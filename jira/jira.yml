@@ -1,0 +1,87 @@
+---
+settings:
+  artifacts-dir: results/%Y-%m-%d_%H-%M-%S
+  aggregator: consolidator
+  verbose: false
+  env:
+    application_hostname: test_jira_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 2990, etc
+    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+    admin_login: admin
+    admin_password: admin
+    concurrency: 200
+    test_duration: 45m
+    WEBDRIVER_VISIBLE: False
+    JMETER_VERSION: 5.1
+services:
+  - module: shellexec
+    prepare:
+      - python util/prepare-data.py ${application_protocol}://${application_hostname}:${application_port}${application_postfix}
+    shutdown:
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+execution:
+  - scenario: jmeter
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+scenarios:
+  selenium:
+    script: selenium_ui/jira-ui.py
+  jmeter:
+    script: jmeter/jira.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hr: 54500
+      perc_create_issue: 4
+      perc_search_jql: 13
+      perc_view_issue: 43
+      perc_view_project_summary: 4
+      perc_view_dashboard: 12
+      perc_edit_issue: 4
+      perc_add_comment: 2
+      perc_browse_projects: 4
+      perc_view_scrum_board: 3
+      perc_view_kanban_board: 3
+      perc_view_backlog: 6
+      perc_browse_boards: 2
+      perc_standalone_extension: 0 # By default disabled
+modules:
+  consolidator:
+    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
+    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+  jmeter:
+    version: ${JMETER_VERSION}
+    detect-plugins: true
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    plugins:
+      - bzm-parallel=0.4
+      - bzm-random-csv=0.6
+      - jpgc-casutg=2.5
+      - jpgc-dummy=0.2
+      - jpgc-ffw=2.0
+      - jpgc-fifo=0.2
+      - jpgc-functions=2.1
+      - jpgc-json=2.6
+      - jpgc-perfmon=2.1
+      - jpgc-prmctl=0.4
+      - jpgc-tst=2.4
+      - jpgc-wsc=0.3
+      - tilln-sshmon=1.0
+      - jpgc-cmd=2.2
+      - jpgc-synthesis=2.2
+    system-properties:
+      server.rmi.ssl.disable: true
+      java.rmi.server.hostname: localhost
+      httpsampler.ignore_failed_embedded_resources: "true"
+  selenium:
+    chromedriver:
+      version: "76.0.3809.68" # Supports Chrome version 76. You can refer to http://chromedriver.chromium.org/downloads

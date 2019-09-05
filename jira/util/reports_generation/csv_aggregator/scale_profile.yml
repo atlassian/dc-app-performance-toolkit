@@ -1,0 +1,10 @@
+# Defines which column from test runs is used for aggregated report. Default is "90% Line"
+column_name: "90% Line"
+runs:
+  # fullPath should contain full path to directory with results.csv. E.g. /home/$USER/centaurus/jira/results/2019-08-06_17-41-08
+  - runName: "Node 1"
+    fullPath: ""
+  - runName: "Node 2"
+    fullPath: ""
+  - runName: "Node 4"
+    fullPath: ""
