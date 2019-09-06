@@ -26,7 +26,7 @@ image_width_px: 1200
 
 
 #####Running
-To run script you need installed python and dependencies from `centaurus/jira/requirements.txt`<br>
+To run script you need installed python and dependencies from `jira/requirements.txt`<br>
 Run script using the following command:
 ```text
 python chart_generator.py <yml config file path (absolute or relative)>
