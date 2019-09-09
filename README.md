@@ -10,7 +10,7 @@ At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC suppor
 * The SQL import is flaky. In case of a failure, run it again.
 
 ## Installation and set up
-
+test
 #### Dependencies
 * Python 3.6+ and pip
 * JDK 8
