@@ -18,7 +18,7 @@ CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
 # DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
 JIRA_DB_USER="postgres"
-JIRA_DB_PASS="password"
+JIRA_DB_PASS="P@ssword1"
 
 # Datasets AWS bucket and db dupm name
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
