@@ -3,7 +3,7 @@ Exports a jiraticket information to a file (PDF/XLSX/CSV).
 
 Screenshot
 
-![](./jiraxporter.png)
+![](images/jiraxporter.png)
 
 
 ### Testing Notes
