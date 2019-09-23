@@ -4,6 +4,8 @@ from typing import List
 
 from scripts.utils import validate_str_is_not_blank, validate_file_exists, resolve_path
 
+RESULTS_CSV_FILE_NAME = "results.csv"
+
 
 def __validate_config(config: dict):
     validate_str_is_not_blank(config, 'column_name')
@@ -29,12 +31,12 @@ def __create_header(config) -> List[str]:
 
 
 def __validate_count_of_actions(key_files: dict):
-    # TODO consider doing validation and reading file avoiding opening the same file two times
+    # TODO consider doing validation and reading file avoiding opening the same file two times (see __get_data_to_write)
     counter = 0
     counter_dict = {}
     for run in key_files['runs']:
-        filename = Path(run['fullPath'])
-        with open(filename, 'r') as f:
+        filename = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
+        with filename.open(mode='r') as f:
             records = csv.DictReader(f)
             row_count = sum(1 for _ in records)
             counter_dict[filename] = row_count
@@ -54,7 +56,7 @@ def __get_data_to_write(config: dict) -> List[dict]:
     column_name = config['column_name']
     for run in config['runs']:
         column_value_by_label = {}
-        filename = resolve_path(run['fullPath'])
+        filename = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
         with filename.open(mode='r') as fs:
             for row in csv.DictReader(fs):
                 column_value_by_label[row['Label']] = row[column_name]
