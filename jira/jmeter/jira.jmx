@@ -4432,7 +4432,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="uri" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">uri</stringProp>
-                      <stringProp name="Argument.value">http://${application.hostname}:${application.port}/secure/Dashboard.jspa</stringProp>
+                      <stringProp name="Argument.value">${application.protocol}://${application.hostname}:${application.port}/secure/Dashboard.jspa</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
