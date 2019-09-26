@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
@@ -14,23 +13,45 @@ JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
 STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
 CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
+JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
+JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 
 # DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
 JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
+# Jira version variables
+SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6)
+JIRA_VERSION="$(sudo cat ${JIRA_VERSION_FILE})"
+echo Your JiraVersion is \'$JIRA_VERSION\'
+
+if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${JIRA_VERSION} " ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/$JIRA_VERSION/large"
+elif [[ " $@ " =~ " -force " ]]; then # Check if the -force flag was set
+  echo Unfortunately your JiraVersion \'$JIRA_VERSION\' is not supported.
+  echo Please kindly be informed that we will use a dataset that can be incompatible with your JiraVersion.
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
+  if sudo su jira -c "! grep -q 'Djira.downgrade.allowed=true' $JIRA_SETENV_FILE"; then # Check if downgrade option seted
+          sudo sed -i 's/JVM_SUPPORT_RECOMMENDED_ARGS="/&-Djira.downgrade.allowed=true /' $JIRA_SETENV_FILE
+          echo The \'-Djira.downgrade.allowed=true\' was added to \'JVM_SUPPORT_RECOMMENDED_ARGS\' variable in $JIRA_SETENV_FILE
+  fi
+else
+  echo Unfortunately your JiraVersion \'$JIRA_VERSION\' is not supported.\
+  Please use \'-force\' flag to run the script
+  exit 1
+fi
+
 # Datasets AWS bucket and db dupm name
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
 DB_DUMP_NAME="db.dump"
 ###################    End of variables section  ###################
 
 
 echo "!!! Warning !!!"
-echo    # move to a new line
+echo # move to a new line
 echo "This script restores Postgres DB from SQL DB dump for Jira DC created with AWS Quickstart defaults."
 echo "You can review or modify default variables in 'Variables section' of this script."
-echo    # move to a new line
+echo # move to a new line
 echo "Variables:"
 echo "JIRA_CURRENT_DIR=${JIRA_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
@@ -38,15 +59,13 @@ echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
 echo "JIRA_DB_USER=${JIRA_DB_USER}"
 echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
 echo "DB_DUMP=${DATASETS_AWS_BUCKET}/${DB_DUMP_NAME}"
-echo    # move to a new line
+echo # move to a new line
 read -p "I confirm that variables are correct and want to proceed (y/n)?  " -n 1 -r
-echo    # move to a new line
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    echo "Script was canceled."
-    exit 1
+echo # move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+  echo "Script was canceled."
+  exit 1
 fi
-
 
 echo "Step1: Check Postgres Client"
 if ! [[ -x "$(command -v psql)" ]]; then
