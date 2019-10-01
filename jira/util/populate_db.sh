@@ -23,13 +23,13 @@ JIRA_DB_PASS="Password1!"
 
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6)
-JIRA_VERSION="$(sudo cat ${JIRA_VERSION_FILE})"
-echo Your JiraVersion is \'$JIRA_VERSION\'
+JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
+echo Jira Version: "${JIRA_VERSION}"
 
 if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${JIRA_VERSION} " ]]; then
   DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/$JIRA_VERSION/large"
 elif [[ " $@ " =~ " -force " ]]; then # Check if the -force flag was set
-  echo Unfortunately your JiraVersion \'$JIRA_VERSION\' is not supported.
+  echo Jira Version "${JIRA_VERSION}" is not officially supported by DCAPT. Supported versions:
   echo Please kindly be informed that we will use a dataset that can be incompatible with your JiraVersion.
   DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
   if sudo su jira -c "! grep -q 'Djira.downgrade.allowed=true' $JIRA_SETENV_FILE"; then # Check if downgrade option seted
