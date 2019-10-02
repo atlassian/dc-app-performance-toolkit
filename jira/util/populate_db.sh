@@ -15,6 +15,7 @@ START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
 CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
 JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
+SHUT_DOWN_TOMCAT="${JIRA_CURRENT_DIR}/bin/shutdown.sh"
 
 # DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
@@ -24,27 +25,55 @@ JIRA_DB_PASS="Password1!"
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
-echo Jira Version: "${JIRA_VERSION}"
+echo "Jira Version: ${JIRA_VERSION}"
 
-if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${JIRA_VERSION} " ]]; then
-  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/$JIRA_VERSION/large"
-elif [[ " $@ " =~ " -force " ]]; then # Check if the -force flag was set
+# Datasets AWS bucket and db dump name
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+DATASETS_SIZE="large"
+DB_DUMP_NAME="db.dump"
+DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+
+###################    End of variables section  ###################
+
+
+# Check if Jira version is supported
+if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+  echo "Jira Version: ${JIRA_VERSION} is not officially supported by DCAPT."
+  echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
+  echo "If you want to force apply any of existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
+  echo "e.g. ./populate_db.sh --force 8.0.3"
+  echo "Warning. This may broke your Jira instance"
+  # Check if --force flag is passed into command
+  if [[ "$1" == "--force" ]]; then
+    # Check if passed Jira version is in list of supported
+    if [[ "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "$2" ]]; then
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+      echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
+    else
+      echo "Correct dataset version was not specified after --force flag."
+      echo "Available datasets: ${SUPPORTED_JIRA_VERSIONS[@]}"
+      exit 1
+    fi
+  else
+    # No force flag
+    exit 1
+  fi
+fi
+
+if [[ ! " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${JIRA_VERSION} " ]]; then
+  if [[ " $@ " =~ " --force " ]]; then # Check if the -force flag was set
   echo Jira Version "${JIRA_VERSION}" is not officially supported by DCAPT. Supported versions:
   echo Please kindly be informed that we will use a dataset that can be incompatible with your JiraVersion.
   DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
-  if sudo su jira -c "! grep -q 'Djira.downgrade.allowed=true' $JIRA_SETENV_FILE"; then # Check if downgrade option seted
+  if sudo su jira -c "! grep -q 'Djira.downgrade.allowed=true' $JIRA_SETENV_FILE"; then # Check if downgrade option set
           sudo sed -i 's/JVM_SUPPORT_RECOMMENDED_ARGS="/&-Djira.downgrade.allowed=true /' $JIRA_SETENV_FILE
           echo The \'-Djira.downgrade.allowed=true\' was added to \'JVM_SUPPORT_RECOMMENDED_ARGS\' variable in $JIRA_SETENV_FILE
   fi
 else
-  echo Unfortunately your JiraVersion \'$JIRA_VERSION\' is not supported.\
-  Please use \'-force\' flag to run the script
+  echo "Jira Version: "${JIRA_VERSION}" is not supported.\
+  Please use \'--force\' flag to run the script"
   exit 1
 fi
-
-# Datasets AWS bucket and db dupm name
-DB_DUMP_NAME="db.dump"
-###################    End of variables section  ###################
 
 
 echo "!!! Warning !!!"
@@ -58,7 +87,7 @@ echo "DB_CONFIG=${DB_CONFIG}"
 echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
 echo "JIRA_DB_USER=${JIRA_DB_USER}"
 echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
-echo "DB_DUMP=${DATASETS_AWS_BUCKET}/${DB_DUMP_NAME}"
+echo "DB_DUMP_URL=${DB_DUMP_URL}"
 echo # move to a new line
 read -p "I confirm that variables are correct and want to proceed (y/n)?  " -n 1 -r
 echo # move to a new line
@@ -83,7 +112,7 @@ fi
 
 echo "Step2: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
-wget ${DATASETS_AWS_BUCKET}/${DB_DUMP_NAME}
+wget ${DB_DUMP_URL}
 if [[ $? -ne 0 ]]; then
   echo "DB dump download failed! Pls check available disk space."
   exit 1
