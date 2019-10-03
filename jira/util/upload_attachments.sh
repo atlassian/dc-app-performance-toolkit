@@ -8,7 +8,7 @@ SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 echo "Jira Version: ${JIRA_VERSION}"
 
-ATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
 ATTACHMENTS_TAR="attachments.tar.gz"
 ATTACHMENTS_DIR="attachments"
 DATASETS_SIZE="large"
