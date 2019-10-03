@@ -113,6 +113,7 @@ CATALINA_PID=$(pgrep -f "catalina")
 echo "CATALINA_PID=${CATALINA_PID}"
 if [[ -z ${CATALINA_PID} ]]; then
   echo "Jira is not running"
+  sudo su -c "rm -rf ${CATALINA_PID_FILE}"
 else
   echo "Stopping Jira"
   sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"

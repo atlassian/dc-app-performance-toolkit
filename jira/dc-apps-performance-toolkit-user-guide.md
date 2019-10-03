@@ -47,12 +47,12 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | 8.0.3 |
+| Jira Version | 8.0.3 or 7.13.6 |
 
 The Data Center App Performance Toolkit officially supports:
 
-- The latest Jira GA (General Availability release) version: 8.0.3
-- The latest [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13
+- The latest Jira Platform Release version: 8.0.3
+- The latest Jira [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6
 
 **Cluster nodes**
 
@@ -159,7 +159,7 @@ All the datasets use the standard `admin`/`admin` credentials.
 
 Pre-loading the dataset is a three-step process:
 
-1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script or [xml_backup.zip](https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large/xml_backup.zip).
+1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script or restore from xml backup file.
 1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/upload_attachments.sh) script.
 1. [Re-indexing Jira Data Center](#reindexing). For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
@@ -203,14 +203,13 @@ To populate the database with SQL:
     INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
     JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-    STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
-    START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
     CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
     JIRA_DB_NAME="jira"
     JIRA_DB_USER="postgres"
     JIRA_DB_PASS="Password1!"
-    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
-    DB_DUMP_NAME="db.dump"
+    JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
+    JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
+    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
     ```
 1. Run the script:
 
@@ -243,10 +242,11 @@ We recommend that you only use this method if you are having problems with the [
     ssh ec2-user@$NODE_IP -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP"
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [xml_backup.zip](https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large/xml_backup.zip) file.
+1. Download the xml_backup.zip file corresponding to your Jira version.
 
     ``` bash
-    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large/xml_backup.zip -O /media/atl/jira/shared/import"
+    JIRA_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-software.version")
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JIRA_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import"
     ```
 1. From a different computer, log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
@@ -276,7 +276,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
+    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
     ATTACHMENTS_TAR="attachments.tar.gz"
     ATTACHMENTS_DIR="attachments"
     TMP_DIR="/tmp"
