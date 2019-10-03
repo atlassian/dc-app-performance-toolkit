@@ -40,15 +40,21 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by DCAPT."
   echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
-  echo "If you want to force apply any of existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
+  echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 8.0.3"
-  echo "Warning. This may broke your Jira instance"
+  echo "!!! Warning !!! This may broke your Jira instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Jira version is in list of supported
     if [[ "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "$2" ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
+      # If there is no DOWNGRADE_OPT - set it
+      DOWNGRADE_OPT="Djira.downgrade.allowed=true"
+      if sudo su jira -c "! grep -q ${DOWNGRADE_OPT} $JIRA_SETENV_FILE"; then
+        sudo sed -i "s/JVM_SUPPORT_RECOMMENDED_ARGS=\"/&-${DOWNGRADE_OPT} /" "${JIRA_SETENV_FILE}"
+        echo "Flag -${DOWNGRADE_OPT} was set in ${JIRA_SETENV_FILE}"
+      fi
     else
       echo "Correct dataset version was not specified after --force flag."
       echo "Available datasets: ${SUPPORTED_JIRA_VERSIONS[@]}"
@@ -59,22 +65,6 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
     exit 1
   fi
 fi
-
-if [[ ! " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${JIRA_VERSION} " ]]; then
-  if [[ " $@ " =~ " --force " ]]; then # Check if the -force flag was set
-  echo Jira Version "${JIRA_VERSION}" is not officially supported by DCAPT. Supported versions:
-  echo Please kindly be informed that we will use a dataset that can be incompatible with your JiraVersion.
-  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira/8.0.3/large"
-  if sudo su jira -c "! grep -q 'Djira.downgrade.allowed=true' $JIRA_SETENV_FILE"; then # Check if downgrade option set
-          sudo sed -i 's/JVM_SUPPORT_RECOMMENDED_ARGS="/&-Djira.downgrade.allowed=true /' $JIRA_SETENV_FILE
-          echo The \'-Djira.downgrade.allowed=true\' was added to \'JVM_SUPPORT_RECOMMENDED_ARGS\' variable in $JIRA_SETENV_FILE
-  fi
-else
-  echo "Jira Version: "${JIRA_VERSION}" is not supported.\
-  Please use \'--force\' flag to run the script"
-  exit 1
-fi
-
 
 echo "!!! Warning !!!"
 echo # move to a new line
@@ -120,42 +110,59 @@ fi
 
 echo "Step3: Stop Jira"
 CATALINA_PID=$(pgrep -f "catalina")
+echo "CATALINA_PID=${CATALINA_PID}"
 if [[ -z ${CATALINA_PID} ]]; then
   echo "Jira is not running"
 else
   echo "Stopping Jira"
-  sudo su jira -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
-  sudo su jira -c "${STOP_JIRA}"
-  sleep 5
+  sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
+  sudo su -c "${SHUT_DOWN_TOMCAT}"
+  COUNTER=0
+  TIMEOUT=5
+  ATTEMPTS=20
+  while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
+    if [[ -z $(pgrep -f "catalina") ]]; then
+      echo Jira is stopped
+      break
+    fi
+    echo "Waiting for Jira stop, attempt ${COUNTER} at waiting ${TIMEOUT} seconds."
+    sleep ${TIMEOUT}
+    let COUNTER++
+  done
+  if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
+    echo "Jira stop was not finished in $ATTEMPTS attempts with $TIMEOUT sec timeout."
+    echo "Try to rerun script."
+    exit 1
+  fi
 fi
 
-echo "Step4: Get DB_URL"
-DB_URL=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
-if [[ -z ${DB_URL} ]]; then
+echo "Step4: Get DB_HOST"
+DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
+if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
   exit 1
 fi
-echo "DB_URL=${DB_URL}"
+echo "DB_HOST=${DB_HOST}"
 
 echo "Step5: SQL Restore"
 echo "Check DB connection"
-PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_URL}
+PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
   echo "Connection to DB failed. Please check correctness of following variables:"
   echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
   echo "JIRA_DB_USER=${JIRA_DB_USER}"
   echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
-  echo "DB_URL=${DB_URL}"
+  echo "DB_HOST=${DB_HOST}"
   exit 1
 fi
 echo "Drop DB"
-PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_URL} ${JIRA_DB_NAME}
+PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} ${JIRA_DB_NAME}
 sleep 5
 echo "Create DB"
-PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_URL} -T template0 ${JIRA_DB_NAME}
+PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 ${JIRA_DB_NAME}
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${JIRA_DB_PASS} pg_restore -v -U ${JIRA_DB_USER} -h ${DB_URL} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
+time PGPASSWORD=${JIRA_DB_PASS} pg_restore -v -U ${JIRA_DB_USER} -h ${DB_HOST} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
