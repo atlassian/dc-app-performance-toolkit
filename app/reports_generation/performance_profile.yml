@@ -3,9 +3,9 @@ column_name: "90% Line"
 runs:
   # fullPath should contain a full path to the directory with run results. E.g. /home/$USER/dc-app-performance-toolkit/jira/results/2019-08-06_17-41-08
   - runName: "without app"
-    fullPath: "C:\\Atlassian\\Centaurus\\GIT\\dc-app-performance-toolkit\\app\\results\\jira\\2019-10-04_12-06-38"
+    fullPath: ""
   - runName: "with app"
-    fullPath: "C:\\Atlassian\\Centaurus\\GIT\\dc-app-performance-toolkit\\app\\results\\jira\\2019-10-04_12-06-38"
+    fullPath: ""
 
 # Chart generation config
 index_col: "Action"
