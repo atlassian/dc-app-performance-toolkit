@@ -137,7 +137,7 @@ else
   fi
 fi
 
-echo "Step4: Get DB_HOST"
+echo "Step4: Get DB Host"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
