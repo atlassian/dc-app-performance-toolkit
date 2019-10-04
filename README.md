@@ -6,7 +6,9 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
 At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC support is coming soon.
 
 ## Known issues/limitations
-* Jira version 8.0.3 is only supported. Version 7.13.x support is coming soon.
+* Supported Jira versions: 
+    * Latest platform release: 8.0.3
+    * Latest enterprise release: 7.13.6
 * The SQL import is flaky. In case of a failure, run it again.
 
 ## Installation and set up
