@@ -1,6 +1,6 @@
 ---
 settings:
-  artifacts-dir: results/%Y-%m-%d_%H-%M-%S
+  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
   env:
@@ -17,7 +17,7 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - python util/prepare-data.py ${application_protocol}://${application_hostname}:${application_port}${application_postfix}
+      - python util/data_preparation/jira/prepare-data.py ${application_protocol}://${application_hostname}:${application_port}${application_postfix}
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
 execution:
@@ -31,7 +31,7 @@ execution:
     hold-for: ${test_duration}
 scenarios:
   selenium:
-    script: selenium_ui/jira-ui.py
+    script: selenium_ui/jira_ui.py
   jmeter:
     script: jmeter/jira.jmx
     properties:
