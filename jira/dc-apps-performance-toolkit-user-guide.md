@@ -185,11 +185,11 @@ To populate the database with SQL:
 
     For Windows, use Putty to connect to the Jira node over SSH.
     For Linux or MacOS:
-    ``` bash
+    ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh ec2-user@$NODE_IP -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP"
+    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script and make it executable:
@@ -235,11 +235,11 @@ We recommend that you only use this method if you are having problems with the [
 
     For Windows, use Putty to connect to the Jira node over SSH.
     For Linux or MacOS:
-    ``` bash
+    ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh ec2-user@$NODE_IP -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP"
+    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" eec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the xml_backup.zip file corresponding to your Jira version.
@@ -261,11 +261,11 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 
     For Windows, use Putty to connect to the Jira node over SSH.
     For Linux or MacOS:
-    ``` bash
+    ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh ec2-user@$NODE_IP -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP"
+    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/upload_attachments.sh) script and make it executable:
@@ -514,7 +514,7 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh ec2-user@$NODE_IP -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP"
+    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
 1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/index-sync.sh) file. Then, make it executable and run it:
 
