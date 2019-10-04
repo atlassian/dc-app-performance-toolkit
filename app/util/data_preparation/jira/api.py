@@ -1,23 +1,16 @@
 import json
+
 import requests
-import yaml
-from pathlib import Path
-
-
-def admin_credentials():
-    with open(Path(__file__).parents[1] / "jira.yml", 'r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        return jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
-
-
-USER, PASSWORD = admin_credentials()
 
 
 class ApiJira(object):
 
-    def __init__(self, host, api_session=None, timeout=30):
+    def __init__(self, host, user, password, api_session=None, timeout=30):
         self.host = host
         self.requests_timeout = timeout
+        self.user = user
+        self.password = password
+
         if api_session is None:
             self.api_session = requests.Session()
         else:
@@ -25,7 +18,7 @@ class ApiJira(object):
 
     @property
     def base_auth(self):
-        return USER, PASSWORD
+        return self.user, self.password
 
     def get_boards(self, startAt=0, maxResults=100, type=None, name=None, projectKeyOrID=None):
         """
@@ -89,7 +82,7 @@ class ApiJira(object):
         while loop_count > 0:
 
             api_url = f'{self.host}/rest/api/2/user/search?username={username}&startAt={startAt}' \
-                  f'&maxResults={maxResults}&includeActive={includeActive}&includeInactive={includeInactive}'
+                      f'&maxResults={maxResults}&includeActive={includeActive}&includeInactive={includeInactive}'
 
             r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
             assert r.ok, f"Could not retrieve users: {r.status_code} {r.text}"
@@ -123,7 +116,7 @@ class ApiJira(object):
 
         while loop_count > 0:
             api_url = f'{self.host}/rest/api/2/search?jql={jql}&startAt={startAt}&maxResults={maxResults}' \
-                f'&validateQuery={validateQuery}&fields={fields}'
+                      f'&validateQuery={validateQuery}&fields={fields}'
             r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
             assert r.ok, f"Could not retrieve users: {r.status_code} {r.text}"
             issues.extend(r.json()['issues'])
@@ -141,7 +134,7 @@ class ApiJira(object):
         return r.json()
 
     def update_app(self, app_key, payload):
-        api_url =  f'{self.host}/rest/plugins/1.0/{app_key}-key'
+        api_url = f'{self.host}/rest/plugins/1.0/{app_key}-key'
         headers = {"content-type": "application/vnd.atl.plugins.plugin+json"}
         r = self.api_session.put(api_url, auth=self.base_auth, headers=headers, verify=False, json=payload)
         assert r.ok, f"Could not update application {app_key}"
@@ -158,7 +151,7 @@ class ApiJira(object):
         :return: Returns the created user.
         """
         if not email:
-            email = name+'@localdomain.com'
+            email = name + '@localdomain.com'
         if not displayname:
             displayname = name
         payload = json.dumps({

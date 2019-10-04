@@ -155,7 +155,7 @@
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
-          <stringProp name="filename">datasets/users.csv</stringProp>
+          <stringProp name="filename">datasets/jira/users.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">username,password</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -1095,7 +1095,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
         </LoopController>
         <hashTree>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="issues" enabled="true">
-            <stringProp name="filename">datasets/issues.csv</stringProp>
+            <stringProp name="filename">datasets/jira/issues.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">issue_key,issue_id,project_key</stringProp>
@@ -1106,7 +1106,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="scrum boards" enabled="true">
-            <stringProp name="filename">datasets/scrum-boards.csv</stringProp>
+            <stringProp name="filename">datasets/jira/scrum-boards.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">scrum_board_id</stringProp>
@@ -1117,7 +1117,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="kanban boards" enabled="true">
-            <stringProp name="filename">datasets/kanban-boards.csv</stringProp>
+            <stringProp name="filename">datasets/jira/kanban-boards.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">kanban_board_id</stringProp>
@@ -1128,7 +1128,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="jql" enabled="true">
-            <stringProp name="filename">datasets/jqls.csv</stringProp>
+            <stringProp name="filename">datasets/jira/jqls.csv</stringProp>
             <stringProp name="fileEncoding"></stringProp>
             <stringProp name="variableNames">jql</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
@@ -1601,7 +1601,7 @@ def request_body = &quot;pid=${pid}&amp;issuetype=${issuetype}&amp;atl_token=${a
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -2528,7 +2528,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -3177,7 +3177,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -4088,7 +4088,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -5035,7 +5035,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -6266,7 +6266,7 @@ vars.put(&quot;random_string_long&quot;, random_string_long)
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -6815,7 +6815,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -7157,7 +7157,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -8174,7 +8174,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -9191,7 +9191,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -10347,7 +10347,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -10769,7 +10769,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -10798,7 +10798,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree/>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/jira/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>

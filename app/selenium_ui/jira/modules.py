@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from jira.selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
+from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
 from selenium.webdriver.support.ui import Select
 
 timeout = 20

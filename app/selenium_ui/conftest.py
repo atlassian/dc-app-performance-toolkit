@@ -15,6 +15,8 @@ import yaml
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
+from util.project_paths import JIRA_YML, JIRA_DATASETS
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
@@ -23,12 +25,12 @@ JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,su
 
 # create selenium output files
 try:
-    latest_results_dir = max(glob.glob((str((Path(__file__).parents[1]
-                                             / "results").absolute()) + '/20*')), key=os.path.getmtime)
+    # TODO consider using TAURUS_ARTIFACTS_DIR env variable
+    latest_results_dir = max(glob.glob((str((Path("results") / "jira").absolute()) + '/20*')), key=os.path.getmtime)
 except ValueError:
+    # TODO we have error here if 'results' dir does not exist
     results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    cur_dir = str(Path(__file__).parents[1])
-    pytest_run_results = f'{cur_dir}/results/{results_dir_name}_local'
+    pytest_run_results = f'results/{results_dir_name}_local'
     os.mkdir(pytest_run_results)
     latest_results_dir = pytest_run_results  # in case you just run pytest
 
@@ -44,8 +46,8 @@ if not selenium_results_file.exists():
 
 
 def application_url():
-    with open(Path(__file__).parents[1] / "jira.yml", 'r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
+    with JIRA_YML.open(mode='r') as fs:
+        jira_yaml = yaml.load(fs, Loader=yaml.FullLoader)
         protocol = jira_yaml['settings']['env']['application_protocol']
         hostname = jira_yaml['settings']['env']['application_hostname']
         port = str(jira_yaml['settings']['env']['application_port'])
@@ -94,6 +96,7 @@ def print_timing(func):
 
 @pytest.fixture(scope="module")
 def webdriver():
+    # TODO consider extract common logic with globals to separate function
     global driver
     if 'driver' in globals():
         driver = globals()['driver']
@@ -118,7 +121,7 @@ atexit.register(driver_quit)
 
 
 def generate_random_string(length):
-    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for i in range(length)])
+    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
 
 
 def generate_jqls(max_length=3, count=100):
@@ -128,7 +131,7 @@ def generate_jqls(max_length=3, count=100):
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
+def pytest_runtest_makereport(item):
     # Making test result information available in fixtures
     # https://docs.pytest.org/en/latest/example/simple.html#making-test-result-information-available-in-fixtures
     outcome = yield
@@ -159,17 +162,17 @@ def screen_shots(request, webdriver):
 
 @pytest.fixture(scope="module")
 def datasets():
+    # TODO consider extract common logic with globals to separate function
     global data_sets
     if 'data_sets' in globals():
         data_sets = globals()['data_sets']
         return data_sets
     else:
         data_sets = dict()
-        input_data_path = Path(__file__).parents[1] / "datasets"
 
         def read_input_file(file_name):
-            with open(input_data_path / file_name, 'r') as f:
-                reader = csv.reader(f)
+            with open(JIRA_DATASETS / file_name, 'r') as fs:
+                reader = csv.reader(fs)
                 return list(reader)
 
         data_sets["issues"] = read_input_file("issues.csv")
