@@ -9,6 +9,6 @@ runs:
 
 # Chart generation config
 index_col: "Action"
-title: "Performance Testing"
+title: "DCAPT Performance Testing"
 image_height_px: 1000
 image_width_px: 1200
