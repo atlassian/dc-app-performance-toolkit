@@ -1,18 +1,12 @@
-# Work around import issue
-import os
 import random
 import string
 import sys
 
 import yaml
 
-# TODO fix this work around
-from util.project_paths import JIRA_DATASETS, JIRA_YML
-
-sys.path.insert(0, os.getcwd())
-print("System path: ", sys.path)
-
 from util.data_preparation.jira.api import ApiJira
+from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
@@ -59,26 +53,25 @@ def generate_random_string(length=20):
 
 
 def write_test_data_to_files(datasets):
-    datasets_path = JIRA_DATASETS
-
-    def write_to_file(file_name, list):
-        with open(datasets_path / file_name, 'w') as f:
-            for item in list:
-                f.write(f"{item}\n")
-
-    write_to_file('jqls.csv', datasets['jqls'])
+    __write_to_file(JIRA_DATASET_JQLS, datasets['jqls'])
 
     scrum_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'scrum']
-    write_to_file('scrum-boards.csv', scrum_boards)
+    __write_to_file(JIRA_DATASET_SCRUM_BOARDS, scrum_boards)
 
     kanban_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'kanban']
-    write_to_file('kanban-boards.csv', kanban_boards)
+    __write_to_file(JIRA_DATASET_KANBAN_BOARDS, kanban_boards)
 
     users = [f"{user['name']},{DEFAULT_USER_PASSWORD}" for user in datasets['users']]
-    write_to_file('users.csv', users)
+    __write_to_file(JIRA_DATASET_USERS, users)
 
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets['issues']]
-    write_to_file('issues.csv', issues)
+    __write_to_file(JIRA_DATASET_ISSUES, issues)
+
+
+def __write_to_file(file_path, items):
+    with open(file_path, 'w') as f:
+        for item in items:
+            f.write(f"{item}\n")
 
 
 def main():
@@ -96,13 +89,15 @@ def main():
         user, password = jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
 
     jira_api = ApiJira(url, user, password)
-    dataset["boards"] = jira_api.get_boards(type='scrum', maxResults=250) \
-                        + jira_api.get_boards(type='kanban', maxResults=250)
+    dataset["boards"] = (
+            jira_api.get_boards(board_type='scrum', max_results=250) +
+            jira_api.get_boards(board_type='kanban', max_results=250)
+    )
 
-    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, maxResults=performance_users_count)
+    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
     dataset["users"] = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
 
-    dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", maxResults=8000)
+    dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", max_results=8000)
     dataset["jqls"] = generate_jqls(count=150)
 
     write_test_data_to_files(dataset)

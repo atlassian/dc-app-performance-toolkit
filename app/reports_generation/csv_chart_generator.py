@@ -1,10 +1,5 @@
 import datetime
-import sys
 from pathlib import Path
-
-# Work around import issue
-sys.path.insert(0, str(Path(__file__).absolute().parent))
-print("System path: ", sys.path)
 
 from scripts import config_provider, csv_aggregator, chart_generator
 

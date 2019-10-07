@@ -15,7 +15,8 @@ import yaml
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-from util.project_paths import JIRA_YML, JIRA_DATASETS
+from util.project_paths import JIRA_YML, JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
+    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -166,21 +167,23 @@ def datasets():
     global data_sets
     if 'data_sets' in globals():
         data_sets = globals()['data_sets']
+
         return data_sets
     else:
         data_sets = dict()
+        data_sets["issues"] = __read_input_file(JIRA_DATASET_ISSUES)
+        data_sets["users"] = __read_input_file(JIRA_DATASET_USERS)
+        data_sets["jqls"] = __read_input_file(JIRA_DATASET_JQLS)
+        data_sets["scrum_boards"] = __read_input_file(JIRA_DATASET_SCRUM_BOARDS)
+        data_sets["kanban_boards"] = __read_input_file(JIRA_DATASET_KANBAN_BOARDS)
 
-        def read_input_file(file_name):
-            with open(JIRA_DATASETS / file_name, 'r') as fs:
-                reader = csv.reader(fs)
-                return list(reader)
-
-        data_sets["issues"] = read_input_file("issues.csv")
-        data_sets["users"] = read_input_file("users.csv")
-        data_sets["jqls"] = read_input_file("jqls.csv")
-        data_sets["scrum_boards"] = read_input_file("scrum-boards.csv")
-        data_sets["kanban_boards"] = read_input_file("kanban-boards.csv")
         return data_sets
+
+
+def __read_input_file(file_path):
+    with open(file_path, 'r') as fs:
+        reader = csv.reader(fs)
+        return list(reader)
 
 
 class AnyEc:
@@ -191,10 +194,10 @@ class AnyEc:
     def __init__(self, *args):
         self.ecs = args
 
-    def __call__(self, driver):
+    def __call__(self, w_driver):
         for fn in self.ecs:
             try:
-                if fn(driver):
+                if fn(w_driver):
                     return True
             except:
                 pass

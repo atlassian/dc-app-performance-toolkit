@@ -1,13 +1,15 @@
 import random
 import time
 import urllib.parse
+
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
-from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.wait import WebDriverWait
+
+from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
 
 timeout = 20
 
@@ -24,12 +26,13 @@ def _dismiss_popup(webdriver, *args):
 
 
 def login(webdriver, datasets):
-
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
+        # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
             webdriver.get(f'{APPLICATION_URL}/login.jsp')
+
         measure(webdriver, "selenium_login:open_login_page")
 
         def _setup_page_is_presented():
@@ -37,15 +40,15 @@ def login(webdriver, datasets):
             return True if elems else False
 
         def _user_setup():
-            _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "next")), interaction)
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "next")), interaction)
             next_el = webdriver.find_element_by_id('next')
             next_el.send_keys(Keys.ESCAPE)
             next_el.click()
             _wait_until(webdriver,
-                        EC.visibility_of_element_located((By.CSS_SELECTOR, "input[value='Next']")), interaction
+                        ec.visibility_of_element_located((By.CSS_SELECTOR, "input[value='Next']")), interaction
                         ).click()
             _wait_until(webdriver,
-                        EC.visibility_of_element_located((By.CSS_SELECTOR, "a[data-step-key='browseprojects']")),
+                        ec.visibility_of_element_located((By.CSS_SELECTOR, "a[data-step-key='browseprojects']")),
                         interaction
                         ).click()
             webdriver.get(f'{APPLICATION_URL}/secure/Dashboard.jspa')
@@ -59,7 +62,8 @@ def login(webdriver, datasets):
             webdriver.find_element_by_id('login-form-submit').click()
             if _setup_page_is_presented():
                 _user_setup()
-            _wait_until(webdriver, EC.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
+            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
+
         measure(webdriver, "selenium_login:login_and_view_dashboard")
 
     measure(webdriver, "selenium_login")
@@ -77,7 +81,8 @@ def view_issue(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/browse/{issue}')
-        _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "summary-val")), interaction)
+        _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "summary-val")), interaction)
+
     measure(webdriver, "selenium_view_issue")
 
 
@@ -85,18 +90,19 @@ def create_issue(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         # open quick create
-        _wait_until(webdriver, EC.element_to_be_clickable((By.ID, "create_link")), interaction)
+        _wait_until(webdriver, ec.element_to_be_clickable((By.ID, "create_link")), interaction)
 
         @print_timing
         def measure(webdriver, interaction):
             webdriver.find_element_by_id('create_link').click()
-            _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "create-issue-dialog")), interaction)
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "create-issue-dialog")), interaction)
+
         measure(webdriver, "selenium_create_issue:open_quick_create")
 
         # create issue
         @print_timing
         def measure(webdriver, interaction):
-            _wait_until(webdriver, EC.element_to_be_clickable((By.ID, "summary")), interaction
+            _wait_until(webdriver, ec.element_to_be_clickable((By.ID, "summary")), interaction
                         ).send_keys(f"Issue created date {time.time()}")
 
             text_description = f'Description: {generate_random_string(100)}'
@@ -108,11 +114,11 @@ def create_issue(webdriver, datasets):
             if assign_els:
                 assign_els[0].click()
 
-           # Set resolution if there is such field
+            # Set resolution if there is such field
             resolution_els = webdriver.find_elements_by_id('resolution')
             if resolution_els:
                 dropdown_length = len(Select(resolution_els[0]).options)
-                random_resolution_id = random.randint(1, dropdown_length-1)
+                random_resolution_id = random.randint(1, dropdown_length - 1)
                 Select(resolution_els[0]).select_by_index(random_resolution_id)
 
             def __filer_epic(element):
@@ -126,15 +132,18 @@ def create_issue(webdriver, datasets):
             action.move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
 
             # Wait until issue-form saves issue-type
-            _wait_until(webdriver, EC.invisibility_of_element_located((By.CSS_SELECTOR, ".buttons>.throbber")),
+            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, ".buttons>.throbber")),
                         interaction)
 
             @print_timing
             def measure(webdriver, interaction):
-                _wait_until(webdriver, EC.element_to_be_clickable((By.ID, "create-issue-submit")), interaction).click()
-                _wait_until(webdriver, EC.invisibility_of_element_located((By.ID, "create-issue-dialog")), interaction)
+                _wait_until(webdriver, ec.element_to_be_clickable((By.ID, "create-issue-submit")), interaction).click()
+                _wait_until(webdriver, ec.invisibility_of_element_located((By.ID, "create-issue-dialog")), interaction)
+
             measure(webdriver, "selenium_create_issue:submit_issue_form")
+
         measure(webdriver, "selenium_create_issue:fill_and_submit_issue_form")
+
     measure(webdriver, "selenium_create_issue")
     _dismiss_popup(webdriver, '.aui-inline-dialog-contents .cancel')
 
@@ -145,7 +154,8 @@ def view_project_summary(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/browse/{project_key}/summary')
-        _wait_until(webdriver, EC.presence_of_element_located((By.CLASS_NAME, "project-meta-column")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "project-meta-column")), interaction)
+
     measure(webdriver, "selenium_project_summary")
 
 
@@ -156,10 +166,11 @@ def search_jql(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(APPLICATION_URL + f"/issues/?jql={jql}")
         _wait_until(webdriver, AnyEc(
-            EC.presence_of_element_located((By.ID, "issuetable")),
-            EC.presence_of_element_located((By.ID, "issue-content")),
-            EC.presence_of_element_located((By.CLASS_NAME, "no-results-hint"))
+            ec.presence_of_element_located((By.ID, "issuetable")),
+            ec.presence_of_element_located((By.ID, "issue-content")),
+            ec.presence_of_element_located((By.CLASS_NAME, "no-results-hint"))
         ), interaction)
+
     measure(webdriver, "selenium_search_jql")
 
 
@@ -172,7 +183,8 @@ def edit_issue(webdriver, datasets):
         def measure(webdriver, interaction):
             # open editor
             webdriver.get(f'{APPLICATION_URL}/secure/EditIssue!default.jspa?id={issue_id}')
-            _wait_until(webdriver, EC.presence_of_element_located((By.ID, "issue-edit")), interaction)
+            _wait_until(webdriver, ec.presence_of_element_located((By.ID, "issue-edit")), interaction)
+
         measure(webdriver, "selenium_edit_issue:open_edit_issue_form")
 
         # edit summary
@@ -187,8 +199,10 @@ def edit_issue(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             webdriver.find_element_by_id('issue-edit-submit').click()
-            _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "summary-val")), interaction)
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "summary-val")), interaction)
+
         measure(webdriver, "selenium_edit_issue:save_edit_issue_form")
+
     measure(webdriver, "selenium_edit_issue")
 
 
@@ -201,7 +215,8 @@ def save_comment(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             webdriver.get(f'{APPLICATION_URL}/secure/AddComment!default.jspa?id={issue_id}')
-            _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "comment-add-submit")), interaction)
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "comment-add-submit")), interaction)
+
         measure(webdriver, "selenium_save_comment:open_comment_form")
 
         # save editor
@@ -212,8 +227,10 @@ def save_comment(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             webdriver.find_element_by_id('comment-add-submit').click()
-            _wait_until(webdriver, EC.visibility_of_element_located((By.ID, "summary-val")), interaction)
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "summary-val")), interaction)
+
         measure(webdriver, "selenium_save_comment:submit_form")
+
     measure(webdriver, "selenium_save_comment")
 
 
@@ -222,9 +239,10 @@ def browse_project(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(APPLICATION_URL +
                       f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={random.randint(1, 100)}')
-        _wait_until(webdriver, AnyEc(EC.presence_of_element_located((By.CSS_SELECTOR, "tbody.projects-list")),
-                                     EC.presence_of_element_located((By.CLASS_NAME, "none-panel"))
+        _wait_until(webdriver, AnyEc(ec.presence_of_element_located((By.CSS_SELECTOR, "tbody.projects-list")),
+                                     ec.presence_of_element_located((By.CLASS_NAME, "none-panel"))
                                      ), interaction)
+
     measure(webdriver, "selenium_browse_project")
 
 
@@ -232,7 +250,9 @@ def browse_board(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/secure/ManageRapidViews.jspa')
-        _wait_until(webdriver, EC.presence_of_element_located((By.CSS_SELECTOR, "#ghx-content-main table.aui")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, "#ghx-content-main table.aui")),
+                    interaction)
+
     measure(webdriver, "selenium_browse_board")
 
     _dismiss_popup(webdriver, 'aui-inline-dialog-contents .cancel')
@@ -240,29 +260,35 @@ def browse_board(webdriver, datasets):
 
 def view_backlog_for_scrum_board(webdriver, datasets):
     board_id = random.choice(datasets["scrum_boards"])[0]
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}&view=planning')
-        _wait_until(webdriver, EC.presence_of_element_located(
+        _wait_until(webdriver, ec.presence_of_element_located(
             (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")), interaction)
+
     measure(webdriver, "selenium_view_scrum_board_backlog")
 
 
 def view_scrum_board(webdriver, datasets):
     board_id = random.choice(datasets["scrum_boards"])[0]
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}')
-        _wait_until(webdriver, EC.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
+
     measure(webdriver, "selenium_view_scrum_board")
 
 
 def view_kanban_board(webdriver, datasets):
     board_id = random.choice(datasets["kanban_boards"])
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}')
-        _wait_until(webdriver, EC.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
+
     measure(webdriver, "selenium_view_kanban_board")
 
 
@@ -270,7 +296,8 @@ def view_dashboard(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/secure/Dashboard.jspa')
-        _wait_until(webdriver, EC.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
+
     measure(webdriver, "selenium_view_dashboard")
 
 
@@ -279,7 +306,8 @@ def log_out(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/logoutconfirm.jsp')
         webdriver.find_element_by_id('confirm-logout-submit').click()
-        _wait_until(webdriver, EC.presence_of_element_located((By.CLASS_NAME, "login-link")), interaction)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "login-link")), interaction)
+
     measure(webdriver, "selenium_log_out")
 
 
@@ -288,7 +316,7 @@ def _write_to_text_area(webdriver, element, input_text, interaction):
     if "richeditor-cover" in element.get_attribute("class"):
         attribute_id = element.get_attribute("id")
         iframe_xpath = f"//div[textarea[@id='{attribute_id}']]//iframe"
-        _wait_until(webdriver, EC.frame_to_be_available_and_switch_to_it((By.XPATH, iframe_xpath)), interaction)
+        _wait_until(webdriver, ec.frame_to_be_available_and_switch_to_it((By.XPATH, iframe_xpath)), interaction)
         # Send keys seems flaky when using Rich Text Editor (tinymce). Make the "input_text" small.
         webdriver.find_element_by_id("tinymce").send_keys(input_text)
         webdriver.switch_to.parent_frame()
@@ -307,11 +335,11 @@ def _wait_until(webdriver, expected_condition, interaction, time_out=timeout):
 
         message += f"Timed out after {time_out} sec waiting for one of the conditions: \n{conditions_text}"
 
-    elif ec_type == EC.invisibility_of_element_located:
+    elif ec_type == ec.invisibility_of_element_located:
         message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
                     f"Locator: {expected_condition.target}")
 
-    elif ec_type == EC.frame_to_be_available_and_switch_to_it:
+    elif ec_type == ec.frame_to_be_available_and_switch_to_it:
         message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
                     f"Locator: {expected_condition.frame_locator}")
 

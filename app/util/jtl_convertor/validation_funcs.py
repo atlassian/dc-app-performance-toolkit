@@ -1,4 +1,4 @@
-from validation_exception import ValidationException
+from util.jtl_convertor.validation_exception import ValidationException
 
 
 def is_not_none(value: str) -> None:
