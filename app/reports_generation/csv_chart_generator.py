@@ -1,10 +1,5 @@
 import datetime
-import sys
 from pathlib import Path
-
-# Work around import issue
-sys.path.insert(0, str(Path(__file__).absolute().parent))
-print("System path: ", sys.path)
 
 from scripts import config_provider, csv_aggregator, chart_generator
 
@@ -19,7 +14,7 @@ def main():
 
 
 def __get_results_dir() -> Path:
-    path = (Path(__file__).absolute().parents[2] / "results" / "reports" /
+    path = (Path(__file__).absolute().parents[1] / "results" / "reports" /
             datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
     path.mkdir(parents=True, exist_ok=True)
     return path

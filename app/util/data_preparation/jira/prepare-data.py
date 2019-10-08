@@ -1,22 +1,15 @@
-import sys
 import random
 import string
+import sys
+
 import yaml
 
-# Work around import issue
-import os
-sys.path.insert(0, os.path.dirname(os.getcwd()))
-print("System path: ", sys.path)
-
-from pathlib import Path
-from jira.selenium_ui.api import ApiJira
+from util.data_preparation.jira.api import ApiJira
+from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
-
-
-def __get_parent_dir():
-    return Path(__file__).parents[1]
 
 
 def generate_jqls(max_length=3, count=100):
@@ -26,11 +19,10 @@ def generate_jqls(max_length=3, count=100):
 
 
 def get_perf_users_count():
-    with open(__get_parent_dir() / "jira.yml", 'r') as file:
+    with JIRA_YML.open(mode='r') as file:
         jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
         users_count = jira_yaml['settings']['env']['concurrency']
         return users_count
-
 
 
 # https://jira.atlassian.com/browse/JRASERVER-65089 User search startAt parameter is not working
@@ -47,7 +39,7 @@ def generate_perf_users(cur_perf_user, api):
             try:
                 user = api.create_user(name=username, password=DEFAULT_USER_PASSWORD)
                 print(f"User {user['name']} is created, number of users to create is "
-                      f"{config_perf_users_count-len(cur_perf_user)}")
+                      f"{config_perf_users_count - len(cur_perf_user)}")
                 cur_perf_user.append(user)
             # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
             except Exception as error:
@@ -61,45 +53,51 @@ def generate_random_string(length=20):
 
 
 def write_test_data_to_files(datasets):
-    file_path = __get_parent_dir() / "datasets"
-
-    def write_to_file(file_name, list):
-        with open(file_path / file_name, 'w') as f:
-            for item in list:
-                f.write(f"{item}\n")
-
-    write_to_file('jqls.csv', datasets['jqls'])
+    __write_to_file(JIRA_DATASET_JQLS, datasets['jqls'])
 
     scrum_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'scrum']
-    write_to_file('scrum-boards.csv', scrum_boards)
+    __write_to_file(JIRA_DATASET_SCRUM_BOARDS, scrum_boards)
 
     kanban_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'kanban']
-    write_to_file('kanban-boards.csv', kanban_boards)
+    __write_to_file(JIRA_DATASET_KANBAN_BOARDS, kanban_boards)
 
     users = [f"{user['name']},{DEFAULT_USER_PASSWORD}" for user in datasets['users']]
-    write_to_file('users.csv', users)
+    __write_to_file(JIRA_DATASET_USERS, users)
 
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets['issues']]
-    write_to_file('issues.csv', issues)
+    __write_to_file(JIRA_DATASET_ISSUES, issues)
+
+
+def __write_to_file(file_path, items):
+    with open(file_path, 'w') as f:
+        for item in items:
+            f.write(f"{item}\n")
 
 
 def main():
     print("Started preparing data")
 
+    # TODO consider getting server url from jira.yml see get_perf_users_count()
     url = sys.argv[1]
     print("Server url: ", url)
 
     dataset = dict()
 
-    jira_api = ApiJira(url)
-    dataset["boards"] = jira_api.get_boards(type='scrum', maxResults=250) \
-                        + jira_api.get_boards(type='kanban', maxResults=250)
+    # TODO consider reading jira.yml only once
+    with JIRA_YML.open(mode='r') as file:
+        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
+        user, password = jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
 
+    jira_api = ApiJira(url, user, password)
+    dataset["boards"] = (
+            jira_api.get_boards(board_type='scrum', max_results=250) +
+            jira_api.get_boards(board_type='kanban', max_results=250)
+    )
 
-    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, maxResults=performance_users_count)
+    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
     dataset["users"] = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
 
-    dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", maxResults=8000)
+    dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", max_results=8000)
     dataset["jqls"] = generate_jqls(count=150)
 
     write_test_data_to_files(dataset)
@@ -107,4 +105,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

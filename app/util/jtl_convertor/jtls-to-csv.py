@@ -5,11 +5,7 @@ import time
 from pathlib import Path
 from typing import IO, List, Set
 
-# Work around import issue
-sys.path.append(os.path.dirname(__file__))
-print("System path: ", sys.path)
-
-import jtl_validator
+from util.jtl_convertor import jtl_validator
 
 RESULTS_CSV_NAME = 'results.csv'
 ENV_JMETER_VERSION = 'JMETER_VERSION'

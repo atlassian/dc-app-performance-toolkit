@@ -4,8 +4,8 @@ from pathlib import Path
 from types import FunctionType
 from typing import List, Dict
 
-from validation_exception import ValidationException
-from validation_funcs import is_not_none, is_number, is_not_blank
+from util.jtl_convertor.validation_exception import ValidationException
+from util.jtl_convertor.validation_funcs import is_not_none, is_number, is_not_blank
 
 CONNECT = 'Connect'
 HOSTNAME = 'Hostname'
