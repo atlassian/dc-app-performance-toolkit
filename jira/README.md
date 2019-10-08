@@ -1,6 +1,6 @@
 # Running tests
 ## Pre-requisites
-* Working Jira Software, version 8.0.3 with users, issues, projects, and boards, etc.
+* Working Jira Software of supported version (see toolkit README.md for a list of supported Jira versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
 * Virtual environment with Python3.6+ and bzt installed. See the root `README.md` file for more details.
 
