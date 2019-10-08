@@ -38,11 +38,11 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
-  echo "Jira Version: ${JIRA_VERSION} is not officially supported by DCAPT."
+  echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 8.0.3"
-  echo "!!! Warning !!! This may broke your Jira instance."
+  echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Jira version is in list of supported
