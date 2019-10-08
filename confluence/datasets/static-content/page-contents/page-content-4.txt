@@ -1,0 +1,471 @@
+<h1>Roadmap</h1>
+<p><span style="color: #000000;">Lorem ipsum varius curae fermentum aenean dolor, varius diam tortor consequat interdum congue tincidunt, erat ornare porttitor curab</span></p>
+<table class="relative-table wrapped confluenceTable" style="width: 79.1311%;">
+<colgroup><col style="width: 4.92813%;" /><col style="width: 13.1417%;" /><col style="width: 15.2293%;" /><col style="width: 66.5982%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh" colspan="1">Priority</th>
+      <th class="confluenceTh" colspan="1">Project</th>
+      <th class="confluenceTh">Ticket/Page</th>
+      <th class="confluenceTh">Description</th>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">1</td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis donec cras fames eros ac augue eget ut</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="5caec8e9-b882-482c-b67c-ed71d46ad5a1" data-macro-parameters="key=PC-4165|server=Atlassian JIRA Extranet - Special                Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio con</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">3</td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis donec cras fames eros ac augue eget ut</span></td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="08e31f32-c977-4af6-b4c6-96d6c803f217" data-macro-parameters="key=PC-4660|server=Atlassian JIRA Extranet - Special                Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><span>Back in March we fixed <img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="2ef2d473-b912-4bd7-b7f5-b18f6f4aabb0" data-macro-parameters="key=CONFSRVDEV-1022|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" />&nbsp;<span style="color: #000000;">Lorem ipsum varius curae fermentum aenean dolor, varius diam tortor consequat interdum congue tincidunt, erat ornare porttitor curab</span></span></p>
+            <ul>
+               <li>
+                  <ul>
+                     <li><span><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="d96f8ade-ba92-49c7-b890-55bbf1d9a292" data-macro-parameters="key=CONFSRVDEV-1065|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /><br /></span></li>
+                     <li><span><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="24e8107e-cb7c-4cc3-8dc1-74c73efbd7bf" data-macro-parameters="key=CONFSRVDEV-1141|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /><br class="_mce_tagged_br" /></span></li>
+                     <li><span><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="60a47d11-af91-4e59-a31a-3603498895ff" data-macro-parameters="key=CONFSRVDEV-1138|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /><br /></span></li>
+                  </ul>
+               </li>
+            </ul>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">2</td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis donec cras fames eros ac augue eget ut</span></td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="4c9c25c5-371b-433f-b534-820b1dbc81e1" data-macro-parameters="key=PC-4297|server=Atlassian JIRA Extranet - Special                Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd">
+         <ul>
+            <li>
+               <p>tiam nisi porta massa integer quisque massa cras eu blandit ultricies habitasse nec sapien senectus, fames facilisis semper eleifend ac et rhoncus metus lacinia litora, justo vel id lorem netus porttitor tristique in curabitur eget.</p>
+               <p>Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio convallis id pulvinar varius diam elementum nibh semper suscipit tortor, non imperdiet nulla potenti lectus turpis ipsum tortor porttitor arcu et senectus sed justo platea massa quisque accumsan.</p>
+            </li>
+         </ul>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">4</td>
+      <td class="confluenceTd" colspan="1">Caching Archite<span style="color: #000000;">Facilisis donec cras fames eros ac augue eget ut</span>re</td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><a class="confluence-link" href="" data-linked-resource-default-alias="Test Performance TKHBETNIC" data-base-url="" data-linked-resource-id="175538508" data-linked-resource-version="1" data-linked-resource-type="page">Should we use local caches with remote invalidation</a>?</p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <p>Hendrerit blandit justo curabitur nulla nec sagittis quisque iaculis aptent, curae dolor ligula aliquam maecenas lacus quam ipsum aliquet condimentum, posuere congue ornare imperdiet iaculis sed nulla ac curabitur urna eu lacus vestibulum amet volutpat interdum, libero sit duis phasellus laoreet pellentesque quisque, curabitur hendrerit lacinia aptent quisque sagittis dictumst nulla suspendisse odio pretium potenti condimentum gravida magna, euismod fermentum potenti inceptos justo adipiscing amet facilisis, primis scelerisque praesent donec massa ut facilisis ac varius suscipit orci gravida nostra quisque enim, praesent nisl ac egestas gravida odio dictumst, ligula gravida purus aenean bibendum aliquam nunc aenean quisque habitant turpis ut.</p>
+         <p>Faucibus pellentesque auctor elementum est justo eleifend id orci fringilla consequat torquent sapien mollis aliquam nam volutpat quisque, euismod consectetur senectus gravida cras potenti pellentesque aliquet pulvinar condimentum arcu aenean aliquam maecenas placerat mollis in accumsan et malesuada duis erat posuere inceptos tristique tortor cursus, posuere pellentesque ullamcorper iaculis rutrum aenean lacus sit orci consectetur fusce ac litora nisi urna at pretium aliquam pulvinar, vel tristique sit odio a duis augue, malesuada nec ultricies ad dapibus quis aliquet ligula platea ligula scelerisque litora hac suspendisse vehicula, venenatis mi taciti libero sociosqu vestibulum donec in, lectus mollis blandit suscipit consectetur sagittis.</p>
+         <p><span style="letter-spacing: 0px;">&nbsp;</span><a class="confluence-link" style="letter-spacing: 0px;" href="" data-linked-resource-default-alias="Test Performance TKHBETNIC" data-base-url="" data-linked-resource-id="175538508" data-linked-resource-version="1" data-linked-resource-type="page">Should we use local caches with remote invalidation</a></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">5</td>
+      <td class="confluenceTd" colspan="1">Heavy lifting<span style="color: #000000;">Facilisis donec cras fames eros ac augue eget ut</span>ty</td>
+      <td class="confluenceTd" colspan="1"><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="4868645c-85c1-47e6-b4ae-b135abc7b7e9" data-macro-parameters="key=PC-5412|server=Atlassian JIRA Extranet - Special          Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></td>
+      <td class="confluenceTd" colspan="1">
+         <p>I</p>
+         <p>Est nullam porta himenaeos mi lectus ad congue id integer ultricies, sit euismod vel nunc malesuada etiam nulla felis netus, justo senectus non euismod potenti praesent risus quisque malesuada cubilia iaculis enim scelerisque aliquam risus inceptos tristique non nec at non, primis eleifend tortor magna velit ut himenaeos convallis a hendrerit, eros etiam aliquam orci porttitor quis curae aptent nunc morbi augue pulvinar platea libero curae ornare quisque, lacinia nec urna fermentum laoreet facilisis consequat, quis auctor nostra pulvinar ornare consectetur dapibus aliquam lobortis cursus vestibulum lectus laoreet, malesuada turpis nam aliquam nullam nibh, at felis sollicitudin tristique sem eleifend.</p>
+         <p>Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tincidunt suscipit, pharetra taciti velit vel imperdiet aptent sagittis ornare pellentesque, mauris proin ligula massa curabitur aliquam egestas erat praesent mattis tempus ligula congue vestibulum luctus lacus congue, venenatis dolor neque eu enim faucibus vehicula bibendum, cursus nunc fermentum ad sollicitudin nam id justo ut sollicitudin inceptos volutpat orci, tincidunt dapibus aliquam urna ultrices, conubia vulputate arcu ac.</p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">6</td>
+      <td class="confluenceTd"><br /></td>
+      <td class="confluenceTd"><br /></td>
+      <td class="confluenceTd"><br /></td>
+   </tr>
+</tbody>
+</table>
+<p><br /></p>
+<p><br /></p>
+<h1>Stability/Performance Ideas</h1>
+<table class="relative-table wrapped confluenceTable" style="width: 100.0%;">
+<colgroup><col style="width: 53.483%;" /><col style="width: 6.27519%;" /><col style="width: 6.27519%;" /><col style="width: 6.27519%;" /><col style="width: 8.0023%;" /><col style="width: 13.4139%;" /><col style="width: 6.27519%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh">Initiative</th>
+      <th class="confluenceTh" style="text-align: center;">Effort</th><th class="confluenceTh" style="text-align: center;" colspan="1">Value</th><th class="confluenceTh" style="text-align: center;" colspan="1">Risk</th><th class="confluenceTh" style="text-align: center;" colspan="1">
+      <p>Priority</p>
+      <p>(value+risk)/effort</p>
+      </th>
+      <th class="confluenceTh" colspan="1">Notes</th>
+      <th class="confluenceTh" colspan="1">Status</th>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Est nullam porta himenaeos mi lectus ad congue id integer ultricies, sit euismod vel nunc malesuada etiam nulla felis netus, justo</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="9cff34b7-29d2-401b-a948-01947ae46dcc" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="e473cfbb-2c5d-4193-aeaf-66e5a4d42a78" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="f79aee82-e39e-4f4d-bfce-af349fed93b6" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="1edddbdc-4b89-4655-8afd-10949947d8bd" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p></div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Est nullam porta himenaeos mi lectus ad congue id integer ultricies, sit euismod vel nunc malesuada etiam nulla felis netus, justo</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="391fd668-f738-49da-9e40-939d0ab4d783" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="ec6dfb69-b186-4896-a088-bfc7f901195e" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="16ff87b7-0e5d-488f-bfad-ceb5abd049bf" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="75cba9ff-c2fc-4e83-876a-4329bf9d02f6" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p></div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Est nullam porta himenaeos mi lectus ad congue id integer ultricies, sit euismod vel nunc malesuada etiam nulla felis netus, justo</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="e5b076ee-a3b9-4e90-bc39-1ea44e21fb87" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="5bb1794f-c9bc-4765-95cf-36aea91315c3" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="81ad5a1b-dc56-4f18-8494-da89457458c7" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="aa56b1a3-8533-4af1-8cb7-f0ce5b50ee28" data-macro-name="status" data-macro-parameters="colour=Grey|title=1.5 - low/Medium" data-macro-default-parameter="" /></p></div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></p>
+         </div>
+      </td>
+      <td class="confluenceTd" style="text-align: center;">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="a16268ea-9f1b-4635-80de-dd18cf56cddf" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="574d3716-9899-4fa5-9999-6382a60c4eb6" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="6a190af4-fa12-4a21-ad63-15252fc696cf" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="eefd362b-9402-45ad-9896-3d24dc1bd1c5" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></p>
+         </div>
+      </td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="2e138cb9-d456-48bd-bafb-eeb519665d38" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="2b597e8d-fa69-4167-97c1-59ece7f0f5ec" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="0c701fa7-8258-461a-bee6-d481d4f78b00" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="5647dfb3-4cda-49b9-9e5c-8db760a6cf69" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p>Customers are u<span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="8b74917b-a306-4c39-a5db-88759c7d102a" data-macro-parameters="key=PC-4297|server=Atlassian JIRA Extranet - Special                   Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="40a6a08b-be5a-48fe-a690-6192567abfee" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="3eb6ba14-9a7d-4ec2-bf85-44c4e5bb8b0a" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p></div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="dbc20bc1-8605-4955-b91d-f41340112b81" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="53c310ff-2134-4e42-940b-0e38aac7fecc" data-macro-name="status" data-macro-parameters="colour=Red|title=4 - very high" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p>Customers are unable to access Conf DC<span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span><span>L cache mode for L2 cache) <img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="1766a5c8-5336-42ee-a8e1-bed7dea3ad0d" data-macro-parameters="key=CONFSRVDEV-976|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></span></p>
+         </div>
+      </td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="6dd5130c-18e7-49e2-9370-564938f7d667" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="41945652-2bf4-44a3-8c71-32220c859967" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p></div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="640a8789-552a-4d02-a503-0652e79207e9" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="1bda19ff-7f7f-4832-bb7e-19bdfdddea73" data-macro-name="status" data-macro-parameters="colour=Green|title=2.5 - Medium/High" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="493c4418-f668-4e2e-ba08-39d546e5765b" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="d4b4db03-2da5-4351-8c6f-7e485c402f03" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="de1c34c9-062b-481c-889e-bb51f058c105" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="087d0459-de0f-4138-a2a9-7cedf8e276b1" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="5ffb99be-ac09-4e2e-b670-f9b9f02370b6" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper"><p style="text-align: center;"><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="2ff0199e-c9cd-41a1-9dbb-ef433138eed4" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p></div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="75920df0-af23-42dd-ad6c-ccf96df57cbf" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="72abceae-9c4f-4885-ae59-b3455e242239" data-macro-name="status" data-macro-parameters="colour=Green|title=2.5 - Medium/High" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="1a74a946-741e-42fa-b2e1-bf134960c39d" data-macro-parameters="colour=Green|title=roadmapped " data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="c01f8b3b-c096-4957-8e9f-ec90d174e02c" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="1b518c96-dc8c-4d79-b368-88c30d263df0" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="ab75351c-03e9-4d6d-aedc-a90812e12499" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="ca95e9b5-fd2a-407b-86c8-231c56a5ff58" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="fdc4b118-6f4b-4fa6-8dde-e9d213fc7ac8" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="9ff23322-e0c5-4903-b2c6-3fed60e3f583" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="c7bb754b-4f7e-4ad5-b5a3-238aeea22285" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="c32b8d75-9096-433d-9f40-6f0e37ebb058" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <p><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></p>
+      </td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="b550ecbc-4c33-4426-a418-5fa9422c4609" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="51ce428a-bffc-42ec-95c4-e87db5d9b90f" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="27b15f4e-be62-4f1f-83ae-319ed7fd8662" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="068a4c6c-f820-4b41-a220-64e82565f175" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="f9e7813d-4464-4a14-b10a-12f4aed90c98" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="e17ca497-89ab-40ab-8b43-66aa29c355cb" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="7fd1be5e-16b5-45ed-aa58-c50b56e3a1b1" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="d7d6dc4c-c1bf-4e1c-ae42-7621befe8699" data-macro-name="status" data-macro-parameters="colour=Grey|title=1.5 - low/Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="03ddf4d7-16dc-4ae5-834a-5f10ffe89a5d" data-macro-name="status" data-macro-parameters="colour=Yellow|title=3 - high" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="0903d6e0-b1f9-46b4-8b4f-d50de9a49c80" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="76593db6-030b-42e2-a5b9-73d782edb4ea" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="b9e54629-b32a-4a4f-96fd-6cd2639ab1a0" data-macro-name="status" data-macro-parameters="colour=Grey|title=1.3 - low/Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <p>Avat<span style="color: #000000;">Facilisis euismod consectetur hac aenean litora commodo taciti purus id platea semper, ut donec etiam curabitur habitasse pulvinar hendrerit eu rhoncus elit ullamcorper ipsum, commodo fringilla dolor praesent tempus praesent quis ligula potenti curae malesuada varius primis fusce aenean facilisis ipsum phasellus tinc</span><span style="letter-spacing: 0px;">&nbsp;</span><a class="confluence-link" style="letter-spacing: 0px;" href="" data-linked-resource-default-alias="Test Performance TKHBETNIC" data-base-url="" data-linked-resource-id="175538508" data-linked-resource-version="1" data-linked-resource-type="page">Test Performance TKHBETNIC</a></p>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><a class="confluence-link" href="" data-linked-resource-default-alias="Test Performance TKHBETNIC" data-base-url="" data-linked-resource-id="175538508" data-linked-resource-version="1" data-linked-resource-type="page">Performance - avatars</a></td>
+      <td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="49769cd3-e4ae-4e91-8029-e27913e3ae5f" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="51871d61-7102-412b-b619-49e2ece1e409" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="1cc83f4c-3877-4c3b-ba8a-406ea21a992e" data-macro-name="status" data-macro-parameters="colour=Grey|title=1 - low" data-macro-default-parameter="" /></p>
+      </div>
+      </td><td class="confluenceTd" style="text-align: center;" colspan="1">
+      <div class="content-wrapper">
+         <p><img class="editor-inline-macro" width="88" data-macro-schema-version="1" height="18" src="" data-macro-id="ba1aea26-2c61-49c3-9500-28f8defbf240" data-macro-name="status" data-macro-parameters="colour=Blue|title=2 - Medium" data-macro-default-parameter="" /></p>
+      </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>

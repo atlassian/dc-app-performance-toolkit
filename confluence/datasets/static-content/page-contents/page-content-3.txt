@@ -1,0 +1,231 @@
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 1344.0px;">
+<colgroup><col style="width: 0.0px;" /><col style="width: 0.0px;" /><col style="width: 0.0px;" /></colgroup>
+<tbody>
+   <tr>
+      <td class="confluenceTd" colspan="3">
+         <div class="content-wrapper">
+            <p><span class="text-placeholder">Edit PC ticket in JIRA macros above and below, yes twice, deal with it: </span></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="28747c2c-f794-4167-8118-4e549c13bf18" data-macro-parameters="columns=key,summary,status,how are we tracking?,latest explanation of how we're                tracking|jqlQuery=id\\=PC-3503 |maximumIssues=20|server=Atlassian JIRA Extranet - Special Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <h2><strong>How does this project fit with the product strategy?</strong></h2>
+            <p><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum et</span></p>
+            <h2><strong>Related pages</strong></h2>
+            <p><img class="editor-inline-macro" src="" data-macro-name="children" data-macro-id="45f4fdba-9ea5-45ad-b36b-f93ffcd2b5a6" data-macro-parameters="sort=title" data-macro-schema-version="2" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <h2><strong>Team</strong></h2>
+            <ul>
+               <li><strong>PM: </strong><span class="text-placeholder" data-placeholder-type="mention">PM </span><strong><br /></strong></li>
+               <li><strong>Design:</strong> <span class="text-placeholder" data-placeholder-type="mention">Design </span></li>
+               <li><strong>Feature lead:</strong> <span class="text-placeholder" data-placeholder-type="mention"> Feature lead</span></li>
+               <li><strong>QE: </strong><span class="text-placeholder" data-placeholder-type="mention">QE </span></li>
+               <li><strong>Dev: </strong><span class="text-placeholder" data-placeholder-type="mention">dev1</span>, <span class="text-placeholder" data-placeholder-type="mention">dev2 </span>, <span class="text-placeholder" data-placeholder-type="mention">dev3 </span></li>
+            </ul>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <h2><strong>Epic</strong></h2>
+            <p><span class="text-placeholder" data-placeholder-type="jira">CONFSRVDEV-xxx </span></p>
+            <h2><strong>Health monitor</strong></h2>
+            <p><img class="editor-inline-macro" src="" data-macro-name="create-from-template" data-macro-id="4efb2172-1947-4de0-a392-38c404648ddb" data-macro-parameters="blueprintModuleCompleteKey=com.atlassian.confluence.plugins.atlassian-playbook-blueprints:healthmonitor-blueprint|buttonLabel=Create health                monitor|contentBlueprintId=68be245d-b5aa-48cc-b3e3-597ef33fb618|templateName=68be245d-b5aa-48cc-b3e3-597ef33fb618|title=&lt;Feature&gt; - Health Monitor" data-macro-schema-version="1" /></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="detailssummary" data-macro-id="dcd9782a-be6f-4703-8ffe-162a1472ec3c" data-macro-parameters="cql=label in                (&quot;healthmonitor&quot;,&quot;health-monitor&quot;) and parent \\= currentContent()" data-macro-schema-version="2" /></p>
+         </div>
+      </td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 73.4795%;">
+<colgroup><col style="width: 24.5522%;" /><col style="width: 75.4478%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh" colspan="2"><h1 style="text-align: center;"><strong>Problem space</strong></h1></th>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="2">
+         <h2>Why, What and measure of success (from Project Central)</h2>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="2">
+         <div class="content-wrapper">
+            <p><span class="text-placeholder">Edit PC ticket in JIRA macro below: </span></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="83e13426-c78c-4a9a-ae42-2f68b6223186" data-macro-parameters="columns=why are we doing it?,what are we doing?,how do we judge                success?|jqlQuery=id\\=PC-3503 |maximumIssues=20|server=Atlassian JIRA Extranet - Special Projects|serverId=1202c5f7-2db8-3476-90b9-79417ee44946" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>Goals, Signals and Measures?</h2>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Lorem ipsum varius curae fermentum aenean dolor, varius diam tortor consequat interdum congue tincidunt, erat ornare porttitor curabitur conubia erat hendrerit etiam hac nibh ac vivamus condimentum aptent blandit di</span></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="create-from-template" data-macro-id="76205e30-58be-4ff1-b7f9-0a8b1b70fc00" data-macro-parameters="buttonLabel=Create goals, signals and measures|templateId=103153679|templateName=103153679|title=&lt;Feature&gt;  - Goals, Signals and                Measures" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 1344.0px;">
+<colgroup><col style="width: 0.0px;" /><col style="width: 0.0px;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh" colspan="2"><h1 style="text-align: center;"><strong>Validation</strong></h1></th>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>What do we already know?</h2>
+      </td>
+      <td class="confluenceTd">
+         <p><span style="color: #000000;">Hendrerit blandit justo curabitur nulla nec sagittis quisque iaculis aptent, curae dolor ligula aliquam maecenas lacus quam ipsum aliquet condimentum, posuere congue ornare imperdiet iaculis sed nulla ac curabitur urna eu lacus vestibulum amet volutpat interdum, libero sit duis phasellus laoreet pellentesque quisque, curabitur hendrerit lacinia aptent quisque sagittis dictumst nulla suspendisse</span></p>
+         <p><span class="text-placeholder">Link to details:</span></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>What do we need to answer?</h2>
+      </td>
+      <td class="confluenceTd">
+         <p class="auto-cursor-target"><br /></p>
+         <p class="auto-cursor-target"><br /></p>
+         <table class="wrapped confluenceTable">
+            <colgroup>
+               <col />
+               <col />
+            </colgroup>
+            <tbody>
+               <tr>
+                  <th class="confluenceTh">Question/assumption</th>
+                  <th class="confluenceTh">Outcome (leave blank until decision reached)</th>
+               </tr>
+               <tr>
+                  <td class="confluenceTd" colspan="1">
+                     <p>Lorem ipsum varius curae fermentum aenean dolor, varius diam tortor consequat interdum congue tincidunt, erat ornare porttitor curabitur conubia erat hendrerit etiam hac nibh ac vivamus condimentum aptent blandit dictum a urna, leo ullamcorper rhoncus molestie consectetur molestie conubia litora sit hendrerit non etiam per quis pharetra cras eros metus placerat convallis, eleifend torquent felis libero dapibus erat sed facilisis, ipsum sollicitudin consectetur pellentesque eget etiam nisi porta massa integer quisque massa cras eu blandit ultricies habitasse nec sapien s<span class="text-placeholder">What questions will increase our confidence in the decisions we need to make?</span></p>
+                     <p><span class="text-placeholder">What are the gaps in our understanding?</span></p>
+                  </td>
+                  <td class="confluenceTd" colspan="1"><br /></td>
+               </tr>
+            </tbody>
+         </table>
+         <p class="auto-cursor-target"><br /></p>
+         <p class="auto-cursor-target"><br /></p>
+      </td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 1357.0px;">
+<colgroup><col style="width: 0.0px;" /><col style="width: 0.0px;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh" colspan="2"><h1 style="text-align: center;"><strong>Ready to make it</strong></h1></th>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <h2>High level requirements</h2>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Lorem ipsum varius curae fermentum aenean dolor, varius diam tortor consequat interdum congue tincidunt, erat ornare porttitor curabitur conubia erat hendrerit etiam hac nibh ac vivamus condimentum aptent blandit di</span></p>
+            <table class="wrapped confluenceTable">
+               <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+               </colgroup>
+               <tbody>
+                  <tr>
+                     <th class="confluenceTh">Title</th>
+                     <th class="confluenceTh">User Story</th>
+                     <th class="confluenceTh">Importance</th>
+                     <th class="confluenceTh">Notes</th>
+                  </tr>
+                  <tr>
+                     <td class="confluenceTd"><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                     <td class="confluenceTd"><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></td>
+                     <td class="confluenceTd"><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></td>
+                     <td class="confluenceTd">
+                        <p><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></p>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <p class="auto-cursor-target"><br /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>Requirements and Design</h2>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></p>
+            <p><span class="text-placeholder">Link to details:</span></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="create-from-template" data-macro-id="14576f68-9281-4bff-9768-a3c80aa9b219" data-macro-parameters="buttonLabel=Create                requirements and design|templateId=103153699|templateName=103153699|title=&lt;Feature&gt; - Requirements" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>Scale and scope</h2>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></p>
+            <p><span class="text-placeholder">Link to details:</span></p>
+            <p><img class="editor-inline-macro" src="" data-macro-name="create-from-template" data-macro-id="66895e05-07bb-461b-a050-19b2b85cb2f6" data-macro-parameters="buttonLabel=Create dev plan from template|spaceKey=BSERV|templateId=2918678529|templateName=2918678529|title=&lt;Feature&gt; Dev Plan" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 1357.0px;">
+<colgroup>
+   <col />
+   <col />
+</colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh" colspan="2"><h1 style="text-align: center;"><strong>Ship and Improve it</strong></h1></th>
+   </tr>
+   <tr>
+      <td class="confluenceTd">
+         <h2>Messaging</h2>
+      </td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <h3>Target market</h3>
+            <p><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></p>
+            <h3>Customer pain points</h3>
+            <p><span style="color: #000000;">Porttitor hendrerit tincidunt aliquam metus ac accumsan aliquam est felis, condimentum fusce a habitant suspendisse risus libero massa curae velit ultricies</span></p>
+            <h3>Product proof points</h3>
+            <p><span style="color: #000000;"><span style="color: #000000;">class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio con</span>cies</span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>
+            <h3>Product promise</h3>
+            <p><span style="color: #000000;">class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio con</span></p>
+            <h3>Differentiators</h3>
+            <p><span style="color: #000000;">class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio con</span></p>
+            <p><br /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">class massa vel justo elementum tortor orci, volutpat aptent feugiat magna condimentum bibendum ultricies iaculis facilisis ullamcorper, primis elit morbi et conubia himenaeos cras tortor congue etiam torquent quis rutrum nibh eu sociosqu integer rutrum nostra pellentesque pharetra, curabitur sodales nisl blandit inceptos feugiat molestie lectus congue varius leo ac odio con&nbsp; &nbsp;</span></td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>

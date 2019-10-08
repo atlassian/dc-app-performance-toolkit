@@ -1,0 +1,123 @@
+<p class="auto-cursor-target"><br /></p>
+<table class="wysiwyg-macro" style="background-image: url(''); background-repeat: no-repeat;" data-macro-name="details" data-macro-parameters="label=" data-macro-schema-version="1" data-macro-body-type="RICH_TEXT">
+<tbody>
+   <tr>
+      <td class="wysiwyg-macro-body">
+         <p class="auto-cursor-target"><br /></p>
+         <table class="confluenceTable">
+            <colgroup>
+               <col />
+               <col />
+            </colgroup>
+            <tbody>
+               <tr>
+                  <th class="confluenceTh">Status</th>
+                  <td class="confluenceTd"><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-parameters="colour=Yellow|title=In progress" data-macro-schema-version="1" /></td>
+               </tr>
+               <tr>
+                  <th class="confluenceTh">Stakeholders</th>
+                  <td class="confluenceTd"><a class="confluence-link confluence-userlink user-mention" userkey="2c9082c93f36441c013f364a826f054b" data-linked-resource-default-alias="Smoke Test 2" data-username="testuser2" data-linked-resource-id="1899331604" data-linked-resource-version="2" data-linked-resource-type="userinfo" href="" data-base-url="">Smoke Test 2</a>&nbsp;<a class="confluence-link confluence-userlink user-mention" userkey="ff80818144f8852a01450207a2160007" data-linked-resource-default-alias="Cutover Testing" data-username="cutovertesting" data-linked-resource-id="2220467724" data-linked-resource-version="1" data-linked-resource-type="userinfo" href="" data-base-url="">Cutover Testing</a>&nbsp;</td>
+               </tr>
+               <tr>
+                  <th class="confluenceTh">Outcome</th>
+                  <td class="confluenceTd"><span style="color: #000000;">Aenean suspendisse dapibus nam ut rhoncus convallis sem facilisis, lectus senectus leo duis integer sodales aenean suscipit fringilla feugiat cubilia tempus integer libero quisque, interdum erat habitant vestibulum viverra habitasse neque, tellus fringilla cras pretium nisi aptent leo inceptos bibendum leo orci per ornare commodo, curae tincidunt ante duis purus mi, volutpat aptent lacus ut phasellus tellus augue tincidunt non</span></td>
+               </tr>
+               <tr>
+                  <th class="confluenceTh">Due date</th>
+                  <td class="confluenceTd"><time class="non-editable" datetime="2018-06-22">22 Jun 2018</time></td>
+               </tr>
+               <tr>
+                  <th class="confluenceTh">Owner</th>
+                  <td class="confluenceTd"><a class="confluence-link confluence-userlink user-mention current-user-mention" userkey="2c9082c93f36441c013f364a7e74001a" data-linked-resource-default-alias="Bogus Admin User" data-username="admin" data-linked-resource-id="69518087748069479" data-linked-resource-version="1" data-linked-resource-type="userinfo" href="" data-base-url="">Bogus Admin User</a>&nbsp;</td>
+               </tr>
+            </tbody>
+         </table>
+         <p class="auto-cursor-target"><br /></p>
+      </td>
+   </tr>
+</tbody>
+</table>
+<h2>Background</h2>
+<p>Blandit hac libero arcu fermentum ornare placerat donec hac velit, donec blandit cursus posuere nec id aliquet turpis, proin risus leo primis tristique vehicula dictum ligula habitasse ut facilisis felis vulputate tempor dictum vivamus augue porta, inceptos lectus eget ligula justo pellentesque eu eros, ad per fringilla habitant nec arcu sed fusce auctor tempus curabitur pellentesque primis egestas massa semper tellus sodales adipiscing, placerat lacinia pulvinar mauris nisi malesuada nulla venenatis nullam pulvinar, dictumst turpis tincidunt platea eget neque habitasse inceptos lorem tortor purus neque libero duis sollicitudin vel amet nisl at, dictum habitasse curabitur morbi eros sem lectus aliquam test test</p>
+<h2>Options</h2>
+<p><br /></p>
+<table class="confluenceTable relative-table" style="width: 96.3971%;">
+<colgroup><col style="width: 12.4427%;" /><col style="width: 22.8244%;" /><col style="width: 33.9695%;" /><col style="width: 30.7634%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh">
+         <p><br /></p>
+      </th>
+      <th class="confluenceTh">Description</th>
+      <th class="confluenceTh">Pros/Cons</th>
+      <th class="confluenceTh">Estimated cost/effort</th>
+   </tr>
+   <tr>
+      <th class="confluenceTh" colspan="1">Option 1 - <span class="text-placeholder">title of option 1 </span></th>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Justo mi velit vel porttitor tellus urna leo per dictumst, egestas senectus sit sed laoreet fames tortor nec, curabitur venenatis lectus ad nullam himenaeos non lobortis luctus nisi blandit eleifend enim iaculis vel suscipit condimentum, hac maecenas tempor laoreet amet cras litora nisl, primis ullamcorper consectetur lacinia vehicula magna pharetra laoreet lobortis varius sagittis cras dictum est platea luctus</span></td>
+      <td class="confluenceTd" colspan="1">
+         <p><img class="emoticon emoticon-tick confluence-embedded-image confluence-external-resource" title="(tick)" border="0" src="" alt="(tick)" data-attachment-copy="" />&nbsp;<span style="color: #000000;">Justo mi velit vel porttitor tellus urna leo per dictumst, egestas senectus sit sed laoreet fames tortor nec, curabitur venenatis lectus ad nullam himenaeos non lobortis luctus nisi blandit eleifend enim iaculis vel suscipit condimentum, hac maecenas tempor laoreet amet cras litora nisl, primis ullamcorper consectetur lacinia vehicula magna pharetra laoreet lobortis varius sagittis cras dictum est platea luctus</span></p>
+         <p><img class="emoticon emoticon-minus confluence-embedded-image confluence-external-resource" title="(minus)" border="0" src="" alt="(minus)" data-attachment-copy="" /></p>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <th class="confluenceTh" colspan="1">Option 2 - <span class="text-placeholder">title of option 2 </span></th>
+      <td class="confluenceTd">
+         <p><span style="color: #000000;">Scelerisque luctus viverra tincidunt donec id, torquent sit molestie ultricies sed, posuere integer condimentum facilisis curabitur congue tellus tempor interdum sem viverra luctus posuere euismod blandit cubilia, ligula massa hendrerit id tortor litora egestas velit purus pellentesque sapien odio sed eleifend et nisi sodales nisl viverra</span></p>
+      </td>
+      <td class="confluenceTd">
+         <p><img class="emoticon emoticon-tick confluence-embedded-image confluence-external-resource" title="(tick)" border="0" src="" alt="(tick)" data-attachment-copy="" /><span style="color: #000000;">Scelerisque luctus viverra tincidunt donec id, torquent sit molestie ultricies sed, posuere integer condimentum facilisis curabitur congue tellus tempor interdum sem viverra luctus posuere euismod blandit cubilia, ligula massa hendrerit id tortor litora egestas velit purus pellentesque sapien odio sed eleifend et nisi sodales nisl viverra</span></p>
+         <p><img class="emoticon emoticon-minus confluence-embedded-image confluence-external-resource" title="(minus)" border="0" src="" alt="(minus)" data-attachment-copy="" /></p>
+      </td>
+      <td class="confluenceTd"><br /></td>
+   </tr>
+   <tr>
+      <th class="confluenceTh" colspan="1">Option 3 - <span class="text-placeholder">title of option 3 </span></th>
+      <td class="confluenceTd"><span style="color: #000000;">Scelerisque luctus viverra tincidunt donec id, torquent sit molestie ultricies sed, posuere integer condimentum facilisis curabitur congue tellus tempor interdum sem viverra luctus posuere euismod blandit cubilia, ligula massa hendrerit id tortor litora egestas velit purus pellentesque sapien odio sed eleifend et nisi sodales nisl viverra</span></td>
+      <td class="confluenceTd">
+         <p><img class="emoticon emoticon-tick confluence-embedded-image confluence-external-resource" title="(tick)" border="0" src="" alt="(tick)" data-attachment-copy="" /><span style="color: #000000;">Scelerisque luctus viverra tincidunt donec id, torquent sit molestie ultricies sed, posuere integer condimentum facilisis curabitur congue tellus tempor interdum sem viverra luctus posuere euismod blandit cubilia, ligula massa hendrerit id tortor litora egestas velit purus pellentesque sapien odio sed eleifend et nisi sodales nisl viverra</span></p>
+         <p><img class="emoticon emoticon-minus confluence-embedded-image confluence-external-resource" title="(minus)" border="0" src="" alt="(minus)" data-attachment-copy="" /></p>
+      </td>
+      <td class="confluenceTd"><br /></td>
+   </tr>
+</tbody>
+</table>
+<p><br /></p>
+<h2>Questions</h2>
+<table class="confluenceTable relative-table" style="width: 96.5441%;">
+<colgroup><col style="width: 19.2073%;" /><col style="width: 44.8933%;" /><col style="width: 17.9116%;" /><col style="width: 9.60366%;" /><col style="width: 8.38415%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh">Question</th>
+      <th class="confluenceTh" colspan="1">Answer</th>
+      <th class="confluenceTh" colspan="1">Owner</th>
+      <th class="confluenceTh" colspan="1">Date decided</th>
+      <th class="confluenceTh">Status</th>
+   </tr>
+   <tr>
+      <td class="confluenceTd"><span style="color: #000000;">Justo mi velit vel porttitor tellus urna leo per dictumst, egestas senectus sit sed laoreet fames tortor nec, curabitur venenatis lectus ad nullam himenaeos non lobortis luctus nisi blandit eleifend enim iaculis vel suscipit condimentum</span></td>
+      <td class="confluenceTd">
+         <p>Tempus odio cubilia orci vestibulum lacus tempor donec primis habitasse est dui, egestas blandit nec augue est conubia blandit at ligula sed, integer fermentum quisque porta dapibus pellentesque conubia vel molestie mattis metus neque nibh venenatis suscipit quis ullamcorper mauris rutrum dolor, proin sapien nec sollicitudin fusce iaculis sodales vestibulum sit morbi, vitae a odio ultricies vestibulum lobortis aliquam hac amet scelerisque sem vitae volutpat ac lorem mi curabitur, faucibus porta felis curae risus eu eget, interdum nostra eleifend risus ultricies dolor hac viverra per placerat etiam est ut risus augue quisque hac, pharetra aliquet libero condimentum porta eros a.</p>
+         <p>Porta malesuada dui curabitur morbi sodales semper mattis donec risus, cras auctor lobortis dictum pharetra magna id netus augue, congue dolor scelerisque erat posuere ullamcorper turpis posuere rutrum lacinia eleifend metus libero arcu porttitor tellus per, morbi rhoncus dapibus tellus mollis orci libero hendrerit lectus, egestas donec viverra imperdiet mollis posuere pretium netus nostra dolor imperdiet torquent magna potenti tristique sociosqu lectus blandit, hac nisl interdum feugiat sed eget potenti cubilia fringilla nunc dictum eu aenean vestibulum aliquam tincidunt nec mollis morbi, potenti aliquet amet aptent pharetra aliquet suspendisse aliquam ante, habitant ut rhoncus duis feugiat fringilla ut quis bibendum.</p>
+      </td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><a class="confluence-link" href="" userkey="2c9082c93f36441c013f364a826f054b" data-base-url="" data-linked-resource-type="userinfo" data-linked-resource-default-alias="Smoke Test 2">Smoke Test 2</a></p>
+         </div>
+      </td>
+      <td class="confluenceTd"><span class="text-placeholder">18/05/2018</span></td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" width="88" data-attachment-copy="" data-macro-schema-version="1" height="18" src="" data-macro-id="7989511c-3f45-4dac-8614-075e103b3917" data-macro-name="status" data-macro-parameters="colour=Yellow|title=In Progress" /></p>
+         </div>
+      </td>
+   </tr>
+</tbody>
+</table>
+<h2>Action items</h2>
+<ul class="inline-task-list" data-inline-tasks-content-id="3784998915">
+   <li data-inline-task-id="1"><span style="color: #000000;">Cubilia sem condimentum consequat suscipit luctus fames pulvinar mauris, odio quisque class etiam fusce morbi dui duis, gravida rutrum quisque aliquet placerat imperdiet amet taciti turpis felis sapien dapibus mattis auctor quisque</span></li>
+   <li data-inline-task-id=""><span style="color: #000000;"><span style="color: #000000;">Dui etiam integer scelerisque hac mauris mi, risus interdum at tellus varius ligula, pellentesque consectetur cras est feugiat pharetra torquent fusce eu ut quisque ut potenti, tempus consequat vestibulum potenti pulvinar libero aliquam, iaculis condimentum fringilla quis fames aenean dapibus viverra purus donec&nbsp;</span><br /></span></li>
+   <li data-inline-task-id=""><span style="color: #000000;"><span style="color: #000000;"><span style="color: #000000;">Scelerisque luctus viverra tincidunt donec id, torquent sit molestie ultricies sed, posuere integer condimentum facilisis curabitur congue tellus tempor interdum sem viverra luctus posuere euismod blandit cubilia, ligula massa hendrerit id tortor litora egestas velit purus pellentesque sapien odio sed eleifend et nisi sodales nisl viverra</span><br /></span></span></li>
+</ul>

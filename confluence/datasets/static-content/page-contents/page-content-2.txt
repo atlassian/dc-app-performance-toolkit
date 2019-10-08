@@ -1,0 +1,1088 @@
+<p class="auto-cursor-target"><br /></p>
+<table class="relative-table wrapped confluenceTable" style="width: 99.9189%;">
+<colgroup><col style="width: 9.82941%;" /><col style="width: 2.92445%;" /><col style="width: 3.81803%;" /><col style="width: 10.4387%;" /><col style="width: 20.9586%;" /><col style="width: 21.3241%;" /><col style="width: 30.7067%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh"><span style="color: #000000;">as dapibus arcu m</span>FE)</th>
+      <th class="confluenceTh" colspan="1"><span style="color: #000000;">as dapibus arcu m</span>x</th>
+      <th class="confluenceTh" colspan="1">
+         <p><span style="color: #000000;">as dapibus arcu m</span></p>
+      </th>
+      <th class="confluenceTh" colspan="1">
+         <p>status</p>
+         <p> not merged</p>
+         <p> merged</p>
+         <p>blank: todo</p>
+      </th>
+      <th class="confluenceTh"><span style="color: #000000;">as dapibus arcu m</span></th>
+      <th class="confluenceTh"><span>P2<span style="color: #000000;">as dapibus arcu m</span></span></th>
+      <th class="confluenceTh">Known<span style="color: #000000;">as dapibus arcu m</span></th>
+   </tr>
+   <tr>
+      <td class="confluenceTd"><span style="color: #000000;">Cursus fames semper rhoncus curae ultricies etiam ut dapibus vel diam commodo vitae, rhoncus lobortis rutrum aliquam posuere cras quisque himenaeos eu dui litora, rutrum facilisis erat<span>&nbsp;</span></span></td>
+      <td class="confluenceTd" colspan="1">N/A</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd">-</td>
+      <td class="confluenceTd">N/A</td>
+      <td class="confluenceTd"><span style="color: #000000;">Ante pretium sodales scelerisque lobortis phasellus nullam tristique varius phasellus cursus rhoncus aliquet, lacus nunc gravida rhoncus conubia cursus sit nullam luctus torquent arcu justo ligula maecenas nisl vehicula sit,<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Cursus fames semper rhoncus curae ultricies etiam ut dapibus vel diam commodo vitae, rhoncus lobortis rutrum aliquam posuere cras quisque himenaeos eu dui litora, rutrum facilisis erat<span>&nbsp;</span></span></td>
+      <td class="confluenceTd" colspan="1">N/A</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Ante pretium sodales scelerisque lobortis phasellus nullam tristique varius phasellus cursus rhoncus aliquet, lacus nunc gravida rhoncus conubia cursus sit nullam luctus torquent arcu justo ligula maecenas nisl vehicula sit,<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Cursus fames semper rhoncus curae ultricies etiam ut dapibus vel diam commodo vitae, rhoncus lobortis rutrum aliquam posuere cras quisque himenaeos eu dui litora, rutrum facilisis erat<span>&nbsp;</span></span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="fd66339a-1e26-40b3-96c4-b77237be8716" data-macro-parameters="columns=key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution|key=CONFSRVDEV-2722|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">mono-repoed</td>
+      <td class="confluenceTd" colspan="1"><a href=""></a><a href="">/</a></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Ante pretium sodales scelerisque lobortis phasellus nullam tristique varius phasellus cursus rhoncus aliquet, lacus nunc gravida rhoncus conubia cursus sit nullam luctus torquent arcu justo ligula maecenas nisl vehicula sit,<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>customtoolbar/feedbackbutton</span></td>
+      <td class="confluenceTd" colspan="1">N/A</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">-</td>
+      <td class="confluenceTd" colspan="1">N/A</td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Ante pretium sodales scelerisque lobortis phasellus nullam tristique varius phasellus cursus rhoncus aliquet, lacus nunc gravida rhoncus conubia cursus sit nullam luctus torquent arcu justo ligula maecenas nisl vehicula sit,<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>pagelayout</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="1ea288a9-ad91-48a0-a749-50a1fd0a78ab" data-macro-parameters="key=CONFSRVDEV-2759|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1">The button in the toolbar does not work and looks funny. Most likely missing <code>com.atlassian.confluence.plugins.confluence-page-layout:pagelayout-frontend</code></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>propertypanel</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="0e4aa570-665d-4604-8372-1320e802e889" data-macro-parameters="key=CONFSRVDEV-2762|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">-</td>
+      <td class="confluenceTd" colspan="1">-</td>
+      <td class="confluenceTd" colspan="1">
+         <p><span style="color: #000000;">Ante pretium sodales scelerisque lobortis phasellus nullam tristique varius phasellus cursus rhoncus aliquet, lacus nunc gravida rhoncus conubia cursus sit nullam luctus torquent arcu justo ligula maecenas nisl vehicula sit,<span>&nbsp;</span></span></p>
+         <ul>
+            <li><code>editor-resources-conf-frontend</code></li>
+            <li><code>property-panel-image-link-macro-conf-frontend</code></li>
+         </ul>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>request-access</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="87c1fb30-8094-4785-af31-f063cb462d3b" data-macro-parameters="key=CONFSRVDEV-2765|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><a href=""></a><a href="">/</a></td>
+      <td class="confluenceTd" colspan="1"><a href=""></a></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>link-browser</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="acd0b32c-c8c9-41b2-a91f-fcd6fdb24774" data-macro-parameters="key=CONFSRVDEV-2751|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>advanced-macros</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="b497493d-3905-40a6-9592-394007a8be46" data-macro-parameters="key=CONFSRVDEV-2777|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">mono-repoed</td>
+      <td class="confluenceTd" colspan="1"><a href=""></a><a href="">/</a></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>aeTable</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>atlassianemotions</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="f4eb7867-c008-47bc-b5e8-592bf57c32ad" data-macro-parameters="key=CONFSRVDEV-2715|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>auiwindowmanager</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="9c4d69d0-6356-4af3-9400-456139cccfc4" data-macro-parameters="key=CONFSRVDEV-2716|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autocomplete-date</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="67167975-40eb-4264-8bef-2ba11d4e05c1" data-macro-parameters="key=CONFSRVDEV-2717|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><a href=""></a><a href="">/</a></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autocomplete-link</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p><span style="color: #000000;">Curabitur tellus sollicitudin facilisis urna vel sodales scelerisque maecenas scelerisque nam magna, aptent proin nunc conubia augue dapibus fermentum etiam enim facilisis</span></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autocomplete-macro</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autocomplete-media</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autoconvert</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autoformat</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="226a5bec-e7c2-4d78-ae86-8d85a10c7797" data-macro-parameters="key=CONFSRVDEV-2718|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self contained and working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>autoresize</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="a92f87fa-e390-4bf6-9202-aa8224103fc5" data-macro-parameters="key=CONFSRVDEV-2719|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>breadcrumbs</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="49356c58-f3f1-4021-a3bf-754de45e2587" data-macro-parameters="key=CONFSRVDEV-2720|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>browser-fixes</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="1d76f5b1-5319-4a97-a5d0-fbc3da1dcb84" data-macro-parameters="key=CONFSRVDEV-2721|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1">test</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Self contained.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>code-macro</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confcharmap</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="070ebf00-8774-4c0d-b4a6-a2bffec2bb0c" data-macro-parameters="key=CONFSRVDEV-2723|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p>Required the PopupManager code to be updated to include a version check.</p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confcursortarget</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="082ed532-780a-4b3b-9d13-6965e51d8f7a" data-macro-parameters="key=CONFSRVDEV-2724|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self contained and working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confluencedrafts</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="81e0d77c-ba2d-4996-a17b-dfb706cb1912" data-macro-parameters="key=CONFSRVDEV-2729|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confList</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confluence</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="24dea6d4-1b29-4d31-8ba2-54824e393837" data-macro-parameters="key=CONFSRVDEV-2725|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confluence-keyboard-shortcuts</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="6cd3576e-50a8-401c-86fb-009ffe80abf4" data-macro-parameters="key=CONFSRVDEV-2728|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confluence-labels</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">confluence-editor</td>
+      <td class="confluenceTd" colspan="1">50/50</td>
+      <td class="confluenceTd" colspan="1"><span> </span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="8ac33ffb-9f2f-4eed-b372-8f68ddc5b8ad" data-macro-parameters="key=CONFSRVDEV-2726|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <p><span>confmonospace</span></p>
+      </td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Self contained and no external dependencies.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>confluence-email-gateway</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="3f1fd403-c9b4-44a4-b19b-925f3eb34e5e" data-macro-parameters="key=CONFSRVDEV-2727|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>content-formatting-macros</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="fe3d5950-9734-402d-b3f9-2a3e88550bbe" data-macro-parameters="key=CONFSRVDEV-2731|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>create-from-template-macro</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="f93452ea-ac5f-41da-b636-d787ef65c750" data-macro-parameters="key=CONFSRVDEV-2732|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>customtoolbar</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="ce6e913c-770c-4f4d-b7e7-f7d4941d48e5" data-macro-parameters="key=CONFSRVDEV-2733|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>deletecommand</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self contained.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>draggable</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="95200e89-ee45-4e18-811a-6bf5638830e0" data-macro-parameters="key=CONFSRVDEV-2736|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p><span style="color: #000000;">Ultrices enim ut interdum just</span></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>drag-and-drop</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="64fb77fc-ef27-4afa-b095-ca0b8397cc15" data-macro-parameters="key=CONFSRVDEV-2735|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Ultrices enim ut interdum just</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>editor-analytics</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="07f6d5bd-fb70-4e93-9484-4d4961e6376b" data-macro-parameters="key=CONFSRVDEV-2737|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self contained and working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>emotions</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="bad00329-dc42-475d-98da-273dce53188d" data-macro-parameters="key=CONFSRVDEV-2738|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Icons showing, but functionality broken.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>flextofullsize</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="ec26819e-a80e-42d3-86e0-861a63d7ab11" data-macro-parameters="key=CONFSRVDEV-2739|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>gadgets</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="fb72cf79-0ff2-4dcc-bb62-fd7200bf5be3" data-macro-parameters="key=CONFSRVDEV-2740|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>highlightnode</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="ea7e7a02-3d96-40e0-8a2f-cc09e89aa122" data-macro-parameters="key=CONFSRVDEV-2741|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <h1>Deleted. Plugin wasn't being used an apparently wasn't overly useful.</h1>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>hipchat-emoticons</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="7e818310-8967-4e00-a2f5-c5ee0851f8da" data-macro-parameters="key=CONFSRVDEV-2742|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Broken.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>inline-comment</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="5358ba47-26c3-48cc-a741-0048b4f023cf" data-macro-parameters="key=CONFSRVDEV-2743|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>insert-files</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="6901027a-2adc-4e86-b513-dab05735186e" data-macro-parameters="key=CONFSRVDEV-2744|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p>ha<span style="color: #000000;">Ultrices enim ut interdum just</span></p>
+         <p><br /></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>insertwiki</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="843b2197-b8cf-4383-89d6-22cf4ee5b48f" data-macro-parameters="key=CONFSRVDEV-2745|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Required an update t<span style="color: #000000;">Ultrices enim ut interdum just</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>invite-to-edit</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="8bf739fe-7c36-47a6-ae0f-e81cf42c17e2" data-macro-parameters="key=CONFSRVDEV-2746|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><a href=""></a><a href="">/</a></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p>This thing tacks itself on to the #rte-toolbar, so probably it can keep loading exactly as it used to. It has no other interaction with the editor. It works essentially the same way that the collaborative editor plugin adds user avatars. Those two can be done together.</p>
+         <p><a href=""></a><a href="">/</a></p>
+         <p><br /></p>
+         <p>Appears to be working correctly.</p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>iosediting</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span>Appears to be self-contained.</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>jiralink</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="cd8f7a20-3d2c-44a2-aa17-57c9ef27f19d" data-macro-parameters="key=CONFSRVDEV-2748|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>leavecomment</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="106c4529-8fb9-4fe1-8722-bfdecc63232e" data-macro-parameters="key=CONFSRVDEV-2749|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self-contained and working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>leavetemplate</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="362f6401-1cef-4bea-b58f-b116bf9545c3" data-macro-parameters="key=CONFSRVDEV-2750|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>locationicon</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="9dfaa0c1-2bd7-4caf-8b5c-f9ec5195d3f3" data-macro-parameters="key=CONFSRVDEV-2753|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><span style="color: #000000;"><span>&nbsp;</span>conubia accumsan sollicitudin, pellentesque felis potenti massa nibh mattis suscipit vehicula viverra semper egestas ad taciti nullam nostra elit quis aliquet laoreet maecenas donec turpis, odio aliquam arcu nec hac litora hac quis donec, dictumst nibh aliquet ut torquent tincidunt auctor platea egestas condimentum phase</span></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>macrobrowser</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="cba19c16-5f8d-485f-b8cb-3fcc939b72a3" data-macro-parameters="key=CONFSRVDEV-2754|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span>Appears to be self-contained.</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>macroplaceholder</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="cd0d3bed-cc94-43eb-9f64-b6bdff626178" data-macro-parameters="key=CONFSRVDEV-2755|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span>Appears to be self-contained.</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>multimedia-macros</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="dbe836b9-c1f1-4831-9061-2b7041e0e3d4" data-macro-parameters="key=CONFSRVDEV-2756|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>notify-watchers</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="407a4789-7c7b-4c85-af54-b8debac0dc30" data-macro-parameters="key=CONFSRVDEV-2757|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>office-connector</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="e9027684-5351-4d44-b64c-30e4c551dac1" data-macro-parameters="key=CONFSRVDEV-2758|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>persit-scroll-position</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="7a0bcd52-b58e-4ba3-857e-df993d94c9e5" data-macro-parameters="key=CONFSRVDEV-2760|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span>Appears to be self-contained and working as expected.</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>placeholder</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be self-contained and working as expected.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>referrer</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="28c35bf3-3c7a-4f84-8121-7d578efe5cc8" data-macro-parameters="key=CONFSRVDEV-2763|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span>Appears to be self-contained and working as expected.</span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">reliable-save</td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="6ba36daf-8ac2-4a9d-b45a-cd070a78fde2" data-macro-parameters="key=CONFSRVDEV-2764|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><span>mono-repoed</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>roadmap-planner</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="1930f585-b97b-45b4-821a-02f7ec34dc7b" data-macro-parameters="key=CONFSRVDEV-2766|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">Appears to be working correctly.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">searchreplace</td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>sortable-tables</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>status-macro</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>sticky-table-headers</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="5adbab8c-a2a4-4325-9e3d-a78357a5f71e" data-macro-parameters="key=CONFSRVDEV-2767|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>tableanalytics</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="aa55777f-8b7d-4453-a46c-21b6b0ab9073" data-macro-parameters="key=CONFSRVDEV-2768|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>tablecontentwrapper</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="62544b29-3183-46ed-8a72-e5cb15aed47e" data-macro-parameters="key=CONFSRVDEV-2769|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;"><span><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>tasklist</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="c2708815-037e-4876-a621-46316d36744d" data-macro-parameters="key=CONFSRVDEV-2771|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <p><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></p>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>task-report-macro</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="2a214f11-0ebf-4238-97d7-6b7ca662ed6b" data-macro-parameters="key=CONFSRVDEV-2770|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>team-calendar</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="60cb8b73-5dc7-4ba4-8000-139b8018c800" data-macro-parameters="key=CONFSRVDEV-2772|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>textpattern</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="8d74b6de-510d-485a-81b7-637da08c085a" data-macro-parameters="key=CONFSRVDEV-2773|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">&nbsp; &nbsp;</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>versioncomment</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="b22c2d73-80fa-45e3-8c33-44c88eeb24f9" data-macro-parameters="key=CONFSRVDEV-2774|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>view-file-macro</span></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="9650d0c8-1df1-4659-aa9e-24e00d200423" data-macro-parameters="key=CONFSRVDEV-2775|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span>watch-page</span></td>
+      <td class="confluenceTd" colspan="1"></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="a83ed989-bbcd-40c7-b7e6-f1966212d6f3" data-macro-parameters="key=CONFSRVDEV-2776|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">
+         <p>(NEW) template placeholder</p>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p>n<span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></p>
+         </div>
+      </td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">This may actually be the placeholder plugin? Verify in templates/blueprints.</td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">(NEW) template variables</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Quisque donec cras dapibus arcu malesuada fusce tempus vestibulum fermentum aenean class, hac felis rutrum convallis vivamus donec taciti massa dictum auctor convallis potenti, curabitur dictumst curabitur congue vulputate consectetur rutrum etiam consequat iaculis amet luctus<span>&nbsp;</span></span></td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1">(NEW) confluence-questions</td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1">This is not used in Cloud at all and even contains its own editor loader. We need to look into how we'll manage that.</td>
+   </tr>
+</tbody>
+</table>
+<p class="auto-cursor-target"><br /></p>
+<p>Errors/Issues</p>
+<table class="relative-table wrapped confluenceTable" style="width: 95.8%;">
+<colgroup><col style="width: 17.8683%;" /><col style="width: 65.9352%;" /><col style="width: 16.1964%;" /></colgroup>
+<tbody>
+   <tr>
+      <th class="confluenceTh">Issue</th>
+      <th class="confluenceTh">Description</th>
+      <th class="confluenceTh">status</th>
+   </tr>
+   <tr>
+      <td class="confluenceTd"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="0bbce4f2-803c-4c3d-be08-2623dd7fc48b" data-macro-parameters="colour=Blue|title=to do" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="a03a1b57-f3b3-47bd-b54d-b9b6e0891661" data-macro-parameters="colour=Blue|title=to do" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" src="" data-macro-name="jira" data-macro-id="86e74aba-3dd5-4612-ac1e-401131e62e60" data-macro-parameters="columns=key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution|key=CONFSRVDEV-2788|server=Atlassian JIRA|serverId=144880e9-a353-312f-9412-ed028e8166fa" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="83898c20-27d6-4cbe-bdfc-918cd0959d49" data-macro-parameters="colour=Blue|title=to do" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="298bcf2e-9294-4a99-ae51-d86c53091db7" data-macro-parameters="colour=Blue|title=to do" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span></td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="149069dd-aceb-4a73-af8a-e24275d25acf" data-macro-parameters="colour=Green|title=SEEMS FINE" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><span style="color: #000000;">Vehicula sagittis fringilla ante sodales</span></td>
+      <td class="confluenceTd" colspan="1">Plugins can be d<span style="color: #000000;">Semper blandit id aptent nostra dictumst erat magna phasellus fermentum interdum, massa nec aptent enim pretium venenatis netus libero pretium magna nam vel etiam commodo risus sed primis morbi phasellus, habitant lobortis sagittis eu nisl neque</span>Cloud). We need to test editor resilience against that.</td>
+      <td class="confluenceTd" colspan="1">
+         <div class="content-wrapper">
+            <p><img class="editor-inline-macro" height="18" width="88" src="" data-macro-name="status" data-macro-id="f28c49b7-0ecc-45c5-880a-4682298a3fa3" data-macro-parameters="colour=Blue|title=to do" data-macro-schema-version="1" /></p>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+      <td class="confluenceTd" colspan="1"><br /></td>
+   </tr>
+</tbody>
+</table>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
