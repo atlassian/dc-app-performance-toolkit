@@ -16,7 +16,12 @@ At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC suppor
 #### Dependencies
 * Python 3.6+ and pip
 * JDK 8
-* Google Chrome web browser, version 76
+* Google Chrome web browser. 
+
+Please make sure you have a version of Chrome browser that is compatible with [chromedriver](http://chromedriver.chromium.org/downloads) version set in app/%product%.yml file (modules->selenium->chromedriver->version).
+
+If a first part of chromedriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [chromedriver](http://chromedriver.chromium.org/downloads) version in .yml file.  
+
 
 ### macOS/Linux
 Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
@@ -25,7 +30,6 @@ python3 --version
 pip --version
 java -version
 ```
-Check that Chrome browser version is 76.
 
 We recommend using virtualenv for Taurus.
 
@@ -61,7 +65,6 @@ pip --version
 java -version
 Microsoft Visual C++ 14
 ```
-Check that Chrome browser version is 76.
 
 Make sure you have Visual Studio build tool v14.22 installed. 
 Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualstudio.microsoft.com/downloads) and do the following:
