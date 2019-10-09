@@ -47,16 +47,12 @@ pip install bzt==1.13.8
 ```
 5. Install dependencies:
 ```
-cd jira
+cd app
 pip install -r requirements.txt
 ```
 
 
 ### Windows
-There are two ways of installing Taurus on Windows.
-One way is to use the prebuilt installer that will install latest Taurus on your PC including local Python 3.6 and all its dependencies.
-However, if you already have Python installed, you can install Taurus manually with pip, Python package manager.
-
 #### Installing Taurus manually
 Make sure you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
@@ -96,7 +92,7 @@ pip install bzt==1.13.8
 ```
 5. Install dependencies:
 ```
-cd jira
+cd app
 pip install -r requirements.txt
 ```
 
@@ -108,7 +104,7 @@ It will install local Python 3.6 and Taurus with all its dependencies.
 
 Install dependencies:
 ```
-cd jira
+cd app
 bzt-pip install setuptools wheel
 bzt-pip install -r requirements.txt
 ```
