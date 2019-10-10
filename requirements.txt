@@ -1,3 +1,4 @@
 matplotlib==3.1.1
 pandas==0.25.0
 importlib-metadata==0.20
+bzt==1.13.8

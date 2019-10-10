@@ -192,10 +192,10 @@ To populate the database with SQL:
     ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script and make it executable:
+1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script and make it executable:
 
     ``` bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/populate_db.sh && chmod +x populate_db.sh
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/populate_db.sh && chmod +x populate_db.sh
     ```
 1. Review the following `Variables section` of the script:
 
@@ -225,7 +225,7 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 #### Option 2: Loading the dataset through XML import (~4 hours)
 
-We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script.
+We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script.
 
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
@@ -268,10 +268,10 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/upload_attachments.sh) script and make it executable:
+1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script and make it executable:
 
     ``` bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/upload_attachments.sh && chmod +x upload_attachments.sh
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/upload_attachments.sh && chmod +x upload_attachments.sh
     ```    
 1. Review the following `Variables section` of the script:
 
@@ -320,7 +320,7 @@ This scenario helps to identify basic performance issues without a need to spin 
 
 To receive performance baseline results without an app installed:
 
-1. On the computer where you cloned the Data Center App Performance Toolkit, navigate to `dc-app-performance-toolkit/jira folder`.
+1. On the computer where you cloned the Data Center App Performance Toolkit, navigate to `dc-app-performance-toolkit/app folder`.
 1. Open the `jira.yml` file and fill in the following variables:
     - `application_hostname`: your_dc_jira_instance_hostname without protocol
     - `application_protocol`: HTTP or HTTPS
@@ -334,7 +334,7 @@ To receive performance baseline results without an app installed:
     ``` bash
     bzt jira.yml
     ```
-1. View the following main results of the run in the `dc-app-performance-toolkit/jira/results/YY-MM-DD-hh-mm-ss` folder:
+1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
@@ -363,7 +363,7 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 
 To generate a performance regression report:  
 
-1. Navigate to the `dc-app-performance-toolkit/jira/util/reports_generation` folder.
+1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
@@ -372,7 +372,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/jira/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
 
 #### Analyzing report
 
@@ -387,13 +387,13 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`jira.jmx`) and Selenium (`jira-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/jira/extension`). You can modify these scripts to include their app-specific actions.
+Extension scripts, which extend the base JMeter (`jira.jmx`) and Selenium (`jira-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying JMeter
 
 JMeter is written in XML and requires JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command.
 
-Make sure you run this command inside the `dc-app-performance-toolkit/jira directory`. The main `jmeter/jira.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
+Make sure you run this command inside the `dc-app-performance-toolkit/app directory`. The main `jmeter/jira.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
 
 Here's a snippet of the base JMeter script (`jira.jmx`):
 
@@ -458,7 +458,7 @@ If there are some additional variables from the base script required by the exte
 
 In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
 
-We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `jira/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
 In the `jira-ui.py` script, view the following block of code:
 
@@ -469,7 +469,7 @@ In the `jira-ui.py` script, view the following block of code:
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `jira/extension/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
+To implement the custom_action function, modify the `extension_ui.py` file in the `extension/jira/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
 
 ``` python
 def custom_action(webdriver, datasets):
@@ -482,7 +482,7 @@ def custom_action(webdriver, datasets):
         measure(webdriver, 'selenium_app_custom_action:view_report')
 ```
 
-To view more examples, see the `modules.py` file in the `jira/selenium_ui/` directory.
+To view more examples, see the `modules.py` file in the `selenium_ui/jira` directory.
 
 #### Running tests with your modification
 
@@ -516,10 +516,10 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
     export NODE_IP=node_private_ip
     ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
-1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/index-sync.sh) file. Then, make it executable and run it:
+1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
 
     ```bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/index-sync.sh && chmod +x index-sync.sh
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
     ./index-sync.sh | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
@@ -561,7 +561,7 @@ Save this full path to the run results folder. Later you will have to insert it 
 
 To generate a scalability report:
 
-1. Navigate to the `dc-app-performance-toolkit/jira/util/csv_aggregator` folder.
+1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
@@ -571,7 +571,7 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/jira/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
 
 #### Analyzing report
 
