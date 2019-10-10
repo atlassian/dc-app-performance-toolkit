@@ -516,10 +516,10 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
     export NODE_IP=node_private_ip
     ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
-1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/index-sync.sh) file. Then, make it executable and run it:
+1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
 
     ```bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/jira/util/index-sync.sh && chmod +x index-sync.sh
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
     ./index-sync.sh | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:

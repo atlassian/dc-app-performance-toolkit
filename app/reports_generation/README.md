@@ -1,12 +1,12 @@
 ## Reports generator - a tool that creates an aggregated .csv file and chart from multiple run results.
-Before you start, make sure you have installed Python packages from `jira/requirements.txt`.
+Before you start, make sure you have installed Python packages from [requirements.txt](../../requirements.txt).
 
-Otherwise, run the `pip install -r requirements.txt` command from `jira` directory to install necessary packages to your virtual environment.
+Otherwise, run the `pip install -r requirements.txt` command from DCAPT [root](../..) directory to install necessary packages to your virtual environment.
 
 To create reports, run the <br>
-`python csv_chart_generator.py [performance_profile.yml or scale_profile.yml]` command from the `jira/util/reports_generation` folder.
+`python csv_chart_generator.py [performance_profile.yml or scale_profile.yml]` command from the `reports_generation` folder.
 
-The aggregated .csv files and charts are stored in the `jira/results/reports` directory.
+The aggregated .csv files and charts are stored in the `results/reports` directory.
 Before run, you should edit `performance_profile.yml` or `scale_profile.yml` and set appropriate `fullPath` values. 
 
 **Configuration**

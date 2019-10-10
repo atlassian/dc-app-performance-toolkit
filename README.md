@@ -18,10 +18,9 @@ At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC suppor
 * JDK 8
 * Google Chrome web browser. 
 
-Please make sure you have a version of Chrome browser that is compatible with [chromedriver](http://chromedriver.chromium.org/downloads) version set in app/%product%.yml file (modules->selenium->chromedriver->version).
+Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/%product%.yml file (modules->selenium->chromedriver->version).
 
-If a first part of chromedriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [chromedriver](http://chromedriver.chromium.org/downloads) version in .yml file.  
-
+If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
 ### macOS/Linux
 Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
@@ -45,16 +44,10 @@ virtualenv venv -p python3
 ```
 source venv/bin/activate
 ```
-4. Install bzt:
+4. Install dependencies:
 ```
-pip install bzt==1.13.8
-```
-5. Install dependencies:
-```
-cd app
 pip install -r requirements.txt
 ```
-
 
 ### Windows
 #### Installing Taurus manually
@@ -74,7 +67,6 @@ Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualst
 4. Select the **MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.22)** check box (clear all the others).
 5. Click **Install**.
 
-
 We recommend using virtualenv for Taurus.
 
 1. Install virtualenv with pip:
@@ -89,31 +81,13 @@ virtualenv venv -p python
 ```
 venv\Scripts\activate
 ```
-4. Install bzt:
+4. Install dependencies:
 ```
-pip install bzt==1.13.8
-```
-5. Install dependencies:
-```
-cd app
 pip install -r requirements.txt
-```
-
-#### Installing Taurus with prebuilt installer
-Download an [installer](https://gettaurus.org/builds/TaurusInstaller_1.13.8_x64.exe) and run it.
-It will install local Python 3.6 and Taurus with all its dependencies.
-
-`bzt-pip` is a wrapper for pip that can be used to install packages.
-
-Install dependencies:
-```
-cd app
-bzt-pip install setuptools wheel
-bzt-pip install -r requirements.txt
 ```
 
 ## Additional info
 Official Taurus installation instructions are located [here](https://gettaurus.org/docs/Installation/).
 
 ## Running Taurus
-Navigate to product folder and follow README.md instructions.
+Navigate to [docs](docs) folder and follow instructions.
