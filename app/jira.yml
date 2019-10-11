@@ -10,8 +10,8 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 1
-    test_duration: 1m
+    concurrency: 200
+    test_duration: 45
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
 services:
