@@ -6848,14 +6848,21 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="random page number (1 - 100)" enabled="true">
-                <stringProp name="variableName">page_number</stringProp>
-                <stringProp name="outputFormat"></stringProp>
-                <stringProp name="minimumValue">1</stringProp>
-                <stringProp name="maximumValue">100</stringProp>
-                <stringProp name="randomSeed"></stringProp>
-                <boolProp name="perThread">false</boolProp>
-              </RandomVariableConfig>
+              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="get project pages count" enabled="true">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">import org.apache.commons.io.FileUtils;
+
+int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
+int pages;
+if (projects % 25 == 0 ){
+	pages = projects / 25;
+}else {
+	pages = projects / 25 + 1;
+}
+vars.put(&quot;pages&quot;, String.valueOf(pages));</stringProp>
+              </BeanShellPreProcessor>
               <hashTree/>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="900 /secure/BrowseProjects.jspa" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -6877,7 +6884,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="page" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">page</stringProp>
-                      <stringProp name="Argument.value">${page_number}</stringProp>
+                      <stringProp name="Argument.value">${__Random(1, ${pages})}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -10842,6 +10849,43 @@ if ( sleep_time &gt; 0 ) {
           </hashTree>
         </hashTree>
       </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
