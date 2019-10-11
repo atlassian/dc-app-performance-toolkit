@@ -11,7 +11,7 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 200
-    test_duration: 45
+    test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
 services:
