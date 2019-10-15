@@ -154,7 +154,7 @@
         </ResultCollector>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
-          <stringProp name="filename">datasets/users.csv</stringProp>
+          <stringProp name="filename">datasets/confluence/users.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">username,password</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -852,7 +852,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="blogs" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/blogs.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/blogs.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>
@@ -864,7 +864,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="pages" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/pages.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/pages.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>
@@ -876,7 +876,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="blog contents path" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/static-content/blog_contents_path.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/static-content/blog_contents_path.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>
@@ -888,7 +888,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="page contents path" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/static-content/page_contents_path.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/static-content/page_contents_path.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>
@@ -900,7 +900,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="files upload" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/static-content/files_upload.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/static-content/files_upload.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>
@@ -912,7 +912,7 @@
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="search terms" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/static-content/search_terms.csv</stringProp>
+            <stringProp name="filename">datasets/confluence/static-content/search_terms.csv</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="quotedData">false</boolProp>
             <boolProp name="recycle">true</boolProp>

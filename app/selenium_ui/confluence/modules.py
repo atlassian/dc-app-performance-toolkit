@@ -1,14 +1,17 @@
 import random
 import time
 
-from confluence.selenium_ui.conftest import AnyEc, application_url, generate_random_string, print_timing
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selenium_ui.conftest import AnyEc, application_url, generate_random_string, print_timing
+from util.project_paths import CONFLUENCE_YML
+
 timeout = 10
 
-APPLICATION_URL = application_url()
+# TODO consider do not use conftest as utility class and do not import it in modules
+APPLICATION_URL = application_url(CONFLUENCE_YML)
 
 
 def _dismiss_popup(webdriver, *args):
@@ -27,6 +30,7 @@ def login(webdriver, datasets):
         def measure(webdriver, interaction):
             webdriver.get(f'{APPLICATION_URL}/login.action')
             _wait_until(webdriver, EC.visibility_of_element_located((By.ID, 'loginButton')), interaction)
+
         measure(webdriver, "selenium_login:open_login_page")
 
         user = random.choice(datasets["users"])
@@ -38,14 +42,16 @@ def login(webdriver, datasets):
             return True if elems else False
 
         def _user_setup():
-            _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')), interaction).click()
-            _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')), interaction).click()
-            spaces = _wait_until(webdriver, EC.visibility_of_any_elements_located((By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')), interaction)
+            _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')),
+                        interaction).click()
+            _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')),
+                        interaction).click()
+            spaces = _wait_until(webdriver, EC.visibility_of_any_elements_located(
+                (By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')), interaction)
             if spaces:
                 spaces[0].click()
             _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.intro-find-spaces-button-continue')),
                         interaction).click()
-
 
         @print_timing
         def measure(webdriver, interaction):
@@ -54,7 +60,9 @@ def login(webdriver, datasets):
                         interaction)
             if _setup_page_is_presented():
                 _user_setup()
-            WebDriverWait(webdriver, timeout).until(EC.presence_of_element_located((By.CLASS_NAME, 'list-container-all-updates')))
+            WebDriverWait(webdriver, timeout).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'list-container-all-updates')))
+
         measure(webdriver, "selenium_login:login_and_view_dashboard")  # waits for all updates
 
     measure(webdriver, 'selenium_login')
@@ -71,6 +79,7 @@ def view_page(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/viewpage.action?pageId={page}')
         WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+
     measure(webdriver, "selenium_view_page")
 
 
@@ -81,6 +90,7 @@ def view_blog(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/viewpage.action?pageId={blog}')
         WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+
     measure(webdriver, "selenium_view_blog")
 
 
@@ -89,6 +99,7 @@ def view_dashboard(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/dashboard.action#all-updates')
         WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.CLASS_NAME, 'update-items')))
+
     measure(webdriver, "selenium_view_dashboard")
 
 
@@ -97,6 +108,7 @@ def create_page(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.find_element(By.ID, "quick-create-page-button").click()
         WebDriverWait(webdriver, timeout).until(EC.element_to_be_clickable((By.ID, "rte-button-publish")))
+
     measure(webdriver, "selenium_create_page:open_create_page_editor")
 
     _dismiss_popup(webdriver, "#closeDisDialog")
@@ -106,6 +118,7 @@ def create_page(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.find_element_by_id("rte-button-publish").click()
         WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+
     measure(webdriver, "selenium_create_page:save_created_page")
 
 
@@ -116,6 +129,7 @@ def edit_page(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/editpage.action?pageId={page}')
         WebDriverWait(webdriver, timeout).until(EC.element_to_be_clickable((By.ID, "rte-button-publish")))
+
     measure(webdriver, "selenium_edit_page:open_create_page_editor")
 
     populate_page_content(webdriver)
@@ -131,6 +145,7 @@ def edit_page(webdriver, datasets):
         _wait_until(webdriver, AnyEc(EC.presence_of_element_located((By.ID, "title-text")),
                                      EC.presence_of_element_located((By.ID, confirmation_button))
                                      ), interaction)
+
     measure(webdriver, "selenium_edit_page:save_edited_page")
 
 
@@ -149,12 +164,15 @@ def create_comment(webdriver, datasets):
         _wait_until(webdriver, EC.frame_to_be_available_and_switch_to_it((By.ID, 'wysiwygTextarea_ifr')), interaction)
         webdriver.find_element_by_id("tinymce").send_keys(f"This is page comment from date {time.time()}")
         webdriver.switch_to.parent_frame()
+
     measure(webdriver, 'selenium_create_comment:write_comment')
 
     @print_timing
     def measure(webdriver, interaction):
         webdriver.find_element_by_id("rte-button-publish").click()
-        _wait_until(webdriver, EC.visibility_of_element_located((By.CSS_SELECTOR, '.quick-comment-prompt')), interaction)
+        _wait_until(webdriver, EC.visibility_of_element_located((By.CSS_SELECTOR, '.quick-comment-prompt')),
+                    interaction)
+
     measure(webdriver, "selenium_create_comment:save_comment")
 
 
@@ -173,6 +191,7 @@ def log_out(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/logout.action')
+
     measure(webdriver, "selenium_log_out")
 
 

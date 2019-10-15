@@ -54,7 +54,7 @@ Be sure to run this command inside the `jira` directory. The main `jmeter/jira.j
 ### Debugging JMeter scripts
 1. Open JMeter GUI from `jira` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
 2. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-3. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `jira/reports/YY-MM-DD-hh-mm-ss` folder.
+3. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/reports/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
@@ -89,13 +89,13 @@ There are two options of running Selenium tests with browser GUI:
 
 ### Running Selenium tests locally without the Performance Toolkit
 1. Activate virualenv for the Performance Toolkit.
-2. Navigate to the jira folder using the `cd jira` command. 
+2. Navigate to the jira folder using the `cd app/selenium_ui` command. 
 3. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
-4. Run all Selenium PyTest tests with the `pytest selenium_ui/jira-ui.py` command.
+4. Run all Selenium PyTest tests with the `pytest jira-ui.py` command.
 5. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
 
-`pytest selenium_ui/jira-ui.py::test_0_selenium_a_login selenium_ui/jira-ui.py::test_1_selenium_view_issue`.
+`pytest jira-ui.py::test_0_selenium_a_login jira-ui.py::test_1_selenium_view_issue`.
 
 
 ### Comparing different runs
-Navigate to the `util/reports_generation` folder and follow README.md instructions to generate side-by-side comparison charts.
+Navigate to the `reports_generation` folder and follow README.md instructions to generate side-by-side comparison charts.

@@ -1,28 +1,25 @@
 import sys
+from pathlib import Path
+
 import yaml
 
-# Work around import issue
-import os
-sys.path.insert(0, os.path.dirname(os.getcwd()))
-print("System path: ", sys.path)
-
-from pathlib import Path
-from confluence.selenium_ui.api import ApiConfluence
+from util.data_preparation.confluence.api import ApiConfluence
 
 
-def __get_parent_dir():
-    return Path(__file__).parents[1]
+def __get_app_dir():
+    return Path(__file__).parents[3]
 
 
 def get_perf_users_count():
-    with open(__get_parent_dir() / "confluence.yml", 'r') as file:
+    with open(__get_app_dir() / "confluence.yml", 'r') as file:
         jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
         users_count = jira_yaml['settings']['env']['concurrency']
         return users_count
 
 
 def write_test_data_to_files(dataset):
-    file_path = Path(__file__).parents[1] / "datasets"
+    # TODO extract paths to project_paths
+    file_path = Path(__file__).parents[3] / "datasets" / "confluence"
 
     def write_to_file(file_name, list):
         with open(file_path / file_name, 'w') as f:

@@ -7,14 +7,16 @@ import yaml
 
 
 def admin_credentials():
-    with open(Path(__file__).parents[1] / "confluence.yml", 'r') as file:
+    # TODO extract paths to project_paths
+    with open(Path(__file__).parents[3] / "confluence.yml", 'r') as file:
         jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
         return jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
 
 
 USER, PASSWORD = admin_credentials()
 
-with open(Path(__file__).parents[1] / "util" / "resources" / "names.txt") as file:
+# TODO extract paths to project_paths
+with open(Path(__file__).parents[2] / "confluence" / "resources" / "names.txt") as file:
     __NAMES = [line.rstrip('\n') for line in file]
 
 
@@ -22,6 +24,7 @@ def random_names(number=2):
     return [random.choice(__NAMES) for _ in range(number)]
 
 
+# TODO use OOP approach for ApiJira and ApiConfluence
 class ApiConfluence:
 
     def __init__(self, host, api_session=None, timeout=30):

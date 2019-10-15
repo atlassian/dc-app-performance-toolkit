@@ -3,6 +3,7 @@ import json
 import requests
 
 
+# TODO use OOP approach for ApiJira and ApiConfluence
 class ApiJira(object):
 
     def __init__(self, host, user, password, api_session=None, timeout=30):

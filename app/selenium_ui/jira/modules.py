@@ -10,11 +10,13 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
+from util.project_paths import JIRA_YML
 
 timeout = 20
 
 ISSUE_TYPE_DROPDOWN = 'issuetype-field'
-APPLICATION_URL = application_url()
+# TODO consider do not use conftest as utility class and do not import it in modules
+APPLICATION_URL = application_url(JIRA_YML)
 
 
 def _dismiss_popup(webdriver, *args):

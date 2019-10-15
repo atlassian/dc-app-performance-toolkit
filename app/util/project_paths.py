@@ -37,6 +37,10 @@ def __get_jira_dataset_issues():
     return __get_jira_dataset('issues.csv')
 
 
+def __get_confluence_yml():
+    return Path(__file__).parents[1] / "confluence.yml"
+
+
 JIRA_YML = __get_jira_yml()
 JIRA_DATASETS = __get_jira_datasets()
 JIRA_DATASET_JQLS = __get_jira_dataset_jqls()
@@ -44,3 +48,5 @@ JIRA_DATASET_SCRUM_BOARDS = __get_jira_dataset_scrum_boards()
 JIRA_DATASET_KANBAN_BOARDS = __get_jira_dataset_kanban_boards()
 JIRA_DATASET_USERS = __get_jira_dataset_users()
 JIRA_DATASET_ISSUES = __get_jira_dataset_issues()
+
+CONFLUENCE_YML = __get_confluence_yml()
