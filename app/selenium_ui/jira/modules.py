@@ -245,7 +245,6 @@ def browse_project(webdriver, datasets):
         _wait_until(webdriver, AnyEc(ec.presence_of_element_located((By.CSS_SELECTOR, "tbody.projects-list")),
                                      ec.presence_of_element_located((By.CLASS_NAME, "none-panel"))
                                      ), interaction)
-
     measure(webdriver, "selenium_browse_project")
 
 
