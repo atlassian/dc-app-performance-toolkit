@@ -154,6 +154,36 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="dataset csv paths" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="issues_csv" elementType="Argument">
+              <stringProp name="Argument.name">issues_csv</stringProp>
+              <stringProp name="Argument.value">datasets/jira/issues.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="scrum_boards_csv" elementType="Argument">
+              <stringProp name="Argument.name">scrum_boards_csv</stringProp>
+              <stringProp name="Argument.value">datasets/jira/scrum-boards.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kanban_boards_csv" elementType="Argument">
+              <stringProp name="Argument.name">kanban_boards_csv</stringProp>
+              <stringProp name="Argument.value">datasets/jira/kanban-boards.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="jql_csv" elementType="Argument">
+              <stringProp name="Argument.name">jql_csv</stringProp>
+              <stringProp name="Argument.value">datasets/jira/jqls.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="project_keys_csv" elementType="Argument">
+              <stringProp name="Argument.name">project_keys_csv</stringProp>
+              <stringProp name="Argument.value">datasets/jira/project_keys.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
           <stringProp name="filename">datasets/jira/users.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
@@ -1095,7 +1125,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
         </LoopController>
         <hashTree>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="issues" enabled="true">
-            <stringProp name="filename">datasets/jira/issues.csv</stringProp>
+            <stringProp name="filename">${issues_csv}</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">issue_key,issue_id,project_key</stringProp>
@@ -1106,7 +1136,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="scrum boards" enabled="true">
-            <stringProp name="filename">datasets/jira/scrum-boards.csv</stringProp>
+            <stringProp name="filename">${scrum_boards_csv}</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">scrum_board_id</stringProp>
@@ -1117,7 +1147,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="kanban boards" enabled="true">
-            <stringProp name="filename">datasets/jira/kanban-boards.csv</stringProp>
+            <stringProp name="filename">${kanban_boards_csv}</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">kanban_board_id</stringProp>
@@ -1128,7 +1158,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="jql" enabled="true">
-            <stringProp name="filename">datasets/jira/jqls.csv</stringProp>
+            <stringProp name="filename">${jql_csv}</stringProp>
             <stringProp name="fileEncoding"></stringProp>
             <stringProp name="variableNames">jql</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
@@ -6854,12 +6884,13 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <stringProp name="filename"></stringProp>
                 <stringProp name="script">import org.apache.commons.io.FileUtils;
 
-int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
+int projects = FileUtils.readLines(new File(vars.get(&quot;project_keys_csv&quot;))).size();
 int pages;
-if (projects % 25 == 0 ){
-	pages = projects / 25;
+int page_size = 25;
+if (projects % page_size == 0 ){
+	pages = projects / page_size;
 }else {
-	pages = projects / 25 + 1;
+	pages = projects / page_size + 1;
 }
 vars.put(&quot;pages&quot;, String.valueOf(pages));</stringProp>
               </BeanShellPreProcessor>
@@ -10849,43 +10880,6 @@ if ( sleep_time &gt; 0 ) {
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <sentBytes>true</sentBytes>
-            <url>true</url>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-            <connectTime>true</connectTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
