@@ -271,6 +271,19 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
+        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="get project pages count" enabled="true">
+          <boolProp name="resetInterpreter">false</boolProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">import org.apache.commons.io.FileUtils;
+
+int projects = FileUtils.readLines(new File(vars.get(&quot;project_keys_csv&quot;))).size();
+int pages;
+int page_size = 25;
+int page_size = 25; int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
+vars.put(&quot;pages&quot;, String.valueOf(pages));</stringProp>
+        </BeanShellPreProcessor>
+        <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_login_and_view_dashboard" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
@@ -6878,23 +6891,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="get project pages count" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">import org.apache.commons.io.FileUtils;
-
-int projects = FileUtils.readLines(new File(vars.get(&quot;project_keys_csv&quot;))).size();
-int pages;
-int page_size = 25;
-if (projects % page_size == 0 ){
-	pages = projects / page_size;
-}else {
-	pages = projects / page_size + 1;
-}
-vars.put(&quot;pages&quot;, String.valueOf(pages));</stringProp>
-              </BeanShellPreProcessor>
-              <hashTree/>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="900 /secure/BrowseProjects.jspa" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
