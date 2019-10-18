@@ -139,6 +139,33 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="get count projects pages" enabled="true">
+          <stringProp name="BeanShellSampler.query">import org.apache.commons.io.FileUtils;
+
+// TODO Rework hard-codded path
+int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
+int page_size = 25;
+int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
+props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Jira" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
@@ -240,19 +267,6 @@
             </elementProp>
           </collectionProp>
         </Arguments>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="get count projects pages" enabled="true">
-          <stringProp name="BeanShellSampler.query">import org.apache.commons.io.FileUtils;
-
-// TODO Rework hard-codded path
-int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
-int page_size = 25;
-int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
-vars.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
         <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_login_and_view_dashboard" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -6846,7 +6860,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
               <stringProp name="script">import java.util.Random;
 
 Random rand = new Random();
-int project_pages = Integer.parseInt(vars.get(&quot;project_pages&quot;));
+int project_pages = Integer.parseInt(props.get(&quot;project_pages&quot;));
 int random_page = rand.nextInt(project_pages) + 1;
 vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
             </BeanShellPreProcessor>
