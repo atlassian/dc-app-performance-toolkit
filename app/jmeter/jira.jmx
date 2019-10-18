@@ -241,31 +241,18 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="common variables" enabled="true">
-          <collectionProp name="Arguments.arguments">
-            <elementProp name="project_keys_csv" elementType="Argument">
-              <stringProp name="Argument.name">project_keys_csv</stringProp>
-              <stringProp name="Argument.value">datasets/jira/project_keys.csv</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-          </collectionProp>
-        </Arguments>
-        <hashTree/>
-        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="get random page with projects" enabled="true">
-          <stringProp name="filename"></stringProp>
-          <stringProp name="parameters"></stringProp>
-          <boolProp name="resetInterpreter">false</boolProp>
-          <stringProp name="script">import org.apache.commons.io.FileUtils;
-import java.util.Random;
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="get count projects pages" enabled="true">
+          <stringProp name="BeanShellSampler.query">import org.apache.commons.io.FileUtils;
 
-Random rand = new Random();
-int projects = FileUtils.readLines(new File(vars.get(&quot;project_keys_csv&quot;))).size();
-int pages;
+// TODO Rework hard-codded path
+int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
 int page_size = 25;
 int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
-int random_page = rand.nextInt(pages);
-vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
-        </BeanShellPreProcessor>
+vars.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
         <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_login_and_view_dashboard" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -6852,6 +6839,18 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_browse_projects}</stringProp>
           </ThroughputController>
           <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="generate random page with projects" enabled="true">
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="script">import java.util.Random;
+
+Random rand = new Random();
+int project_pages = Integer.parseInt(vars.get(&quot;project_pages&quot;));
+int random_page = rand.nextInt(project_pages) + 1;
+vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
               <intProp name="ActionProcessor.action">1</intProp>
               <intProp name="ActionProcessor.target">0</intProp>
