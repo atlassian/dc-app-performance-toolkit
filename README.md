@@ -9,6 +9,7 @@ At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC suppor
 * Supported Jira versions: 
     * Latest platform release: 8.0.3
     * Latest enterprise release: 7.13.6
+    * Latest enterprise release: 8.5.0
 * The SQL import is flaky. In case of a failure, run it again.
 
 ## Installation and set up
