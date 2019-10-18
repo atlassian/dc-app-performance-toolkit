@@ -6,7 +6,7 @@ import yaml
 
 from util.data_preparation.jira.api import ApiJira
 from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
@@ -67,6 +67,9 @@ def write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets['issues']]
     __write_to_file(JIRA_DATASET_ISSUES, issues)
 
+    keys = [key['key'] for key in datasets['project_keys']]
+    __write_to_file(JIRA_DATASET_PROJECT_KEYS, keys)
+
 
 def __write_to_file(file_path, items):
     with open(file_path, 'w') as f:
@@ -99,6 +102,8 @@ def main():
 
     dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", max_results=8000)
     dataset["jqls"] = generate_jqls(count=150)
+
+    dataset["project_keys"] = jira_api.get_all_projects()
 
     write_test_data_to_files(dataset)
 

@@ -16,7 +16,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
 from util.project_paths import JIRA_YML, JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
-    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS
+    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, JIRA_DATASET_PROJECT_KEYS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -176,6 +176,7 @@ def datasets():
         data_sets["jqls"] = __read_input_file(JIRA_DATASET_JQLS)
         data_sets["scrum_boards"] = __read_input_file(JIRA_DATASET_SCRUM_BOARDS)
         data_sets["kanban_boards"] = __read_input_file(JIRA_DATASET_KANBAN_BOARDS)
+        data_sets["project_keys"] = __read_input_file(JIRA_DATASET_PROJECT_KEYS)
 
         return data_sets
 

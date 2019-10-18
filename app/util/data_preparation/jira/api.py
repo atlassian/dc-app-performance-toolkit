@@ -167,3 +167,14 @@ class ApiJira(object):
         r = self.api_session.post(api_url, payload, auth=self.base_auth, headers=headers)
         assert r.ok, f"Could not create user: {r.status_code} {r.text}"
         return r.json()
+
+    def get_all_projects(self):
+        """
+
+        :return: Returns the projects list of all project types - all categories
+        """
+        api_url = f'{self.host}/rest/api/2/project'
+        r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
+        assert r.ok, 'Could not get the list of projects'
+        r = r.json()
+        return r
