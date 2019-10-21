@@ -127,10 +127,11 @@ def create_issue(webdriver, datasets):
 
             webdriver.find_element_by_id(ISSUE_TYPE_DROPDOWN).click()
             issue_elements = webdriver.find_elements_by_class_name("aui-list-item")
-            filtered_issue_elements = list(filter(__filer_epic, issue_elements))
-            rnd_issue_type_el = random.choice(filtered_issue_elements)
-            action = ActionChains(webdriver)
-            action.move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
+            if issue_elements:
+                filtered_issue_elements = list(filter(__filer_epic, issue_elements))
+                rnd_issue_type_el = random.choice(filtered_issue_elements)
+                action = ActionChains(webdriver)
+                action.move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
 
             # Wait until issue-form saves issue-type
             _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, ".buttons>.throbber")),
