@@ -98,23 +98,35 @@ def __create_data_set(jira_api):
 
 
 def __get_issues(jira_api, software_project_keys):
-    return jira_api.issues_search(
-        jql=f"project in ({','.join(software_project_keys)}) AND status != Closed order by key", max_results=8000)
+    issues = jira_api.issues_search(
+        jql=f"project in ({','.join(software_project_keys)}) AND status != Closed order by key", max_results=8000
+    )
+    if not issues:
+        raise SystemExit("There is no issues in Jira")
+
+    return issues
 
 
 def __get_boards(jira_api, board_type):
-    return jira_api.get_boards(board_type=board_type, max_results=250)
+    boards = jira_api.get_boards(board_type=board_type, max_results=250)
+    if not boards:
+        raise SystemExit(f"There is no {board_type} board in Jira")
+
+    return boards
 
 
 def __get_users(jira_api):
     perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
-    return generate_perf_users(api=jira_api, cur_perf_user=perf_users)
+    users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
+    if not users:
+        raise SystemExit("There is no users in Jira")
+
+    return users
 
 
 def __get_software_project_keys(jira_api):
     all_projects = jira_api.get_all_projects()
     software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
-
     if not software_project_keys:
         raise SystemExit("There is no software project in Jira")
 
