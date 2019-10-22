@@ -14,11 +14,20 @@ class JiraSettings:
         self.application_hostname = obj['settings']['env']['application_hostname']
         self.application_protocol = obj['settings']['env']['application_protocol']
         self.application_port = obj['settings']['env']['application_port']
+        self.application_postfix = obj['settings']['env']['application_postfix']
+        self.admin_login = obj['settings']['env']['admin_login']
+        self.admin_password = obj['settings']['env']['admin_password']
+        self.concurrency = obj['settings']['env']['concurrency']
 
     def __repr__(self):
-        return f'application_hostname = {self.application_hostname!r}\napplication_protocol = {self.application_protocol!r}\n' \
-    f'application_port = {self.application_port!r}'
+        return f'application_hostname = {self.application_hostname!r}\n' \
+               f'application_protocol = {self.application_protocol!r}\n' \
+               f'application_port = {self.application_port!r}\n' \
+               f'application_postfix = {self.application_postfix!r}\n' \
+               f'admin_login = {self.admin_login!r}\n' \
+               f'admin_password = {self.admin_password!r}\n' \
+               f'concurrency = {self.concurrency!r}\n'
 
 
-jira_settings = JiraSettings()
-
+JIRA_SETTINGS = JiraSettings()
+print(JIRA_SETTINGS.application_postfix)

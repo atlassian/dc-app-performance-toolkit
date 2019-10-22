@@ -17,12 +17,17 @@ from selenium.webdriver.chrome.options import Options
 
 from util.project_paths import JIRA_YML, JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
     JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, JIRA_DATASET_PROJECT_KEYS
+from util.conf import JIRA_SETTINGS
+
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
-
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
+SERVER_URL = f'{JIRA_SETTINGS.application_protocol}://' \
+             f'{JIRA_SETTINGS.application_hostname}:' \
+             f'{JIRA_SETTINGS.application_port}' \
+             f'{JIRA_SETTINGS.application_postfix or ""}'
 
 # create selenium output files
 try:
@@ -44,17 +49,6 @@ if not selenium_results_file.exists():
         file.write(JTL_HEADER)
     with open(w3c_timings_file, 'w'):
         pass
-
-
-def application_url():
-    with JIRA_YML.open(mode='r') as fs:
-        jira_yaml = yaml.load(fs, Loader=yaml.FullLoader)
-        protocol = jira_yaml['settings']['env']['application_protocol']
-        hostname = jira_yaml['settings']['env']['application_hostname']
-        port = str(jira_yaml['settings']['env']['application_port'])
-        postfix = jira_yaml['settings']['env']['application_postfix']
-        app_url = f"{protocol}://{hostname}:{port}{postfix or ''}"
-        return app_url
 
 
 def datetime_now(prefix):
@@ -158,7 +152,7 @@ def screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(application_url())
+        webdriver.get(SERVER_URL)
 
 
 @pytest.fixture(scope="module")

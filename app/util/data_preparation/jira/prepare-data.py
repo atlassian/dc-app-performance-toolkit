@@ -7,6 +7,7 @@ import yaml
 from util.data_preparation.jira.api import ApiJira
 from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
+from util.conf import JIRA_SETTINGS
 
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
@@ -25,19 +26,12 @@ def __generate_jqls(max_length=3, count=100):
         ''.join(random.choices(string.ascii_lowercase, k=max_length))) for _ in range(count)]
 
 
-def get_perf_users_count():
-    with JIRA_YML.open(mode='r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        users_count = jira_yaml['settings']['env']['concurrency']
-        return users_count
-
-
 # https://jira.atlassian.com/browse/JRASERVER-65089 User search startAt parameter is not working
-performance_users_count = 1000 if get_perf_users_count() > 1000 else get_perf_users_count()
+performance_users_count = 1000 if JIRA_SETTINGS.concurrency > 1000 else JIRA_SETTINGS.concurrency
 
 
 def generate_perf_users(cur_perf_user, api):
-    config_perf_users_count = get_perf_users_count()
+    config_perf_users_count = JIRA_SETTINGS.concurrency
     if len(cur_perf_user) >= config_perf_users_count:
         return cur_perf_user[:config_perf_users_count]
     else:
@@ -136,14 +130,13 @@ def __get_software_project_keys(jira_api):
 def main():
     print("Started preparing data")
 
-    # TODO consider getting server url from jira.yml see get_perf_users_count()
-    url = sys.argv[1]
+    url = f'{JIRA_SETTINGS.application_protocol}://' \
+          f'{JIRA_SETTINGS.application_hostname}:' \
+          f'{JIRA_SETTINGS.application_port}' \
+          f'{JIRA_SETTINGS.application_postfix or ""}'
     print("Server url: ", url)
 
-    # TODO consider reading jira.yml only once
-    with JIRA_YML.open(mode='r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        user, password = jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
+    user, password = JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password
 
     jira_api = ApiJira(url, user, password)
     dataset = __create_data_set(jira_api)
