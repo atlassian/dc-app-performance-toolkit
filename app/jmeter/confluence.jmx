@@ -3726,17 +3726,6 @@ vars.put(&quot;search_cql&quot;, extend_action);
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get Length of Search Term String from CSV" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">vars.put(&quot;p_searchTermLength&quot;, vars.get(&quot;p_searchTerm&quot;).length().toString());
-vars.put(&quot;p_searchTermCounter&quot;,&quot;1&quot;); // Reset Counter
-
-//log.info(&quot;Search Term Length :&quot; + vars.get(&quot;p_searchTermLength&quot;));</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
               </hashTree>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_results" enabled="true">
@@ -3813,24 +3802,6 @@ vars.put(&quot;p_searchTermCounter&quot;,&quot;1&quot;); // Reset Counter
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Perform Predictive Search - Group Characters into String for Search Term" enabled="false">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">vars.put(&quot;p_predictiveSearchTerm&quot;, &quot;siteSearch~&quot; + vars.get(&quot;p_searchTerm&quot;).take(vars.get(&quot;p_searchTermCounter&quot;).toInteger()));</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="c_PageURL" enabled="false">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">c_PageURL</stringProp>
-                  <stringProp name="RegexExtractor.regex">\&quot;href\&quot;:\&quot;(.*?)\&quot;,\&quot;className\&quot;:\&quot;content-type-page\&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">0</stringProp>
-                  <stringProp name="Sample.scope">all</stringProp>
-                </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
@@ -8611,60 +8582,6 @@ vars.put(&quot;edit_page&quot;, extend_action);
                       </elementProp>
                     </collectionProp>
                   </HeaderManager>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="false">
-                    <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="filename"></stringProp>
-                    <stringProp name="parameters"></stringProp>
-                    <stringProp name="script">import groovy.json.JsonSlurper;
-import org.apache.jmeter.services.FileServer;
-
-def failureMessage = &quot;&quot;;
-def jsonResponse = null;
-
-def path = FileServer.getFileServer().getBaseDir();
-new File(path + File.separator + &quot;Errorlogs&quot;).mkdirs();
-File file = new File(path + File.separator + &quot;Errorlogs&quot; + File.separator + ctx.getThreadGroup().getName() + &quot;_${TestStartTime}.log&quot;);
-
-//vars.put(&quot;GetContactCheck&quot;,&quot;true&quot;);
-
-JsonSlurper JSON = new JsonSlurper ();
-
-try {
-    jsonResponse = JSON.parseText(prev.getResponseDataAsString());
-    } catch (Exception e) {
-    failureMessage += &quot;Invalid JSON for transaction - Edit Page - Draft request &amp; for user : &quot; + vars.get(&quot;username&quot;) + &quot; and Search Term  &quot; + vars.get(&quot;p_searchTerm&quot;) + &quot;\n&quot;;
- 
-}
-
-if(!&quot;200&quot;.equals(prev.getResponseCode())){
-	failureMessage += &quot;Expected &lt;response code&gt; [200] for transaction - Edit Page - Draft request but we got instead [&quot; + prev.getResponseCode() + &quot;] for user : &quot; + vars.get(&quot;username&quot;) + &quot; and Search Term  &quot; + vars.get(&quot;p_searchTerm&quot;) + &quot;\n\n&quot; ;
-	
-}
-if (jsonResponse != null)
-{
-	if (!jsonResponse.keySet().containsAll([&quot;draftId&quot;,&quot;time&quot;,&quot;pageId&quot;] )) {
-          failureMessage += &quot;The json config element has wrong structure for transaction - Edit Page - Draft request &amp; user : &quot; + vars.get(&quot;username&quot;) + &quot; and Search Term  &quot; + vars.get(&quot;p_searchTerm&quot;) + &quot;\n\n&quot;;
-         
-	}
-}
-/*if (!jsonResponse.result.numberOfExpectedServers != 3) {
-	failureMessage += &quot;The element has wrong number of servers. Number of servers is:[&quot; + jsonResponse.result.numberOfExpectedServers + &quot;]\n\n&quot;;
-} 
-*/
-
-// Print error messages if any
-if (failureMessage?.trim()) {
-    failureMessage += &quot;URL: &quot; + SampleResult.getURL() + &quot;\n\n&quot;;     
-    failureMessage += &quot;JSON RESPONSE: &quot; + jsonResponse + &quot;\n\n&quot;;
-    failureMessage += &quot;REQUEST HEADERS: &quot; + SampleResult.getRequestHeaders() + &quot;\n\n&quot;;
-
-    AssertionResult.setFailureMessage(failureMessage);
-    AssertionResult.setFailure(true);    
-    file &lt;&lt;  Thread.currentThread().getName()+&quot;: &quot;+&quot;: Assertion failed for request: &quot; + failureMessage + &quot;\n&quot; ; 
-}</stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
                   <hashTree/>
                   <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_draft_id" enabled="true">
                     <stringProp name="RegexExtractor.useHeaders">false</stringProp>
