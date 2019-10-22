@@ -873,30 +873,6 @@
             <stringProp name="variableNames">page_id,space_key</stringProp>
           </CSVDataSet>
           <hashTree/>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="blog contents path" enabled="true">
-            <stringProp name="delimiter">,</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/confluence/static-content/blog_contents_path.csv</stringProp>
-            <boolProp name="ignoreFirstLine">false</boolProp>
-            <boolProp name="quotedData">false</boolProp>
-            <boolProp name="recycle">true</boolProp>
-            <stringProp name="shareMode">shareMode.all</stringProp>
-            <boolProp name="stopThread">false</boolProp>
-            <stringProp name="variableNames">blog_contents_path</stringProp>
-          </CSVDataSet>
-          <hashTree/>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="page contents path" enabled="true">
-            <stringProp name="delimiter">,</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/confluence/static-content/page_contents_path.csv</stringProp>
-            <boolProp name="ignoreFirstLine">false</boolProp>
-            <boolProp name="quotedData">false</boolProp>
-            <boolProp name="recycle">true</boolProp>
-            <stringProp name="shareMode">shareMode.all</stringProp>
-            <boolProp name="stopThread">false</boolProp>
-            <stringProp name="variableNames">page_contents_path</stringProp>
-          </CSVDataSet>
-          <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="files upload" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
@@ -907,18 +883,6 @@
             <stringProp name="shareMode">shareMode.all</stringProp>
             <boolProp name="stopThread">false</boolProp>
             <stringProp name="variableNames">file_path,file_type,file_name</stringProp>
-          </CSVDataSet>
-          <hashTree/>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="search terms" enabled="true">
-            <stringProp name="delimiter">,</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">datasets/confluence/static-content/search_terms.csv</stringProp>
-            <boolProp name="ignoreFirstLine">false</boolProp>
-            <boolProp name="quotedData">false</boolProp>
-            <boolProp name="recycle">true</boolProp>
-            <stringProp name="shareMode">shareMode.all</stringProp>
-            <boolProp name="stopThread">false</boolProp>
-            <stringProp name="variableNames">p_searchTerm</stringProp>
           </CSVDataSet>
           <hashTree/>
           <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
@@ -3739,7 +3703,7 @@ vars.put(&quot;search_cql&quot;, extend_action);
                     <elementProp name="cql" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">cql</stringProp>
-                      <stringProp name="Argument.value">siteSearch~${p_searchTerm}</stringProp>
+                      <stringProp name="Argument.value">siteSearch~${p_search_term}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -3805,13 +3769,22 @@ vars.put(&quot;search_cql&quot;, extend_action);
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="2059852076">{&quot;results&quot;:[{&quot;content&quot;:{&quot;i</stringProp>
+                    <stringProp name="1454469524">{&quot;results&quot;:[</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random Search String" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">vars.put(&quot;p_search_term&quot;, (new Random().with {(1..5).collect {((&apos;a&apos;..&apos;z&apos;)).join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString());
+</stringProp>
+                </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="410 /rest/mywork/latest/status/notification/count" enabled="true">
@@ -4726,7 +4699,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Test Performance ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;${p_page_contents}&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;page&quot;,&quot;version&quot;:{&quot;number&quot;:1,&quot;minorEdit&quot;:true,&quot;syncRev&quot;:&quot;0.IQQyVktY3rNHFnepCZiJDho.27&quot;},&quot;ancestors&quot;:[{&quot;id&quot;:&quot;${page_id}&quot;,&quot;type&quot;:&quot;page&quot;}]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Test Performance ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;Test Performance Create Page Content ${p_new_file_name}&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;page&quot;,&quot;version&quot;:{&quot;number&quot;:1,&quot;minorEdit&quot;:true,&quot;syncRev&quot;:&quot;0.IQQyVktY3rNHFnepCZiJDho.27&quot;},&quot;ancestors&quot;:[{&quot;id&quot;:&quot;${page_id}&quot;,&quot;type&quot;:&quot;page&quot;}]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -4788,28 +4761,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <stringProp name="RegexExtractor.match_number">1</stringProp>
                   <stringProp name="TestPlan.comments">c_newPageTitle</stringProp>
                 </RegexExtractor>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Remove New lines in JSON Body" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">import org.apache.jmeter.services.FileServer
-
-File inputFile = new File(vars.get(&quot;page_contents_path&quot;).toString())
-
-//log.info(vars.get(&quot;page_contents_path&quot;))
-def fileString = &quot;&quot;;
-if (inputFile.exists())
-{
-     inputFile.eachLine {line -&gt;
-     fileString += line
-     }
-     fileString = fileString.replaceAll(&quot;\&quot;&quot;,&quot;\\\\\&quot;&quot;) //Escape double quotes in JSON Body
-     vars.put(&quot;p_page_contents&quot;, fileString)
-}
-</stringProp>
-                </JSR223PreProcessor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
@@ -6650,7 +6601,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Performance Blog - ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${x_space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;${p_blog_contents}&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;blogpost&quot;,&quot;version&quot;:{&quot;number&quot;:1,&quot;minorEdit&quot;:true,&quot;syncRev&quot;:&quot;0.mcPCPtDvwoayMR7zvuQSbf8.30&quot;}}</stringProp>
+                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Performance Blog - ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${x_space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;Test Performance Blog Page Content ${p_new_file_name}&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;blogpost&quot;,&quot;version&quot;:{&quot;number&quot;:1,&quot;minorEdit&quot;:true,&quot;syncRev&quot;:&quot;0.mcPCPtDvwoayMR7zvuQSbf8.30&quot;}}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -6711,37 +6662,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">1</stringProp>
                   <stringProp name="TestPlan.comments">c_newPageTitle</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Remove New lines in JSON Body" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">import org.apache.jmeter.services.FileServer
-
-File inputFile = new File(vars.get(&quot;blog_contents_path&quot;).toString())
-
-//log.info(vars.get(&quot;page_contents_path&quot;))
-def fileString = &quot;&quot;;
-if (inputFile.exists())
-{
-     inputFile.eachLine {line -&gt;
-     fileString += line
-     }
-     fileString = fileString.replaceAll(&quot;\&quot;&quot;,&quot;\\\\\&quot;&quot;) //Escape double quotes in JSON Body
-     vars.put(&quot;p_blog_contents&quot;, fileString)
-}
-</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="c_newBlogTitle" enabled="false">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">c_newBlogTitle</stringProp>
-                  <stringProp name="RegexExtractor.regex">anonymous_export_view.*?\&quot;webui\&quot;:\&quot;(.*?)\&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
