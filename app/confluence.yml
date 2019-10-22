@@ -9,7 +9,7 @@ settings:
     application_port: 80            # 80, 443, 8080, 2990, etc
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
-    admin_password: perf1234perf4321
+    admin_password: admin
     concurrency: 200
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
@@ -83,4 +83,4 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "76.0.3809.68" # Supports Chrome version 76. You can refer to http://chromedriver.chromium.org/downloads
+      version: "77.0.3865.40" # Supports Chrome version 77. You can refer to http://chromedriver.chromium.org/downloads
