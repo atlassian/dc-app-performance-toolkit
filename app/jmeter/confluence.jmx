@@ -174,62 +174,62 @@
             </elementProp>
             <elementProp name="perc_view_page" elementType="Argument">
               <stringProp name="Argument.name">perc_view_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_page, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_view_dashboard" elementType="Argument">
               <stringProp name="Argument.name">perc_view_dashboard</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_dashboard, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_dashboard, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_view_inline_comments" elementType="Argument">
               <stringProp name="Argument.name">perc_view_inline_comments</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_inline_comments, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_inline_comments, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_view_blog" elementType="Argument">
               <stringProp name="Argument.name">perc_view_blog</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_blog, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_blog, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_search_cql" elementType="Argument">
               <stringProp name="Argument.name">perc_search_cql</stringProp>
-              <stringProp name="Argument.value">${__P(perc_search_cql, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_search_cql, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_view_attachment" elementType="Argument">
               <stringProp name="Argument.name">perc_view_attachment</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_attachment, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_attachment, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_upload_attachment" elementType="Argument">
               <stringProp name="Argument.name">perc_upload_attachment</stringProp>
-              <stringProp name="Argument.value">${__P(perc_upload_attachment, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_upload_attachment, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_like_page" elementType="Argument">
               <stringProp name="Argument.name">perc_like_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_like_page, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_like_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_create_page" elementType="Argument">
               <stringProp name="Argument.name">perc_create_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_create_page, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_create_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_create_blog" elementType="Argument">
               <stringProp name="Argument.name">perc_create_blog</stringProp>
-              <stringProp name="Argument.value">${__P(perc_create_blog, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_create_blog, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_edit_page" elementType="Argument">
               <stringProp name="Argument.name">perc_edit_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_edit_page, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_edit_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_comment_page" elementType="Argument">
               <stringProp name="Argument.name">perc_comment_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_comment_page, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_comment_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
