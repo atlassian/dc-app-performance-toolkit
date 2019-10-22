@@ -2111,7 +2111,7 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -2661,7 +2661,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -3637,7 +3637,7 @@ vars.put(&quot;view_blog&quot;, extend_action);
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -3894,7 +3894,7 @@ vars.put(&quot;p_searchTermCounter&quot;,&quot;1&quot;); // Reset Counter
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -5900,7 +5900,7 @@ if (inputFile.exists())
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -7795,7 +7795,7 @@ if (inputFile.exists())
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -9850,7 +9850,7 @@ if (totalAncestorID &gt; 0)
                 </hashTree>
               </hashTree>
               <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-                <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+                <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
               </IncludeController>
               <hashTree/>
             </hashTree>
@@ -9988,7 +9988,7 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
               </hashTree>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
@@ -10453,7 +10453,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree/>
             </hashTree>
             <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/extension.jmx</stringProp>
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
             </IncludeController>
             <hashTree/>
           </hashTree>
