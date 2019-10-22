@@ -41,13 +41,12 @@ scenarios:
       application_postfix: ${application_postfix}
       # Workload model
       total_actions_per_hr: 20000
-      perc_view_page: 50
+      perc_view_page: 54
       perc_view_dashboard: 6
       perc_view_blog: 8
       perc_search_cql: 7
-      perc_create_page: 4
       perc_create_blog: 3
-      perc_edit_page: 6
+      perc_create_and_edit_page: 6
       perc_comment_page: 5
       perc_view_attachment: 3
       perc_upload_attachment: 5
