@@ -33,7 +33,7 @@ def login(webdriver, datasets):
         @print_timing
         # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
-            webdriver.get(f'{}/login.jsp')
+            webdriver.get(f'{APPLICATION_URL}/login.jsp')
 
         measure(webdriver, "selenium_login:open_login_page")
 
