@@ -2,10 +2,8 @@ import random
 import string
 import sys
 
-import yaml
-
 from util.data_preparation.jira.api import ApiJira
-from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
+from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
 from util.conf import JIRA_SETTINGS
 
@@ -130,7 +128,7 @@ def __get_software_project_keys(jira_api):
 def main():
     print("Started preparing data")
 
-    url = JIRA_SETTINGS.get_server_url()
+    url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
     user, password = JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password

@@ -1,4 +1,3 @@
-import csv
 import random
 import time
 import urllib.parse
@@ -16,7 +15,7 @@ from util.conf import JIRA_SETTINGS
 timeout = 20
 
 ISSUE_TYPE_DROPDOWN = 'issuetype-field'
-APPLICATION_URL = JIRA_SETTINGS.get_server_url()
+APPLICATION_URL = JIRA_SETTINGS.server_url
 
 
 def _dismiss_popup(webdriver, *args):

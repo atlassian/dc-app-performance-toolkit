@@ -1,5 +1,5 @@
 import yaml
-from util.project_paths import JIRA_YML
+from util.project_paths import JIRA_YML, CONFLUENCE_YML
 
 
 def read_yml_file(file):
@@ -28,11 +28,24 @@ class JiraSettings:
                f'admin_password = {self.admin_password!r}\n' \
                f'concurrency = {self.concurrency!r}\n'
 
-    def get_server_url(self):
-        return f'{self.protocol}://' \
-               f'{self.hostname}:' \
-               f'{self.port}' \
-               f'{self.postfix}'
+    @property
+    def server_url(self):
+        return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
+
+
+class ConfluenceSettings(JiraSettings):
+
+    def __init__(self):
+        super().__init__()
+        obj = read_yml_file(CONFLUENCE_YML)
+        self.hostname = obj['settings']['env']['application_hostname']
+        self.protocol = obj['settings']['env']['application_protocol']
+        self.port = obj['settings']['env']['application_port']
+        self.postfix = obj['settings']['env']['application_postfix'] or ""
+        self.admin_login = obj['settings']['env']['admin_login']
+        self.admin_password = obj['settings']['env']['admin_password']
+        self.concurrency = obj['settings']['env']['concurrency']
 
 
 JIRA_SETTINGS = JiraSettings()
+CONFLUENCE_SETTINGS = ConfluenceSettings()
