@@ -38,14 +38,14 @@
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
         <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_create_page" enabled="true">
-          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;create_page&quot;)}</stringProp>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_create_blog" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;create_blog&quot;)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
         <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_create_blog" enabled="true">
-          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;create_blog&quot;)}</stringProp>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_create_and_edit_page" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;create_and_edit_page&quot;)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
