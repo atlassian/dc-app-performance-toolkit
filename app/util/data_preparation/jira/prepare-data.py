@@ -6,13 +6,20 @@ import yaml
 
 from util.data_preparation.jira.api import ApiJira
 from util.project_paths import JIRA_YML, JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
+
+KANBAN_BOARDS = "kanban_boards"
+SCRUM_BOARDS = "scrum_boards"
+USERS = "users"
+ISSUES = "issues"
+JQLS = "jqls"
+PROJECT_KEYS = "project_keys"
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
 
 
-def generate_jqls(max_length=3, count=100):
+def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
     return ['text ~ "{}*" order by key'.format(
         ''.join(random.choices(string.ascii_lowercase, k=max_length))) for _ in range(count)]
@@ -53,25 +60,77 @@ def generate_random_string(length=20):
 
 
 def write_test_data_to_files(datasets):
-    __write_to_file(JIRA_DATASET_JQLS, datasets['jqls'])
+    __write_to_file(JIRA_DATASET_JQLS, datasets[JQLS])
 
-    scrum_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'scrum']
+    scrum_boards = [board['id'] for board in datasets[SCRUM_BOARDS]]
     __write_to_file(JIRA_DATASET_SCRUM_BOARDS, scrum_boards)
 
-    kanban_boards = [f"{board['id']}" for board in datasets['boards'] if board['type'] == 'kanban']
+    kanban_boards = [board['id'] for board in datasets[KANBAN_BOARDS]]
     __write_to_file(JIRA_DATASET_KANBAN_BOARDS, kanban_boards)
 
-    users = [f"{user['name']},{DEFAULT_USER_PASSWORD}" for user in datasets['users']]
+    users = [f"{user['name']},{DEFAULT_USER_PASSWORD}" for user in datasets[USERS]]
     __write_to_file(JIRA_DATASET_USERS, users)
 
-    issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets['issues']]
+    issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets[ISSUES]]
     __write_to_file(JIRA_DATASET_ISSUES, issues)
+
+    keys = datasets[PROJECT_KEYS]
+    __write_to_file(JIRA_DATASET_PROJECT_KEYS, keys)
 
 
 def __write_to_file(file_path, items):
     with open(file_path, 'w') as f:
         for item in items:
             f.write(f"{item}\n")
+
+
+def __create_data_set(jira_api):
+    dataset = dict()
+    dataset[USERS] = __get_users(jira_api)
+    software_project_keys = __get_software_project_keys(jira_api)
+    dataset[PROJECT_KEYS] = software_project_keys
+    dataset[ISSUES] = __get_issues(jira_api, software_project_keys)
+    dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
+    dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
+    dataset[JQLS] = __generate_jqls(count=150)
+
+    return dataset
+
+
+def __get_issues(jira_api, software_project_keys):
+    issues = jira_api.issues_search(
+        jql=f"project in ({','.join(software_project_keys)}) AND status != Closed order by key", max_results=8000
+    )
+    if not issues:
+        raise SystemExit("There is no issues in Jira")
+
+    return issues
+
+
+def __get_boards(jira_api, board_type):
+    boards = jira_api.get_boards(board_type=board_type, max_results=250)
+    if not boards:
+        raise SystemExit(f"There is no {board_type} board in Jira")
+
+    return boards
+
+
+def __get_users(jira_api):
+    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
+    users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
+    if not users:
+        raise SystemExit("There is no users in Jira")
+
+    return users
+
+
+def __get_software_project_keys(jira_api):
+    all_projects = jira_api.get_all_projects()
+    software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
+    if not software_project_keys:
+        raise SystemExit("There is no software project in Jira")
+
+    return software_project_keys
 
 
 def main():
@@ -81,26 +140,16 @@ def main():
     url = sys.argv[1]
     print("Server url: ", url)
 
-    dataset = dict()
-
     # TODO consider reading jira.yml only once
     with JIRA_YML.open(mode='r') as file:
         jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
         user, password = jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
 
     jira_api = ApiJira(url, user, password)
-    dataset["boards"] = (
-            jira_api.get_boards(board_type='scrum', max_results=250) +
-            jira_api.get_boards(board_type='kanban', max_results=250)
-    )
-
-    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
-    dataset["users"] = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
-
-    dataset["issues"] = jira_api.issues_search(jql="status != Closed order by key", max_results=8000)
-    dataset["jqls"] = generate_jqls(count=150)
-
+    dataset = __create_data_set(jira_api)
     write_test_data_to_files(dataset)
+
+    print("Finished preparing data")
 
 
 if __name__ == "__main__":

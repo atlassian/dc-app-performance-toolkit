@@ -139,6 +139,33 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="get count projects pages" enabled="true">
+          <stringProp name="BeanShellSampler.query">import org.apache.commons.io.FileUtils;
+
+// TODO Rework hard-codded path
+int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
+int page_size = 25;
+int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
+props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Jira" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
@@ -6826,6 +6853,18 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_browse_projects}</stringProp>
           </ThroughputController>
           <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="generate random page with projects" enabled="true">
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="script">import java.util.Random;
+
+Random rand = new Random();
+int project_pages = Integer.parseInt(props.get(&quot;project_pages&quot;));
+int random_page = rand.nextInt(project_pages) + 1;
+vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
               <intProp name="ActionProcessor.action">1</intProp>
               <intProp name="ActionProcessor.target">0</intProp>
@@ -6848,15 +6887,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="random page number (1 - 100)" enabled="true">
-                <stringProp name="variableName">page_number</stringProp>
-                <stringProp name="outputFormat"></stringProp>
-                <stringProp name="minimumValue">1</stringProp>
-                <stringProp name="maximumValue">100</stringProp>
-                <stringProp name="randomSeed"></stringProp>
-                <boolProp name="perThread">false</boolProp>
-              </RandomVariableConfig>
-              <hashTree/>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="900 /secure/BrowseProjects.jspa" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
@@ -6877,7 +6907,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="page" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">page</stringProp>
-                      <stringProp name="Argument.value">${page_number}</stringProp>
+                      <stringProp name="Argument.value">${random_page}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -10830,9 +10860,9 @@ def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - sta
 
 log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
 
-if ( sleep_time &gt; 0 ) { 
+if ( sleep_time &gt; 0 ) {
     return sleep_time
-} else { 
+} else {
     return 0
 }
 </stringProp>

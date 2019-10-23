@@ -2,6 +2,10 @@ import json
 
 import requests
 
+BATCH_SIZE_BOARDS = 1000
+BATCH_SIZE_USERS = 1000
+BATCH_SIZE_ISSUES = 1000
+
 
 # TODO use OOP approach for ApiJira and ApiConfluence
 class ApiJira(object):
@@ -11,11 +15,7 @@ class ApiJira(object):
         self.requests_timeout = timeout
         self.user = user
         self.password = password
-
-        if api_session is None:
-            self.api_session = requests.Session()
-        else:
-            self.api_session = api_session
+        self.api_session = requests.Session() if api_session is None else api_session
 
     @property
     def base_auth(self):
@@ -32,12 +32,12 @@ class ApiJira(object):
         Relevance meaning that the jql filter defined in board contains a reference to a project.
         :return: Returns the requested boards, at the specified page of the results.
         """
-        fetched_records_per_call = 1000
-        loop_count = max_results // fetched_records_per_call + 1
-        last_loop_remainder = max_results % fetched_records_per_call
+
+        loop_count = max_results // BATCH_SIZE_BOARDS + 1
+        last_loop_remainder = max_results % BATCH_SIZE_BOARDS
 
         boards_list = list()
-        max_results = fetched_records_per_call
+        max_results = BATCH_SIZE_BOARDS
 
         while loop_count > 0:
             api_url = f"{self.host}/rest/agile/1.0/board?startAt={start_at}&maxResults={max_results}"
@@ -73,12 +73,11 @@ class ApiJira(object):
         :return: Returns the requested users
         """
 
-        fetched_records_per_call = 1000
-        loop_count = max_results // fetched_records_per_call + 1
-        last_loop_remainder = max_results % fetched_records_per_call
+        loop_count = max_results // BATCH_SIZE_USERS + 1
+        last_loop_remainder = max_results % BATCH_SIZE_USERS
 
         users_list = list()
-        max_results = fetched_records_per_call
+        max_results = BATCH_SIZE_USERS
 
         while loop_count > 0:
 
@@ -110,19 +109,20 @@ class ApiJira(object):
         *all,-comment - include everything except comments
         :return: Returns the requested issues
         """
-        fetched_records_per_call = 1000
-        loop_count = max_results // fetched_records_per_call + 1
+
+        loop_count = max_results // BATCH_SIZE_ISSUES + 1
         issues = list()
-        last_loop_remainder = max_results % fetched_records_per_call
+        last_loop_remainder = max_results % BATCH_SIZE_ISSUES
 
         while loop_count > 0:
             api_url = f'{self.host}/rest/api/2/search?jql={jql}&startAt={start_at}&maxResults={max_results}' \
                       f'&validateQuery={validate_query}&fields={fields}'
             r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-            assert r.ok, f"Could not retrieve users: {r.status_code} {r.text}"
-            issues.extend(r.json()['issues'])
-            loop_count = loop_count - 1
-            start_at = start_at + len(r.json()['issues'])
+            assert r.ok, f"Could not retrieve issues: {r.status_code} {r.text}"
+            current_issues = r.json()['issues']
+            issues.extend(current_issues)
+            start_at += len(current_issues)
+            loop_count -= 1
             if loop_count == 1:
                 max_results = last_loop_remainder
 
@@ -167,4 +167,14 @@ class ApiJira(object):
         }
         r = self.api_session.post(api_url, payload, auth=self.base_auth, headers=headers)
         assert r.ok, f"Could not create user: {r.status_code} {r.text}"
+        return r.json()
+
+    def get_all_projects(self):
+        """
+        :return: Returns the projects list of all project types - all categories
+        """
+        api_url = f'{self.host}/rest/api/2/project'
+        r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
+        assert r.ok, 'Could not get the list of projects'
+
         return r.json()
