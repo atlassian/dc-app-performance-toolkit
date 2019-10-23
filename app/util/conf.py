@@ -1,5 +1,5 @@
 import yaml
-from app.util.project_paths import JIRA_YML
+from util.project_paths import JIRA_YML
 
 
 def read_yml_file(file):
@@ -34,6 +34,5 @@ class JiraSettings:
                f'{self.port}' \
                f'{self.postfix}'
 
-JIRA_SETTINGS = JiraSettings()
 
-print(JIRA_SETTINGS.get_server_url())
+JIRA_SETTINGS = JiraSettings()

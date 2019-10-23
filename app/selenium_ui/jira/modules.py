@@ -10,12 +10,13 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
+from selenium_ui.conftest import print_timing, AnyEc, generate_random_string
+from util.conf import JIRA_SETTINGS
 
 timeout = 20
 
 ISSUE_TYPE_DROPDOWN = 'issuetype-field'
-APPLICATION_URL = application_url()
+APPLICATION_URL = JIRA_SETTINGS.get_server_url()
 
 
 def _dismiss_popup(webdriver, *args):
@@ -32,7 +33,7 @@ def login(webdriver, datasets):
         @print_timing
         # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/login.jsp')
+            webdriver.get(f'{}/login.jsp')
 
         measure(webdriver, "selenium_login:open_login_page")
 
