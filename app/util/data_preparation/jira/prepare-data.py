@@ -130,10 +130,7 @@ def __get_software_project_keys(jira_api):
 def main():
     print("Started preparing data")
 
-    url = f'{JIRA_SETTINGS.application_protocol}://' \
-          f'{JIRA_SETTINGS.application_hostname}:' \
-          f'{JIRA_SETTINGS.application_port}' \
-          f'{JIRA_SETTINGS.application_postfix or ""}'
+    url = JIRA_SETTINGS.get_server_url()
     print("Server url: ", url)
 
     user, password = JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password

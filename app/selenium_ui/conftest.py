@@ -24,10 +24,6 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
-SERVER_URL = f'{JIRA_SETTINGS.application_protocol}://' \
-             f'{JIRA_SETTINGS.application_hostname}:' \
-             f'{JIRA_SETTINGS.application_port}' \
-             f'{JIRA_SETTINGS.application_postfix or ""}'
 
 # create selenium output files
 try:
@@ -152,7 +148,7 @@ def screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(SERVER_URL)
+        webdriver.get(JIRA_SETTINGS.get_server_url())
 
 
 @pytest.fixture(scope="module")
