@@ -126,8 +126,8 @@ def create_issue(webdriver, datasets):
                 return "epic" not in element.get_attribute("class").lower()
 
             webdriver.find_element_by_id(ISSUE_TYPE_DROPDOWN).click()
-            issue_elements = webdriver.find_elements_by_class_name("aui-list-item")
-            if issue_elements:
+            issue_elements_in_drodown = webdriver.find_elements_by_class_name("aui-list-item")
+            if issue_elements_in_drodown:
                 filtered_issue_elements = list(filter(__filer_epic, issue_elements))
                 rnd_issue_type_el = random.choice(filtered_issue_elements)
                 action = ActionChains(webdriver)
