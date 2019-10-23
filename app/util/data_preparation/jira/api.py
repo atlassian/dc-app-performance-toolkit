@@ -7,6 +7,7 @@ BATCH_SIZE_USERS = 1000
 BATCH_SIZE_ISSUES = 1000
 
 
+# TODO use OOP approach for ApiJira and ApiConfluence
 class ApiJira(object):
 
     def __init__(self, host, user, password, api_session=None, timeout=30):
