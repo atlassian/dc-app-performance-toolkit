@@ -1,6 +1,7 @@
 import atexit
 import csv
 import datetime
+import glob
 import json
 import os
 import random
@@ -20,6 +21,7 @@ from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
+
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
 

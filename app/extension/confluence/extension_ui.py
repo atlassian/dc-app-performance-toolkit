@@ -3,9 +3,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selenium_ui.conftest import print_timing
-from util.conf import JIRA_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS
 
-APPLICATION_URL = JIRA_SETTINGS.server_url
+APPLICATION_URL = CONFLUENCE_SETTINGS.server_url
 timeout = 20
 
 

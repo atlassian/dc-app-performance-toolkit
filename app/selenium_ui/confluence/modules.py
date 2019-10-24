@@ -6,12 +6,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selenium_ui.conftest import AnyEc, generate_random_string, print_timing
-from util.conf import JIRA_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS
 
 timeout = 10
 
 # TODO consider do not use conftest as utility class and do not import it in modules
-APPLICATION_URL = JIRA_SETTINGS.server_url
+APPLICATION_URL = CONFLUENCE_SETTINGS.server_url
 
 
 def _dismiss_popup(webdriver, *args):
