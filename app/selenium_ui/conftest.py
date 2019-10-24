@@ -1,7 +1,6 @@
 import atexit
 import csv
 import datetime
-import glob
 import json
 import os
 import random

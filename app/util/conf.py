@@ -19,15 +19,6 @@ class JiraSettings:
         self.admin_password = obj['settings']['env']['admin_password']
         self.concurrency = obj['settings']['env']['concurrency']
 
-    def __repr__(self):
-        return f'hostname = {self.hostname!r}\n' \
-               f'protocol = {self.protocol!r}\n' \
-               f'port = {self.port!r}\n' \
-               f'postfix = {self.postfix!r}\n' \
-               f'admin_login = {self.admin_login!r}\n' \
-               f'admin_password = {self.admin_password!r}\n' \
-               f'concurrency = {self.concurrency!r}\n'
-
     @property
     def server_url(self):
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
