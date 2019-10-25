@@ -3,17 +3,6 @@ import xmlrpc.client
 from pathlib import Path
 
 import requests
-import yaml
-
-
-def admin_credentials():
-    # TODO extract paths to project_paths
-    with open(Path(__file__).parents[3] / "confluence.yml", 'r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        return jira_yaml['settings']['env']['admin_login'], jira_yaml['settings']['env']['admin_password']
-
-
-USER, PASSWORD = admin_credentials()
 
 # TODO extract paths to project_paths
 with open(Path(__file__).parents[2] / "confluence" / "resources" / "names.txt") as file:
@@ -27,14 +16,16 @@ def random_names(number=2):
 # TODO use OOP approach for ApiJira and ApiConfluence
 class ApiConfluence:
 
-    def __init__(self, host, api_session=None, timeout=30):
+    def __init__(self, host, user, password, api_session=None, timeout=30):
         self.host = host
         self.requests_timeout = timeout
+        self.user = user
+        self.password = password
         if api_session is None:
             self.api_session = requests.Session()
         else:
             self.api_session = api_session
-        self._base_auth = USER, PASSWORD
+        self._base_auth = user, password
 
     @property
     def base_auth(self):
@@ -79,12 +70,11 @@ class ApiConfluence:
         :return: Returns a list of tuples, containing usernames and passwords.
         """
         proxy = xmlrpc.client.ServerProxy(self.host + "/rpc/xmlrpc")
-        token = proxy.confluence2.login(USER, PASSWORD)
+        token = proxy.confluence2.login(self.user, self.password)
         users = list()
 
         for index in range(count):
             username = f"{prefix}{index}"
-            password = PASSWORD
 
             if not proxy.confluence2.hasUser(token, username):
                 names = random_names(2)
@@ -93,6 +83,6 @@ class ApiConfluence:
                                    "name": username,
                                    "url": self.host + f"/display/~{prefix}"
                                    }
-                proxy.confluence2.addUser(token, user_definition, password)
-            users.append((username, password))
+                proxy.confluence2.addUser(token, user_definition, self.password)
+            users.append((username, self.password))
         return users

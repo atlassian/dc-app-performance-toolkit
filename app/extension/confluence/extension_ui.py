@@ -2,10 +2,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selenium_ui.conftest import print_timing, application_url
-from util.project_paths import CONFLUENCE_YML
+from selenium_ui.conftest import print_timing
+from util.conf import CONFLUENCE_SETTINGS
 
-APPLICATION_URL = application_url(CONFLUENCE_YML)
+APPLICATION_URL = CONFLUENCE_SETTINGS.server_url
 timeout = 20
 
 
