@@ -1,11 +1,10 @@
 import random
 import string
-import sys
 
+from util.conf import JIRA_SETTINGS
 from util.data_preparation.jira.api import ApiJira
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
-from util.conf import JIRA_SETTINGS
 
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
@@ -131,9 +130,7 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    user, password = JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password
-
-    jira_api = ApiJira(url, user, password)
+    jira_api = ApiJira(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
     dataset = __create_data_set(jira_api)
     write_test_data_to_files(dataset)
 

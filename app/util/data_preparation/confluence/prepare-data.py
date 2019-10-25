@@ -1,10 +1,7 @@
-import sys
 from pathlib import Path
 
-import yaml
-
-from util.data_preparation.confluence.api import ApiConfluence
 from util.conf import CONFLUENCE_SETTINGS
+from util.data_preparation.confluence.api import ApiConfluence
 
 
 def __get_app_dir():
@@ -38,7 +35,7 @@ def main():
 
     dataset = dict()
 
-    confluence_api = ApiConfluence(url)
+    confluence_api = ApiConfluence(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     dataset["users"] = confluence_api.create_users("performance", CONFLUENCE_SETTINGS.concurrency)
 
     confluence_api.base_auth = dataset["users"][0]

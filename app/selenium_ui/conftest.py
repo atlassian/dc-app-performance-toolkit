@@ -1,22 +1,20 @@
-import atexit
 import csv
 import datetime
 import json
 import os
 import random
 import string
-import sys
-import time
 from pathlib import Path
 
+import atexit
 import pytest
-import yaml
+import sys
+import time
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
-
-from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
-    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, CONFLUENCE_YML, JIRA_DATASET_PROJECT_KEYS
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
+from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
+    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, JIRA_DATASET_PROJECT_KEYS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080

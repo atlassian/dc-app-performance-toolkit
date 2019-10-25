@@ -24,10 +24,9 @@ class JiraSettings:
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
 
-class ConfluenceSettings(JiraSettings):
+class ConfluenceSettings:
 
     def __init__(self):
-        super().__init__()
         obj = read_yml_file(CONFLUENCE_YML)
         self.hostname = obj['settings']['env']['application_hostname']
         self.protocol = obj['settings']['env']['application_protocol']
@@ -36,6 +35,10 @@ class ConfluenceSettings(JiraSettings):
         self.admin_login = obj['settings']['env']['admin_login']
         self.admin_password = obj['settings']['env']['admin_password']
         self.concurrency = obj['settings']['env']['concurrency']
+
+    @property
+    def server_url(self):
+        return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
 
 JIRA_SETTINGS = JiraSettings()
