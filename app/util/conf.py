@@ -1,4 +1,5 @@
 import yaml
+
 from util.project_paths import JIRA_YML, CONFLUENCE_YML
 
 

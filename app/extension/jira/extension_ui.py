@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selenium_ui.conftest import print_timing, application_url
+from selenium_ui.conftest import print_timing
 from util.conf import JIRA_SETTINGS
 
 APPLICATION_URL = JIRA_SETTINGS.server_url
