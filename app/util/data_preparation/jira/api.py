@@ -16,6 +16,7 @@ class ApiJira(object):
         self.user = user
         self.password = password
         self.api_session = requests.Session() if api_session is None else api_session
+        self.api_session.trust_env = False
 
     @property
     def base_auth(self):
