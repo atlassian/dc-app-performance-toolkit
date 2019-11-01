@@ -1,6 +1,7 @@
 import json
 
 import requests
+from requests import Response
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -21,8 +22,7 @@ class ApiJira(object):
     def base_auth(self):
         return self.user, self.password
 
-    @staticmethod
-    def __verify_response(response, error_msg):
+    def __verify_response(self, response: Response, error_msg: str):
         if response.ok:
             return
 
@@ -30,7 +30,8 @@ class ApiJira(object):
         if status_code == 403:
             denied_reason: str = response.headers.get('X-Authentication-Denied-Reason')
             if denied_reason and denied_reason.startswith('CAPTCHA_CHALLENGE'):
-                raise Exception("The user name is in Captcha Mode. Please login via Web UI first and re-run tests.")
+                raise Exception(f"User name [{self.user}] is in Captcha Mode. " +
+                                "Please login via Web UI first and re-run tests.")
 
         raise Exception(f"{error_msg}. Response code:[{response.status_code}], response text:[{response.text}]")
 
