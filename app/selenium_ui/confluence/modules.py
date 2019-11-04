@@ -38,20 +38,23 @@ def login(webdriver, datasets):
         webdriver.find_element_by_id('os_password').send_keys(user[1])
 
         def _setup_page_is_presented():
-            elems = webdriver.find_elements_by_id('grow-intro-video-skip-button')
+            elems = webdriver.find_elements_by_id('grow-ic-nav-container')
             return True if elems else False
 
         def _user_setup():
-            _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')),
-                        interaction).click()
-            _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')),
-                        interaction).click()
-            spaces = _wait_until(webdriver, EC.visibility_of_any_elements_located(
-                (By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')), interaction)
-            if spaces:
-                spaces[0].click()
-            _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.intro-find-spaces-button-continue')),
-                        interaction).click()
+            if webdriver.find_element_by_class_name('grow-aui-progress-tracker-step-current').text == 'Welcome':
+                _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')),
+                            interaction).click()
+            if webdriver.find_element_by_class_name(
+                    'grow-aui-progress-tracker-step-current').text == 'Upload your photo':
+                _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')),
+                            interaction).click()
+            if webdriver.find_element_by_class_name('grow-aui-progress-tracker-step-current').text == 'Find content':
+                _wait_until(webdriver, EC.visibility_of_any_elements_located(
+                    (By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')), interaction)[0].click()
+                _wait_until(webdriver,
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, '.intro-find-spaces-button-continue')),
+                            interaction).click()
 
         @print_timing
         def measure(webdriver, interaction):
