@@ -1,3 +1,6 @@
+# User Guide for Jira
+https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide/
+
 # Running tests
 ## Pre-requisites
 * Working Jira Software of supported version (see toolkit README.md for a list of supported Jira versions) with users, issues, projects, and boards, etc.

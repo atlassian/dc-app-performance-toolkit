@@ -100,15 +100,7 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Download DB dump"
-rm -rf ${DB_DUMP_NAME}
-wget ${DB_DUMP_URL}
-if [[ $? -ne 0 ]]; then
-  echo "DB dump download failed! Pls check available disk space."
-  exit 1
-fi
-
-echo "Step3: Stop Jira"
+echo "Step2: Stop Jira"
 CATALINA_PID=$(pgrep -f "catalina")
 echo "CATALINA_PID=${CATALINA_PID}"
 if [[ -z ${CATALINA_PID} ]]; then
@@ -116,17 +108,20 @@ if [[ -z ${CATALINA_PID} ]]; then
   sudo su -c "rm -rf ${CATALINA_PID_FILE}"
 else
   echo "Stopping Jira"
-  sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
+  if [[ ! -f "${CATALINA_PID_FILE}" ]]; then
+    echo "File created: ${CATALINA_PID_FILE}"
+    sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
+  fi
   sudo su -c "${SHUT_DOWN_TOMCAT}"
   COUNTER=0
   TIMEOUT=5
-  ATTEMPTS=20
+  ATTEMPTS=30
   while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
     if [[ -z $(pgrep -f "catalina") ]]; then
       echo Jira is stopped
       break
     fi
-    echo "Waiting for Jira stop, attempt ${COUNTER} at waiting ${TIMEOUT} seconds."
+    echo "Waiting for Jira stop, attempt ${COUNTER}/${ATTEMPTS} at waiting ${TIMEOUT} seconds."
     sleep ${TIMEOUT}
     let COUNTER++
   done
@@ -135,6 +130,25 @@ else
     echo "Try to rerun script."
     exit 1
   fi
+fi
+
+echo "Step3: Download DB dump"
+rm -rf ${DB_DUMP_NAME}
+ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
+FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
+FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
+REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
+if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
+   echo "Not enough free space for download."
+   echo "Free space: ${FREE_SPACE_GB} GB"
+   echo "Required space: ${REQUIRED_SPACE_GB} GB"
+   exit 1
+fi;
+time wget ${DB_DUMP_URL}
+if [[ $? -ne 0 ]]; then
+  echo "DB dump download failed! Pls check available disk space."
+  exit 1
 fi
 
 echo "Step4: Get DB Host"
@@ -158,9 +172,17 @@ if [[ $? -ne 0 ]]; then
 fi
 echo "Drop DB"
 PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} ${JIRA_DB_NAME}
+if [[ $? -ne 0 ]]; then
+  echo "Drop DB failed."
+  exit 1
+fi
 sleep 5
 echo "Create DB"
 PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" ${JIRA_DB_NAME}
+if [[ $? -ne 0 ]]; then
+  echo "Create DB failed."
+  exit 1
+fi
 sleep 5
 echo "PG Restore"
 time PGPASSWORD=${JIRA_DB_PASS} pg_restore -v -U ${JIRA_DB_USER} -h ${DB_HOST} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
