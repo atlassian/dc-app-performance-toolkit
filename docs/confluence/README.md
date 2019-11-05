@@ -12,7 +12,7 @@ For spiking, testing, or developing, your local Confluence instance would work w
 * `application_hostname`: test confluence hostname (without http)
 * `application_protocol`: http or https
 * `application_port`: 80 (for http) or 443 (for https), or custom
-* `application_postfix`: it is empty by default; e.g., /confluence for url like this http://localhost:2990/confluence
+* `application_postfix`: it is empty by default; e.g., /confluence for url like this http://localhost:1990/confluence
 * `admin_login`: confluence admin user name (after restoring dataset from SQL dump, the admin user name is: admin)
 * `admin_password`: confluence admin user password (after restoring dataset from SQL dump, the admin user password is: admin) 
 * `concurrency`: number of concurrent users for JMeter scenario
