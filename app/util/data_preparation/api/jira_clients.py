@@ -1,39 +1,11 @@
-import json
-
-import requests
-from requests import Response
+from util.data_preparation.api.abstract_clients import RestClient
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
 BATCH_SIZE_ISSUES = 1000
 
 
-# TODO use OOP approach for ApiJira and ApiConfluence
-class ApiJira(object):
-
-    def __init__(self, host, user, password, api_session=None, timeout=30):
-        self.host = host
-        self.requests_timeout = timeout
-        self.user = user
-        self.password = password
-        self.api_session = requests.Session() if api_session is None else api_session
-
-    @property
-    def base_auth(self):
-        return self.user, self.password
-
-    def __verify_response(self, response: Response, error_msg: str):
-        if response.ok:
-            return
-
-        status_code = response.status_code
-        if status_code == 403:
-            denied_reason: str = response.headers.get('X-Authentication-Denied-Reason')
-            if denied_reason and denied_reason.startswith('CAPTCHA_CHALLENGE'):
-                raise Exception(f"User name [{self.user}] is in Captcha Mode. " +
-                                "Please login via Web UI first and re-run tests.")
-
-        raise Exception(f"{error_msg}. Response code:[{response.status_code}], response text:[{response.text}]")
+class JiraRestClient(RestClient):
 
     def get_boards(self, start_at=0, max_results=100, board_type=None, name=None, project_key_or_id=None):
         """
@@ -55,20 +27,18 @@ class ApiJira(object):
 
         while loop_count > 0:
             api_url = f"{self.host}/rest/agile/1.0/board?startAt={start_at}&maxResults={max_results}"
-
             if board_type:
-                api_url = api_url + f"&type={board_type}"
+                api_url += f"&type={board_type}"
             if name:
-                api_url = api_url + f"&name={name}"
+                api_url += f"&name={name}"
             if project_key_or_id:
-                api_url = api_url + f"&projectKeyOrID={project_key_or_id}"
+                api_url += f"&projectKeyOrID={project_key_or_id}"
 
-            r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-            self.__verify_response(r, "Could not retrieve boards")
+            response = self.get(api_url, "Could not retrieve boards")
 
-            boards_list.extend(r.json()['values'])
-            loop_count = loop_count - 1
-            start_at = start_at + len(r.json()['values'])
+            boards_list.extend(response.json()['values'])
+            loop_count -= 1
+            start_at += len(response.json()['values'])
             if loop_count == 1:
                 max_results = last_loop_remainder
 
@@ -94,16 +64,13 @@ class ApiJira(object):
         max_results = BATCH_SIZE_USERS
 
         while loop_count > 0:
-
             api_url = f'{self.host}/rest/api/2/user/search?username={username}&startAt={start_at}' \
                       f'&maxResults={max_results}&includeActive={include_active}&includeInactive={include_inactive}'
+            response = self.get(api_url, "Could not retrieve users")
 
-            r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-            self.__verify_response(r, "Could not retrieve users")
-
-            users_list.extend(r.json())
-            loop_count = loop_count - 1
-            start_at = start_at + len(r.json())
+            users_list.extend(response.json())
+            loop_count -= 1
+            start_at += len(response.json())
             if loop_count == 1:
                 max_results = last_loop_remainder
 
@@ -132,10 +99,9 @@ class ApiJira(object):
         while loop_count > 0:
             api_url = f'{self.host}/rest/api/2/search?jql={jql}&startAt={start_at}&maxResults={max_results}' \
                       f'&validateQuery={validate_query}&fields={fields}'
-            r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-            self.__verify_response(r, "Could not retrieve issues")
+            response = self.get(api_url, "Could not retrieve issues")
 
-            current_issues = r.json()['issues']
+            current_issues = response.json()['issues']
             issues.extend(current_issues)
             start_at += len(current_issues)
             loop_count -= 1
@@ -143,19 +109,6 @@ class ApiJira(object):
                 max_results = last_loop_remainder
 
         return issues
-
-    def get_app_info(self, app_key):
-        api_url = f'{self.host}/rest/plugins/1.0/{app_key}-key'
-        r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-        self.__verify_response(r, f"Could not get application info with application key {app_key}")
-
-        return r.json()
-
-    def update_app(self, app_key, payload):
-        api_url = f'{self.host}/rest/plugins/1.0/{app_key}-key'
-        headers = {"content-type": "application/vnd.atl.plugins.plugin+json"}
-        r = self.api_session.put(api_url, auth=self.base_auth, headers=headers, verify=False, json=payload)
-        self.__verify_response(r, f"Could not update application {app_key}")
 
     def create_user(self, display_name=None, email=None, name='', password=''):
         """
@@ -167,32 +120,22 @@ class ApiJira(object):
         :param display_name: The display name for the user. Required.
         :return: Returns the created user.
         """
-        if not email:
-            email = name + '@localdomain.com'
-        if not display_name:
-            display_name = name
-        payload = json.dumps({
+        api_url = self._host + "/rest/api/2/user"
+        payload = {
             "name": name,
             "password": password,
-            "emailAddress": email,
-            "displayName": display_name
-        })
-        api_url = self.host + "/rest/api/2/user"
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+            "emailAddress": email or name + '@localdomain.com',
+            "displayName": display_name or name
         }
-        r = self.api_session.post(api_url, payload, auth=self.base_auth, headers=headers)
-        self.__verify_response(r, "Could not create user")
+        response = self.post(api_url, payload, "Could not create user")
 
-        return r.json()
+        return response.json()
 
     def get_all_projects(self):
         """
         :return: Returns the projects list of all project types - all categories
         """
         api_url = f'{self.host}/rest/api/2/project'
-        r = self.api_session.get(api_url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-        self.__verify_response(r, 'Could not get the list of projects')
+        response = self.get(api_url, 'Could not get the list of projects')
 
-        return r.json()
+        return response.json()

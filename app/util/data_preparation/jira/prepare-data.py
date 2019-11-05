@@ -2,7 +2,7 @@ import random
 import string
 
 from util.conf import JIRA_SETTINGS
-from util.data_preparation.jira.api import ApiJira
+from util.data_preparation.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
 
@@ -130,8 +130,8 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    jira_api = ApiJira(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
-    dataset = __create_data_set(jira_api)
+    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+    dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 
     print("Finished preparing data")
