@@ -42,16 +42,20 @@ def login(webdriver, datasets):
             return True if elems else False
 
         def _user_setup():
-            if webdriver.find_element_by_class_name('grow-aui-progress-tracker-step-current').text == 'Welcome':
-                _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')),
+            current_step_sel = 'grow-aui-progress-tracker-step-current'
+            if webdriver.find_element_by_class_name(current_step_sel).text == 'Welcome':
+                _wait_until(webdriver,
+                            EC.element_to_be_clickable((By.ID, 'grow-intro-video-skip-button')),
                             interaction).click()
-            if webdriver.find_element_by_class_name(
-                    'grow-aui-progress-tracker-step-current').text == 'Upload your photo':
-                _wait_until(webdriver, EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')),
+            if webdriver.find_element_by_class_name(current_step_sel).text == 'Upload your photo':
+                _wait_until(webdriver,
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, '.aui-button-link')),
                             interaction).click()
-            if webdriver.find_element_by_class_name('grow-aui-progress-tracker-step-current').text == 'Find content':
-                _wait_until(webdriver, EC.visibility_of_any_elements_located(
-                    (By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')), interaction)[0].click()
+            if webdriver.find_element_by_class_name(current_step_sel).text == 'Find content':
+                _wait_until(webdriver,
+                            EC.visibility_of_any_elements_located(
+                                (By.CSS_SELECTOR, '.intro-find-spaces-space>.space-checkbox')),
+                            interaction)[0].click()
                 _wait_until(webdriver,
                             EC.element_to_be_clickable((By.CSS_SELECTOR, '.intro-find-spaces-button-continue')),
                             interaction).click()
