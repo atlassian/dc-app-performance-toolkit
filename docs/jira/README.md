@@ -1,8 +1,8 @@
 # Running tests
 ## Pre-requisites
-* Working Jira Software of supported version (see toolkit README.md for a list of supported Jira versions) with users, issues, projects, and boards, etc.
+* Working Jira Software of supported version ([toolkit README](../../README.md) for a list of supported Jira versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the root `README.md` file for more details.
+* Virtual environment with Python3.6+ and bzt installed. See the root [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
 in the official User Guide to set up Jira DC with the corresponding dataset.
@@ -26,7 +26,7 @@ bzt jira.yml
 ```
 
 ## Results
-Results are located in the `resutls/YY-MM-DD-hh-mm-ss` directory:
+Results are located in the `resutls/jira/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
 * `error_artifacts` - folder with screenshots and HTMLs of Selenium fails
 * `jmeter.err` - JMeter errors log
@@ -41,7 +41,7 @@ Results are located in the `resutls/YY-MM-DD-hh-mm-ss` directory:
 
 ## Jmeter
 ### Changing JMeter workload
-`jira.yml` has a workload section with `perc_action_name` fields. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
+The [jira.yml](../../app/jira.yml) has a workload section with `perc_action_name` fields. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
 throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 54500 user transactions per hour at 200 concurrency.
 
@@ -49,7 +49,7 @@ To simulate a load of medium-sized customers, `total_actions_per_hr` and `concur
 
 ### Opening JMeter scripts
 JMeter is written in XML and requires the JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-Be sure to run this command inside the `jira` directory. The main `jmeter/jira.jmx` file contains the relative path to other scripts and will throw errors if run elsewhere. 
+Be sure to run this command inside the `jira` directory. The main [jira.jmx](../../app/jmeter/jira.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
 
 ### Debugging JMeter scripts
 1. Open JMeter GUI from `jira` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
@@ -72,7 +72,7 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 4. Run JMeter.
 
 ####Option 2: Run one JMeter action via bzt
-1. In jira.yml, set `perc_desired_action` to 100 and all other perc_* to 0.
+1. In [jira.yml](../../app/jira.yml), set `perc_desired_action` to 100 and all other perc_* to 0.
 2. Run `bzt jira.yml`.
 
 ## Selenium
@@ -83,7 +83,7 @@ Also, screenshots and HTMLs of Selenium fails are stared in the `results/YY-MM-D
 
 ### Running Selenium tests with Browser GUI
 There are two options of running Selenium tests with browser GUI:
-1. In `jira.yml` file, set the `WEBDRIVER_VISIBLE: True`.
+1. In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 2. Set environment variable with the `export WEBDRIVER_VISIBLE=True` command.
 
 

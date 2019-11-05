@@ -1,8 +1,8 @@
 # Running tests
 ## Pre-requisites
-* Working Confluence Software of supported version (see the [toolkit](../../README.md) for a list of supported Confluence versions) with users, issues, projects, and boards, etc.
+* Working Confluence Software of supported version (see the [toolkit README](../../README.md) for a list of supported Confluence versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the [toolkit](../../README.md) file for more details.
+* Virtual environment with Python3.6+ and bzt installed. See the [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
 in the official User Guide to set up Confluence DC with the corresponding dataset.
@@ -26,7 +26,7 @@ bzt confluence.yml
 ```
 
 ## Results
-Results are located in the `resutls/YY-MM-DD-hh-mm-ss` directory:
+Results are located in the `resutls/confluence/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
 * `error_artifacts` - folder with screenshots and HTMLs of Selenium fails
 * `jmeter.err` - JMeter errors log
@@ -92,9 +92,9 @@ There are two options of running Selenium tests with browser GUI:
 2. Navigate to the confluence folder using the `cd app/selenium_ui` command. 
 3. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
 4. Run all Selenium PyTest tests with the `pytest confluence-ui.py` command.
-5. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
+5. To run one Selenium PyTest test (e.g., `test_1_selenium_view_page`), execute the first login test and the required one with this command:
 
-`pytest confluence-ui.py::test_0_selenium_a_login confluence-ui.py::test_1_selenium_view_issue`.
+`pytest confluence-ui.py::test_0_selenium_a_login confluence-ui.py::test_1_selenium_view_page`.
 
 
 ### Comparing different runs
