@@ -1,20 +1,11 @@
-import sys
 from pathlib import Path
 
-import yaml
-
-from util.data_preparation.confluence.api import ApiConfluence
+from util.conf import CONFLUENCE_SETTINGS
+from util.data_preparation.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 
 
 def __get_app_dir():
     return Path(__file__).parents[3]
-
-
-def get_perf_users_count():
-    with open(__get_app_dir() / "confluence.yml", 'r') as file:
-        jira_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        users_count = jira_yaml['settings']['env']['concurrency']
-        return users_count
 
 
 def write_test_data_to_files(dataset):
@@ -39,19 +30,21 @@ def write_test_data_to_files(dataset):
 def main():
     print("Started preparing data")
 
-    url = sys.argv[1]
+    url = CONFLUENCE_SETTINGS.server_url
     print("Server url: ", url)
 
+    rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     dataset = dict()
+    dataset["users"] = rpc_client.create_users("performance", CONFLUENCE_SETTINGS.concurrency)
+    user: tuple = dataset["users"][0]
 
-    confluence_api = ApiConfluence(url)
-    dataset["users"] = confluence_api.create_users("performance", get_perf_users_count())
-
-    confluence_api.base_auth = dataset["users"][0]
-    dataset["pages"] = confluence_api.get_content(0, 5000, "page")
-    dataset["blogs"] = confluence_api.get_content(0, 500, "blogpost")
+    rest_client = ConfluenceRestClient(url, user[0], user[1])
+    dataset["pages"] = rest_client.get_content(0, 5000, "page")
+    dataset["blogs"] = rest_client.get_content(0, 500, "blogpost")
 
     write_test_data_to_files(dataset)
+
+    print("Finished preparing data")
 
 
 if __name__ == "__main__":

@@ -10,12 +10,12 @@ import time
 from pathlib import Path
 
 import pytest
-import yaml
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_USERS, JIRA_DATASET_JQLS, \
-    JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, JIRA_YML, CONFLUENCE_YML, JIRA_DATASET_PROJECT_KEYS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS
+from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
+    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -46,17 +46,6 @@ if not selenium_results_file.exists():
         file.write(JTL_HEADER)
     with open(w3c_timings_file, 'w'):
         pass
-
-
-def application_url(yml_file_path: Path):
-    with yml_file_path.open(mode='r') as fs:
-        jira_yaml = yaml.load(fs, Loader=yaml.FullLoader)
-        protocol = jira_yaml['settings']['env']['application_protocol']
-        hostname = jira_yaml['settings']['env']['application_hostname']
-        port = str(jira_yaml['settings']['env']['application_port'])
-        postfix = jira_yaml['settings']['env']['application_postfix']
-        app_url = f"{protocol}://{hostname}:{port}{postfix or ''}"
-        return app_url
 
 
 def datetime_now(prefix):
@@ -161,7 +150,7 @@ def jira_screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(application_url(JIRA_YML))
+        webdriver.get(JIRA_SETTINGS.server_url)
 
 
 @pytest.fixture
@@ -182,7 +171,7 @@ def confluence_screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(application_url(CONFLUENCE_YML))
+        webdriver.get(CONFLUENCE_SETTINGS.server_url)
 
 
 @pytest.fixture(scope="module")

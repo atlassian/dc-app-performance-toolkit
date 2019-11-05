@@ -23,7 +23,7 @@ JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
 # Jira version variables
-SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6)
+SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 echo "Jira Version: ${JIRA_VERSION}"
 

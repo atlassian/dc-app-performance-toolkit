@@ -1,4 +1,3 @@
-import csv
 import random
 import time
 import urllib.parse
@@ -10,14 +9,13 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selenium_ui.conftest import print_timing, AnyEc, application_url, generate_random_string
-from util.project_paths import JIRA_YML
+from selenium_ui.conftest import print_timing, AnyEc, generate_random_string
+from util.conf import JIRA_SETTINGS
 
 timeout = 20
 
 ISSUE_TYPE_DROPDOWN = 'issuetype-field'
-# TODO consider do not use conftest as utility class and do not import it in modules
-APPLICATION_URL = application_url(JIRA_YML)
+APPLICATION_URL = JIRA_SETTINGS.server_url
 
 
 def _dismiss_popup(webdriver, *args):
@@ -130,7 +128,7 @@ def create_issue(webdriver, datasets):
             webdriver.find_element_by_id(ISSUE_TYPE_DROPDOWN).click()
             issue_elements_in_dropdown = webdriver.find_elements_by_class_name("aui-list-item")
             if issue_elements_in_dropdown:
-                filtered_issue_elements = list(filter(__filer_epic, issue_elements))
+                filtered_issue_elements = list(filter(__filer_epic, issue_elements_in_dropdown))
                 rnd_issue_type_el = random.choice(filtered_issue_elements)
                 action = ActionChains(webdriver)
                 action.move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
