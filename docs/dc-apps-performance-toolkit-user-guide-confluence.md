@@ -250,7 +250,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 Do not close or interrupt the session. It will take some time to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2 hours)
+### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-4 hours)
 
 {{% note %}}
 Before re-index, go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; General configuration**, click **Edit** for **Site Configuration** and set **Base ULR** to **LoadBalancerURL** value.
