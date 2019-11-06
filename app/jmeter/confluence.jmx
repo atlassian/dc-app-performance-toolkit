@@ -232,6 +232,11 @@
               <stringProp name="Argument.value">${__P(perc_standalone_extension, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="perc_create_blog" elementType="Argument">
+              <stringProp name="Argument.name">perc_create_blog</stringProp>
+              <stringProp name="Argument.value">${__P(perc_create_blog, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
           <stringProp name="TestPlan.comments">Doesn&apos;t have to total 100
 </stringProp>
@@ -7836,13 +7841,13 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="175358039">title=&quot;Preview&quot;</stringProp>
+                    <stringProp name="2046823756">&lt;title&gt;Edit</stringProp>
                     <stringProp name="1975472560">Update&lt;/button&gt;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
