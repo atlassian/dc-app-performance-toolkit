@@ -1,3 +1,6 @@
+# User Guide for Confluence
+https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-confluence/
+
 # Running tests
 ## Pre-requisites
 * Working Confluence Software of supported version (see the [toolkit README](../../README.md) for a list of supported Confluence versions) with users, issues, projects, and boards, etc.

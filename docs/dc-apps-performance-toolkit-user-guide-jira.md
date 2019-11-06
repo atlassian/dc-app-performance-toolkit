@@ -1,12 +1,12 @@
 ---
-title: "Data Center App Performance Toolkit User Guide"
+title: "Data Center App Performance Toolkit User Guide For Jira"
 platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2018-07-19"
+date: "2019-09-12"
 ---
-# Data Center App Performance Toolkit User Guide
+# Data Center App Performance Toolkit User Guide For Jira
 
 To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
 
@@ -121,7 +121,7 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
     - **Email Address**: email address of the admin user
     - **Username**: admin _(recommended)_
     - **Password**: admin _(recommended)_
-    - **Confirm Password**: admin
+    - **Confirm Password**: admin _(recommended)_
     Click **Next**.
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
 1. After going through the welcome setup, click **Create new project** to create a new project.
@@ -160,15 +160,15 @@ All the datasets use the standard `admin`/`admin` credentials.
 
 Pre-loading the dataset is a three-step process:
 
-1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script or restore from xml backup file.
-1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/upload_attachments.sh) script.
+1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script or restore from xml backup file.
+1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script.
 1. [Re-indexing Jira Data Center](#reindexing). For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
 The following subsections explain each step in greater detail.
 
 ### <a id="importingdataset"></a> Importing the main dataset
 
-You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/jira/util/populate_db.sh) script), or import it via XML.  
+You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script), or import it via XML.  
 
 #### Option 1: Loading the dataset via populate_db.sh script (~1 hour)
 
@@ -332,8 +332,8 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 350 by default
-    - `test_duration`: duration of the performance run - 1 hour by default
+    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
+    - `test_duration`: duration of the performance run - 45min by default
 1. Run bzt.
 
     ``` bash
@@ -354,6 +354,16 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 To receive performance results with an app installed:
 
 1. Install the app you want to test.
+
+{{% note %}}
+**Lucene index test for JIRA**
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Select the **Lock one Jira node and rebuild index** option.
+1. Click **Re-Index** and wait until re-indexing is completed.
+1. Take a screenshot of the acknowledgment screen displaying the re-index time and attach it to your DC HELP ticket.
+{{% /note %}}
+
 1. Run bzt.
 
     ``` bash
@@ -381,7 +391,7 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see a significant impact (>5%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see a significant impact (>10%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 
 ### <a id="testscenario2"></a> Scenario 2: Scalability testing
@@ -463,7 +473,7 @@ If there are some additional variables from the base script required by the exte
 
 In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
 
-We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
 In the `jira-ui.py` script, view the following block of code:
 
