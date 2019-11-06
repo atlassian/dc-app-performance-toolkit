@@ -349,7 +349,7 @@ To receive performance baseline results without an app installed:
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
 
-#### <a id="regressionrun2"></a> Run 2 (~50 min)
+#### <a id="regressionrun2"></a> Run 2 (~50 min + 50 min for Lucene Index timing test)
 
 To receive performance results with an app installed:
 
@@ -357,14 +357,16 @@ To receive performance results with an app installed:
 
 {{% note %}}
 **Lucene index test for JIRA**
+
 If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
+
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
-1. Take a screenshot of the acknowledgment screen displaying the re-index time and attach it to your DC HELP ticket.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and attach it to your DC HELP ticket.
 {{% /note %}}
 
-1. Run bzt.
+2. Run bzt.
 
     ``` bash
     bzt jira.yml
