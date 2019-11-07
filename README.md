@@ -90,7 +90,7 @@ pip install -r requirements.txt
 ```
 
 ## Upgrading
-If you see "There is newer version of Taurus {$version} available, consider upgrading." warning message during your 
+If you see "There is newer version of Taurus available, consider upgrading." warning message during your 
 test execution, please use the next command to apply the upgrade in your virtual environment.
 ```
 pip install -r requirements.txt
