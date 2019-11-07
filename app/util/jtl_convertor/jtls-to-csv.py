@@ -13,7 +13,7 @@ ENV_TAURUS_ARTIFACT_DIR = 'TAURUS_ARTIFACTS_DIR'
 TEMPLATE_PLUGIN_COMMAND = 'java -Djava.awt.headless=true -jar {libs_home}cmdrunner-2.2.jar ' \
                           '--tool Reporter ' \
                           '--tool Reporter --generate-csv {output_csv} ' \
-                          '--input-jtl {input_jtl} ' \
+                          '--input-jtl "{input_jtl}" ' \
                           '--plugin-type AggregateReport'
 CSV_HEADER = 'Label,# Samples,Average,Median,90% Line,95% Line,99% Line,' \
              'Min,Max,Error %,Throughput,Received KB/sec,Std. Dev.\n'
