@@ -89,6 +89,13 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Upgrading
+If you see "There is newer version of Taurus available, consider upgrading." warning message during your 
+test execution, please use the next command to apply the upgrade in your virtual environment.
+```
+pip install -r requirements.txt
+```
+
 ## Additional info
 Official Taurus installation instructions are located [here](https://gettaurus.org/docs/Installation/).
 
