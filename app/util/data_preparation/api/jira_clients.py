@@ -23,7 +23,7 @@ class JiraRestClient(RestClient):
         last_loop_remainder = max_results % BATCH_SIZE_BOARDS
 
         boards_list = list()
-        max_results = BATCH_SIZE_BOARDS
+        max_results = BATCH_SIZE_BOARDS if max_results > BATCH_SIZE_BOARDS else max_results
 
         while loop_count > 0:
             api_url = f"{self.host}/rest/agile/1.0/board?startAt={start_at}&maxResults={max_results}"
@@ -61,7 +61,7 @@ class JiraRestClient(RestClient):
         last_loop_remainder = max_results % BATCH_SIZE_USERS
 
         users_list = list()
-        max_results = BATCH_SIZE_USERS
+        max_results = BATCH_SIZE_USERS if max_results > BATCH_SIZE_USERS else max_results
 
         while loop_count > 0:
             api_url = f'{self.host}/rest/api/2/user/search?username={username}&startAt={start_at}' \

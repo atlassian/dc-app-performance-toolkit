@@ -18,8 +18,8 @@ services:
   - module: shellexec
     prepare:
       - python util/data_preparation/confluence/prepare-data.py
-#    shutdown:
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    shutdown:
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
@@ -82,4 +82,4 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "77.0.3865.40" # Supports Chrome version 77. You can refer to http://chromedriver.chromium.org/downloads
+      version: "78.0.3904.70" # Supports Chrome version 78. You can refer to http://chromedriver.chromium.org/downloads

@@ -36,11 +36,33 @@ def __get_jira_dataset_users():
 def __get_jira_dataset_issues():
     return __get_jira_dataset('issues.csv')
 
+
 def __get_jira_projects_key():
     return __get_jira_dataset('project_keys.csv')
 
+
 def __get_confluence_yml():
     return Path(__file__).parents[1] / "confluence.yml"
+
+
+def __get_confluence_datasets():
+    return __get_datasets() / "confluence"
+
+
+def __get_confluence_dataset(file_name):
+    return __get_confluence_datasets() / file_name
+
+
+def __get_confluence_dataset_users():
+    return __get_confluence_dataset('users.csv')
+
+
+def __get_confluence_dataset_pages():
+    return __get_confluence_dataset('pages.csv')
+
+
+def __get_confluence_dataset_blogs():
+    return __get_confluence_dataset('blogs.csv')
 
 
 JIRA_YML = __get_jira_yml()
@@ -53,3 +75,7 @@ JIRA_DATASET_ISSUES = __get_jira_dataset_issues()
 JIRA_DATASET_PROJECT_KEYS = __get_jira_projects_key()
 
 CONFLUENCE_YML = __get_confluence_yml()
+CONFLUENCE_DATASETS = __get_confluence_datasets()
+CONFLUENCE_USERS = __get_confluence_dataset_users()
+CONFLUENCE_PAGES = __get_confluence_dataset_pages()
+CONFLUENCE_BLOGS = __get_confluence_dataset_blogs()

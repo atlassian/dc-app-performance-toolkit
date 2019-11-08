@@ -1,30 +1,80 @@
-from pathlib import Path
+import random
+import string
 
 from util.conf import CONFLUENCE_SETTINGS
 from util.data_preparation.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
+from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS
 
 
-def __get_app_dir():
-    return Path(__file__).parents[3]
+USERS = "users"
+PAGES = "pages"
+BLOGS = "blogs"
+DEFAULT_USER_PREFIX = 'performance_'
+
+
+def generate_random_string(length=20):
+    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
+
+
+def __create_data_set(rest_client, rpc_client):
+    dataset = dict()
+    dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
+    dataset[PAGES] = __get_pages(rest_client, 5000)
+    dataset[BLOGS] = __get_blogs(rest_client, 500)
+    return dataset
+
+
+def __get_users(confluence_api, rpc_api, count):
+    cur_perf_users = confluence_api.get_users(DEFAULT_USER_PREFIX, count)
+    if len(cur_perf_users) >= count:
+        return cur_perf_users
+    else:
+        while len(cur_perf_users) < count:
+            username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
+            try:
+                user = rpc_api.create_user(username=username, password=username)
+                print(f"User {user['name']} is created, number of users to create is "
+                      f"{count - len(cur_perf_users)}")
+                cur_perf_users.append(user)
+            # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
+            except Exception as error:
+                print(error)
+        print('All performance test users were successfully created')
+        return cur_perf_users
+
+
+def __get_pages(confluence_api, count):
+    pages = confluence_api.get_content(0, count, "page")
+    if not pages:
+        raise SystemExit(f"There is no Pages in Confluence")
+
+    return pages
+
+
+def __get_blogs(confluence_api, count):
+    blogs = confluence_api.get_content(0, count, "blogpost")
+    if not blogs:
+        raise SystemExit(f"There is no Blog posts in Confluence")
+
+    return blogs
+
+
+def __write_to_file(file_path, items):
+    with open(file_path, 'w') as f:
+        for item in items:
+            f.write(f"{item}\n")
 
 
 def write_test_data_to_files(dataset):
-    # TODO extract paths to project_paths
-    file_path = Path(__file__).parents[3] / "datasets" / "confluence"
-
-    def write_to_file(file_name, list):
-        with open(file_path / file_name, 'w') as f:
-            for item in list:
-                f.write("{}\n".format(item))
-
     pages = [f"{page['id']},{page['space']['key']}" for page in dataset['pages']]
-    write_to_file('pages.csv', pages)
+    __write_to_file(CONFLUENCE_PAGES, pages)
 
     blogs = [f"{blog['id']},{blog['space']['key']}" for blog in dataset['blogs']]
-    write_to_file('blogs.csv', blogs)
+    __write_to_file(CONFLUENCE_BLOGS, blogs)
 
-    users = [f"{user[0]},{user[1]}" for user in dataset['users']]
-    write_to_file('users.csv', users)
+    # user password is the same as username
+    users = [f"{user['user']['username']},{user['user']['username']}" for user in dataset['users']]
+    __write_to_file(CONFLUENCE_USERS, users)
 
 
 def main():
@@ -33,15 +83,10 @@ def main():
     url = CONFLUENCE_SETTINGS.server_url
     print("Server url: ", url)
 
+    rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
-    dataset = dict()
-    dataset["users"] = rpc_client.create_users("performance", CONFLUENCE_SETTINGS.concurrency)
-    user: tuple = dataset["users"][0]
 
-    rest_client = ConfluenceRestClient(url, user[0], user[1])
-    dataset["pages"] = rest_client.get_content(0, 5000, "page")
-    dataset["blogs"] = rest_client.get_content(0, 500, "blogpost")
-
+    dataset = __create_data_set(rest_client, rpc_client)
     write_test_data_to_files(dataset)
 
     print("Finished preparing data")
