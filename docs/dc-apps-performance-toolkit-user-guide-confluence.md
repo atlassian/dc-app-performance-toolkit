@@ -490,10 +490,6 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
     Index recovery is required for main index, starting now
     main index recovered from shared home directory
     ```
-
-{{% note %}}
-If index sync did not finish successfully, you have to login into Confluence UI of a new node (see **General Configuration** > **Clustering** page to determine current node) and start Index Rebuild on **General Configuration** > **Content Indexing** page.
-{{% note %}}
     
 1. Run bzt.
 

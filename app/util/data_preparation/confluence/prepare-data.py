@@ -28,19 +28,19 @@ def __get_users(confluence_api, rpc_api, count):
     cur_perf_users = confluence_api.get_users(DEFAULT_USER_PREFIX, count)
     if len(cur_perf_users) >= count:
         return cur_perf_users
-    else:
-        while len(cur_perf_users) < count:
-            username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
-            try:
-                user = rpc_api.create_user(username=username, password=username)
-                print(f"User {user['name']} is created, number of users to create is "
-                      f"{count - len(cur_perf_users)}")
-                cur_perf_users.append(user)
-            # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
-            except Exception as error:
-                print(error)
-        print('All performance test users were successfully created')
-        return cur_perf_users
+
+    while len(cur_perf_users) < count:
+        username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
+        try:
+            user = rpc_api.create_user(username=username, password=username)
+            print(f"User {user['name']} is created, number of users to create is "
+                  f"{count - len(cur_perf_users)}")
+            cur_perf_users.append(user)
+        # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
+        except Exception as error:
+            print(error)
+    print('All performance test users were successfully created')
+    return cur_perf_users
 
 
 def __get_pages(confluence_api, count):
