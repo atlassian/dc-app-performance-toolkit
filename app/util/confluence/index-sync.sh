@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SEARCH_LOG="/var/atlassian/application-data/confluence/logs/atlassian-confluence.log"
-TIMEOUT=300
+TIMEOUT=1200
 
 if sudo -u confluence test -f $SEARCH_LOG; then
     echo "Log file: $SEARCH_LOG"
@@ -12,7 +12,7 @@ fi
 
 function find_word_in_log() {
         COUNTER=0
-        SLEEP_TIME=2
+        SLEEP_TIME=10
         ATTEMPTS=$((TIMEOUT / SLEEP_TIME))
         while [ ${COUNTER} -lt ${ATTEMPTS} ];do
                 check_grep=`sudo su confluence -c "cat $SEARCH_LOG" | grep -o "$1"`

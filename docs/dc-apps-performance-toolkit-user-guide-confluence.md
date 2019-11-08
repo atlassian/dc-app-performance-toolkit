@@ -484,12 +484,13 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh && chmod +x index-sync.sh
     ./index-sync.sh | tee -a index-sync.log
     ```
-    Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
+    Index synchronizing time is about 10-30 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
     Log file: /var/atlassian/application-data/confluence/logs/atlassian-confluence.log
     Index recovery is required for main index, starting now
     main index recovered from shared home directory
     ```
+    
 1. Run bzt.
 
     ``` bash
