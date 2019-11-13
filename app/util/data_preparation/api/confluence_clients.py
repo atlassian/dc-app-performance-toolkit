@@ -92,7 +92,7 @@ class ConfluenceRpcClient(Client):
         if not proxy.confluence2.hasUser(token, username):
             user_definition = {
                 "email": f"{username}@test.com",
-                "fullname": f"{username}_full_name",
+                "fullname": username.capitalize(),
                 "name": username,
                 "url": self.host + f"/display/~{username}"
             }
