@@ -1,6 +1,4 @@
-import random
 import xmlrpc.client
-from pathlib import Path
 
 from util.data_preparation.api.abstract_clients import RestClient, Client
 
@@ -79,14 +77,6 @@ class ConfluenceRestClient(RestClient):
 
 
 class ConfluenceRpcClient(Client):
-    __user_names: list = None
-
-    @property
-    def user_names(self):
-        if not self.__user_names:
-            self.__user_names = self.__read_names()
-
-        return self.__user_names
 
     def create_user(self, username=None, password=None):
         """
@@ -100,10 +90,9 @@ class ConfluenceRpcClient(Client):
         token = proxy.confluence2.login(self.user, self.password)
 
         if not proxy.confluence2.hasUser(token, username):
-            names = self.__get_random_names(2)
             user_definition = {
                 "email": f"{username}@test.com",
-                "fullname": f"{names[0]} {names[1]}",
+                "fullname": username.capitalize(),
                 "name": username,
                 "url": self.host + f"/display/~{username}"
             }
@@ -112,12 +101,3 @@ class ConfluenceRpcClient(Client):
             return user_definition
         else:
             raise Exception(f"Can't create user {username}: user already exists.")
-
-    def __get_random_names(self, number=2):
-        return [random.choice(self.user_names) for _ in range(number)]
-
-    @staticmethod
-    def __read_names():
-        # TODO extract paths to project_paths
-        with open(Path(__file__).parents[2] / "confluence" / "resources" / "names.txt") as file:
-            return [line.rstrip('\n') for line in file]
