@@ -61,7 +61,7 @@ The Data Center App Performance Toolkit officially supports:
 | Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
-| Cluster node instance volume size | 100 |
+| Cluster node instance volume size | 200 |
 
 We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers.
 
@@ -76,7 +76,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | true |
 | Application user database password | Password1! |
-| Database storage | 100 |
+| Database storage | 200 |
 
 {{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Confluence deployment with an enterprise-scale dataset](#preloading)).
@@ -98,7 +98,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | --------- | ----------------- |
 | Make instance internet facing | true |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-|Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
 ### Running the setup wizard
 
