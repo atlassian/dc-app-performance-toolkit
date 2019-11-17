@@ -7,12 +7,11 @@ At the moment, Jira DC support is in beta. Confluence DC and Bitbucket DC suppor
 
 ## Supported versions
 * Supported Jira versions: 
-    * Latest platform release: 8.0.3
-    * Previous enterprise release: 7.13.6
-    * Latest enterprise release: 8.5.0
+    * The latest Platform Release: 8.0.3
+    * The following Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
     
 * Supported Confluence versions:
-    * Latest enterprise release: 6.13.8
+    * The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
 
 ## Installation and set up
 

@@ -139,8 +139,8 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Pages | ~900 000 |
 | Blogposts | ~100 000 |
 | Attachments | ~2 300 000 |
-| Comments | ~4 000 000 |
-| Spaces  | ~5 500 |
+| Comments | ~6 000 000 |
+| Spaces  | ~5 000 |
 | Users | ~5 000 |
 
 {{% note %}}
@@ -253,7 +253,7 @@ Do not close or interrupt the session. It will take some time to upload attachme
 ### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-4 hours)
 
 {{% note %}}
-Before re-index, go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; General configuration**, click **Edit** for **Site Configuration** and set **Base ULR** to **LoadBalancerURL** value.
+Before re-index, go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; General configuration**, click **Edit** for **Site Configuration** and set **Base URL** to **LoadBalancerURL** value.
 {{% /note %}}
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
@@ -264,6 +264,32 @@ For more information, go to [Re-indexing Confluence](https://confluence.atlassia
 
 Confluence will be unavailable for some time during the re-indexing process.
 
+### <a id="index-snapshot"></a> Create Index Snapshot (~30 min)
+
+For more information, go to [Administer your Data Center search index](https://confluence.atlassian.com/doc/administer-your-data-center-search-index-879956107.html).
+
+1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
+1. Create any new page with a random content (without a new page index snapshot job will not be triggered).
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Scheduled Jobs**.
+1. Find **Clean Journal Entries** job and click **Run**.
+1. Make sure that Confluence index snapshot was created. To do that, use SSH to connect to the Confluence node via Bastion (where `NODE_IP` is the IP of the node):
+
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    ```
+1. Download the [index-snapshot.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh) file. Then, make it executable and run it:
+
+    ```bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh && chmod +x index-snapshot.sh
+    ./index-snapshot.sh | tee -a index-snapshot.log
+    ```
+    Index snapshot creation time is about 20-30 minutes. When index snapshot is successfully created, the following will be displayed in console output:
+    ```bash
+    Snapshot was created successfully.
+    ```
 
 ## Testing scenarios
 

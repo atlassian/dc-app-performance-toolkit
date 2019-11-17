@@ -52,8 +52,7 @@ All important parameters are listed and described in this section. For all other
 The Data Center App Performance Toolkit officially supports:
 
 - The latest Jira Platform Release version: 8.0.3
-- The latest Jira [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6
-- The latest Jira Enterprise Release version: 8.5.0
+- The following Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
 
 **Cluster nodes**
 
@@ -305,7 +304,7 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
 {{% note %}}
-Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration**, click **Edit Settings** and set **Base ULR** to **LoadBalancerURL** value.
+Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration**, click **Edit Settings** and set **Base URL** to **LoadBalancerURL** value.
 {{% /note %}}
 
 ## Testing scenarios
