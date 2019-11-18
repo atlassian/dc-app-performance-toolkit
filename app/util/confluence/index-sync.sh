@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Wait until index sync is finished on a new Confluence DC node
+
 SEARCH_LOG="/var/atlassian/application-data/confluence/logs/atlassian-confluence.log"
 TIMEOUT=1200
 
