@@ -10,6 +10,7 @@ USERS = "users"
 PAGES = "pages"
 BLOGS = "blogs"
 DEFAULT_USER_PREFIX = 'performance_'
+DEFAULT_USER_PASSWORD = 'password'
 
 
 def generate_random_string(length=20):
@@ -32,7 +33,7 @@ def __get_users(confluence_api, rpc_api, count):
     while len(cur_perf_users) < count:
         username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
         try:
-            user = rpc_api.create_user(username=username, password=username)
+            user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
             print(f"User {user['name']} is created, number of users to create is "
                   f"{count - len(cur_perf_users)}")
             cur_perf_users.append(user)
@@ -72,8 +73,7 @@ def write_test_data_to_files(dataset):
     blogs = [f"{blog['id']},{blog['space']['key']}" for blog in dataset['blogs']]
     __write_to_file(CONFLUENCE_BLOGS, blogs)
 
-    # user password is the same as username
-    users = [f"{user['user']['username']},{user['user']['username']}" for user in dataset['users']]
+    users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset['users']]
     __write_to_file(CONFLUENCE_USERS, users)
 
 
