@@ -45,7 +45,7 @@ def __get_users(confluence_api, rpc_api, count):
 
 
 def __get_pages(confluence_api, count):
-    pages = confluence_api.get_content(0, count, "page")
+    pages = confluence_api.get_content_search(0, count, cql='type=page')
     if not pages:
         raise SystemExit(f"There is no Pages in Confluence")
 
@@ -53,7 +53,7 @@ def __get_pages(confluence_api, count):
 
 
 def __get_blogs(confluence_api, count):
-    blogs = confluence_api.get_content(0, count, "blogpost")
+    blogs = confluence_api.get_content_search(0, count, cql='type=blogpost')
     if not blogs:
         raise SystemExit(f"There is no Blog posts in Confluence")
 

@@ -8,12 +8,12 @@ BATCH_SIZE_SEARCH = 500
 
 class ConfluenceRestClient(RestClient):
 
-    def get_content(self, start=0, limit=100, board_type="page", expand="space"):
+    def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
         """
         Returns all content. This only includes pages that the user has permission to view.
         :param start: The starting index of the returned boards. Base index: 0.
         :param limit: The maximum number of boards to return per page. Default: 50.
-        :param board_type: Filters results to boards of the specified type. Valid values: page, blogpost
+        :param cql: Filters results to boards of the specified type. Valid values: page, blogpost
         :param expand: Responds with additional values. Valid values: space,history,body.view,metadata.label
         :return: Returns the requested content, at the specified page of the results.
         """
@@ -24,16 +24,16 @@ class ConfluenceRestClient(RestClient):
 
         while loop_count > 0:
             api_url = (
-                    self.host + f'/rest/api/content?&start={start}' +
-                    f'&limit={limit}' +
-                    f'&type={board_type}' +
-                    f'&expand={expand}'
+                    self.host + f'/rest/api/content/search?cql={cql}'
+                                f'&start={start}'
+                                f'&limit={limit}'
+                                f'&expand={expand}'
             )
             request = self.get(api_url, "Could not retrieve content")
 
             content.extend(request.json()['results'])
             if len(content) < 0:
-                raise Exception(f"Content with type {board_type} is empty")
+                raise Exception(f"Content with {cql} is empty")
 
             loop_count -= 1
             if loop_count == 1:
