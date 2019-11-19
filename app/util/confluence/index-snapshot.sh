@@ -17,7 +17,7 @@ FAIL_FAST_ATTEMPTS=15
 
 
 while [ ${COUNTER} -lt ${ATTEMPTS} ];do
-    if sudo su -c "test -f ${SNAPSHOT}"; then
+    if sudo su -c "test -f ${SNAPSHOT}" && find ${SNAPSHOT} -type f -size +5G 2>/dev/null | grep -q .; then
         echo # New line
         echo "Snapshot was created successfully."
         break
@@ -25,7 +25,7 @@ while [ ${COUNTER} -lt ${ATTEMPTS} ];do
 
     if [ ${FAIL_FAST_COUNTER} -eq ${FAIL_FAST_ATTEMPTS} ]; then
         echo # move to a new line
-        echo "Snapshot generation did not started."
+        echo "Snapshot generation did not started."а
         echo "Try to create a new Confluence page in UI and run 'General configuration' > 'Scheduled Jobs' > 'Clean Journal Entries' job again."
         exit 1
     fi
