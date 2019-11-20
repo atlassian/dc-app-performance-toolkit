@@ -190,7 +190,7 @@ def populate_page_content(webdriver):
     webdriver.find_element_by_id("content-title").clear()
     webdriver.find_element_by_id("content-title").send_keys(title)
     WebDriverWait(webdriver, timeout).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "wysiwygTextarea_ifr")))
-    webdriver.find_element_by_id("tinymce").send_keys(generate_random_string(30))
+    webdriver.find_element_by_id("tinymce").find_element_by_tag_name('p').send_keys(generate_random_string(30))
     webdriver.switch_to.parent_frame()
 
 
