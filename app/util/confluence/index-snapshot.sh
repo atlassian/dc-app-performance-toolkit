@@ -6,7 +6,7 @@ SNAPSHOT="/media/atl/confluence/shared-home/index-snapshots/IndexSnapshot_main_i
 
 TEMP_DIR="/var/atlassian/application-data/confluence/temp"
 TEMP_ZIP="/var/atlassian/application-data/confluence/index/*main_index*zip"
-
+MIN_SNAPSHOT_SIZE="5G"
 
 TIMEOUT=3600    # 1 hour
 COUNTER=0
@@ -17,7 +17,7 @@ FAIL_FAST_ATTEMPTS=15
 
 
 while [ ${COUNTER} -lt ${ATTEMPTS} ];do
-    if sudo su -c "test -f ${SNAPSHOT}" && find ${SNAPSHOT} -type f -size +5G 2>/dev/null | grep -q .; then
+    if sudo su -c "test -f ${SNAPSHOT} && find ${SNAPSHOT} -type f -size +${MIN_SNAPSHOT_SIZE} 2>/dev/null | grep -q ."; then
         echo # New line
         echo "Snapshot was created successfully."
         break
@@ -25,7 +25,7 @@ while [ ${COUNTER} -lt ${ATTEMPTS} ];do
 
     if [ ${FAIL_FAST_COUNTER} -eq ${FAIL_FAST_ATTEMPTS} ]; then
         echo # move to a new line
-        echo "Snapshot generation did not started."а
+        echo "Snapshot generation did not started."
         echo "Try to create a new Confluence page in UI and run 'General configuration' > 'Scheduled Jobs' > 'Clean Journal Entries' job again."
         exit 1
     fi
