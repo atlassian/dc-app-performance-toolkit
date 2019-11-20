@@ -6,7 +6,7 @@ SNAPSHOT="/media/atl/confluence/shared-home/index-snapshots/IndexSnapshot_main_i
 
 TEMP_DIR="/var/atlassian/application-data/confluence/temp"
 TEMP_ZIP="/var/atlassian/application-data/confluence/index/*main_index*zip"
-MIN_SNAPSHOT_SIZE=5368709120
+MIN_SNAPSHOT_SIZE=5242880
 
 TIMEOUT=3600    # 1 hour
 COUNTER=0
@@ -17,8 +17,8 @@ FAIL_FAST_ATTEMPTS=15
 
 
 while [ ${COUNTER} -lt ${ATTEMPTS} ];do
-    size=`sudo su -c "ls -la ${SNAPSHOT}" | awk '{print $5}'`
-    if sudo su -c "test -f ${SNAPSHOT} && [ ${size} -gt ${MIN_SNAPSHOT_SIZE} ]"; then
+    SNAPSHOT_SIZE=`sudo su -c "du -s ${SNAPSHOT}" | cut -f1`
+    if sudo su -c "test -f ${SNAPSHOT} && [ ${SNAPSHOT_SIZE} -gt ${MIN_SNAPSHOT_SIZE} ]"; then
         echo # New line
         echo "Snapshot was created successfully."
         break
