@@ -45,7 +45,11 @@ def __get_users(confluence_api, rpc_api, count):
 
 
 def __get_pages(confluence_api, count):
-    pages = confluence_api.get_content_search(0, count, cql='type=page')
+    pages = confluence_api.get_content_search(
+        0, count, cql='type=page'
+                      ' and title !~ JMeter'      # filter out pages created by JMeter
+                      ' and title !~ Selenium'    # filter out pages created by Selenium
+                      ' and title !~ Home')       # filter out space Home pages
     if not pages:
         raise SystemExit(f"There is no Pages in Confluence")
 

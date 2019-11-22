@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium_ui.conftest import AnyEc, generate_random_string, print_timing
 from util.conf import CONFLUENCE_SETTINGS
 
-timeout = 10
+timeout = 20
 
 # TODO consider do not use conftest as utility class and do not import it in modules
 APPLICATION_URL = CONFLUENCE_SETTINGS.server_url
@@ -63,12 +63,11 @@ def login(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             webdriver.find_element_by_id('loginButton').click()
-            _wait_until(webdriver, EC.invisibility_of_element_located((By.ID, 'loginButton')),
-                        interaction)
+            _wait_until(webdriver, EC.invisibility_of_element_located((By.ID, 'loginButton')), interaction)
             if _setup_page_is_presented():
                 _user_setup()
-            WebDriverWait(webdriver, timeout).until(
-                EC.presence_of_element_located((By.CLASS_NAME, 'list-container-all-updates')))
+            _wait_until(webdriver, EC.presence_of_element_located((By.CLASS_NAME, 'list-container-all-updates')),
+                        interaction)
 
         measure(webdriver, "selenium_login:login_and_view_dashboard")  # waits for all updates
 
@@ -85,7 +84,7 @@ def view_page(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/viewpage.action?pageId={page}')
-        WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+        _wait_until(webdriver, EC.visibility_of_element_located((By.ID, 'title-text')), interaction)
 
     measure(webdriver, "selenium_view_page")
 
@@ -96,7 +95,7 @@ def view_blog(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/viewpage.action?pageId={blog}')
-        WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+        _wait_until(webdriver, EC.visibility_of_element_located((By.ID, 'title-text')), interaction)
 
     measure(webdriver, "selenium_view_blog")
 
@@ -105,7 +104,7 @@ def view_dashboard(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/dashboard.action#all-updates')
-        WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.CLASS_NAME, 'update-items')))
+        _wait_until(webdriver, EC.visibility_of_element_located((By.CLASS_NAME, 'update-items')), interaction)
 
     measure(webdriver, "selenium_view_dashboard")
 
@@ -114,17 +113,18 @@ def create_page(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.find_element(By.ID, "quick-create-page-button").click()
-        WebDriverWait(webdriver, timeout).until(EC.element_to_be_clickable((By.ID, "rte-button-publish")))
+        _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
 
     measure(webdriver, "selenium_create_page:open_create_page_editor")
 
     _dismiss_popup(webdriver, "#closeDisDialog")
+    populate_page_title(webdriver)
     populate_page_content(webdriver)
 
     @print_timing
     def measure(webdriver, interaction):
         webdriver.find_element_by_id("rte-button-publish").click()
-        WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'title-text')))
+        _wait_until(webdriver, EC.visibility_of_element_located((By.ID, 'title-text')), interaction)
 
     measure(webdriver, "selenium_create_page:save_created_page")
 
@@ -135,7 +135,11 @@ def edit_page(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/editpage.action?pageId={page}')
-        WebDriverWait(webdriver, timeout).until(EC.element_to_be_clickable((By.ID, "rte-button-publish")))
+        _wait_until(webdriver,
+                    EC.text_to_be_present_in_element((By.CLASS_NAME, 'status-indicator-message'), 'Ready to go'),
+                    interaction)
+
+        _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
 
     measure(webdriver, "selenium_edit_page:open_create_page_editor")
 
@@ -183,13 +187,16 @@ def create_comment(webdriver, datasets):
     measure(webdriver, "selenium_create_comment:save_comment")
 
 
-def populate_page_content(webdriver):
-    WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'content-title')))
+def populate_page_title(webdriver):
+    _wait_until(webdriver, EC.visibility_of_element_located((By.ID, 'content-title')), 'populate page title')
     title = "Selenium - " + generate_random_string(10)
-
     webdriver.find_element_by_id("content-title").clear()
     webdriver.find_element_by_id("content-title").send_keys(title)
-    WebDriverWait(webdriver, timeout).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "wysiwygTextarea_ifr")))
+
+
+def populate_page_content(webdriver):
+    _wait_until(webdriver,
+                EC.frame_to_be_available_and_switch_to_it((By.ID, 'wysiwygTextarea_ifr')), 'populate page content')
     webdriver.find_element_by_id("tinymce").find_element_by_tag_name('p').send_keys(generate_random_string(30))
     webdriver.switch_to.parent_frame()
 
