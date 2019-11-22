@@ -182,11 +182,6 @@
               <stringProp name="Argument.value">${__P(perc_view_dashboard, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_view_inline_comments" elementType="Argument">
-              <stringProp name="Argument.name">perc_view_inline_comments</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_inline_comments, 0)}</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
             <elementProp name="perc_view_blog" elementType="Argument">
               <stringProp name="Argument.name">perc_view_blog</stringProp>
               <stringProp name="Argument.value">${__P(perc_view_blog, 0)}</stringProp>
@@ -215,11 +210,6 @@
             <elementProp name="perc_create_and_edit_page" elementType="Argument">
               <stringProp name="Argument.name">perc_create_and_edit_page</stringProp>
               <stringProp name="Argument.value">${__P(perc_create_and_edit_page, 0)}</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="perc_edit_page" elementType="Argument">
-              <stringProp name="Argument.name">perc_edit_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_edit_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_comment_page" elementType="Argument">
@@ -2652,7 +2642,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">extend_action = &quot;view_blog&quot;
-vars.put(&quot;view_blog&quot;, extend_action);
+vars.put(&quot;extend_action&quot;, extend_action);
 </stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PreProcessor>
@@ -3628,7 +3618,7 @@ vars.put(&quot;view_blog&quot;, extend_action);
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">extend_action = &quot;search_cql&quot;
-vars.put(&quot;search_cql&quot;, extend_action);
+vars.put(&quot;extend_action&quot;, extend_action);
 </stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PreProcessor>
@@ -3865,7 +3855,7 @@ vars.put(&quot;search_cql&quot;, extend_action);
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">extend_action = &quot;create_blog&quot;
-vars.put(&quot;create_blog&quot;, extend_action);
+vars.put(&quot;extend_action&quot;, extend_action);
 </stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PreProcessor>
@@ -5729,7 +5719,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">extend_action = &quot;create_and_edit_page&quot;
-vars.put(&quot;create_and_edit_page&quot;, extend_action);
+vars.put(&quot;extend_action&quot;, extend_action);
 </stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PreProcessor>
@@ -6465,97 +6455,6 @@ vars.put(&quot;create_and_edit_page&quot;, extend_action);
                 </RegexExtractor>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="760 /rest/tinymce/1/drafts" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;draftId&quot;:&quot;${x_content_id}&quot;,&quot;pageId&quot;:&quot;0&quot;,&quot;type&quot;:&quot;page&quot;,&quot;title&quot;:&quot;Test Performance ${p_new_file_name}&quot;,&quot;spaceKey&quot;:&quot;${x_space_key}&quot;,&quot;content&quot;:&quot;test page&quot;,&quot;syncRev&quot;:&quot;0.IQQyVktY3rNHFnepCZiJDho.21&quot;}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/tinymce/1/drafts</stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173998158&amp;draftShareId=5037af93-48f1-47ac-8fad-6389fbb8e208&amp;</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Language" elementType="Header">
-                      <stringProp name="Header.name">Accept-Language</stringProp>
-                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Encoding" elementType="Header">
-                      <stringProp name="Header.name">Accept-Encoding</stringProp>
-                      <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random File Name" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
-
-vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
-
-//log.info(&quot;Random String: &quot; + new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()});</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1912512156">draftId</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="c_newPageDraftID" enabled="false">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">c_newPageDraftID</stringProp>
-                  <stringProp name="RegexExtractor.regex">\&quot;draftId\&quot;:(.*?),\&quot;time</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-              </hashTree>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_create_page" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -6568,7 +6467,33 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Test Performance ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;Test Performance Create Page Content ${p_new_file_name}&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;page&quot;,&quot;version&quot;:{&quot;number&quot;:1,&quot;minorEdit&quot;:true,&quot;syncRev&quot;:&quot;0.IQQyVktY3rNHFnepCZiJDho.27&quot;},&quot;ancestors&quot;:[{&quot;id&quot;:&quot;${page_id}&quot;,&quot;type&quot;:&quot;page&quot;}]}</stringProp>
+                      <stringProp name="Argument.value">{&#xd;
+  &quot;status&quot;: &quot;current&quot;,&#xd;
+  &quot;title&quot;: &quot;Test Performance JMeter ${p_new_file_name}&quot;,&#xd;
+  &quot;space&quot;: {&#xd;
+    &quot;key&quot;: &quot;${space_key}&quot;&#xd;
+  },&#xd;
+  &quot;body&quot;: {&#xd;
+    &quot;storage&quot;: {&#xd;
+      &quot;value&quot;: &quot;Test Performance Create Page Content ${p_new_file_name}&quot;,&#xd;
+      &quot;representation&quot;: &quot;storage&quot;,&#xd;
+      &quot;content&quot;: {&#xd;
+        &quot;id&quot;: &quot;${x_content_id}&quot;&#xd;
+      }&#xd;
+    }&#xd;
+  },&#xd;
+  &quot;id&quot;: &quot;${x_content_id}&quot;,&#xd;
+  &quot;type&quot;: &quot;page&quot;,&#xd;
+  &quot;version&quot;: {&#xd;
+    &quot;number&quot;: 1&#xd;
+  },&#xd;
+  &quot;ancestors&quot;: [&#xd;
+    {&#xd;
+      &quot;id&quot;: &quot;${page_id}&quot;,&#xd;
+      &quot;type&quot;: &quot;page&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -8410,186 +8335,257 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1145 /rest/tinymce/1/drafts" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;draftId&quot;:&quot;0&quot;,&quot;pageId&quot;:&quot;${x_page_id}&quot;,&quot;type&quot;:&quot;page&quot;,&quot;title&quot;:&quot;${x_page_title}&quot;,&quot;spaceKey&quot;:&quot;${x_space_key}&quot;,&quot;content&quot;:&quot;${p_page_content}&quot;,&quot;pageVersion&quot;:${x_page_version}}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/tinymce/1/drafts</stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Language" elementType="Header">
-                      <stringProp name="Header.name">Accept-Language</stringProp>
-                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Encoding" elementType="Header">
-                      <stringProp name="Header.name">Accept-Encoding</stringProp>
-                      <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_draft_id" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">x_draft_id</stringProp>
-                  <stringProp name="RegexExtractor.regex">\&quot;draftId\&quot;:(.*?),\&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                  <stringProp name="TestPlan.comments">c_DraftID</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1912512156">draftId</stringProp>
-                    <stringProp name="-995752950">pageId</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_edit_page" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1150 /rest/api/content/&lt;x_content_id&gt;?status=draft" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;status&quot;:&quot;current&quot;,&quot;title&quot;:&quot;Test Performance Edit ${p_new_file_name}&quot;,&quot;space&quot;:{&quot;key&quot;:&quot;${space_key}&quot;},&quot;body&quot;:{&quot;editor&quot;:{&quot;value&quot;:&quot;&lt;p&gt;Test Performance Edit Content ${p_new_file_name}&lt;/p&gt;&quot;,&quot;representation&quot;:&quot;editor&quot;,&quot;content&quot;:{&quot;id&quot;:&quot;${x_content_id}&quot;}}},&quot;id&quot;:&quot;${x_content_id}&quot;,&quot;type&quot;:&quot;page&quot;,&quot;version&quot;:{&quot;number&quot;:&quot;${p_page_version}&quot;,&quot;message&quot;:&quot;&quot;,&quot;minorEdit&quot;:false,&quot;syncRev&quot;:&quot;0.L8Ejsmosz4mq3fqGTzp72Rg.5&quot;},&quot;ancestors&quot;:[{&quot;id&quot;:&quot;${x_parent_page_id}&quot;,&quot;type&quot;:&quot;page&quot;}]}&#xd;
-</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/content/${x_content_id}?status=draft</stringProp>
-                <stringProp name="HTTPSampler.method">PUT</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                <stringProp name="TestPlan.comments">x_page_version</stringProp>
-              </HTTPSamplerProxy>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has parent" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(&quot;${x_parent_page_id}&quot; != &quot;&quot;)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
               <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Language" elementType="Header">
-                      <stringProp name="Header.name">Accept-Language</stringProp>
-                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Encoding" elementType="Header">
-                      <stringProp name="Header.name">Accept-Encoding</stringProp>
-                      <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random File Name" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1150 /rest/api/content/&lt;x_content_id&gt;?status=draft" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+  &quot;status&quot;: &quot;current&quot;,&#xd;
+  &quot;title&quot;: &quot;Test Performance Edit with JMeter ${p_new_file_name}&quot;,&#xd;
+  &quot;space&quot;: {&#xd;
+    &quot;key&quot;: &quot;${space_key}&quot;&#xd;
+  },&#xd;
+  &quot;body&quot;: {&#xd;
+    &quot;storage&quot;: {&#xd;
+      &quot;value&quot;: &quot;Page edit with JMeter ${p_new_file_name}&quot;,&#xd;
+      &quot;representation&quot;: &quot;storage&quot;,&#xd;
+      &quot;content&quot;: {&#xd;
+        &quot;id&quot;: &quot;${x_content_id}&quot;&#xd;
+      }&#xd;
+    }&#xd;
+  },&#xd;
+  &quot;id&quot;: &quot;${x_content_id}&quot;,&#xd;
+  &quot;type&quot;: &quot;page&quot;,&#xd;
+  &quot;version&quot;: {&#xd;
+    &quot;number&quot;: &quot;${p_page_version}&quot;&#xd;
+  },&#xd;
+  &quot;ancestors&quot;: [&#xd;
+    {&#xd;
+      &quot;id&quot;: &quot;${x_parent_page_id}&quot;,&#xd;
+      &quot;type&quot;: &quot;page&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/content/${x_content_id}?staus=draft</stringProp>
+                  <stringProp name="HTTPSampler.method">PUT</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  <stringProp name="TestPlan.comments">x_page_version</stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Referer" elementType="Header">
+                        <stringProp name="Header.name">Referer</stringProp>
+                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="User-Agent" elementType="Header">
+                        <stringProp name="Header.name">User-Agent</stringProp>
+                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random File Name" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
 
 vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
 
 //log.info(&quot;Random String: &quot; + new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()});</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Construct page version" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">int page_version = vars.get(&quot;x_page_version&quot;).toInteger() + 1;
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Construct page version" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">int page_version = vars.get(&quot;x_page_version&quot;).toInteger() + 1;
 
 vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1280013822">&quot;title&quot;:&quot;Test Performance Edit ${p_new_file_name}&quot;</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-279447717">&quot;title&quot;:&quot;Test Performance Edit with JMeter ${p_new_file_name}&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has not parent" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(&quot;${x_parent_page_id}&quot; == &quot;&quot;)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1151 /rest/api/content/&lt;x_content_id&gt;?status=draft" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+  &quot;status&quot;: &quot;current&quot;,&#xd;
+  &quot;title&quot;: &quot;Test Performance Edit with JMeter ${p_new_file_name}&quot;,&#xd;
+  &quot;space&quot;: {&#xd;
+    &quot;key&quot;: &quot;${space_key}&quot;&#xd;
+  },&#xd;
+  &quot;body&quot;: {&#xd;
+    &quot;storage&quot;: {&#xd;
+      &quot;value&quot;: &quot;Page edit with JMeter ${p_new_file_name}&quot;,&#xd;
+      &quot;representation&quot;: &quot;storage&quot;,&#xd;
+      &quot;content&quot;: {&#xd;
+        &quot;id&quot;: &quot;${x_content_id}&quot;&#xd;
+      }&#xd;
+    }&#xd;
+  },&#xd;
+  &quot;id&quot;: &quot;${x_content_id}&quot;,&#xd;
+  &quot;type&quot;: &quot;page&quot;,&#xd;
+  &quot;version&quot;: {&#xd;
+    &quot;number&quot;: &quot;${p_page_version}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/content/${x_content_id}?staus=draft</stringProp>
+                  <stringProp name="HTTPSampler.method">PUT</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  <stringProp name="TestPlan.comments">x_page_version</stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Referer" elementType="Header">
+                        <stringProp name="Header.name">Referer</stringProp>
+                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="User-Agent" elementType="Header">
+                        <stringProp name="Header.name">User-Agent</stringProp>
+                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random File Name" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
+
+vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
+
+//log.info(&quot;Random String: &quot; + new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()});</stringProp>
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Construct page version" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">int page_version = vars.get(&quot;x_page_version&quot;).toInteger() + 1;
+
+vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-279447717">&quot;title&quot;:&quot;Test Performance Edit with JMeter ${p_new_file_name}&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1155 /pages/viewpage.action?pageId=&lt;page_id&gt;" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -9676,7 +9672,7 @@ if (totalAncestorID &gt; 0)
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">extend_action = &quot;comment_page&quot;
-vars.put(&quot;comment_page&quot;, extend_action);
+vars.put(&quot;extend_action&quot;, extend_action);
 </stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PreProcessor>
@@ -9802,6 +9798,23 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_view_attachment}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">extend_action = &quot;view_attachments&quot;
+vars.put(&quot;extend_action&quot;, extend_action);
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_attachment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -9878,6 +9891,10 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
+            </IncludeController>
+            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="upload attachments" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -9886,6 +9903,23 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_upload_attachment}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">extend_action = &quot;upload_attachments&quot;
+vars.put(&quot;extend_action&quot;, extend_action);
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If uploadable" enabled="true">
               <stringProp name="TestPlan.comments">Page has to be viewed at least once to extract token
 </stringProp>
@@ -10021,6 +10055,10 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
                 </hashTree>
               </hashTree>
             </hashTree>
+            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
+            </IncludeController>
+            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="like page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -10029,6 +10067,23 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_like_page}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">extend_action = &quot;like_page&quot;
+vars.put(&quot;extend_action&quot;, extend_action);
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_like_page" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -10230,6 +10285,10 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
                 </hashTree>
               </hashTree>
             </hashTree>
+            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
+              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
+            </IncludeController>
+            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="standalone extension" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>

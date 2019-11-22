@@ -8,19 +8,56 @@ BATCH_SIZE_SEARCH = 500
 
 class ConfluenceRestClient(RestClient):
 
-    def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
+    def get_content(self, start=0, limit=100, type="page", expand="space"):
         """
         Returns all content. This only includes pages that the user has permission to view.
+        :param start: The starting index of the returned boards. Base index: 0.
+        :param limit: The maximum number of boards to return per page. Default: 50.
+        :param type: the content type to return. Default value: page. Valid values: page, blogpost.
+        :param expand: Responds with additional values. Valid values: space,history,body.view,metadata.label
+        :return: Returns the requested content, at the specified page of the results.
+        """
+        BATCH_SIZE_SEARCH = 200
+        loop_count = limit // BATCH_SIZE_SEARCH + 1
+        content = list()
+        last_loop_remainder = limit % BATCH_SIZE_SEARCH
+        limit = BATCH_SIZE_SEARCH if limit > BATCH_SIZE_SEARCH else limit
+
+        while loop_count > 0:
+            api_url = (
+                    self.host + f'/rest/api/content/?type={type}'
+                                f'&start={start}'
+                                f'&limit={limit}'
+                                f'&expand={expand}'
+            )
+            request = self.get(api_url, "Could not retrieve content")
+
+            content.extend(request.json()['results'])
+            if len(content) < 0:
+                raise Exception(f"Content with type {type} is empty")
+
+            loop_count -= 1
+            if loop_count == 1:
+                limit = last_loop_remainder
+
+            start += len(request.json()['results'])
+
+        return content
+
+    def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
+        """
+        Fetch a list of content using the Confluence Query Language (CQL).
         :param start: The starting index of the returned boards. Base index: 0.
         :param limit: The maximum number of boards to return per page. Default: 50.
         :param cql: Filters results to boards of the specified type. Valid values: page, blogpost
         :param expand: Responds with additional values. Valid values: space,history,body.view,metadata.label
         :return: Returns the requested content, at the specified page of the results.
         """
-        fetched_records_per_call = 200
-        loop_count = limit // fetched_records_per_call + 1
+        BATCH_SIZE_SEARCH = 200
+        loop_count = limit // BATCH_SIZE_SEARCH + 1
         content = list()
-        last_loop_remainder = limit % fetched_records_per_call
+        last_loop_remainder = limit % BATCH_SIZE_SEARCH
+        limit = BATCH_SIZE_SEARCH if limit > BATCH_SIZE_SEARCH else limit
 
         while loop_count > 0:
             api_url = (
