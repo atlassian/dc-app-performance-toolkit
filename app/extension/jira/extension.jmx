@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1 r1853635">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="extension" enabled="false"/>
+      <hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_create_issue" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;create_issue&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_search_jql" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;search_jql&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_issue" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_issue&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_project_summary" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_project_summary&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_dashboard" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_dashboard&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_edit_issue" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;edit_issue&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_add_comment" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;add_comment&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_browse_projects" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;browse_projects&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_kanban_board" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_kanban_board&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_scrum_board" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_scrum_board&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_view_backlog" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;view_backlog&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_browse_boards" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;browse_boards&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="extend_standalone_extension" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(&quot;${extend_action}&quot; == &quot;standalone_extension&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="/example/request/extension" enabled="false">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">true</boolProp>
+          <stringProp name="RESPONSE_CODE">200</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_TIME">${__Random(50,500)}</stringProp>
+          <stringProp name="LATENCY">${__Random(1,50)}</stringProp>
+          <stringProp name="CONNECT">${__Random(1,5)}</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

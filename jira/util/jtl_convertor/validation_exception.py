@@ -1,2 +1,0 @@
-class ValidationException(Exception):
-    pass

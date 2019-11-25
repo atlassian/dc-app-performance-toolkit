@@ -1,10 +1,11 @@
 .idea/
 outputs/
 **/results/
-**/datasets/*.csv
+**/datasets/*/*.csv
 *venv*
 .DS_Store
 *.swp
 *.iml
 *.log
 *.pyc
+local_*.yml
