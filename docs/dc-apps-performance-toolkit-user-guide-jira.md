@@ -38,6 +38,19 @@ You are responsible for the cost of the AWS services used while running this Qui
 
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
+### AWS cost estimation ###
+We have made the research on estimation our Jira stack costs. We have used next parameters:
+- EC instance
+- DB instance
+- EFS
+Based on our research results we have next indicators:
+
+| Instances      | Jira costs ($)     |
+| ---------      | -------------------|          
+| One instance   | ≈ 1 - 1,5          |
+| Two instance   | ≈ 1,5 - 2,5        |
+| Four instances | ≈ 3 - 3,5          |
+
 #### Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
