@@ -45,11 +45,16 @@ We have made the research on estimation our Confluence stack costs. We have used
 - EFS
 Based on our research results we have next indicators:
 
-| Instances      | Confluence costs ($)|
-| ---------      | -------------------|           
-| One instance   | ≈ 1,2 - 1,7        |
-| Two instance   |  ≈ 1,7 - 2,7       |
-| Four instances |  ≈ 3,2 - 3,7       |
+_*The prices below are approximate and may vary depending on factors such as (region, scalability, etc.)_
+
+| Instances      | Costs ($/hr) |
+| ---------      | -------------|           
+| One instance   | ≈ 1,5 - 1,6  |
+| Two instances  | ≈ 1,7 - 2,5  |
+| Four instances | ≈ 3,5 - 4,2  |
+
+AWS's breadth of services and pricing options offer the flexibility to effectively manage your costs and still keep the performance and capacity your business requires. 
+You can use [SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) to calculate your AWS costs. 
 
 #### Quick Start parameters
 

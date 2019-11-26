@@ -45,11 +45,16 @@ We have made the research on estimation our Jira stack costs. We have used next 
 - EFS
 Based on our research results we have next indicators:
 
-| Instances      | Jira costs ($)     |
-| ---------      | -------------------|          
-| One instance   | ≈ 1 - 1,5          |
-| Two instance   | ≈ 1,5 - 2,5        |
-| Four instances | ≈ 3 - 3,5          |
+_*The prices below are approximate and may vary depending on factors such as (region, scalability, etc.)_
+
+| Instances      | Costs ($/hr)  |
+| ---------      | --------------|          
+| One instance   | ≈ 1 - 1,3     |
+| Two instances  | ≈ 1,7 - 2,1   |
+| Four instances | ≈ 3,1 - 3,8   |
+
+AWS's breadth of services and pricing options offer the flexibility to effectively manage your costs and still keep the performance and capacity your business requires. 
+You can use [SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) to calculate your AWS costs. 
 
 #### Quick Start parameters
 
