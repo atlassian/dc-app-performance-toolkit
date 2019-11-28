@@ -2,6 +2,8 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML
 
+TOOLKIT_VERSION='1.1.1'
+
 
 def read_yml_file(file):
     with file.open(mode='r') as file:
@@ -21,7 +23,6 @@ class JiraSettings:
         self.admin_password = env_settings['admin_password']
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
-        self.tool_version = env_settings['TOOL_VERSION']
 
     @property
     def server_url(self):
@@ -41,7 +42,6 @@ class ConfluenceSettings:
         self.admin_password = env_settings['admin_password']
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
-        self.tool_version = env_settings['TOOL_VERSION']
 
     @property
     def server_url(self):
