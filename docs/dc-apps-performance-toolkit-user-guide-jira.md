@@ -39,22 +39,16 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-We have made the research on estimation our Jira stack costs. We have used next parameters:
-- EC instance
-- DB instance
-- EFS
-Based on our research results we have next indicators:
+[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
-_*The prices below are approximate and may vary depending on factors such as (region, scalability, etc.)_
+*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Instances      | Costs ($/hr)  |
-| ---------      | --------------|          
-| One instance   | ≈ 1 - 1,3     |
-| Two instances  | ≈ 1,7 - 2,1   |
-| Four instances | ≈ 3,1 - 3,8   |
-
-AWS's breadth of services and pricing options offer the flexibility to effectively manage your costs and still keep the performance and capacity your business requires. 
-You can use [SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) to calculate your AWS costs. 
+| Jira DC            | Estimated hourly cost ($)|
+| ------------------ | ------------|
+| One Node Jira DC   |  1 - 1,3    |
+| Two Node Jira DC   |  1,7 - 2,1  |
+| Four Node Jira DC  |  3,1 - 3,8  |
 
 #### Quick Start parameters
 
