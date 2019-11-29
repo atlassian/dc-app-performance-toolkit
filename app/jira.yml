@@ -17,6 +17,7 @@ settings:
 services:
   - module: shellexec
     prepare:
+      - python util/environment_checker.py
       - python util/data_preparation/jira/prepare-data.py
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
