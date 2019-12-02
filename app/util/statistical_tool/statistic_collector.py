@@ -3,14 +3,13 @@ import time
 import sys
 import os
 import re
-import yaml
 from pathlib import Path
 import requests
 from datetime import datetime
 import hashlib
 import platform
 
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -19,8 +18,15 @@ BITBUCKET = 'bitbucket'
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
 
+BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
+DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?'
+
+
 def application_type():
-    return sys.argv[1]
+    app_type = sys.argv[1]
+    if app_type.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
+        exit(0)
+    return app_type.lower()
 
 
 class StatisticFormer:
@@ -33,27 +39,31 @@ class StatisticFormer:
         self.os = ""
         self.duration = 0
         self.concurrency = 0
-        self.total_test_count = 0
         self.actual_duration = 0
+        self.selenium_test_count = 0
+        self.jmeter_test_count = 0
 
     @property
     def config_yml(self):
         if self.application_type.lower() == JIRA:
-            return CONFLUENCE_SETTINGS
-        elif self.application_type.lower() == CONFLUENCE:
             return JIRA_SETTINGS
+        elif self.application_type.lower() == CONFLUENCE:
+            return CONFLUENCE_SETTINGS
         # TODO Bitbucket the same approach
 
     @property
-    def last_log_dir(self):
+    def __last_log_dir(self):
         results_dir = f'{Path(__file__).parents[2]}/results/{self.application_type.lower()}'
-        last_run_log_dir = max([os.path.join(results_dir, d) for d in
+        try:
+            last_run_log_dir = max([os.path.join(results_dir, d) for d in
                                 os.listdir(results_dir)], key=os.path.getmtime)
+        except:
+            sys.exit(0)
         return last_run_log_dir
 
     @property
     def last_bzt_log_file(self):
-        with open(f'{self.last_log_dir}/bzt.log') as log_file:
+        with open(f'{self.__last_log_dir}/bzt.log') as log_file:
             log_file = log_file.readlines()
             return log_file
 
@@ -72,6 +82,9 @@ class StatisticFormer:
         min_hash = hash_str[:len(hash_str)//3]
         return min_hash
 
+    def is_statistic_enabled(self):
+        return True if str(self.config_yml.statistic_collector).lower() == 'true' else False
+
     def __validate_bzt_log_not_empty(self):
         if len(self.last_bzt_log_file) == 0:
             raise sys.exit(0)
@@ -79,7 +92,7 @@ class StatisticFormer:
     def get_duration_by_start_finish_strings(self):
         self.__validate_bzt_log_not_empty()
         first_string = self.last_bzt_log_file[0]
-        last_string = self.last_bzt_log_file[len(self.last_bzt_log_file)-1]
+        last_string = self.last_bzt_log_file[len(self.last_bzt_log_file) - 1]
         start_time = re.findall(DT_REGEX, first_string)[0]
         start_datetime_obj = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         finish_time = re.findall(DT_REGEX, last_string)[0]
@@ -100,9 +113,18 @@ class StatisticFormer:
         return test_duration
 
     def get_actual_run_time(self):
-        run_time_bzt = self.get_actual_run_time()
+        run_time_bzt = self.get_duration_by_test_duration()
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
+
+    def get_actual_test_count(self):
+        jmeter_test = ' jmeter_'
+        selenium_test = ' selenium_'
+        for line in self.last_bzt_log_file:
+            if jmeter_test in line:
+                self.jmeter_test_count = self.jmeter_test_count + 1
+            elif selenium_test in line:
+                self.selenium_test_count = self.selenium_test_count +  1
 
     def generate_statistics(self):
         self.application_url = self.config_yml.server_url
@@ -111,55 +133,31 @@ class StatisticFormer:
         self.duration = self.config_yml.duration
         self.os = self.get_os()
         self.actual_duration = self.get_actual_run_time()
-        #self.tool_version = self.config_yml.tool_version
+        self.tool_version = TOOLKIT_VERSION
+        self.get_actual_test_count()
 
 
+class StatisticSender:
+
+    def __init__(self, statstic_instance):
+        self.run_statistic = statstic_instance
+
+    def send_request(self):
+        base_url = BASE_URL
+        params_string=f'app_type={self.run_statistic.application_type}&os={self.run_statistic.os}&' \
+                      f'tool_ver={self.run_statistic.tool_version}&run_id={self.run_statistic.run_id}&' \
+                      f'exp_dur={self.run_statistic.duration}&act_dur={self.run_statistic.actual_duration}&' \
+                      f'sel_count={self.run_statistic.selenium_test_count}&jm_count={self.run_statistic.jmeter_test_count}&' \
+                      f'concurrency={self.run_statistic.concurrency}'
+
+        r = requests.get(url=f'{base_url}{params_string}')
+        return r.content
 
 
-
-
-
-app_type = application_type()
-p = StatisticFormer(app_type)
-
-p.generate_statistics()
-print(p.application_url, p.run_id)
-print(p.get_duration_by_test_duration())
-
-
-
-
-# a = f'{Path(__file__).parents[2]}/jira.yml'
-#
-# last_dir = max([os.path.join(f'{Path(__file__).parents[2]}/results/jira',d) for d in os.listdir(f'{Path(__file__).parents[2]}/results/jira')], key=os.path.getmtime)
-#
-# def read_yml_file(file):
-#     with file.open(mode='r') as file:
-#         return yaml.load(file, Loader=yaml.FullLoader)
-#
-# obj = read_yml_file(Path(a))
-# with open('/tmp/date.tmp', 'w') as tmp:
-#     tmp.write(f"datetime: {obj['settings']['env']['datetime']}'\n'   last_res_dir: {str(last_dir)}  ")
-#
-#
-
-
-
-# p = StatisticPerformer(application_type=application_type())
-# print(p.config_yaml)
-
-
-
-
-#
-#
-# BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
-# ARGS_STRING = 'user_ip=ip&run_id=run_id&start_time=start_time&end_time=end_time&version=cent_version&os=mac&duration=dur&concurrency=200&total_test_count=20'
-#
-#
-#
-# while True:
-#     print(application_type())
-#     r = requests.get(url=f'{BASE_URL}{ARGS_STRING}')
-#     time.sleep(2)
-#     print(str(r.iter_content))
+if __name__ == '__main__':
+    app_type = application_type()
+    p = StatisticFormer(app_type)
+    if p.is_statistic_enabled():
+        p.generate_statistics()
+        sender = StatisticSender(p)
+        sender.send_request()

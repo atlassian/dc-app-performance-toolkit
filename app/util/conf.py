@@ -2,6 +2,8 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML
 
+TOOLKIT_VERSION='1.1.1'
+
 
 def read_yml_file(file):
     with file.open(mode='r') as file:
@@ -12,13 +14,16 @@ class JiraSettings:
 
     def __init__(self):
         obj = read_yml_file(JIRA_YML)
-        self.hostname = obj['settings']['env']['application_hostname']
-        self.protocol = obj['settings']['env']['application_protocol']
-        self.port = obj['settings']['env']['application_port']
-        self.postfix = obj['settings']['env']['application_postfix'] or ""
-        self.admin_login = obj['settings']['env']['admin_login']
-        self.admin_password = obj['settings']['env']['admin_password']
-        self.concurrency = obj['settings']['env']['concurrency']
+        env_settings = obj['settings']['env']
+        self.hostname = env_settings['application_hostname']
+        self.protocol = env_settings['application_protocol']
+        self.port = env_settings['application_port']
+        self.postfix = env_settings['application_postfix'] or ""
+        self.admin_login = env_settings['admin_login']
+        self.admin_password = env_settings['admin_password']
+        self.concurrency = env_settings['concurrency']
+        self.duration = env_settings['test_duration']
+        self.statistic_collector = env_settings['analytics_enabled']
 
     @property
     def server_url(self):
@@ -29,13 +34,16 @@ class ConfluenceSettings:
 
     def __init__(self):
         obj = read_yml_file(CONFLUENCE_YML)
-        self.hostname = obj['settings']['env']['application_hostname']
-        self.protocol = obj['settings']['env']['application_protocol']
-        self.port = obj['settings']['env']['application_port']
-        self.postfix = obj['settings']['env']['application_postfix'] or ""
-        self.admin_login = obj['settings']['env']['admin_login']
-        self.admin_password = obj['settings']['env']['admin_password']
-        self.concurrency = obj['settings']['env']['concurrency']
+        env_settings = obj['settings']['env']
+        self.hostname = env_settings['application_hostname']
+        self.protocol = env_settings['application_protocol']
+        self.port = env_settings['application_port']
+        self.postfix = env_settings['application_postfix'] or ""
+        self.admin_login = env_settings['admin_login']
+        self.admin_password = env_settings['admin_password']
+        self.concurrency = env_settings['concurrency']
+        self.duration = env_settings['test_duration']
+        self.statistic_collector = env_settings['analytics_enabled']
 
     @property
     def server_url(self):
