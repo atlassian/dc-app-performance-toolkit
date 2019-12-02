@@ -61,7 +61,7 @@ class AnalyticsFormer:
     def __last_log_dir(self):
         results_dir = None
         results_dirs_dict = {'jira': JIRA_RESULT_DIR, 'confluence': CONFLUENCE_RESULT_DIR}
-        for app, res_dir in results_dirs_dict:
+        for app, res_dir in results_dirs_dict.items():
             if app == self.application_type.lower():
                 results_dir = res_dir
         try:
