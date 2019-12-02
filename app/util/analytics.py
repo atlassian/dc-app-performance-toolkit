@@ -155,7 +155,7 @@ class AnalyticsSender:
 
         r = requests.get(url=f'{base_url}{params_string}')
         if r.status_code != 403:
-            print(f'Analytics data was sent unsuccessfully, status code {r.status_code}')
+            print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
 
 
 def main():
