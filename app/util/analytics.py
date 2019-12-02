@@ -35,7 +35,7 @@ def application_type():
     return sys.argv[1]
 
 
-class AnalyticsFormer:
+class AnalyticsCollector:
 
     def __init__(self, application_type):
         self.application_type = application_type
@@ -147,23 +147,23 @@ class AnalyticsSender:
 
     def send_request(self):
         base_url = BASE_URL
-        params_string=f'app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
-                      f'tool_ver={self.run_analytics.tool_version}&run_id={self.run_analytics.run_id}&' \
-                      f'exp_dur={self.run_analytics.duration}&act_dur={self.run_analytics.actual_duration}&' \
-                      f'sel_count={self.run_analytics.selenium_test_count}&jm_count={self.run_analytics.jmeter_test_count}&' \
-                      f'concurrency={self.run_analytics.concurrency}'
+        params_string = f'app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
+                        f'tool_ver={self.run_analytics.tool_version}&run_id={self.run_analytics.run_id}&' \
+                        f'exp_dur={self.run_analytics.duration}&act_dur={self.run_analytics.actual_duration}&' \
+                        f'sel_count={self.run_analytics.selenium_test_count}&jm_count={self.run_analytics.jmeter_test_count}&' \
+                        f'concurrency={self.run_analytics.concurrency}'
 
         r = requests.get(url=f'{base_url}{params_string}')
         if r.status_code != 403:
-            print(f'Analytics data was not send to Atlassian, status code {r.status_code}')
+            print(f'Analytics data was sent unsuccessfully, status code {r.status_code}')
 
 
 def main():
     app_type = application_type()
-    p = AnalyticsFormer(app_type)
-    if p.is_analytics_enabled():
-        p.generate_analytics()
-        sender = AnalyticsSender(p)
+    collector = AnalyticsCollector(app_type)
+    if collector.is_analytics_enabled():
+        collector.generate_analytics()
+        sender = AnalyticsSender(collector)
         sender.send_request()
 
 
