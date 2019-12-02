@@ -5,13 +5,6 @@ def __get_jira_yml():
     return Path(__file__).parents[1] / "jira.yml"
 
 
-def __get_jira_result_dir():
-    return Path(__file__).parents[1] / "results" / "jira"
-
-
-def __get_confluence_result_dir():
-    return Path(__file__).parents[1] / "results" / "confluence"
-
 def __get_datasets():
     return Path(__file__).parents[1] / "datasets"
 
@@ -35,8 +28,7 @@ def __get_confluence_datasets():
 def __get_confluence_dataset(file_name):
     return __get_confluence_datasets() / file_name
 
-JIRA_RESULT_DIR = __get_jira_result_dir()
-CONFLUENCE_RESULT_DIR = __get_confluence_result_dir()
+
 JIRA_YML = __get_jira_yml()
 JIRA_DATASETS = __get_jira_datasets()
 JIRA_DATASET_JQLS = __get_jira_dataset('jqls.csv')

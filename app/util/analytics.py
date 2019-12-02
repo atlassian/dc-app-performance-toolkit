@@ -6,8 +6,7 @@ from datetime import datetime
 import hashlib
 import platform
 
-from conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
-from project_paths import JIRA_RESULT_DIR, CONFLUENCE_RESULT_DIR
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -19,15 +18,16 @@ DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
 BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
 DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?'
 
+APP_TYPE_MSG = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
+
 
 def __validate_app_type():
-    msg = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
     try:
         app_type = sys.argv[1]
         if app_type.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
-            raise SystemExit(msg)
+            raise SystemExit(APP_TYPE_MSG)
     except IndexError:
-        SystemExit(msg)
+        SystemExit(APP_TYPE_MSG)
 
 
 def application_type():
@@ -53,23 +53,16 @@ class AnalyticsFormer:
     def config_yml(self):
         if self.application_type.lower() == JIRA:
             return JIRA_SETTINGS
-        elif self.application_type.lower() == CONFLUENCE:
+        if self.application_type.lower() == CONFLUENCE:
             return CONFLUENCE_SETTINGS
         # TODO Bitbucket the same approach
 
     @property
     def __last_log_dir(self):
-        results_dir = None
-        results_dirs_dict = {'jira': JIRA_RESULT_DIR, 'confluence': CONFLUENCE_RESULT_DIR}
-        for app, res_dir in results_dirs_dict.items():
-            if app == self.application_type.lower():
-                results_dir = res_dir
-        try:
-            last_run_log_dir = max([os.path.join(results_dir, d) for d in
-                                os.listdir(results_dir)], key=os.path.getmtime)
-            return last_run_log_dir
-        except:
-            raise SystemExit(f'Run log folder is missing in the {results_dir}')
+        if 'TAURUS_ARTIFACTS_DIR' in os.environ:
+            return os.environ.get('TAURUS_ARTIFACTS_DIR')
+        else:
+            raise SystemExit('Taurus result directory could not be found')
 
     @property
     def last_bzt_log_file(self):
@@ -93,7 +86,7 @@ class AnalyticsFormer:
         return min_hash
 
     def is_analytics_enabled(self):
-        return True if str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y'] else False
+        return str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y']
 
     def __validate_bzt_log_not_empty(self):
         if len(self.last_bzt_log_file) == 0:
@@ -161,12 +154,18 @@ class AnalyticsSender:
                       f'concurrency={self.run_analytics.concurrency}'
 
         r = requests.get(url=f'{base_url}{params_string}')
+        if r.status_code != 403:
+            print(f'Analytics data was not send to Atlassian, status code {r.status_code}')
 
 
-if __name__ == '__main__':
+def main():
     app_type = application_type()
     p = AnalyticsFormer(app_type)
     if p.is_analytics_enabled():
         p.generate_analytics()
         sender = AnalyticsSender(p)
         sender.send_request()
+
+
+if __name__ == '__main__':
+    main()
