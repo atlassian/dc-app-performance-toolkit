@@ -22,7 +22,7 @@ services:
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
-      - python util/statistic_collector.py confluence
+      - python util/analytics.py confluence
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
