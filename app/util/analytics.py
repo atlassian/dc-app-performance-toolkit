@@ -7,7 +7,7 @@ from datetime import datetime
 import hashlib
 import platform
 
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
+from conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -20,16 +20,22 @@ BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
 DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?'
 
 
-def application_type():
-    app_type = None
+def __validate_app_type():
+    msg = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
     try:
         app_type = sys.argv[1]
+        if app_type.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
+            raise SystemExit(msg)
     except IndexError:
-        exit(0)
-    return app_type.lower() if app_type.lower() in [JIRA, CONFLUENCE, BITBUCKET] else exit(0)
+        SystemExit(msg)
 
 
-class StatisticFormer:
+def application_type():
+    __validate_app_type()
+    return sys.argv[1]
+
+
+class AnalyticsFormer:
 
     def __init__(self, application_type):
         self.application_type = application_type
@@ -53,7 +59,7 @@ class StatisticFormer:
 
     @property
     def __last_log_dir(self):
-        results_dir = f'{Path(__file__).parents[2]}/results/{self.application_type.lower()}'
+        results_dir = f'{Path(__file__).parents[1]}/results/{self.application_type.lower()}'
         try:
             last_run_log_dir = max([os.path.join(results_dir, d) for d in
                                 os.listdir(results_dir)], key=os.path.getmtime)
@@ -82,8 +88,8 @@ class StatisticFormer:
         min_hash = hash_str[:len(hash_str)//3]
         return min_hash
 
-    def is_statistic_enabled(self):
-        return True if str(self.config_yml.statistic_collector).lower() in ['yes', 'true'] else False
+    def is_analytics_enabled(self):
+        return True if str(self.config_yml.analytics_collector).lower() in ['yes', 'true'] else False
 
     def __validate_bzt_log_not_empty(self):
         if len(self.last_bzt_log_file) == 0:
@@ -124,7 +130,7 @@ class StatisticFormer:
             if jmeter_test in line:
                 self.jmeter_test_count = self.jmeter_test_count + 1
             elif selenium_test in line:
-                self.selenium_test_count = self.selenium_test_count +  1
+                self.selenium_test_count = self.selenium_test_count + 1
 
     def generate_statistics(self):
         self.application_url = self.config_yml.server_url
@@ -137,26 +143,26 @@ class StatisticFormer:
         self.get_actual_test_count()
 
 
-class StatisticSender:
+class AnalyticsSender:
 
-    def __init__(self, statstic_instance):
-        self.run_statistic = statstic_instance
+    def __init__(self, analytics_instance):
+        self.run_analytics = analytics_instance
 
     def send_request(self):
         base_url = BASE_URL
-        params_string=f'app_type={self.run_statistic.application_type}&os={self.run_statistic.os}&' \
-                      f'tool_ver={self.run_statistic.tool_version}&run_id={self.run_statistic.run_id}&' \
-                      f'exp_dur={self.run_statistic.duration}&act_dur={self.run_statistic.actual_duration}&' \
-                      f'sel_count={self.run_statistic.selenium_test_count}&jm_count={self.run_statistic.jmeter_test_count}&' \
-                      f'concurrency={self.run_statistic.concurrency}'
+        params_string=f'app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
+                      f'tool_ver={self.run_analytics.tool_version}&run_id={self.run_analytics.run_id}&' \
+                      f'exp_dur={self.run_analytics.duration}&act_dur={self.run_analytics.actual_duration}&' \
+                      f'sel_count={self.run_analytics.selenium_test_count}&jm_count={self.run_analytics.jmeter_test_count}&' \
+                      f'concurrency={self.run_analytics.concurrency}'
 
         r = requests.get(url=f'{base_url}{params_string}')
         return r.content
 
 if __name__ == '__main__':
     app_type = application_type()
-    p = StatisticFormer(app_type)
-    if p.is_statistic_enabled():
+    p = AnalyticsFormer(app_type)
+    if p.is_analytics_enabled():
         p.generate_statistics()
-        sender = StatisticSender(p)
-        sender.send_request()
+        sender = AnalyticsSender(p)
+        print(sender.send_request())
