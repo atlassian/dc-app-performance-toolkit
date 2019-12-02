@@ -4,23 +4,25 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_jira_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: jira-loadb-1gk0fw32i1rza-1304264642.us-east-2.elb.amazonaws.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
     concurrency: 200
-    test_duration: 45m
+    test_duration: 2m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
-    analytics_enabled: True
+    allow_analytics: Yes            # Allow sending run statistics to Atlassian. We do not collect any PI. This statistics are needed for further toolkit improvements and development
 services:
   - module: shellexec
     prepare:
       - python util/data_preparation/jira/prepare-data.py
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    post-process:
+      - python util/statistical_tool/statistic_collector.py jira
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}

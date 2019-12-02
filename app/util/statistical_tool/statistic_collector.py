@@ -1,5 +1,3 @@
-import requests
-import time
 import sys
 import os
 import re
@@ -23,10 +21,12 @@ DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?
 
 
 def application_type():
-    app_type = sys.argv[1]
-    if app_type.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
+    app_type = None
+    try:
+        app_type = sys.argv[1]
+    except IndexError:
         exit(0)
-    return app_type.lower()
+    return app_type.lower() if app_type.lower() in [JIRA, CONFLUENCE, BITBUCKET] else exit(0)
 
 
 class StatisticFormer:
@@ -57,9 +57,9 @@ class StatisticFormer:
         try:
             last_run_log_dir = max([os.path.join(results_dir, d) for d in
                                 os.listdir(results_dir)], key=os.path.getmtime)
+            return last_run_log_dir
         except:
-            sys.exit(0)
-        return last_run_log_dir
+            exit(0)
 
     @property
     def last_bzt_log_file(self):
@@ -83,7 +83,7 @@ class StatisticFormer:
         return min_hash
 
     def is_statistic_enabled(self):
-        return True if str(self.config_yml.statistic_collector).lower() == 'true' else False
+        return True if str(self.config_yml.statistic_collector).lower() in ['yes', 'true'] else False
 
     def __validate_bzt_log_not_empty(self):
         if len(self.last_bzt_log_file) == 0:
@@ -152,7 +152,6 @@ class StatisticSender:
 
         r = requests.get(url=f'{base_url}{params_string}')
         return r.content
-
 
 if __name__ == '__main__':
     app_type = application_type()

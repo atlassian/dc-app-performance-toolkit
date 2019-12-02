@@ -14,13 +14,15 @@ settings:
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
-    analytics_enabled: True
+    allow_analytics: Yes            # Allow sending run statistics to Atlassian. We do not collect any PI. This statistics are needed for further toolkit improvements and development
 services:
   - module: shellexec
     prepare:
       - python util/data_preparation/confluence/prepare-data.py
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    post-process:
+      - python util/statistical_tool/statistic_collector.py confluence
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}

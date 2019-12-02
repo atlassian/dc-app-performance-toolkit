@@ -23,7 +23,7 @@ class JiraSettings:
         self.admin_password = env_settings['admin_password']
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
-        self.statistic_collector = env_settings['analytics_enabled']
+        self.statistic_collector = env_settings['allow_analytics']
 
     @property
     def server_url(self):
@@ -43,7 +43,7 @@ class ConfluenceSettings:
         self.admin_password = env_settings['admin_password']
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
-        self.statistic_collector = env_settings['analytics_enabled']
+        self.statistic_collector = env_settings['allow_analytics']
 
     @property
     def server_url(self):
