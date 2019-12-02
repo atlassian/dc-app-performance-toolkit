@@ -30,7 +30,7 @@ def __validate_app_type():
         SystemExit(APP_TYPE_MSG)
 
 
-def application_type():
+def get_application_type():
     __validate_app_type()
     return sys.argv[1]
 
@@ -58,15 +58,15 @@ class AnalyticsCollector:
         # TODO Bitbucket the same approach
 
     @property
-    def __last_log_dir(self):
+    def _log_dir(self):
         if 'TAURUS_ARTIFACTS_DIR' in os.environ:
             return os.environ.get('TAURUS_ARTIFACTS_DIR')
         else:
             raise SystemExit('Taurus result directory could not be found')
 
     @property
-    def last_bzt_log_file(self):
-        with open(f'{self.__last_log_dir}/bzt.log') as log_file:
+    def bzt_log_file(self):
+        with open(f'{self._log_dir}/bzt.log') as log_file:
             log_file = log_file.readlines()
             return log_file
 
@@ -89,12 +89,12 @@ class AnalyticsCollector:
         return str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y']
 
     def __validate_bzt_log_not_empty(self):
-        if len(self.last_bzt_log_file) == 0:
-            raise SystemExit(f'bzt.log file in {self.__last_log_dir} is empty')
+        if len(self.bzt_log_file) == 0:
+            raise SystemExit(f'bzt.log file in {self._log_dir} is empty')
 
     def get_duration_by_start_finish_strings(self):
-        first_string = self.last_bzt_log_file[0]
-        last_string = self.last_bzt_log_file[-1]
+        first_string = self.bzt_log_file[0]
+        last_string = self.bzt_log_file[-1]
         start_time = re.findall(DT_REGEX, first_string)[0]
         start_datetime_obj = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         finish_time = re.findall(DT_REGEX, last_string)[0]
@@ -104,7 +104,7 @@ class AnalyticsCollector:
 
     def get_duration_by_test_duration(self):
         test_duration = None
-        for string in self.last_bzt_log_file:
+        for string in self.bzt_log_file:
             if 'Test duration' in string:
                 str_duration = string.split('duration:')[1].replace('\n', '')
                 str_duration = str_duration.replace(' ', '')
@@ -123,7 +123,7 @@ class AnalyticsCollector:
     def get_actual_test_count(self):
         jmeter_test = ' jmeter_'
         selenium_test = ' selenium_'
-        for line in self.last_bzt_log_file:
+        for line in self.bzt_log_file:
             if jmeter_test in line:
                 self.jmeter_test_count = self.jmeter_test_count + 1
             elif selenium_test in line:
@@ -159,7 +159,7 @@ class AnalyticsSender:
 
 
 def main():
-    app_type = application_type()
+    app_type = get_application_type()
     collector = AnalyticsCollector(app_type)
     if collector.is_analytics_enabled():
         collector.generate_analytics()
