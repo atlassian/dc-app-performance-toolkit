@@ -157,7 +157,7 @@ class AnalyticsSender:
                       f'concurrency={self.run_analytics.concurrency}'
 
         r = requests.get(url=f'{base_url}{params_string}')
-        return r.content
+
 
 if __name__ == '__main__':
     app_type = application_type()
@@ -165,4 +165,4 @@ if __name__ == '__main__':
     if p.is_analytics_enabled():
         p.generate_statistics()
         sender = AnalyticsSender(p)
-        print(sender.send_request())
+        sender.send_request()
