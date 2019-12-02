@@ -1,13 +1,13 @@
 import sys
 import os
 import re
-from pathlib import Path
 import requests
 from datetime import datetime
 import hashlib
 import platform
 
 from conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
+from project_paths import JIRA_RESULT_DIR, CONFLUENCE_RESULT_DIR
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -59,13 +59,17 @@ class AnalyticsFormer:
 
     @property
     def __last_log_dir(self):
-        results_dir = f'{Path(__file__).parents[1]}/results/{self.application_type.lower()}'
+        results_dir = None
+        results_dirs_dict = {'jira': JIRA_RESULT_DIR, 'confluence': CONFLUENCE_RESULT_DIR}
+        for app, res_dir in results_dirs_dict:
+            if app == self.application_type.lower():
+                results_dir = res_dir
         try:
             last_run_log_dir = max([os.path.join(results_dir, d) for d in
                                 os.listdir(results_dir)], key=os.path.getmtime)
             return last_run_log_dir
         except:
-            exit(0)
+            raise SystemExit(f'Run log folder is missing in the {results_dir}')
 
     @property
     def last_bzt_log_file(self):
@@ -89,16 +93,15 @@ class AnalyticsFormer:
         return min_hash
 
     def is_analytics_enabled(self):
-        return True if str(self.config_yml.analytics_collector).lower() in ['yes', 'true'] else False
+        return True if str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y'] else False
 
     def __validate_bzt_log_not_empty(self):
         if len(self.last_bzt_log_file) == 0:
-            raise sys.exit(0)
+            raise SystemExit(f'bzt.log file in {self.__last_log_dir} is empty')
 
     def get_duration_by_start_finish_strings(self):
-        self.__validate_bzt_log_not_empty()
         first_string = self.last_bzt_log_file[0]
-        last_string = self.last_bzt_log_file[len(self.last_bzt_log_file) - 1]
+        last_string = self.last_bzt_log_file[-1]
         start_time = re.findall(DT_REGEX, first_string)[0]
         start_datetime_obj = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         finish_time = re.findall(DT_REGEX, last_string)[0]
@@ -107,18 +110,19 @@ class AnalyticsFormer:
         return duration.seconds
 
     def get_duration_by_test_duration(self):
-        self.__validate_bzt_log_not_empty()
         test_duration = None
         for string in self.last_bzt_log_file:
             if 'Test duration' in string:
                 str_duration = string.split('duration:')[1].replace('\n', '')
-                duration_datetime_obj = datetime.strptime(str_duration, ' %H:%M:%S')
+                str_duration = str_duration.replace(' ', '')
+                duration_datetime_obj = datetime.strptime(str_duration, '%H:%M:%S')
                 test_duration = duration_datetime_obj.hour*3600 + \
                                 duration_datetime_obj.minute*60 + duration_datetime_obj.second
                 break
         return test_duration
 
     def get_actual_run_time(self):
+        self.__validate_bzt_log_not_empty()
         run_time_bzt = self.get_duration_by_test_duration()
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
@@ -132,7 +136,7 @@ class AnalyticsFormer:
             elif selenium_test in line:
                 self.selenium_test_count = self.selenium_test_count + 1
 
-    def generate_statistics(self):
+    def generate_analytics(self):
         self.application_url = self.config_yml.server_url
         self.run_id = self.id_generator(string=self.application_url)
         self.concurrency = self.config_yml.concurrency
@@ -163,6 +167,6 @@ if __name__ == '__main__':
     app_type = application_type()
     p = AnalyticsFormer(app_type)
     if p.is_analytics_enabled():
-        p.generate_statistics()
+        p.generate_analytics()
         sender = AnalyticsSender(p)
         sender.send_request()
