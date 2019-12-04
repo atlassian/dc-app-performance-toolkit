@@ -21,7 +21,7 @@ def __create_data_set(rest_client, rpc_client):
     dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
     dataset[PAGES] = __get_pages(rest_client, 5000)
-    dataset[BLOGS] = __get_blogs(rest_client, 500)
+    dataset[BLOGS] = __get_blogs(rest_client, 5000)
     return dataset
 
 
@@ -57,7 +57,9 @@ def __get_pages(confluence_api, count):
 
 
 def __get_blogs(confluence_api, count):
-    blogs = confluence_api.get_content_search(0, count, cql='type=blogpost')
+    blogs = confluence_api.get_content_search(
+        0, count, cql='type=blogpost'
+                      ' and title !~ Performance')
     if not blogs:
         raise SystemExit(f"There is no Blog posts in Confluence")
 
