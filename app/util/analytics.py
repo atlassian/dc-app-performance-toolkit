@@ -48,6 +48,7 @@ class AnalyticsCollector:
         self.actual_duration = 0
         self.selenium_test_count = 0
         self.jmeter_test_count = 0
+        self.date = ""
 
     @property
     def config_yml(self):
@@ -138,7 +139,7 @@ class AnalyticsCollector:
         self.actual_duration = self.get_actual_run_time()
         self.tool_version = TOOLKIT_VERSION
         self.get_actual_test_count()
-
+        self.date = datetime.utcnow().strftime("%m/%d/%Y-%H:%M:%S")
 
 class AnalyticsSender:
 
@@ -147,7 +148,7 @@ class AnalyticsSender:
 
     def send_request(self):
         base_url = BASE_URL
-        params_string = f'app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
+        params_string = f'date={self.run_analytics.date}&app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
                         f'tool_ver={self.run_analytics.tool_version}&run_id={self.run_analytics.run_id}&' \
                         f'exp_dur={self.run_analytics.duration}&act_dur={self.run_analytics.actual_duration}&' \
                         f'sel_count={self.run_analytics.selenium_test_count}&jm_count={self.run_analytics.jmeter_test_count}&' \
