@@ -44,11 +44,11 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Confluence DC            | Estimated hourly cost ($) |
-| ------------------------ | -------------|
-| One Node Confluence DC   | 1,5 - 1,6    |
-| Two Node Confluence DC   | 1,7 - 2,5    |
-| Four Node Confluence DC  | 3,5 - 4,2    |
+| Stack                     | Estimated hourly cost ($)|
+| ------------------------- | -------------------------|
+| One Node Confluence DC    | 1,5 - 1,6                |
+| Two Nodes Confluence DC   | 1,7 - 2,5                |
+| Four Nodes Confluence DC  | 3,5 - 4,2                |
 
 #### Quick Start parameters
 
