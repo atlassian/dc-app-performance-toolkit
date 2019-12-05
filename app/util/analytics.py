@@ -148,10 +148,15 @@ class AnalyticsSender:
 
     def send_request(self):
         base_url = BASE_URL
-        params_string = f'date={self.run_analytics.date}&app_type={self.run_analytics.application_type}&os={self.run_analytics.os}&' \
-                        f'tool_ver={self.run_analytics.tool_version}&run_id={self.run_analytics.run_id}&' \
-                        f'exp_dur={self.run_analytics.duration}&act_dur={self.run_analytics.actual_duration}&' \
-                        f'sel_count={self.run_analytics.selenium_test_count}&jm_count={self.run_analytics.jmeter_test_count}&' \
+        params_string = f'date={self.run_analytics.date}&' \
+                        f'app_type={self.run_analytics.application_type}&' \
+                        f'os={self.run_analytics.os}&' \
+                        f'tool_ver={self.run_analytics.tool_version}&' \
+                        f'run_id={self.run_analytics.run_id}&' \
+                        f'exp_dur={self.run_analytics.duration}&' \
+                        f'act_dur={self.run_analytics.actual_duration}&' \
+                        f'sel_count={self.run_analytics.selenium_test_count}&' \
+                        f'jm_count={self.run_analytics.jmeter_test_count}&' \
                         f'concurrency={self.run_analytics.concurrency}'
 
         r = requests.get(url=f'{base_url}{params_string}')
