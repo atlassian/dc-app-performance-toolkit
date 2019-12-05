@@ -113,10 +113,10 @@ def create_page(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         webdriver.find_element(By.ID, "quick-create-page-button").click()
+        _dismiss_popup(webdriver, "#closeDisDialog")
         _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
 
     measure(webdriver, "selenium_create_page:open_create_page_editor")
-
     _dismiss_popup(webdriver, "#closeDisDialog")
     populate_page_title(webdriver)
     populate_page_content(webdriver)
@@ -136,8 +136,9 @@ def edit_page(webdriver, datasets):
     def measure(webdriver, interaction):
         webdriver.get(f'{APPLICATION_URL}/pages/editpage.action?pageId={page}')
         _wait_until(webdriver,
-                    EC.text_to_be_present_in_element((By.CLASS_NAME, 'status-indicator-message'), 'Ready to go'),
-                    interaction)
+                    AnyEc(EC.text_to_be_present_in_element((By.CLASS_NAME, 'status-indicator-message'), 'Ready to go'),
+                          EC.text_to_be_present_in_element((By.CLASS_NAME, 'status-indicator-message'), 'Changes saved')
+                          ), interaction)
 
         _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
 
@@ -165,15 +166,10 @@ def create_comment(webdriver, datasets):
 
     @print_timing
     def measure(webdriver, interaction):
-        create_comment_button = webdriver.find_element(By.CSS_SELECTOR, ".quick-comment-prompt")
-        webdriver.execute_script("arguments[0].scrollIntoView()", create_comment_button)
-        # create_comment_button.click()
         webdriver.execute_script("document.querySelector('.quick-comment-prompt').click()")
-        _wait_until(webdriver, EC.invisibility_of_element_located(create_comment_button), interaction)
-
-        _wait_until(webdriver, EC.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
         _wait_until(webdriver, EC.frame_to_be_available_and_switch_to_it((By.ID, 'wysiwygTextarea_ifr')), interaction)
-        webdriver.find_element_by_id("tinymce").send_keys(f"This is page comment from date {time.time()}")
+        webdriver.find_element_by_id("tinymce").find_element_by_tag_name('p')\
+            .send_keys(f"This is page comment from date {time.time()}")
         webdriver.switch_to.parent_frame()
 
     measure(webdriver, 'selenium_create_comment:write_comment')
