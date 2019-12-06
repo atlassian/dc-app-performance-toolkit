@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8)
+SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 echo "Confluence Version: ${CONFLUENCE_VERSION}"
 

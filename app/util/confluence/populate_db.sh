@@ -18,7 +18,7 @@ CONFLUENCE_DB_USER="postgres"
 CONFLUENCE_DB_PASS="Password1!"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8)
+SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 echo "Confluence Version: ${CONFLUENCE_VERSION}"
 
