@@ -59,8 +59,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 |
-| Confluence Version | 7.0.4  |
+| Confluence Version | 6.13.8 or 7.0.4|
 
 The Data Center App Performance Toolkit officially supports:
 
