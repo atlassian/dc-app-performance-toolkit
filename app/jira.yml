@@ -89,3 +89,6 @@ modules:
   selenium:
     chromedriver:
       version: "78.0.3904.70" # Supports Chrome version 78. You can refer to http://chromedriver.chromium.org/downloads
+reporting:
+- data-source: sample-labels
+  module: junit-xml
