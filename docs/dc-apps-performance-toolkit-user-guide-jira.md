@@ -38,6 +38,18 @@ You are responsible for the cost of the AWS services used while running this Qui
 
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
+### AWS cost estimation ###
+[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
+
+*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
+
+| Stack                     | Estimated hourly cost ($)|
+| ------------------------- | -------------------------|
+| One Node Jira DC          | 1 - 1,3                  |
+| Two Nodes Jira DC         | 1,7 - 2,1                |
+| Four Nodes Jira DC        | 3,1 - 3,8                |
+
 #### Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.

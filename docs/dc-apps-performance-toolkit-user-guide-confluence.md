@@ -38,6 +38,18 @@ You are responsible for the cost of the AWS services used while running this Qui
 
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
+### AWS cost estimation ###
+[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
+
+*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
+
+| Stack                     | Estimated hourly cost ($)|
+| ------------------------- | -------------------------|
+| One Node Confluence DC    | 1,5 - 1,6                |
+| Two Nodes Confluence DC   | 1,7 - 2,5                |
+| Four Nodes Confluence DC  | 3,5 - 4,2                |
+
 #### Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
@@ -47,11 +59,11 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 |
+| Confluence Version | 6.13.8 or 7.0.4|
 
 The Data Center App Performance Toolkit officially supports:
 
-- The latest Confluence Platform Release version: 7.0.x (Coming soon)
+- The latest Confluence Platform Release version: 7.0.4 
 - The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
 
 **Cluster nodes**
