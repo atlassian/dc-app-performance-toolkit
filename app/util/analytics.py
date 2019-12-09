@@ -124,13 +124,12 @@ class AnalyticsCollector:
             elif selenium_test in line:
                 self.selenium_test_count = self.selenium_test_count + 1
 
-    def __convert_to_sec(self, time):
+    def __convert_to_sec(self, duration):
         seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
-        time = str(time)
-        numbers = ''.join(filter(str.isdigit, time))
-        units = ''.join(filter(str.isalpha, time))
+        duration = str(duration)
+        numbers = ''.join(filter(str.isdigit, duration))
+        units = ''.join(filter(str.isalpha, duration))
         return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
-
 
     def generate_analytics(self):
         self.application_url = self.config_yml.server_url
