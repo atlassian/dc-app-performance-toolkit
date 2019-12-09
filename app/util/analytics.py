@@ -40,7 +40,7 @@ class AnalyticsCollector:
 
     def __init__(self, application_type):
         self.application_type = application_type
-        self.run_id = ""
+        self.run_id = uuid.uuid1().hex
         self.application_url = ""
         self.tool_version = ""
         self.os = ""
@@ -49,7 +49,8 @@ class AnalyticsCollector:
         self.actual_duration = 0
         self.selenium_test_count = 0
         self.jmeter_test_count = 0
-        self.date = ""
+        self.time_stamp = datetime.utcnow().timestamp()
+        self.date = datetime.fromtimestamp(self.time_stamp).strftime("%m/%d/%Y-%H:%M:%S")
 
     @property
     def config_yml(self):
@@ -125,7 +126,11 @@ class AnalyticsCollector:
 
     def __convert_to_sec(self, time):
         seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
-        return int(str(time)[:-1]) * seconds_per_unit[str(time)[-1]]
+        time = str(time)
+        numbers = ''.join(filter(str.isdigit, time))
+        units = ''.join(filter(str.isalpha, time))
+        return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
+
 
     def generate_analytics(self):
         self.application_url = self.config_yml.server_url
@@ -135,26 +140,26 @@ class AnalyticsCollector:
         self.actual_duration = self.get_actual_run_time()
         self.tool_version = TOOLKIT_VERSION
         self.get_actual_test_count()
-        self.date = datetime.utcnow().strftime("%m/%d/%Y-%H:%M:%S")
+
 
 class AnalyticsSender:
 
     def __init__(self, analytics_instance):
-        self.run_analytics = analytics_instance
+        self.analytics = analytics_instance
 
     def send_request(self):
         headers = {"Content-Type": "application/json"}
-        params = {"date": self.run_analytics.date,
+        params = {"date": self.analytics.date,
                   "time_stamp": datetime.now().timestamp(),
-                  "app_type": self.run_analytics.application_type,
-                  "os": self.run_analytics.os,
-                  "tool_ver": self.run_analytics.tool_version,
-                  "run_id": uuid.uuid1().hex,
-                  "exp_dur": self.run_analytics.duration,
-                  "act_dur":  self.run_analytics.actual_duration,
-                  "sel_count": self.run_analytics.selenium_test_count,
-                  "jm_count": self.run_analytics.jmeter_test_count,
-                  "concurrency": self.run_analytics.concurrency
+                  "app_type": self.analytics.application_type,
+                  "os": self.analytics.os,
+                  "tool_ver": self.analytics.tool_version,
+                  "run_id": self.analytics.run_id,
+                  "exp_dur": self.analytics.duration,
+                  "act_dur":  self.analytics.actual_duration,
+                  "sel_count": self.analytics.selenium_test_count,
+                  "jm_count": self.analytics.jmeter_test_count,
+                  "concurrency": self.analytics.concurrency
         }
         r = requests.post(url=f'{BASE_URL}', json=params, headers=headers)
         response = r.json()
