@@ -149,13 +149,14 @@ class AnalyticsSender:
                   "tool_ver": self.run_analytics.tool_version,
                   "run_id": uuid.uuid1().hex,
                   "exp_dur": self.run_analytics.duration,
-                  "act_dur": self.run_analytics.actual_duration,
+                  "act_dur":  self.run_analytics.actual_duration,
                   "sel_count": self.run_analytics.selenium_test_count,
                   "jm_count": self.run_analytics.jmeter_test_count,
                   "concurrency": self.run_analytics.concurrency
         }
         r = requests.post(url=f'{BASE_URL}', json=params, headers=headers)
-        print(params)
+        response = r.json()
+        print(response)
         if r.status_code != 200:
             print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
 
