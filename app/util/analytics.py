@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 import hashlib
 import platform
+import uuid
 
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
@@ -15,8 +16,7 @@ BITBUCKET = 'bitbucket'
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
 
-BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
-DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?'
+BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 
 APP_TYPE_MSG = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
 
@@ -39,7 +39,6 @@ class AnalyticsCollector:
 
     def __init__(self, application_type):
         self.application_type = application_type
-        self.run_id = ""
         self.application_url = ""
         self.tool_version = ""
         self.os = ""
@@ -77,14 +76,6 @@ class AnalyticsCollector:
         for key, value in OS.items():
             os_type = key if os_type in value else os_type
         return os_type
-
-    @staticmethod
-    def id_generator(string):
-        dt = datetime.now().strftime("%H%M%S%f")
-        string_to_hash = str.encode(f'{dt}{string}')
-        hash_str = hashlib.sha1(string_to_hash).hexdigest()
-        min_hash = hash_str[:len(hash_str)//3]
-        return min_hash
 
     def is_analytics_enabled(self):
         return str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y']
@@ -130,11 +121,14 @@ class AnalyticsCollector:
             elif selenium_test in line:
                 self.selenium_test_count = self.selenium_test_count + 1
 
+    def __convert_to_sec(self, time):
+        seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
+        return int(str(time)[:-1]) * seconds_per_unit[str(time)[-1]]
+
     def generate_analytics(self):
         self.application_url = self.config_yml.server_url
-        self.run_id = self.id_generator(string=self.application_url)
         self.concurrency = self.config_yml.concurrency
-        self.duration = self.config_yml.duration
+        self.duration = self.__convert_to_sec(self.config_yml.duration)
         self.os = self.get_os()
         self.actual_duration = self.get_actual_run_time()
         self.tool_version = TOOLKIT_VERSION
@@ -147,20 +141,22 @@ class AnalyticsSender:
         self.run_analytics = analytics_instance
 
     def send_request(self):
-        base_url = BASE_URL
-        params_string = f'date={self.run_analytics.date}&' \
-                        f'app_type={self.run_analytics.application_type}&' \
-                        f'os={self.run_analytics.os}&' \
-                        f'tool_ver={self.run_analytics.tool_version}&' \
-                        f'run_id={self.run_analytics.run_id}&' \
-                        f'exp_dur={self.run_analytics.duration}&' \
-                        f'act_dur={self.run_analytics.actual_duration}&' \
-                        f'sel_count={self.run_analytics.selenium_test_count}&' \
-                        f'jm_count={self.run_analytics.jmeter_test_count}&' \
-                        f'concurrency={self.run_analytics.concurrency}'
-
-        r = requests.get(url=f'{base_url}{params_string}')
-        if r.status_code != 403:
+        headers = {"Content-Type": "application/json"}
+        params = {"date": self.run_analytics.date,
+                  "time_stamp": datetime.now().timestamp(),
+                  "app_type": self.run_analytics.application_type,
+                  "os": self.run_analytics.os,
+                  "tool_ver": self.run_analytics.tool_version,
+                  "run_id": uuid.uuid1().hex,
+                  "exp_dur": self.run_analytics.duration,
+                  "act_dur": self.run_analytics.actual_duration,
+                  "sel_count": self.run_analytics.selenium_test_count,
+                  "jm_count": self.run_analytics.jmeter_test_count,
+                  "concurrency": self.run_analytics.concurrency
+        }
+        r = requests.post(url=f'{BASE_URL}', json=params, headers=headers)
+        print(params)
+        if r.status_code != 200:
             print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
 
 
@@ -175,3 +171,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
