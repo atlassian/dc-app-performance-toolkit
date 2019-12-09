@@ -18,6 +18,7 @@ DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 
+
 APP_TYPE_MSG = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
 
 
@@ -39,6 +40,7 @@ class AnalyticsCollector:
 
     def __init__(self, application_type):
         self.application_type = application_type
+        self.run_id = ""
         self.application_url = ""
         self.tool_version = ""
         self.os = ""
