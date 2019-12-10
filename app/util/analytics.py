@@ -115,7 +115,7 @@ class AnalyticsCollector:
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
 
-    def get_actual_test_count(self):
+    def set_actual_test_count(self):
         jmeter_test = ' jmeter_'
         selenium_test = ' selenium_'
         for line in self.bzt_log_file:
@@ -131,7 +131,7 @@ class AnalyticsCollector:
         units = ''.join(filter(str.isalpha, duration))
         return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
 
-    def get_date_timestamp(self):
+    def set_date_timestamp(self):
         utc_now = datetime.utcnow()
         self.time_stamp = int(round(utc_now.timestamp() * 1000))
         self.date = utc_now.strftime("%m/%d/%Y-%H:%M:%S")
@@ -143,8 +143,8 @@ class AnalyticsCollector:
         self.os = self.get_os()
         self.actual_duration = self.get_actual_run_time()
         self.tool_version = TOOLKIT_VERSION
-        self.get_actual_test_count()
-        self.get_date_timestamp()
+        self.set_actual_test_count()
+        self.set_date_timestamp()
 
 
 class AnalyticsSender:
@@ -155,20 +155,19 @@ class AnalyticsSender:
     def send_request(self):
         headers = {"Content-Type": "application/json"}
         payload = {"run_id": self.analytics.run_id,
-                  "date": self.analytics.date,
-                  "time_stamp": self.analytics.time_stamp,
-                  "app_type": self.analytics.application_type,
-                  "os": self.analytics.os,
-                  "tool_ver": self.analytics.tool_version,
-                  "exp_dur": self.analytics.duration,
-                  "act_dur":  self.analytics.actual_duration,
-                  "sel_count": self.analytics.selenium_test_count,
-                  "jm_count": self.analytics.jmeter_test_count,
-                  "concurrency": self.analytics.concurrency
+                   "date": self.analytics.date,
+                   "time_stamp": self.analytics.time_stamp,
+                   "app_type": self.analytics.application_type,
+                   "os": self.analytics.os,
+                   "tool_ver": self.analytics.tool_version,
+                   "exp_dur": self.analytics.duration,
+                   "act_dur":  self.analytics.actual_duration,
+                   "sel_count": self.analytics.selenium_test_count,
+                   "jm_count": self.analytics.jmeter_test_count,
+                   "concurrency": self.analytics.concurrency
         }
         r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
-        response = r.json()
-        print(response)
+        print(r.json())
         if r.status_code != 200:
             print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
 
