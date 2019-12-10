@@ -12,10 +12,13 @@ from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
+SUCCESS_TEST_RATE = 95.00
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
-
+SUCCESS_TEST_RATE_REGX = r'(\d{1,3}.\d{1,2}%)'
+JMETER_TEST_REGX = r'jmeter_\S*'
+SELENIUM_TEST_REGX = r'selenium_\S*'
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 
 
@@ -115,14 +118,42 @@ class AnalyticsCollector:
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
 
+    def get_test_count_by_type(self, tests_type, log):
+            trigger = f' {tests_type}_'
+            test_search_regx = ""
+            if tests_type == 'jmeter':
+                test_search_regx = JMETER_TEST_REGX
+            elif tests_type == 'selenium':
+                test_search_regx = SELENIUM_TEST_REGX
+            tests = {}
+            for line in log:
+                if trigger in line and ('FAIL' in line or 'OK' in line):
+                    test_name = re.findall(test_search_regx, line)[0]
+                    test_rate = float(''.join(re.findall(SUCCESS_TEST_RATE_REGX, line))[:-1])
+                    if test_name not in tests:
+                        tests[test_name] = test_rate
+            return tests
+
+    def get_success_count_from_tests(self, tests):
+        success_test_count = 0
+        for _, success_rate in tests.items():
+            if success_rate >= SUCCESS_TEST_RATE:
+                success_test_count = success_test_count + 1
+        return success_test_count
+
+
     def set_actual_test_count(self):
-        jmeter_test = ' jmeter_'
-        selenium_test = ' selenium_'
-        for line in self.bzt_log_file:
-            if jmeter_test in line:
-                self.jmeter_test_count = self.jmeter_test_count + 1
-            elif selenium_test in line:
-                self.selenium_test_count = self.selenium_test_count + 1
+        TEST_RESULTS_START_STRING = 'Request label stats:'
+        res_string_idx = [str(index) for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
+        # Cut bzt.log from the 'Request label stats:' string to the end
+        if res_string_idx:
+            res_string_idx = int(''.join(res_string_idx))
+            results_bzt_run = self.bzt_log_file[res_string_idx:]
+
+            selenium_tests = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
+            jmeter_tests = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
+            self.selenium_test_count = self.get_success_count_from_tests(selenium_tests)
+            self.jmeter_test_count = self.get_success_count_from_tests(jmeter_tests)
 
     def __convert_to_sec(self, duration):
         seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
