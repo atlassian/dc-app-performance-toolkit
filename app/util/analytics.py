@@ -136,7 +136,7 @@ class AnalyticsCollector:
 
     def get_success_count_from_tests(self, tests):
         success_test_count = 0
-        for _, success_rate in tests.items():
+        for success_rate in tests.values():
             if success_rate >= SUCCESS_TEST_RATE:
                 success_test_count = success_test_count + 1
         return success_test_count
@@ -147,7 +147,7 @@ class AnalyticsCollector:
         res_string_idx = [index for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
         # Cut bzt.log from the 'Request label stats:' string to the end
         if res_string_idx:
-            res_string_idx = int(res_string_idx[0])
+            res_string_idx = res_string_idx[0]
             results_bzt_run = self.bzt_log_file[res_string_idx:]
 
             selenium_tests = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
