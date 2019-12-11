@@ -3,20 +3,23 @@ import os
 import re
 import requests
 from datetime import datetime
-import hashlib
 import platform
+import uuid
 
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
+SUCCESS_TEST_RATE = 95.00
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
+SUCCESS_TEST_RATE_REGX = r'(\d{1,3}.\d{1,2}%)'
+JMETER_TEST_REGX = r'jmeter_\S*'
+SELENIUM_TEST_REGX = r'selenium_\S*'
+BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 
-BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats.html?'
-DEV_BASE_URL = 'http://dcapps-ua-test.s3.us-east-2.amazonaws.com/stats_dev.html?'
 
 APP_TYPE_MSG = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
 
@@ -39,7 +42,7 @@ class AnalyticsCollector:
 
     def __init__(self, application_type):
         self.application_type = application_type
-        self.run_id = ""
+        self.run_id = str(uuid.uuid1())
         self.application_url = ""
         self.tool_version = ""
         self.os = ""
@@ -48,6 +51,7 @@ class AnalyticsCollector:
         self.actual_duration = 0
         self.selenium_test_count = 0
         self.jmeter_test_count = 0
+        self.time_stamp = ""
         self.date = ""
 
     @property
@@ -77,14 +81,6 @@ class AnalyticsCollector:
         for key, value in OS.items():
             os_type = key if os_type in value else os_type
         return os_type
-
-    @staticmethod
-    def id_generator(string):
-        dt = datetime.now().strftime("%H%M%S%f")
-        string_to_hash = str.encode(f'{dt}{string}')
-        hash_str = hashlib.sha1(string_to_hash).hexdigest()
-        min_hash = hash_str[:len(hash_str)//3]
-        return min_hash
 
     def is_analytics_enabled(self):
         return str(self.config_yml.analytics_collector).lower() in ['yes', 'true', 'y']
@@ -121,46 +117,90 @@ class AnalyticsCollector:
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
 
-    def get_actual_test_count(self):
-        jmeter_test = ' jmeter_'
-        selenium_test = ' selenium_'
-        for line in self.bzt_log_file:
-            if jmeter_test in line:
-                self.jmeter_test_count = self.jmeter_test_count + 1
-            elif selenium_test in line:
-                self.selenium_test_count = self.selenium_test_count + 1
+    @staticmethod
+    def get_test_count_by_type(tests_type, log):
+        trigger = f' {tests_type}_'
+        test_search_regx = ""
+        if tests_type == 'jmeter':
+            test_search_regx = JMETER_TEST_REGX
+        elif tests_type == 'selenium':
+            test_search_regx = SELENIUM_TEST_REGX
+        tests = {}
+        for line in log:
+            if trigger in line and ('FAIL' in line or 'OK' in line):
+                test_name = re.findall(test_search_regx, line)[0]
+                test_rate = float(''.join(re.findall(SUCCESS_TEST_RATE_REGX, line))[:-1])
+                if test_name not in tests:
+                    tests[test_name] = test_rate
+        return tests
+
+    @staticmethod
+    def get_success_count_from_tests(tests):
+        success_test_count = 0
+        for success_rate in tests.values():
+            if success_rate >= SUCCESS_TEST_RATE:
+                success_test_count = success_test_count + 1
+        return success_test_count
+
+    def set_actual_test_count(self):
+        TEST_RESULTS_START_STRING = 'Request label stats:'
+        res_string_idx = [index for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
+        # Cut bzt.log from the 'Request label stats:' string to the end
+        if res_string_idx:
+            res_string_idx = res_string_idx[0]
+            results_bzt_run = self.bzt_log_file[res_string_idx:]
+
+            selenium_tests = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
+            jmeter_tests = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
+            self.selenium_test_count = self.get_success_count_from_tests(selenium_tests)
+            self.jmeter_test_count = self.get_success_count_from_tests(jmeter_tests)
+
+    @staticmethod
+    def __convert_to_sec(duration):
+        seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
+        duration = str(duration)
+        numbers = ''.join(filter(str.isdigit, duration))
+        units = ''.join(filter(str.isalpha, duration))
+        return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
+
+    def set_date_timestamp(self):
+        utc_now = datetime.utcnow()
+        self.time_stamp = int(round(utc_now.timestamp() * 1000))
+        self.date = utc_now.strftime("%m/%d/%Y-%H:%M:%S")
 
     def generate_analytics(self):
         self.application_url = self.config_yml.server_url
-        self.run_id = self.id_generator(string=self.application_url)
         self.concurrency = self.config_yml.concurrency
-        self.duration = self.config_yml.duration
+        self.duration = self.__convert_to_sec(self.config_yml.duration)
         self.os = self.get_os()
         self.actual_duration = self.get_actual_run_time()
         self.tool_version = TOOLKIT_VERSION
-        self.get_actual_test_count()
-        self.date = datetime.utcnow().strftime("%m/%d/%Y-%H:%M:%S")
+        self.set_actual_test_count()
+        self.set_date_timestamp()
+
 
 class AnalyticsSender:
 
     def __init__(self, analytics_instance):
-        self.run_analytics = analytics_instance
+        self.analytics = analytics_instance
 
     def send_request(self):
-        base_url = BASE_URL
-        params_string = f'date={self.run_analytics.date}&' \
-                        f'app_type={self.run_analytics.application_type}&' \
-                        f'os={self.run_analytics.os}&' \
-                        f'tool_ver={self.run_analytics.tool_version}&' \
-                        f'run_id={self.run_analytics.run_id}&' \
-                        f'exp_dur={self.run_analytics.duration}&' \
-                        f'act_dur={self.run_analytics.actual_duration}&' \
-                        f'sel_count={self.run_analytics.selenium_test_count}&' \
-                        f'jm_count={self.run_analytics.jmeter_test_count}&' \
-                        f'concurrency={self.run_analytics.concurrency}'
-
-        r = requests.get(url=f'{base_url}{params_string}')
-        if r.status_code != 403:
+        headers = {"Content-Type": "application/json"}
+        payload = {"run_id": self.analytics.run_id,
+                   "date": self.analytics.date,
+                   "time_stamp": self.analytics.time_stamp,
+                   "app_type": self.analytics.application_type,
+                   "os": self.analytics.os,
+                   "tool_ver": self.analytics.tool_version,
+                   "exp_dur": self.analytics.duration,
+                   "act_dur":  self.analytics.actual_duration,
+                   "sel_count": self.analytics.selenium_test_count,
+                   "jm_count": self.analytics.jmeter_test_count,
+                   "concurrency": self.analytics.concurrency
+        }
+        r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
+        print(r.json())
+        if r.status_code != 200:
             print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
 
 
@@ -175,3 +215,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
