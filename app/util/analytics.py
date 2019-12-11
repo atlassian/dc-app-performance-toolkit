@@ -117,29 +117,30 @@ class AnalyticsCollector:
         run_time_start_finish = self.get_duration_by_start_finish_strings()
         return run_time_bzt if run_time_bzt else run_time_start_finish
 
-    def get_test_count_by_type(self, tests_type, log):
-            trigger = f' {tests_type}_'
-            test_search_regx = ""
-            if tests_type == 'jmeter':
-                test_search_regx = JMETER_TEST_REGX
-            elif tests_type == 'selenium':
-                test_search_regx = SELENIUM_TEST_REGX
-            tests = {}
-            for line in log:
-                if trigger in line and ('FAIL' in line or 'OK' in line):
-                    test_name = re.findall(test_search_regx, line)[0]
-                    test_rate = float(''.join(re.findall(SUCCESS_TEST_RATE_REGX, line))[:-1])
-                    if test_name not in tests:
-                        tests[test_name] = test_rate
-            return tests
+    @staticmethod
+    def get_test_count_by_type(tests_type, log):
+        trigger = f' {tests_type}_'
+        test_search_regx = ""
+        if tests_type == 'jmeter':
+            test_search_regx = JMETER_TEST_REGX
+        elif tests_type == 'selenium':
+            test_search_regx = SELENIUM_TEST_REGX
+        tests = {}
+        for line in log:
+            if trigger in line and ('FAIL' in line or 'OK' in line):
+                test_name = re.findall(test_search_regx, line)[0]
+                test_rate = float(''.join(re.findall(SUCCESS_TEST_RATE_REGX, line))[:-1])
+                if test_name not in tests:
+                    tests[test_name] = test_rate
+        return tests
 
-    def get_success_count_from_tests(self, tests):
+    @staticmethod
+    def get_success_count_from_tests(tests):
         success_test_count = 0
         for success_rate in tests.values():
             if success_rate >= SUCCESS_TEST_RATE:
                 success_test_count = success_test_count + 1
         return success_test_count
-
 
     def set_actual_test_count(self):
         TEST_RESULTS_START_STRING = 'Request label stats:'
@@ -154,7 +155,8 @@ class AnalyticsCollector:
             self.selenium_test_count = self.get_success_count_from_tests(selenium_tests)
             self.jmeter_test_count = self.get_success_count_from_tests(jmeter_tests)
 
-    def __convert_to_sec(self, duration):
+    @staticmethod
+    def __convert_to_sec(duration):
         seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
         duration = str(duration)
         numbers = ''.join(filter(str.isdigit, duration))
