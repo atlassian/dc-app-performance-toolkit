@@ -144,10 +144,10 @@ class AnalyticsCollector:
 
     def set_actual_test_count(self):
         TEST_RESULTS_START_STRING = 'Request label stats:'
-        res_string_idx = [str(index) for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
+        res_string_idx = [index for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
         # Cut bzt.log from the 'Request label stats:' string to the end
         if res_string_idx:
-            res_string_idx = int(''.join(res_string_idx))
+            res_string_idx = int(res_string_idx[0])
             results_bzt_run = self.bzt_log_file[res_string_idx:]
 
             selenium_tests = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
