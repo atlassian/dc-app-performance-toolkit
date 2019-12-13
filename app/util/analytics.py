@@ -5,13 +5,12 @@ import requests
 from datetime import datetime
 import platform
 import uuid
-
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
-SUCCESS_TEST_RATE = 95.00
+
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
@@ -49,8 +48,8 @@ class AnalyticsCollector:
         self.duration = 0
         self.concurrency = 0
         self.actual_duration = 0
-        self.selenium_test_count = 0
-        self.jmeter_test_count = 0
+        self.selenium_test_rates = 0
+        self.jmeter_test_rates = 0
         self.time_stamp = ""
         self.date = ""
 
@@ -106,8 +105,8 @@ class AnalyticsCollector:
                 str_duration = string.split('duration:')[1].replace('\n', '')
                 str_duration = str_duration.replace(' ', '')
                 duration_datetime_obj = datetime.strptime(str_duration, '%H:%M:%S')
-                test_duration = duration_datetime_obj.hour*3600 + \
-                                duration_datetime_obj.minute*60 + duration_datetime_obj.second
+                test_duration = (duration_datetime_obj.hour*3600 +
+                                 duration_datetime_obj.minute*60 + duration_datetime_obj.second)
                 break
         return test_duration
 
@@ -134,26 +133,16 @@ class AnalyticsCollector:
                     tests[test_name] = test_rate
         return tests
 
-    @staticmethod
-    def get_success_count_from_tests(tests):
-        success_test_count = 0
-        for success_rate in tests.values():
-            if success_rate >= SUCCESS_TEST_RATE:
-                success_test_count = success_test_count + 1
-        return success_test_count
-
     def set_actual_test_count(self):
-        TEST_RESULTS_START_STRING = 'Request label stats:'
-        res_string_idx = [index for index, value in enumerate(self.bzt_log_file) if TEST_RESULTS_START_STRING in value]
+        test_result_string_trigger = 'Request label stats:'
+        res_string_idx = [index for index, value in enumerate(self.bzt_log_file) if test_result_string_trigger in value]
         # Cut bzt.log from the 'Request label stats:' string to the end
         if res_string_idx:
             res_string_idx = res_string_idx[0]
             results_bzt_run = self.bzt_log_file[res_string_idx:]
 
-            selenium_tests = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
-            jmeter_tests = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
-            self.selenium_test_count = self.get_success_count_from_tests(selenium_tests)
-            self.jmeter_test_count = self.get_success_count_from_tests(jmeter_tests)
+            self.selenium_test_rates = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
+            self.jmeter_test_rates = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
 
     @staticmethod
     def __convert_to_sec(duration):
@@ -194,8 +183,8 @@ class AnalyticsSender:
                    "tool_ver": self.analytics.tool_version,
                    "exp_dur": self.analytics.duration,
                    "act_dur":  self.analytics.actual_duration,
-                   "sel_count": self.analytics.selenium_test_count,
-                   "jm_count": self.analytics.jmeter_test_count,
+                   "selenium_test_rates": self.analytics.selenium_test_rates,
+                   "jmeter_test_rates": self.analytics.jmeter_test_rates,
                    "concurrency": self.analytics.concurrency
         }
         r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
