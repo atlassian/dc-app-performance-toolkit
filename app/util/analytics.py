@@ -5,13 +5,12 @@ import requests
 from datetime import datetime
 import platform
 import uuid
-import json
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
-SUCCESS_TEST_RATE = 95.00
+
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
@@ -49,8 +48,8 @@ class AnalyticsCollector:
         self.duration = 0
         self.concurrency = 0
         self.actual_duration = 0
-        self.selenium_test_count = 0
-        self.jmeter_test_count = 0
+        self.selenium_test_rates = 0
+        self.jmeter_test_rates = 0
         self.time_stamp = ""
         self.date = ""
 
@@ -142,8 +141,8 @@ class AnalyticsCollector:
             res_string_idx = res_string_idx[0]
             results_bzt_run = self.bzt_log_file[res_string_idx:]
 
-            self.selenium_test_count = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
-            self.jmeter_test_count = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
+            self.selenium_test_rates = self.get_test_count_by_type(tests_type='selenium', log=results_bzt_run)
+            self.jmeter_test_rates = self.get_test_count_by_type(tests_type='jmeter', log=results_bzt_run)
 
     @staticmethod
     def __convert_to_sec(duration):
@@ -184,8 +183,8 @@ class AnalyticsSender:
                    "tool_ver": self.analytics.tool_version,
                    "exp_dur": self.analytics.duration,
                    "act_dur":  self.analytics.actual_duration,
-                   "full_selenium": self.analytics.selenium_test_count,
-                   "full_jmeter": self.analytics.jmeter_test_count,
+                   "selenium_test_rates": self.analytics.selenium_test_rates,
+                   "jmeter_test_rates": self.analytics.jmeter_test_rates,
                    "concurrency": self.analytics.concurrency
         }
         r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
