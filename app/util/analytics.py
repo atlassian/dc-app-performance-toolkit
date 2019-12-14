@@ -7,7 +7,7 @@ import platform
 import uuid
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 from util.data_preparation.api.jira_clients import JiraRestClient
-from util.data_preparation.api.confluence_clients import ConfluenceRestClient, ConfluenceRpcClient
+from util.data_preparation.api.confluence_clients import ConfluenceRestClient
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -229,4 +229,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
