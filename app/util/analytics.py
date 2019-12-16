@@ -200,7 +200,7 @@ class AnalyticsSender:
     def send_request(self):
         headers = {"Content-Type": "application/json"}
         payload = {"run_id": self.analytics.run_id,
-                   "application_version": self.analytics.application_version,
+                   "app_version": self.analytics.application_version,
                    "date": self.analytics.date,
                    "time_stamp": self.analytics.time_stamp,
                    "app_type": self.analytics.application_type,
