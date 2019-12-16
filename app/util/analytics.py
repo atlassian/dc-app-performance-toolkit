@@ -6,6 +6,8 @@ from datetime import datetime
 import platform
 import uuid
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
+from util.data_preparation.api.jira_clients import JiraRestClient
+from util.data_preparation.api.confluence_clients import ConfluenceRestClient
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -52,6 +54,7 @@ class AnalyticsCollector:
         self.jmeter_test_rates = 0
         self.time_stamp = ""
         self.date = ""
+        self.application_version = ""
 
     @property
     def config_yml(self):
@@ -157,6 +160,26 @@ class AnalyticsCollector:
         self.time_stamp = int(round(utc_now.timestamp() * 1000))
         self.date = utc_now.strftime("%m/%d/%Y-%H:%M:%S")
 
+    def get_jira_version(self):
+        client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                password=self.config_yml.admin_password)
+        jira_server_info = client.get_server_info()
+        jira_server_version = jira_server_info.get('version', '')
+        return jira_server_version
+
+    def get_confluence_version(self):
+        client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                      password=self.config_yml.admin_password)
+        confluence_server_version = client.get_confluence_version()
+        return confluence_server_version
+
+    def get_application_version(self):
+        if self.application_type.lower() == JIRA:
+            return self.get_jira_version()
+        if self.application_type.lower() == CONFLUENCE:
+            return self.get_confluence_version()
+        # TODO Bitbucket the same approach
+
     def generate_analytics(self):
         self.application_url = self.config_yml.server_url
         self.concurrency = self.config_yml.concurrency
@@ -166,6 +189,7 @@ class AnalyticsCollector:
         self.tool_version = TOOLKIT_VERSION
         self.set_actual_test_count()
         self.set_date_timestamp()
+        self.application_version = self.get_application_version()
 
 
 class AnalyticsSender:
@@ -176,6 +200,7 @@ class AnalyticsSender:
     def send_request(self):
         headers = {"Content-Type": "application/json"}
         payload = {"run_id": self.analytics.run_id,
+                   "app_version": self.analytics.application_version,
                    "date": self.analytics.date,
                    "time_stamp": self.analytics.time_stamp,
                    "app_type": self.analytics.application_type,
@@ -204,4 +229,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
