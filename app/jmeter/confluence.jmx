@@ -61,7 +61,7 @@
         <collectionProp name="HeaderManager.headers">
           <elementProp name="" elementType="Header">
             <stringProp name="Header.name">Origin</stringProp>
-            <stringProp name="Header.value">${application.protocol}://${application.hostname}</stringProp>
+            <stringProp name="Header.value">${application.protocol}://${application.hostname}:${application.port}</stringProp>
           </elementProp>
         </collectionProp>
       </HeaderManager>
@@ -295,10 +295,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/login.action?os_destination=%2Findex.action&amp;permissionViolation=true</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -348,10 +344,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/login.action?os_destination=%2Findex.action&amp;permissionViolation=true</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -457,10 +449,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -510,10 +498,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -559,10 +543,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -615,10 +595,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -697,10 +673,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -810,10 +782,6 @@
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                </elementProp>
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
                   <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -946,10 +914,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1129,10 +1093,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1189,10 +1149,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1257,10 +1213,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1321,10 +1273,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1385,10 +1333,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1449,10 +1393,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1561,10 +1501,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1618,10 +1554,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1674,10 +1606,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1734,10 +1662,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1794,10 +1718,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1854,10 +1774,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -1921,10 +1837,6 @@ if (totalAncestorID &gt; 0)
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2008,10 +1920,6 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2124,10 +2032,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/login.action?os_destination=%2Findex.action&amp;permissionViolation=true</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2237,10 +2141,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2290,10 +2190,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2339,10 +2235,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2395,10 +2287,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2477,10 +2365,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2590,10 +2474,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2674,10 +2554,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2774,10 +2650,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2834,10 +2706,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2902,10 +2770,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -2966,10 +2830,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3030,10 +2890,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3094,10 +2950,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3186,10 +3038,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3262,10 +3110,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3318,10 +3162,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3378,10 +3218,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3438,10 +3274,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3498,10 +3330,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3566,10 +3394,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/viewpage.action?pageId=83492986</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3658,10 +3482,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3735,10 +3555,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3803,10 +3619,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3895,10 +3707,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/index.action</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -3990,10 +3798,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4051,10 +3855,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4100,10 +3900,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4156,10 +3952,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4216,10 +4008,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4277,10 +4065,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4335,10 +4119,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4420,10 +4200,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createblogpost.action?spaceKey=~admin</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4490,10 +4266,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173736329&amp;draftShareId=f32d5da6-341a-491e-9b74-f2184369cadf&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4546,10 +4318,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173736329&amp;draftShareId=f32d5da6-341a-491e-9b74-f2184369cadf&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4634,10 +4402,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173736329&amp;draftShareId=f32d5da6-341a-491e-9b74-f2184369cadf&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4695,7 +4459,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}${x_new_title_blog}</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/${x_new_title_blog}</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4708,10 +4472,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173736329&amp;draftShareId=f32d5da6-341a-491e-9b74-f2184369cadf&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4774,10 +4534,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4834,10 +4590,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4887,10 +4639,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -4945,10 +4693,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5009,10 +4753,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5065,10 +4805,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5133,10 +4869,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5197,10 +4929,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5246,10 +4974,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5291,10 +5015,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5359,10 +5079,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5451,10 +5167,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5507,10 +5219,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5567,10 +5275,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/2018/04/17/Test+Blog+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5663,10 +5367,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=175374338&amp;draftShareId=b74521fb-1e06-4def-8218-d81ee02cdef4&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5773,10 +5473,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+1</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5868,10 +5564,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051&amp;src=quick-create</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5928,10 +5620,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051&amp;src=quick-create</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -5988,10 +5676,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051&amp;src=quick-create</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6041,10 +5725,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051&amp;src=quick-create</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6098,10 +5778,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6155,10 +5831,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6212,10 +5884,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6269,10 +5937,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6325,10 +5989,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6414,10 +6074,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/createpage.action?spaceKey=~qpham&amp;fromPageId=173441051</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6515,10 +6171,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173441052&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6588,10 +6240,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173441052&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6705,10 +6353,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/pages/resumedraft.action?draftId=173441052&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6758,10 +6402,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6818,10 +6458,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6886,10 +6522,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -6954,10 +6586,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7018,10 +6646,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7082,10 +6706,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7146,10 +6766,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7203,10 +6819,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7259,10 +6871,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7319,10 +6927,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7415,10 +7019,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7471,10 +7071,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7531,10 +7127,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7591,10 +7183,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~qpham/Test+Performance+2</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7658,10 +7246,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~bmcnamara/Collaborate+Now</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7805,10 +7389,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7890,10 +7470,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -7958,10 +7534,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8015,10 +7587,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8100,10 +7668,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8161,10 +7725,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8218,10 +7778,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8303,10 +7859,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8402,10 +7954,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8522,10 +8070,6 @@ vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8608,10 +8152,6 @@ vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8712,10 +8252,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8790,10 +8326,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/pages/resumedraft.action?draftId=0&amp;draftShareId=&amp;</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8843,10 +8375,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8903,10 +8431,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -8971,10 +8495,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9039,10 +8559,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9103,10 +8619,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9167,10 +8679,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9259,10 +8767,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9323,10 +8827,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9380,10 +8880,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9436,10 +8932,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9496,10 +8988,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9556,10 +9044,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9616,10 +9100,6 @@ if (totalAncestorID &gt; 0)
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9726,10 +9206,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/viewpage.action?pageId=10354815</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -9849,10 +9325,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/display/~admin/Test+-+Performance</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -10014,10 +9486,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/viewpageattachments.action?pageId=173309964</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -10126,10 +9594,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
               <hashTree>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Referer" elementType="Header">
-                      <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">${application.protocol}://${application.hostname}/pages/viewpage.action?pageId=2606119446</stringProp>
-                    </elementProp>
                     <elementProp name="Accept-Language" elementType="Header">
                       <stringProp name="Header.name">Accept-Language</stringProp>
                       <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -10191,10 +9655,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/viewpage.action?pageId=83492986</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
@@ -10251,10 +9711,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                     <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">${application.port}://${application.hostname}:${application.port}/${application.postfix}/pages/viewpage.action?pageId=83492986</stringProp>
-                      </elementProp>
                       <elementProp name="Accept-Language" elementType="Header">
                         <stringProp name="Header.name">Accept-Language</stringProp>
                         <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
