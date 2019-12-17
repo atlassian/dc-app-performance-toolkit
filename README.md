@@ -23,12 +23,12 @@ The request include the following data, and will in no way contain PII (Personal
 - application under test (Jira/Confluence/Bitbucket)
 - timestamp of performance toolkit run
 - performance toolkit version
-- operating system version
-- concurrency and duration from $product.yml file (e.g jira.yml or confluence.yml)
-- executed action names and success rate
+- operating system
+- `concurrency` and `test_duration` from `$product.yml` file (e.g jira.yml or confluence.yml)
 - actual run duration
+- executed action names and success rates
 
-To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the allow_analytics toggle in $product.yml file.
+To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
 
 
 ## Installation and set up
