@@ -17,16 +17,16 @@ At the moment, Jira DC and Confluence DC support is in beta. Bitbucket DC suppor
 ## Analytics
 The Data Center App Performance Toolkit includes some simple usage analytics.  
 We collect this data to better understand how the community is using the Performance Toolkit, and to help us plan our roadmap.
-When a performance tests is completed we send events with analytics.
+When a performance tests is completed we send one HTTP POST request with analytics.
 
-The events include the following data, and will in no way contain PII (Personally Identifiable Information).
+The request include the following data, and will in no way contain PII (Personally Identifiable Information).
+- application under test (Jira/Confluence/Bitbucket)
 - timestamp of performance toolkit run
 - performance toolkit version
 - operating system version
-- concurrency and duration from `$config.yml` file (e.g jira.yml or confluence.yml)
-- run test name and test results
-- run duration
-- application under test (Jira/Confluence/Bitbucket)
+- concurrency and duration from $product.yml file (e.g jira.yml or confluence.yml)
+- executed action names and success rate
+- actual run duration
 
 To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the allow_analytics toggle in $product.yml file.
 
