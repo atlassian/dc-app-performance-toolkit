@@ -13,7 +13,24 @@ At the moment, Jira DC and Confluence DC support is in beta. Bitbucket DC suppor
 * Supported Confluence versions:
     * The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
     * The latest Confluence Platform Release: 7.0.4
-    
+
+## Analytics
+The Data Center App Performance Toolkit includes some simple usage analytics.  
+We collect this data to better understand how the community is using the Performance Toolkit, and to help us plan our roadmap.
+When a performance tests is completed we send events with analytics.
+
+The events include the following data, and will in no way contain PII (Personally Identifiable Information).
+- timestamp of performance toolkit run
+- performance toolkit version
+- operating system version
+- concurrency and duration from `$config.yml` file (e.g jira.yml or confluence.yml)
+- run test name and test results
+- run duration
+- application under test (Jira/Confluence/Bitbucket)
+
+To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the allow_analytics toggle in $product.yml file.
+
+
 ## Installation and set up
 
 #### Dependencies
@@ -101,3 +118,4 @@ Official Taurus installation instructions are located [here](https://gettaurus.o
 
 ## Running Taurus
 Navigate to [docs](docs) folder and follow instructions.
+
