@@ -24,7 +24,7 @@ The request include the following data, and will in no way contain PII (Personal
 - timestamp of performance toolkit run
 - performance toolkit version
 - operating system
-- `concurrency` and `test_duration` from `$product.yml` file (e.g jira.yml or confluence.yml)
+- `concurrency` and `test_duration` from `$product.yml` file
 - actual run duration
 - executed action names and success rates
 
@@ -38,7 +38,7 @@ To help us continue improving the Toolkit, we’d love you to keep these analyti
 * JDK 8
 * Google Chrome web browser. 
 
-Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product%.yml file (modules->selenium->chromedriver->version).
+Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product.yml file (modules->selenium->chromedriver->version).
 
 If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
