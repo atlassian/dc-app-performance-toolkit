@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: jira-loadb-1gk0fw32i1rza-1304264642.us-east-2.elb.amazonaws.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: test_jira_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
