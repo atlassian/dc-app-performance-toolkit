@@ -113,7 +113,7 @@ The request include the following data, and will in no way contain PII (Personal
 - `concurrency` and `test_duration` from `$product.yml` file
 - actual run duration
 - executed action names and success rates
-- uniq identifier non PII
+- uniq identifier (non PII)
 
 To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
 
