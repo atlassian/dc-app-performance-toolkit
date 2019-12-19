@@ -116,9 +116,5 @@ The request include the following data, and will in no way contain PII (Personal
 
 To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
 
-
-
-
 ## Running Taurus
 Navigate to [docs](docs) folder and follow instructions.
-
