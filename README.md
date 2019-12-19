@@ -14,22 +14,6 @@ At the moment, Jira DC and Confluence DC support is in beta. Bitbucket DC suppor
     * The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
     * The latest Confluence Platform Release: 7.0.4
 
-## Analytics
-The Data Center App Performance Toolkit includes some simple usage analytics.  
-We collect this data to better understand how the community is using the Performance Toolkit, and to help us plan our roadmap.
-When a performance tests is completed we send one HTTP POST request with analytics.
-
-The request include the following data, and will in no way contain PII (Personally Identifiable Information).
-- application under test (Jira/Confluence/Bitbucket)
-- timestamp of performance toolkit run
-- performance toolkit version
-- operating system
-- `concurrency` and `test_duration` from `$product.yml` file
-- actual run duration
-- executed action names and success rates
-
-To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
-
 
 ## Installation and set up
 
@@ -115,6 +99,25 @@ pip install -r requirements.txt
 
 ## Additional info
 Official Taurus installation instructions are located [here](https://gettaurus.org/docs/Installation/).
+
+## Analytics
+The Data Center App Performance Toolkit includes some simple usage analytics.  
+We collect this data to better understand how the community is using the Performance Toolkit, and to help us plan our roadmap.
+When a performance tests is completed we send one HTTP POST request with analytics.
+
+The request include the following data, and will in no way contain PII (Personally Identifiable Information).
+- application under test (Jira/Confluence/Bitbucket)
+- timestamp of performance toolkit run
+- performance toolkit version
+- operating system
+- `concurrency` and `test_duration` from `$product.yml` file
+- actual run duration
+- executed action names and success rates
+
+To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
+
+
+
 
 ## Running Taurus
 Navigate to [docs](docs) folder and follow instructions.
