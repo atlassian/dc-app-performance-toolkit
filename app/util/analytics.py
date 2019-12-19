@@ -184,7 +184,7 @@ class AnalyticsCollector:
         # TODO Bitbucket the same approach
 
     @property
-    def uniq_id(self):
+    def uniq_user_id(self):
         user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
         uid = hashlib.pbkdf2_hmac('sha256', user_info.encode('utf-8'),
                                   b"I'm a salty boi, in a salty world, it's fantastic, there's pepper eveywhere",
@@ -210,7 +210,7 @@ class AnalyticsSender:
     def send_request(self):
         headers = {"Content-Type": "application/json"}
         payload = {"run_id": self.analytics.run_id,
-                   "user_id": self.analytics.uniq_id,
+                   "user_id": self.analytics.uniq_user_id,
                    "app_version": self.analytics.application_version,
                    "date": self.analytics.date,
                    "time_stamp": self.analytics.time_stamp,
