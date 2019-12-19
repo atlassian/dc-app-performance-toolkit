@@ -5,6 +5,10 @@ import requests
 from datetime import datetime
 import platform
 import uuid
+import getpass
+import socket
+import hashlib
+
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
 from util.data_preparation.api.jira_clients import JiraRestClient
 from util.data_preparation.api.confluence_clients import ConfluenceRestClient
@@ -44,7 +48,6 @@ class AnalyticsCollector:
     def __init__(self, application_type):
         self.application_type = application_type
         self.run_id = str(uuid.uuid1())
-        self.application_url = ""
         self.tool_version = ""
         self.os = ""
         self.duration = 0
@@ -180,8 +183,15 @@ class AnalyticsCollector:
             return self.get_confluence_version()
         # TODO Bitbucket the same approach
 
+    @property
+    def uniq_user_id(self):
+        user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
+        uid = hashlib.pbkdf2_hmac('sha256', user_info.encode('utf-8'),
+                                  b"I'm a salty boi, in a salty world, it's fantastic, there's pepper eveywhere",
+                                  100000).hex()
+        return uid
+
     def generate_analytics(self):
-        self.application_url = self.config_yml.server_url
         self.concurrency = self.config_yml.concurrency
         self.duration = self.__convert_to_sec(self.config_yml.duration)
         self.os = self.get_os()
@@ -200,6 +210,7 @@ class AnalyticsSender:
     def send_request(self):
         headers = {"Content-Type": "application/json"}
         payload = {"run_id": self.analytics.run_id,
+                   "user_id": self.analytics.uniq_user_id,
                    "app_version": self.analytics.application_version,
                    "date": self.analytics.date,
                    "time_stamp": self.analytics.time_stamp,
@@ -211,7 +222,7 @@ class AnalyticsSender:
                    "selenium_test_rates": self.analytics.selenium_test_rates,
                    "jmeter_test_rates": self.analytics.jmeter_test_rates,
                    "concurrency": self.analytics.concurrency
-        }
+                   }
         r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
         print(r.json())
         if r.status_code != 200:
