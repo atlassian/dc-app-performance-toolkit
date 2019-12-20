@@ -187,7 +187,7 @@ class AnalyticsCollector:
     def uniq_user_id(self):
         user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
         uid = hashlib.pbkdf2_hmac('sha256', user_info.encode('utf-8'),
-                                  b"I'm a salty boi, in a salty world, it's fantastic, there's pepper eveywhere",
+                                  b"DCAPT Centaurus",
                                   100000).hex()
         return uid
 
