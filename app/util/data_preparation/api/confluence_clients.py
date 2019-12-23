@@ -1,7 +1,7 @@
 import xmlrpc.client
 
 from util.data_preparation.api.abstract_clients import RestClient, Client
-
+import xml.etree.ElementTree as ET
 
 BATCH_SIZE_SEARCH = 500
 
@@ -83,6 +83,16 @@ class ConfluenceRestClient(RestClient):
     def get_users(self, prefix, count):
         users_list = self.search(f"user~{prefix}", limit=count)
         return users_list
+
+    def get_confluence_version(self):
+        version = ''
+        api_url = f'{self.host}/rest/applinks/1.0/manifest'
+        response = self.get(api_url, 'Could not get Confluence manifest')
+        tree = ET.fromstring(response.content)
+        for child in tree:
+            if child.tag == 'version':
+                version = child.text
+        return version
 
     def search(self, cql, cqlcontext=None, expand=None, start=0, limit=500):
         """

@@ -1,0 +1,3 @@
+Atlassian is always striving to improve the Data Center App Performance Toolkit.
+In order to do so, Atlassian uses analytics techniques to better understand how the Data Center App Performance Toolkit is being used.
+For more information on these techniques and the type of data collected, please read our Privacy Policy (https://www.atlassian.com/legal/privacy-policy).
