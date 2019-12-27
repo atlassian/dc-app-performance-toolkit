@@ -155,7 +155,7 @@ def view_project_summary(webdriver, datasets):
 
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/browse/{project_key}/summary')
+        webdriver.get(f'{APPLICATION_URL}/browse/{project_key}/summaryA')
         _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "project-meta-column")), interaction)
 
     measure(webdriver, "selenium_project_summary")
