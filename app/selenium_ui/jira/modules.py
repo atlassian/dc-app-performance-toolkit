@@ -115,6 +115,13 @@ def create_issue(webdriver, datasets):
             if assign_els:
                 assign_els[0].click()
 
+
+
+
+
+
+
+
             # Set resolution if there is such field
             resolution_els = webdriver.find_elements_by_id('resolution')
             if resolution_els:
@@ -138,9 +145,19 @@ def create_issue(webdriver, datasets):
                         interaction)
 
             @print_timing
-            def measure(webdriver, interaction):
+            def measure(webdriver,interaction):
                 _wait_until(webdriver, ec.element_to_be_clickable((By.ID, "create-issue-submit")), interaction).click()
                 _wait_until(webdriver, ec.invisibility_of_element_located((By.ID, "create-issue-dialog")), interaction)
+
+
+
+
+
+
+
+
+
+
 
             measure(webdriver, "selenium_create_issue:submit_issue_form")
 
@@ -150,15 +167,19 @@ def create_issue(webdriver, datasets):
     _dismiss_popup(webdriver, '.aui-inline-dialog-contents .cancel')
 
 
-def view_project_summary(webdriver, datasets):
+def view_project_summary(webdriver,datasets):
     project_key = random.choice(datasets["issues"])[2]
 
     @print_timing
-    def measure(webdriver, interaction):
+    def measure(webdriver,interaction):
         webdriver.get(f'{APPLICATION_URL}/browse/{project_key}/summaryA')
         _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "project-meta-column")), interaction)
 
     measure(webdriver, "selenium_project_summary")
+
+
+
+
 
 
 
