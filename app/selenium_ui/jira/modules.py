@@ -122,6 +122,7 @@ def create_issue(webdriver, datasets):
 
 
 
+
             # Set resolution if there is such field
             resolution_els = webdriver.find_elements_by_id('resolution')
             if resolution_els:
