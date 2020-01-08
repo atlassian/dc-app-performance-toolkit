@@ -14,12 +14,25 @@ timeout = 20
 APPLICATION_URL = CONFLUENCE_SETTINGS.server_url
 
 
+
+
+
+
+
+
 def _dismiss_popup(webdriver, *args):
     for elem in args:
         try:
             webdriver.execute_script(f"document.querySelector(\'{elem}\').click()")
         except:
             pass
+
+
+
+
+
+
+
 
 
 def login(webdriver, datasets):
