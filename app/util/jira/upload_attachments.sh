@@ -81,7 +81,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    echo "Required space: ${REQUIRED_SPACE_GB} GB"
    exit 1
 fi;
-sudo su jira -c "time wget ${ATTACHMENTS_TAR_URL}"
+sudo su jira -c "time wget --progress=dot:giga ${ATTACHMENTS_TAR_URL}"
 
 echo "Step3: Untar attachments to tmp folder"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
