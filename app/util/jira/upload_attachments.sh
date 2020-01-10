@@ -98,3 +98,6 @@ sudo su -c "rm -rf ${ATTACHMENTS_TAR}"
 echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
+
+echo "Finished"
+echo  # move to a new line

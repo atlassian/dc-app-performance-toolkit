@@ -160,5 +160,8 @@ echo "Step6: Start Confluence"
 sudo systemctl start confluence
 rm -rf ${DB_DUMP_NAME}
 
+echo "Finished"
+echo  # move to a new line
+
 echo "Important: new admin user credentials are admin/admin"
 echo "Wait a couple of minutes until Confluence is started."
