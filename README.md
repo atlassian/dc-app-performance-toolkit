@@ -90,9 +90,12 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Upgrading
-If you see "There is newer version of Taurus available, consider upgrading." warning message during your 
-test execution, please use the next command to apply the upgrade in your virtual environment.
+## Upgrading the toolkit
+Get latest codebase from master branch:
+```
+git pull
+```
+Activate virtual env for the toolkit and install latest versions of libraries:
 ```
 pip install -r requirements.txt
 ```
