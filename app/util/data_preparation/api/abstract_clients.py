@@ -57,8 +57,11 @@ class RestClient(Client):
         self.__verify_response(response, error_msg)
         return response
 
-    def post(self, url: str, body: dict, error_msg: str):
-        response = self.session.post(url, self.to_json(body), auth=self.base_auth, headers=self.JSON_HEADERS)
+    def post(self, url: str, body, error_msg: str, to_json=True):
+        if to_json:
+            response = self.session.post(url, self.to_json(body), auth=self.base_auth, headers=self.JSON_HEADERS)
+        else:
+            response = self.session.post(url, params=body, auth=self.base_auth, headers=self.JSON_HEADERS)
         self.__verify_response(response, error_msg)
         return response
 

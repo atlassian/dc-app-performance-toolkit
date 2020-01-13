@@ -1,0 +1,92 @@
+---
+settings:
+  artifacts-dir: results/confluence/%Y-%m-%d_%H-%M-%S
+  aggregator: consolidator
+  verbose: false
+  env:
+    application_hostname: bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com   # Confluence DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 2990, etc
+    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+    admin_login: admin
+    admin_password: admin
+    concurrency: 200
+    test_duration: 45m
+    WEBDRIVER_VISIBLE: False
+    JMETER_VERSION: 5.1
+    allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+services:
+  - module: shellexec
+    prepare:
+      - python util/environment_checker.py
+      - python util/data_preparation/bitbucket/prepare-data.py
+    shutdown:
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    post-process:
+      - python util/analytics.py confluence
+execution:
+#  - scenario: jmeter
+#    concurrency: ${concurrency}
+#    hold-for: ${test_duration}
+#    ramp-up: 3m
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+scenarios:
+  selenium:
+    script: selenium_ui/confluence-ui.py
+  jmeter:
+    script: jmeter/confluence.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hr: 20000
+      perc_view_page: 54
+      perc_view_dashboard: 6
+      perc_view_blog: 8
+      perc_search_cql: 7
+      perc_create_blog: 3
+      perc_create_and_edit_page: 6
+      perc_comment_page: 5
+      perc_view_attachment: 3
+      perc_upload_attachment: 5
+      perc_like_page: 3
+      perc_standalone_extension: 0 # By default disabled
+modules:
+  consolidator:
+    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
+    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+  jmeter:
+    version: ${JMETER_VERSION}
+    detect-plugins: true
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    plugins:
+      - bzm-parallel=0.4
+      - bzm-random-csv=0.6
+      - jpgc-casutg=2.5
+      - jpgc-dummy=0.2
+      - jpgc-ffw=2.0
+      - jpgc-fifo=0.2
+      - jpgc-functions=2.1
+      - jpgc-json=2.6
+      - jpgc-perfmon=2.1
+      - jpgc-prmctl=0.4
+      - jpgc-tst=2.4
+      - jpgc-wsc=0.3
+      - tilln-sshmon=1.0
+      - jpgc-cmd=2.2
+      - jpgc-synthesis=2.2
+    system-properties:
+      server.rmi.ssl.disable: true
+      java.rmi.server.hostname: localhost
+      httpsampler.ignore_failed_embedded_resources: "true"
+  selenium:
+    chromedriver:
+      version: "78.0.3904.105" #79.0.3945.36" # Supports Chrome version 79. You can refer to http://chromedriver.chromium.org/downloads
+reporting:
+- data-source: sample-labels
+  module: junit-xml

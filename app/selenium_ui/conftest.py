@@ -100,7 +100,7 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(executable_path="/Users/smoro/Downloads/chromedriver", options=chrome_options)
         return driver
 
 
@@ -202,6 +202,18 @@ def confluence_datasets():
 
     datasets["pages"] = __read_input_file(input_data_path / "pages.csv")
     datasets["blogs"] = __read_input_file(input_data_path / "blogs.csv")
+    datasets["users"] = __read_input_file(input_data_path / "users.csv")
+
+    return datasets
+
+
+@pytest.fixture(scope="module")
+def bitbucket_datasets():
+    # TODO extract paths to project_paths
+    datasets = dict()
+    input_data_path = Path(__file__).parents[1] / "datasets" / "bitbucket"
+
+    datasets["projects"] = __read_input_file(input_data_path / "projects.csv")
     datasets["users"] = __read_input_file(input_data_path / "users.csv")
 
     return datasets
