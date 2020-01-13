@@ -36,6 +36,7 @@ def login(webdriver, datasets):
 
         measure(webdriver, "selenium_login:open_login_page")
         print('Hello Bamboo CI')
+
         def _setup_page_is_presented():
             elems = webdriver.find_elements_by_id('next')
             return True if elems else False
