@@ -240,9 +240,11 @@ def browse_project(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         page_size = 25
-        pages = len(datasets['project_keys']) // page_size
-        webdriver.get(APPLICATION_URL +
-                      f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={random.randint(1, pages)}')
+        projects_count = len(datasets['project_keys'])
+        pages = projects_count // page_size if projects_count % page_size == 0 else projects_count // page_size + 1
+        webdriver.get(
+            APPLICATION_URL +
+            f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={random.randint(1, pages)}')
         _wait_until(webdriver, AnyEc(ec.presence_of_element_located((By.CSS_SELECTOR, "tbody.projects-list")),
                                      ec.presence_of_element_located((By.CLASS_NAME, "none-panel"))
                                      ), interaction)
