@@ -1,4 +1,4 @@
-matplotlib==3.1.1
-pandas==0.25.0
-importlib-metadata==0.20
+matplotlib==3.1.2
+pandas==0.25.3
+importlib-metadata==1.4.0
 bzt==1.13.9

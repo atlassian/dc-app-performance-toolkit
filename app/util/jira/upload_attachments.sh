@@ -81,7 +81,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    echo "Required space: ${REQUIRED_SPACE_GB} GB"
    exit 1
 fi;
-sudo su jira -c "time wget ${ATTACHMENTS_TAR_URL}"
+sudo su jira -c "time wget --progress=dot:giga ${ATTACHMENTS_TAR_URL}"
 
 echo "Step3: Untar attachments to tmp folder"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
@@ -98,3 +98,6 @@ sudo su -c "rm -rf ${ATTACHMENTS_TAR}"
 echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
+
+echo "Finished"
+echo  # move to a new line
