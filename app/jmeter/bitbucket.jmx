@@ -36,12 +36,12 @@
           </elementProp>
           <elementProp name="application.ssh_port" elementType="Argument">
             <stringProp name="Argument.name">application.ssh_port</stringProp>
-            <stringProp name="Argument.value">7999</stringProp>
+            <stringProp name="Argument.value">${__P(application.ssh_port,7999)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.ssh_hostname" elementType="Argument">
             <stringProp name="Argument.name">application.ssh_hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com)})}	</stringProp>
+            <stringProp name="Argument.value">${__P(application_hostname, bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="NUMBER_OF_USERS" elementType="Argument">
@@ -290,10 +290,9 @@ vars.put(&quot;REPO_SLUG&quot;, repoSlug)
 
 def gitProtocolSshPercentage = Integer.valueOf(&quot;${GIT_PROTOCOL_SSH_PERCENTAGE}&quot;).intValue()
 def randomNum = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 100)
-if (61 &lt;= gitProtocolSshPercentage) {
+if (randomNum &lt;= gitProtocolSshPercentage) {
 	vars.put(&quot;GIT_PROTOCOL&quot;, &quot;ssh&quot;)
-//	vars.put(&quot;REPO_URL&quot;, &quot;ssh://git@${application.ssh_hostname}:${application.ssh_port}/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;) 
-	vars.put(&quot;REPO_URL&quot;, &quot;ssh://git@bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com:7999/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;)
+	vars.put(&quot;REPO_URL&quot;, &quot;ssh://git@${application.ssh_hostname}:${application.ssh_port}/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;) 
 } else {
 	vars.put(&quot;GIT_PROTOCOL&quot;, &quot;http&quot;)
 	vars.put(&quot;REPO_URL&quot;, &quot;${application.protocol}://&quot; + username + &quot;:&quot; + password + &quot;@${application.hostname}:${application.port}/scm/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;)
@@ -306,8 +305,7 @@ if (61 &lt;= gitProtocolSshPercentage) {
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">vars.put(&quot;REPO_FOLDER&quot;, &quot;${GIT_DATA_FOLDER}/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-${__UUID()}&quot;)
-//GIT_DATA_FOLDER</stringProp>
+              <stringProp name="script">vars.put(&quot;REPO_FOLDER&quot;, &quot;${GIT_DATA_FOLDER}/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-${__UUID()}&quot;)</stringProp>
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
@@ -603,7 +601,7 @@ if (localWorkingCopy.exists()) {
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
             <boolProp name="displayJMeterProperties">true</boolProp>
             <boolProp name="displayJMeterVariables">true</boolProp>
             <boolProp name="displaySystemProperties">false</boolProp>
