@@ -43,21 +43,7 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
-      # Workload model
-      total_actions_per_hr: 54500
-      perc_create_issue: 4
-      perc_search_jql: 13
-      perc_view_issue: 43
-      perc_view_project_summary: 4
-      perc_view_dashboard: 12
-      perc_edit_issue: 4
-      perc_add_comment: 2
-      perc_browse_projects: 4
-      perc_view_scrum_board: 3
-      perc_view_kanban_board: 3
-      perc_view_backlog: 6
-      perc_browse_boards: 2
-      perc_standalone_extension: 0 # By default disabled
+      tmp_dir: /tmp
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
