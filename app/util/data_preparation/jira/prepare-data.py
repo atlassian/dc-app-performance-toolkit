@@ -79,7 +79,7 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_project_keys = __get_software_project_keys(jira_api)
+    software_project_keys = __get_software_project_keys(jira_api, PROJECTS_COUNT_LIMIT)
     dataset[PROJECT_KEYS] = software_project_keys
     dataset[ISSUES] = __get_issues(jira_api, software_project_keys)
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
@@ -116,13 +116,13 @@ def __get_users(jira_api):
     return users
 
 
-def __get_software_project_keys(jira_api):
+def __get_software_project_keys(jira_api, max_projects_count):
     all_projects = jira_api.get_all_projects()
     software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
     if not software_project_keys:
         raise SystemExit("There is no software project in Jira")
     # Limit number of projects to avoid "Request header is too large" for further requests.
-    return software_project_keys[:PROJECTS_COUNT_LIMIT]
+    return software_project_keys[:max_projects_count]
 
 
 def main():
