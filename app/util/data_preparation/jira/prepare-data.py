@@ -12,6 +12,7 @@ USERS = "users"
 ISSUES = "issues"
 JQLS = "jqls"
 PROJECT_KEYS = "project_keys"
+PROJECTS_COUNT_LIMIT = 1000
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
@@ -120,8 +121,8 @@ def __get_software_project_keys(jira_api):
     software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
     if not software_project_keys:
         raise SystemExit("There is no software project in Jira")
-
-    return software_project_keys
+    # Limit number of projects to avoid "Request header is too large" for further requests.
+    return software_project_keys[:PROJECTS_COUNT_LIMIT]
 
 
 def main():
