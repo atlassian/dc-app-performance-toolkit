@@ -6,7 +6,6 @@ from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS
 
 DEFAULT_USER_PREFIX = 'user'
-#DEFAULT_USER_PASSWORD = 'password'
 USERS = "users"
 PROJECTS = "projects"
 
@@ -20,7 +19,7 @@ def __get_users(bitbucket_api):
     perf_users = bitbucket_api.get_users(username=f'{DEFAULT_USER_PREFIX}', max_results=perf_user_count)
     perf_user_count_to_create = perf_user_count - len(perf_users)
     while perf_user_count_to_create > 0:
-        user = bitbucket_api.create_user(username=f'{DEFAULT_USER_PREFIX}{generate_random_string()}')
+        user = bitbucket_api.create_user(username=f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}')
         perf_users.append(user)
         perf_user_count_to_create = perf_user_count_to_create - 1
     return bitbucket_api.get_users(username=f'{DEFAULT_USER_PREFIX}', max_results=perf_user_count)
@@ -51,7 +50,7 @@ def __write_to_file(file_path, items):
 
 
 def write_test_data_to_files(datasets):
-    users = [f"{user['name']},{user['name']}" for user in datasets[USERS]]
+    users = [f"{user['id']},{user['name']},{user['name']}" for user in datasets[USERS]]
     __write_to_file(BITBUCKET_USERS, users)
 
     projects = [f"{project_key},{','.join(map(str, repo_key))}" for project_key, repo_key in datasets[PROJECTS].items()]

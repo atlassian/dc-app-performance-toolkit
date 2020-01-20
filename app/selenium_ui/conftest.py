@@ -13,7 +13,7 @@ import pytest
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 
@@ -172,6 +172,27 @@ def confluence_screen_shots(request, webdriver):
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
         webdriver.get(CONFLUENCE_SETTINGS.server_url)
+
+
+@pytest.fixture
+def bitbucket_screen_shots(request, webdriver):
+    yield
+    # request.node is an "item" because we use the default
+    # "function" scope
+    if request.node.rep_call.failed:
+        mode = "w" if not selenium_error_file.exists() else "a+"
+        action_name = request.node.rep_call.head_line
+        error_text = request.node.rep_call.longreprtext
+        with open(selenium_error_file, mode) as err_file:
+            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
+        print(f"Action: {action_name}, Error: {error_text}\n")
+        os.makedirs(f"{current_results_dir}/errors_artifacts", exist_ok=True)
+        error_artifact_name = f'{current_results_dir}/errors_artifacts/{datetime_now(action_name)}'
+        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
+        with open(f'{error_artifact_name}.html', 'wb') as html_file:
+            html_file.write(webdriver.page_source.encode('utf-8'))
+        webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
+        webdriver.get(BITBUCKET_SETTINGS.server_url)
 
 
 @pytest.fixture(scope="module")

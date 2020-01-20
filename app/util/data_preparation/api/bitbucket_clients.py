@@ -47,9 +47,9 @@ class BitbucketRestClient(RestClient):
         response = self.get(api_url, f'Could not retrieve pull requests list')
         return response.json()
 
-
-
-    def create_user(self, username, password='password', email=None):
+    def create_user(self, username, password=None, email=None):
+        if not password:
+            password = username
         if not email:
             email = f'{username}@localdomain.com'
 
@@ -62,4 +62,4 @@ class BitbucketRestClient(RestClient):
         }
         api_url = f'{self.host}/rest/api/1.0/admin/users'
         response = self.post(api_url, params, error_msg="Could not create user", to_json=False)
-        return response.json()
+        #return response.json()
