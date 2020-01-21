@@ -26,7 +26,7 @@ def __get_users(bitbucket_api):
 
 
 def __get_projects(bitbucket_api):
-    repos = bitbucket_api.get_repos()
+    repos = bitbucket_api.get_repos(max_results=2000)
     projects_dict = {}
     for repo in repos:
         if repo['project']['key'] not in projects_dict:

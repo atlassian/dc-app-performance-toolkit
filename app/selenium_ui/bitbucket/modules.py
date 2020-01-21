@@ -43,7 +43,8 @@ def login(webdriver, datasets):
 
         @print_timing
         def measure(webdriver, interaction):
-            webdriver.find_element_by_id('submit').click()
+            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "submit")),
+                        interaction).click()
             _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "marketing-page-footer")), interaction)
         measure(webdriver, "selenium_login:login_get_started")
 
@@ -67,7 +68,10 @@ def view_projects(webdriver, datasets):
 
 
 def view_project_repos(webdriver, datasets):
-    project_key = f"PRJ-{datasets['current_user_id']}"
+    #project_key = f"PRJ-{datasets['current_user_id']}"
+    project = random.choice(datasets["projects"])
+    project_key = project[0]
+
     datasets['current_project_key'] = project_key
     project_url = f"{PROJECTS_URL}/{project_key}"
     @print_timing
@@ -94,7 +98,7 @@ def view_repo(webdriver, datasets):
 def view_list_pull_requests(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element(By.CSS_SELECTOR, '#repository-nav-pull-requests>aui-badge').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "#repository-nav-pull-requests>aui-badge")), interaction).click()
         _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "pull-requests-content")), interaction)
     measure(webdriver, 'selenium_view_list_pull_requests')
 
@@ -114,7 +118,8 @@ def view_pull_request_overview_tab(webdriver, datasets):
 def view_pull_request_diff_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element_by_css_selector('ul.tabs-menu>li:nth-child(2)>a').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "ul.tabs-menu>li:nth-child(2)>a")),
+                    interaction).click()
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, ".diff-tree-toolbar")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_diff')
@@ -123,7 +128,7 @@ def view_pull_request_diff_tab(webdriver, datasets):
 def view_pull_request_commits_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element_by_css_selector('ul.tabs-menu>li:nth-child(3)>a').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "ul.tabs-menu>li:nth-child(3)>a")), interaction).click()
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "tr>th.message")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_commits')
@@ -144,7 +149,8 @@ def comment_pull_request_diff(webdriver, datasets):
         random_diff_line.click()
         comment_text_area = webdriver.find_element_by_css_selector('textarea.text')
         comment_text_area.send_keys(f"{generate_random_string(50)}")
-        webdriver.find_element_by_css_selector('div.buttons>button:nth-child(1)').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "div.buttons>button:nth-child(1)")),
+                    interaction).click()
     measure(webdriver, 'selenium_comment_pull_request_file')
 
 
@@ -159,7 +165,8 @@ def comment_pull_request_overview(webdriver, datasets):
         comment_text_area = webdriver.find_element_by_css_selector('textarea.text')
         comment_text_area.click()
         comment_text_area.send_keys(f"{generate_random_string(50)}")
-        webdriver.find_element_by_css_selector('div.buttons>button:nth-child(1)').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "div.buttons>button:nth-child(1)")),
+                    interaction).click()
     measure(webdriver, 'selenium_comment_pull_request_overview')
 
 
@@ -175,7 +182,8 @@ def view_branches(webdriver, datasets):
 def view_commits(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element_by_css_selector('.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(2)').click()
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, ".aui-sidebar-group.sidebar-navigation>ul>li:nth-child(2)")),
+                    interaction).click()
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "svg.commit-graph")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_commits')
@@ -184,10 +192,8 @@ def view_commits(webdriver, datasets):
 def logout(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/logout')
+        webdriver.get(f'{APPLICATION_URL}/j_atl_security_logout')
     measure(webdriver, "selenium_log_out")
-    webdriver.delete_all_cookies()
-    webdriver.get(LOGIN_URL)
 
 
 def _wait_until(webdriver, expected_condition, interaction, time_out=timeout):

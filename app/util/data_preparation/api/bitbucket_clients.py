@@ -32,7 +32,7 @@ class BitbucketRestClient(RestClient):
                                  max_results=max_results)
 
     def get_users(self, username, max_results=500):
-        return self.get_entities(entity_name=f'users',
+        return self.get_entities(entity_name='users',
                                  filter=username,
                                  batch_size=BATCH_SIZE_USERS,
                                  max_results=max_results)
@@ -62,4 +62,4 @@ class BitbucketRestClient(RestClient):
         }
         api_url = f'{self.host}/rest/api/1.0/admin/users'
         response = self.post(api_url, params, error_msg="Could not create user", to_json=False)
-        #return response.json()
+        return response
