@@ -2,7 +2,7 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML
 
-TOOLKIT_VERSION = '1.2.0'
+TOOLKIT_VERSION = '1.2.1'
 
 
 def read_yml_file(file):
