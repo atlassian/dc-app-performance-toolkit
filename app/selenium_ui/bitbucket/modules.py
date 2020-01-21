@@ -49,16 +49,16 @@ def login(webdriver, datasets):
 def view_dashboard(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-       webdriver.get(DASHBOARD_URL)
-       _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "dashboard-your-work")), interaction)
+        webdriver.get(DASHBOARD_URL)
+        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "dashboard-your-work")), interaction)
     measure(webdriver, "selenium_view_dashboard")
 
 
 def view_projects(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-       webdriver.get(PROJECTS_URL)
-       _wait_until(webdriver, ec.presence_of_element_located((By.ID, "projects-container")), interaction)
+        webdriver.get(PROJECTS_URL)
+        _wait_until(webdriver, ec.presence_of_element_located((By.ID, "projects-container")), interaction)
     measure(webdriver, "selenium_view_projects")
 
 
