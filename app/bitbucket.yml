@@ -11,7 +11,7 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 2
-    test_duration: 3m
+    test_duration: 7m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
@@ -44,6 +44,7 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       tmp_dir: /tmp
+      ssh_key_url: https://centaurus-datasets.s3.us-east-2.amazonaws.com/bitbucket/ssh/id_rsa
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
