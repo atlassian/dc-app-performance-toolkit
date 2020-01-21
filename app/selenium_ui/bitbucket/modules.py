@@ -1,12 +1,7 @@
 import random
-import time
-import urllib.parse
-import pytest
-from selenium.webdriver.common.action_chains import ActionChains
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 
@@ -68,7 +63,6 @@ def view_projects(webdriver, datasets):
 
 
 def view_project_repos(webdriver, datasets):
-    #project_key = f"PRJ-{datasets['current_user_id']}"
     project = random.choice(datasets["projects"])
     project_key = project[0]
 
@@ -98,7 +92,8 @@ def view_repo(webdriver, datasets):
 def view_list_pull_requests(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "#repository-nav-pull-requests>aui-badge")), interaction).click()
+        pr_button = '#repository-nav-pull-requests>aui-badge'
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, pr_button)), interaction).click()
         _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "pull-requests-content")), interaction)
     measure(webdriver, 'selenium_view_list_pull_requests')
 
@@ -120,7 +115,8 @@ def view_pull_request_diff_tab(webdriver, datasets):
     def measure(webdriver, interaction):
         _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "ul.tabs-menu>li:nth-child(2)>a")),
                     interaction).click()
-        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, ".diff-tree-toolbar")), interaction)
+        diff_tab = ".diff-tree-toolbar"
+        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, diff_tab)), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_diff')
 
@@ -128,7 +124,8 @@ def view_pull_request_diff_tab(webdriver, datasets):
 def view_pull_request_commits_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "ul.tabs-menu>li:nth-child(3)>a")), interaction).click()
+        pr_commits = 'ul.tabs-menu>li:nth-child(3)>a'
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, pr_commits)), interaction).click()
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "tr>th.message")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_commits')
@@ -182,9 +179,11 @@ def view_branches(webdriver, datasets):
 def view_commits(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, ".aui-sidebar-group.sidebar-navigation>ul>li:nth-child(2)")),
+        commits = '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(2)'
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, commits)),
                     interaction).click()
-        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "svg.commit-graph")), interaction)
+        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "svg.commit-graph")),
+                    interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_commits')
 
