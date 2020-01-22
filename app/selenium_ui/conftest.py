@@ -39,13 +39,10 @@ def __get_current_results_dir():
 current_results_dir = __get_current_results_dir()
 selenium_results_file = Path(current_results_dir + '/selenium.jtl')
 selenium_error_file = Path(current_results_dir + '/selenium.err')
-w3c_timings_file = Path(current_results_dir + '/w3c_timings.txt')
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
         file.write(JTL_HEADER)
-    with open(w3c_timings_file, 'w'):
-        pass
 
 
 def datetime_now(prefix):
@@ -74,11 +71,6 @@ def print_timing(func):
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
-
-        w3c_timing = json.dumps(webdriver.execute_script("return window.performance.getEntries()"))
-        with open(w3c_timings_file, "a+") as file:
-            file.write(f"{{\"timestamp\": {timestamp}, \"timing\": {timing}, \"interation\": \"{interaction}\", "
-                       f"\"error\": \"{error_msg}\", \"success\": \"{success}\", \"w3c_timing\": {w3c_timing}}}\n")
 
         if not success:
             raise Exception(error_msg, full_exception)
