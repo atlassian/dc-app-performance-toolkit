@@ -10,8 +10,8 @@ settings:
     application_postfix:            # e.g. /bitbucket in case of url like http://localhost:2990/bitbucket
     admin_login: admin
     admin_password: admin
-    concurrency: 20
-    test_duration: 60m
+    concurrency: 100
+    test_duration: 30m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.

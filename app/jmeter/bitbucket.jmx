@@ -119,6 +119,11 @@
             <stringProp name="Argument.value">${__P(use_jira_keys,true)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="PRIVATE_SSH_KEY_LOCATION" elementType="Argument">
+            <stringProp name="Argument.name">PRIVATE_SSH_KEY_LOCATION</stringProp>
+            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -154,6 +159,43 @@
         <boolProp name="clearEachIteration">true</boolProp>
         <boolProp name="useExpires">false</boolProp>
       </CacheManager>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
       <hashTree/>
       <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -493,7 +535,62 @@ if (localWorkingCopy.exists()) {
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Full clone a random repository over ${GIT_PROTOCOL}" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="[Trikit] Full clone a random repository over ${GIT_PROTOCOL}" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import com.atlassian.trikit.Trikit
+import com.atlassian.trikit.UsernamePassword
+import java.nio.file.Path
+import java.nio.file.Paths
+
+
+def username = vars.get(&quot;USERNAME&quot;)
+def password = vars.get(&quot;USER_PASSWORD&quot;)
+
+repoUrl = vars.get(&quot;REPO_URL&quot;)
+sshKey = props.get(&quot;PRIVATE_SSH_KEY_LOCATION&quot;);
+trikit = new Trikit();
+
+if (vars.get(&quot;GIT_PROTOCOL&quot;).equals(&quot;http&quot;)) {
+	credentials = new UsernamePassword(username, password)
+	metrics = trikit.clone(repoUrl, null, credentials, 5000L)
+} else {
+	path = Paths.get(sshKey)
+	metrics = trikit.clone(repoUrl, (Path) path, null, 5000L)
+}
+
+SampleResult.setBytes(metrics.bytesRead)
+</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Send throughput to InfluxDB" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">def influx = props.get(&quot;influxdb-url&quot;)
+def protocol = vars.get(&quot;GIT_PROTOCOL&quot;)
+def url = new URL(&apos;https://&apos; + influx + &apos;/write?db=jmeter&amp;p=admin&amp;u=admin&apos;)
+def http = url.openConnection()
+http.setDoOutput(true)
+http.setRequestMethod(&apos;POST&apos;)
+http.setRequestProperty(&apos;User-agent&apos;, &apos;groovy script&apos;)
+def timeInSeconds = prev.getTime()/1000
+def throughput = prev.getBytes()/timeInSeconds
+
+log.info(&apos;throughput,git-type=clone,connection=&apos; + protocol + &apos; value=&apos;+ throughput.toString() + &apos;,elapsedTime=&apos;+prev.getTime().toString() + &apos;,bytes=&apos; + prev.getBytes().toString())
+
+def out = new OutputStreamWriter(http.outputStream)
+out.write(&apos;throughput,git-type=clone,connection=&apos; + protocol + &apos; value=&apos;+ throughput.toString() + &apos;,elapsedTime=&apos;+prev.getTime().toString() + &apos;,bytes=&apos; + prev.getBytes().toString())
+out.close()
+
+http.inputStream</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="[OS Sampler] Full clone a random repository over ${GIT_PROTOCOL}" enabled="false">
             <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">git</stringProp>
@@ -560,7 +657,7 @@ if (responseCode != &quot;0&quot;) {
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">100</stringProp>
           </LoopController>
@@ -805,43 +902,6 @@ log.info(&quot;Git temporary workspace: [&quot; + gitTmpWorkspace +&quot;] succe
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <sentBytes>true</sentBytes>
-            <url>true</url>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-            <connectTime>true</connectTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
