@@ -180,7 +180,7 @@ def view_branches(webdriver, datasets):
 
 def create_pull_request(webdriver, datasets):
     random_repo_with_pr = get_random_repo_with_pr(datasets)
-    fork_name = f"fork-{random_repo_with_pr[0]}"
+    fork_name = f"fork-{random_repo_with_pr[0]}_{generate_random_string(5)}"
     webdriver.get(f"{PROJECTS_URL}/{random_repo_with_pr[1]}/repos/{random_repo_with_pr[0]}")
     _dismiss_popup(webdriver, '.feature-discovery-close')
 
@@ -193,7 +193,6 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "enable-ref-syncing")),
                         interaction)
             safe_click(webdriver, By.ID, 'enable-ref-syncing', interaction)
-            fork_name = f"fork-{random_repo_with_pr[0]}"
             fork_name_field = webdriver.find_element_by_id('name')
             fork_name_field.clear()
             fork_name_field.send_keys(f'{fork_name}')
