@@ -54,6 +54,11 @@ def test_11_selenium_view_branches(webdriver, bitbucket_datasets, bitbucket_scre
 def test_12_selenium_view_commits(webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_commits(webdriver, bitbucket_datasets)
 
+
+def test_13_selenium_create_pull_request(webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.create_pull_request(webdriver, bitbucket_datasets)
+
+
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
 Write your custom selenium scripts in `app/extension/jira/extension_ui.py`. 
@@ -63,5 +68,5 @@ Refer to `app/selenium_ui/jira/modules.py` for examples.
 #     extension_ui.custom_action(webdriver, bitbucket_datasets)
 
 
-def test_13_selenium_logout(webdriver, bitbucket_datasets, bitbucket_screen_shots):
+def test_14_selenium_logout(webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.logout(webdriver, bitbucket_datasets)

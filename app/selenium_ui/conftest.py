@@ -236,6 +236,8 @@ def bitbucket_datasets():
 
     datasets["projects"] = __read_input_file(input_data_path / "projects.csv")
     datasets["users"] = __read_input_file(input_data_path / "users.csv")
+    datasets["repos"] = __read_input_file(input_data_path / "repos.csv")
+    datasets["pull_requests"] = __read_input_file(input_data_path / "pull_requests.csv")
 
     return datasets
 

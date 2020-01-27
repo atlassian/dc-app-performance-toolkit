@@ -1,8 +1,8 @@
 from util.data_preparation.api.abstract_clients import RestClient
 
-BATCH_SIZE_PROJECTS = 500
-BATCH_SIZE_USERS = 500
-
+BATCH_SIZE_PROJECTS = 100
+BATCH_SIZE_USERS = 100
+BATCH_SIZE_REPOS = 100
 
 class BitbucketRestClient(RestClient):
 
@@ -26,6 +26,19 @@ class BitbucketRestClient(RestClient):
                 max_results = last_loop_remainder
         return entities
 
+    def get_non_fork_repos(self, max_results):
+        batch_size = max_results * 2
+        non_fork_repos = []
+        start_at = 0
+        while len(non_fork_repos) < max_results:
+            api_url = f'{self.host}/rest/api/1.0/repos?limit={batch_size}&start={start_at}'
+            response = self.get(api_url, f'Could not retrieve entities list')
+            for repo in response.json()['values']:
+                if 'origin' not in repo and len(non_fork_repos) < max_results:
+                    non_fork_repos.append(repo)
+            start_at = start_at + batch_size
+        return non_fork_repos
+
     def get_projects(self, max_results=500):
         return self.get_entities(entity_name='projects',
                                  batch_size=BATCH_SIZE_PROJECTS,
@@ -39,8 +52,13 @@ class BitbucketRestClient(RestClient):
 
     def get_repos(self, max_results=500):
         return self.get_entities(entity_name='repos',
-                                 batch_size=BATCH_SIZE_PROJECTS,
+                                 batch_size=BATCH_SIZE_REPOS,
                                  max_results=max_results)
+
+    def get_project_repos(self, project_key):
+        api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos'
+        response = self.get(api_url, f'Could not get repos of project {project_key}')
+        return response.json()
 
     def get_pull_request(self, project_key, repo_key):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests'
