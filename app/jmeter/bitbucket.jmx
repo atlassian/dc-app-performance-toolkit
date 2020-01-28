@@ -828,15 +828,15 @@ if (responseCode != &quot;0&quot;) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git pull" enabled="true">
-              <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git fetch" enabled="true">
+              <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
               <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">pull</stringProp>
+                    <stringProp name="Argument.value">fetch</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
