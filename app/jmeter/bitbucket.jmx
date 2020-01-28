@@ -160,7 +160,7 @@
         <boolProp name="useExpires">false</boolProp>
       </CacheManager>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -452,7 +452,7 @@ import org.apache.commons.io.FileUtils;
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">0</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -607,11 +607,10 @@ if (responseCode != &quot;0&quot;) {
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="script">import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
-import java.nio.file.Path;
+import org.apache.commons.io.FileUtils;
 import java.nio.file.Paths;
-
+import java.util.UUID;
 
 gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
  try {
@@ -619,23 +618,23 @@ gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
  	                              .toAbsolutePath()
  	                              .toString();
      log.info(&quot;Tmp pull folder: [&quot; + tempPullFolder +&quot;] successfully created.&quot;);
- 	vars.put(&quot;TMP_PULL_FOLDER&quot;, tempPullFolder);
+     
+	File srcDir = new File(vars.get(&quot;REPO_FOLDER&quot;) + &quot;/.git&quot;);
+	String metaRepo = tempPullFolder + &quot;/&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID();
+	File trgDir = new File (metaRepo + &quot;/.git&quot;);
+	FileUtils.copyDirectory(srcDir, trgDir);
+	vars.put(&quot;.GIT_FOLDER&quot;, metaRepo);
+	
 } catch (Exception e) {
 	log.error(&quot;Error while creating temporary workspace for pull&quot;, e);
 	ctx.getEngine().askThreadsToStop();
-}
-	
-     Path srcDir = Paths.get(vars.get(&quot;REPO_FOLDER&quot;) + &quot;/.git&quot;);
-     Path trgDir = Paths.get(tempPullFolder)
-	Files.copy(srcDir, trgDir);
-
-</stringProp>
+}</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">100</stringProp>
+            <intProp name="LoopController.loops">-1</intProp>
           </LoopController>
           <hashTree>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
@@ -829,7 +828,7 @@ if (responseCode != &quot;0&quot;) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="GIT PULL" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git pull" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
@@ -843,9 +842,20 @@ if (responseCode != &quot;0&quot;) {
                 </collectionProp>
               </elementProp>
               <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="GIT_SSH_VARIANT" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSH_VARIANT</stringProp>
+                    <stringProp name="Argument.value">ssh</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="GIT_SSH_COMMAND" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSH_COMMAND</stringProp>
+                    <stringProp name="Argument.value">${__P(GIT_SSH_COMMAND)}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
               </elementProp>
-              <stringProp name="SystemSampler.directory">created dir</stringProp>
+              <stringProp name="SystemSampler.directory">${.GIT_FOLDER}</stringProp>
             </SystemSampler>
             <hashTree/>
           </hashTree>
@@ -863,7 +873,7 @@ if (localWorkingCopy.exists()) {
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
             <boolProp name="displayJMeterProperties">false</boolProp>
             <boolProp name="displayJMeterVariables">true</boolProp>
             <boolProp name="displaySystemProperties">false</boolProp>
@@ -992,7 +1002,7 @@ SampleResult.setBytes(metrics.bytesRead)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group" enabled="false">
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
