@@ -548,6 +548,11 @@ if (localWorkingCopy.exists()) {
                 </elementProp>
                 <elementProp name="" elementType="Argument">
                   <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">--no-checkout</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
                   <stringProp name="Argument.value">${REPO_URL}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
@@ -682,7 +687,7 @@ vars.put(&quot;COMMIT_MESSAGE&quot;, &quot;${commitMessage}&quot;)</stringProp>
             </hashTree>
             <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Change file" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
-              <stringProp name="LoopController.loops">${NUM_FILES_TO_CHANGE}</stringProp>
+              <stringProp name="LoopController.loops">1</stringProp>
             </LoopController>
             <hashTree>
               <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="change file" enabled="true">
@@ -703,7 +708,12 @@ def now = new Date()
 def max = Integer.valueOf(vars.get(&quot;MAX_NUM_LINES_TO_CHANGE&quot;))
 int number_of_lines = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, max + 1);
 
-new File(localWorkingCopy.toString(), fileName).withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
+def file = new File(localWorkingCopy.toString(), fileName);
+if(!file.exists()){
+	file.createNewFile();
+}
+
+file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
 	for (i = 0; i &lt; number_of_lines; i++) {
 		writer.writeLine &apos;Hey, this is a new line: (&apos; + (i+1) + &apos;/&apos; + number_of_lines + &apos;) &apos; + Math.random().toString() + &apos; &apos; + now
 	}
@@ -828,7 +838,7 @@ if (responseCode != &quot;0&quot;) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git fetch" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git fetch over ${GIT_PROTOCOL}" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
