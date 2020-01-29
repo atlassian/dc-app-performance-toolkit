@@ -1,6 +1,6 @@
 import requests
 
-class TestLogin:
+class TestDelete:
     def test_login(self):
         # authenticate and get a session id
         auth_response = requests.post('http://localhost:8080/rest/auth/1/session',
@@ -22,7 +22,8 @@ class TestLogin:
         diagrams_response = requests.post('http://localhost:8080/rest/dependency-map/1.0/diagram/duplicate/' + idString ,
             cookies=dict(JSESSIONID=session_id))
         assert diagrams_response.status_code == 200
-        # 
+        print( diagrams_response.json() );
+        # get
         diagrams_response = requests.get('http://localhost:8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50',
             cookies=dict(JSESSIONID=session_id))
         assert diagrams_response.status_code == 200
@@ -32,10 +33,12 @@ class TestLogin:
         id1= diagram1["id"]
         print(id1);
         idString = str(id1)
+        print( diagrams_response.json() );
         #remove
         diagrams_response2 = requests.delete('http://localhost:8080/rest/dependency-map/1.0/diagram/' + idString,
             cookies=dict(JSESSIONID=session_id))
         assert diagrams_response2.status_code == 200
+        print( diagrams_response.json() );
 
         
  
