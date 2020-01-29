@@ -73,6 +73,7 @@ The Data Center App Performance Toolkit officially supports:
 | Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
+| Cluster node instance volume size | 100 |
 
 We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Data Center customers.
 
@@ -82,7 +83,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Database instance class | [db.m4.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | true |
@@ -108,7 +109,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | --------- | ----------------- |
 | Make instance internet facing | true |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-|Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
 ### Running the setup wizard
 
@@ -360,24 +361,26 @@ To receive performance baseline results without an app installed:
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
 
-#### <a id="regressionrun2"></a> Run 2 (~50 min + 50 min for Lucene Index timing test)
-
-To receive performance results with an app installed:
-
-1. Install the app you want to test.
+#### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
 {{% note %}}
 **Lucene index test for JIRA**
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
 
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and attach it to your DC HELP ticket.
+
+For Jira 7.x index time for 1M issues on User Guide recommended configuration is about ~100min, for Jira 8.x - ~40min.
 {{% /note %}}
 
-2. Run bzt.
+To receive performance results with an app installed and Lucene index timing screenshots:
+1. Follow steps described in Note section to generate Lucene index timing screenshot without an app installed.
+1. Install the app you want to test.
+1. Follow steps described in Note section to generate Lucene index timing screenshot with an app installed.
+1. Run bzt.
 
     ``` bash
     bzt jira.yml
