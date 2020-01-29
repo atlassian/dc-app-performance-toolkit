@@ -160,7 +160,7 @@
         <boolProp name="useExpires">false</boolProp>
       </CacheManager>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -246,14 +246,9 @@ import java.util.UUID;
             <stringProp name="script">import java.io.File;
 import org.apache.commons.io.FileUtils;
 
- try {
- 	String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
- 	String bitbucketSshKeyUrl = vars.get(&quot;ssh.key.url&quot;);
-     File privateKey = new File(gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;);
-     FileUtils.copyURLToFile(new URL(bitbucketSshKeyUrl), privateKey);
- 	FileUtils.copyURLToFile(new URL(bitbucketSshKeyUrl + &quot;.pub&quot;), new File(gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa.pub&quot;));
- 	String privateSshKeyLocation = gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;;
- 	props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
+try {
+	String privateSshKeyLocation = &quot;C:/Atlassian/Centaurus/BB/tmp/test/.ssh/id_rsa&quot;;
+     props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
      log.info(&quot;SSH keys are stored in &quot; + privateSshKeyLocation);
      props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation);
 } catch (Exception e) {
@@ -294,7 +289,7 @@ import org.apache.commons.io.FileUtils;
           </SystemSampler>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="false">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
