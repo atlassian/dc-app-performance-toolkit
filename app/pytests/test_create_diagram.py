@@ -49,13 +49,13 @@ class TestCreateDiagram:
         userKey = diagrams_response.json()["key"]
         print(userKey)
         
+        # Create diagram
         payload ={ 'name':"D100", 'author':'admin', 
            'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey, 
             'boxColorFieldKey': field, 'groupedLayoutFieldKey': field, 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}        
         
-        print(payload);
-        print(json.dumps(payload))
+      
         diagrams_response = requests.post('http://localhost:8080/rest/dependency-map/1.0/diagram',           
             json=payload,
             cookies=dict(JSESSIONID=session_id))

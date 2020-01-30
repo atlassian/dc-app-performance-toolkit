@@ -1,7 +1,7 @@
 import requests
 
 class TestCopy:
-    def test_login(self):
+    def test_copy(self):
         # authenticate and get a session id
         auth_response = requests.post('http://localhost:8080/rest/auth/1/session',
             json={ "username": "admin", "password": "admin" })
@@ -18,6 +18,8 @@ class TestCopy:
         id1= str(diagram1["id"])
         print( id1)
         print( diagrams_response.json() ); 
+        
+        #create a copy of the diagram
         diagrams_response = requests.post('http://localhost:8080/rest/dependency-map/1.0/diagram/duplicate/' + id1 ,
             cookies=dict(JSESSIONID=session_id))
         assert diagrams_response.status_code == 200 

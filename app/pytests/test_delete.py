@@ -1,7 +1,7 @@
 import requests
 
 class TestDelete:
-    def test_login(self):
+    def test_delete_diagram(self):
         # authenticate and get a session id
         auth_response = requests.post('http://localhost:8080/rest/auth/1/session',
             json={ "username": "admin", "password": "admin" })
