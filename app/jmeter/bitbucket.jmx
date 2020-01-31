@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, test_bitbucket_instance.atlassian.com)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
@@ -41,7 +41,7 @@
           </elementProp>
           <elementProp name="application.ssh_hostname" elementType="Argument">
             <stringProp name="Argument.name">application.ssh_hostname</stringProp>
-            <stringProp name="Argument.value">${__P(application_hostname, bitbucket-loadbala-6bmjswoyfzm3-5148108.us-east-2.elb.amazonaws.com)}</stringProp>
+            <stringProp name="Argument.value">${__P(application_hostname, test_bitbucket_instance.atlassian.com)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="tmp.dir" elementType="Argument">
@@ -119,11 +119,6 @@
             <stringProp name="Argument.value">${__P(use_jira_keys,true)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="PRIVATE_SSH_KEY_LOCATION" elementType="Argument">
-            <stringProp name="Argument.name">PRIVATE_SSH_KEY_LOCATION</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -159,43 +154,6 @@
         <boolProp name="clearEachIteration">true</boolProp>
         <boolProp name="useExpires">false</boolProp>
       </CacheManager>
-      <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <sentBytes>true</sentBytes>
-            <url>true</url>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-            <connectTime>true</connectTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
       <hashTree/>
       <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -246,9 +204,14 @@ import java.util.UUID;
             <stringProp name="script">import java.io.File;
 import org.apache.commons.io.FileUtils;
 
-try {
-	String privateSshKeyLocation = &quot;C:/Atlassian/Centaurus/BB/tmp/test/.ssh/id_rsa&quot;;
-     props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
+ try {
+ 	String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
+ 	String bitbucketSshKeyUrl = vars.get(&quot;ssh.key.url&quot;);
+     File privateKey = new File(gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;);
+     FileUtils.copyURLToFile(new URL(bitbucketSshKeyUrl), privateKey);
+ 	FileUtils.copyURLToFile(new URL(bitbucketSshKeyUrl + &quot;.pub&quot;), new File(gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa.pub&quot;));
+ 	String privateSshKeyLocation = gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;;
+ 	props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
      log.info(&quot;SSH keys are stored in &quot; + privateSshKeyLocation);
      props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);
 } catch (Exception e) {
@@ -289,7 +252,7 @@ try {
           </SystemSampler>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
@@ -512,7 +475,7 @@ if (randomNum &lt;= gitProtocolSshPercentage) {
               <stringProp name="script">import java.util.UUID;
 
 String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
-vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID());	</stringProp>
+vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID());</stringProp>
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
@@ -530,8 +493,8 @@ if (localWorkingCopy.exists()) {
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="[OS Sampler] Full clone a random repository over ${GIT_PROTOCOL}" enabled="true">
-            <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Clone repository over ${GIT_PROTOCOL}" enabled="true">
+            <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">git</stringProp>
             <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -601,7 +564,7 @@ if (responseCode != &quot;0&quot;) {
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="TMP_PULL_FOLDER" enabled="true">
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Create repo shallow copy" enabled="true">
               <stringProp name="scriptLanguage">java</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
@@ -612,18 +575,18 @@ import org.apache.commons.io.FileUtils;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
  try {
- 	String tempPullFolder = Files.createDirectories(Paths.get(gitTmpWorkspace, new String[]{&quot;tmpPullDir&quot;}), new FileAttribute[0])
+ 	String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
+ 	String shallowCopiesDir = Files.createDirectories(Paths.get(gitTmpWorkspace, new String[]{&quot;shallow_copies&quot;}), new FileAttribute[0])
  	                              .toAbsolutePath()
  	                              .toString();
-     log.info(&quot;Tmp pull folder: [&quot; + tempPullFolder +&quot;] successfully created.&quot;);
+     log.info(&quot;Shallow copies folder: [&quot; + shallowCopiesDir +&quot;] successfully created.&quot;);
      
 	File srcDir = new File(vars.get(&quot;REPO_FOLDER&quot;) + &quot;/.git&quot;);
-	String metaRepo = tempPullFolder + &quot;/&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID();
-	File trgDir = new File (metaRepo + &quot;/.git&quot;);
+	String repoShallowCopyDir = shallowCopiesDir + &quot;/&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID();
+	File trgDir = new File (repoShallowCopyDir + &quot;/.git&quot;);
 	FileUtils.copyDirectory(srcDir, trgDir);
-	vars.put(&quot;.GIT_FOLDER&quot;, metaRepo);
+	vars.put(&quot;REPO_SHALLOW_COPY_DIR&quot;, repoShallowCopyDir);
 	
 } catch (Exception e) {
 	log.error(&quot;Error while creating temporary workspace for pull&quot;, e);
@@ -632,7 +595,7 @@ gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <intProp name="LoopController.loops">-1</intProp>
           </LoopController>
@@ -772,7 +735,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
             </SystemSampler>
             <hashTree/>
             <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git push origin master over ${GIT_PROTOCOL}" enabled="true">
-              <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+              <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
               <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -860,7 +823,7 @@ if (responseCode != &quot;0&quot;) {
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="SystemSampler.directory">${.GIT_FOLDER}</stringProp>
+              <stringProp name="SystemSampler.directory">${REPO_SHALLOW_COPY_DIR}</stringProp>
             </SystemSampler>
             <hashTree/>
           </hashTree>
@@ -876,133 +839,6 @@ def localWorkingCopy = new File(vars.get(&quot;REPO_FOLDER&quot;))
 if (localWorkingCopy.exists()) {
 	localWorkingCopy.deleteDir()
 }</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
-            <boolProp name="displayJMeterProperties">false</boolProp>
-            <boolProp name="displayJMeterVariables">true</boolProp>
-            <boolProp name="displaySystemProperties">false</boolProp>
-          </DebugSampler>
-          <hashTree/>
-        </hashTree>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="trikit" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <intProp name="LoopController.loops">-1</intProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">100</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push" enabled="true"/>
-        <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
-            <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">// sampler to set up random variables, in the contained pre-processors
-SampleResult.setIgnore();</stringProp>
-          </JSR223Sampler>
-          <hashTree>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="USERNAME, USER_PASSWORD (get a random user)" enabled="true">
-              <stringProp name="scriptLanguage">groovy</stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">def userId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_USERS} + 1)
-def username = &quot;${USER_NAME_PREFIX}&quot; + userId
-
-vars.put(&quot;USERNAME&quot;, username)
-vars.put(&quot;USER_PASSWORD&quot;, username)</stringProp>
-            </JSR223PreProcessor>
-            <hashTree/>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="REPO_URL, REPO_SLUG, GIT_PROTOCOL (get a random repo URL)" enabled="true">
-              <stringProp name="scriptLanguage">groovy</stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">def projectId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_PROJECTS} + 1)
-def repoId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_REPOS_PER_PROJECT} + 1)
-def repoSlug = &quot;${PROJECT_NAME_PREFIX}&quot; + projectId + &quot;-${REPO_NAME_PREFIX}&quot; + repoId
-def projectKey = &quot;${PROJECT_NAME_PREFIX}&quot; + projectId
-
-def username = vars.get(&quot;USERNAME&quot;)
-def password = vars.get(&quot;USER_PASSWORD&quot;)
-
-vars.put(&quot;REPO_SLUG&quot;, repoSlug)
-
-def gitProtocolSshPercentage = Integer.valueOf(&quot;${GIT_PROTOCOL_SSH_PERCENTAGE}&quot;).intValue()
-def randomNum = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 100)
-if (randomNum &lt;= gitProtocolSshPercentage) {
-	vars.put(&quot;GIT_PROTOCOL&quot;, &quot;ssh&quot;)
-	vars.put(&quot;REPO_URL&quot;, &quot;ssh://git@${application.ssh_hostname}:${application.ssh_port}/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;) 
-} else {
-	vars.put(&quot;GIT_PROTOCOL&quot;, &quot;http&quot;)
-	vars.put(&quot;REPO_URL&quot;, &quot;${application.protocol}://&quot; + username + &quot;:&quot; + password + &quot;@${application.hostname}:${application.port}/scm/&quot; + projectKey + &quot;/&quot; + repoSlug + &quot;.git&quot;)
-}
-</stringProp>
-            </JSR223PreProcessor>
-            <hashTree/>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="REPO_FOLDER (Generate repo folder)" enabled="true">
-              <stringProp name="scriptLanguage">java</stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">import java.util.UUID;
-
-String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
-vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID());</stringProp>
-            </JSR223PreProcessor>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Delete repo from disk if exists" enabled="true">
-            <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore();
-
-def localWorkingCopy = new File(vars.get(&quot;REPO_FOLDER&quot;))
-
-if (localWorkingCopy.exists()) {
-	localWorkingCopy.deleteDir()
-}</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="[Trikit] Full clone a random repository over ${GIT_PROTOCOL}" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">import com.atlassian.trikit.Trikit
-import com.atlassian.trikit.UsernamePassword
-import java.nio.file.Path
-import java.nio.file.Paths
-
-
-def username = vars.get(&quot;USERNAME&quot;)
-def password = vars.get(&quot;USER_PASSWORD&quot;)
-
-repoUrl = vars.get(&quot;REPO_URL&quot;)
-sshKey = props.get(&quot;PRIVATE_SSH_KEY_LOCATION&quot;);
-trikit = new Trikit();
-
-if (vars.get(&quot;GIT_PROTOCOL&quot;).equals(&quot;http&quot;)) {
-	credentials = new UsernamePassword(username, password)
-	metrics = trikit.clone(repoUrl, null, credentials, 5000L)
-} else {
-	path = Paths.get(sshKey)
-	metrics = trikit.clone(repoUrl, (Path) path, null, 5000L)
-}
-
-SampleResult.setBytes(metrics.bytesRead)
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
         </hashTree>
@@ -1039,6 +875,43 @@ log.info(&quot;Git temporary workspace: [&quot; + gitTmpWorkspace +&quot;] succe
           <hashTree/>
         </hashTree>
       </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>

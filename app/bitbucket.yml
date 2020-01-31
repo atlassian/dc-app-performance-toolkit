@@ -4,14 +4,14 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: bitbucket-loadbala-115vgfccwm6ke-1977496740.us-west-1.elb.amazonaws.com   # Jira DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
+    application_hostname: test_bitbucket_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     application_postfix:            # e.g. /bitbucket in case of url like http://localhost:2990/bitbucket
     admin_login: admin
     admin_password: admin
-    concurrency: 30
-    test_duration: 10m
+    concurrency: 20
+    test_duration: 50m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
@@ -28,7 +28,7 @@ execution:
   - scenario: jmeter
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
+    ramp-up: 10m
 #  - scenario: selenium
 #    executor: selenium
 #    runner: pytest
@@ -43,7 +43,7 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
-      tmp_dir: C:/Projects/tmp5
+      tmp_dir: /tmp
       ssh_key_url: https://centaurus-datasets.s3.us-east-2.amazonaws.com/bitbucket/ssh/id_rsa
 modules:
   consolidator:
