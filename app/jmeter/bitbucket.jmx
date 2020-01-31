@@ -493,8 +493,8 @@ if (localWorkingCopy.exists()) {
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Full clone a random repository over ${GIT_PROTOCOL}" enabled="true">
-            <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Clone repository over ${GIT_PROTOCOL}" enabled="true">
+            <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">git</stringProp>
             <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -502,6 +502,11 @@ if (localWorkingCopy.exists()) {
                 <elementProp name="" elementType="Argument">
                   <stringProp name="Argument.name"></stringProp>
                   <stringProp name="Argument.value">clone</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">--no-checkout</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
                 <elementProp name="" elementType="Argument">
@@ -559,10 +564,40 @@ if (responseCode != &quot;0&quot;) {
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Create repo shallow copy" enabled="true">
+              <stringProp name="scriptLanguage">java</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
+import org.apache.commons.io.FileUtils;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+ try {
+ 	String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
+ 	String shallowCopiesDir = Files.createDirectories(Paths.get(gitTmpWorkspace, new String[]{&quot;shallow_copies&quot;}), new FileAttribute[0])
+ 	                              .toAbsolutePath()
+ 	                              .toString();
+     log.info(&quot;Shallow copies folder: [&quot; + shallowCopiesDir +&quot;] successfully created.&quot;);
+     
+	File srcDir = new File(vars.get(&quot;REPO_FOLDER&quot;) + &quot;/.git&quot;);
+	String repoShallowCopyDir = shallowCopiesDir + &quot;/&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID();
+	File trgDir = new File (repoShallowCopyDir + &quot;/.git&quot;);
+	FileUtils.copyDirectory(srcDir, trgDir);
+	vars.put(&quot;REPO_SHALLOW_COPY_DIR&quot;, repoShallowCopyDir);
+	
+} catch (Exception e) {
+	log.error(&quot;Error while creating temporary workspace for pull&quot;, e);
+	ctx.getEngine().askThreadsToStop();
+}</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Push to master" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">100</stringProp>
+            <intProp name="LoopController.loops">-1</intProp>
           </LoopController>
           <hashTree>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
@@ -610,7 +645,7 @@ vars.put(&quot;COMMIT_MESSAGE&quot;, &quot;${commitMessage}&quot;)</stringProp>
             </hashTree>
             <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Change file" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
-              <stringProp name="LoopController.loops">${NUM_FILES_TO_CHANGE}</stringProp>
+              <stringProp name="LoopController.loops">1</stringProp>
             </LoopController>
             <hashTree>
               <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="change file" enabled="true">
@@ -631,7 +666,12 @@ def now = new Date()
 def max = Integer.valueOf(vars.get(&quot;MAX_NUM_LINES_TO_CHANGE&quot;))
 int number_of_lines = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, max + 1);
 
-new File(localWorkingCopy.toString(), fileName).withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
+def file = new File(localWorkingCopy.toString(), fileName);
+if(!file.exists()){
+	file.createNewFile();
+}
+
+file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
 	for (i = 0; i &lt; number_of_lines; i++) {
 		writer.writeLine &apos;Hey, this is a new line: (&apos; + (i+1) + &apos;/&apos; + number_of_lines + &apos;) &apos; + Math.random().toString() + &apos; &apos; + now
 	}
@@ -695,7 +735,7 @@ new File(localWorkingCopy.toString(), fileName).withWriterAppend(&apos;utf-8&apo
             </SystemSampler>
             <hashTree/>
             <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git push origin master over ${GIT_PROTOCOL}" enabled="true">
-              <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+              <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
               <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -756,6 +796,36 @@ if (responseCode != &quot;0&quot;) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git fetch over ${GIT_PROTOCOL}" enabled="true">
+              <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
+              <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
+              <stringProp name="SystemSampler.command">git</stringProp>
+              <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">fetch</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="GIT_SSH_VARIANT" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSH_VARIANT</stringProp>
+                    <stringProp name="Argument.value">ssh</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="GIT_SSH_COMMAND" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSH_COMMAND</stringProp>
+                    <stringProp name="Argument.value">${__P(GIT_SSH_COMMAND)}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="SystemSampler.directory">${REPO_SHALLOW_COPY_DIR}</stringProp>
+            </SystemSampler>
+            <hashTree/>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Delete repo from disk if exists" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
