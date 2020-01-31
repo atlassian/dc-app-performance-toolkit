@@ -250,7 +250,7 @@ try {
 	String privateSshKeyLocation = &quot;C:/Atlassian/Centaurus/BB/tmp/test/.ssh/id_rsa&quot;;
      props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
      log.info(&quot;SSH keys are stored in &quot; + privateSshKeyLocation);
-     props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation);
+     props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);
 } catch (Exception e) {
 	log.error(&quot;Error while copying ssh keys&quot;, e);
 	ctx.getEngine().askThreadsToStop();
