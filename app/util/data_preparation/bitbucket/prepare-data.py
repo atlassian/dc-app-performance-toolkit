@@ -29,11 +29,7 @@ def __get_users(bitbucket_api):
 
 def __get_repos(bitbucket_api):
     max_results = 50
-    import time
-    #start_time = time.time()
     repos = bitbucket_api.get_non_fork_repos(max_results=max_results)
-    #print("--- %s seconds ---" % (time.time() - start_time))
-
     print(f'Repos number to fetch via API is {max_results}')
     return repos
 

@@ -133,49 +133,20 @@ def pytest_runtest_makereport(item):
 
 @pytest.fixture
 def jira_screen_shots(request, webdriver):
-    # TODO come up with a good solution to make 1 function from jira_screen_shots() and confluence_screen_shots()
-    yield
-    # request.node is an "item" because we use the default
-    # "function" scope
-    if request.node.rep_call.failed:
-        mode = "w" if not selenium_error_file.exists() else "a+"
-        action_name = request.node.rep_call.head_line
-        error_text = request.node.rep_call.longreprtext
-        with open(selenium_error_file, mode) as err_file:
-            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
-        print(f"Action: {action_name}, Error: {error_text}\n")
-        os.makedirs(f"{current_results_dir}/errors_artifacts", exist_ok=True)
-        error_artifact_name = f'{current_results_dir}/errors_artifacts/{datetime_now(action_name)}'
-        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
-        with open(f'{error_artifact_name}.html', 'wb') as html_file:
-            html_file.write(webdriver.page_source.encode('utf-8'))
-        webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(JIRA_SETTINGS.server_url)
+    get_screen_shots(request, webdriver, app_settings=JIRA_SETTINGS)
 
 
 @pytest.fixture
 def confluence_screen_shots(request, webdriver):
-    yield
-    # request.node is an "item" because we use the default
-    # "function" scope
-    if request.node.rep_call.failed:
-        mode = "w" if not selenium_error_file.exists() else "a+"
-        action_name = request.node.rep_call.head_line
-        error_text = request.node.rep_call.longreprtext
-        with open(selenium_error_file, mode) as err_file:
-            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
-        print(f"Action: {action_name}, Error: {error_text}\n")
-        os.makedirs(f"{current_results_dir}/errors_artifacts", exist_ok=True)
-        error_artifact_name = f'{current_results_dir}/errors_artifacts/{datetime_now(action_name)}'
-        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
-        with open(f'{error_artifact_name}.html', 'wb') as html_file:
-            html_file.write(webdriver.page_source.encode('utf-8'))
-        webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(CONFLUENCE_SETTINGS.server_url)
+    get_screen_shots(request, webdriver, app_settings=CONFLUENCE_SETTINGS)
 
 
 @pytest.fixture
 def bitbucket_screen_shots(request, webdriver):
+    get_screen_shots(request, webdriver, app_settings=BITBUCKET_SETTINGS)
+
+
+def get_screen_shots(request, webdriver, app_settings):
     yield
     # request.node is an "item" because we use the default
     # "function" scope
@@ -192,7 +163,7 @@ def bitbucket_screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(BITBUCKET_SETTINGS.server_url)
+        webdriver.get(app_settings.server_url)
 
 
 @pytest.fixture(scope="module")
