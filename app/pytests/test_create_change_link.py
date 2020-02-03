@@ -1,8 +1,8 @@
 import requests
 import json
 
-class TestCreateChangeLink:
-    def test_create_change_link(self):
+class TestLinkConfig:
+    def test_link(self):
         # authenticate and get a session id
         auth_response = requests.post('http://localhost:8080/rest/auth/1/session',
             json={ "username": "admin", "password": "admin" })
