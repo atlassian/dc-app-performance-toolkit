@@ -478,6 +478,47 @@ String gitTmpWorkspace = props.get(&quot;GIT_TMP_WORKSPACE&quot;);
 vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + vars.get(&quot;REPO_SLUG&quot;) + &quot;-&quot; + UUID.randomUUID());</stringProp>
             </JSR223PreProcessor>
             <hashTree/>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="User git config global" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+Runtime rt = Runtime.getRuntime();
+        Process p = rt.exec(&quot;git config -l&quot;);
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(p.getInputStream()));
+
+        String line;
+        boolean name = false;
+        boolean email = false;
+
+        while ((line = reader.readLine()) != null) {
+            if (line.contains(&quot;user.name&quot;)) {
+                if (line.endsWith(&quot;=&quot;)) {
+                    p = rt.exec(&quot;git config --global user.name \&quot;admin\&quot;&quot;);
+                }
+                name = true;
+            } else if (line.contains(&quot;user.email&quot;)) {
+                if (line.endsWith(&quot;=&quot;)) {
+                    p = rt.exec(&quot;git config --global user.email \&quot;admin@test.com\&quot;&quot;);
+                }
+                email = true;
+            }
+        }
+        reader.close();
+        if (!name) {
+            p = rt.exec(&quot;git config --global user.name \&quot;admin\&quot;&quot;);
+        }
+        if (!email) {
+            p = rt.exec(&quot;git config --global user.email \&quot;admin@test.com\&quot;&quot;);
+        }</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Delete repo from disk if exists" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
