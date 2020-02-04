@@ -36,7 +36,6 @@ Results are located in the `resutls/jira/YY-MM-DD-hh-mm-ss` directory:
 * `kpi.jtl` - JMeter raw data
 * `pytest.out` - detailed log of Selenium execution, including stacktraces of Selenium fails
 * `selenium.jtl` - Selenium raw data
-* `w3c_timings.txt` - w3c browser timings
 * `results.csv` - consolidated results of execution
 
 

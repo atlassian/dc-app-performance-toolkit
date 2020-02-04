@@ -51,7 +51,7 @@ def __get_pages(confluence_api, count):
                       ' and title !~ Selenium'    # filter out pages created by Selenium
                       ' and title !~ Home')       # filter out space Home pages
     if not pages:
-        raise SystemExit(f"There is no Pages in Confluence")
+        raise SystemExit(f"There are no Pages in Confluence")
 
     return pages
 
@@ -61,7 +61,7 @@ def __get_blogs(confluence_api, count):
         0, count, cql='type=blogpost'
                       ' and title !~ Performance')
     if not blogs:
-        raise SystemExit(f"There is no Blog posts in Confluence")
+        raise SystemExit(f"There are no Blog posts in Confluence")
 
     return blogs
 
@@ -73,13 +73,13 @@ def __write_to_file(file_path, items):
 
 
 def write_test_data_to_files(dataset):
-    pages = [f"{page['id']},{page['space']['key']}" for page in dataset['pages']]
+    pages = [f"{page['id']},{page['space']['key']}" for page in dataset[PAGES]]
     __write_to_file(CONFLUENCE_PAGES, pages)
 
-    blogs = [f"{blog['id']},{blog['space']['key']}" for blog in dataset['blogs']]
+    blogs = [f"{blog['id']},{blog['space']['key']}" for blog in dataset[BLOGS]]
     __write_to_file(CONFLUENCE_BLOGS, blogs)
 
-    users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset['users']]
+    users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(CONFLUENCE_USERS, users)
 
 

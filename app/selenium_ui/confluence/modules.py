@@ -112,7 +112,7 @@ def view_dashboard(webdriver, datasets):
 def create_page(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element(By.ID, "quick-create-page-button").click()
+        _wait_until(webdriver, ec.element_to_be_clickable((By.ID, 'quick-create-page-button')), interaction).click()
         _dismiss_popup(webdriver, "#closeDisDialog")
         _wait_until(webdriver, ec.element_to_be_clickable((By.ID, 'rte-button-publish')), interaction)
 

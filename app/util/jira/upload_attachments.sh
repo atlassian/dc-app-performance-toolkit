@@ -85,7 +85,7 @@ sudo su jira -c "time wget --progress=dot:giga ${ATTACHMENTS_TAR_URL}"
 
 echo "Step3: Untar attachments to tmp folder"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
-sudo su jira -c "tar -xzvf ${ATTACHMENTS_TAR}"
+sudo su jira -c "tar -xzf ${ATTACHMENTS_TAR} --checkpoint=.10000"
 if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1

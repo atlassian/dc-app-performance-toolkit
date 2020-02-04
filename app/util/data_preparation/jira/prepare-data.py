@@ -12,6 +12,7 @@ USERS = "users"
 ISSUES = "issues"
 JQLS = "jqls"
 PROJECT_KEYS = "project_keys"
+PROJECTS_COUNT_LIMIT = 1000
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
@@ -78,7 +79,7 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_project_keys = __get_software_project_keys(jira_api)
+    software_project_keys = __get_software_project_keys(jira_api, PROJECTS_COUNT_LIMIT)
     dataset[PROJECT_KEYS] = software_project_keys
     dataset[ISSUES] = __get_issues(jira_api, software_project_keys)
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
@@ -89,11 +90,12 @@ def __create_data_set(jira_api):
 
 
 def __get_issues(jira_api, software_project_keys):
+    jql_projects_str = ','.join(f'"{prj}"' for prj in software_project_keys)
     issues = jira_api.issues_search(
-        jql=f"project in ({','.join(software_project_keys)}) AND status != Closed order by key", max_results=8000
+        jql=f"project in ({jql_projects_str}) AND status != Closed order by key", max_results=8000
     )
     if not issues:
-        raise SystemExit("There is no issues in Jira")
+        raise SystemExit("There are no issues in Jira")
 
     return issues
 
@@ -101,7 +103,7 @@ def __get_issues(jira_api, software_project_keys):
 def __get_boards(jira_api, board_type):
     boards = jira_api.get_boards(board_type=board_type, max_results=250)
     if not boards:
-        raise SystemExit(f"There is no {board_type} board in Jira")
+        raise SystemExit(f"There are no {board_type} boards in Jira")
 
     return boards
 
@@ -110,18 +112,18 @@ def __get_users(jira_api):
     perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
     users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
     if not users:
-        raise SystemExit("There is no users in Jira")
+        raise SystemExit("There are no users in Jira")
 
     return users
 
 
-def __get_software_project_keys(jira_api):
+def __get_software_project_keys(jira_api, max_projects_count):
     all_projects = jira_api.get_all_projects()
     software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
     if not software_project_keys:
-        raise SystemExit("There is no software project in Jira")
-
-    return software_project_keys
+        raise SystemExit("There are no software projects in Jira")
+    # Limit number of projects to avoid "Request header is too large" for further requests.
+    return software_project_keys[:max_projects_count]
 
 
 def main():
