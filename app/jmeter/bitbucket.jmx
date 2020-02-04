@@ -220,6 +220,34 @@ import org.apache.commons.io.FileUtils;
 }</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="User git config global" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import org.apache.commons.lang3.StringUtils;
+
+try {
+	Runtime rt = Runtime.getRuntime();
+	String name = new BufferedReader(new InputStreamReader(rt.exec(&quot;git config --global user.name&quot;).getInputStream())).readLine();
+	String email = new BufferedReader(new InputStreamReader(rt.exec(&quot;git config --global user.email&quot;).getInputStream())).readLine();
+
+
+	if (StringUtils.isBlank(name)) {
+		rt.exec(&quot;git config --global user.name \&quot;&quot; + vars.get(&quot;admin_login&quot;) + &quot;\&quot;&quot;).waitFor();
+		}
+	if (StringUtils.isBlank(email)) {
+		rt.exec(&quot;git config --global user.email \&quot;&quot; + vars.get(&quot;admin_login&quot;) + &quot;@test.com\&quot;&quot;).waitFor();
+		}
+} catch (Exception e) {
+	log.error(&quot;Error while changing user.name or/and user.email&quot;, e);
+	ctx.getEngine().askThreadsToStop();
+	}</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
         </hashTree>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If OS is not Windows" enabled="true">
           <stringProp name="IfController.condition">${__BeanShell(import org.apache.commons.lang3.SystemUtils; !SystemUtils.IS_OS_WINDOWS;)}</stringProp>
