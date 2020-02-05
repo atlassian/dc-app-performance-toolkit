@@ -1,16 +1,11 @@
 import requests
+from fixtures import session
 
 class TestCopy:
-    def test_copy(self):
-        # authenticate and get a session id
-        auth_response = requests.post('http://localhost:8080/rest/auth/1/session',
-            json={ "username": "admin", "password": "admin" })
-        assert auth_response.status_code == 200
-        session_id = auth_response.json()['session']['value']
+    def test_copy(self, session):
 
         # request list of diagrams using the session id
-        diagrams_response = requests.get('http://localhost:8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50',
-            cookies=dict(JSESSIONID=session_id))
+        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
         total = diagrams_response.json()["total"];
         values = diagrams_response.json()["values"];
@@ -20,8 +15,6 @@ class TestCopy:
         print( diagrams_response.json() ); 
         
         #create a copy of the diagram
-        diagrams_response = requests.post('http://localhost:8080/rest/dependency-map/1.0/diagram/duplicate/' + id1 ,
-            cookies=dict(JSESSIONID=session_id))
-        assert diagrams_response.status_code == 200 
-        print( diagrams_response.json() );       
-        
+        diagrams_response = session.post('http://localhost:8080/rest/dependency-map/1.0/diagram/duplicate/' + id1 )
+        assert diagrams_response.status_code == 200
+        print( diagrams_response.json() );
