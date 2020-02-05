@@ -69,41 +69,6 @@
             <stringProp name="Argument.value">60</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="NUMBER_OF_USERS" elementType="Argument">
-            <stringProp name="Argument.name">NUMBER_OF_USERS</stringProp>
-            <stringProp name="Argument.value">${__P(num_users,600)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="NUMBER_OF_PROJECTS" elementType="Argument">
-            <stringProp name="Argument.name">NUMBER_OF_PROJECTS</stringProp>
-            <stringProp name="Argument.value">${__P(num_projects,1600)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="NUMBER_OF_REPOS_PER_PROJECT" elementType="Argument">
-            <stringProp name="Argument.name">NUMBER_OF_REPOS_PER_PROJECT</stringProp>
-            <stringProp name="Argument.value">${__P(repositories_per_project,2)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="NUMBER_OF_PRS_PER_REPO" elementType="Argument">
-            <stringProp name="Argument.name">NUMBER_OF_PRS_PER_REPO</stringProp>
-            <stringProp name="Argument.value">${__P(pull_requests_per_repository,2)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="PROJECT_NAME_PREFIX" elementType="Argument">
-            <stringProp name="Argument.name">PROJECT_NAME_PREFIX</stringProp>
-            <stringProp name="Argument.value">${__P(project_prefix,prj-)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="REPO_NAME_PREFIX" elementType="Argument">
-            <stringProp name="Argument.name">REPO_NAME_PREFIX</stringProp>
-            <stringProp name="Argument.value">${__P(repository_prefix,repo-)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="USER_NAME_PREFIX" elementType="Argument">
-            <stringProp name="Argument.name">USER_NAME_PREFIX</stringProp>
-            <stringProp name="Argument.value">${__P(user_prefix,user-)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="MAX_NUM_LINES_TO_CHANGE" elementType="Argument">
             <stringProp name="Argument.name">MAX_NUM_LINES_TO_CHANGE</stringProp>
             <stringProp name="Argument.value">${__P(max_num_line_to_change,20)}</stringProp>
@@ -445,6 +410,30 @@ try {
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
+          <stringProp name="filename">datasets/bitbucket/users.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">USER_ID,USERNAME,USER_PASSWORD</stringProp>
+          <boolProp name="ignoreFirstLine">false</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="repos" enabled="true">
+          <stringProp name="filename">datasets/bitbucket/repos.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">REPO_SLUG,PROJECT_KEY</stringProp>
+          <boolProp name="ignoreFirstLine">false</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
@@ -456,32 +445,16 @@ try {
 SampleResult.setIgnore();</stringProp>
           </JSR223Sampler>
           <hashTree>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="USERNAME, USER_PASSWORD (get a random user)" enabled="true">
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="REPO_URL, REPO_SLUG, GIT_PROTOCOL" enabled="true">
               <stringProp name="scriptLanguage">groovy</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">def userId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_USERS} + 1)
-def username = &quot;${USER_NAME_PREFIX}&quot; + userId
-
-vars.put(&quot;USERNAME&quot;, username)
-vars.put(&quot;USER_PASSWORD&quot;, username)</stringProp>
-            </JSR223PreProcessor>
-            <hashTree/>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="REPO_URL, REPO_SLUG, GIT_PROTOCOL (get a random repo URL)" enabled="true">
-              <stringProp name="scriptLanguage">groovy</stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">def projectId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_PROJECTS} + 1)
-def repoId = java.util.concurrent.ThreadLocalRandom.current().nextInt(1, ${NUMBER_OF_REPOS_PER_PROJECT} + 1)
-def repoSlug = &quot;${PROJECT_NAME_PREFIX}&quot; + projectId + &quot;-${REPO_NAME_PREFIX}&quot; + repoId
-def projectKey = &quot;${PROJECT_NAME_PREFIX}&quot; + projectId
+              <stringProp name="script">def repoSlug = &quot;${REPO_SLUG}&quot;
+def projectKey = &quot;${PROJECT_KEY}&quot;
 
 def username = vars.get(&quot;USERNAME&quot;)
 def password = vars.get(&quot;USER_PASSWORD&quot;)
-
-vars.put(&quot;REPO_SLUG&quot;, repoSlug)
 
 def gitProtocolSshPercentage = Integer.valueOf(&quot;${GIT_PROTOCOL_SSH_PERCENTAGE}&quot;).intValue()
 def randomNum = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 100)
@@ -507,20 +480,6 @@ vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + v
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Delete repo from disk if exists" enabled="true">
-            <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore();
-
-def localWorkingCopy = new File(vars.get(&quot;REPO_FOLDER&quot;))
-
-if (localWorkingCopy.exists()) {
-	localWorkingCopy.deleteDir()
-}</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Clone repository over ${GIT_PROTOCOL}" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
