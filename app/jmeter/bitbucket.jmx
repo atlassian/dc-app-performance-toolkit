@@ -178,7 +178,6 @@ import org.apache.commons.io.FileUtils;
  	String privateSshKeyLocation = (gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;).replace(&quot;\\&quot;, &quot;/&quot;);
  	props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
      log.info(&quot;SSH keys are stored in &quot; + privateSshKeyLocation);
-     props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);
 } catch (Exception e) {
 	log.error(&quot;Error while copying ssh keys&quot;, e);
 	ctx.getEngine().askThreadsToStop();
@@ -211,6 +210,14 @@ try {
 	log.error(&quot;Error while changing user.name or/and user.email&quot;, e);
 	ctx.getEngine().askThreadsToStop();
 	}</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="GIT_SSH_COMMAND" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + props.get(&quot;PRIVATE_SSH_KEY_LOCATION&quot;) + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);</stringProp>
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
