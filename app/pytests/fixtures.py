@@ -7,5 +7,10 @@ def session():
     # authenticate to get a session id
     s = requests.session()
     auth_response = s.post('http://localhost:8080/rest/auth/1/session',
-        json={ "username": "admin", "password": "admin" })
+                           json={ "username": "admin", "password": "admin" })
+
+    # after test teardown
+    yield s  # provide the fixture value
+    print("teardown session")
+    s.close()
     return s

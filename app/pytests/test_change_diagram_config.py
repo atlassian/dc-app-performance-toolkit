@@ -10,7 +10,7 @@ from fixtures import session
 #POST /rest/webResources/1.0/resources
 
 class TestChangeDiagram:
-    def test_login(self, session):
+    def test_change_diagram_config(self, session):
         # Create diagram
         payload ={ 'name':"D100", 'author':'admin', 
            'lastEditedBy':'admin', 'layoutId':0, 'filterKey': 10000, 

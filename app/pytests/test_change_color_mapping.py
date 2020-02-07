@@ -3,7 +3,7 @@ import json
 from fixtures import session
 
 class TestChangeColorMapping:
-    def test_create_color_mapping(self, session):
+    def test_change_color_mapping(self, session):
         # Create diagram
         payload ={ 'name':"D100", 'author':'admin', 
            'lastEditedBy':'admin', 'layoutId':0, 'filterKey': 10000, 
