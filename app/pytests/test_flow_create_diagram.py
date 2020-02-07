@@ -166,8 +166,6 @@ class TestFlowCreateDiagram:
                                          json=payload)
         assert(diagrams_response.status_code == 200)
 
-
-
         #JIRA Get project id
         #diagrams_response = session.get('http://localhost:8080/rest/api/2/project')
         #assert diagrams_response.status_code == 200
