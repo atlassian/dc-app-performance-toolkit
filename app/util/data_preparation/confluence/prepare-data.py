@@ -1,10 +1,13 @@
 import random
 import string
 
+import urllib3
+
 from util.conf import CONFLUENCE_SETTINGS
 from util.data_preparation.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 USERS = "users"
 PAGES = "pages"
@@ -47,9 +50,9 @@ def __get_users(confluence_api, rpc_api, count):
 def __get_pages(confluence_api, count):
     pages = confluence_api.get_content_search(
         0, count, cql='type=page'
-                      ' and title !~ JMeter'      # filter out pages created by JMeter
-                      ' and title !~ Selenium'    # filter out pages created by Selenium
-                      ' and title !~ Home')       # filter out space Home pages
+                      ' and title !~ JMeter'  # filter out pages created by JMeter
+                      ' and title !~ Selenium'  # filter out pages created by Selenium
+                      ' and title !~ Home')  # filter out space Home pages
     if not pages:
         raise SystemExit(f"There are no Pages in Confluence")
 
