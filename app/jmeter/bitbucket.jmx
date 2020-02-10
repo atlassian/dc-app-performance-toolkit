@@ -203,14 +203,34 @@ try {
 
 	if (StringUtils.isBlank(name)) {
 		rt.exec(&quot;git config --global user.name \&quot;&quot; + vars.get(&quot;admin_login&quot;) + &quot;\&quot;&quot;).waitFor();
-		}
+	}
 	if (StringUtils.isBlank(email)) {
 		rt.exec(&quot;git config --global user.email \&quot;&quot; + vars.get(&quot;admin_login&quot;) + &quot;@test.com\&quot;&quot;).waitFor();
-		}
+	}
 } catch (Exception e) {
 	log.error(&quot;Error while changing user.name or/and user.email&quot;, e);
 	ctx.getEngine().askThreadsToStop();
-	}</stringProp>
+}</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="DATASETS_DIR" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import java.nio.file.Paths;
+import org.apache.jmeter.services.FileServer;
+
+String baseDir = FileServer.getFileServer()
+					.getBaseDir();
+String datasetsDir =  Paths.get(baseDir)
+					.getParent()
+					.resolve(&quot;datasets&quot;)
+					.toAbsolutePath()
+					.toString()
+					.replace(&quot;\\&quot;, &quot;/&quot;);
+					
+props.put(&quot;DATASETS_DIR&quot;, datasetsDir);</stringProp>
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
@@ -410,8 +430,14 @@ try {
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action" enabled="true">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">0</stringProp>
+        </TestAction>
+        <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
-          <stringProp name="filename">datasets/bitbucket/users.csv</stringProp>
+          <stringProp name="filename">${__P(DATASETS_DIR)}/bitbucket/users.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">USER_ID,USERNAME,USER_PASSWORD</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -423,7 +449,7 @@ try {
         </CSVDataSet>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="repos" enabled="true">
-          <stringProp name="filename">datasets/bitbucket/repos.csv</stringProp>
+          <stringProp name="filename">${__P(DATASETS_DIR)}/bitbucket/repos.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">REPO_SLUG,PROJECT_KEY</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
