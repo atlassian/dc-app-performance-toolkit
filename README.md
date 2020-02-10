@@ -14,13 +14,16 @@ At the moment, Jira DC and Confluence DC support is in beta. Bitbucket DC suppor
     * The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
     * The latest Confluence Platform Release: 7.0.4
 
+* Supported Bitbucket Server versions:
+    * The latest Bitbucket Server [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
 
 ## Installation and set up
 
 #### Dependencies
 * Python 3.6+ and pip
 * JDK 8
-* Google Chrome web browser. 
+* Google Chrome web browser
+* Git client (only for Bitbucket Server)
 
 Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product.yml file (modules->selenium->chromedriver->version).
 
@@ -32,6 +35,10 @@ Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, a
 python3 --version
 pip --version
 java -version
+```
+For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
 ```
 
 We recommend using virtualenv for Taurus.
@@ -61,6 +68,10 @@ python --version or python3 --version
 pip --version
 java -version
 Microsoft Visual C++ 14
+```
+For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
 ```
 
 Make sure you have Visual Studio build tool v14.22 installed. 

@@ -51,12 +51,12 @@ To simulate a load of medium-sized customers, `total_actions_per_hr` and `concur
 
 ### Opening JMeter scripts
 JMeter is written in XML and requires the JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-Be sure to run this command inside the `jira` directory. The main [jira.jmx](../../app/jmeter/jira.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
+Be sure to run this command inside the `app` directory. The main [jira.jmx](../../app/jmeter/jira.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
 
 ### Debugging JMeter scripts
 1. Open JMeter GUI from `jira` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
 2. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-3. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/reports/YY-MM-DD-hh-mm-ss` folder.
+3. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/results/jira/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
@@ -67,8 +67,8 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 
 ### Run one JMeter action
 ####Option 1: Run one JMeter action via GUI
-1. Open JMeter GUI from `jira` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-2. Go to `File` > `Open`, and then open `jira/jmeter/jira.jmx`.
+1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
+2. Go to `File` > `Open`, and then open `jmeter/jira.jmx`.
 2. In the`Global Variables` section, add correct Jira hostname, port, protocol, and postfix (if required).
 3. In `Jira` > `load profile`, set `perc_desired_action` to 100.
 4. Run JMeter.
@@ -79,9 +79,9 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 
 ## Selenium
 ### Debugging Selenium scripts
-Detailed log and stacktrace of Selenium PyTest fails are located in the `results/YY-MM-DD-hh-mm-ss/pytest.out` file. 
+Detailed log and stacktrace of Selenium PyTest fails are located in the `results/jira/YY-MM-DD-hh-mm-ss/pytest.out` file. 
 
-Also, screenshots and HTMLs of Selenium fails are stared in the `results/YY-MM-DD-hh-mm-ss/error_artifacts` folder. 
+Also, screenshots and HTMLs of Selenium fails are stared in the `results/jira/YY-MM-DD-hh-mm-ss/error_artifacts` folder. 
 
 ### Running Selenium tests with Browser GUI
 There are two options of running Selenium tests with browser GUI:
@@ -91,7 +91,7 @@ There are two options of running Selenium tests with browser GUI:
 
 ### Running Selenium tests locally without the Performance Toolkit
 1. Activate virualenv for the Performance Toolkit.
-2. Navigate to the jira folder using the `cd app/selenium_ui` command. 
+2. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
 3. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
 4. Run all Selenium PyTest tests with the `pytest jira-ui.py` command.
 5. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
