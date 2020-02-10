@@ -178,7 +178,7 @@ import org.apache.commons.io.FileUtils;
  	String privateSshKeyLocation = (gitTmpWorkspace + &quot;/bitbucket_ssh/id_rsa&quot;).replace(&quot;\\&quot;, &quot;/&quot;);
  	props.put(&quot;PRIVATE_SSH_KEY_LOCATION&quot;, privateSshKeyLocation);
      log.info(&quot;SSH keys are stored in &quot; + privateSshKeyLocation);
-     props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);
+     props.put(&quot;GIT_SSH_COMMAND&quot;, &quot;ssh -i &quot; + privateSshKeyLocation + &quot; -o \&quot;StrictHostKeyChecking=no\&quot;&quot;);     
 } catch (Exception e) {
 	log.error(&quot;Error while copying ssh keys&quot;, e);
 	ctx.getEngine().askThreadsToStop();
@@ -231,6 +231,24 @@ String datasetsDir =  Paths.get(baseDir)
 					.replace(&quot;\\&quot;, &quot;/&quot;);
 					
 props.put(&quot;DATASETS_DIR&quot;, datasetsDir);</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="GIT_LOG_DIR" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import org.apache.commons.lang3.StringUtils;
+
+try {
+String envArtifactsDir = System.getenv(&quot;TAURUS_ARTIFACTS_DIR&quot;);
+String gitLogDir = (StringUtils.isBlank(envArtifactsDir) ? vars.get(&quot;GIT_TMP_WORKSPACE&quot;) : envArtifactsDir).replace(&quot;\\&quot;, &quot;/&quot;);
+props.put(&quot;GIT_LOG_DIR&quot;, gitLogDir);
+log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
+} catch (Exception e) {
+	log.error(&quot;Error while defining GIT_LOG_DIR&quot;, e);
+	ctx.getEngine().askThreadsToStop();
+}</stringProp>
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
@@ -398,12 +416,6 @@ props.put(&quot;DATASETS_DIR&quot;, datasetsDir);</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action" enabled="true">
-          <intProp name="ActionProcessor.action">1</intProp>
-          <intProp name="ActionProcessor.target">0</intProp>
-          <stringProp name="ActionProcessor.duration">0</stringProp>
-        </TestAction>
-        <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
           <stringProp name="filename">${__P(DATASETS_DIR)}/bitbucket/users.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
@@ -522,6 +534,7 @@ vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + v
               </collectionProp>
             </elementProp>
             <stringProp name="SystemSampler.directory">${__P(GIT_TMP_WORKSPACE)}</stringProp>
+            <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
           </SystemSampler>
           <hashTree>
             <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OS Process Result" enabled="true">
@@ -682,7 +695,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="SystemSampler.directory">${REPO_FOLDER}</stringProp>
-              <stringProp name="SystemSampler.stderr">/tmp/giterrors.log</stringProp>
+              <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree/>
             <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git commit" enabled="true">
@@ -712,7 +725,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="SystemSampler.directory">${REPO_FOLDER}</stringProp>
-              <stringProp name="SystemSampler.stderr">/tmp/giterrors.log</stringProp>
+              <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree/>
             <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git push origin master over ${GIT_PROTOCOL}" enabled="true">
@@ -753,6 +766,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
                 </collectionProp>
               </elementProp>
               <stringProp name="SystemSampler.directory">${REPO_FOLDER}</stringProp>
+              <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OS Process Result" enabled="true">
@@ -805,6 +819,7 @@ if (responseCode != &quot;0&quot;) {
                 </collectionProp>
               </elementProp>
               <stringProp name="SystemSampler.directory">${REPO_SHALLOW_COPY_DIR}</stringProp>
+              <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree/>
           </hashTree>
