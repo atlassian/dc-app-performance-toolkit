@@ -11,6 +11,9 @@ PROJECTS = "projects"
 REPOS = 'repos'
 PULL_REQUESTS = "pull_requests"
 
+FETCH_LIMIT_REPOS = 50
+FETCH_LIMIT_PROJECTS = FETCH_LIMIT_REPOS
+
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -28,16 +31,22 @@ def __get_users(bitbucket_api):
 
 
 def __get_repos(bitbucket_api):
-    max_results = 50
-    repos = bitbucket_api.get_non_fork_repos(max_results=max_results)
-    print(f'Repos number to fetch via API is {max_results}')
+    concurrency = BITBUCKET_SETTINGS.concurrency
+    repos = bitbucket_api.get_non_fork_repos(
+        FETCH_LIMIT_REPOS if concurrency < FETCH_LIMIT_REPOS else concurrency
+    )
+    print(f'Repos number to fetch via API is {FETCH_LIMIT_REPOS}')
+    repos_len = len(repos)
+    if repos_len < concurrency:
+        raise SystemExit(f'Required number of repositories based on concurrency was not found'
+                         f' Found [{repos_len}] repos, needed at least [{concurrency}]')
+
     return repos
 
 
 def __get_projects(bitbucket_api):
-    max_results = 50
-    projects = bitbucket_api.get_projects(max_results=max_results)
-    print(f'Projects number to fetch via API is {max_results}')
+    projects = bitbucket_api.get_projects(max_results=FETCH_LIMIT_PROJECTS)
+    print(f'Projects number to fetch via API is {FETCH_LIMIT_PROJECTS}')
     return projects
 
 
