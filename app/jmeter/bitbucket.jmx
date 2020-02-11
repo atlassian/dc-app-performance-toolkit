@@ -242,7 +242,7 @@ props.put(&quot;DATASETS_DIR&quot;, datasetsDir);</stringProp>
 
 try {
 String envArtifactsDir = System.getenv(&quot;TAURUS_ARTIFACTS_DIR&quot;);
-String gitLogDir = (StringUtils.isBlank(envArtifactsDir) ? vars.get(&quot;GIT_TMP_WORKSPACE&quot;) : envArtifactsDir).replace(&quot;\\&quot;, &quot;/&quot;);
+String gitLogDir = (StringUtils.isBlank(envArtifactsDir) ? props.get(&quot;GIT_TMP_WORKSPACE&quot;) : envArtifactsDir).replace(&quot;\\&quot;, &quot;/&quot;);
 props.put(&quot;GIT_LOG_DIR&quot;, gitLogDir);
 log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
 } catch (Exception e) {
