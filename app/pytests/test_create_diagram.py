@@ -1,6 +1,7 @@
 import requests
 import json
 from fixtures import session
+import os
 
 class TestCreateDiagram:
     def test_create_diagram(self, session):
@@ -18,25 +19,26 @@ class TestCreateDiagram:
     #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 960 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram" "
 
         # Get filter key
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
+        HOSTNAME = os.environ.get('application_hostname')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
         filterKey= str(diagrams_response.json()["filters"][1]["filterKey"])
         print(filterKey)
         
         # Get field
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
         field= diagrams_response.json()["fields"][0]["id"]
         print(field)
 
        # Get field
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
         field= diagrams_response.json()["fields"][0]["id"]
         print(field)
 
         # Get user        
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/user')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
         userKey = diagrams_response.json()["key"]
         print("User key: " + userKey)
@@ -47,7 +49,7 @@ class TestCreateDiagram:
             'boxColorFieldKey': field, 'groupedLayoutFieldKey': field, 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}               
       
-        diagram_response = session.post('http://localhost:8080/rest/dependency-map/1.0/diagram',
+        diagram_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
             json=payload)
         assert diagram_response.status_code == 200
         diagramId = str(diagram_response.json()["id"])
@@ -56,7 +58,7 @@ class TestCreateDiagram:
         # Create linkConfig
         payload = { 'diagramId': diagramId, 'linkKey': 10000, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 20}
 
-        diagrams_response = session.post('http://localhost:8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
+        diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
             json=payload)
 
         newLinkConfig = diagrams_response.json()
@@ -65,6 +67,6 @@ class TestCreateDiagram:
         assert(diagrams_response.status_code == 200)
 
         # Get diagrams
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 

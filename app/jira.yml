@@ -1,16 +1,17 @@
 ---
+version: '3'
 settings:
   artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: localhost   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: 172.18.0.2   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 8080            # 80, 443, 8080, 2990, etc
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 200
+    concurrency: 10
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
@@ -25,19 +26,24 @@ services:
     post-process:
       - python3 util/analytics.py jira
 execution:
-  # - scenario: jmeter
-  #   concurrency: ${concurrency}
-  #   hold-for: ${test_duration}
-  #   ramp-up: 3m
-  # - scenario: selenium
-  #   executor: selenium
-  #   runner: pytest
-  #   hold-for: ${test_duration}
+ # - scenario: jmeter
+ #   concurrency: ${concurrency}
+ #   hold-for: ${test_duration}
+ #   ramp-up: 3m
+#  - scenario: selenium
+#   executor: selenium
+#    runner: pytest
+#    hold-for: ${test_duration}
   - executor: pytest
-    iterations: 1
-    scenario:
-      script: pytests/
+    ramp-up: 15s
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  #  iterations: 200
+    scenario: pytest-run
 scenarios:
+  pytest-run:
+    script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py
   jmeter:

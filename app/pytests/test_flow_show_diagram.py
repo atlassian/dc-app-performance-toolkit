@@ -2,6 +2,8 @@ import requests
 import pytest
 import time
 from fixtures import session
+import os
+
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
 #GET /rest/api/2/search?jql=project+%3D+SCRUM+ORDER+BY+Rank+ASC&startAt=0&maxResults=50 HTTP/1.1" 200 7802 44 "http://localhost:8080/plugins/servlet/dependenc
@@ -28,7 +30,8 @@ _diagram_id = '0'
 def create_data(scope="session"):
     print("start fixture create data")
     session = requests.session()
-    auth_response = session.post('http://localhost:8080/rest/auth/1/session',
+    HOSTNAME = os.environ.get('application_hostname')
+    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
                                  json={ "username": "admin", "password": "admin" })
     global _project_id
     global _diagram_id
@@ -37,12 +40,12 @@ def create_data(scope="session"):
     #Create Diagram
     #################################################################################################
     # Get filter key
-    diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
+    diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
     assert diagrams_response.status_code == 200
     filterKey= str(diagrams_response.json()["filters"][1]["filterKey"])
 
     # Get field
-    diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
+    diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
     assert diagrams_response.status_code == 200
     field= diagrams_response.json()["fields"][0]["id"]
 
@@ -52,7 +55,7 @@ def create_data(scope="session"):
         'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
         'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
 
-    diagrams_response = session.post('http://localhost:8080/rest/dependency-map/1.0/diagram',
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
         json=payload)
     assert diagrams_response.status_code == 200
     diagramKey = str(diagrams_response.json()['id'])
@@ -62,7 +65,7 @@ def create_data(scope="session"):
 
     #update box colore resource entry, created if not exists.
     payload = {"diagramId":diagramKey,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
-    diagrams_response = session.post('http://localhost:8080/rest/dependency-map/1.0/boxColor',
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
         json=payload)
     assert diagrams_response.status_code == 200
     print( diagrams_response.json() )
@@ -72,14 +75,14 @@ def create_data(scope="session"):
     #######################################################
 
     #JIRA Get list of available link types
-    diagrams_response = session.get('http://localhost:8080/rest/api/2/issueLinkType')
+    diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
     issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
     print("issueLinkTypeId=" + issueLinkTypeId)
 
     # Create linkConfig
     payload = { 'diagramId': diagramKey, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
 
-    diagrams_response = session.post('http://localhost:8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
         json=payload)
     assert(diagrams_response.status_code == 200)
     newLinkConfig = diagrams_response.json()
@@ -90,47 +93,48 @@ def create_data(scope="session"):
 
     yield _diagram_id  # provide the fixture value
     session = requests.session()
-    auth_response = session.post('http://localhost:8080/rest/auth/1/session',
+    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
                              json={ "username": "admin", "password": "admin" })
-    diagrams_response2 = session.delete('http://localhost:8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
+    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
     assert diagrams_response2.status_code == 200
     print("Deleted diagram id=" + _diagram_id)
 
 
-class TestChangeLinkConfig:
-    def test_show_diagram(self, create_data, session):
+class TestFlowShowDiagram:
+    def test_show_diagram_flow_sd(self, create_data, session):
         start = time.time()
         #Get all diagrams
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        HOSTNAME = os.environ.get('application_hostname')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
         #JIRA Get project with everything in it
-        diagrams_response = session.get('http://localhost:8080/rest/api/2/search?jql=project+%3D+' + _project_id + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project+%3D+' + _project_id + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
         #print(diagrams_response.json());
 
         # Get field priority
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/field/priority')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/priority')
         assert diagrams_response.status_code == 200
 
         # Get field fixVersion
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/field/fixVersions')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/fixVersions')
         assert diagrams_response.status_code == 200
 
         #Get color palet entries
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '0')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '0')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get color palet entries
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -139,7 +143,7 @@ class TestChangeLinkConfig:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -148,7 +152,7 @@ class TestChangeLinkConfig:
     #       print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -157,7 +161,7 @@ class TestChangeLinkConfig:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -166,7 +170,7 @@ class TestChangeLinkConfig:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -175,7 +179,7 @@ class TestChangeLinkConfig:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -184,7 +188,7 @@ class TestChangeLinkConfig:
     #        print( diagrams_response.json() )
 
         #JIRA Get list of available fileds
-        diagrams_response = session.get('http://localhost:8080/rest/api/2/field')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/field')
         assert diagrams_response.status_code == 200
     #    value = diagrams_response.json()[0]
     #    content = diagrams_response.text
@@ -194,13 +198,13 @@ class TestChangeLinkConfig:
     #        print(value)
 
         #JIRA Get list of available link types
-        diagrams_response = session.get('http://localhost:8080/rest/api/2/issueLinkType')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
         assert diagrams_response.status_code == 200
         issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
     #    print("issueLinkTypeId=" + issueLinkTypeId)
 
         #Get all link configs
-        diagrams_response = session.get('http://localhost:8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
     #    print( diagrams_response.json())
 
         end = time.time()
