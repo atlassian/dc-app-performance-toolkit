@@ -281,7 +281,19 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
             </elementProp>
             <stringProp name="SystemSampler.directory"></stringProp>
           </SystemSampler>
-          <hashTree/>
+          <hashTree>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore OS Process Sampler result" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">if(!prev.isSuccessful())
+	log.error(&quot;Error occured in Thread name::&quot; + prev.getThreadName() + &quot;::Sampler name::&quot; + prev.getSampleLabel() + &quot;::&quot; + prev.getResponseMessage())
+else
+	prev.setIgnore()</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
         </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
