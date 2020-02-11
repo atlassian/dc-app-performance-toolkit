@@ -81,3 +81,8 @@ class BitbucketRestClient(RestClient):
         api_url = f'{self.host}/rest/api/1.0/admin/users'
         response = self.post(api_url, params, error_msg="Could not create user", to_json=False)
         return response
+
+    def get_bitbucket_version(self):
+        api_url = f'{self.host}/rest/api/1.0/application-properties'
+        response = self.get(api_url, 'Could not get Bitbucket properties')
+        return response.json()['version']

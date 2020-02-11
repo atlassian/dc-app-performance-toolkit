@@ -20,22 +20,22 @@ services:
     prepare:
       - python util/environment_checker.py
       - python util/data_preparation/bitbucket/prepare-data.py
-#    shutdown:
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
-#    post-process:
-#      - python util/analytics.py bitbucket
+    shutdown:
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    post-process:
+      - python util/analytics.py bitbucket
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 10m
-#  - scenario: selenium
-#    executor: selenium
-#    runner: pytest
-#    hold-for: ${test_duration}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
 scenarios:
-#  selenium:
-#    script: selenium_ui/bitbucket_ui.py
+  selenium:
+    script: selenium_ui/bitbucket_ui.py
   jmeter:
     script: jmeter/bitbucket.jmx
     properties:
