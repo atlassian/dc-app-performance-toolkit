@@ -127,7 +127,7 @@ class JiraRestClient(RestClient):
             "emailAddress": email or name + '@localdomain.com',
             "displayName": display_name or name
         }
-        response = self.post(api_url, payload, "Could not create user")
+        response = self.post(api_url, "Could not create user", body=payload)
 
         return response.json()
 
