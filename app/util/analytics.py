@@ -9,9 +9,10 @@ import getpass
 import socket
 import hashlib
 
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, TOOLKIT_VERSION
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, TOOLKIT_VERSION
 from util.data_preparation.api.jira_clients import JiraRestClient
 from util.data_preparation.api.confluence_clients import ConfluenceRestClient
+from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -65,7 +66,8 @@ class AnalyticsCollector:
             return JIRA_SETTINGS
         if self.application_type.lower() == CONFLUENCE:
             return CONFLUENCE_SETTINGS
-        # TODO Bitbucket the same approach
+        if self.application_type.lower() == BITBUCKET:
+            return BITBUCKET_SETTINGS
 
     @property
     def _log_dir(self):
@@ -173,15 +175,20 @@ class AnalyticsCollector:
     def get_confluence_version(self):
         client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                       password=self.config_yml.admin_password)
-        confluence_server_version = client.get_confluence_version()
-        return confluence_server_version
+        return client.get_confluence_version()
+
+    def get_bitbucket_version(self):
+        client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                      password=self.config_yml.admin_password)
+        return client.get_bitbucket_version()
 
     def get_application_version(self):
         if self.application_type.lower() == JIRA:
             return self.get_jira_version()
         if self.application_type.lower() == CONFLUENCE:
             return self.get_confluence_version()
-        # TODO Bitbucket the same approach
+        if self.application_type.lower() == BITBUCKET:
+            return self.get_bitbucket_version()
 
     @property
     def uniq_user_id(self):
