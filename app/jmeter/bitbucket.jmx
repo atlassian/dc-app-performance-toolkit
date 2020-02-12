@@ -261,7 +261,7 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
           <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Chmod 400 ssh key" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
-            <stringProp name="SystemSampler.command">chmod</stringProp>
+            <stringProp name="SystemSampler.command">2chmod</stringProp>
             <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="Argument">
@@ -287,10 +287,14 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">if(!prev.isSuccessful())
-	log.error(&quot;Error occured in Thread name::&quot; + prev.getThreadName() + &quot;::Sampler name::&quot; + prev.getSampleLabel() + &quot;::&quot; + prev.getResponseMessage())
-else
-	prev.setIgnore()</stringProp>
+              <stringProp name="script">if(!prev.isSuccessful()){
+	log.error(&quot;Error occured in Thread name::&quot; + prev.getThreadName() + &quot;::Sampler name::&quot; + prev.getSampleLabel() + &quot;::&quot; + prev.getResponseMessage() + &quot;::&quot; + prev.getResponseDataAsString())
+	ctx.getEngine().askThreadsToStop();
+}	
+else{
+	prev.setIgnore()
+}
+	</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
