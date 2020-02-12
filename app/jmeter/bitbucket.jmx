@@ -283,10 +283,7 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
           </SystemSampler>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add ssh key on Bitbucket" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Add ssh key on Bitbucket" enabled="true"/>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Admin" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -400,6 +397,21 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore Login &amp; Add ssh key &amp; Logout Samplers" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">if(!prev.isSuccessful() &amp;&amp; prev.getSampleLabel() != &quot;Add ssh key&quot;){
+	log.error(&quot;Error occured in Thread name::&quot; + prev.getThreadName() + &quot;::Sampler name::&quot; + prev.getSampleLabel() + &quot;::&quot; + prev.getResponseMessage() + &quot;::&quot; + prev.getResponseDataAsString())
+	ctx.getEngine().askThreadsToStop();
+}	
+else{
+	prev.setIgnore()
+}
+	</stringProp>
+          </JSR223PostProcessor>
           <hashTree/>
         </hashTree>
       </hashTree>
