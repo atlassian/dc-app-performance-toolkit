@@ -11,7 +11,7 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 20
-    test_duration: 60m
+    test_duration: 50m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
@@ -19,23 +19,23 @@ services:
   - module: shellexec
     prepare:
       - python util/environment_checker.py
-#      - python util/data_preparation/bitbucket/prepare-data.py
-#    shutdown:
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
-#    post-process:
-#      - python util/analytics.py bitbucket
+      - python util/data_preparation/bitbucket/prepare-data.py
+    shutdown:
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+    post-process:
+      - python util/analytics.py bitbucket
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
-#  - scenario: selenium
-#    executor: selenium
-#    runner: pytest
-#    hold-for: ${test_duration}
+    ramp-up: 10m
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
 scenarios:
-#  selenium:
-#    script: selenium_ui/bitbucket_ui.py
+  selenium:
+    script: selenium_ui/bitbucket_ui.py
   jmeter:
     script: jmeter/bitbucket.jmx
     properties:
