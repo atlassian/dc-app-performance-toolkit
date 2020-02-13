@@ -2,10 +2,10 @@ import random
 import string
 
 from util.conf import BITBUCKET_SETTINGS
-from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
+from util.data_preparation.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
 
-DEFAULT_USER_PREFIX = 'user'
+DEFAULT_USER_PREFIX = 'dcapt-perf-user'
 USERS = "users"
 PROJECTS = "projects"
 REPOS = 'repos'
@@ -19,15 +19,31 @@ def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
-def __get_users(bitbucket_api):
-    perf_user_count = BITBUCKET_SETTINGS.concurrency
-    perf_users = bitbucket_api.get_users(username=f'{DEFAULT_USER_PREFIX}', max_results=perf_user_count)
-    perf_user_count_to_create = perf_user_count - len(perf_users)
+def __get_admin_users(client: BitbucketRestClient):
+    perf_users = __get_users(client)
+    for user in perf_users:
+        client.change_user_permissions(user['name'], BitbucketUserPermission.ADMIN)
+
+    return perf_users
+
+
+def __get_users(client: BitbucketRestClient):
+    perf_users_desired_number = BITBUCKET_SETTINGS.concurrency
+    current_perf_users = client.get_users(f'{DEFAULT_USER_PREFIX}', perf_users_desired_number)
+    perf_users_current_number = len(current_perf_users)
+    if not (perf_users_current_number < perf_users_desired_number):
+        return current_perf_users
+
+    perf_user_count_to_create = perf_users_desired_number - perf_users_current_number
     while perf_user_count_to_create > 0:
-        user = bitbucket_api.create_user(username=f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}')
-        perf_users.append(user)
+        client.create_user(f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}')
         perf_user_count_to_create = perf_user_count_to_create - 1
-    return bitbucket_api.get_users(username=f'{DEFAULT_USER_PREFIX}', max_results=perf_user_count)
+
+    perf_users = client.get_users(f'{DEFAULT_USER_PREFIX}', perf_users_desired_number)
+    if len(perf_users) < perf_users_desired_number:
+        raise SystemExit(f'Server returned less number of users than expected')
+
+    return perf_users
 
 
 def __get_repos(bitbucket_api):
@@ -63,7 +79,7 @@ def __get_prs(bitbucket_api, repos):
 
 def __create_data_set(bitbucket_api):
     dataset = dict()
-    dataset[USERS] = __get_users(bitbucket_api)
+    dataset[USERS] = __get_admin_users(bitbucket_api)
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
     dataset[PULL_REQUESTS] = __get_prs(bitbucket_api, dataset[REPOS])

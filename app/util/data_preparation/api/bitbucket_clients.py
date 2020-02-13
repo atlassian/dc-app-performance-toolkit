@@ -1,8 +1,18 @@
+from enum import Enum
+
 from util.data_preparation.api.abstract_clients import RestClient
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
 BATCH_SIZE_REPOS = 100
+
+
+class BitbucketUserPermission(Enum):
+    LICENSED_USER = "LICENSED_USER"
+    PROJECT_CREATE = "PROJECT_CREATE"
+    ADMIN = "ADMIN"
+    SYS_ADMIN = "SYS_ADMIN"
+
 
 class BitbucketRestClient(RestClient):
 
@@ -23,6 +33,7 @@ class BitbucketRestClient(RestClient):
             start_at = start_at + len(response.json()['values'])
             loop_count -= 1
             if loop_count == 1:
+                # TODO variable max_results is not used, before delete it we should check if there is no bug in the code
                 max_results = last_loop_remainder
         return entities
 
@@ -44,9 +55,9 @@ class BitbucketRestClient(RestClient):
                                  batch_size=BATCH_SIZE_PROJECTS,
                                  max_results=max_results)
 
-    def get_users(self, username, max_results=500):
+    def get_users(self, name_filter, max_results=500):
         return self.get_entities(entity_name='users',
-                                 filter=username,
+                                 filter=name_filter,
                                  batch_size=BATCH_SIZE_USERS,
                                  max_results=max_results)
 
@@ -79,10 +90,19 @@ class BitbucketRestClient(RestClient):
             "addToDefaultGroup": True
         }
         api_url = f'{self.host}/rest/api/1.0/admin/users'
-        response = self.post(api_url, params, error_msg="Could not create user", to_json=False)
+        response = self.post(api_url, "Could not create user", params=params)
         return response
 
     def get_bitbucket_version(self):
         api_url = f'{self.host}/rest/api/1.0/application-properties'
         response = self.get(api_url, 'Could not get Bitbucket properties')
         return response.json()['version']
+
+    def change_user_permissions(self, name: str, permission: BitbucketUserPermission):
+        params = {
+            "name": name,
+            "permission": permission.value
+        }
+        api_url = f'{self.host}/rest/api/1.0/admin/permissions/users'
+        response = self.put(api_url, "Could not create user", params=params)
+        return response
