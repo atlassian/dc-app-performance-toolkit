@@ -69,6 +69,10 @@ def __get_blogs(confluence_api, count):
     return blogs
 
 
+def __is_remote_api_enabled(confluence_api):
+    return confluence_api.is_remote_api_enabled()
+
+
 def __write_to_file(file_path, items):
     with open(file_path, 'w') as f:
         for item in items:
@@ -94,6 +98,8 @@ def main():
 
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
+
+    __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
     write_test_data_to_files(dataset)
