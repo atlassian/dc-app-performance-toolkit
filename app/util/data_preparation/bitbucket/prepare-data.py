@@ -5,7 +5,7 @@ from util.conf import BITBUCKET_SETTINGS
 from util.data_preparation.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
 
-DEFAULT_USER_PREFIX = 'user'
+DEFAULT_USER_PREFIX = 'dcapt-perf-user'
 USERS = "users"
 PROJECTS = "projects"
 REPOS = 'repos'
