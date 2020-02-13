@@ -13,7 +13,7 @@ settings:
     concurrency: 200
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.1
+    JMETER_VERSION: 5.2.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
@@ -86,7 +86,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "79.0.3945.36" # Supports Chrome version 79. You can refer to http://chromedriver.chromium.org/downloads
+      version: "80.0.3987.16" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
