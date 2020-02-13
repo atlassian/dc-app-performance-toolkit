@@ -162,4 +162,4 @@ echo "Finished"
 echo  # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
-echo "Important: do not forget to start Bitbucket"
+echo "Important: do not start Bitbucket until attachments restore"

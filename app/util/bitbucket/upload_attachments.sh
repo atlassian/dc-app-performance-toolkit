@@ -81,4 +81,5 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 echo "Finished"
+echo "Important: do not forget to start Bitbucket"
 echo  # move to a new line
