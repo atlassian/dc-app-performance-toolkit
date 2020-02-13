@@ -1,5 +1,8 @@
 #!/bin/bash
 
+###################    Check if NFS exists        ###################
+pgrep nfsd > /dev/null && echo "NFS found" || echo "NFS was not found. Please check if you use correct machine"; exit 1
+
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
@@ -94,7 +97,7 @@ DUMP_DIR='/media/atl/bitbucket/shared'
 cd ${DUMP_DIR}
 if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
-  exit 1
+    exit 1
 fi
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')

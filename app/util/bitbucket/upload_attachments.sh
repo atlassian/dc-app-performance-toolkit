@@ -1,5 +1,7 @@
 #!/bin/bash
 
+###################    Check if NFS exists        ###################
+pgrep nfsd > /dev/null && echo "NFS found" || echo "NFS was not found. Please check if you use correct machine"; exit 1
 
 ###################    Variables section         ###################
 # Bitbucket version variables
@@ -73,7 +75,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    exit 1
 fi;
 
-wget -qO- ${ATTACHMENTS_TAR_URL}| tar -xvz -C ${ATTACHMENT_DIR_DATA} --strip-components 1
+time wget -qO- ${ATTACHMENTS_TAR_URL}| tar -xz --checkpoint=.10000 -C ${ATTACHMENT_DIR_DATA} --strip-components 1
 if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1
