@@ -287,7 +287,9 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">if(!prev.isSuccessful()){
+              <stringProp name="script">// We want to hide the sampler if it passes successfully to not output in results and show if it fails for troubleshooting purpose
+
+if(!prev.isSuccessful()){
 	log.error(&quot;Error occured in Thread name::&quot; + prev.getThreadName() + &quot;::Sampler name::&quot; + prev.getSampleLabel() + &quot;::&quot; + prev.getResponseMessage() + &quot;::&quot; + prev.getResponseDataAsString())
 	ctx.getEngine().askThreadsToStop();
 }	
