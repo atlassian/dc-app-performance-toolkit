@@ -22,7 +22,7 @@ def generate_random_string(length=20):
 def __get_admin_users(client: BitbucketRestClient):
     perf_users = __get_users(client)
     for user in perf_users:
-        client.change_user_permissions(user['name'], BitbucketUserPermission.ADMIN)
+        client.apply_user_permissions(user['name'], BitbucketUserPermission.ADMIN)
 
     return perf_users
 

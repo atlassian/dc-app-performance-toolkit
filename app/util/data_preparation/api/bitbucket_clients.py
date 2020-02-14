@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 
 from util.data_preparation.api.abstract_clients import RestClient
@@ -16,25 +17,31 @@ class BitbucketUserPermission(Enum):
 
 class BitbucketRestClient(RestClient):
 
-    def get_entities(self, entity_name, batch_size, filter=None, max_results=500):
+    def get_entities(self, entity_name, batch_size, filter_=None, max_results=500):
+        print(f'Attempt to fetch [{max_results}] [{entity_name}] from the server')
         entities = []
-        loop_count = max_results // batch_size
-        if loop_count == 0:
-            loop_count = 1
-        last_loop_remainder = max_results % batch_size
+        entities_to_fetch = max_results
         start_at = 0
-        while loop_count > 0:
-            if not filter:
-                api_url = f'{self.host}/rest/api/1.0/{entity_name}?limit={batch_size}&start={start_at}'
-            else:
-                api_url = f'{self.host}/rest/api/1.0/{entity_name}?limit={batch_size}&start={start_at}&filter={filter}'
+        while entities_to_fetch > 0:
+            limit = entities_to_fetch if entities_to_fetch < batch_size else batch_size
+
+            api_url = f'{self.host}/rest/api/1.0/{entity_name}?limit={limit}&start={start_at}'
+            if filter_:
+                api_url += f'&filter={filter_}'
+
             response = self.get(api_url, f'Could not retrieve entities list')
-            entities.extend(response.json()['values'])
-            start_at = start_at + len(response.json()['values'])
-            loop_count -= 1
-            if loop_count == 1:
-                # TODO variable max_results is not used, before delete it we should check if there is no bug in the code
-                max_results = last_loop_remainder
+            returned_entities = response.json()['values']
+            entities.extend(returned_entities)
+            returned_entities_count = len(returned_entities)
+            if returned_entities_count < limit:
+                print(f'Stopped fetching [{entity_name}] with filter [{filter_}]'
+                      f' since there is no more than [{len(entities)}] on the server')
+                break
+
+            start_at = start_at + returned_entities_count
+            entities_to_fetch -= limit
+
+        print(f'Totally fetched [{len(entities)}] [{entity_name}] from the server')
         return entities
 
     def get_non_fork_repos(self, max_results):
@@ -57,7 +64,7 @@ class BitbucketRestClient(RestClient):
 
     def get_users(self, name_filter, max_results=500):
         return self.get_entities(entity_name='users',
-                                 filter=name_filter,
+                                 filter_=name_filter,
                                  batch_size=BATCH_SIZE_USERS,
                                  max_results=max_results)
 
@@ -77,20 +84,17 @@ class BitbucketRestClient(RestClient):
         return response.json()
 
     def create_user(self, username, password=None, email=None):
-        if not password:
-            password = username
-        if not email:
-            email = f'{username}@localdomain.com'
-
+        start_time = time.time()
         params = {
             "name": username,
-            "password": password,
-            "emailAddress": email,
+            "password": password if password else username,
+            "emailAddress": email if email else f'{username}@localdomain.com',
             "displayName": f'Test-{username}',
             "addToDefaultGroup": True
         }
         api_url = f'{self.host}/rest/api/1.0/admin/users'
         response = self.post(api_url, "Could not create user", params=params)
+        print(f'Successfully created user [{username}] in [{(time.time() - start_time)}]')
         return response
 
     def get_bitbucket_version(self):
@@ -98,11 +102,13 @@ class BitbucketRestClient(RestClient):
         response = self.get(api_url, 'Could not get Bitbucket properties')
         return response.json()['version']
 
-    def change_user_permissions(self, name: str, permission: BitbucketUserPermission):
+    def apply_user_permissions(self, name: str, permission: BitbucketUserPermission):
+        start_time = time.time()
         params = {
             "name": name,
             "permission": permission.value
         }
         api_url = f'{self.host}/rest/api/1.0/admin/permissions/users'
         response = self.put(api_url, "Could not create user", params=params)
+        print(f'Successfully applied user [{name}] permission [{permission.value}] in [{(time.time() - start_time)}]')
         return response
