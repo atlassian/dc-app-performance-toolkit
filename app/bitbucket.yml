@@ -39,6 +39,8 @@ scenarios:
   jmeter:
     script: jmeter/bitbucket.jmx
     properties:
+      admin_login: ${admin_login}
+      admin_password: ${admin_password}
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
       application_port: ${application_port}
