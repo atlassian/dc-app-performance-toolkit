@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################    Check if NFS exists        ###################
-pgrep nfsd > /dev/null && echo "NFS found" || echo "NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine."; exit 1
+pgrep nfsd > /dev/null && echo "NFS found" || (echo "NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine."; exit 1)
 
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
