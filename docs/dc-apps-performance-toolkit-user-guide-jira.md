@@ -18,7 +18,7 @@ Follow installation instructions described in the `dc-app-performance-toolkit/RE
 
 If you need performance testing results at a production level, follow instructions in this chapter to set up Jira Data Center with the corresponding dataset.
 
-For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide/#testing-scenarios). Still, script adjustments for your local dataset may be required.
+For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#testing-scenarios). Still, script adjustments for your local dataset may be required.
 
 ## Setting up Jira Data Center
 
@@ -44,11 +44,11 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack                     | Estimated hourly cost ($)|
-| ------------------------- | -------------------------|
-| One Node Jira DC          | 1 - 1,3                  |
-| Two Nodes Jira DC         | 1,7 - 2,1                |
-| Four Nodes Jira DC        | 3,1 - 3,8                |
+| Stack | Estimated hourly cost ($) |
+| ----- | ------------------------- |
+| One Node Jira DC | 1 - 1.3 |
+| Two Nodes Jira DC  1.7 - 2.1 |
+| Four Nodes Jira DC | 3.1 - 3.8 |
 
 #### Quick Start parameters
 
@@ -193,7 +193,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Jira node instance.
+    - Copy the _Private IP_ of Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -347,8 +347,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
-    - `test_duration`: duration of the performance run - 45min by default
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
+    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
 1. Run bzt.
 
     ``` bash
