@@ -26,14 +26,14 @@ services:
     post-process:
       - python3 util/analytics.py jira
 execution:
- # - scenario: jmeter
- #   concurrency: ${concurrency}
- #   hold-for: ${test_duration}
- #   ramp-up: 3m
-#  - scenario: selenium
-#   executor: selenium
-#    runner: pytest
-#    hold-for: ${test_duration}
+  - scenario: jmeter
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}     
   - executor: pytest
     ramp-up: 15s
     concurrency: ${concurrency}
@@ -100,5 +100,17 @@ modules:
     chromedriver:
       version: "79.0.3945.36" # Supports Chrome version 79. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
-- data-source: sample-labels
-  module: junit-xml
+#- data-source: sample-labels
+#  module: junit-xml
+#  summary: true
+#  percentiles: true
+#  failed-labels: false   
+#  test-duration: true
+#  dump-csv: result.csv
+- module: console
+- module: final-stats
+  summary: true
+  percentiles: true 
+  failed-labels: false
+  test-duration: true
+  dump-csv: perf_result_csv.csv
