@@ -164,11 +164,6 @@ class TestFlowCreateDiagram:
 
 
 
-        #JIRA Get project id
-        #diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/project')
-        #assert diagrams_response.status_code == 200
-        #projectId = diagrams_response.json()[1]['id']
-        #print('projectId:' +  projectId)
 
 
 

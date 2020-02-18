@@ -1,7 +1,7 @@
 ---
 version: '3'
 settings:
-  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%S
+  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%ST
   aggregator: consolidator
   verbose: false
   env:
@@ -22,7 +22,8 @@ services:
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
-      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+      - python3 util/conv_ldjson_jtl.py
+      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl PyTestExecutor-1.jtl
     post-process:
       - python3 util/analytics.py jira
 execution:
@@ -100,17 +101,17 @@ modules:
     chromedriver:
       version: "79.0.3945.36" # Supports Chrome version 79. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
-#- data-source: sample-labels
-#  module: junit-xml
-#  summary: true
-#  percentiles: true
-#  failed-labels: false   
-#  test-duration: true
-#  dump-csv: result.csv
-- module: console
+- data-source: sample-labels
+  module: junit-xml
+  summary: true
+  percentiles: true
+  failed-labels: false
+  test-duration: true
+  dump-csv: result.csv
 - module: final-stats
   summary: true
   percentiles: true 
+  summary-labels: true
   failed-labels: false
   test-duration: true
-  dump-csv: perf_result_csv.csv
+  dump-csv: results.csv
