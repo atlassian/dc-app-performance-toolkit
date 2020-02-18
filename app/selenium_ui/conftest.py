@@ -125,21 +125,23 @@ def pytest_runtest_makereport(item):
 
 @pytest.fixture
 def jira_screen_shots(request, webdriver):
+    yield
     get_screen_shots(request, webdriver, app_settings=JIRA_SETTINGS)
 
 
 @pytest.fixture
 def confluence_screen_shots(request, webdriver):
+    yield
     get_screen_shots(request, webdriver, app_settings=CONFLUENCE_SETTINGS)
 
 
 @pytest.fixture
 def bitbucket_screen_shots(request, webdriver):
+    yield
     get_screen_shots(request, webdriver, app_settings=BITBUCKET_SETTINGS)
 
 
 def get_screen_shots(request, webdriver, app_settings):
-    yield
     # request.node is an "item" because we use the default
     # "function" scope
     if request.node.rep_call.failed:
