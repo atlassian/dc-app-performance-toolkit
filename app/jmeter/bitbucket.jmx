@@ -587,7 +587,7 @@ vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + v
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Clone repository over ${GIT_PROTOCOL}" enabled="true">
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_clone_repo_via_${GIT_PROTOCOL}" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">git</stringProp>
@@ -659,12 +659,13 @@ if (responseCode != &quot;0&quot;) {
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Create repo shallow copy" enabled="true">
-              <stringProp name="scriptLanguage">java</stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">import java.nio.file.Files;
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="jmeter_create_repo_shallow_copy" enabled="true">
+            <stringProp name="scriptLanguage">java</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import org.apache.commons.io.FileUtils;
 import java.nio.file.Paths;
@@ -687,9 +688,8 @@ import java.util.UUID;
 	log.error(&quot;Error while creating temporary workspace for pull&quot;, e);
 	ctx.getEngine().askThreadsToStop();
 }</stringProp>
-            </JSR223PostProcessor>
-            <hashTree/>
-          </hashTree>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <intProp name="LoopController.loops">-1</intProp>
@@ -743,7 +743,7 @@ vars.put(&quot;COMMIT_MESSAGE&quot;, &quot;${commitMessage}&quot;)</stringProp>
               <stringProp name="LoopController.loops">1</stringProp>
             </LoopController>
             <hashTree>
-              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="change file" enabled="true">
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="jmeter_change_file" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="filename"></stringProp>
@@ -774,7 +774,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
               </JSR223Sampler>
               <hashTree/>
             </hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git add" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_git_add" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
@@ -799,7 +799,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
               <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree/>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git commit" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_git_commit" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
@@ -829,7 +829,7 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
               <stringProp name="SystemSampler.stderr">${__P(GIT_LOG_DIR)}/giterrors.log</stringProp>
             </SystemSampler>
             <hashTree/>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git push origin master over ${GIT_PROTOCOL}" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_git_push_via_${GIT_PROTOCOL}" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
@@ -892,7 +892,7 @@ if (responseCode != &quot;0&quot;) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="git fetch over ${GIT_PROTOCOL}" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_git_fetch_via_${GIT_PROTOCOL}" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">git</stringProp>
