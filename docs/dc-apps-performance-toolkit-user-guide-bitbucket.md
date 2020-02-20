@@ -124,15 +124,13 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 
 1. In the AWS console, go to **Services > CloudFormation > Stack > Stack details > Select your stack**.
 1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
-1. Open **LoadBalancerURL** in your browser. This will take you to the Jira setup wizard.
+1. Open **LoadBalancerURL** in your browser. This will take you to the Bitbucket setup wizard.
 1. On the **Set up application properties** page, populate the following fields:
-    - **Application Title**: any name for your Jira Data Center deployment
-    - **Mode**: Private
+    - **Application Title**: any name for your Bitbucket Data Center deployment
     - **Base URL**: your stack's Elastic LoadBalancer URL
-    Click **Next**.
 1. On the next page, populate the **Your License Key** field by either:
     - Using your existing license, or
-    - Generating a Jira trial license, or
+    - Generating a Bitbucket trial license, or
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Set up administrator account** page, populate the following fields:
@@ -141,9 +139,7 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
     - **Username**: admin _(recommended)_
     - **Password**: admin _(recommended)_
     - **Confirm Password**: admin _(recommended)_
-    Click **Next**.
-1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
-1. After going through the welcome setup, click **Create new project** to create a new project.
+    Click **Go to Bitbucket**.
 
 {{% note %}}
 After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
@@ -209,7 +205,7 @@ To populate the database with SQL:
     ```
 1. In new terminal session connect to the Bitbucket NFS Server over SSH:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
+    For Windows, use Putty to connect to the Bitbucket node over SSH.
     For Linux or MacOS:
     ```bash
     ssh-add path_to_your_private_key_pem
@@ -262,7 +258,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 
 1. Using SSH, connect to the Bitbucket NFS Server via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
+    For Windows, use Putty to connect to the Bitbucket node over SSH.
     For Linux or MacOS:
     ```bash
     ssh-add path_to_your_private_key_pem
@@ -272,7 +268,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NFS_SERVER_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script and make it executable:
+1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/upload_attachments.sh) script and make it executable:
 
     ``` bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bitbucket/upload_attachments.sh && chmod +x upload_attachments.sh
@@ -383,80 +379,15 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`jira.jmx`) and Selenium (`bitbucket-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/bitbucket`). You can modify these scripts to include their app-specific actions.
-
-##### Modifying JMeter
-
-JMeter is written in XML and requires JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command.
-
-Make sure you run this command inside the `dc-app-performance-toolkit/app directory`. The main `jmeter/bitbucket.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
-
-Here's a snippet of the base JMeter script (`jira.jmx`):
-
-![Base JMeter script](/platform/marketplace/images/jmeter-base.png)
-
-For every base action, there is an extension script executed after the base script. In most cases, you should modify only the `extension.jmx` file. For example, if there are additional REST APIs introduced as part of viewing an issue, you can include these calls in the `extension.jmx` file under the view issue transaction.
-
-Here's a snippet of the extension JMeter script (`extension.jmx`).
-
-![Extended JMeter script](/platform/marketplace/images/jmeter-extended.png)
-
-This ensures that these APIs are called as part of the view issue transaction with minimal intrusion (for example, no additional logins). For a fairer comparison, you have to keep the same number of base transactions before and after the plugin is installed.
-
-{{% note %}}
-The controllers in the extension script, which are executed along with the base action, are named after the corresponding base action (for example, `extend_search_jql`, `extend_view_issue`).
-{{% /note %}}
-
-When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `jira.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
-
-``` yml
-#      perc_create_issue: 4
-#      perc_search_jql: 16
-      perc_view_issue: 100
-#      perc_view_project_summary: 4
-#      perc_view_dashboard: 8
-```
-
-{{% note %}}
-If multiple actions are affected, add transactions to multiple extension controllers.
-{{% /note %}}
-
-##### Extending a stand-alone transaction
-
-You can run your script independently of the base action under a specific workload if, for example, your plugin introduces a separate URL and has no correlation to the base transactions.
-
-In such a case, you extend the `extend_standalone_extension` controller, which is also located in the `extension.jmx` file. With this option, you can define the execution percentage by the `perc_standalone_extension` parameter in the `jira.yml` config file.
-
-The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
-
-``` yml
-      perc_standalone_extension: 10
-```
-
-##### Using JMeter variables from the base script
-
-Use or access the following variables of the extension script from the base script. They can also be inherited.
-
-- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
-- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
-- `${project_key}` - project key being viewed or modified (e.g. ABC)
-- `${project_id}` - project id being viewed or modified (e.g. 3423)
-- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
-- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
-- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
-- `${username}` - the logged in username (e.g. admin)
-
-{{% note %}}
-If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
-{{% /note %}}
+Extension scripts, which extend the base Selenium (`bitbucket-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/bitbucket`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying Selenium
 
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
+You can extend Selenium scripts to measure the end-to-end browser timings.
 
-We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
-In the `jira-ui.py` script, view the following block of code:
+In the `bitbucket-ui.py` script, view the following block of code:
 
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
@@ -465,7 +396,7 @@ In the `jira-ui.py` script, view the following block of code:
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/jira/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
+To implement the custom_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
 
 ``` python
 def custom_action(webdriver, datasets):
@@ -478,17 +409,17 @@ def custom_action(webdriver, datasets):
         measure(webdriver, 'selenium_app_custom_action:view_report')
 ```
 
-To view more examples, see the `modules.py` file in the `selenium_ui/jira` directory.
+To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
 
 #### Running tests with your modification
 
 To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
 
 ##### <a id="run3"></a> Run 3 (~50 min)
-To receive scalability benchmark results for one-node Jira DC with app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Bitbucket DC with app-specific actions, run `bzt`:
 
 ``` bash
-bzt jira.yml
+bzt bitbucket.yml
 ```
 
 {{% note %}}
@@ -498,39 +429,16 @@ Save this full path to the run results folder. Later you will have to insert it 
 
 ##### <a id="run4"></a> Run 4 (~50 min)
 
-To receive scalability benchmark results for two-node Jira DC with app-specific actions:
+To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
 1. In the AWS console, go to **CloudFormation > Stack details > Select your stack**.
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
-
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
-    ```
-1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
-
-    ```bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
-    ```
-    Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
-    ```bash
-    IndexCopyService] Index restore started. Total 0 issues on instance before loading Snapshot file: IndexSnapshot_10203.tar.sz
-    Recovering search indexes - 60% complete... Recovered added and updated issues
-    Recovering search indexes - 80% complete... Cleaned removed issues
-    Recovering search indexes - 100% complete... Recovered all indexes
-    IndexCopyService] Index restore complete. Total N issues on instance
-    ```
 1. Run bzt.
 
     ``` bash
-    bzt jira.yml
+    bzt bitbucket.yml
     ```    
 
 {{% note %}}
@@ -572,6 +480,6 @@ To generate a scalability report:
 
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Jira Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Once completed, you will be able to review action timings on Bitbucket Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
-After completing all your tests, delete your Jira Data Center stacks.
+After completing all your tests, delete your Bitbucket Data Center stacks.
