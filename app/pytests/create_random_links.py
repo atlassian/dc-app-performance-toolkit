@@ -37,9 +37,9 @@ class TestCreateIssueLinks:
         for project in resp.json():
             project_key = project['key']
 
-            # collect keys of all issues in this project into issue_keys
+            # collect keys of all issues in this project into issue_ids
             link_percentage = 30
-            issue_keys = []
+            issue_ids = []
             startAt = 0
             while True:
                 resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=2&startAt={startAt}&jql=project={project_key}&fields=key')
@@ -47,31 +47,30 @@ class TestCreateIssueLinks:
                 result = resp.json()
                 if startAt >= result['total']:
                     break
-                issue_keys.extend(list(map(lambda issue : issue['key'], result['issues'])))
-                startAt = len(issue_keys)
+                issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
+                startAt = len(issue_ids)
 
-            # generate link_percentage random issue pairs out of issue_keys
+            # generate link_percentage random issue pairs out of issue_ids
             # all pairs are in increasing order, to avoid link cycles
-            pair_count = min(len(issue_keys) * link_percentage / 100, binom(len(issue_keys), 2)) # limit wanted number of links by theoretical maximum
+            pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum
             pairs = set()   # set of tuples, as tuples can be added to a set, but not lists
             print(pairs)
             while len(pairs) < pair_count:
-                pair = tuple(sorted(random.sample(issue_keys, 2), key=issue_key_number))
+                pair = tuple(sorted(random.sample(issue_ids, 2)))
                 if pair not in pairs:
                     pairs.add(pair)
             for pair in pairs:
-                print(pair[0])
-                print(pair[1])
-              #  self.create_link(session, issueLinkTypeId, pair[0], pair[1])
+                print(pair)
+                self.create_link(session, issueLinkTypeId, pair[0], pair[1])
 
-    def create_link(self, session, issueLinkTypeId, from_issue_key, to_issue_key):
+    def create_link(self, session, issueLinkTypeId, from_issue_id, to_issue_id):
         payload = { 'type': { 'id': issueLinkTypeId},  #blocks?
-                    'inwardIssue': { 'id': to_issue_key },
-                    'outwardIssue': { 'id': from_issue_key}}
+                    'inwardIssue': { 'id': to_issue_id },
+                    'outwardIssue': { 'id': from_issue_id}}
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/api/2/issueLink',
                                      json= payload)
 
-        print(f"created link from issue {from_issue_key} to {to_issue_key} ")
+        print(f"created link from issue {from_issue_id} to {to_issue_id} ")
 
 
 
