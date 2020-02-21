@@ -21,7 +21,7 @@ class TestCreateLink:
         assert diagrams_response.status_code == 200       
         issueId1 = diagrams_response.json()['issues'][0]['id']
         issueKey1 = diagrams_response.json()['issues'][0]['key']
-        issueId2 = diagrams_response.json()['issues'][15]['id']
+        issueId2 = diagrams_response.json()['issues'][9]['id']
         print ('issueId1=' + issueId1 + ' key=' + issueKey1 + ' issueId2=' + issueId2)      
         #JIRA Get list of available link types
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')
