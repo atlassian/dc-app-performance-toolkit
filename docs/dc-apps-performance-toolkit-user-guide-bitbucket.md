@@ -24,7 +24,7 @@ For spiking, testing, or developing, your local Bitbucket instance would work we
 
 We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
-The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira into this new VPC. Deploying Jira with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
+The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Bitbucket into this new VPC. Deploying Bitbucket with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 ### Using the AWS Quick Start for Bitbucket
 
@@ -97,7 +97,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 
 {{% note %}}
-The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).
+The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading)).
 {{% /note %}}
 
 **Networking (for new ASI)**
@@ -188,7 +188,7 @@ To populate the database with SQL:
     - Copy the _Private IP_ of Bitbucket NFS Server.
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
+    For Windows, use Putty to connect to the Bitbucket node over SSH.
     For Linux or MacOS:
     ```bash
     ssh-add path_to_your_private_key_pem
@@ -447,14 +447,14 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 
 ##### <a id="run5"></a> Run 5 (~50 min)
 
-To receive scalability benchmark results for four-node Jira DC with app-specific actions:
+To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
-1. Scale your Jira Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
+1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
 1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
 1. Run bzt.
 
     ``` bash
-    bzt jira.yml
+    bzt bitbucket.yml
     ```    
 
 {{% note %}}
