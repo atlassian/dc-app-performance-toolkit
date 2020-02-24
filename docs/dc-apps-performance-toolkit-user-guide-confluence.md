@@ -44,11 +44,11 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack                     | Estimated hourly cost ($)|
-| ------------------------- | -------------------------|
-| One Node Confluence DC    | 1,5 - 1,6                |
-| Two Nodes Confluence DC   | 1,7 - 2,5                |
-| Four Nodes Confluence DC  | 3,5 - 4,2                |
+| Stack | Estimated hourly cost ($) |
+| ----- | ------------------------- |
+| One Node Confluence DC | 1.5 - 1.6 |
+| Two Nodes Confluence DC | 1.7 - 2.5 |
+| Four Nodes Confluence DC | 3.5 - 4.2 |
 
 #### Quick Start parameters
 
@@ -59,7 +59,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 or 7.0.4|
+| Confluence Version | 6.13.8 or 7.0.4 |
 
 The Data Center App Performance Toolkit officially supports:
 
@@ -69,13 +69,13 @@ The Data Center App Performance Toolkit officially supports:
 **Cluster nodes**
 
 | Parameter | Recommended Value |
-| --------- | ----------------- |
+| ----------| ----------------- |
 | Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers.
+We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html)
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -182,7 +182,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Confluence node instance.
+    - Copy the _Private IP_ of Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
     For Windows, use Putty to connect to the Confluence node over SSH.
@@ -330,8 +330,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
-    - `test_duration`: duration of the performance run - 45min by default
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
+    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
 1. Run bzt.
 
     ``` bash
