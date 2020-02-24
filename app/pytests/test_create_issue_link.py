@@ -40,16 +40,21 @@ class TestCreateLink:
 
         ###
         #JIRA Get new issue links id
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issue/' + issueKey1)
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issue/' + issueId1)
+       # diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issue/SCRUM-128')
         issueLinks = diagrams_response.json()['fields']['issuelinks']
-        issueLinksId = issueLinks[0]['id']
-        print("New issue Links Id=" + issueLinksId);
-        
-        #JIRA Delete issue link
-       # diagrams_response = requests.delete('http://'  + HOSTNAME + ':8080/rest/api/2/issueLink/' + issueLinksId,
-       #     json= payload,
-       #    cookies=dict(JSESSIONID=session_id))
-       # assert diagrams_response.status_code == 204
-       #print("Deleted issueLinksId=" + issueLinksId);
+        firstIssueLinksId = issueLinks[0]['id']
+        firstIssueLinkSelf = issueLinks[0]['self']
+        #lastIssueLinksId = issueLinks[-1]['id']
+
+        diagrams_response = session.get(firstIssueLinkSelf)
+        assert diagrams_response.status_code == 200
+
+    #    print("Deleted issueLinksId=" + firstIssueLinksId);
+        diagrams_response = session.delete('http://'  + HOSTNAME + ':8080/rest/api/latest/issueLink/' + firstIssueLinksId)
+        assert diagrams_response.status_code == 204
+
+
+
         
              
