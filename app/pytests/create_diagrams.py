@@ -81,6 +81,7 @@ def create_diagram(session, filterKey):
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
                                          json=payload)
 
+
         newLinkConfig = diagrams_response.json()
         linkConfigId = str(newLinkConfig["id"])
         print(linkConfigId)

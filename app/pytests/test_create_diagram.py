@@ -4,8 +4,8 @@ from fixtures import session
 import os
 import pathlib
 
-CURRENT_PATH = pathlib.Path().absolute()
-out_file_path = CURRENT_PATH / "deleteCreatedObjects"
+#CURRENT_PATH = pathlib.Path().absolute()
+#out_file_path = CURRENT_PATH / "deleteCreatedObjects"
 
 class TestCreateDiagram:
     def test_create_diagram(self, session):
@@ -60,14 +60,14 @@ class TestCreateDiagram:
         print("New diagram id: " + diagramId)
 
 
-        try:
-            with open(out_file_path, "a") as f:
-                diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId
-                f.write(diagrams_delete_request)
-                f.write("\n")
-                f.close()
-        except IOError:
-            print("File not accessible")
+    #    try:
+     #       with open(out_file_path, "a") as f:
+     #           diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId
+     #          f.write(diagrams_delete_request)
+     #          f.write("\n")
+     #          f.close()
+     #   except IOError:
+     #       print("File not accessible")
 
         # Create linkConfig
         payload = { 'diagramId': diagramId, 'linkKey': 10000, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 20}
