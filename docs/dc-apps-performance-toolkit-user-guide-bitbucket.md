@@ -299,7 +299,6 @@ Run the script:
    ``` bash
    sudo systemctl start bitbucket
    ```
-
    
 ## Testing scenarios
 
