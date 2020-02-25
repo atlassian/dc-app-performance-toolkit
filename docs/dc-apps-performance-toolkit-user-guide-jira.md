@@ -18,7 +18,7 @@ Follow installation instructions described in the `dc-app-performance-toolkit/RE
 
 If you need performance testing results at a production level, follow instructions in this chapter to set up Jira Data Center with the corresponding dataset.
 
-For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide/#testing-scenarios). Still, script adjustments for your local dataset may be required.
+For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#testing-scenarios). Still, script adjustments for your local dataset may be required.
 
 ## Setting up Jira Data Center
 
@@ -44,11 +44,11 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack                     | Estimated hourly cost ($)|
-| ------------------------- | -------------------------|
-| One Node Jira DC          | 1 - 1,3                  |
-| Two Nodes Jira DC         | 1,7 - 2,1                |
-| Four Nodes Jira DC        | 3,1 - 3,8                |
+| Stack | Estimated hourly cost ($) |
+| ----- | ------------------------- |
+| One Node Jira DC | 1 - 1.3 |
+| Two Nodes Jira DC  1.7 - 2.1 |
+| Four Nodes Jira DC | 3.1 - 3.8 |
 
 #### Quick Start parameters
 
@@ -73,6 +73,7 @@ The Data Center App Performance Toolkit officially supports:
 | Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
+| Cluster node instance volume size | 100 |
 
 We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Data Center customers.
 
@@ -82,7 +83,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Database instance class | [db.m4.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | true |
@@ -108,7 +109,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | --------- | ----------------- |
 | Make instance internet facing | true |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-|Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
 ### Running the setup wizard
 
@@ -192,7 +193,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Jira node instance.
+    - Copy the _Private IP_ of Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -201,7 +202,8 @@ To populate the database with SQL:
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script and make it executable:
@@ -251,7 +253,8 @@ We recommend that you only use this method if you are having problems with the [
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" eec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the xml_backup.zip file corresponding to your Jira version.
@@ -277,7 +280,8 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script and make it executable:
@@ -343,8 +347,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
-    - `test_duration`: duration of the performance run - 45min by default
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
+    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
 1. Run bzt.
 
     ``` bash
@@ -360,24 +365,32 @@ To receive performance baseline results without an app installed:
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
 
-#### <a id="regressionrun2"></a> Run 2 (~50 min + 50 min for Lucene Index timing test)
-
-To receive performance results with an app installed:
-
-1. Install the app you want to test.
+#### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
 {{% note %}}
 **Lucene index test for JIRA**
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
+
+Steps:
 
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and attach it to your DC HELP ticket.
+
 {{% /note %}}
 
-2. Run bzt.
+{{% note %}}
+Jira 7 index time for 1M issues on a User Guide recommended configuration is about ~100 min, Jira 8 index time is about ~40 min.
+{{% /note %}}
+
+To receive performance results with an app installed and Lucene index timing screenshots:
+
+1. Follow the steps described in Note section to get a Lucene index timing screenshot without an app installed.
+1. Install the app you want to test.
+1. Follow the steps described in Note section to get a Lucene index timing screenshot with an app installed.
+1. Run bzt.
 
     ``` bash
     bzt jira.yml
@@ -542,7 +555,8 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
     ```
 1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
 
