@@ -9,14 +9,23 @@ import os
 
 _diagram_id = '0'
 
-@pytest.fixture(scope="session")
-def create_data(scope="session"):
+@pytest.fixture(scope="class")
+def create_data(session):
     print("Create diagram")
     global _diagram_id
-    session = requests.session()
+   # session = requests.session()
     HOSTNAME = os.environ.get('application_hostname')
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                             json={ "username": "admin", "password": "admin" })
+
+    # Get user
+    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+    assert diagrams_response.status_code == 200
+    userKey = diagrams_response.json()["key"]
+    print("User key: " + userKey)
+
+
+
+    #auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
+    #                         json={ "username": userKey, "password": "admin" })
 
     # Get filter key
     diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -29,8 +38,8 @@ def create_data(scope="session"):
     field= diagrams_response.json()["id"]
 
     # Create diagram
-    payload ={ 'name':"G100", 'author':'admin',
-               'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey,
+    payload ={ 'name':"G100", 'author': userKey,
+               'lastEditedBy':userKey, 'layoutId':0, 'filterKey': filterKey,
                'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
                'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
 
@@ -85,19 +94,14 @@ def create_data(scope="session"):
                                      json=payload)
     assert(diagrams_response.status_code == 200)
 
-    session.close()
-
     yield _diagram_id  # provide the fixture value
-    session = requests.session()
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                                 json={ "username": "admin", "password": "admin" })
     diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
     assert diagrams_response2.status_code == 200
     print("Deleted diagram id=" + _diagram_id)
 
 
 class TestCreateLink:
-    def test_show_diagram_flow_ci(self, create_data, session):
+    def test_show_diagram_flow_ci(self, session, create_data,):
         print("INSIDE SHOW")
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
@@ -241,7 +245,7 @@ class TestCreateLink:
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
         #    print( diagrams_response.json())
 
-    def test_create_issue_link_flow_ci(self, create_data, session):
+    def test_create_issue_link_flow_ci(self, session, create_data):
         print("INSIDE CREATE")
         #JIRA Get project id
         HOSTNAME = os.environ.get('application_hostname')

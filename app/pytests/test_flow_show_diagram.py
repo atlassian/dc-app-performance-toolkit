@@ -26,15 +26,18 @@ import os
 _project_id = '10000'
 _diagram_id = '0'
 
-@pytest.fixture(scope="session")
-def create_data(scope="session"):
-    print("start fixture create data")
-    session = requests.session()
-    HOSTNAME = os.environ.get('application_hostname')
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                                 json={ "username": "admin", "password": "admin" })
+@pytest.fixture(scope="class")
+def create_data(session):
     global _project_id
     global _diagram_id
+    HOSTNAME = os.environ.get('application_hostname')
+    # Get user
+    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+    assert diagrams_response.status_code == 200
+    userKey = diagrams_response.json()["key"]
+    print("User key: " + userKey)
+
+    print("start fixture create data")
 
     ##################################################################################################
     #Create Diagram
@@ -50,7 +53,7 @@ def create_data(scope="session"):
     field= diagrams_response.json()["fields"][0]["id"]
 
     # Create diagram
-    payload ={ 'name':"D100", 'author':'admin',
+    payload ={ 'name':"D100", 'author':userKey,
        'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey,
         'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
         'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
@@ -89,12 +92,10 @@ def create_data(scope="session"):
     linkConfigId = str(newLinkConfig["id"])
     print("linkConfigId=" + linkConfigId)
 
-    session.close()
-
     yield _diagram_id  # provide the fixture value
-    session = requests.session()
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                             json={ "username": "admin", "password": "admin" })
+
+ #   auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
+ #                            json={ "username": userKey, "password": "admin" })
     diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
     assert diagrams_response2.status_code == 200
     print("Deleted diagram id=" + _diagram_id)

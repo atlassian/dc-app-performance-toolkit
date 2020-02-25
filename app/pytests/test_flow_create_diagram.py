@@ -1,7 +1,9 @@
 import requests
 from fixtures import session
+import pytest
 import time
 import os
+import random
 
 class TestFlowCreateDiagram:
 
@@ -78,7 +80,9 @@ class TestFlowCreateDiagram:
         # Get filter key
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
-        filterKey= str(diagrams_response.json()["filters"][1]["filterKey"])
+
+        filterKeyEntryId = random.randint(0,1)
+        filterKey= str(diagrams_response.json()["filters"][filterKeyEntryId]["filterKey"])
 
         # Get filter key
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -92,6 +96,11 @@ class TestFlowCreateDiagram:
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/status')
         assert diagrams_response.status_code == 200
         field= diagrams_response.json()["id"]
+
+        # Get field sprint
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/sprint')
+        assert diagrams_response.status_code == 200
+        field2= diagrams_response.json()["id"]
 
         # Get field options - status
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/fieldOption/status')
@@ -107,10 +116,10 @@ class TestFlowCreateDiagram:
         userKey = diagrams_response.json()["key"]
         
         # Create diagram
-        payload ={ 'name':"F100", 'author':'admin',
-           'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey, 
+        payload ={ 'name':"F100", 'author':userKey,
+           'lastEditedBy':userKey, 'layoutId':2, 'filterKey': filterKey,
             'boxColorFieldKey': field, 'groupedLayoutFieldKey': field, 
-            'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}               
+            'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
       
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
             json=payload)

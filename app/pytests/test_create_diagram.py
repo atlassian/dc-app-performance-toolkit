@@ -2,6 +2,10 @@ import requests
 import json
 from fixtures import session
 import os
+import pathlib
+
+CURRENT_PATH = pathlib.Path().absolute()
+out_file_path = CURRENT_PATH / "deleteCreatedObjects"
 
 class TestCreateDiagram:
     def test_create_diagram(self, session):
@@ -44,8 +48,8 @@ class TestCreateDiagram:
         print("User key: " + userKey)
         
         # Create diagram
-        payload ={ 'name':"D100", 'author':'admin', 
-           'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey, 
+        payload ={ 'name':"D100", 'author':userKey,
+           'lastEditedBy':userKey, 'layoutId':0, 'filterKey': filterKey,
             'boxColorFieldKey': field, 'groupedLayoutFieldKey': field, 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}               
       
@@ -54,6 +58,16 @@ class TestCreateDiagram:
         assert diagram_response.status_code == 200
         diagramId = str(diagram_response.json()["id"])
         print("New diagram id: " + diagramId)
+
+
+        try:
+            with open(out_file_path, "a") as f:
+                diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId
+                f.write(diagrams_delete_request)
+                f.write("\n")
+                f.close()
+        except IOError:
+            print("File not accessible")
 
         # Create linkConfig
         payload = { 'diagramId': diagramId, 'linkKey': 10000, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 20}

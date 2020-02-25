@@ -11,6 +11,7 @@ assert users_reponse.status_code == 200
 users = list(map(lambda user : user['name'], users_reponse.json()))
 if len(users) > 1:
     users.remove('admin')
+print(users)
 
 # returns a random username/password dict
 # all users have password 'password', except user 'admin' that has password 'admin'
@@ -19,6 +20,7 @@ def getRandomUsernamePassword():
     password = 'password'
     if username == 'admin':
         password = 'admin'
+    print(username)
     return {'username': username, 'password': password}
 
 # returns a logged in session for use in a test method

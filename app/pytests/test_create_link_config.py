@@ -5,12 +5,18 @@ import os
 
 class TestLinkConfig:
     def test_create_change_link(self, session):
+        HOSTNAME = os.environ.get('application_hostname')
+        # Get user
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+        assert diagrams_response.status_code == 200
+        userKey = diagrams_response.json()["key"]
+        print("User key: " + userKey)
+
         # Create diagram
-        payload ={ 'name':"D100", 'author':'admin', 
-           'lastEditedBy':'admin', 'layoutId':0, 'filterKey': 10000, 
+        payload ={ 'name':"D100", 'author': userKey,
+           'lastEditedBy':userKey, 'layoutId':0, 'filterKey': 10000,
             'boxColorFieldKey': "priority", 'groupedLayoutFieldKey': "priority", 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
-        HOSTNAME = os.environ.get('application_hostname')
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
             json=payload)
 

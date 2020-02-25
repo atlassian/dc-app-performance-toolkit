@@ -29,20 +29,15 @@ class TestCreateDiagram:
         assert diagrams_response.status_code == 200
         print ("filter json: " + str(diagrams_response.json()))
 
-        #########
-        #remove
         with open(out_file_path, "w") as f:
             #print( diagrams_response.json() );
             for filter in diagrams_response.json()["filters"]:
                 filterKey= filter["filterKey"]
                 print(filterKey)
-                for c in range(0, 1):
+                for c in range(0, 10):
                   diagramId = create_diagram(session, filterKey)
                   diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId
                   f.write(diagrams_delete_request)
-                  #f.write(diagramId)
-
-
                   f.write("\n")
         f.close()
 
@@ -69,8 +64,8 @@ def create_diagram(session, filterKey):
         print("User key: " + userKey)
 
         # Create diagram
-        payload ={ 'name':"A100", 'author':'admin',
-                   'lastEditedBy':'admin', 'layoutId':2, 'filterKey': filterKey,
+        payload ={ 'name':"A100", 'author':userKey,
+                   'lastEditedBy':userKey, 'layoutId':2, 'filterKey': filterKey,
                    'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
                    'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
 
