@@ -2,7 +2,6 @@ import pytest
 import requests
 import os
 import random
-import time
 
 HOSTNAME = os.environ.get('application_hostname')
 
@@ -13,9 +12,6 @@ users = list(map(lambda user : user['name'], users_reponse.json()))
 if len(users) > 1:
     users.remove('admin')
 print(users)
-
-
-
 
 # returns a random username/password dict
 # all users have password 'password', except user 'admin' that has password 'admin'
@@ -30,7 +26,6 @@ def getRandomUsernamePassword():
 # returns a logged in session for use in a test method
 @pytest.fixture(scope="class")
 def session():
- #   time.sleep(20)
     print("create session")
     # authenticate to get a session id
     s = requests.session()

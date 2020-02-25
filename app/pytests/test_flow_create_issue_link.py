@@ -3,11 +3,14 @@ from fixtures import session
 import pytest
 from generatetests import pytest_generate_tests
 import os
+import random
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
 
 _diagram_id = '0'
+_project_id = 0
+
 
 @pytest.fixture(scope="class")
 def create_data(session):
@@ -21,11 +24,6 @@ def create_data(session):
     assert diagrams_response.status_code == 200
     userKey = diagrams_response.json()["key"]
     print("User key: " + userKey)
-
-
-
-    #auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-    #                         json={ "username": userKey, "password": "admin" })
 
     # Get filter key
     diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -99,14 +97,61 @@ def create_data(session):
     assert diagrams_response2.status_code == 200
     print("Deleted diagram id=" + _diagram_id)
 
+def get_link_type(session):
+    #JIRA Get list of available link types
+    HOSTNAME = os.environ.get('application_hostname')
+    issueLinkTypeId = 0
+    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')
+    issueLinkTypes = diagrams_response.json()['issueLinkTypes']
+    for linkType in issueLinkTypes:
+        print(linkType)
+        if linkType["name"]=="Blocks":
+            issueLinkTypeId=linkType["id"]
+            break
+    print(issueLinkTypeId)
+    return issueLinkTypeId
+
 
 class TestCreateLink:
     def test_show_diagram_flow_ci(self, session, create_data,):
+        global _project_id
         print("INSIDE SHOW")
-        #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
+
+        #Get diagram
+        diagram_ids = []
+        startAt = 0
+        while True:
+            resp =  session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+            assert resp.status_code == 200
+            result=resp.json()
+            if startAt >= result['total'] or startAt > 500:
+                break
+            diagram_ids.extend(list(map(lambda diagram : diagram['id'], result['values'])))
+            startAt = len(diagram_ids)
+
+        #Get project
+        resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
+        assert resp.status_code == 200
+        result = resp.json()
+        length = len(result)
+        project_id=result[random.randint(0,length-1)]['id']
+        _project_id = project_id
+
+        issue_ids = []
+        startAt = 0
+        while True:
+            resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
+            assert resp.status_code == 200
+            result = resp.json()
+            if startAt >= result['total'] or startAt > 500:
+                break
+            issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
+            startAt = len(issue_ids)
+            print(startAt)
+        print(issue_ids)
+
+
 
         #JIRA Get project with everything in it
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project+%3D+' + '10000' + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
@@ -175,84 +220,51 @@ class TestCreateLink:
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId 1")
-        #    else:
-        #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId 2")
-        #    else:
-        #       print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId 3")
-        #    else:
-        #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId 4")
-        #    else:
-        #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId 5")
-        #    else:
-        #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
-        #    if not value:
-        #        print( "No response value fieldId -1")
-        #    else:
-        #        print( diagrams_response.json() )
 
         #JIRA Get list of available fileds
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/field')
         assert diagrams_response.status_code == 200
-        #    value = diagrams_response.json()[0]
-        #    content = diagrams_response.text
-        #    if not value:
-        #        print( "No response value field")
-        #    else:
-        #        print(value)
 
         #JIRA Get list of available link types
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
         assert diagrams_response.status_code == 200
         issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
-        #    print("issueLinkTypeId=" + issueLinkTypeId)
 
         #Get all link configs
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
-        #    print( diagrams_response.json())
+
 
     def test_create_issue_link_flow_ci(self, session, create_data):
+        global _project_id
         print("INSIDE CREATE")
-        #JIRA Get project id
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/project')
-        assert diagrams_response.status_code == 200
-        projectId = diagrams_response.json()[1]['id']
-        print('projectId:' +  projectId);
+
+        projectId = _project_id
 
         #JIRA Get list of available issues
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project=' + projectId)
@@ -260,15 +272,13 @@ class TestCreateLink:
         issueId1 = diagrams_response.json()['issues'][0]['id']
         issueKey1 = diagrams_response.json()['issues'][0]['key']
         issueId2 = diagrams_response.json()['issues'][9]['id']
-        print ('issueId1=' + issueId1 + ' key=' + issueKey1 + ' issueId2=' + issueId2)
+
         #JIRA Get list of available link types
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
-        issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
-        print("issueLinkTypeId=" + issueLinkTypeId)
+        issueLinkTypeId = get_link_type(session)
 
         ####
         #JIRA create link
-        payload = { 'type': { 'id': issueLinkTypeId},  #blocks?
+        payload = { 'type': { 'id': issueLinkTypeId},
                     'inwardIssue': { 'id': issueId2 },
                     'outwardIssue': { 'id': issueId1}}
         diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/api/2/issueLink',

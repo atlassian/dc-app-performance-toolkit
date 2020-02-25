@@ -73,7 +73,7 @@ class TestDelete:
                 if startAt >= result['total']:
                     break
                 issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
-                startAt = startAt + len(issue_ids)
+                startAt = len(issue_ids)
 
                 for issue in result['issues']:
                     print(issue['key'])

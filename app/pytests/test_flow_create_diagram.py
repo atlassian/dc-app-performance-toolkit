@@ -16,16 +16,28 @@ class TestFlowCreateDiagram:
         #GET /rest/api/2/user?key=admin HTTP/1.1" 200 344 1
 
         start = time.time()
+
+        diagram_ids = []
+        startAt = 0
+
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
+        while True:
+            resp =session.get('http://'  + HOSTNAME + f':8080/rest/dependency-map/1.0/diagram?searchTerm=&{startAt}=0&maxResults=50')
+            assert resp.status_code == 200
+            result = resp.json()
+            if startAt >= result['total'] or startAt > 500:
+                break
+            diagram_ids.extend(list(map(lambda issue : issue['id'], result['values'])))
+            startAt = len(diagram_ids)
+            print(startAt)
 
-        # Get filter 10000  Scrum
+
+        # Get filter 10000  ?Scrum?
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10000')
         assert diagrams_response.status_code == 200
 
-        # Get filter 10001 Kanban
+        # Get filter 10001 ?Kanban?
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10001')
         assert diagrams_response.status_code == 200
 

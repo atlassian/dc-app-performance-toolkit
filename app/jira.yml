@@ -11,7 +11,7 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 10
+    concurrency: 200
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
@@ -34,14 +34,14 @@ execution:
   - scenario: selenium
     executor: selenium
     runner: pytest
-    hold-for: ${test_duration}     
-  - executor: pytest
-    ramp-up: 15s
-    concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
-  #  iterations: 200
-    scenario: pytest-run
+  - scenario: pytest-run
+    executor: pytest
+    think-time: 5s
+    concurrency:  ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
 scenarios:
   pytest-run:
     script: pytests/
