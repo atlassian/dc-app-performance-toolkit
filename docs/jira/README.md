@@ -66,14 +66,14 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 3. Click the start button to start running the test.
 
 ### Run one JMeter action
-####Option 1: Run one JMeter action via GUI
+#### Option 1: Run one JMeter action via GUI
 1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
 2. Go to `File` > `Open`, and then open `jmeter/jira.jmx`.
 2. In the`Global Variables` section, add correct Jira hostname, port, protocol, and postfix (if required).
 3. In `Jira` > `load profile`, set `perc_desired_action` to 100.
 4. Run JMeter.
 
-####Option 2: Run one JMeter action via bzt
+#### Option 2: Run one JMeter action via bzt
 1. In [jira.yml](../../app/jira.yml), set `perc_desired_action` to 100 and all other perc_* to 0.
 2. Run `bzt jira.yml`.
 
