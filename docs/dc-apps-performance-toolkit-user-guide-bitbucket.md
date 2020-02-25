@@ -293,7 +293,13 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
+After the process is finished, don't forget to start Bitbucket. Using SSH, return to the Bitbucket node.
+Run the script:
 
+   ``` bash
+   sudo systemctl start bitbucket
+   ```
+   
 ## Testing scenarios
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
