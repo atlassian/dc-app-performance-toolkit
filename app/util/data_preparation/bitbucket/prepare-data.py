@@ -1,6 +1,6 @@
 import random
 import string
-
+import time
 from util.conf import BITBUCKET_SETTINGS
 from util.data_preparation.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
@@ -66,14 +66,23 @@ def __get_projects(bitbucket_api):
     return projects
 
 
-def __get_prs(bitbucket_api, repos):
+def __get_prs(bitbucket_api):
+    concurrency = BITBUCKET_SETTINGS.concurrency
     repos_prs = []
+    REPOS_TO_FETCH = 1000
+    start_time = time.time()
+    repos = bitbucket_api.get_non_fork_repos(REPOS_TO_FETCH)
     for repo in repos:
         repo_prs = [repo['slug'], repo['project']['key']]
-        prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
-        for pr in prs['values']:
-            repo_prs.extend([pr['fromRef']['displayId'], pr['toRef']['displayId']])
-        repos_prs.append(repo_prs)
+        if len(repos_prs) <= concurrency:
+            prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
+            for pr in prs['values']:
+                repo_prs.extend([pr['fromRef']['displayId'], pr['toRef']['displayId']])
+                repos_prs.append(repo_prs)
+    if len(repos_prs) < concurrency:
+        raise SystemExit(f'Repositories from list {[repo["project"]["key"]-repo["slug"] for repo in repos]} '
+                         f'do not contain {concurrency} pull requests')
+    print(f"Successfully fetched pull requests in  [{(time.time() - start_time)}]")
     return repos_prs
 
 
@@ -82,7 +91,7 @@ def __create_data_set(bitbucket_api):
     dataset[USERS] = __get_admin_users(bitbucket_api)
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
-    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api, dataset[REPOS])
+    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
     return dataset
 
 
