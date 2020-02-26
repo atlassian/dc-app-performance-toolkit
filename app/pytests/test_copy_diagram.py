@@ -1,4 +1,5 @@
 import requests
+from conftest import print_timing
 from fixtures import session
 from fixtures import saveRemoveDiagramCmd
 import os
@@ -7,6 +8,7 @@ import pathlib
 
 class TestCopyDiagram:
     diagramId = 0
+    @print_timing
     def test_create_diagram_flow_cd(self, session):
         # Create Diagram
         #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 2
@@ -142,6 +144,8 @@ class TestCopyDiagram:
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
                                          json=payload)
         assert(diagrams_response.status_code == 200)
+
+    @print_timing
     def test_copy_diagram(self, session):
 
         HOSTNAME = os.environ.get('application_hostname')

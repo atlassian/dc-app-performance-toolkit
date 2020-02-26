@@ -22,8 +22,7 @@ services:
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
-      - python3 util/conv_ldjson_jtl.py
-      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl PyTestExecutor-1.jtl
+      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytest_run.jtl
     post-process:
       - python3 util/analytics.py jira
 execution:
@@ -37,14 +36,20 @@ execution:
     hold-for: ${test_duration}
     ramp-up: 3m
   - scenario: pytest-run
-    executor: pytest
-    think-time: 5s
+    executor: selenium
+    runner: pytest
+    concurrency:  ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  - scenario: pytest-run
+    executor: pytest -workers 200
     concurrency:  ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
 scenarios:
   pytest-run:
     script: pytests/
+ #   additional-args: --workers ${concurrency}
   selenium:
     script: selenium_ui/jira_ui.py
   jmeter:

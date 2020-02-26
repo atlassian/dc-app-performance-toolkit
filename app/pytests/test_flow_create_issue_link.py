@@ -1,4 +1,5 @@
 import requests
+from conftest import print_timing_with_create_data
 from fixtures import session
 from fixtures import saveRemoveIssueLinkCmd
 import pytest
@@ -114,7 +115,8 @@ def get_link_type(session):
 
 
 class TestCreateLink:
-    def test_show_diagram_flow_ci(self, session, create_data,):
+    @print_timing_with_create_data
+    def test_show_diagram_flow_ci(self, session, create_data):
         global _project_id
         print("INSIDE SHOW")
         HOSTNAME = os.environ.get('application_hostname')
@@ -259,7 +261,7 @@ class TestCreateLink:
         #Get all link configs
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
 
-
+    @print_timing_with_create_data
     def test_create_issue_link_flow_ci(self, session, create_data):
         global _project_id
         print("INSIDE CREATE")

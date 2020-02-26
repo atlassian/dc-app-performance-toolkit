@@ -49,8 +49,41 @@ def print_timing(func):
         start = time.time()
         error_msg = 'Success'
         full_exception = ''
+        interaction = func.__qualname__
         try:
             func(self, session)
+            success = True
+        except Exception:
+            success = False
+            # https://docs.python.org/2/library/sys.html#sys.exc_info
+            exc_type, full_exception = sys.exc_info()[:2]
+            error_msg = exc_type.__name__
+        end = time.time()
+        timing = str(int((end - start) * 1000))
+
+        with open(pytest_results_file, "a+") as file:
+            timestamp = round(time.time() * 1000)
+            file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+
+        print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
+
+        w3c_timing = 0
+        with open(w3c_timings_pytest_file, "a+") as file:
+            file.write(f"{{\"timestamp\": {timestamp}, \"timing\": {timing}, \"interation\": \"{interaction}\", "
+                       f"\"error\": \"{error_msg}\", \"success\": \"{success}\", \"w3c_timing\": {w3c_timing}}}\n")
+
+        if not success:
+            raise Exception(error_msg, full_exception)
+
+    return wrapper
+
+def print_timing_with_create_data(func):
+    def wrapper(self , session, create_data):
+        start = time.time()
+        error_msg = 'Success'
+        full_exception = ''
+        try:
+            func(self, session, create_data)
             success = True
         except Exception:
             success = False

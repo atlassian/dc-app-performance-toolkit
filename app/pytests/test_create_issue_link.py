@@ -1,5 +1,7 @@
 import requests
+from conftest import print_timing
 from fixtures import session
+
 import os
 
 #POST /rest/api/2/issueLink
@@ -8,6 +10,7 @@ import os
 
 
 class TestCreateLink:
+    @print_timing
     def test_create_issue_link(self, session):
         #JIRA Get project id
         HOSTNAME = os.environ.get('application_hostname')

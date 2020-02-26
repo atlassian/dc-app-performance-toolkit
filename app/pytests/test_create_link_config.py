@@ -1,10 +1,12 @@
 import requests
 import json
+from conftest import print_timing
 from fixtures import session
 from fixtures import saveRemoveDiagramCmd
 import os
 
 class TestLinkConfig:
+    @print_timing
     def test_create_change_link(self, session):
         HOSTNAME = os.environ.get('application_hostname')
         # Get user

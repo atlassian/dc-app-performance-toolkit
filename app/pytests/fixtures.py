@@ -45,6 +45,7 @@ def getRandomUsernamePassword():
     if username == 'admin':
         password = 'admin'
     print(username)
+    print("RETURN USER: " + username)
     return {'username': username, 'password': password}
 
 # returns a logged in session for use in a test method

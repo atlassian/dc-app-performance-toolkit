@@ -1,9 +1,11 @@
 import requests
 import json
+from conftest import print_timing
 from fixtures import session
 from fixtures import saveRemoveDiagramCmd
 import os
 import pathlib
+import pytest
 
 #POST /rest/dependency-map/1.0/diagram
 #POST /rest/dependency-map/1.0/linkConfig
@@ -13,6 +15,7 @@ import pathlib
 #POST /rest/webResources/1.0/resources
 
 class TestChangeDiagram:
+    @print_timing
     def test_change_diagram_config(self, session):
         HOSTNAME = os.environ.get('application_hostname')
         # Get user

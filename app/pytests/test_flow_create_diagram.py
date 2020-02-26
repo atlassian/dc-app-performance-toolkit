@@ -1,4 +1,5 @@
 import requests
+from conftest import print_timing
 from fixtures import session
 from fixtures import saveRemoveDiagramCmd
 import pytest
@@ -8,7 +9,7 @@ import random
 
 class TestFlowCreateDiagram:
 
-
+    @print_timing
     def test_show_dependency_maps_flow_cd(self, session):
         #Select Dependency Map
         #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1630 3
@@ -48,7 +49,7 @@ class TestFlowCreateDiagram:
         userKey = diagrams_response.json()["key"]
         #print(userKey)
 
-
+    @print_timing
     def test_create_diagram_flow_cd(self, session):
         # Create Diagram
         #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 2
