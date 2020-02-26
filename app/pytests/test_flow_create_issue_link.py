@@ -1,5 +1,6 @@
 import requests
 from fixtures import session
+from fixtures import saveRemoveIssueLinkCmd
 import pytest
 from generatetests import pytest_generate_tests
 import os
@@ -286,10 +287,13 @@ class TestCreateLink:
         assert diagrams_response.status_code == 201
         print("issue created")
 
+
         ###
         #JIRA Get new issue links id
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + issueKey1)
         issueLinks = diagrams_response.json()['fields']['issuelinks']
         issueLinksId = issueLinks[0]['id']
         print("New issue Links Id=" + issueLinksId);
+
+        saveRemoveIssueLinkCmd(issueLinksId)
 

@@ -1,7 +1,9 @@
 import requests
 import json
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
 import os
+import pathlib
 
 #POST /rest/dependency-map/1.0/diagram
 #POST /rest/dependency-map/1.0/linkConfig
@@ -31,6 +33,8 @@ class TestChangeDiagram:
         newDiagram = diagrams_response.json()
         diagramId = str(newDiagram["id"])
         print('diagramid=' +diagramId)
+
+        saveRemoveDiagramCmd(diagramId)
          
         # Get all priorities
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/fieldOption/priority')

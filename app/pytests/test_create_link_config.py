@@ -1,6 +1,7 @@
 import requests
 import json
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
 import os
 
 class TestLinkConfig:
@@ -22,7 +23,7 @@ class TestLinkConfig:
 
         newDiagram = diagrams_response.json()
         diagramId = str(newDiagram["id"])
-        print("New diagram id: " + diagramId)
+        saveRemoveDiagramCmd(diagramId)
 
         #JIRA Get list of available link types
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')

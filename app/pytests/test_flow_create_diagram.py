@@ -1,5 +1,6 @@
 import requests
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
 import pytest
 import time
 import os
@@ -138,6 +139,8 @@ class TestFlowCreateDiagram:
         assert diagrams_response.status_code == 200
         diagramId = diagrams_response.json()['id']
         diagramKey = str(diagramId)
+
+        saveRemoveDiagramCmd(diagramId)
         
         #create box colore resource entries.
         payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}

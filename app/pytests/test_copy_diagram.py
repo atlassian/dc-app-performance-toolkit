@@ -1,9 +1,9 @@
 import requests
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
 import os
 import random
-
-
+import pathlib
 
 class TestCopyDiagram:
     diagramId = 0
@@ -97,6 +97,8 @@ class TestCopyDiagram:
         TestCopyDiagram.diagramId = diagrams_response.json()['id']
         diagramKey = str(TestCopyDiagram.diagramId)
 
+        saveRemoveDiagramCmd(TestCopyDiagram.diagramId)
+
         #create box colore resource entries.
         payload = {"diagramId":TestCopyDiagram.diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
@@ -147,4 +149,7 @@ class TestCopyDiagram:
         #create a copy of the diagram
         diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/duplicate/' + str(TestCopyDiagram.diagramId) )
         assert diagrams_response.status_code == 200
-        print( diagrams_response.json() );
+
+        diagramId = diagrams_response.json()['diagram']['id']
+        saveRemoveDiagramCmd(diagramId)
+
