@@ -45,6 +45,7 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
+      total_actions_per_hr: 32700
       tmp_dir: /tmp
       ssh_key_url: https://centaurus-datasets.s3.us-east-2.amazonaws.com/bitbucket/ssh/id_rsa
 modules:
