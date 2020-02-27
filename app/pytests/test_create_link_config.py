@@ -1,22 +1,31 @@
 import requests
 import json
+from conftest import print_timing
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
 import os
 
 class TestLinkConfig:
+    @print_timing
     def test_create_change_link(self, session):
+        HOSTNAME = os.environ.get('application_hostname')
+        # Get user
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+        assert diagrams_response.status_code == 200
+        userKey = diagrams_response.json()["key"]
+        print("User key: " + userKey)
+
         # Create diagram
-        payload ={ 'name':"D100", 'author':'admin', 
-           'lastEditedBy':'admin', 'layoutId':0, 'filterKey': 10000, 
+        payload ={ 'name':"D100", 'author': userKey,
+           'lastEditedBy':userKey, 'layoutId':0, 'filterKey': 10000,
             'boxColorFieldKey': "priority", 'groupedLayoutFieldKey': "priority", 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
-        HOSTNAME = os.environ.get('application_hostname')
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
             json=payload)
 
         newDiagram = diagrams_response.json()
         diagramId = str(newDiagram["id"])
-        print("New diagram id: " + diagramId)
+        saveRemoveDiagramCmd(diagramId)
 
         #JIRA Get list of available link types
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')

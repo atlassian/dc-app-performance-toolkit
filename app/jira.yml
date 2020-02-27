@@ -11,7 +11,7 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 10
+    concurrency: 200
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
@@ -22,8 +22,7 @@ services:
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
-      - python3 util/conv_ldjson_jtl.py
-      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl PyTestExecutor-1.jtl
+      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytest_run.jtl
     post-process:
       - python3 util/analytics.py jira
 execution:
@@ -34,17 +33,23 @@ execution:
   - scenario: selenium
     executor: selenium
     runner: pytest
-    hold-for: ${test_duration}     
-  - executor: pytest
-    ramp-up: 15s
-    concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
-  #  iterations: 200
-    scenario: pytest-run
+  - scenario: pytest-run
+    executor: selenium
+    runner: pytest
+    concurrency:  ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  - scenario: pytest-run
+    executor: pytest -workers 200
+    concurrency:  ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
 scenarios:
   pytest-run:
     script: pytests/
+ #   additional-args: --workers ${concurrency}
   selenium:
     script: selenium_ui/jira_ui.py
   jmeter:

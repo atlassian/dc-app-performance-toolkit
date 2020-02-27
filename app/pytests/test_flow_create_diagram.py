@@ -1,11 +1,15 @@
 import requests
+from conftest import print_timing
 from fixtures import session
+from fixtures import saveRemoveDiagramCmd
+import pytest
 import time
 import os
+import random
 
 class TestFlowCreateDiagram:
 
-
+    @print_timing
     def test_show_dependency_maps_flow_cd(self, session):
         #Select Dependency Map
         #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1630 3
@@ -14,16 +18,28 @@ class TestFlowCreateDiagram:
         #GET /rest/api/2/user?key=admin HTTP/1.1" 200 344 1
 
         start = time.time()
+
+        diagram_ids = []
+        startAt = 0
+
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
+        while True:
+            resp =session.get('http://'  + HOSTNAME + f':8080/rest/dependency-map/1.0/diagram?searchTerm=&{startAt}=0&maxResults=50')
+            assert resp.status_code == 200
+            result = resp.json()
+            if startAt >= result['total'] or startAt > 500:
+                break
+            diagram_ids.extend(list(map(lambda issue : issue['id'], result['values'])))
+            startAt = len(diagram_ids)
+            print(startAt)
 
-        # Get filter 10000  Scrum
+
+        # Get filter 10000  ?Scrum?
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10000')
         assert diagrams_response.status_code == 200
 
-        # Get filter 10001 Kanban
+        # Get filter 10001 ?Kanban?
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10001')
         assert diagrams_response.status_code == 200
 
@@ -33,7 +49,7 @@ class TestFlowCreateDiagram:
         userKey = diagrams_response.json()["key"]
         #print(userKey)
 
-
+    @print_timing
     def test_create_diagram_flow_cd(self, session):
         # Create Diagram
         #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 2
@@ -78,7 +94,9 @@ class TestFlowCreateDiagram:
         # Get filter key
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
-        filterKey= str(diagrams_response.json()["filters"][1]["filterKey"])
+
+        filterKeyEntryId = random.randint(0,1)
+        filterKey= str(diagrams_response.json()["filters"][filterKeyEntryId]["filterKey"])
 
         # Get filter key
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -92,6 +110,11 @@ class TestFlowCreateDiagram:
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/status')
         assert diagrams_response.status_code == 200
         field= diagrams_response.json()["id"]
+
+        # Get field sprint
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/sprint')
+        assert diagrams_response.status_code == 200
+        field2= diagrams_response.json()["id"]
 
         # Get field options - status
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/fieldOption/status')
@@ -107,16 +130,18 @@ class TestFlowCreateDiagram:
         userKey = diagrams_response.json()["key"]
         
         # Create diagram
-        payload ={ 'name':"F100", 'author':'admin',
-           'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey, 
+        payload ={ 'name':"F100", 'author':userKey,
+           'lastEditedBy':userKey, 'layoutId':2, 'filterKey': filterKey,
             'boxColorFieldKey': field, 'groupedLayoutFieldKey': field, 
-            'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}               
+            'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
       
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
             json=payload)
         assert diagrams_response.status_code == 200
         diagramId = diagrams_response.json()['id']
         diagramKey = str(diagramId)
+
+        saveRemoveDiagramCmd(diagramId)
         
         #create box colore resource entries.
         payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}

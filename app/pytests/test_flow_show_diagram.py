@@ -3,6 +3,7 @@ import pytest
 import time
 from fixtures import session
 import os
+import random
 
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
@@ -23,18 +24,19 @@ import os
 #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 2 "http://localhost:8080/plugins/servlet/dependency-map/diagram?renderDiagramId=114" "Mozilla/5.0 (Windows NT
 #GET /rest/dependency-map/1.0/linkConfig?diagramId=114 HTTP/1.1" 200 44 2 "http://localhost:8080/plugins/servlet/dependency-map/diagram?renderDiagramId=114" "
 
-_project_id = '10000'
 _diagram_id = '0'
 
-@pytest.fixture(scope="session")
-def create_data(scope="session"):
-    print("start fixture create data")
-    session = requests.session()
-    HOSTNAME = os.environ.get('application_hostname')
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                                 json={ "username": "admin", "password": "admin" })
-    global _project_id
+@pytest.fixture(scope="class")
+def create_data(session):
     global _diagram_id
+    HOSTNAME = os.environ.get('application_hostname')
+    # Get user
+    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+    assert diagrams_response.status_code == 200
+    userKey = diagrams_response.json()["key"]
+    print("User key: " + userKey)
+
+    print("start fixture create data")
 
     ##################################################################################################
     #Create Diagram
@@ -50,7 +52,7 @@ def create_data(scope="session"):
     field= diagrams_response.json()["fields"][0]["id"]
 
     # Create diagram
-    payload ={ 'name':"D100", 'author':'admin',
+    payload ={ 'name':"D100", 'author':userKey,
        'lastEditedBy':'admin', 'layoutId':0, 'filterKey': filterKey,
         'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
         'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
@@ -89,12 +91,10 @@ def create_data(scope="session"):
     linkConfigId = str(newLinkConfig["id"])
     print("linkConfigId=" + linkConfigId)
 
-    session.close()
-
     yield _diagram_id  # provide the fixture value
-    session = requests.session()
-    auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
-                             json={ "username": "admin", "password": "admin" })
+
+ #   auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
+ #                            json={ "username": userKey, "password": "admin" })
     diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
     assert diagrams_response2.status_code == 200
     print("Deleted diagram id=" + _diagram_id)
@@ -108,10 +108,28 @@ class TestFlowShowDiagram:
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
-        #JIRA Get project with everything in it
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project+%3D+' + _project_id + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
-        #print(diagrams_response.json());
+        resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
+        assert resp.status_code == 200
+        result = resp.json()
+        length = len(result)
+        project_id=result[random.randint(0,length-1)]['id']
+
+        issue_ids = []
+        startAt = 0
+        while True:
+            resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
+            assert resp.status_code == 200
+            result = resp.json()
+            if startAt >= result['total'] or startAt > 500:
+                break
+            issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
+            startAt = len(issue_ids)
+            print(startAt)
+        print(issue_ids)
+
+
+
+
 
         # Get field priority
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/priority')

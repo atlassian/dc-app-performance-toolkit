@@ -2,8 +2,12 @@ from fixtures import session
 import os
 import math
 import random
+import pathlib
 
 HOSTNAME = os.environ.get('application_hostname')
+
+CURRENT_PATH = pathlib.Path().absolute()
+out_file_path = CURRENT_PATH / "deleteCreatedObjects"
 
 # returns the number of ways k elements can be chosen from n elements
 def binom(n, k):
@@ -34,6 +38,9 @@ class TestCreateIssueLinks:
 
         issueLinkTypeId = get_link_type(session)
         assert resp.status_code == 200
+
+
+
         for project in resp.json():
             project_key = project['key']
 
@@ -71,6 +78,22 @@ class TestCreateIssueLinks:
                                      json= payload)
 
         print(f"created link from issue {from_issue_id} to {to_issue_id} ")
+
+        #JIRA Get new issue links id
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + from_issue_id)
+        issueLinks = diagrams_response.json()['fields']['issuelinks']
+        print(issueLinks)
+        issueLinksId = issueLinks[-1]['id']
+        print("New issue Links Id=" + issueLinksId);
+
+        try:
+            with open(out_file_path, "a") as f:
+                issueLink_delete_request ='http://'  + HOSTNAME + ':8080/rest/api/3/issueLink/' + issueLinksId
+                f.write(issueLink_delete_request)
+                f.write("\n")
+                f.close()
+        except IOError:
+            print("File not accessible")
 
 
 

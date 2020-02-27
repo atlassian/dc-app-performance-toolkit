@@ -1,8 +1,10 @@
 import requests
+from conftest import print_timing
 from fixtures import session
 import os
 
 class TestDelete:
+    @print_timing
     def test_delete_diagram(self, session):
         # Prepare
         # request list of diagrams using the session id
