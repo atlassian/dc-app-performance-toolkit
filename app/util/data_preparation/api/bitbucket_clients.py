@@ -45,7 +45,7 @@ class BitbucketRestClient(RestClient):
         return entities
 
     def get_non_fork_repos(self, max_results):
-        batch_size = max_results * 2
+        batch_size = 1000
         non_fork_repos = []
         start_at = 0
         while len(non_fork_repos) < max_results:
