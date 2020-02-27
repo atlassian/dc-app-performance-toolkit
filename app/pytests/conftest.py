@@ -5,9 +5,13 @@ import time
 import sys
 import json
 import inspect
+import threading
+global_lock = threading.Lock()
 
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
+HOSTNAME = os.environ.get('application_hostname')
+
 
 def pytest_addoption(parser):
     parser.addoption('--repeat', action='store',
@@ -19,11 +23,14 @@ def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
         return os.environ.get('TAURUS_ARTIFACTS_DIR')
     else:
-        # TODO we have error here if 'results' dir does not exist
+     #   raise SystemExit('Taurus result directory could not be found')
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #  pytest_run_results = f'../results/{results_dir_name}_local'
+       #  pytest_run_results = f'../results/{results_dir_name}_local'
         pytest_run_results = f'results/{results_dir_name}_local'
-        os.mkdir(pytest_run_results)
+        if os.path.isdir(pytest_run_results):
+            print ("Dir exist")
+        else:
+            os.mkdir(pytest_run_results)
         return pytest_run_results  # in case you just run pytest
 
 
@@ -31,18 +38,41 @@ def __get_current_results_dir():
 current_results_dir = __get_current_results_dir()
 pytest_results_file = Path(current_results_dir + '/pytests_run.jtl')
 pytest_error_file = Path(current_results_dir + '/pytests_run.err')
-w3c_timings_pytest_file = Path(current_results_dir + '/w3c_timings_pytests.txt')
-print("wc3_timing_pytest_file:" + current_results_dir +  '/w3c_timings_pytests.txt')
+#w3c_timings_pytest_file = Path(current_results_dir + '/w3c_timings_pytests.txt')
+#print("wc3_timing_pytest_file:" + current_results_dir +  '/w3c_timings_pytests.txt')
+out_file_path = Path(current_results_dir + '/deleteCreatedObjects')
 
 
 if not pytest_results_file.exists():
     with open(pytest_results_file, "w") as file:
         file.write(JTL_HEADER)
-    with open(w3c_timings_pytest_file, 'w'):
-        pass
+#    with open(w3c_timings_pytest_file, 'w'):
+#        pass
 
-#    print(method.__module__)
-#   print(method.__qualname__)
+def saveRemoveDiagramCmd(diagramId):
+    try:
+        global_lock.acquire()
+        with open(out_file_path, "a") as f:
+            diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + str(diagramId)
+            f.write(diagrams_delete_request)
+            f.write("\n")
+            f.close()
+        global_lock.release()
+    except IOError:
+        print("File not accessible" + diagramId)
+
+def saveRemoveIssueLinkCmd(issueLinkId):
+    try:
+        global_lock.acquire()
+        with open(out_file_path, "a") as f:
+            issueLink_delete_request ='http://'  + HOSTNAME + ':8080/rest/api/latest/issueLink/' + str(issueLinkId)
+            f.write(issueLink_delete_request)
+            f.write("\n")
+            f.close()
+        global_lock.release()
+    except IOError:
+        print("File not accessible" + issueLinkId)
+
 
 def print_timing(func):
     def wrapper(self , session):
@@ -60,28 +90,26 @@ def print_timing(func):
             error_msg = exc_type.__name__
         end = time.time()
         timing = str(int((end - start) * 1000))
+        timestamp = round(time.time() * 1000)
 
-        with open(pytest_results_file, "a+") as file:
-            timestamp = round(time.time() * 1000)
+        global_lock.acquire()
+        with open(pytest_results_file, "a") as file:
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+        global_lock.release()
 
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
-
-        w3c_timing = 0
-        with open(w3c_timings_pytest_file, "a+") as file:
-            file.write(f"{{\"timestamp\": {timestamp}, \"timing\": {timing}, \"interation\": \"{interaction}\", "
-                       f"\"error\": \"{error_msg}\", \"success\": \"{success}\", \"w3c_timing\": {w3c_timing}}}\n")
 
         if not success:
             raise Exception(error_msg, full_exception)
 
     return wrapper
 
-def print_timing_with_create_data(func):
+def print_timing_with_additional_arg(func):
     def wrapper(self , session, create_data):
         start = time.time()
         error_msg = 'Success'
         full_exception = ''
+        interaction = func.__qualname__
         try:
             func(self, session, create_data)
             success = True
@@ -93,17 +121,15 @@ def print_timing_with_create_data(func):
         end = time.time()
         timing = str(int((end - start) * 1000))
 
-        interaction = func.__qualname__
-        with open(pytest_results_file, "a+") as file:
-            timestamp = round(time.time() * 1000)
+
+        timestamp = round(time.time() * 1000)
+
+        global_lock.acquire()
+        with open(pytest_results_file, "a") as file:
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+        global_lock.release()
 
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
-
-        w3c_timing = 0
-        with open(w3c_timings_pytest_file, "a+") as file:
-            file.write(f"{{\"timestamp\": {timestamp}, \"timing\": {timing}, \"interation\": \"{interaction}\", "
-                       f"\"error\": \"{error_msg}\", \"success\": \"{success}\", \"w3c_timing\": {w3c_timing}}}\n")
 
         if not success:
             raise Exception(error_msg, full_exception)

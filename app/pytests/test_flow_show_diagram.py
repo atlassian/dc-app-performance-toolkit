@@ -24,11 +24,9 @@ import random
 #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 2 "http://localhost:8080/plugins/servlet/dependency-map/diagram?renderDiagramId=114" "Mozilla/5.0 (Windows NT
 #GET /rest/dependency-map/1.0/linkConfig?diagramId=114 HTTP/1.1" 200 44 2 "http://localhost:8080/plugins/servlet/dependency-map/diagram?renderDiagramId=114" "
 
-_diagram_id = '0'
 
 @pytest.fixture(scope="class")
 def create_data(session):
-    global _diagram_id
     HOSTNAME = os.environ.get('application_hostname')
     # Get user
     diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
@@ -60,13 +58,12 @@ def create_data(session):
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
         json=payload)
     assert diagrams_response.status_code == 200
-    diagramKey = str(diagrams_response.json()['id'])
-    _diagram_id= diagramKey
-    print("Nytt diagram med id="  + diagramKey )
+    diagramId = str(diagrams_response.json()['id'])
+    print("Nytt diagram med id="  + diagramId )
 
 
     #update box colore resource entry, created if not exists.
-    payload = {"diagramId":diagramKey,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
+    payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
         json=payload)
     assert diagrams_response.status_code == 200
@@ -82,26 +79,27 @@ def create_data(session):
     print("issueLinkTypeId=" + issueLinkTypeId)
 
     # Create linkConfig
-    payload = { 'diagramId': diagramKey, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
+    payload = { 'diagramId': diagramId, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
 
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
         json=payload)
     assert(diagrams_response.status_code == 200)
     newLinkConfig = diagrams_response.json()
     linkConfigId = str(newLinkConfig["id"])
     print("linkConfigId=" + linkConfigId)
 
-    yield _diagram_id  # provide the fixture value
+    yield diagramId
 
- #   auth_response = session.post('http://' + HOSTNAME + ':8080/rest/auth/1/session',
- #                            json={ "username": userKey, "password": "admin" })
-    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
+    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId)
     assert diagrams_response2.status_code == 200
-    print("Deleted diagram id=" + _diagram_id)
+    print("Deleted diagram id=" + diagramId)
+
+    return diagramId
 
 
 class TestFlowShowDiagram:
     def test_show_diagram_flow_sd(self, create_data, session):
+        diagramId=create_data
         start = time.time()
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
@@ -152,7 +150,7 @@ class TestFlowShowDiagram:
     #    print("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -161,7 +159,7 @@ class TestFlowShowDiagram:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -170,7 +168,7 @@ class TestFlowShowDiagram:
     #       print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -179,7 +177,7 @@ class TestFlowShowDiagram:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -188,7 +186,7 @@ class TestFlowShowDiagram:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -197,7 +195,7 @@ class TestFlowShowDiagram:
     #        print( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -222,7 +220,7 @@ class TestFlowShowDiagram:
     #    print("issueLinkTypeId=" + issueLinkTypeId)
 
         #Get all link configs
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId)
     #    print( diagrams_response.json())
 
         end = time.time()

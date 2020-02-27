@@ -1,7 +1,7 @@
 import requests
-from conftest import print_timing_with_create_data
+from conftest import print_timing_with_additional_arg
 from fixtures import session
-from fixtures import saveRemoveIssueLinkCmd
+from conftest import saveRemoveIssueLinkCmd
 import pytest
 from generatetests import pytest_generate_tests
 import os
@@ -10,14 +10,12 @@ import random
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
 
-_diagram_id = '0'
 _project_id = 0
 
 
 @pytest.fixture(scope="class")
 def create_data(session):
     print("Create diagram")
-    global _diagram_id
    # session = requests.session()
     HOSTNAME = os.environ.get('application_hostname')
 
@@ -37,6 +35,13 @@ def create_data(session):
     assert diagrams_response.status_code == 200
     field= diagrams_response.json()["id"]
 
+    #Get project
+    resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
+    assert resp.status_code == 200
+    result = resp.json()
+    length = len(result)
+    projectId=result[random.randint(0,length-1)]['id']
+
     # Create diagram
     payload ={ 'name':"G100", 'author': userKey,
                'lastEditedBy':userKey, 'layoutId':0, 'filterKey': filterKey,
@@ -47,8 +52,8 @@ def create_data(session):
                                      json=payload)
     assert diagrams_response.status_code == 200
     diagramId = diagrams_response.json()['id']
-    diagramKey = str(diagramId)
-    _diagram_id= diagramKey
+    diagramIdStr = str(diagramId)
+
 
     #create box colore resource entries.
     payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
@@ -79,25 +84,27 @@ def create_data(session):
     issueLinkTypeId2 = diagrams_response.json()['issueLinkTypes'][1]['id']
     issueLinkTypeId3 = diagrams_response.json()['issueLinkTypes'][2]['id']
 
-    payload = { 'diagramId': diagramKey, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
     assert(diagrams_response.status_code == 200)
 
-    payload = { 'diagramId': diagramKey, 'linkKey': issueLinkTypeId2, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 6}
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId2, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 6}
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
     assert(diagrams_response.status_code == 200)
 
-    payload = { 'diagramId': diagramKey, 'linkKey': issueLinkTypeId3 , 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 1}
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramKey,
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId3 , 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 1}
+    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
     assert(diagrams_response.status_code == 200)
 
-    yield _diagram_id  # provide the fixture value
-    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + _diagram_id)
+    yield {'diagramId': diagramIdStr,  'projectId':projectId}
+    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramIdStr)
     assert diagrams_response2.status_code == 200
-    print("Deleted diagram id=" + _diagram_id)
+    print("Deleted diagram id=" + diagramIdStr)
+
+    return {'diagramId': diagramIdStr,  'projectId':projectId}
 
 def get_link_type(session):
     #JIRA Get list of available link types
@@ -115,9 +122,11 @@ def get_link_type(session):
 
 
 class TestCreateLink:
-    @print_timing_with_create_data
+    @print_timing_with_additional_arg
     def test_show_diagram_flow_ci(self, session, create_data):
-        global _project_id
+        print("INSIDE SHOW DIAGRAM")
+        diagramIdStr = create_data['diagramId']
+        projectId = create_data['projectId']
         print("INSIDE SHOW")
         HOSTNAME = os.environ.get('application_hostname')
 
@@ -133,18 +142,10 @@ class TestCreateLink:
             diagram_ids.extend(list(map(lambda diagram : diagram['id'], result['values'])))
             startAt = len(diagram_ids)
 
-        #Get project
-        resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
-        assert resp.status_code == 200
-        result = resp.json()
-        length = len(result)
-        project_id=result[random.randint(0,length-1)]['id']
-        _project_id = project_id
-
         issue_ids = []
         startAt = 0
         while True:
-            resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
+            resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={projectId}&fields=key')
             assert resp.status_code == 200
             result = resp.json()
             if startAt >= result['total'] or startAt > 500:
@@ -220,32 +221,32 @@ class TestCreateLink:
         assert diagrams_response.status_code == 200
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + _diagram_id + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
@@ -259,15 +260,16 @@ class TestCreateLink:
         issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
 
         #Get all link configs
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + _diagram_id)
+        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr)
 
-    @print_timing_with_create_data
+    @print_timing_with_additional_arg
     def test_create_issue_link_flow_ci(self, session, create_data):
-        global _project_id
-        print("INSIDE CREATE")
+        print("INSIDE CREATE ISSUE LINK")
+        print(create_data)
+        projectId = create_data['projectId']
+        print("projectId=" + projectId )
         HOSTNAME = os.environ.get('application_hostname')
-
-        projectId = _project_id
+        print("INSIDE CREATE ISSUE LINK 2")
 
         #JIRA Get list of available issues
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project=' + projectId)
@@ -278,7 +280,7 @@ class TestCreateLink:
 
         #JIRA Get list of available link types
         issueLinkTypeId = get_link_type(session)
-
+        print("INSIDE CREATE ISSUE LINK 2")
         ####
         #JIRA create link
         payload = { 'type': { 'id': issueLinkTypeId},

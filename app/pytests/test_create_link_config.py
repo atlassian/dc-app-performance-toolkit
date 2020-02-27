@@ -2,7 +2,7 @@ import requests
 import json
 from conftest import print_timing
 from fixtures import session
-from fixtures import saveRemoveDiagramCmd
+from conftest import saveRemoveDiagramCmd
 import os
 
 class TestLinkConfig:

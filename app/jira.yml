@@ -12,13 +12,15 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 200
-    test_duration: 45m
+    test_duration: 5m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+ #   TAURUS_ARTIFACTS_DIR: /bzt-configs/results/jira
 services:
   - module: shellexec
     prepare:
+      - pip install pytest-parallel
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
@@ -30,26 +32,21 @@ execution:
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
-  - scenario: selenium
-    executor: selenium
+  - executor: selenium
+    scenario: selenium
     runner: pytest
     hold-for: ${test_duration}
+    concurrency:  ${concurrency}
     ramp-up: 3m
   - scenario: pytest-run
-    executor: selenium
+    executor: pytest
     runner: pytest
-    concurrency:  ${concurrency}
-    hold-for: ${test_duration}
-    ramp-up: 3m
-  - scenario: pytest-run
-    executor: pytest -workers 200
-    concurrency:  ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
 scenarios:
   pytest-run:
+    additional-args: --workers 8 --tests-per-worker 25
     script: pytests/
- #   additional-args: --workers ${concurrency}
   selenium:
     script: selenium_ui/jira_ui.py
   jmeter:
