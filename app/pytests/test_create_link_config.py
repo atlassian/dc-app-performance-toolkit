@@ -4,8 +4,10 @@ from conftest import print_timing
 from fixtures import session
 from conftest import saveRemoveDiagramCmd
 import os
+from maxfreq import max_freq
 
 class TestLinkConfig:
+    @max_freq(500/3600)
     @print_timing
     def test_create_change_link(self, session):
         HOSTNAME = os.environ.get('application_hostname')

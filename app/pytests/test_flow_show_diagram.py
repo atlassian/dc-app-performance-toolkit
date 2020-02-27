@@ -4,7 +4,7 @@ import time
 from fixtures import session
 import os
 import random
-
+from maxfreq import max_freq
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
 #GET /rest/api/2/search?jql=project+%3D+SCRUM+ORDER+BY+Rank+ASC&startAt=0&maxResults=50 HTTP/1.1" 200 7802 44 "http://localhost:8080/plugins/servlet/dependenc
@@ -98,6 +98,7 @@ def create_data(session):
 
 
 class TestFlowShowDiagram:
+    @max_freq(1000/3600)
     def test_show_diagram_flow_sd(self, create_data, session):
         diagramId=create_data
         start = time.time()

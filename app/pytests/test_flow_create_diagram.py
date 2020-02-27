@@ -6,9 +6,11 @@ import pytest
 import time
 import os
 import random
+from maxfreq import max_freq
 
 class TestFlowCreateDiagram:
 
+    @max_freq(50/3600)
     @print_timing
     def test_show_dependency_maps_flow_cd(self, session):
         #Select Dependency Map
@@ -32,15 +34,22 @@ class TestFlowCreateDiagram:
                 break
             diagram_ids.extend(list(map(lambda issue : issue['id'], result['values'])))
             startAt = len(diagram_ids)
-            print(startAt)
+         #   print(startAt)
 
+
+        # Get filter key
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
+        assert diagrams_response.status_code == 200
+
+        filterKey1= str(diagrams_response.json()["filters"][0]["filterKey"])
+        filterKey2= str(diagrams_response.json()["filters"][0]["filterKey"])
 
         # Get filter 10000  ?Scrum?
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10000')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/' + filterKey1)
         assert diagrams_response.status_code == 200
 
         # Get filter 10001 ?Kanban?
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/10001')
+        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/filter/'+ filterKey2)
         assert diagrams_response.status_code == 200
 
         # Get user
@@ -49,6 +58,7 @@ class TestFlowCreateDiagram:
         userKey = diagrams_response.json()["key"]
         #print(userKey)
 
+    @max_freq(50/3600)
     @print_timing
     def test_create_diagram_flow_cd(self, session):
         # Create Diagram

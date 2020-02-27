@@ -6,6 +6,7 @@ import pytest
 from generatetests import pytest_generate_tests
 import os
 import random
+from maxfreq import max_freq
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
@@ -56,22 +57,22 @@ def create_data(session):
 
 
     #create box colore resource entries.
-    payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":1,"colorPaletteEntryId":5}
+    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":1,"colorPaletteEntryId":5}
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":2,"colorPaletteEntryId":6}
+    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":2,"colorPaletteEntryId":6}
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":3,"colorPaletteEntryId":7}
+    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":3,"colorPaletteEntryId":7}
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":4,"colorPaletteEntryId":8}
+    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":4,"colorPaletteEntryId":8}
     diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
@@ -122,6 +123,7 @@ def get_link_type(session):
 
 
 class TestCreateLink:
+    @max_freq(500/3600)
     @print_timing_with_additional_arg
     def test_show_diagram_flow_ci(self, session, create_data):
         print("INSIDE SHOW DIAGRAM")
@@ -262,6 +264,7 @@ class TestCreateLink:
         #Get all link configs
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr)
 
+    @max_freq(500/3600)
     @print_timing_with_additional_arg
     def test_create_issue_link_flow_ci(self, session, create_data):
         print("INSIDE CREATE ISSUE LINK")

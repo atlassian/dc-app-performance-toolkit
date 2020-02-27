@@ -4,6 +4,7 @@ from conftest import print_timing
 from fixtures import session
 from conftest import saveRemoveDiagramCmd
 import os
+from maxfreq import max_freq
 import pathlib
 import pytest
 
@@ -15,6 +16,7 @@ import pytest
 #POST /rest/webResources/1.0/resources
 
 class TestChangeDiagram:
+    @max_freq(50/3600)
     @print_timing
     def test_change_diagram_config(self, session):
         HOSTNAME = os.environ.get('application_hostname')

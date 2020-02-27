@@ -1,6 +1,7 @@
 import requests
 from conftest import print_timing
 from fixtures import session
+from maxfreq import max_freq
 
 import os
 
@@ -10,6 +11,7 @@ import os
 
 
 class TestCreateLink:
+    @max_freq(500/3600)
     @print_timing
     def test_create_issue_link(self, session):
         #JIRA Get project id
