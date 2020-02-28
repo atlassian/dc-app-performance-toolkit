@@ -7,6 +7,7 @@ from generatetests import pytest_generate_tests
 import os
 import random
 from maxfreq import max_freq
+from conftest import print_in_shell
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
@@ -16,7 +17,7 @@ _project_id = 0
 
 @pytest.fixture(scope="class")
 def create_data(session):
-    print("Create diagram")
+    print_in_shell("Create diagram")
    # session = requests.session()
     HOSTNAME = os.environ.get('application_hostname')
 
@@ -24,7 +25,7 @@ def create_data(session):
     diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
     assert diagrams_response.status_code == 200
     userKey = diagrams_response.json()["key"]
-    print("User key: " + userKey)
+    print_in_shell("User key: " + userKey)
 
     # Get filter key
     diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -103,7 +104,7 @@ def create_data(session):
     yield {'diagramId': diagramIdStr,  'projectId':projectId}
     diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramIdStr)
     assert diagrams_response2.status_code == 200
-    print("Deleted diagram id=" + diagramIdStr)
+    print_in_shell("Deleted diagram id=" + diagramIdStr)
 
     return {'diagramId': diagramIdStr,  'projectId':projectId}
 
@@ -114,11 +115,11 @@ def get_link_type(session):
     diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')
     issueLinkTypes = diagrams_response.json()['issueLinkTypes']
     for linkType in issueLinkTypes:
-        print(linkType)
+        print_in_shell(linkType)
         if linkType["name"]=="Blocks":
             issueLinkTypeId=linkType["id"]
             break
-    print(issueLinkTypeId)
+    print_in_shell(issueLinkTypeId)
     return issueLinkTypeId
 
 
@@ -126,10 +127,8 @@ class TestCreateLink:
     @max_freq(500/3600)
     @print_timing_with_additional_arg
     def test_show_diagram_flow_ci(self, session, create_data):
-        print("INSIDE SHOW DIAGRAM")
         diagramIdStr = create_data['diagramId']
         projectId = create_data['projectId']
-        print("INSIDE SHOW")
         HOSTNAME = os.environ.get('application_hostname')
 
         #Get diagram
@@ -154,15 +153,15 @@ class TestCreateLink:
                 break
             issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
             startAt = len(issue_ids)
-            print(startAt)
-        print(issue_ids)
+           # print_in_shell(startAt)
+        print_in_shell(issue_ids)
 
 
 
         #JIRA Get project with everything in it
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project+%3D+' + '10000' + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
-        #print(diagrams_response.json());
+        #print_in_shell(diagrams_response.json());
 
         # Get field priority
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/status')
@@ -187,8 +186,8 @@ class TestCreateLink:
         #Get color palet entrie
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '3')
         assert diagrams_response.status_code == 200
-        colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
-        #    print("colorPaletteEntryId=" + str(colorPaletteEntryId))
+        #colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
+        #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get color palet entrie
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
@@ -267,12 +266,10 @@ class TestCreateLink:
     @max_freq(500/3600)
     @print_timing_with_additional_arg
     def test_create_issue_link_flow_ci(self, session, create_data):
-        print("INSIDE CREATE ISSUE LINK")
-        print(create_data)
+       # print_in_shell(create_data)
         projectId = create_data['projectId']
-        print("projectId=" + projectId )
+      #  print_in_shell("projectId=" + projectId )
         HOSTNAME = os.environ.get('application_hostname')
-        print("INSIDE CREATE ISSUE LINK 2")
 
         #JIRA Get list of available issues
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project=' + projectId)
@@ -283,7 +280,6 @@ class TestCreateLink:
 
         #JIRA Get list of available link types
         issueLinkTypeId = get_link_type(session)
-        print("INSIDE CREATE ISSUE LINK 2")
         ####
         #JIRA create link
         payload = { 'type': { 'id': issueLinkTypeId},
@@ -292,7 +288,7 @@ class TestCreateLink:
         diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/api/2/issueLink',
                                          json= payload)
         assert diagrams_response.status_code == 201
-        print("issue created")
+      #  print_in_shell("issue created")
 
 
         ###
@@ -300,7 +296,7 @@ class TestCreateLink:
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + issueKey1)
         issueLinks = diagrams_response.json()['fields']['issuelinks']
         issueLinksId = issueLinks[0]['id']
-        print("New issue Links Id=" + issueLinksId);
+        print_in_shell("New issue Links Id=" + issueLinksId);
 
         saveRemoveIssueLinkCmd(issueLinksId)
 

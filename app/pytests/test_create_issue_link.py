@@ -2,6 +2,7 @@ import requests
 from conftest import print_timing
 from fixtures import session
 from maxfreq import max_freq
+from conftest import print_in_shell
 
 import os
 
@@ -19,7 +20,7 @@ class TestCreateLink:
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/project')
         assert diagrams_response.status_code == 200 
         projectId = diagrams_response.json()[1]['id']        
-        print('projectId:' +  projectId);
+        print_in_shell('projectId:' +  projectId);
         
         #JIRA Get list of available issues
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/search?jql=project=' + projectId)
@@ -27,11 +28,11 @@ class TestCreateLink:
         issueId1 = diagrams_response.json()['issues'][0]['id']
         issueKey1 = diagrams_response.json()['issues'][0]['key']
         issueId2 = diagrams_response.json()['issues'][9]['id']
-        print ('issueId1=' + issueId1 + ' key=' + issueKey1 + ' issueId2=' + issueId2)      
+        print_in_shell ('issueId1=' + issueId1 + ' key=' + issueKey1 + ' issueId2=' + issueId2)
         #JIRA Get list of available link types
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')
         issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']  
-        print("issueLinkTypeId=" + issueLinkTypeId)
+        print_in_shell("issueLinkTypeId=" + issueLinkTypeId)
 
         ####
         #JIRA create link                 
@@ -41,7 +42,7 @@ class TestCreateLink:
         diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/api/2/issueLink',
             json= payload)
         assert diagrams_response.status_code == 201
-        print("issue created")
+        print_in_shell("issue created")
 
         ###
         #JIRA Get new issue links id
@@ -55,7 +56,7 @@ class TestCreateLink:
         diagrams_response = session.get(firstIssueLinkSelf)
         assert diagrams_response.status_code == 200
 
-    #    print("Deleted issueLinksId=" + firstIssueLinksId);
+        print_in_shell("Deleted issueLinksId=" + firstIssueLinksId);
         diagrams_response = session.delete('http://'  + HOSTNAME + ':8080/rest/api/latest/issueLink/' + firstIssueLinksId)
         assert diagrams_response.status_code == 204
 

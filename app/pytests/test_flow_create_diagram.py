@@ -7,6 +7,7 @@ import time
 import os
 import random
 from maxfreq import max_freq
+from conftest import print_in_shell
 
 class TestFlowCreateDiagram:
 
@@ -34,7 +35,7 @@ class TestFlowCreateDiagram:
                 break
             diagram_ids.extend(list(map(lambda issue : issue['id'], result['values'])))
             startAt = len(diagram_ids)
-         #   print(startAt)
+         #   print_in_shell(startAt)
 
 
         # Get filter key
@@ -56,7 +57,7 @@ class TestFlowCreateDiagram:
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
         userKey = diagrams_response.json()["key"]
-        #print(userKey)
+        #print_in_shell(userKey)
 
     @max_freq(50/3600)
     @print_timing

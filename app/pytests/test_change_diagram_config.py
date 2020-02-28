@@ -3,6 +3,7 @@ import json
 from conftest import print_timing
 from fixtures import session
 from conftest import saveRemoveDiagramCmd
+from conftest import print_in_shell
 import os
 from maxfreq import max_freq
 import pathlib
@@ -24,7 +25,7 @@ class TestChangeDiagram:
         diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
         userKey = diagrams_response.json()["key"]
-        print("User key: " + userKey)
+        print_in_shell("User key: " + userKey)
 
         # Create diagram
         payload ={ 'name':"D100", 'author':userKey,
@@ -37,7 +38,7 @@ class TestChangeDiagram:
         assert diagrams_response.status_code == 200    
         newDiagram = diagrams_response.json()
         diagramId = str(newDiagram["id"])
-        print('diagramid=' +diagramId)
+        print_in_shell('diagramid=' +diagramId)
 
         saveRemoveDiagramCmd(diagramId)
          
@@ -46,23 +47,23 @@ class TestChangeDiagram:
         assert diagrams_response.status_code == 200            
         priorityItem = diagrams_response.json()[4]
         priorityItemId = str(priorityItem['id'])
-        print('priorityItemId=' + priorityItemId)
+        print_in_shell('priorityItemId=' + priorityItemId)
         
         #Get colore palete entry for diagram for field=priority option=5 
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=' + priorityItemId)
         assert diagrams_response.status_code == 200            
         value = diagrams_response.text
         if not value:
-           print( "No response value")
+           print_in_shell( "No response value")
         else:
-           print( diagrams_response.json() ) 
+           print_in_shell( diagrams_response.json() )
 
         #create box coloure resource entry
         payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":4}
         diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
             json=payload)
         assert diagrams_response.status_code == 200
-        print( diagrams_response.json() )
+        print_in_shell( diagrams_response.json() )
         boxColorResource = diagrams_response.json()['id']
         
         #update box coloure resource entry, created if not exists.
@@ -70,7 +71,7 @@ class TestChangeDiagram:
         diagrams_response = session.put('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
             json=payload)
         assert diagrams_response.status_code == 200
-        print( diagrams_response.json() )
+        print_in_shell( diagrams_response.json() )
         
         
     

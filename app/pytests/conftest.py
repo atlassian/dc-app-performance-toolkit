@@ -12,11 +12,18 @@ JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,su
              "Latency,Hostname,Connect\n"
 HOSTNAME = os.environ.get('application_hostname')
 
+PRINT_IN_SHELL = os.environ.get('print_in_shell')
+
 
 def pytest_addoption(parser):
     parser.addoption('--repeat', action='store',
                      help='Number of times to repeat each test')
 
+def print_in_shell(value):
+    if PRINT_IN_SHELL=="No":
+        pass
+    else:
+        print(value)
 
 
 def __get_current_results_dir():

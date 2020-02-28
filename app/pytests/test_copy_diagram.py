@@ -17,7 +17,7 @@ class TestCopyDiagram:
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
         result = diagrams_response.json()['values']
-        diagramId=result[-1]['id']
+        diagramId=result[0]['id']
 
         #create a copy of the diagram
         diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/duplicate/' + str(diagramId) )
