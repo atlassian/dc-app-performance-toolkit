@@ -25,6 +25,16 @@ def _dismiss_popup(webdriver, *args):
 
 
 def login(webdriver, datasets):
+    user = random.choice(datasets["users"])
+    datasets['current_user_id'] = int(user[0]) - 1
+    datasets['current_user_name'] = user[1]
+    project_with_repo_prs = random.choice(datasets["pull_requests"])
+    datasets['current_project_key'] = project_with_repo_prs[1]
+    datasets['current_repo_slug'] = project_with_repo_prs[0]
+    # If PRs number > 2, choose random between first 2 PRs
+    datasets['pull_request_id'] = random.choice([project_with_repo_prs[2], project_with_repo_prs[5]
+                                                if len(project_with_repo_prs) > 5 else project_with_repo_prs[2]])
+
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
@@ -32,9 +42,6 @@ def login(webdriver, datasets):
             webdriver.get(f'{LOGIN_URL}')
 
         measure(webdriver, "selenium_login:open_login_page")
-        user = random.choice(datasets["users"])
-        datasets['current_user_id'] = int(user[0]) - 1
-        datasets['current_user_name'] = user[1]
         webdriver.find_element_by_id('j_username').send_keys(user[1])
         webdriver.find_element_by_id('j_password').send_keys(user[2])
 
@@ -65,11 +72,7 @@ def view_projects(webdriver, datasets):
 
 
 def view_project_repos(webdriver, datasets):
-    project = random.choice(datasets["projects"])
-    project_key = project[0]
-
-    datasets['current_project_key'] = project_key
-    project_url = f"{PROJECTS_URL}/{project_key}"
+    project_url = f"{PROJECTS_URL}/{datasets['current_project_key']}"
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{project_url}")
@@ -80,43 +83,41 @@ def view_project_repos(webdriver, datasets):
 
 
 def view_repo(webdriver, datasets):
-    repos = webdriver.find_elements_by_css_selector('span.repository-name')
-    repo = random.choice(repos)
-
+    repo_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/browse"
     @print_timing
     def measure(webdriver, interaction):
-        repo.click()
+        webdriver.get(f"{repo_url}")
         _wait_until(webdriver, ec.presence_of_element_located((By.ID, "repo-clone-dialog")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, "selenium_view_repository")
 
 
 def view_list_pull_requests(webdriver, datasets):
+    repo_pr_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests"
     @print_timing
     def measure(webdriver, interaction):
-        pr_button = '#repository-nav-pull-requests>aui-badge'
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, pr_button)), interaction).click()
+        webdriver.get(f"{repo_pr_url}")
         _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "pull-requests-content")), interaction)
     measure(webdriver, 'selenium_view_list_pull_requests')
 
 
 def view_pull_request_overview_tab(webdriver, datasets):
-    pull_requests = webdriver.find_elements_by_css_selector('a.pull-request-title')
-    random_pr = random.choice(pull_requests)
+    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
+    webdriver.get(pull_requests_url)
 
     @print_timing
     def measure(webdriver, interaction):
-        random_pr.click()
+        webdriver.get(pull_requests_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "ul.tabs-menu")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_overview')
 
 
 def view_pull_request_diff_tab(webdriver, datasets):
+    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "ul.tabs-menu>li:nth-child(2)>a")),
-                    interaction).click()
+        webdriver.get(pull_requests_url)
         diff_tab = ".diff-tree-toolbar"
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, diff_tab)), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
@@ -124,17 +125,18 @@ def view_pull_request_diff_tab(webdriver, datasets):
 
 
 def view_pull_request_commits_tab(webdriver, datasets):
+    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/commits"
     @print_timing
     def measure(webdriver, interaction):
-        pr_commits = 'ul.tabs-menu>li:nth-child(3)>a'
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, pr_commits)), interaction).click()
+        webdriver.get(pull_requests_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "tr>th.message")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_pull_request_commits')
 
 
 def comment_pull_request_diff(webdriver, datasets):
-    webdriver.find_element_by_css_selector('ul.tabs-menu>li:nth-child(2)>a').click()
+    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
+    webdriver.get(pull_requests_url)
 
     @print_timing
     def measure(webdriver, interaction):
@@ -142,19 +144,21 @@ def comment_pull_request_diff(webdriver, datasets):
                     interaction)
         _wait_until(webdriver, ec.visibility_of_element_located((By.CLASS_NAME, "CodeMirror-code")),
                     interaction)
-        diff_lines = webdriver.find_elements_by_css_selector('button.add-comment-trigger>span.aui-iconfont-add-comment')
-        random_diff_line = random.choice(diff_lines)
-        webdriver.execute_script('arguments[0].scrollIntoView(true);', random_diff_line)
-        random_diff_line.click()
-        comment_text_area = webdriver.find_element_by_css_selector('textarea.text')
-        comment_text_area.send_keys(f"{generate_random_string(50)}")
+        webdriver.execute_script(f"elems=document.querySelectorAll('button.add-comment-trigger>span.aui-iconfont-add-comment'); "
+                                 "item=elems[Math.floor(Math.random() * elems.length)];"
+                                 "item.scrollIntoView();"
+                                 "item.click();"
+                                 "document.querySelector('textarea.text').value = 'Comment from Selenium script';")
+        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "textarea.text")),
+                    interaction)
         _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "div.buttons>button:nth-child(1)")),
                     interaction).click()
     measure(webdriver, 'selenium_comment_pull_request_file')
 
 
 def comment_pull_request_overview(webdriver, datasets):
-    webdriver.find_element_by_css_selector('ul.tabs-menu>li:nth-child(1)>a').click()
+    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
+    webdriver.get(pull_requests_url)
 
     @print_timing
     def measure(webdriver, interaction):
@@ -170,9 +174,10 @@ def comment_pull_request_overview(webdriver, datasets):
 
 
 def view_branches(webdriver, datasets):
+    repo_branches_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/branches"
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.find_element_by_css_selector('.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(3)').click()
+        webdriver.get(repo_branches_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.ID, "branch-name-column")), interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
     measure(webdriver, 'selenium_view_branches')
@@ -180,7 +185,7 @@ def view_branches(webdriver, datasets):
 
 def create_pull_request(webdriver, datasets):
     random_repo_with_pr = get_random_repo_with_pr(datasets)
-    fork_name = f"fork-{random_repo_with_pr[0]}_{generate_random_string(5)}"
+    fork_name = f"fork-{random_repo_with_pr[0]}_{generate_random_string(7)}"
     webdriver.get(f"{PROJECTS_URL}/{random_repo_with_pr[1]}/repos/{random_repo_with_pr[0]}")
     _dismiss_popup(webdriver, '.feature-discovery-close')
 
@@ -210,7 +215,7 @@ def create_pull_request(webdriver, datasets):
             safe_click(webdriver, By.ID, 'sourceBranch', interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
             branch_name_from_dropdown = webdriver.find_element_by_id('sourceBranchDialog-search-input')
-            branch_name_from_dropdown.send_keys(f'{random_repo_with_pr[2]}')
+            branch_name_from_dropdown.send_keys(f'{random_repo_with_pr[3]}')
             _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR,
                         '#sourceBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_from_dropdown.send_keys(Keys.ENTER)
@@ -226,7 +231,7 @@ def create_pull_request(webdriver, datasets):
             #safe_click(webdriver, By.ID, 'targetBranch', interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'targetBranchDialog')), interaction)
             branch_name_to_dropdown = webdriver.find_element_by_id('targetBranchDialog-search-input')
-            branch_name_to_dropdown.send_keys(f'{random_repo_with_pr[3]}')
+            branch_name_to_dropdown.send_keys(f'{random_repo_with_pr[4]}')
             _wait_until(webdriver, ec.invisibility_of_element_located(
                 (By.CSS_SELECTOR, '#targetBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_to_dropdown.send_keys(Keys.ENTER)
@@ -281,11 +286,10 @@ def create_pull_request(webdriver, datasets):
 
 
 def view_commits(webdriver, datasets):
+    repo_commits_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/commits"
     @print_timing
     def measure(webdriver, interaction):
-        commits = '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(2)'
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, commits)),
-                    interaction).click()
+        webdriver.get(repo_commits_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "svg.commit-graph")),
                     interaction)
         _dismiss_popup(webdriver, '.feature-discovery-close')
@@ -337,7 +341,7 @@ def get_random_repo_with_pr(datasets):
         if len(pr) >= 4:
             repos_with_prs.append(pr)
     if len(repos_with_prs) == 0:
-        raise NoPullRequestFoundException('app/dataset/bitbucket/repos.csv does not have any pull request')
+        raise NoPullRequestFoundException('app/datasets/bitbucket/pull_requests.csv does not have any pull request')
     return random.choice(repos_with_prs)
 
 
