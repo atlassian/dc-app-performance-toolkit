@@ -271,32 +271,33 @@ class TestCreateLink:
       #  print_in_shell("projectId=" + projectId )
         HOSTNAME = os.environ.get('application_hostname')
 
-        #JIRA Get list of available issues
+            #JIRA Get list of available issues
         diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/search?jql=project=' + projectId)
-        assert diagrams_response.status_code == 200
-        issueId1 = diagrams_response.json()['issues'][0]['id']
-        issueKey1 = diagrams_response.json()['issues'][0]['key']
-        issueId2 = diagrams_response.json()['issues'][9]['id']
+        if len(diagrams_response.json()['issues']) > 9:
+            assert diagrams_response.status_code == 200
+            issueId1 = diagrams_response.json()['issues'][0]['id']
+            issueKey1 = diagrams_response.json()['issues'][0]['key']
+            issueId2 = diagrams_response.json()['issues'][9]['id']
 
-        #JIRA Get list of available link types
-        issueLinkTypeId = get_link_type(session)
-        ####
-        #JIRA create link
-        payload = { 'type': { 'id': issueLinkTypeId},
-                    'inwardIssue': { 'id': issueId2 },
-                    'outwardIssue': { 'id': issueId1}}
-        diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/api/2/issueLink',
-                                         json= payload)
-        assert diagrams_response.status_code == 201
-      #  print_in_shell("issue created")
+            #JIRA Get list of available link types
+            issueLinkTypeId = get_link_type(session)
+            ####
+            #JIRA create link
+            payload = { 'type': { 'id': issueLinkTypeId},
+                        'inwardIssue': { 'id': issueId2 },
+                        'outwardIssue': { 'id': issueId1}}
+            diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/api/2/issueLink',
+                                             json= payload)
+            assert diagrams_response.status_code == 201
+          #  print_in_shell("issue created")
 
 
-        ###
-        #JIRA Get new issue links id
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + issueKey1)
-        issueLinks = diagrams_response.json()['fields']['issuelinks']
-        issueLinksId = issueLinks[0]['id']
-        print_in_shell("New issue Links Id=" + issueLinksId);
+            ###
+            #JIRA Get new issue links id
+            diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + issueKey1)
+            issueLinks = diagrams_response.json()['fields']['issuelinks']
+            issueLinksId = issueLinks[0]['id']
+            print_in_shell("New issue Links Id=" + issueLinksId);
 
-        saveRemoveIssueLinkCmd(issueLinksId)
+            saveRemoveIssueLinkCmd(issueLinksId)
 
