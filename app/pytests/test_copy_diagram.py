@@ -8,7 +8,7 @@ import pathlib
 from maxfreq import max_freq
 
 class TestCopyDiagram:
-
+    @max_freq(50/3600)
     @print_timing
     def test_copy_diagram(self, session):
         HOSTNAME = os.environ.get('application_hostname')

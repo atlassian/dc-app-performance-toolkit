@@ -6,7 +6,7 @@ from maxfreq import max_freq
 from conftest import print_in_shell
 
 class TestDelete:
-  #  @max_freq(50/3600)
+    @max_freq(50/3600)
     @print_timing
     def test_delete_diagram(self, session):
         # Prepare

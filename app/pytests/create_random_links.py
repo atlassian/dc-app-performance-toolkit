@@ -17,7 +17,6 @@ def binom(n, k):
 def issue_key_number(s):
     return int(s.partition("-")[2])
 
-
 def get_link_type(session):
     #JIRA Get list of available link types
     issueLinkTypeId = 0
@@ -38,8 +37,6 @@ class TestCreateIssueLinks:
 
         issueLinkTypeId = get_link_type(session)
         assert resp.status_code == 200
-
-
 
         for project in resp.json():
             project_key = project['key']
