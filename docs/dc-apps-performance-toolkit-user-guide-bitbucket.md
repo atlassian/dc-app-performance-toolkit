@@ -198,7 +198,7 @@ To populate the database with SQL:
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Stop Bitbucket server:
+1. Stop Bitbucket Server:
 
     ``` bash
     sudo systemctl stop bitbucket
@@ -293,20 +293,32 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
----
-## Optional
-### Customize Elasticsearch Service
-Go to AWS Services and choose 'Elasticsearch Service'. In 'My Elasticsearch domains" table find your domain and click on it.  
-Click on the "Edit domain" button, go to the "Storage configuration" section, assign 500 GiB to the "EBS storage size per node" field.  
-Click on the "Submit" button.   
----
 
-After the process is finished, don't forget to start Bitbucket. Using SSH, return to the Bitbucket node.
-Run the script:
+### Increase Elasticsearch Service EBS volume size
+Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
 
-   ``` bash
-   sudo systemctl start bitbucket
-   ```
+1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
+1. Click **Edit domain** button, go to the **Storage configuration** section, set 500 GiB to the **EBS storage size per node** field.  
+1. Click **Submit** button.   
+
+### Start Bitbucket Server
+1. Using SSH, connect to the Bitbucket node via the Bastion instance:
+
+    For Windows, use Putty to connect to the Bitbucket node over SSH.
+    For Linux or MacOS:
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Start Bitbucket Server:
+
+    ``` bash
+    sudo systemctl start bitbucket
+    ```
 
 ## Testing scenarios
 
