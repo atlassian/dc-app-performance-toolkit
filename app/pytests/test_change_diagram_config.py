@@ -2,8 +2,10 @@ import requests
 import json
 from conftest import print_timing
 from fixtures import session
+from fixtures import base_url
 from conftest import saveRemoveDiagramCmd
 from conftest import print_in_shell
+
 import os
 from maxfreq import max_freq
 import pathlib
@@ -19,10 +21,10 @@ import pytest
 class TestChangeDiagram:
     @max_freq(50/3600)
     @print_timing
-    def test_change_diagram_config(self, session):
+    def test_change_diagram_config(self, base_url, session):
         HOSTNAME = os.environ.get('application_hostname')
         # Get user
-        diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+        diagrams_response = session.get('/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
         userKey = diagrams_response.json()["key"]
         print_in_shell("User key: " + userKey)
@@ -33,7 +35,7 @@ class TestChangeDiagram:
             'boxColorFieldKey': "priority", 'groupedLayoutFieldKey': "priority", 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
 
-        diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
+        diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
             json=payload)
         assert diagrams_response.status_code == 200    
         newDiagram = diagrams_response.json()
@@ -43,14 +45,14 @@ class TestChangeDiagram:
         saveRemoveDiagramCmd(diagramId)
          
         # Get all priorities
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/fieldOption/priority')
+        diagrams_response = session.get('/rest/dependency-map/1.0/fieldOption/priority')
         assert diagrams_response.status_code == 200            
         priorityItem = diagrams_response.json()[4]
         priorityItemId = str(priorityItem['id'])
         print_in_shell('priorityItemId=' + priorityItemId)
         
         #Get colore palete entry for diagram for field=priority option=5 
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=' + priorityItemId)
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=' + priorityItemId)
         assert diagrams_response.status_code == 200            
         value = diagrams_response.text
         if not value:
@@ -60,7 +62,7 @@ class TestChangeDiagram:
 
         #create box coloure resource entry
         payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":4}
-        diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
+        diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
             json=payload)
         assert diagrams_response.status_code == 200
         print_in_shell( diagrams_response.json() )
@@ -68,7 +70,7 @@ class TestChangeDiagram:
         
         #update box coloure resource entry, created if not exists.
         payload = {"id":boxColorResource,"diagramId":diagramId,"fieldId":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":5}
-        diagrams_response = session.put('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
+        diagrams_response = session.put('/rest/dependency-map/1.0/boxColor',
             json=payload)
         assert diagrams_response.status_code == 200
         print_in_shell( diagrams_response.json() )

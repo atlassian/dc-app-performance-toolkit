@@ -60,7 +60,7 @@ def saveRemoveDiagramCmd(diagramId):
     try:
         global_lock.acquire()
         with open(out_file_path, "a") as f:
-            diagrams_delete_request ='http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + str(diagramId)
+            diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId)
             f.write(diagrams_delete_request)
             f.write("\n")
             f.close()
@@ -72,7 +72,7 @@ def saveRemoveIssueLinkCmd(issueLinkId):
     try:
         global_lock.acquire()
         with open(out_file_path, "a") as f:
-            issueLink_delete_request ='http://'  + HOSTNAME + ':8080/rest/api/latest/issueLink/' + str(issueLinkId)
+            issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId)
             f.write(issueLink_delete_request)
             f.write("\n")
             f.close()
@@ -82,13 +82,13 @@ def saveRemoveIssueLinkCmd(issueLinkId):
 
 
 def print_timing(func):
-    def wrapper(self , session):
+    def wrapper(self , base_url, session):
         start = time.time()
         error_msg = 'Success'
         full_exception = ''
         interaction = func.__qualname__
         try:
-            func(self, session)
+            func(self, base_url, session)
             success = True
         except Exception:
             success = False
@@ -112,13 +112,13 @@ def print_timing(func):
     return wrapper
 
 def print_timing_with_additional_arg(func):
-    def wrapper(self , session, create_data):
+    def wrapper(self , base_url, session, create_data):
         start = time.time()
         error_msg = 'Success'
         full_exception = ''
         interaction = func.__qualname__
         try:
-            func(self, session, create_data)
+            func(self, base_url, session, create_data)
             success = True
         except Exception:
             success = False

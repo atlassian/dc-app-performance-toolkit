@@ -1,10 +1,10 @@
 from fixtures import session
+from fixtures import base_url
 import os
 import math
 import random
 import pathlib
 
-HOSTNAME = os.environ.get('application_hostname')
 
 CURRENT_PATH = pathlib.Path().absolute()
 out_file_path = CURRENT_PATH / "deleteCreatedObjects"
@@ -20,7 +20,7 @@ def issue_key_number(s):
 def get_link_type(session):
     #JIRA Get list of available link types
     issueLinkTypeId = 0
-    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/api/2/issueLinkType')
+    diagrams_response = session.get('/rest/api/2/issueLinkType')
     issueLinkTypes = diagrams_response.json()['issueLinkTypes']
     for linkType in issueLinkTypes:
         print(linkType)
@@ -31,14 +31,15 @@ def get_link_type(session):
     return issueLinkTypeId
 
 class TestCreateIssueLinks:
-    def test_create_issue_links(self, session):
+    def test_create_issue_links(self, base_url, session):
         # get all projects
-        resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
+        projStartAt = 0
+
+        respProj = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
 
         issueLinkTypeId = get_link_type(session)
-        assert resp.status_code == 200
-
-        for project in resp.json():
+        assert respProj.status_code == 200
+        for project in respProj.json():
             project_key = project['key']
 
             # collect keys of all issues in this project into issue_ids
@@ -46,7 +47,7 @@ class TestCreateIssueLinks:
             issue_ids = []
             startAt = 0
             while True:
-                resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=2&startAt={startAt}&jql=project={project_key}&fields=key')
+                resp = session.get(f'/rest/api/latest/search?maxResults=2&startAt={startAt}&jql=project={project_key}&fields=key')
                 assert resp.status_code == 200
                 result = resp.json()
                 if startAt >= result['total']:
@@ -67,17 +68,18 @@ class TestCreateIssueLinks:
                 print(pair)
                 self.create_link(session, issueLinkTypeId, pair[0], pair[1])
 
+
     def create_link(self, session, issueLinkTypeId, from_issue_id, to_issue_id):
         payload = { 'type': { 'id': issueLinkTypeId},  #blocks?
                     'inwardIssue': { 'id': to_issue_id },
                     'outwardIssue': { 'id': from_issue_id}}
-        diagrams_response = session.post('http://'  + HOSTNAME + ':8080/rest/api/2/issueLink',
+        diagrams_response = session.post('/rest/api/2/issueLink',
                                      json= payload)
 
         print(f"created link from issue {from_issue_id} to {to_issue_id} ")
 
         #JIRA Get new issue links id
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issue/' + from_issue_id)
+        diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
         issueLinks = diagrams_response.json()['fields']['issuelinks']
         print(issueLinks)
         issueLinksId = issueLinks[-1]['id']
@@ -85,7 +87,7 @@ class TestCreateIssueLinks:
 
         try:
             with open(out_file_path, "a") as f:
-                issueLink_delete_request ='http://'  + HOSTNAME + ':8080/rest/api/3/issueLink/' + issueLinksId
+                issueLink_delete_request ='/rest/api/3/issueLink/' + issueLinksId
                 f.write(issueLink_delete_request)
                 f.write("\n")
                 f.close()

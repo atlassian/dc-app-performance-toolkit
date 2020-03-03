@@ -2,10 +2,12 @@ import requests
 import pytest
 import time
 from fixtures import session
+from fixtures import base_url
 import os
 import random
 from maxfreq import max_freq
 from conftest import print_in_shell
+from conftest import print_timing_with_additional_arg
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
 #GET /rest/api/2/search?jql=project+%3D+SCRUM+ORDER+BY+Rank+ASC&startAt=0&maxResults=50 HTTP/1.1" 200 7802 44 "http://localhost:8080/plugins/servlet/dependenc
@@ -28,9 +30,8 @@ from conftest import print_in_shell
 
 @pytest.fixture(scope="class")
 def create_data(session):
-    HOSTNAME = os.environ.get('application_hostname')
     # Get user
-    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/user')
+    diagrams_response = session.get('/rest/dependency-map/1.0/user')
     assert diagrams_response.status_code == 200
     userKey = diagrams_response.json()["key"]
     print_in_shell("User key: " + userKey)
@@ -40,17 +41,17 @@ def create_data(session):
     #Create Diagram
     #################################################################################################
     # Get filter key
-    diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
+    diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
     assert diagrams_response.status_code == 200
     filterKey= str(diagrams_response.json()["filters"][1]["filterKey"])
 
     # Get field status
-    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/status')
+    diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
     assert diagrams_response.status_code == 200
     field= diagrams_response.json()["id"]
 
     # Get field sprint
-    diagrams_response = session.get('http://'  + HOSTNAME + ':8080/rest/dependency-map/1.0/field/sprint')
+    diagrams_response = session.get('/rest/dependency-map/1.0/field/sprint')
     assert diagrams_response.status_code == 200
     field2= diagrams_response.json()["id"]
 
@@ -61,7 +62,7 @@ def create_data(session):
         'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
         'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
 
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram',
+    diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
         json=payload)
     assert diagrams_response.status_code == 200
     diagramId = str(diagrams_response.json()['id'])
@@ -70,7 +71,7 @@ def create_data(session):
 
     #update box colore resource entry, created if not exists.
     payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":1,"colorPaletteEntryId":5}
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor',
+    diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
         json=payload)
     assert diagrams_response.status_code == 200
     #print_in_shell( diagrams_response.json() )
@@ -80,14 +81,14 @@ def create_data(session):
     #######################################################
 
     #JIRA Get list of available link types
-    diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
+    diagrams_response = session.get('/rest/api/2/issueLinkType')
     issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
     print_in_shell("issueLinkTypeId=" + issueLinkTypeId)
 
     # Create linkConfig
     payload = { 'diagramId': diagramId, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
 
-    diagrams_response = session.post('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
+    diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
         json=payload)
     assert(diagrams_response.status_code == 200)
     newLinkConfig = diagrams_response.json()
@@ -96,7 +97,7 @@ def create_data(session):
 
     yield diagramId
 
-    diagrams_response2 = session.delete('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram/' + diagramId)
+    diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramId)
     assert diagrams_response2.status_code == 200
     print_in_shell("Deleted diagram id=" + diagramId)
 
@@ -105,14 +106,15 @@ def create_data(session):
 
 class TestFlowShowDiagram:
     @max_freq(1000/3600)
-    def test_show_diagram_flow_sd(self, create_data, session):
+    @print_timing_with_additional_arg
+    def test_show_diagram_flow_sd(self, base_url, session, create_data):
         diagramId=create_data
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
-        resp = session.get('http://' + HOSTNAME + ':8080/rest/api/latest/project')
+        resp = session.get('/rest/api/latest/project')
         assert resp.status_code == 200
         result = resp.json()
         length = len(result)
@@ -121,7 +123,7 @@ class TestFlowShowDiagram:
         issue_ids = []
         startAt = 0
         while True:
-            resp = session.get('http://' + HOSTNAME + f':8080/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
+            resp = session.get(f'/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
             assert resp.status_code == 200
             result = resp.json()
             if startAt >= result['total'] or startAt > 500:
@@ -131,27 +133,27 @@ class TestFlowShowDiagram:
         print_in_shell(issue_ids)
 
         # Get field priority
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/priority')
+        diagrams_response = session.get('/rest/dependency-map/1.0/field/priority')
         assert diagrams_response.status_code == 200
 
         # Get field fixVersion
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/field/fixVersions')
+        diagrams_response = session.get('/rest/dependency-map/1.0/field/fixVersions')
         assert diagrams_response.status_code == 200
 
         #Get color palet entries
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '0')
+        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '0')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get color palet entries
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -160,7 +162,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -169,7 +171,7 @@ class TestFlowShowDiagram:
     #       print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -178,7 +180,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -187,7 +189,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -196,7 +198,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -205,7 +207,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #JIRA Get list of available fileds
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/field')
+        diagrams_response = session.get('/rest/api/2/field')
         assert diagrams_response.status_code == 200
     #    value = diagrams_response.json()[0]
     #    content = diagrams_response.text
@@ -215,13 +217,13 @@ class TestFlowShowDiagram:
     #        print_in_shell(value)
 
         #JIRA Get list of available link types
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/api/2/issueLinkType')
+        diagrams_response = session.get('/rest/api/2/issueLinkType')
         assert diagrams_response.status_code == 200
         issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
     #    print_in_shell("issueLinkTypeId=" + issueLinkTypeId)
 
         #Get all link configs
-        diagrams_response = session.get('http://' + HOSTNAME + ':8080/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId)
+        diagrams_response = session.get('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId)
     #    print_in_shell( diagrams_response.json())
 
 
