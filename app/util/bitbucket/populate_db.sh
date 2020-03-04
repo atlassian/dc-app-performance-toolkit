@@ -98,7 +98,7 @@ if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
     exit 1
 fi
-rm -rf ${DB_DUMP_NAME}
+sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
 FREE_SPACE_KB=$(sudo su bitbucket -c "df -k --output=avail $DUMP_DIR | tail -n1")
@@ -151,7 +151,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}
+sudo su bitbucket -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
