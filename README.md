@@ -12,6 +12,10 @@ The pytests for DM can be run either directly with:
 or in the Taurus test suite with
 
     docker run --rm -it --net="host" -v ${PWD}:/bzt-configs -v ${PWD}/results:/tmp/artifacts dagrende/taurus:v1 jira.yml
+    
+alternativ when running on windows bash give explicit path
+
+    winpty docker run --rm -it --net="host" -v //c/dc-app-performance/dc-app-performance-toolkit/app:/bzt-configs -v //c/dc-app-performance/dc-app-performance-toolkit/app/result:/tmp/artifacts dagrende/taurus:v1 jira.yml
 
 ## Building the taurus test tool docker image
 
