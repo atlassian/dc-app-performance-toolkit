@@ -193,7 +193,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of Jira node instance.
+    - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -244,7 +244,7 @@ We recommend that you only use this method if you are having problems with the [
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Jira node instance.
+    - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -347,9 +347,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
-    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
-    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
 
     ``` bash
@@ -370,8 +370,7 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 {{% note %}}
 **Lucene index test for JIRA**
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
-
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment and a dataset that has 1M issues. You'll need to perform this twice: first without your app installed, and again with your app installed.
 Steps:
 
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.

@@ -46,9 +46,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 0.8 - 1 |
-| Two Nodes Bitbucket DC | 1,2 - 1.5 |
-| Four Nodes Bitbucket DC | 1.9 - 2.3 |
+| One Node Bitbucket DC | 1 - 1.3 |
+| Two Nodes Bitbucket DC | 1.5 - 1.8 |
+| Four Nodes Bitbucket DC | 2.1 - 2.5 |
 
 #### Quick Start parameters
 
@@ -72,7 +72,7 @@ The Data Center App Performance Toolkit officially supports:
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 
-We recommend [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html)
+We recommend [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -125,18 +125,15 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 1. In the AWS console, go to **Services > CloudFormation > Stack > Stack details > Select your stack**.
 1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
 1. Open **LoadBalancerURL** in your browser. This will take you to the Bitbucket setup wizard.
-1. On the **Set up application properties** page, populate the following fields:
-    - **Application Title**: any name for your Bitbucket Data Center deployment
+1. On the **Bitbucket setup** page, populate the following fields:
+    - **Application title**: any name for your Bitbucket Data Center deployment
     - **Base URL**: your stack's Elastic LoadBalancer URL
-1. On the next page, populate the **Your License Key** field by either:
-    - Using your existing license, or
-    - Generating a Bitbucket trial license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
+    - **License key**: select new evaluation license or existing license checkbox
     Click **Next**.
-1. On the **Set up administrator account** page, populate the following fields:
-    - **Full name**: any full name of the admin user
-    - **Email Address**: email address of the admin user
+1. On the **Administrator account setup** page, populate the following fields:
     - **Username**: admin _(recommended)_
+    - **Full name**: any full name of the admin user
+    - **Email address**: email address of the admin user
     - **Password**: admin _(recommended)_
     - **Confirm Password**: admin _(recommended)_
     Click **Go to Bitbucket**.
@@ -184,8 +181,8 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of Bitbucket node instance.
-    - Copy the _Private IP_ of Bitbucket NFS Server.
+    - Copy the _Private IP_ of the Bitbucket node instance.
+    - Copy the _Private IP_ of the Bitbucket NFS Server instance.
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
     For Windows, use Putty to connect to the Bitbucket node over SSH.
@@ -203,7 +200,7 @@ To populate the database with SQL:
     ``` bash
     sudo systemctl stop bitbucket
     ```
-1. In new terminal session connect to the Bitbucket NFS Server over SSH:
+1. In a new terminal session connect to the Bitbucket NFS Server over SSH:
 
     For Windows, use Putty to connect to the Bitbucket node over SSH.
     For Linux or MacOS:
@@ -344,9 +341,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
-    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
-    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
 
     ``` bash

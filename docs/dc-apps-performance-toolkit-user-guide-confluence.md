@@ -75,7 +75,7 @@ The Data Center App Performance Toolkit officially supports:
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html)
+We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -182,7 +182,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of Confluence node instance.
+    - Copy the _Private IP_ of the Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
     For Windows, use Putty to connect to the Confluence node over SSH.
@@ -330,9 +330,9 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - we recommend to use defaults for full-scale results generation.
-    - `test_duration`: duration of the performance run - we recommend to use defaults for full-scale results generation.
-    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend to use defaults for full-scale results generation.
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
 
     ``` bash
