@@ -47,9 +47,10 @@ class TestCreateIssueLinks:
             issue_ids = []
             startAt = 0
             while True:
-                resp = session.get(f'/rest/api/latest/search?maxResults=2&startAt={startAt}&jql=project={project_key}&fields=key')
+                resp = session.get(f'/rest/api/latest/search?maxResults=100&startAt={startAt}&jql=project={project_key}&fields=key')
                 assert resp.status_code == 200
                 result = resp.json()
+                print(f"if {startAt} >= {result['total']}")
                 if startAt >= result['total']:
                     break
                 issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
@@ -59,15 +60,17 @@ class TestCreateIssueLinks:
             # all pairs are in increasing order, to avoid link cycles
             pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum
             pairs = set()   # set of tuples, as tuples can be added to a set, but not lists
-            print(pairs)
+            print("before while")
             while len(pairs) < pair_count:
+                print("after while")
                 pair = tuple(sorted(random.sample(issue_ids, 2)))
+                print(pair)
                 if pair not in pairs:
                     pairs.add(pair)
-            for pair in pairs:
-                print(pair)
-                self.create_link(session, issueLinkTypeId, pair[0], pair[1])
-
+#            for pair in pairs:
+#                print(pair)
+#                self.create_link(session, issueLinkTypeId, pair[0], pair[1])
+        print("end")
 
     def create_link(self, session, issueLinkTypeId, from_issue_id, to_issue_id):
         payload = { 'type': { 'id': issueLinkTypeId},  #blocks?

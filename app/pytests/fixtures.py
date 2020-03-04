@@ -9,7 +9,21 @@ import json
 from os import path
 from requests import Session
 
-BASE_URL="http://localhost:8080"
+
+def get_hostname_port():
+    basepath = path.dirname(__file__)
+    filepath = path.abspath(path.join(basepath, "..", "jira.yml"))
+    print(filepath)
+    with open(filepath) as file:
+        dict= yaml.load(file)
+    envSetting = dict['settings']['env']
+    print(envSetting)
+
+    hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port'])
+    return hostname_port_var
+
+
+BASE_URL = get_hostname_port()
 
 @pytest.fixture
 def base_url():
@@ -23,29 +37,14 @@ class LiveServerSession(Session):
         url = self.prefix_url + url
         return super(LiveServerSession, self).request(method, url, *args, **kwargs)
 
-def get_hostname_port():
-    basepath = path.dirname(__file__)
-    filepath = path.abspath(path.join(basepath, "..", "jira.yml"))
-    print(filepath)
-    with open(filepath) as file:
-        dict= yaml.load(file, yaml.FullLoader)
-    envSetting = dict['settings']['env']
-    print(envSetting)
-
-    hostname_port_var =envSetting['application_hostname'] + ':' + str(envSetting['application_port'])
-    return hostname_port_var
-
-
-HOSTNAME_PORT =get_hostname_port()
-
 
 # get list of all users - except 'admin' if more than one user
 print("hej")
-print(HOSTNAME_PORT);
-users_reponse = requests.get('http://'+ HOSTNAME_PORT  + '/rest/api/latest/user/search?username=.', auth=('admin', 'admin'))
+print(BASE_URL);
+users_reponse = requests.get(BASE_URL  + '/rest/api/latest/user/search?username=.', auth=('admin', 'admin'))
 assert users_reponse.status_code == 200
 users = list(map(lambda user : user['name'], users_reponse.json()))
-if len(users) > 1:
+if len(users) > 1 and 'admin' in users:
     users.remove('admin')
 #print(users)
 
