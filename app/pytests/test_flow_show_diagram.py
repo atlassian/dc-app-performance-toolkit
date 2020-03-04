@@ -8,6 +8,7 @@ import random
 from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import print_timing_with_additional_arg
+from conftest import getRandomProjectId
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
 #GET /rest/api/2/search?jql=project+%3D+SCRUM+ORDER+BY+Rank+ASC&startAt=0&maxResults=50 HTTP/1.1" 200 7802 44 "http://localhost:8080/plugins/servlet/dependenc
@@ -116,9 +117,9 @@ class TestFlowShowDiagram:
 
         resp = session.get('/rest/api/latest/project')
         assert resp.status_code == 200
-        result = resp.json()
-        length = len(result)
-        project_id=result[random.randint(0,length-1)]['id']
+        #result = resp.json()
+        #length = len(result)
+        project_id=getRandomProjectId()
 
         issue_ids = []
         startAt = 0

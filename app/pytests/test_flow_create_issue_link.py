@@ -9,6 +9,7 @@ import os
 import random
 from maxfreq import max_freq
 from conftest import print_in_shell
+from conftest import getRandomProjectId
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
@@ -38,12 +39,8 @@ def create_data(session):
     assert diagrams_response.status_code == 200
     field= diagrams_response.json()["id"]
 
-    #Get project
-    resp = session.get('/rest/api/latest/project')
-    assert resp.status_code == 200
-    result = resp.json()
-    length = len(result)
-    projectId=result[random.randint(0,length-1)]['id']
+    # Get project id from the list of projects we shall use, saved in a file
+    projectId=getRandomProjectId()
 
     # Create diagram
     payload ={ 'name':"G100", 'author': userKey,

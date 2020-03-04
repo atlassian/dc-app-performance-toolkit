@@ -10,24 +10,33 @@ from os import path
 from requests import Session
 
 
-def get_hostname_port():
+def env_settings():
     basepath = path.dirname(__file__)
     filepath = path.abspath(path.join(basepath, "..", "jira.yml"))
     print(filepath)
     with open(filepath) as file:
         dict= yaml.load(file)
     envSetting = dict['settings']['env']
-    print(envSetting)
+    return envSetting
 
+def get_hostname_port():
+    envSetting = env_settings()
+    print(envSetting)
     hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port'])
     return hostname_port_var
 
 
 BASE_URL = get_hostname_port()
 
+
 @pytest.fixture
 def base_url():
     return BASE_URL
+
+@pytest.fixture
+def nr_projects():
+    envSettings = env_settings()
+    return envSettings['max_nr_projects_to_use']
 
 class LiveServerSession(Session):
     def __init__(self, prefix_url=None, *args, **kwargs):

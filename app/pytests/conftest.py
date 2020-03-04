@@ -6,7 +6,9 @@ import sys
 import json
 import inspect
 import threading
+import pathlib
 global_lock = threading.Lock()
+import random
 
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
@@ -30,10 +32,14 @@ def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
         return os.environ.get('TAURUS_ARTIFACTS_DIR')
     else:
-     #   raise SystemExit('Taurus result directory could not be found')
+        #   raise SystemExit('Taurus result directory could not be found')
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-       #  pytest_run_results = f'../results/{results_dir_name}_local'
+        #  pytest_run_results = f'../results/{results_dir_name}_local'
         pytest_run_results = f'results/{results_dir_name}_local'
+        if os.path.isdir(f'results/'):
+            pass
+        else:
+            os.mkdir(f'results/')
         if os.path.isdir(pytest_run_results):
             print ("Dir exist")
         else:
@@ -47,8 +53,10 @@ pytest_results_file = Path(current_results_dir + '/pytests_run.jtl')
 pytest_error_file = Path(current_results_dir + '/pytests_run.err')
 #w3c_timings_pytest_file = Path(current_results_dir + '/w3c_timings_pytests.txt')
 #print("wc3_timing_pytest_file:" + current_results_dir +  '/w3c_timings_pytests.txt')
-out_file_path = Path(current_results_dir + '/deleteCreatedObjects')
+delete_created_objects_path = Path(current_results_dir + '/deleteCreatedObjects')
 
+CURRENT_PATH = pathlib.Path().absolute()
+projects_path = CURRENT_PATH  / 'projects'
 
 if not pytest_results_file.exists():
     with open(pytest_results_file, "w") as file:
@@ -59,7 +67,7 @@ if not pytest_results_file.exists():
 def saveRemoveDiagramCmd(diagramId):
     try:
         global_lock.acquire()
-        with open(out_file_path, "a") as f:
+        with open(delete_created_objects_path, "a") as f:
             diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId)
             f.write(diagrams_delete_request)
             f.write("\n")
@@ -71,7 +79,7 @@ def saveRemoveDiagramCmd(diagramId):
 def saveRemoveIssueLinkCmd(issueLinkId):
     try:
         global_lock.acquire()
-        with open(out_file_path, "a") as f:
+        with open(delete_created_objects_path, "a") as f:
             issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId)
             f.write(issueLink_delete_request)
             f.write("\n")
@@ -79,6 +87,36 @@ def saveRemoveIssueLinkCmd(issueLinkId):
         global_lock.release()
     except IOError:
         print("File not accessible" + issueLinkId)
+
+def saveProjectCmd(projectName, key, id):
+    try:
+        with open(projects_path, "a") as f:
+            project = {'projectName': projectName, 'key': key, 'id': id}
+            f.write(str (project))
+            f.write("\n")
+            f.close()
+    except IOError:
+        print("File not accessible: " + projects_path)
+
+def readProjectCmd():
+    result = []
+    try:
+        with open(projects_path, "r") as fp:
+            line = fp.readline()
+            while line:
+                dict = eval(line)
+                result.append(dict)
+                line = fp.readline()
+    except IOError:
+        print("File not accessible " + 'project')
+    return result
+
+def getRandomProjectId():
+    projectsDict = readProjectCmd()
+    nrProjects = len(projectsDict)
+    projectId=projectsDict[random.randint(0,nrProjects-1)]['id']
+    return projectId
+
 
 
 def print_timing(func):

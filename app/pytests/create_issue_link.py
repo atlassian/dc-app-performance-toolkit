@@ -4,6 +4,7 @@ from fixtures import session
 from fixtures import base_url
 from maxfreq import max_freq
 from conftest import print_in_shell
+from conftest import getRandomProjectId
 
 import os
 
@@ -17,8 +18,10 @@ class TestCreateLink:
     def test_create_issue_link(self, base_url, session):
         #JIRA Get project id
         diagrams_response = session.get('/rest/api/2/project')
-        assert diagrams_response.status_code == 200 
-        projectId = diagrams_response.json()[1]['id']        
+        assert diagrams_response.status_code == 200
+
+        # Get project id from the list of projects we shall use, saved in a file
+        projectId=getRandomProjectId()
         print_in_shell('projectId:' +  projectId);
         
         #JIRA Get list of available issues
@@ -34,10 +37,17 @@ class TestCreateLink:
             issueLinkTypeId = diagrams_response.json()['issueLinkTypes'][0]['id']
             print_in_shell("issueLinkTypeId=" + issueLinkTypeId)
 
-            ####
+            #JIRA Get new issue links id
+            diagrams_response = session.get('/rest/api/2/issue/' + issueId1)
+            issueLinks = diagrams_response.json()['fields']['issuelinks']
+          #  print(issueLinks)
+            print("Before")
+            print(issueLinks[0]['id'])
+            print(issueLinks[-1]['id'])
+
             #JIRA create link
-            print (issueId1);
-            print(issueId2)
+            #print (issueId1);
+            #print(issueId2)
             payload = { 'type': { 'id': issueLinkTypeId},  #blocks?
                          'inwardIssue': { 'id': issueId2 },
                          'outwardIssue': { 'id': issueId1}}
@@ -46,17 +56,18 @@ class TestCreateLink:
             assert diagrams_response.status_code == 201
             print_in_shell("issue created")
 
-            ###
             #JIRA Get new issue links id
             diagrams_response = session.get('/rest/api/2/issue/' + issueId1)
-           # diagrams_response = session.get('/rest/api/2/issue/SCRUM-128')
             issueLinks = diagrams_response.json()['fields']['issuelinks']
             firstIssueLinksId = issueLinks[0]['id']
             firstIssueLinkSelf = issueLinks[0]['self']
-            #lastIssueLinksId = issueLinks[-1]['id']
 
-            diagrams_response = session.get(firstIssueLinkSelf)
-            assert diagrams_response.status_code == 200
+
+           # print(issueLinks)
+            print(issueLinks[0]['id'])
+            print(issueLinks[-1]['id'])
+            #diagrams_response = session.get(firstIssueLinkSelf)
+            #assert diagrams_response.status_code == 200
 
 
 

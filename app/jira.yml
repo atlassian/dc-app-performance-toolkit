@@ -17,6 +17,7 @@ settings:
     JMETER_VERSION: 5.1
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     print_in_shell: No
+    max_nr_projects_to_use: 1
  #   TAURUS_ARTIFACTS_DIR: /bzt-configs/results/jira
 services:
   - module: shellexec

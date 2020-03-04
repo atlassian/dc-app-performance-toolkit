@@ -1,9 +1,12 @@
 from fixtures import session
 from fixtures import base_url
+from fixtures import nr_projects
+from conftest import saveProjectCmd
 import os
 import math
 import random
 import pathlib
+from itertools import islice
 
 
 CURRENT_PATH = pathlib.Path().absolute()
@@ -31,7 +34,7 @@ def get_link_type(session):
     return issueLinkTypeId
 
 class TestCreateIssueLinks:
-    def test_create_issue_links(self, base_url, session):
+    def test_create_issue_links(self, base_url, nr_projects, session):
         # get all projects
         projStartAt = 0
 
@@ -39,9 +42,13 @@ class TestCreateIssueLinks:
 
         issueLinkTypeId = get_link_type(session)
         assert respProj.status_code == 200
-        for project in respProj.json():
+        projects = respProj.json()
+        print("NR of projects: " + str(nr_projects))
+        if len(projects) > nr_projects:
+            projects = x = islice(projects, 0, nr_projects)
+        for project in projects:
             project_key = project['key']
-
+            saveProjectCmd( project['name'], project['key'], project['id'])
             # collect keys of all issues in this project into issue_ids
             link_percentage = 30
             issue_ids = []
@@ -60,19 +67,24 @@ class TestCreateIssueLinks:
             # all pairs are in increasing order, to avoid link cycles
             pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum
             pairs = set()   # set of tuples, as tuples can be added to a set, but not lists
-            print("before while")
+           # print("before while")
             while len(pairs) < pair_count:
                 print("after while")
                 pair = tuple(sorted(random.sample(issue_ids, 2)))
-                print(pair)
+             #   print(pair)
                 if pair not in pairs:
                     pairs.add(pair)
-#            for pair in pairs:
-#                print(pair)
-#                self.create_link(session, issueLinkTypeId, pair[0], pair[1])
+            for pair in pairs:
+                print(pair)
+                self.create_link(session, issueLinkTypeId, pair[0], pair[1])
         print("end")
 
     def create_link(self, session, issueLinkTypeId, from_issue_id, to_issue_id):
+        #before
+        diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
+        before_issue_links = diagrams_response.json()['fields']['issuelinks']
+        before_size = len(before_issue_links)
+
         payload = { 'type': { 'id': issueLinkTypeId},  #blocks?
                     'inwardIssue': { 'id': to_issue_id },
                     'outwardIssue': { 'id': from_issue_id}}
@@ -85,17 +97,19 @@ class TestCreateIssueLinks:
         diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
         issueLinks = diagrams_response.json()['fields']['issuelinks']
         print(issueLinks)
-        issueLinksId = issueLinks[-1]['id']
-        print("New issue Links Id=" + issueLinksId);
+        if (len(issueLinks) > before_size):
 
-        try:
-            with open(out_file_path, "a") as f:
-                issueLink_delete_request ='/rest/api/3/issueLink/' + issueLinksId
-                f.write(issueLink_delete_request)
-                f.write("\n")
-                f.close()
-        except IOError:
-            print("File not accessible")
+            issueLinksId = issueLinks[0]['id']
+            print("New issue Links Id=" + issueLinksId);
+
+            try:
+                with open(out_file_path, "a") as f:
+                    issueLink_delete_request ='/rest/api/latest/issueLink/' + issueLinksId
+                    f.write(issueLink_delete_request)
+                    f.write("\n")
+                    f.close()
+            except IOError:
+                print("File not accessible")
 
 
 
