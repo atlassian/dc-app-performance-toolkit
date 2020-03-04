@@ -96,20 +96,25 @@ class TestCreateIssueLinks:
         #JIRA Get new issue links id
         diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
         issueLinks = diagrams_response.json()['fields']['issuelinks']
-        print(issueLinks)
+        #print(issueLinks)
         if (len(issueLinks) > before_size):
+            issueLinksId = 0
+            for issueLink in issueLinks:
+                if 'inwardIssue' in issueLink and  issueLink['inwardIssue']:
+                   if  issueLink['inwardIssue']['id']==to_issue_id:
+                       issueLinksId = issueLink['id']
 
-            issueLinksId = issueLinks[0]['id']
+            #issueLinksId = issueLinks[-1]['id']
             print("New issue Links Id=" + issueLinksId);
-
-            try:
-                with open(out_file_path, "a") as f:
-                    issueLink_delete_request ='/rest/api/latest/issueLink/' + issueLinksId
-                    f.write(issueLink_delete_request)
-                    f.write("\n")
-                    f.close()
-            except IOError:
-                print("File not accessible")
+            if issueLinksId!=0:
+                try:
+                    with open(out_file_path, "a") as f:
+                        issueLink_delete_request ='/rest/api/latest/issueLink/' + issueLinksId
+                        f.write(issueLink_delete_request)
+                        f.write("\n")
+                        f.close()
+                except IOError:
+                    print("File not accessible")
 
 
 
