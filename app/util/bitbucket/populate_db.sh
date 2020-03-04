@@ -94,7 +94,6 @@ fi
 
 echo "Step2: Download DB dump"
 DUMP_DIR='/media/atl/bitbucket/shared'
-cd ${DUMP_DIR}
 if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
     exit 1
@@ -102,7 +101,7 @@ fi
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
-FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
+FREE_SPACE_KB=$(sudo su bitbucket -c "df -k --output=avail $DUMP_DIR | tail -n1")
 FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
@@ -112,7 +111,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    exit 1
 fi;
 # use computer style progress bar
-time wget --progress=dot:giga ${DB_DUMP_URL}
+sudo su bitbucket -c "time wget --progress=dot:giga ${DB_DUMP_URL} -P ${DUMP_DIR}"
 if [[ $? -ne 0 ]]; then
   echo "DB dump download failed! Pls check available disk space."
   exit 1
@@ -163,3 +162,5 @@ echo  # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
+
+
