@@ -15,7 +15,7 @@ def env_settings():
     filepath = path.abspath(path.join(basepath, "..", "jira.yml"))
     print(filepath)
     with open(filepath) as file:
-        dict= yaml.load(file)
+        dict= yaml.load(file, yaml.FullLoader)
     envSetting = dict['settings']['env']
     return envSetting
 
