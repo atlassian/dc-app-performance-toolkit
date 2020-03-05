@@ -83,11 +83,10 @@ projects = readProjectCmd()
 
 def saveRemoveDiagramCmd(diagramId):
     try:
+        diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId) + '\n'
         global_lock.acquire()
         with open(delete_created_objects_path, "a") as f:
-            diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId)
             f.write(diagrams_delete_request)
-            f.write("\n")
             f.close()
         global_lock.release()
     except IOError:
@@ -95,11 +94,10 @@ def saveRemoveDiagramCmd(diagramId):
 
 def saveRemoveIssueLinkCmd(issueLinkId):
     try:
+        issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId) + '\n'
         global_lock.acquire()
         with open(delete_created_objects_path, "a") as f:
-            issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId)
             f.write(issueLink_delete_request)
-            f.write("\n")
             f.close()
         global_lock.release()
     except IOError:

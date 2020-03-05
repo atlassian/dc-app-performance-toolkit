@@ -33,7 +33,7 @@ class TestFlowCreateDiagram:
             resp =session.get(f'/rest/dependency-map/1.0/diagram?searchTerm=&{startAt}=0&maxResults=50')
             assert resp.status_code == 200
             result = resp.json()
-            if startAt >= result['total'] or startAt > 500:
+            if startAt >= result['total'] or startAt > 500 or not('values' in result):
                 break
             diagram_ids.extend(list(map(lambda issue : issue['id'], result['values'])))
             startAt = len(diagram_ids)

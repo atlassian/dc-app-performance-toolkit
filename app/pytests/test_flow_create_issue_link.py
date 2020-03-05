@@ -143,7 +143,7 @@ class TestCreateLink:
             resp =  session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
             assert resp.status_code == 200
             result=resp.json()
-            if startAt >= result['total'] or startAt > 500:
+            if startAt >= result['total'] or startAt > 500 or not('values' in result):
                 break
             diagram_ids.extend(list(map(lambda diagram : diagram['id'], result['values'])))
             startAt = len(diagram_ids)
@@ -154,7 +154,7 @@ class TestCreateLink:
             resp = session.get(f'/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={projectId}&fields=key')
             assert resp.status_code == 200
             result = resp.json()
-            if startAt >= result['total'] or startAt > 500:
+            if startAt >= result['total'] or startAt > 500 or not('issues' in result):
                 break
             issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
             startAt = len(issue_ids)

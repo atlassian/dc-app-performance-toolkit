@@ -20,7 +20,7 @@ class TestLinkConfig:
         print_in_shell("User key: " + userKey)
 
         # Create diagram
-        payload ={ 'name':"D100", 'author': userKey,
+        payload ={ 'name':"E100", 'author': userKey,
            'lastEditedBy':userKey, 'layoutId':0, 'filterKey': 10000,
             'boxColorFieldKey': "priority", 'groupedLayoutFieldKey': "priority", 
             'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}

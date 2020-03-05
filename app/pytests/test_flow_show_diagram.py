@@ -10,6 +10,7 @@ from conftest import print_in_shell
 from conftest import print_timing_with_additional_arg
 from conftest import getRandomProjectId
 from conftest import getRandomFixture
+from conftest import saveRemoveDiagramCmd
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
 #GET /rest/api/2/search?jql=project+%3D+SCRUM+ORDER+BY+Rank+ASC&startAt=0&maxResults=50 HTTP/1.1" 200 7802 44 "http://localhost:8080/plugins/servlet/dependenc
@@ -61,7 +62,7 @@ def create_data(session):
 
 
     # Create diagram
-    payload ={ 'name':"D100", 'author':userKey,
+    payload ={ 'name':"F100", 'author':userKey,
        'lastEditedBy':userKey, 'layoutId':2, 'filterKey': filterKey,
         'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
         'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
@@ -71,6 +72,7 @@ def create_data(session):
     assert diagrams_response.status_code == 200
     diagramId = str(diagrams_response.json()['id'])
     print_in_shell("Nytt diagram med id="  + diagramId )
+    saveRemoveDiagramCmd(diagramId)
 
 
     #update box colore resource entry, created if not exists.
@@ -130,7 +132,7 @@ class TestFlowShowDiagram:
             resp = session.get(f'/rest/api/latest/search?maxResults=50&startAt={startAt}&jql=project={project_id}&fields=key')
             assert resp.status_code == 200
             result = resp.json()
-            if startAt >= result['total'] or startAt > 500:
+            if startAt >= result['total'] or startAt > 500 or not('issues' in result):
                 break
             issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
             startAt = len(issue_ids)

@@ -60,7 +60,7 @@ class TestCreateIssueLinks:
                 assert resp.status_code == 200
                 result = resp.json()
                 print(f"if {startAt} >= {result['total']}")
-                if startAt >= result['total']:
+                if startAt >= result['total'] or not('issues' in result):
                     break
                 issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
                 startAt = len(issue_ids)
