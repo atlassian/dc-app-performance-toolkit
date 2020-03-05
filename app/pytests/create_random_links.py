@@ -3,14 +3,16 @@ from fixtures import base_url
 from fixtures import nr_projects
 from conftest import saveProjectCmd
 import os
+from os import path
 import math
 import random
 import pathlib
 from itertools import islice
 
 
-CURRENT_PATH = pathlib.Path().absolute()
-out_file_path = CURRENT_PATH / "deleteCreatedObjects"
+basepath = path.dirname(__file__)
+#CURRENT_PATH = pathlib.Path().absolute()
+out_file_path = path.abspath(path.join(basepath, "deleteCreatedObjects"))
 
 # returns the number of ways k elements can be chosen from n elements
 def binom(n, k):
@@ -62,7 +64,8 @@ class TestCreateIssueLinks:
                     break
                 issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
                 startAt = len(issue_ids)
-
+            if len(issue_ids)==0:
+                break
             # generate link_percentage random issue pairs out of issue_ids
             # all pairs are in increasing order, to avoid link cycles
             pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum

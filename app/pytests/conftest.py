@@ -6,7 +6,8 @@ import sys
 import json
 import inspect
 import threading
-import pathlib
+import os
+from os import path
 global_lock = threading.Lock()
 import random
 
@@ -49,14 +50,15 @@ def __get_current_results_dir():
 
 # create selenium output files
 current_results_dir = __get_current_results_dir()
+basepath = path.dirname(__file__)
 pytest_results_file = Path(current_results_dir + '/pytests_run.jtl')
 pytest_error_file = Path(current_results_dir + '/pytests_run.err')
 #w3c_timings_pytest_file = Path(current_results_dir + '/w3c_timings_pytests.txt')
 #print("wc3_timing_pytest_file:" + current_results_dir +  '/w3c_timings_pytests.txt')
-delete_created_objects_path = Path(current_results_dir + '/deleteCreatedObjects')
+delete_created_objects_path = path.abspath(path.join(basepath, "deleteCreatedObjects"))
 
-CURRENT_PATH = pathlib.Path().absolute()
-projects_path = CURRENT_PATH  / 'projects'
+#CURRENT_PATH = pathlib.Path().absolute()
+projects_path = path.abspath(path.join(basepath, "projects"))
 
 if not pytest_results_file.exists():
     with open(pytest_results_file, "w") as file:

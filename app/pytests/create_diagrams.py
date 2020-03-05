@@ -2,7 +2,9 @@ import requests
 import json
 from fixtures import session
 from fixtures import base_url
+from conftest import readProjectCmd
 import os
+from os import path
 import random
 import pathlib
 
@@ -19,26 +21,61 @@ import pathlib
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 960 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram" "
 HOSTNAME = os.environ.get('application_hostname')
 
-CURRENT_PATH = pathlib.Path().absolute()
-out_file_path = CURRENT_PATH / "deleteCreatedObjects"
+basepath = path.dirname(__file__)
+#CURRENT_PATH = pathlib.Path().absolute()
+out_file_path = path.abspath(path.join(basepath, "deleteCreatedObjects"))
+
+def getProjectIds(projectDict):
+    result = []
+    for project in projectDict:
+        result.append(project['id'])
+    return result
 
 class TestCreateDiagram:
+
+
     def test_create_diagram(self, base_url, session):
         #Get filter key
-        diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=50')
-        assert diagrams_response.status_code == 200
-        print ("filter json: " + str(diagrams_response.json()))
+        page = 0
+        projectDict = readProjectCmd()
+        projectIdList = getProjectIds(projectDict)
+        filterKeyList =[]
+        while True:
+            diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
+                                      #      'searchTerm=&page=' + str(page) +'&maxResults=50')
+            assert diagrams_response.status_code == 200
+            diagrams_response_filters = diagrams_response.json()["filters"]
+            print ("all filters json: " + str(diagrams_response_filters))
+            page = page + 1
 
-        with open(out_file_path, "w") as f:
+            if len(diagrams_response_filters) ==0:
+                break
+
+            for filter in diagrams_response_filters:
+        #        print(filter)
+                filter_id = str (filter['filterKey'])
+                print(filter_id)
+                permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
+        #        print('filter json: ' + str(permission_response.json()))
+                for sharePer in permission_response.json():
+                    if sharePer['type']=='project':
+                        if sharePer['project']['id'] in projectIdList   :
+                            filterKeyList.append(filter_id)
+                            exit = 1
+                            break
+
+        print(str(filterKeyList))
+
+
+        with open(out_file_path, "a") as f:
             #print( diagrams_response.json() );
-            for filter in diagrams_response.json()["filters"]:
-                filterKey= filter["filterKey"]
+            for filterKey in filterKeyList:
                 print(filterKey)
                 for c in range(0, 10):
-                  diagramId = create_diagram(session, filterKey)
-                  diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + diagramId
-                  f.write(diagrams_delete_request)
-                  f.write("\n")
+                    diagramId = create_diagram(session, filterKey)
+                    diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + diagramId
+                    f.write(diagrams_delete_request)
+                    f.write("\n")
         f.close()
 
 def create_diagram(session, filterKey):

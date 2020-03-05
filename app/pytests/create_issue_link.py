@@ -59,8 +59,14 @@ class TestCreateLink:
             #JIRA Get new issue links id
             diagrams_response = session.get('/rest/api/2/issue/' + issueId1)
             issueLinks = diagrams_response.json()['fields']['issuelinks']
-            firstIssueLinksId = issueLinks[0]['id']
-            firstIssueLinkSelf = issueLinks[0]['self']
+
+            issueLinksId = 0
+            for issueLink in issueLinks:
+                if 'inwardIssue' in issueLink and  issueLink['inwardIssue']:
+                    if  issueLink['inwardIssue']['id']==issueId1:
+                        issueLinksId = issueLink['id']
+
+            print("New issue Links Id=" + issueLinksId);
 
 
            # print(issueLinks)
