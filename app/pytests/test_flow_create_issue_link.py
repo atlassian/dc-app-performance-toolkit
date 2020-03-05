@@ -10,6 +10,7 @@ import random
 from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import getRandomProjectId
+from conftest import saveRemoveIssueLinkCmd
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
@@ -269,15 +270,15 @@ class TestCreateLink:
     def test_create_issue_link_flow_ci(self, base_url, session, create_data):
         projectId = create_data['projectId']
       #  print_in_shell("projectId=" + projectId )
-        HOSTNAME = os.environ.get('application_hostname')
 
             #JIRA Get list of available issues
         diagrams_response = session.get('/rest/api/2/search?jql=project=' + projectId)
         if len(diagrams_response.json()['issues']) > 9:
             assert diagrams_response.status_code == 200
             to_issue_id = diagrams_response.json()['issues'][0]['id']
-            issueKey1 = diagrams_response.json()['issues'][0]['key']
+            to_issue_Key = diagrams_response.json()['issues'][0]['key']
             from_issue_id = diagrams_response.json()['issues'][9]['id']
+            from_issue_Key = diagrams_response.json()['issues'][9]['key']
 
             #JIRA Get list of available link types
             issueLinkTypeId = get_link_type(session)
@@ -298,7 +299,6 @@ class TestCreateLink:
             #after
             diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
             issue_links = diagrams_response.json()['fields']['issuelinks']
-
             if (len(issue_links) > before_size):
                 issueLinksId = 0
                 for issueLink in issue_links:
@@ -307,14 +307,9 @@ class TestCreateLink:
                            issueLinksId = issueLink['id']
 
                 #issueLinksId = issueLinks[-1]['id']
-                print_in_shell("New issue Links Id=" + issueLinksId);
                 if issueLinksId!=0:
                    try:
-                       with open(out_file_path, "a") as f:
-                           issueLink_delete_request ='/rest/api/latest/issueLink/' + issueLinksId
-                           f.write(issueLink_delete_request)
-                           f.write("\n")
-                           f.close()
+                       saveRemoveIssueLinkCmd(issueLinksId)
                    except IOError:
                        print_in_shell("File not accessible")
 
