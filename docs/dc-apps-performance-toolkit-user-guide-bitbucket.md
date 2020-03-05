@@ -68,11 +68,11 @@ The Data Center App Performance Toolkit officially supports:
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Bitbucket cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) |
+| Bitbucket cluster node instance type | [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 
-We recommend [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html).
+We recommend [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -99,6 +99,11 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 {{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading)).
 {{% /note %}}
+
+**Elasticsearch**
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Elasticsearch instance type | m4.xlarge.elasticsearch|
 
 **Networking (for new ASI)**
 
@@ -170,7 +175,7 @@ The following subsections explain each step in greater detail.
 
 You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/populate_db.sh) script).  
 
-#### Loading the dataset via populate_db.sh script (~1 hour)
+#### Loading the dataset via populate_db.sh script (~2 hours)
 
 {{% note %}}
 We recommend doing this via the CLI.
@@ -295,7 +300,7 @@ Do not close or interrupt the session. It will take about two hours to upload at
 Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
 
 1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
-1. Click **Edit domain** button, go to the **Storage configuration** section, set 500 GiB to the **EBS storage size per node** field.  
+1. Click **Edit domain** button, go to the **Storage configuration** section, set 750 GiB to the **EBS storage size per node** field.  
 1. Click **Submit** button.   
 
 ### Start Bitbucket Server
@@ -316,6 +321,26 @@ Elasticsearch EBS volume size has to be increased in order to generate index nee
     ``` bash
     sudo systemctl start bitbucket
     ```
+1. Wait 10-15 minutes until Bitbucket Server is started.
+1. Open browser and navigate to **LoadBalancerURL**.
+1. Login with admin user.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings**, set **Base URL** to **LoadBalancerURL** value and click **Save**.
+
+
+### Elasticsearch Index
+If your app does not use Bitbucket search functionality just skip this section.
+Otherwise, if your app is depending on Bitbucket search functionality you need to wait until Elasticsearch index is finished.
+Bitbucket-project index and bitbucket-repository index usually take about 10 hours, bitbucket-search index (search by repositories content) could take up to couple of days.
+
+To check status of indexing:
+1. Open **LoadBalancerURL** in your browser.
+1. Login with admin user.
+1. Navigate to **LoadBalancerURL**/rest/indexing/latest/status page.
+
+{{% note %}}
+If case of any difficulties with Index generation, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+{{% /note %}}
+
 
 ## Testing scenarios
 
@@ -506,3 +531,7 @@ To generate a scalability report:
 Once completed, you will be able to review action timings on Bitbucket Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 After completing all your tests, delete your Bitbucket Data Center stacks.
+
+
+## Support
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

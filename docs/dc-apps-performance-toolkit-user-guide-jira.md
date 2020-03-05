@@ -50,7 +50,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Jira DC  1.7 - 2.1 |
 | Four Nodes Jira DC | 3.1 - 3.8 |
 
-#### Quick Start parameters
+#### <a id="quick-start-parameters"></a> Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
 
@@ -352,9 +352,11 @@ To receive performance baseline results without an app installed:
     - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
 
+
     ``` bash
     bzt jira.yml
     ```
+    
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
@@ -367,34 +369,35 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues. 
+
+First, benchmark your re-index time without your app installed:
+
 {{% note %}}
-**Lucene index test for JIRA**
+Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~40 min.
+{{% /note %}}
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment and a dataset that has 1M issues. You'll need to perform this twice: first without your app installed, and again with your app installed.
-Steps:
-
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
-1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and attach it to your DC HELP ticket.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DC HELP ticket.
 
-{{% /note %}}
+Next, benchmark your re-index time with your app installed:
 
-{{% note %}}
-Jira 7 index time for 1M issues on a User Guide recommended configuration is about ~100 min, Jira 8 index time is about ~40 min.
-{{% /note %}}
+1. Install the app you want to test. 
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Select the **Lock one Jira node and rebuild index** option.
+1. Click **Re-Index** and wait until re-indexing is completed.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DC HELP ticket.
 
-To receive performance results with an app installed and Lucene index timing screenshots:
-
-1. Follow the steps described in Note section to get a Lucene index timing screenshot without an app installed.
-1. Install the app you want to test.
-1. Follow the steps described in Note section to get a Lucene index timing screenshot with an app installed.
-1. Run bzt.
+After attaching both screenshots to your DC HELP ticket, move on to performance results generation with an app installed:
 
     ``` bash
     bzt jira.yml
     ```
-
+    
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
@@ -619,3 +622,6 @@ To generate a scalability report:
 Once completed, you will be able to review action timings on Jira Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 After completing all your tests, delete your Jira Data Center stacks.
+
+## Support
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
