@@ -2,10 +2,10 @@ import requests
 from conftest import print_timing_with_additional_arg
 from fixtures import session
 from fixtures import base_url
-from conftest import saveRemoveIssueLinkCmd
 import pytest
 from generatetests import pytest_generate_tests
 import os
+from os import path
 import random
 from maxfreq import max_freq
 from conftest import print_in_shell
@@ -15,6 +15,9 @@ from conftest import getRandomProjectId
 #GET /rest/api/2/issue/10000
 
 _project_id = 0
+
+basepath = path.dirname(__file__)
+out_file_path = path.abspath(path.join(basepath, "deleteCreatedObjects"))
 
 
 @pytest.fixture(scope="class")
@@ -264,7 +267,6 @@ class TestCreateLink:
     @max_freq(500/3600)
     @print_timing_with_additional_arg
     def test_create_issue_link_flow_ci(self, base_url, session, create_data):
-       # print_in_shell(create_data)
         projectId = create_data['projectId']
       #  print_in_shell("projectId=" + projectId )
         HOSTNAME = os.environ.get('application_hostname')
@@ -273,29 +275,48 @@ class TestCreateLink:
         diagrams_response = session.get('/rest/api/2/search?jql=project=' + projectId)
         if len(diagrams_response.json()['issues']) > 9:
             assert diagrams_response.status_code == 200
-            issueId1 = diagrams_response.json()['issues'][0]['id']
+            to_issue_id = diagrams_response.json()['issues'][0]['id']
             issueKey1 = diagrams_response.json()['issues'][0]['key']
-            issueId2 = diagrams_response.json()['issues'][9]['id']
+            from_issue_id = diagrams_response.json()['issues'][9]['id']
 
             #JIRA Get list of available link types
             issueLinkTypeId = get_link_type(session)
-            ####
+
+            #before
+            diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
+            before_issue_links = diagrams_response.json()['fields']['issuelinks']
+            before_size = len(before_issue_links)
+
             #JIRA create link
             payload = { 'type': { 'id': issueLinkTypeId},
-                        'inwardIssue': { 'id': issueId2 },
-                        'outwardIssue': { 'id': issueId1}}
+                        'inwardIssue': { 'id': to_issue_id },
+                        'outwardIssue': { 'id': from_issue_id}}
             diagrams_response = session.post('/rest/api/2/issueLink',
                                              json= payload)
             assert diagrams_response.status_code == 201
-          #  print_in_shell("issue created")
+
+            #after
+            diagrams_response = session.get('/rest/api/2/issue/' + from_issue_id)
+            issue_links = diagrams_response.json()['fields']['issuelinks']
+
+            if (len(issue_links) > before_size):
+                issueLinksId = 0
+                for issueLink in issue_links:
+                   if 'inwardIssue' in issueLink and  issueLink['inwardIssue']:
+                       if  issueLink['inwardIssue']['id']==to_issue_id:
+                           issueLinksId = issueLink['id']
+
+                #issueLinksId = issueLinks[-1]['id']
+                print_in_shell("New issue Links Id=" + issueLinksId);
+                if issueLinksId!=0:
+                   try:
+                       with open(out_file_path, "a") as f:
+                           issueLink_delete_request ='/rest/api/latest/issueLink/' + issueLinksId
+                           f.write(issueLink_delete_request)
+                           f.write("\n")
+                           f.close()
+                   except IOError:
+                       print_in_shell("File not accessible")
 
 
-            ###
-            #JIRA Get new issue links id
-            diagrams_response = session.get('/rest/api/2/issue/' + issueKey1)
-            issueLinks = diagrams_response.json()['fields']['issuelinks']
-            issueLinksId = issueLinks[0]['id']
-            print_in_shell("New issue Links Id=" + issueLinksId);
-
-            saveRemoveIssueLinkCmd(issueLinksId)
 
