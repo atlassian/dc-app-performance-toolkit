@@ -50,7 +50,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Bitbucket DC | 1.5 - 1.8 |
 | Four Nodes Bitbucket DC | 2.1 - 2.5 |
 
-#### Quick Start parameters
+#### <a id="quick-start-parameters"></a>  Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
 
@@ -101,6 +101,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 {{% /note %}}
 
 **Elasticsearch**
+
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Elasticsearch instance type | m4.xlarge.elasticsearch|
@@ -300,7 +301,7 @@ Do not close or interrupt the session. It will take about two hours to upload at
 Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
 
 1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
-1. Click **Edit domain** button, go to the **Storage configuration** section, set 750 GiB to the **EBS storage size per node** field.  
+1. Click **Edit domain** button, go to the **Storage configuration** section, set **750** GiB to the **EBS storage size per node** field.  
 1. Click **Submit** button.   
 
 ### Start Bitbucket Server
@@ -328,11 +329,13 @@ Elasticsearch EBS volume size has to be increased in order to generate index nee
 
 
 ### Elasticsearch Index
-If your app does not use Bitbucket search functionality just skip this section.
+If your app does not use Bitbucket search functionality just **skip** this section.
+
 Otherwise, if your app is depending on Bitbucket search functionality you need to wait until Elasticsearch index is finished.
-Bitbucket-project index and bitbucket-repository index usually take about 10 hours, bitbucket-search index (search by repositories content) could take up to couple of days.
+**Bitbucket-project** index and **bitbucket-repository** index usually take about 10 hours on a User Guide [recommended configuration](#quick-start-parameters), **bitbucket-search** index (search by repositories content) could take up to a couple of days.
 
 To check status of indexing:
+
 1. Open **LoadBalancerURL** in your browser.
 1. Login with admin user.
 1. Navigate to **LoadBalancerURL**/rest/indexing/latest/status page.
@@ -463,7 +466,7 @@ To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` 
 
 To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
 
-##### <a id="run3"></a> Run 3 (~50 min)
+##### <a id="run3"></a> Run 3 (~1 hour)
 To receive scalability benchmark results for one-node Bitbucket DC with app-specific actions, run `bzt`:
 
 ``` bash
@@ -475,7 +478,7 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
 {{% /note %}}
 
-##### <a id="run4"></a> Run 4 (~50 min)
+##### <a id="run4"></a> Run 4 (~1 hour)
 
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
@@ -493,7 +496,7 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
 {{% /note %}}
 
-##### <a id="run5"></a> Run 5 (~50 min)
+##### <a id="run5"></a> Run 5 (~1 hour)
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
