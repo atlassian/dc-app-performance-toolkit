@@ -8,6 +8,8 @@ The pytests for DM can be run either directly with:
     cd fo-dcapt
     cd app
     pytest pytests
+    
+## Run tests in docker
 
 or in the Taurus test suite with
 
@@ -17,7 +19,7 @@ alternativ when running on windows bash give explicit path
 
     winpty docker run --rm -it --net="host" -v //c/dc-app-performance/dc-app-performance-toolkit/app:/bzt-configs -v //c/dc-app-performance/dc-app-performance-toolkit/app/result:/tmp/artifacts dagrende/taurus:v1 jira.yml
 
-## Building the taurus test tool docker image
+### Building the taurus test tool docker image
 
 Taurus have published the taurus test tool as a docker image with the name Blazemeter/taurus. If you get problems when you run it the reason may be it is built some time ago and their components are outdated.
 It is easy to rebuild it yourself:
@@ -40,8 +42,41 @@ Run it with:
     docker run --rm -it --net="host" -v ${PWD}:/bzt-configs -v ${PWD}/results:/tmp/artifacts yourname/taurus:v1 jira.yml
 
 
-## Useful links for test writing
+### Useful links for test writing
 
 * pytest - https://docs.pytest.org/en/latest/contents.html
 * requests - https://requests.readthedocs.io/en/master/user/quickstart/#response-headers
 * jira rest api authentication - https://community.atlassian.com/t5/Jira-questions/How-to-authenticate-to-Jira-REST-API/qaq-p/814987
+
+## Run tests on an AWS server
+
+    git clone https://github.com/FindOut/dc-app-performance-toolkit.git
+    cd dc-app-performance-toolkit
+    virtualenv venv -p python3
+    source venv/bin/activate
+    pip install pytest
+    deactivate
+    source venv/bin/activate
+    pip install -r requirements.txt
+    
+Now we have an environment with python and pytest using python3 and the required python packages.
+
+### run the DM test suite
+
+In the Jira Datacenter App Perfomance test, one step is to run tests specific for Dependency Map. 
+
+    cd app/pytests
+
+Create initial data specific to DM, like links between random issues and dependency map objects.
+
+    python setup.py
+    
+Here we should probably re-index Jira.
+    
+Run the DM specific test suite.
+
+    bzt jira-dm.yml
+    
+Remove DM specific data created by setup.py above.
+
+    python cleanup.py
