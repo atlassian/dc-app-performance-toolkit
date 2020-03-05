@@ -48,13 +48,14 @@ class LiveServerSession(Session):
 
 
 # get list of all users - except 'admin' if more than one user
-print("hej")
+
 print(BASE_URL);
-users_reponse = requests.get(BASE_URL  + '/rest/api/latest/user/search?username=.', auth=('admin', 'admin'))
+users_reponse = requests.get(BASE_URL  + '/rest/api/latest/user/search?username=performance_', auth=('admin', 'admin'))
 assert users_reponse.status_code == 200
 users = list(map(lambda user : user['name'], users_reponse.json()))
-if len(users) > 1 and 'admin' in users:
-    users.remove('admin')
+if len(users) ==0:
+    print("There is no performance user")
+    users.append('admin')
 #print(users)
 
 
@@ -74,8 +75,7 @@ def getRandomUsernamePassword():
 # returns a logged in session for use in a test method
 @pytest.fixture(scope="class")
 def session():
- #   time.sleep(20)
- #   print("create session")
+    #print("create session")
     # authenticate to get a session id
     s =  LiveServerSession(BASE_URL)
     auth_response = s.post('/rest/auth/1/session',
@@ -83,7 +83,7 @@ def session():
 
     # after test teardown
     yield s  # provide the fixture value
-    print("teardown session")
+    #print("teardown session")
     s.close()
     return s
 

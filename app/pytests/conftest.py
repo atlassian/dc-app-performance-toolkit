@@ -66,6 +66,21 @@ if not pytest_results_file.exists():
 #    with open(w3c_timings_pytest_file, 'w'):
 #        pass
 
+def readProjectCmd():
+    result = []
+    try:
+        with open(projects_path, "r") as fp:
+            line = fp.readline()
+            while line:
+                dict = eval(line)
+                result.append(dict)
+                line = fp.readline()
+    except IOError:
+        print("File not accessible " + 'project')
+    return result
+
+projects = readProjectCmd()
+
 def saveRemoveDiagramCmd(diagramId):
     try:
         global_lock.acquire()
@@ -90,6 +105,7 @@ def saveRemoveIssueLinkCmd(issueLinkId):
     except IOError:
         print("File not accessible" + issueLinkId)
 
+
 def saveProjectCmd(projectName, key, id):
     try:
         with open(projects_path, "a") as f:
@@ -100,23 +116,41 @@ def saveProjectCmd(projectName, key, id):
     except IOError:
         print("File not accessible: " + projects_path)
 
-def readProjectCmd():
-    result = []
-    try:
-        with open(projects_path, "r") as fp:
-            line = fp.readline()
-            while line:
-                dict = eval(line)
-                result.append(dict)
-                line = fp.readline()
-    except IOError:
-        print("File not accessible " + 'project')
-    return result
+def getRandomFixture(session):
+    page = 0
+    exit = 0
+    projectId = getRandomProjectId()
+    print("PROJECT" + str( projectId ))
+    while True:
+        diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
+        assert diagrams_response.status_code == 200
+        diagrams_response_filters = diagrams_response.json()["filters"]
+        print ("all filters json: " + str(diagrams_response_filters))
+        page = page + 1
+
+        if len(diagrams_response_filters) ==0:
+            break
+
+        for filter in diagrams_response_filters:
+            filter_id = str (filter['filterKey'])
+            print(filter_id)
+            permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
+            for sharePer in permission_response.json():
+                if sharePer['type']=='project':
+                    if sharePer['project']['id'] == projectId   :
+                        filterKey=filter_id
+                        exit = 1
+                        break
+            if exit ==1:
+                break
+
+        if exit == 1:
+            break
+    return filterKey
 
 def getRandomProjectId():
-    projectsDict = readProjectCmd()
-    nrProjects = len(projectsDict)
-    projectId=projectsDict[random.randint(0,nrProjects-1)]['id']
+    nrProjects = len(projects)
+    projectId=projects[random.randint(0,nrProjects-1)]['id']
     return projectId
 
 

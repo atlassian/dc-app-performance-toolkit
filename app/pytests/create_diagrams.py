@@ -42,10 +42,9 @@ class TestCreateDiagram:
         filterKeyList =[]
         while True:
             diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
-                                      #      'searchTerm=&page=' + str(page) +'&maxResults=50')
             assert diagrams_response.status_code == 200
             diagrams_response_filters = diagrams_response.json()["filters"]
-            print ("all filters json: " + str(diagrams_response_filters))
+        #    print ("all filters json: " + str(diagrams_response_filters))
             page = page + 1
 
             if len(diagrams_response_filters) ==0:
@@ -119,6 +118,7 @@ def create_diagram(session, filterKey):
                                          json=payload)
 
 
+
         newLinkConfig = diagrams_response.json()
         linkConfigId = str(newLinkConfig["id"])
         print(linkConfigId)
@@ -148,6 +148,8 @@ def change_color_mapping(session, diagramId):
         assert diagrams_response.status_code == 200
         print( diagrams_response.json() )
         #boxColorResource = diagrams_response.json()['id']
+
+
 
 
 

@@ -5,6 +5,7 @@ from fixtures import base_url
 from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import getRandomProjectId
+from conftest import saveNewIssuLink
 
 import os
 
@@ -45,6 +46,11 @@ class TestCreateLink:
             print(issueLinks[0]['id'])
             print(issueLinks[-1]['id'])
 
+            #before
+            diagrams_response = session.get('/rest/api/2/issue/' + issueId1)
+            before_issue_links = diagrams_response.json()['fields']['issuelinks']
+            before_size = len(before_issue_links)
+
             #JIRA create link
             #print (issueId1);
             #print(issueId2)
@@ -56,24 +62,11 @@ class TestCreateLink:
             assert diagrams_response.status_code == 201
             print_in_shell("issue created")
 
-            #JIRA Get new issue links id
-            diagrams_response = session.get('/rest/api/2/issue/' + issueId1)
-            issueLinks = diagrams_response.json()['fields']['issuelinks']
-
-            issueLinksId = 0
-            for issueLink in issueLinks:
-                if 'inwardIssue' in issueLink and  issueLink['inwardIssue']:
-                    if  issueLink['inwardIssue']['id']==issueId1:
-                        issueLinksId = issueLink['id']
-
-            print("New issue Links Id=" + issueLinksId);
 
 
-           # print(issueLinks)
-            print(issueLinks[0]['id'])
-            print(issueLinks[-1]['id'])
-            #diagrams_response = session.get(firstIssueLinkSelf)
-            #assert diagrams_response.status_code == 200
+            saveNewIssueLink(session, issueId1, issueId2, before_size)
+
+
 
 
 
