@@ -311,10 +311,6 @@
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
                 </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
                   <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -355,10 +351,6 @@
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                 </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -465,10 +457,6 @@
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
                 </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36</stringProp>
-                </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
                   <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -510,10 +498,6 @@
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
                 </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
                   <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -554,10 +538,6 @@
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                 </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -610,10 +590,6 @@
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                 </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -684,10 +660,6 @@
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                 </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -793,10 +765,6 @@
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
                   <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                 </elementProp>
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -925,10 +893,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1109,10 +1073,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -1164,10 +1124,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1225,10 +1181,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -1284,10 +1236,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1345,10 +1293,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -1404,10 +1348,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1513,10 +1453,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -1565,10 +1501,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1622,10 +1554,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -1677,10 +1605,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1734,10 +1658,6 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -1789,10 +1709,6 @@ if (totalAncestorID &gt; 0)
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -1848,10 +1764,6 @@ if (totalAncestorID &gt; 0)
                       <elementProp name="Accept-Encoding" elementType="Header">
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                       </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
@@ -1931,10 +1843,6 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
                       <elementProp name="Accept-Encoding" elementType="Header">
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                       </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
@@ -2043,10 +1951,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2157,10 +2061,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2202,10 +2102,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2246,10 +2142,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2302,10 +2194,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2376,10 +2264,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2486,10 +2370,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2565,10 +2445,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2666,10 +2542,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2721,10 +2593,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2782,10 +2650,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2841,10 +2705,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -2902,10 +2762,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -2961,10 +2817,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                     </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
@@ -3050,10 +2902,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -3122,10 +2971,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3178,10 +3024,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3234,10 +3077,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3290,10 +3130,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3346,10 +3183,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3406,10 +3240,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3494,10 +3325,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3567,10 +3395,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3631,10 +3456,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3719,10 +3541,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -3814,10 +3633,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3867,10 +3683,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -3912,10 +3725,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -3968,10 +3778,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4024,10 +3831,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4077,10 +3881,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4131,10 +3932,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4216,10 +4014,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4278,10 +4073,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -4334,10 +4126,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
@@ -4418,10 +4207,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4484,10 +4270,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -4550,10 +4333,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4606,10 +4386,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4651,10 +4428,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -4705,10 +4479,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4765,10 +4536,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4821,10 +4589,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4881,10 +4646,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -4941,10 +4703,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -4982,10 +4741,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -5031,10 +4787,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5091,10 +4844,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5179,10 +4929,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -5235,10 +4982,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5291,10 +5035,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5383,10 +5124,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5485,10 +5223,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -5580,10 +5315,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5636,10 +5368,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5692,10 +5421,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5737,10 +5463,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5790,10 +5513,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5843,10 +5563,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -5896,10 +5613,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -5949,10 +5663,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6005,10 +5716,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6090,10 +5798,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6187,10 +5892,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6252,10 +5954,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -6369,10 +6068,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6418,10 +6114,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6474,10 +6167,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6538,10 +6228,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6598,10 +6285,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6658,10 +6342,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6718,10 +6399,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6778,10 +6456,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -6831,10 +6506,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6887,10 +6559,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -6943,10 +6612,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7031,10 +6697,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -7087,10 +6750,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7143,10 +6803,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7199,10 +6856,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7258,10 +6912,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -7401,10 +7052,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -7486,10 +7134,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7546,10 +7191,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7599,10 +7241,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7684,10 +7323,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7737,10 +7373,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -7790,10 +7423,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7875,10 +7505,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -7969,10 +7596,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <elementProp name="Accept-Encoding" elementType="Header">
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                       </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
@@ -8086,10 +7709,6 @@ vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
                       </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                      </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
                         <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
@@ -8164,10 +7783,7 @@ vars.put(&quot;p_page_version&quot;, page_version.toString());</stringProp>
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -8264,10 +7880,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8342,10 +7955,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8391,10 +8001,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8447,10 +8054,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8511,10 +8115,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8571,10 +8172,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8631,10 +8229,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -8691,10 +8286,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8779,10 +8371,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
@@ -8839,10 +8428,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8892,10 +8478,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -8948,10 +8531,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9004,10 +8584,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9060,10 +8637,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9116,10 +8690,7 @@ if (totalAncestorID &gt; 0)
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9226,10 +8797,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9337,10 +8905,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                    </elementProp>
+                    
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -9498,10 +9063,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
                       </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                      </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
                         <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
@@ -9606,10 +9167,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
                       <stringProp name="Header.value">gzip, deflate</stringProp>
                     </elementProp>
-                    <elementProp name="User-Agent" elementType="Header">
-                      <stringProp name="Header.name">User-Agent</stringProp>
-                      <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0</stringProp>
-                    </elementProp>
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9671,10 +9228,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
                       </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
-                      </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
                         <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
@@ -9726,10 +9279,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <elementProp name="Accept-Encoding" elementType="Header">
                         <stringProp name="Header.name">Accept-Encoding</stringProp>
                         <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0</stringProp>
                       </elementProp>
                       <elementProp name="Accept" elementType="Header">
                         <stringProp name="Header.name">Accept</stringProp>
