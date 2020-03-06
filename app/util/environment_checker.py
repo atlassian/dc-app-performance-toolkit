@@ -1,4 +1,5 @@
 from sys import version_info
+import subprocess
 
 from util.conf import TOOLKIT_VERSION
 
@@ -13,3 +14,7 @@ if python_version < MIN_SUPPORTED_PYTHON_VERSION:
     raise Exception(
         "Python version {} is not supported. "
         "Please use Python version {} or higher.".format(python_version, MIN_SUPPORTED_PYTHON_VERSION))
+
+git_exist = subprocess.getstatusoutput("git --version")[0]
+if git_exist == 1 or git_exist == 127:
+    raise Exception("Git is not installed")
