@@ -81,27 +81,27 @@ def readProjectCmd():
 
 projects = readProjectCmd()
 
-def saveRemoveDiagramCmd(diagramId):
+def writeLockedCmd(delete_request, type , id):
+    global global_lock
     try:
-        diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId) + '\n'
         global_lock.acquire()
         with open(delete_created_objects_path, "a") as f:
-            f.write(diagrams_delete_request)
+            f.write(delete_request)
             f.close()
         global_lock.release()
     except IOError:
-        print("File not accessible" + diagramId)
+        print("Write to deleteCreateObjects file failed" + type +  id)
+
+def saveRemoveDiagramCmd(diagramId):
+    diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId) + '\n'
+    writeLockedCmd(diagrams_delete_request, "Diagram" , diagramId)
+
 
 def saveRemoveIssueLinkCmd(issueLinkId):
-    try:
-        issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId) + '\n'
-        global_lock.acquire()
-        with open(delete_created_objects_path, "a") as f:
-            f.write(issueLink_delete_request)
-            f.close()
-        global_lock.release()
-    except IOError:
-        print("File not accessible" + issueLinkId)
+    issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId) + '\n'
+    writeLockedCmd(issueLink_delete_request, "IssuLink" , issueLinkId)
+
+
 
 
 def saveProjectCmd(projectName, key, id):

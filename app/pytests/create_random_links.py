@@ -70,11 +70,8 @@ class TestCreateIssueLinks:
             # all pairs are in increasing order, to avoid link cycles
             pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum
             pairs = set()   # set of tuples, as tuples can be added to a set, but not lists
-           # print("before while")
             while len(pairs) < pair_count:
-                print("after while")
                 pair = tuple(sorted(random.sample(issue_ids, 2)))
-             #   print(pair)
                 if pair not in pairs:
                     pairs.add(pair)
             for pair in pairs:
