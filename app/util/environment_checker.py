@@ -1,3 +1,4 @@
+import errno
 from sys import version_info
 import subprocess
 
@@ -15,6 +16,8 @@ if python_version < MIN_SUPPORTED_PYTHON_VERSION:
         "Python version {} is not supported. "
         "Please use Python version {} or higher.".format(python_version, MIN_SUPPORTED_PYTHON_VERSION))
 
-git_exist = subprocess.getstatusoutput("git --version")[0]
-if git_exist == 1 or git_exist == 127:
-    raise Exception("Git is not installed")
+try:
+    subprocess.call("git")
+except OSError as e:
+    if e.errno == errno.ENOENT:
+      raise Exception("Git is not installed")
