@@ -61,11 +61,10 @@ fi
 
 
 echo "Step1: Download and untar attachments"
-cd ${NFS_DIR}
 sudo su -c "rm -rf ${ATTACHMENTS_TAR}"
 ARTIFACT_SIZE_BYTES=$(curl -sI ${ATTACHMENTS_TAR_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
-FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
+FREE_SPACE_KB=$(sudo su bitbucket -c "df -k --output=avail $NFS_DIR | tail -n1")
 FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
@@ -75,7 +74,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    exit 1
 fi;
 
-time wget -qO- ${ATTACHMENTS_TAR_URL}| tar -xz --checkpoint=.10000 -C ${ATTACHMENT_DIR_DATA} --strip-components 1
+sudo su -c "time wget -qO- ${ATTACHMENTS_TAR_URL} -P ${NFS_DIR} | tar -xz --checkpoint=.10000 -C ${NFS_DIR}/${ATTACHMENT_DIR_DATA} --strip-components 1"
 if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1

@@ -1,5 +1,6 @@
 import random
 import string
+import time
 
 from util.conf import BITBUCKET_SETTINGS
 from util.data_preparation.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
@@ -19,14 +20,6 @@ def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
-def __get_admin_users(client: BitbucketRestClient):
-    perf_users = __get_users(client)
-    for user in perf_users:
-        client.apply_user_permissions(user['name'], BitbucketUserPermission.ADMIN)
-
-    return perf_users
-
-
 def __get_users(client: BitbucketRestClient):
     perf_users_desired_number = BITBUCKET_SETTINGS.concurrency
     current_perf_users = client.get_users(f'{DEFAULT_USER_PREFIX}', perf_users_desired_number)
@@ -35,15 +28,21 @@ def __get_users(client: BitbucketRestClient):
         return current_perf_users
 
     perf_user_count_to_create = perf_users_desired_number - perf_users_current_number
-    while perf_user_count_to_create > 0:
-        client.create_user(f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}')
-        perf_user_count_to_create = perf_user_count_to_create - 1
+    __create_users(client, perf_user_count_to_create)
 
     perf_users = client.get_users(f'{DEFAULT_USER_PREFIX}', perf_users_desired_number)
     if len(perf_users) < perf_users_desired_number:
         raise SystemExit(f'Server returned less number of users than expected')
 
     return perf_users
+
+
+def __create_users(client: BitbucketRestClient, perf_user_count_to_create):
+    while perf_user_count_to_create > 0:
+        user_name = f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}'
+        client.create_user(user_name)
+        client.apply_user_permissions(user_name, BitbucketUserPermission.ADMIN)
+        perf_user_count_to_create = perf_user_count_to_create - 1
 
 
 def __get_repos(bitbucket_api):
@@ -66,23 +65,32 @@ def __get_projects(bitbucket_api):
     return projects
 
 
-def __get_prs(bitbucket_api, repos):
+def __get_prs(bitbucket_api):
+    concurrency = BITBUCKET_SETTINGS.concurrency
     repos_prs = []
+    REPOS_TO_FETCH = 1000
+    start_time = time.time()
+    repos = bitbucket_api.get_non_fork_repos(REPOS_TO_FETCH)
     for repo in repos:
         repo_prs = [repo['slug'], repo['project']['key']]
-        prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
-        for pr in prs['values']:
-            repo_prs.extend([pr['fromRef']['displayId'], pr['toRef']['displayId']])
-        repos_prs.append(repo_prs)
+        if len(repos_prs) <= concurrency:
+            prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
+            for pr in prs['values']:
+                repo_prs.extend([pr['id'], pr['fromRef']['displayId'], pr['toRef']['displayId']])
+                repos_prs.append(repo_prs)
+    if len(repos_prs) < concurrency:
+        raise SystemExit(f'Repositories from list {[repo["project"]["key"] - repo["slug"] for repo in repos]} '
+                         f'do not contain {concurrency} pull requests')
+    print(f"Successfully fetched pull requests in  [{(time.time() - start_time)}]")
     return repos_prs
 
 
 def __create_data_set(bitbucket_api):
     dataset = dict()
-    dataset[USERS] = __get_admin_users(bitbucket_api)
+    dataset[USERS] = __get_users(bitbucket_api)
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
-    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api, dataset[REPOS])
+    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
     return dataset
 
 

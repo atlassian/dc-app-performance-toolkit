@@ -18,7 +18,7 @@ Follow installation instructions described in the `dc-app-performance-toolkit/RE
 
 If you need performance testing results at a production level, follow instructions in this chapter to set up Jira Data Center with the corresponding dataset.
 
-For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide/#testing-scenarios). Still, script adjustments for your local dataset may be required.
+For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#testing-scenarios). Still, script adjustments for your local dataset may be required.
 
 ## Setting up Jira Data Center
 
@@ -44,13 +44,13 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack                     | Estimated hourly cost ($)|
-| ------------------------- | -------------------------|
-| One Node Jira DC          | 1 - 1,3                  |
-| Two Nodes Jira DC         | 1,7 - 2,1                |
-| Four Nodes Jira DC        | 3,1 - 3,8                |
+| Stack | Estimated hourly cost ($) |
+| ----- | ------------------------- |
+| One Node Jira DC | 1 - 1.3 |
+| Two Nodes Jira DC  1.7 - 2.1 |
+| Four Nodes Jira DC | 3.1 - 3.8 |
 
-#### Quick Start parameters
+#### <a id="quick-start-parameters"></a> Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
 
@@ -193,7 +193,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Jira node instance.
+    - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -244,7 +244,7 @@ We recommend that you only use this method if you are having problems with the [
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Jira node instance.
+    - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
     For Windows, use Putty to connect to the Jira node over SSH.
@@ -347,13 +347,16 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
-    - `test_duration`: duration of the performance run - 45min by default
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
+
 
     ``` bash
     bzt jira.yml
     ```
+    
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
@@ -366,35 +369,35 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues. 
+
+First, benchmark your re-index time without your app installed:
+
 {{% note %}}
-**Lucene index test for JIRA**
+Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~40 min.
+{{% /note %}}
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
-
-Steps:
-
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
-1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and attach it to your DC HELP ticket.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DC HELP ticket.
 
-{{% /note %}}
+Next, benchmark your re-index time with your app installed:
 
-{{% note %}}
-Jira 7 index time for 1M issues on a User Guide recommended configuration is about ~100 min, Jira 8 index time is about ~40 min.
-{{% /note %}}
+1. Install the app you want to test. 
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Select the **Lock one Jira node and rebuild index** option.
+1. Click **Re-Index** and wait until re-indexing is completed.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DC HELP ticket.
 
-To receive performance results with an app installed and Lucene index timing screenshots:
-
-1. Follow the steps described in Note section to get a Lucene index timing screenshot without an app installed.
-1. Install the app you want to test.
-1. Follow the steps described in Note section to get a Lucene index timing screenshot with an app installed.
-1. Run bzt.
+After attaching both screenshots to your DC HELP ticket, move on to performance results generation with an app installed:
 
     ``` bash
     bzt jira.yml
     ```
-
+    
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
@@ -619,3 +622,6 @@ To generate a scalability report:
 Once completed, you will be able to review action timings on Jira Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 After completing all your tests, delete your Jira Data Center stacks.
+
+## Support
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
