@@ -19,6 +19,7 @@ services:
   - module: shellexec
     prepare:
       - python util/environment_checker.py
+      - python util/git_client_check.py
       - python util/data_preparation/bitbucket/prepare-data.py
     shutdown:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
