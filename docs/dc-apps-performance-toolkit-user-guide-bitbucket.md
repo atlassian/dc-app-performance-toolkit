@@ -104,14 +104,15 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Elasticsearch instance type | m4.xlarge.elasticsearch|
+| Elasticsearch instance type | m4.xlarge.elasticsearch |
+| Elasticsearch disk-space per node (GB) | 1000 |
 
 **Networking (for new ASI)**
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region. Both zones must support EFS (see [Supported AWS regions](https://confluence.atlassian.com/enterprise/getting-started-with-jira-data-center-on-aws-969535550.html#GettingstartedwithJiraDataCenteronAWS-SupportedAWSregions) for details)._ |
+| Availability Zones | _Select two availability zones in your region_ |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Make instance internet facing | true |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
@@ -293,16 +294,9 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ```
 
 {{% note %}}
-Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
+Do not close or interrupt the session. It will take about two hours to upload attachments.
 {{% /note %}}
-
-
-### Increase Elasticsearch Service EBS volume size
-Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
-
-1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
-1. Click **Edit domain** button, go to the **Storage configuration** section, set **750** GiB to the **EBS storage size per node** field.  
-1. Click **Submit** button.   
+ 
 
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
