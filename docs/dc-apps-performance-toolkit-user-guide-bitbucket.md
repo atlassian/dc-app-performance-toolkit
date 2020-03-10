@@ -104,7 +104,8 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Elasticsearch instance type | m4.xlarge.elasticsearch|
+| Elasticsearch instance type | m4.xlarge.elasticsearch |
+| Elasticsearch disk-space per node (GB) | 1000 |
 
 **Networking (for new ASI)**
 
@@ -295,14 +296,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 {{% note %}}
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
-
-
-### Increase Elasticsearch Service EBS volume size
-Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
-
-1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
-1. Click **Edit domain** button, go to the **Storage configuration** section, set **750** GiB to the **EBS storage size per node** field.  
-1. Click **Submit** button.   
+ 
 
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
