@@ -76,7 +76,7 @@ def readProjectCmd():
                 result.append(dict)
                 line = fp.readline()
     except IOError:
-        print("File not accessible " + 'project')
+        print("File not accessible read " + 'project')
     return result
 
 projects = readProjectCmd()
@@ -91,6 +91,7 @@ def writeLockedCmd(delete_request, type , id):
         global_lock.release()
     except IOError:
         print("Write to deleteCreateObjects file failed" + type +  id)
+        global_lock.release()
 
 def saveRemoveDiagramCmd(diagramId):
     diagrams_delete_request ='/rest/dependency-map/1.0/diagram/' + str(diagramId) + '\n'
@@ -100,19 +101,6 @@ def saveRemoveDiagramCmd(diagramId):
 def saveRemoveIssueLinkCmd(issueLinkId):
     issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId) + '\n'
     writeLockedCmd(issueLink_delete_request, "IssuLink" , issueLinkId)
-
-
-
-
-def saveProjectCmd(projectName, key, id):
-    try:
-        with open(projects_path, "a") as f:
-            project = {'projectName': projectName, 'key': key, 'id': id}
-            f.write(str (project))
-            f.write("\n")
-            f.close()
-    except IOError:
-        print("File not accessible: " + projects_path)
 
 def getRandomFixture(session):
     page = 0
@@ -134,8 +122,7 @@ def getRandomFixture(session):
             print(filter_id)
             permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
             for sharePer in permission_response.json():
-                if sharePer['type']=='project':
-                    if sharePer['project']['id'] == projectId   :
+                if sharePer['type']=='project' and sharePer['project']['id'] == projectId   :
                         filterKey=filter_id
                         exit = 1
                         break

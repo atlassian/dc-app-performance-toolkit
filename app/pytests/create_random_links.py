@@ -1,7 +1,6 @@
 from fixtures import session
 from fixtures import base_url
 from fixtures import nr_projects
-from conftest import saveProjectCmd
 import os
 from os import path
 import math
@@ -13,6 +12,26 @@ from itertools import islice
 basepath = path.dirname(__file__)
 #CURRENT_PATH = pathlib.Path().absolute()
 out_file_path = path.abspath(path.join(basepath, "deleteCreatedObjects"))
+
+#CURRENT_PATH = pathlib.Path().absolute()
+projects_path = path.abspath(path.join(basepath, "projects"))
+
+def saveRemoveFilterCmd(filterId):
+    filter_request ='/rest/api/2/filter/' + str(filterId) + '\n'
+    with open(out_file_path, "a") as f:
+        f.write(filter_request)
+        f.close()
+
+def saveProjectCmd(projectName, key, id):
+    try:
+        with open(projects_path, "a") as f:
+            project = {'projectName': projectName, 'key': key, 'id': id}
+            f.write(str (project))
+            f.write("\n")
+            f.close()
+    except IOError:
+        print("File not accessible write: " + projects_path)
+
 
 # returns the number of ways k elements can be chosen from n elements
 def binom(n, k):
@@ -35,12 +54,100 @@ def get_link_type(session):
     print(issueLinkTypeId)
     return issueLinkTypeId
 
+
+
+def get_projects(nr_projects, session):
+    resp =  respProj = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
+    assert resp.status_code == 200
+    result = resp.json()
+
+    return result
+
+
+def get_projects_with_permisions(nr_projects, session):
+    #Before running, there has to performance users in the DB.
+    projects = get_projects(nr_projects, session)
+    print("AllProjects: " + str(projects))
+    projects_with_perm = []
+    for project in projects:
+        projectKey = project['key']
+        diagrams_response = session.get(
+            "/rest/api/2/user/permission/search?permissions=ASSIGN_ISSUE&projectKey=" + projectKey + "&username=per")
+        print(str(diagrams_response.json()))
+        if (len(diagrams_response.json())) > 0:
+            projectId = project['id']
+            projects_with_perm.append(project)
+        if (len(projects_with_perm)>= nr_projects):
+            break
+    print ("PROJECTS WITH PERM:" + str("projects_with_perm" ))
+    return projects_with_perm
+
+def get_filter(projectId, session):
+    page = 0
+    exit = 0
+    filterKey =""
+    print("PROJECT" + str( projectId ))
+    while True:
+        result_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
+        assert result_response.status_code == 200
+        filter_response = result_response.json()["filters"]
+        print ("all filters json: " + str(filter_response))
+        page = page + 1
+
+        if len(filter_response) ==0:
+            break
+
+        for filter in filter_response:
+            filter_id = str (filter['filterKey'])
+            print("filter['filterKey']" +filter_id)
+            permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
+            print ("for filter: " + str(permission_response.json()))
+            for sharePer in permission_response.json():
+                print("Permission: " + str(sharePer))
+                print(sharePer['type']=='project')
+                print (sharePer['project']['id'] == projectId )
+                print("F2 SharePer['project']['id']" + sharePer['project']['id'])
+                print("F2 projectId" + projectId)
+                if sharePer['type']=='project' and  sharePer['project']['id'] == projectId   :
+                    filterKey=filter_id
+                    exit = 1
+                    break
+            if exit ==1:
+                break
+
+        if exit == 1:
+            break
+    return filterKey
+
+def create_filter_if_missing(projects, session):
+    #Before running, there has to performance users in the DB.
+    for project in projects:
+        filterKey = get_filter(project["id"], session)
+        print("FilterKey" + filterKey)
+
+        if filterKey == "" :
+            # Create filter
+            jqlQuery = "project = " +project["projectKey"] + "ORDER BY Rank ASC"
+            payload = {"jql": jqlQuery,
+                "name": "All issues",
+                "description": "Lists all issues"}
+            response = session.post(
+                '/rest/api/2/filter', json=payload)
+            assert response.status_code == 200
+            result = response.json()
+            new_filter_id = result['id']
+            print("Filter created: " + new_filter_id)
+
+
 class TestCreateIssueLinks:
     def test_create_issue_links(self, base_url, nr_projects, session):
         # get all projects
         projStartAt = 0
 
+
         respProj = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
+        projects = get_projects_with_permisions(nr_projects, session)
+        create_filter_if_missing(projects, session)
 
         issueLinkTypeId = get_link_type(session)
         assert respProj.status_code == 200
@@ -59,7 +166,7 @@ class TestCreateIssueLinks:
                 resp = session.get(f'/rest/api/latest/search?maxResults=100&startAt={startAt}&jql=project={project_key}&fields=key')
                 assert resp.status_code == 200
                 result = resp.json()
-                print(f"if {startAt} >= {result['total']}")
+       #         print(f"if {startAt} >= {result['total']}")
                 if startAt >= result['total'] or not('issues' in result):
                     break
                 issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
@@ -116,58 +223,3 @@ class TestCreateIssueLinks:
                 except IOError:
                     print("File not accessible")
 
-
-
-#/rest/api/latest/project
-# [
-#   {
-#     "expand": "description,lead,url,projectKeys",
-#     "self": "http://localhost:8080/rest/api/2/project/10001",
-#     "id": "10001",
-#     "key": "DRKAN",
-#     "name": "drkanban",
-#     "avatarUrls": {
-#       "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324",
-#       "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
-#       "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
-#       "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324"
-#     },
-#     "projectTypeKey": "software"
-#   },
-#   {
-#     "expand": "description,lead,url,projectKeys",
-#     "self": "http://localhost:8080/rest/api/2/project/10000",
-#     "id": "10000",
-#     "key": "DRSCRUM",
-#     "name": "drscrum",
-#     "avatarUrls": {
-#       "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324",
-#       "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
-#       "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
-#       "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324"
-#     },
-#     "projectTypeKey": "software"
-#   }
-# ]
-
-#/rest/api/latest/search?maxResults=2&jql=project=DRKAN&fields=key
-# {
-#   "expand": "schema,names",
-#   "startAt": 0,
-#   "maxResults": 2,
-#   "total": 16,
-#   "issues": [
-#     {
-#       "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
-#       "id": "10038",
-#       "self": "http://localhost:8080/rest/api/latest/issue/10038",
-#       "key": "DRKAN-16"
-#     },
-#     {
-#       "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
-#       "id": "10037",
-#       "self": "http://localhost:8080/rest/api/latest/issue/10037",
-#       "key": "DRKAN-15"
-#     }
-#   ]
-# }
