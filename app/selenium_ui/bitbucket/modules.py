@@ -223,7 +223,6 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.visibility_of_element_located((
                         By.ID, 'targetBranch')), interaction)
             webdriver.execute_script("document.querySelector('#targetBranch').click()")
-            #safe_click(webdriver, By.ID, 'targetBranch', interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'targetBranchDialog')), interaction)
             branch_name_to_dropdown = webdriver.find_element_by_id('targetBranchDialog-search-input')
             branch_name_to_dropdown.send_keys(f'{random_repo_with_pr[3]}')
