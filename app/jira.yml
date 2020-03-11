@@ -22,7 +22,7 @@ settings:
 services:
   - module: shellexec
     prepare:
-#      - pip install pytest-parallel
+      - pip install pytest-parallel
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
@@ -47,7 +47,7 @@ execution:
     ramp-up: 3m
 scenarios:
   pytest-run:
-#    additional-args: --workers 8 --tests-per-worker 25
+    additional-args: --workers 8 --tests-per-worker 25
     script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py

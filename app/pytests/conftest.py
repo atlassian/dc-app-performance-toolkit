@@ -9,6 +9,7 @@ import threading
 import os
 from os import path
 global_lock = threading.Lock()
+global_lock_pytest_result = threading.Lock()
 import random
 
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
@@ -61,8 +62,10 @@ delete_created_objects_path = path.abspath(path.join(basepath, "deleteCreatedObj
 projects_path = path.abspath(path.join(basepath, "projects"))
 
 if not pytest_results_file.exists():
+    global_lock_pytest_result.acquire()
     with open(pytest_results_file, "w") as file:
         file.write(JTL_HEADER)
+    global_lock_pytest_result.release()
 #    with open(w3c_timings_pytest_file, 'w'):
 #        pass
 
@@ -102,41 +105,20 @@ def saveRemoveIssueLinkCmd(issueLinkId):
     issueLink_delete_request ='/rest/api/latest/issueLink/' + str(issueLinkId) + '\n'
     writeLockedCmd(issueLink_delete_request, "IssuLink" , issueLinkId)
 
-def getRandomFixture(session):
-    page = 0
-    exit = 0
-    projectId = getRandomProjectId()
-    print("PROJECT" + str( projectId ))
-    while True:
-        diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
-        assert diagrams_response.status_code == 200
-        diagrams_response_filters = diagrams_response.json()["filters"]
-        print ("all filters json: " + str(diagrams_response_filters))
-        page = page + 1
-
-        if len(diagrams_response_filters) ==0:
-            break
-
-        for filter in diagrams_response_filters:
-            filter_id = str (filter['filterKey'])
-            print(filter_id)
-            permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
-            for sharePer in permission_response.json():
-                if sharePer['type']=='project' and sharePer['project']['id'] == projectId   :
-                        filterKey=filter_id
-                        exit = 1
-                        break
-            if exit ==1:
-                break
-
-        if exit == 1:
-            break
+def getRandomFilter(session):
+    project = getRandomProject()
+    filterKey = project["filterId"]
     return filterKey
 
 def getRandomProjectId():
     nrProjects = len(projects)
     projectId=projects[random.randint(0,nrProjects-1)]['id']
     return projectId
+
+def getRandomProject():
+    nrProjects = len(projects)
+    project=projects[random.randint(0,nrProjects-1)]
+    return project
 
 
 

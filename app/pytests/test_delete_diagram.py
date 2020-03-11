@@ -5,7 +5,7 @@ from fixtures import base_url
 import os
 from maxfreq import max_freq
 from conftest import print_in_shell
-from conftest import getRandomFixture
+from conftest import getRandomFilter
 
 class TestDelete:
     @max_freq(50/3600)
@@ -29,7 +29,7 @@ class TestDelete:
         assert diagrams_response.status_code == 200
 
         #Get filterKey randomly among the project in the project file
-        filterKey= getRandomFixture(session)
+        filterKey= getRandomFilter(session)
 
         # Get field status
         diagrams_response = session.get('/rest/dependency-map/1.0/field/status')

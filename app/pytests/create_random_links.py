@@ -22,10 +22,10 @@ def saveRemoveFilterCmd(filterId):
         f.write(filter_request)
         f.close()
 
-def saveProjectCmd(projectName, key, id):
+def saveProjectCmd(projectName, key, id, filterId):
     try:
         with open(projects_path, "a") as f:
-            project = {'projectName': projectName, 'key': key, 'id': id}
+            project = {'projectName': projectName, 'key': key, 'id': id, 'filterId': filterId}
             f.write(str (project))
             f.write("\n")
             f.close()
@@ -44,7 +44,7 @@ def issue_key_number(s):
 def get_link_type(session):
     #JIRA Get list of available link types
     issueLinkTypeId = 0
-    diagrams_response = session.get('/rest/api/2/issueLinkType')
+    diagrams_response = session.get('/rest/api/2/issueLinkType', auth=('admin', 'admin'))
     issueLinkTypes = diagrams_response.json()['issueLinkTypes']
     for linkType in issueLinkTypes:
         print(linkType)
@@ -57,29 +57,27 @@ def get_link_type(session):
 
 
 def get_projects(nr_projects, session):
-    resp =  respProj = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
+    resp = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
     assert resp.status_code == 200
     result = resp.json()
-
     return result
-
 
 def get_projects_with_permisions(nr_projects, session):
     #Before running, there has to performance users in the DB.
     projects = get_projects(nr_projects, session)
-    print("AllProjects: " + str(projects))
+ #   print("AllProjects: " + str(projects))
     projects_with_perm = []
     for project in projects:
         projectKey = project['key']
         diagrams_response = session.get(
-            "/rest/api/2/user/permission/search?permissions=ASSIGN_ISSUE&projectKey=" + projectKey + "&username=per")
-        print(str(diagrams_response.json()))
+            "/rest/api/2/user/permission/search?permissions=ASSIGN_ISSUE&projectKey=" + projectKey + "&username=per", auth=('admin','admin'))
+#        print(str(diagrams_response.json()))
         if (len(diagrams_response.json())) > 0:
             projectId = project['id']
             projects_with_perm.append(project)
         if (len(projects_with_perm)>= nr_projects):
             break
-    print ("PROJECTS WITH PERM:" + str("projects_with_perm" ))
+    print ("PROJECTS WITH PERM:" + str(len(projects_with_perm )))
     return projects_with_perm
 
 def get_filter(projectId, session):
@@ -88,10 +86,10 @@ def get_filter(projectId, session):
     filterKey =""
     print("PROJECT" + str( projectId ))
     while True:
-        result_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50')
+        result_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=' + str(page) + '&resultsPerPage=50', auth=('admin','admin'))
         assert result_response.status_code == 200
         filter_response = result_response.json()["filters"]
-        print ("all filters json: " + str(filter_response))
+#        print ("all filters json: " + str(filter_response))
         page = page + 1
 
         if len(filter_response) ==0:
@@ -99,15 +97,15 @@ def get_filter(projectId, session):
 
         for filter in filter_response:
             filter_id = str (filter['filterKey'])
-            print("filter['filterKey']" +filter_id)
-            permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission')
-            print ("for filter: " + str(permission_response.json()))
+ #           print("filter['filterKey']" +filter_id)
+            permission_response = session.get('/rest/api/2/filter/' + filter_id + '/permission', auth=('admin','admin'))
+  #          print ("for filter: " + str(permission_response.json()))
             for sharePer in permission_response.json():
-                print("Permission: " + str(sharePer))
-                print(sharePer['type']=='project')
-                print (sharePer['project']['id'] == projectId )
-                print("F2 SharePer['project']['id']" + sharePer['project']['id'])
-                print("F2 projectId" + projectId)
+   #             print("Permission: " + str(sharePer))
+   #             print(sharePer['type']=='project')
+   #             print (sharePer['project']['id'] == projectId )
+   #             print("F2 SharePer['project']['id']" + sharePer['project']['id'])
+   #             print("F2 projectId" + projectId)
                 if sharePer['type']=='project' and  sharePer['project']['id'] == projectId   :
                     filterKey=filter_id
                     exit = 1
@@ -121,22 +119,33 @@ def get_filter(projectId, session):
 
 def create_filter_if_missing(projects, session):
     #Before running, there has to performance users in the DB.
+    print("PROJECTS#" + str(projects))
     for project in projects:
         filterKey = get_filter(project["id"], session)
         print("FilterKey" + filterKey)
 
         if filterKey == "" :
             # Create filter
-            jqlQuery = "project = " +project["projectKey"] + "ORDER BY Rank ASC"
+            jqlQuery = "project = " + project["key"]
+            print(jqlQuery)
             payload = {"jql": jqlQuery,
-                "name": "All issues",
-                "description": "Lists all issues"}
+                "name": project["key"] + " NEW All issues",
+                "description": "List all issues"}
             response = session.post(
-                '/rest/api/2/filter', json=payload)
+                '/rest/api/2/filter', json=payload, auth=('admin','admin'))
             assert response.status_code == 200
             result = response.json()
             new_filter_id = result['id']
             print("Filter created: " + new_filter_id)
+            filterKey=new_filter_id
+            saveRemoveFilterCmd(new_filter_id)
+            #Set filter permission
+            payloadPer = {"type": "group",
+                          "groupname": "jira-software-users"}
+            responsePer = session.post(
+                '/rest/api/2/filter/' + filterKey + "/permission", json=payloadPer, auth=('admin','admin'))
+            assert response.status_code == 200
+        saveProjectCmd(project['name'], project['key'], project['id'], filterKey)
 
 
 class TestCreateIssueLinks:
@@ -144,8 +153,7 @@ class TestCreateIssueLinks:
         # get all projects
         projStartAt = 0
 
-
-        respProj = session.get('/rest/api/latest/project',auth=('admin', 'admin'))
+        respProj = session.get('/rest/api/latest/project', auth=('admin', 'admin'))
         projects = get_projects_with_permisions(nr_projects, session)
         create_filter_if_missing(projects, session)
 
@@ -157,26 +165,28 @@ class TestCreateIssueLinks:
             projects = x = islice(projects, 0, nr_projects)
         for project in projects:
             project_key = project['key']
-            saveProjectCmd( project['name'], project['key'], project['id'])
             # collect keys of all issues in this project into issue_ids
             link_percentage = 30
             issue_ids = []
             startAt = 0
             while True:
-                resp = session.get(f'/rest/api/latest/search?maxResults=100&startAt={startAt}&jql=project={project_key}&fields=key')
+                resp = session.get(
+                    f'/rest/api/latest/search?maxResults=100&startAt={startAt}&jql=project={project_key}&fields=key',
+                    auth=('admin', 'admin'))
                 assert resp.status_code == 200
                 result = resp.json()
-       #         print(f"if {startAt} >= {result['total']}")
-                if startAt >= result['total'] or not('issues' in result):
+                #         print(f"if {startAt} >= {result['total']}")
+                if startAt >= result['total'] or not ('issues' in result):
                     break
-                issue_ids.extend(list(map(lambda issue : issue['id'], result['issues'])))
+                issue_ids.extend(list(map(lambda issue: issue['id'], result['issues'])))
                 startAt = len(issue_ids)
-            if len(issue_ids)==0:
+            if len(issue_ids) == 0:
                 break
             # generate link_percentage random issue pairs out of issue_ids
             # all pairs are in increasing order, to avoid link cycles
-            pair_count = min(len(issue_ids) * link_percentage / 100, binom(len(issue_ids), 2)) # limit wanted number of links by theoretical maximum
-            pairs = set()   # set of tuples, as tuples can be added to a set, but not lists
+            pair_count = min(len(issue_ids) * link_percentage / 100,
+                             binom(len(issue_ids), 2))  # limit wanted number of links by theoretical maximum
+            pairs = set()  # set of tuples, as tuples can be added to a set, but not lists
             while len(pairs) < pair_count:
                 pair = tuple(sorted(random.sample(issue_ids, 2)))
                 if pair not in pairs:
@@ -221,5 +231,5 @@ class TestCreateIssueLinks:
                         f.write("\n")
                         f.close()
                 except IOError:
-                    print("File not accessible")
+                    print("File not accessible delete...")
 

@@ -11,7 +11,7 @@ from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import getRandomProjectId
 from conftest import saveRemoveIssueLinkCmd
-from conftest import getRandomFixture
+from conftest import getRandomFilter
 
 #POST /rest/api/2/issueLink
 #GET /rest/api/2/issue/10000
@@ -39,7 +39,7 @@ def create_data(session):
     assert diagrams_response.status_code == 200
 
     #Get filterKey randomly among the project in the project file
-    filterKey= getRandomFixture(session)
+    filterKey= getRandomFilter(session)
 
     # Get field status
     diagrams_response = session.get('/rest/dependency-map/1.0/field/status')

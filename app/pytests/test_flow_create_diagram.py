@@ -9,7 +9,7 @@ import os
 import random
 from maxfreq import max_freq
 from conftest import print_in_shell
-from conftest import getRandomFixture
+from conftest import getRandomFilter
 
 class TestFlowCreateDiagram:
 
@@ -44,8 +44,10 @@ class TestFlowCreateDiagram:
         diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
 
-        filterKey1=  getRandomFixture(session)
-        filterKey2=  getRandomFixture(session)
+        filterKey1=  getRandomFilter(session)
+        filterKey2=  getRandomFilter(session)
+        while filterKey1==filterKey2:
+            filterKey2= getRandomFilter(session)
 
         # Get filter 10000  ?Scrum?
         diagrams_response = session.get('/rest/api/2/filter/' + filterKey1)
@@ -113,7 +115,7 @@ class TestFlowCreateDiagram:
         assert diagrams_response.status_code == 200
 
         #Get filterKey randomly among the project in the project file
-        filterKey= getRandomFixture(session)
+        filterKey= getRandomFilter(session)
 
         #Get color palet entry
         diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')

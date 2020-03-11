@@ -9,7 +9,7 @@ from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import print_timing_with_additional_arg
 from conftest import getRandomProjectId
-from conftest import getRandomFixture
+from conftest import getRandomFilter
 from conftest import saveRemoveDiagramCmd
 
 #GET /rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50 HTTP/1.1" 200 1040 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram?r
@@ -48,7 +48,7 @@ def create_data(session):
     assert diagrams_response.status_code == 200
 
     #Get filterKey randomly among the project in the project file
-    filterKey= getRandomFixture(session)
+    filterKey= getRandomFilter(session)
 
     # Get field status
     diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
