@@ -72,6 +72,8 @@ Create initial data specific to DM, like links between random issues and depende
     python setup.py
     
 Here we should probably re-index Jira.
+    Go to  > System.
+    Select Advanced > Indexing 
     
 Run the DM specific test suite.
 
