@@ -21,7 +21,7 @@ BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.0)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
@@ -39,7 +39,7 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your Bitbucket, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./populate_db.sh --force 6.8.0"
+  echo "e.g. ./populate_db.sh --force 6.10.0"
   echo "!!! Warning !!! This may break your Bitbucket instance. Also, note that downgrade is not supported by Bitbucket."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
@@ -137,25 +137,26 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 echo "Drop DB"
-PGPASSWORD=${BITBUCKET_DB_PASS} dropdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} ${BITBUCKET_DB_NAME}
+sudo su -c "PGPASSWORD=${BITBUCKET_DB_PASS} dropdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} ${BITBUCKET_DB_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "Drop DB failed. Please make sure you stop Bitbucket."
   exit 1
 fi
 sleep 5
 echo "Create DB"
-PGPASSWORD=${BITBUCKET_DB_PASS} createdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -T template0 ${BITBUCKET_DB_NAME}
+sudo su -c "PGPASSWORD=${BITBUCKET_DB_PASS} createdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -T template0 ${BITBUCKET_DB_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "Create DB failed."
   exit 1
 fi
 sleep 5
 echo "PG Restore"
-sudo su bitbucket -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
+sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
 fi
+sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 
 echo "Finished"
 echo  # move to a new line
