@@ -72,13 +72,28 @@ Create initial data specific to DM, like links between random issues and depende
     python setup.py
     
 Here we should probably re-index Jira.
+
     Go to  > System.
     Select Advanced > Indexing 
+    
+Copy the delete instructions for the setup, and find out how man objects have been created
+
+    cp deleteCreatedObjects deleteCreatedObjectsSetup
+    wc -l deleteCreatedObjects 
     
 Run the DM specific test suite.
 
     bzt jira-dm.yml
     
+Remove DM specific data created during run
+
+    wc -l deleteCreatedObjects
+    tail -n +<lines diff> deleteCreatedObjects > deleteDuringRun   
+    
 Remove DM specific data created by setup.py above.
+
+    pythone cleanupObjCreatedDuringRun.py
+    
+If you want to remove all objects created of setup and running    
 
     python cleanup.py
