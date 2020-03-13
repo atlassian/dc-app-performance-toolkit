@@ -12,7 +12,7 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 200
-    test_duration: 10m
+    test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.1
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
@@ -26,7 +26,7 @@ services:
       - python3 util/environment_checker.py
       - python3 util/data_preparation/jira/prepare-data.py
     shutdown:
-      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytest_run.jtl
+      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytests_run.jtl
     post-process:
       - python3 util/analytics.py jira
 execution:
