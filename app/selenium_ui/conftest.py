@@ -92,7 +92,11 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
+        #driver = Chrome(options=chrome_options)
+        driver = Chrome(
+            executable_path='/Users/ometel/.bzt/selenium-taurus/tools/chromedriver/80.0.3987.16/chromedriver',
+            options=chrome_options)
+
         return driver
 
 
