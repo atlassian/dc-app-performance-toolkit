@@ -104,7 +104,8 @@ def login(webdriver, datasets):
         def measure(webdriver, interaction):
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "submit")),
                         interaction).click()
-            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "marketing-page-footer")), interaction)
+            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "marketing-page-footer")),
+                        interaction)
         measure(webdriver, "selenium_login:login_get_started")
 
     measure(webdriver, "selenium_login")
@@ -128,6 +129,7 @@ def view_projects(webdriver, datasets):
 
 def view_project_repos(webdriver, datasets):
     project_url = f"{PROJECTS_URL}/{datasets['current_project_key']}"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{project_url}")
@@ -139,6 +141,7 @@ def view_project_repos(webdriver, datasets):
 
 def view_repo(webdriver, datasets):
     repo_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/browse"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{repo_url}")
@@ -148,7 +151,9 @@ def view_repo(webdriver, datasets):
 
 
 def view_list_pull_requests(webdriver, datasets):
-    repo_pr_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests"
+    repo_pr_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                   f"repos/{datasets['current_repo_slug']}/pull-requests")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{repo_pr_url}")
@@ -157,7 +162,9 @@ def view_list_pull_requests(webdriver, datasets):
 
 
 def view_pull_request_overview_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
@@ -167,7 +174,9 @@ def view_pull_request_overview_tab(webdriver, datasets):
 
 
 def view_pull_request_diff_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
@@ -177,7 +186,9 @@ def view_pull_request_diff_tab(webdriver, datasets):
 
 
 def view_pull_request_commits_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/commits"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/commits")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
@@ -187,7 +198,8 @@ def view_pull_request_commits_tab(webdriver, datasets):
 
 
 def comment_pull_request_diff(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff")
     webdriver.get(pull_requests_url)
 
     @print_timing
@@ -207,7 +219,8 @@ def comment_pull_request_diff(webdriver, datasets):
 
         if 'v6' in webdriver.app_version:
             css_selector = get_selector('comment_text_area_selector', webdriver.app_version)[1]
-            webdriver.execute_script(f"document.querySelector('{css_selector}').value = 'Comment from Selenium script';")
+            webdriver.execute_script(
+                f"document.querySelector('{css_selector}').value = 'Comment from Selenium script';")
         elif 'v7' in webdriver.app_version:
             _wait_until(webdriver,
                         ec.visibility_of_element_located(get_selector('text_area_selector', webdriver.app_version)),
@@ -221,7 +234,8 @@ def comment_pull_request_diff(webdriver, datasets):
 
 
 def comment_pull_request_overview(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview")
     webdriver.get(pull_requests_url)
 
     @print_timing
@@ -248,7 +262,9 @@ def comment_pull_request_overview(webdriver, datasets):
 
 
 def view_branches(webdriver, datasets):
-    repo_branches_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/branches"
+    repo_branches_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/branches")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(repo_branches_url)
@@ -281,7 +297,8 @@ def create_pull_request(webdriver, datasets):
 
         @print_timing
         def measure(webdriver, interaction):
-            safe_click(webdriver, By.CSS_SELECTOR, '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(4)', interaction)
+            safe_click(webdriver, By.CSS_SELECTOR, '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(4)',
+                       interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'pull-requests-content')), interaction)
             safe_click(webdriver, By.ID, 'empty-list-create-pr-button', interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'branch-compare')), interaction)
@@ -293,7 +310,9 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR,
                         '#sourceBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_from_dropdown.send_keys(Keys.ENTER)
-            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
+            _wait_until(webdriver,
+                        ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')),
+                        interaction)
             # Choose project source
             safe_click(webdriver, By.ID, 'targetRepo', interaction)
             safe_click(webdriver, By.CSS_SELECTOR, "div#targetRepoDialog>div>ul.results-list>li:nth-child(1)",
@@ -308,11 +327,13 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.invisibility_of_element_located(
                 (By.CSS_SELECTOR, '#targetBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_to_dropdown.send_keys(Keys.ENTER)
-            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
+            _wait_until(webdriver,
+                        ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
             _wait_until(webdriver, ec.element_to_be_clickable((By.ID, 'show-create-pr-button')),
                         interaction)
             safe_click(webdriver, By.ID, 'show-create-pr-button', interaction)
-            _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'textarea#pull-request-description')),
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located((By.CSS_SELECTOR, 'textarea#pull-request-description')),
                         interaction)
             webdriver.find_element_by_id('title').clear()
             webdriver.find_element_by_id('title').send_keys('Selenium test pull request')
@@ -373,6 +394,7 @@ def create_pull_request(webdriver, datasets):
 
 def view_commits(webdriver, datasets):
     repo_commits_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/commits"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(repo_commits_url)
@@ -429,7 +451,6 @@ def get_random_repo_with_pr(datasets):
     if len(repos_with_prs) == 0:
         raise NoPullRequestFoundException('app/datasets/bitbucket/pull_requests.csv does not have any pull request')
     return random.choice(repos_with_prs)
-
 
 
 def get_element_or_none(webdriver, by, element):
