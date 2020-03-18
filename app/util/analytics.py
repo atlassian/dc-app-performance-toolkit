@@ -179,7 +179,7 @@ class AnalyticsCollector:
 
     def get_bitbucket_version(self):
         client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
-                                      password=self.config_yml.admin_password)
+                                     password=self.config_yml.admin_password)
         return client.get_bitbucket_version()
 
     def get_application_version(self):

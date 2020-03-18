@@ -6,7 +6,7 @@ pgrep nfsd > /dev/null && echo "NFS found" || (echo "NFS process was not found. 
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.0)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 echo "Bitbucket Version: ${BITBUCKET_VERSION}"
 
@@ -23,7 +23,7 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Peformance Toolkit."
   echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your BITBUCKET, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./upload_attachments --force 6.13.8"
+  echo "e.g. ./upload_attachments --force 6.10.0"
   echo "!!! Warning !!! This may broke your Bitbucket instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then

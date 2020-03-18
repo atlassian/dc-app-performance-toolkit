@@ -15,6 +15,46 @@ DASHBOARD_URL = f"{BITBUCKET_SETTINGS.server_url}/dashboard"
 PROJECTS_URL = f"{BITBUCKET_SETTINGS.server_url}/projects"
 timeout = 20
 
+# TODO Move to a page objects DCA-53
+SELECTORS = {
+    'activity_selector': {
+        'v6': (By.CSS_SELECTOR, ".pull-request-activity-content"),
+        'v7': (By.CSS_SELECTOR, ".pull-request-activities")
+    },
+    'comment_text_area_selector': {
+        'v6': (By.CSS_SELECTOR, "textarea.text"),
+        'v7': (By.CLASS_NAME, "comment-editor-wrapper")
+    },
+    'text_area_selector': {
+        'v6': (By.CSS_SELECTOR, 'textarea.text'),
+        'v7': (By.CLASS_NAME, 'CodeMirror-code')
+    },
+    'comment_button_selector': {
+        'v6': (By.CSS_SELECTOR, "div.buttons>button:nth-child(1)"),
+        'v7': (By.CSS_SELECTOR, "div.editor-controls>button:nth-child(1)")
+    },
+    'code_area_selector': {
+        'v6': (By.CLASS_NAME, "CodeMirror-code"),
+        'v7': (By.CLASS_NAME, "diff-segment")
+    },
+    'inline_comment_button_selector': {
+        'v6': (By.CSS_SELECTOR, "button.add-comment-trigger>span.aui-iconfont-add-comment"),
+        'v7':  (By.CSS_SELECTOR, ".diff-line-comment-trigger")
+    },
+    'diagram_selector': {
+        'v6': (By.CSS_SELECTOR, 'div.diagram-image'),
+        'v7': (By.CLASS_NAME, 'branches-diagram')
+    },
+    'merge_pr_button_selector': {
+        'v6': (By.CSS_SELECTOR, 'button.confirm-button'),
+        'v7': (By.CSS_SELECTOR, "button[type='submit']")
+    },
+    'del_branch_checkbox_selector': {
+        'v6': (By.CSS_SELECTOR, 'span.pull-request-cleanup-checkbox-wrapper'),
+        'v7': (By.NAME, 'deleteSourceRef')
+    }
+}
+
 
 def _dismiss_popup(webdriver, *args):
     for elem in args:
@@ -22,6 +62,18 @@ def _dismiss_popup(webdriver, *args):
             webdriver.execute_script(f"document.querySelector(\'{elem}\').click()")
         except:
             pass
+
+
+def get_selector(selector_name, version):
+    selector_dict = SELECTORS.get(selector_name)
+    if selector_dict is None:
+        raise Exception(f'Selector {selector_name} not defined.')
+    if type(selector_dict) != dict:
+        raise Exception(f'Selector {selector_name} is not dictionary')
+    selector = selector_dict.get(version)
+    if selector is None:
+        raise Exception(f'Selector {selector_name} for version {version} is not found')
+    return selector
 
 
 def login(webdriver, datasets):
@@ -41,6 +93,9 @@ def login(webdriver, datasets):
         def measure(webdriver, interaction):
             webdriver.get(f'{LOGIN_URL}')
 
+            # Get application major version e.g. v7 or v6
+            webdriver.app_version = webdriver.find_element_by_id('product-version').text.split('.')[0]
+
         measure(webdriver, "selenium_login:open_login_page")
         webdriver.find_element_by_id('j_username').send_keys(user[1])
         webdriver.find_element_by_id('j_password').send_keys(user[2])
@@ -49,7 +104,8 @@ def login(webdriver, datasets):
         def measure(webdriver, interaction):
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "submit")),
                         interaction).click()
-            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "marketing-page-footer")), interaction)
+            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "marketing-page-footer")),
+                        interaction)
         measure(webdriver, "selenium_login:login_get_started")
 
     measure(webdriver, "selenium_login")
@@ -73,6 +129,7 @@ def view_projects(webdriver, datasets):
 
 def view_project_repos(webdriver, datasets):
     project_url = f"{PROJECTS_URL}/{datasets['current_project_key']}"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{project_url}")
@@ -84,6 +141,7 @@ def view_project_repos(webdriver, datasets):
 
 def view_repo(webdriver, datasets):
     repo_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/browse"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{repo_url}")
@@ -93,7 +151,9 @@ def view_repo(webdriver, datasets):
 
 
 def view_list_pull_requests(webdriver, datasets):
-    repo_pr_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests"
+    repo_pr_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                   f"repos/{datasets['current_repo_slug']}/pull-requests")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(f"{repo_pr_url}")
@@ -102,79 +162,109 @@ def view_list_pull_requests(webdriver, datasets):
 
 
 def view_pull_request_overview_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
-    webdriver.get(pull_requests_url)
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview")
 
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "ul.tabs-menu")), interaction)
-        _dismiss_popup(webdriver, '.feature-discovery-close')
+        _dismiss_popup(webdriver, '.feature-discovery-close', '.css-1it7f5o')
     measure(webdriver, 'selenium_view_pull_request_overview')
 
 
 def view_pull_request_diff_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
-        diff_tab = ".diff-tree-toolbar"
-        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, diff_tab)), interaction)
-        _dismiss_popup(webdriver, '.feature-discovery-close')
+        _wait_until(webdriver, ec.visibility_of_any_elements_located((By.LINK_TEXT, 'Diff')), interaction)
+        _dismiss_popup(webdriver, '.feature-discovery-close', '.css-1it7f5o')
     measure(webdriver, 'selenium_view_pull_request_diff')
 
 
 def view_pull_request_commits_tab(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/commits"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/commits")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(pull_requests_url)
         _wait_until(webdriver, ec.visibility_of_any_elements_located((By.CSS_SELECTOR, "tr>th.message")), interaction)
-        _dismiss_popup(webdriver, '.feature-discovery-close')
+        _dismiss_popup(webdriver, '.feature-discovery-close', '.css-1it7f5o')
     measure(webdriver, 'selenium_view_pull_request_commits')
 
 
 def comment_pull_request_diff(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/diff")
     webdriver.get(pull_requests_url)
 
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, ".diff-tree-toolbar")),
+        _wait_until(webdriver, ec.visibility_of_element_located((By.LINK_TEXT, "Diff")), interaction)
+        _dismiss_popup(webdriver, '.feature-discovery-close', '.css-1it7f5o')
+
+        _wait_until(webdriver,
+                    ec.visibility_of_element_located(get_selector('code_area_selector', webdriver.app_version)),
                     interaction)
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CLASS_NAME, "CodeMirror-code")),
-                    interaction)
-        webdriver.execute_script(f"elems=document.querySelectorAll('button.add-comment-trigger>span.aui-iconfont-add-comment'); "
+
+        css_selector = get_selector('inline_comment_button_selector', webdriver.app_version)[1]
+        webdriver.execute_script(f"elems=document.querySelectorAll('{css_selector}'); "
                                  "item=elems[Math.floor(Math.random() * elems.length)];"
                                  "item.scrollIntoView();"
-                                 "item.click();"
-                                 "document.querySelector('textarea.text').value = 'Comment from Selenium script';")
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "textarea.text")),
-                    interaction)
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "div.buttons>button:nth-child(1)")),
+                                 "item.click();")
+
+        if 'v6' in webdriver.app_version:
+            css_selector = get_selector('comment_text_area_selector', webdriver.app_version)[1]
+            webdriver.execute_script(
+                f"document.querySelector('{css_selector}').value = 'Comment from Selenium script';")
+        elif 'v7' in webdriver.app_version:
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located(get_selector('text_area_selector', webdriver.app_version)),
+                        interaction).send_keys('Comment from Selenium script')
+
+        _wait_until(webdriver,
+                    ec.visibility_of_element_located(get_selector('comment_button_selector', webdriver.app_version)),
                     interaction).click()
+
     measure(webdriver, 'selenium_comment_pull_request_file')
 
 
 def comment_pull_request_overview(webdriver, datasets):
-    pull_requests_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview"
+    pull_requests_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/pull-requests/{datasets['pull_request_id']}/overview")
     webdriver.get(pull_requests_url)
 
     @print_timing
     def measure(webdriver, interaction):
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, ".pull-request-activity-content")),
+
+        _wait_until(webdriver,
+                    ec.visibility_of_element_located(get_selector('activity_selector', webdriver.app_version)),
                     interaction)
-        _dismiss_popup(webdriver, 'button.aui-button-link.feature-discovery-close')
-        comment_text_area = webdriver.find_element_by_css_selector('textarea.text')
-        comment_text_area.click()
-        comment_text_area.send_keys(f"{generate_random_string(50)}")
-        _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, "div.buttons>button:nth-child(1)")),
+        _dismiss_popup(webdriver, 'button.aui-button-link.feature-discovery-close', '.css-1it7f5o')
+
+        _wait_until(webdriver,
+                    ec.element_to_be_clickable(get_selector('comment_text_area_selector', webdriver.app_version)),
                     interaction).click()
+
+        _wait_until(webdriver,
+                    ec.element_to_be_clickable(get_selector('text_area_selector', webdriver.app_version)),
+                    interaction).send_keys(f"{generate_random_string(50)}")
+
+        _wait_until(webdriver,
+                    ec.visibility_of_element_located(get_selector('comment_button_selector', webdriver.app_version)),
+                    interaction).click()
+
     measure(webdriver, 'selenium_comment_pull_request_overview')
 
 
 def view_branches(webdriver, datasets):
-    repo_branches_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/branches"
+    repo_branches_url = (f"{PROJECTS_URL}/{datasets['current_project_key']}/"
+                         f"repos/{datasets['current_repo_slug']}/branches")
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(repo_branches_url)
@@ -207,7 +297,8 @@ def create_pull_request(webdriver, datasets):
 
         @print_timing
         def measure(webdriver, interaction):
-            safe_click(webdriver, By.CSS_SELECTOR, '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(4)', interaction)
+            safe_click(webdriver, By.CSS_SELECTOR, '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(4)',
+                       interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'pull-requests-content')), interaction)
             safe_click(webdriver, By.ID, 'empty-list-create-pr-button', interaction)
             _wait_until(webdriver, ec.visibility_of_element_located((By.ID, 'branch-compare')), interaction)
@@ -219,7 +310,9 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR,
                         '#sourceBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_from_dropdown.send_keys(Keys.ENTER)
-            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
+            _wait_until(webdriver,
+                        ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')),
+                        interaction)
             # Choose project source
             safe_click(webdriver, By.ID, 'targetRepo', interaction)
             safe_click(webdriver, By.CSS_SELECTOR, "div#targetRepoDialog>div>ul.results-list>li:nth-child(1)",
@@ -234,16 +327,19 @@ def create_pull_request(webdriver, datasets):
             _wait_until(webdriver, ec.invisibility_of_element_located(
                 (By.CSS_SELECTOR, '#targetBranchDialog>div.results>div.spinner-wrapper')), interaction)
             branch_name_to_dropdown.send_keys(Keys.ENTER)
-            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
+            _wait_until(webdriver,
+                        ec.invisibility_of_element_located((By.CSS_SELECTOR, 'ul.results-list')), interaction)
             _wait_until(webdriver, ec.element_to_be_clickable((By.ID, 'show-create-pr-button')),
                         interaction)
             safe_click(webdriver, By.ID, 'show-create-pr-button', interaction)
-            _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'textarea#pull-request-description')),
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located((By.CSS_SELECTOR, 'textarea#pull-request-description')),
                         interaction)
             webdriver.find_element_by_id('title').clear()
             webdriver.find_element_by_id('title').send_keys('Selenium test pull request')
             safe_click(webdriver, By.ID, 'submit-form', interaction)
-            _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'div.activity-item-content')),
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located(get_selector('activity_selector', webdriver.app_version)),
                         interaction)
             _wait_until(webdriver, ec.element_to_be_clickable((By.CSS_SELECTOR, 'button.merge-button')),
                         interaction)
@@ -253,19 +349,31 @@ def create_pull_request(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             _dismiss_popup(webdriver, 'button.aui-button-link.feature-discovery-close')
-            _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'div.activity-item-content')),
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located(get_selector('activity_selector', webdriver.app_version)),
                         interaction)
             _dismiss_popup(webdriver, 'button.aui-button-link.feature-discovery-close')
-            _wait_until(webdriver, ec.element_to_be_clickable((By.CSS_SELECTOR, 'button.merge-button')),
-                        interaction)
+            if 'v6' in webdriver.app_version:
+                _wait_until(webdriver,
+                            ec.presence_of_element_located((By.CSS_SELECTOR, "aui-spinner[size='small']")),
+                            interaction,
+                            time_out=1)
+                _wait_until(webdriver,
+                            ec.invisibility_of_element_located((By.CSS_SELECTOR, "aui-spinner[size='small']")),
+                            interaction)
+            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, 'merge-button')),
+                        interaction).click()
             _dismiss_popup(webdriver, 'button.aui-button-link.feature-discovery-close')
-            while not get_element_or_none(webdriver, By.CSS_SELECTOR, 'div.diagram-image'):
-                webdriver.execute_script("document.querySelector('button.merge-button').click()")
-            _wait_until(webdriver, ec.visibility_of_element_located((By.CSS_SELECTOR, 'div.diagram-image')),
+            _wait_until(webdriver,
+                        ec.visibility_of_element_located(get_selector('diagram_selector', webdriver.app_version)),
                         interaction)
-            safe_click(webdriver, By.CSS_SELECTOR, 'button.confirm-button', interaction)
-            _wait_until(webdriver, ec.invisibility_of_element_located((By.CSS_SELECTOR,
-                        'span.pull-request-cleanup-checkbox-wrapper')), interaction)
+            _wait_until(webdriver,
+                        ec.element_to_be_clickable(get_selector('merge_pr_button_selector', webdriver.app_version)),
+                        interaction).click()
+            _wait_until(webdriver,
+                        ec.invisibility_of_element_located(
+                            get_selector('del_branch_checkbox_selector', webdriver.app_version)),
+                        interaction)
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
 
         @print_timing
@@ -286,6 +394,7 @@ def create_pull_request(webdriver, datasets):
 
 def view_commits(webdriver, datasets):
     repo_commits_url = f"{PROJECTS_URL}/{datasets['current_project_key']}/repos/{datasets['current_repo_slug']}/commits"
+
     @print_timing
     def measure(webdriver, interaction):
         webdriver.get(repo_commits_url)
@@ -342,7 +451,6 @@ def get_random_repo_with_pr(datasets):
     if len(repos_with_prs) == 0:
         raise NoPullRequestFoundException('app/datasets/bitbucket/pull_requests.csv does not have any pull request')
     return random.choice(repos_with_prs)
-
 
 
 def get_element_or_none(webdriver, by, element):
