@@ -22,6 +22,7 @@ services:
       - python util/git_client_check.py
       - python util/data_preparation/bitbucket/prepare-data.py
     shutdown:
+      - python util/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
       - python util/analytics.py bitbucket
