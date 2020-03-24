@@ -2,7 +2,7 @@ import sys
 import os
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 import platform
 import uuid
 import getpass
@@ -161,9 +161,7 @@ class AnalyticsCollector:
         return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
 
     def set_date_timestamp(self):
-        utc_now = datetime.utcnow()
-        self.time_stamp = int(round(utc_now.timestamp() * 1000))
-        self.date = utc_now.strftime("%m/%d/%Y-%H:%M:%S")
+        self.date = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat('T', 'seconds')
 
     def get_jira_version(self):
         client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
