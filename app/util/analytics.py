@@ -18,6 +18,11 @@ JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 
+MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
+                CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
+                BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400}
+                }
+
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
@@ -25,9 +30,18 @@ SUCCESS_TEST_RATE_REGX = r'(\d{1,3}.\d{1,2}%)'
 JMETER_TEST_REGX = r'jmeter_\S*'
 SELENIUM_TEST_REGX = r'selenium_\S*'
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
+SUCCESS_TEST_RATE = 95.00
+RESULTS_CSV = 'results.csv'
+BZT_LOG = 'bzt.log'
+LABEL_HEADER = 'Label'
+LABEL_HEADER_INDEX = 0
+SAMPLES_HEADER = '# Samples'
+SAMPLES_HEADER_INDEX = 1
+GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
+                  'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
+                  'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
-
-APP_TYPE_MSG = 'Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
+APP_TYPE_MSG = 'ERROR: Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
 
 
 def __validate_app_type():
@@ -54,11 +68,12 @@ class AnalyticsCollector:
         self.duration = 0
         self.concurrency = 0
         self.actual_duration = 0
-        self.selenium_test_rates = 0
-        self.jmeter_test_rates = 0
+        self.selenium_test_rates = dict()
+        self.jmeter_test_rates = dict()
         self.time_stamp = ""
         self.date = ""
         self.application_version = ""
+        self.summary = []
 
     @property
     def config_yml(self):
@@ -74,11 +89,11 @@ class AnalyticsCollector:
         if 'TAURUS_ARTIFACTS_DIR' in os.environ:
             return os.environ.get('TAURUS_ARTIFACTS_DIR')
         else:
-            raise SystemExit('Taurus result directory could not be found')
+            raise SystemExit('ERROR: Taurus result directory could not be found')
 
     @property
     def bzt_log_file(self):
-        with open(f'{self._log_dir}/bzt.log') as log_file:
+        with open(f'{self._log_dir}/{BZT_LOG}') as log_file:
             log_file = log_file.readlines()
             return log_file
 
@@ -94,7 +109,7 @@ class AnalyticsCollector:
 
     def __validate_bzt_log_not_empty(self):
         if len(self.bzt_log_file) == 0:
-            raise SystemExit(f'bzt.log file in {self._log_dir} is empty')
+            raise SystemExit(f'ERROR: {BZT_LOG} file in {self._log_dir} is empty')
 
     def get_duration_by_start_finish_strings(self):
         first_string = self.bzt_log_file[0]
@@ -208,6 +223,110 @@ class AnalyticsCollector:
         self.set_date_timestamp()
         self.application_version = self.get_application_version()
 
+    @property
+    def actual_git_operations_count(self):
+        count = 0
+
+        if self.application_type != BITBUCKET:
+            raise Exception(f'ERROR: {self.application_type} is not {BITBUCKET}')
+        results_csv_file_path = f'{self._log_dir}/results.csv'
+        if not os.path.exists(results_csv_file_path):
+            raise SystemExit(f'ERROR: {results_csv_file_path} was not found.')
+        with open(results_csv_file_path) as res_file:
+            header = res_file.readline()
+            results = res_file.readlines()
+
+        headers_list = header.split(',')
+        if headers_list[LABEL_HEADER_INDEX] != LABEL_HEADER:
+            raise SystemExit(f'ERROR: {results_csv_file_path} has unexpected header. '
+                             f'Actual: {headers_list[LABEL_HEADER_INDEX]}, Expected: {LABEL_HEADER}')
+        if headers_list[SAMPLES_HEADER_INDEX] != SAMPLES_HEADER:
+            raise SystemExit(f'ERROR: {results_csv_file_path} has unexpected header. '
+                             f'Actual: {headers_list[SAMPLES_HEADER_INDEX]}, Expected: {SAMPLES_HEADER}')
+
+        for line in results:
+            if any(s in line for s in GIT_OPERATIONS):
+                count = count + int(line.split(',')[SAMPLES_HEADER_INDEX])
+
+        return count
+
+    @staticmethod
+    def is_all_tests_successful(tests):
+        for success_rate in tests.values():
+            if success_rate < SUCCESS_TEST_RATE:
+                return False
+        return True
+
+    def __is_success(self):
+        success = (self.is_all_tests_successful(self.jmeter_test_rates) and
+                   self.is_all_tests_successful(self.selenium_test_rates))
+        if success:
+            return success, 'OK'
+        else:
+            return success, f"One or more actions have success rate < {SUCCESS_TEST_RATE} %"
+
+    def __is_finished(self):
+        finished = self.actual_duration >= self.duration
+        if finished:
+            return finished, 'OK'
+        else:
+            return finished, (f"Test run was aborted: actual test duration {self.actual_duration} sec "
+                              f"< than expected test_duration {self.duration} sec in yml file")
+
+    def __is_compliant(self):
+        compliant = (self.actual_duration >= MIN_DEFAULTS[self.application_type]['test_duration'] and
+                     self.concurrency >= MIN_DEFAULTS[self.application_type]['concurrency'])
+        if compliant:
+            return compliant, 'OK'
+        else:
+            error_msg = ''
+            if self.actual_duration < MIN_DEFAULTS[self.application_type]['test_duration']:
+                error_msg = error_msg + (f"Test run duration {self.actual_duration} sec < than minimum test "
+                                         f"duration {MIN_DEFAULTS[self.application_type]['test_duration']} sec.")
+
+            if self.concurrency < MIN_DEFAULTS[self.application_type]['concurrency']:
+                error_msg = error_msg + (f" Test run concurrency {self.concurrency} < than minimum test "
+                                         f"concurrency {MIN_DEFAULTS[self.application_type]['concurrency']}.")
+            return compliant, error_msg
+
+    def __is_git_operations_compliant(self):
+        # calculate expected git operations for a particular test duration
+        expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
+        git_operations_compliant = self.actual_git_operations_count >= expected_get_operations_count
+        if git_operations_compliant:
+            return git_operations_compliant, 'OK'
+        else:
+            return git_operations_compliant, (f"Total git operations < than minimum "
+                                              f"{expected_get_operations_count}")
+
+    def generate_report_summary(self):
+        finished = self.__is_finished()
+        success = self.__is_success()
+        compliant = self.__is_compliant()
+
+        overall_status = 'OK' if finished[0] and success[0] and compliant[0] else 'FAIL'
+
+        if self.application_type == BITBUCKET:
+            git_compliant = self.__is_git_operations_compliant()
+            overall_status = 'OK' if overall_status and git_compliant[0] else 'FAIL'
+
+        with open(f'{self._log_dir}/results_summary.log', 'w') as rs_file:
+            rs_file.write(f'Summary run status: {overall_status}\n\n')
+            rs_file.write(f'Action{" "*(50-6)}Success Rate{" "*(20-12)}Status\n')
+            for key, value in self.jmeter_test_rates.items():
+                status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
+                rs_file.write(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
+            for key, value in self.selenium_test_rates.items():
+                status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
+                rs_file.write(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
+            rs_file.write('\n')
+            rs_file.write(f'Finished: {finished}\n')
+            rs_file.write(f'Success: {success}\n')
+            rs_file.write(f'Compliant: {compliant}\n')
+            if self.application_type == BITBUCKET:
+                rs_file.write(f'Total Git operations count = {self.actual_git_operations_count}\n')
+                rs_file.write(f'Total Git operations compliant: {git_compliant}\n')
+
 
 class AnalyticsSender:
 
@@ -239,8 +358,9 @@ class AnalyticsSender:
 def main():
     app_type = get_application_type()
     collector = AnalyticsCollector(app_type)
+    collector.generate_analytics()
+    collector.generate_report_summary()
     if collector.is_analytics_enabled():
-        collector.generate_analytics()
         sender = AnalyticsSender(collector)
         sender.send_request()
 
