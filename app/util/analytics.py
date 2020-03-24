@@ -161,6 +161,8 @@ class AnalyticsCollector:
         return int(numbers) * seconds_per_unit[units] if units in seconds_per_unit else int(numbers)
 
     def set_date_timestamp(self):
+        utc_now = datetime.utcnow()
+        self.time_stamp = int(round(utc_now.timestamp() * 1000))
         self.date = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat('T', 'seconds')
 
     def get_jira_version(self):
