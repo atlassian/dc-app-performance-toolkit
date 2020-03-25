@@ -90,6 +90,6 @@ def validate(file_path: Path) -> None:
             __validate_header(reader.fieldnames)
             __validate_rows(reader)
     except (ValidationException, FileNotFoundError) as e:
-        raise SystemExit(f"Validation failed. File path: [{file_path}]. Validation details: {str(e)}")
+        raise SystemExit(f"ERROR: Validation failed. File path: [{file_path}]. Validation details: {str(e)}")
 
     print(f'File: {file_path} validated in {time.time() - start_time} seconds')
