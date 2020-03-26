@@ -289,10 +289,11 @@ class PullRequest(BasePage):
         self.wait_comment_text_area_visible(interaction)
         selector = self.get_selector(PullRequestLocator.comment_text_area)
         self.execute_js(f"document.querySelector('{selector[1]}').value = 'Comment from Selenium script';")
-        self.wait_until_visible(PullRequestLocator.comment_button, interaction).click()
+        self.click_save_comment_button(interaction)
 
     def add_code_comment_v7(self, interaction):
         self.wait_until_visible(PullRequestLocator.text_area, interaction).send_keys('Comment from Selenium script')
+        self.click_save_comment_button(interaction)
 
     def click_save_comment_button(self, interaction):
         return self.wait_until_visible(PullRequestLocator.comment_button, interaction).click()
