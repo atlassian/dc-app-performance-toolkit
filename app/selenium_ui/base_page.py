@@ -1,7 +1,8 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium_ui.conftest import AnyEc
-import random, string
+import random
+import string
 
 TIMEOUT = 20
 

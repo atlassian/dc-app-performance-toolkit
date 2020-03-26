@@ -2,9 +2,10 @@ from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import BaseLocator, LoginPageLocators, GetStartedLocators, \
-    DashboardLocators,ProjectsLocators, ProjectLocators, RepoLocators, RepoNavigationPanelLocators, PopupLocators, \
+    DashboardLocators, ProjectsLocators, ProjectLocators, RepoLocators, RepoNavigationPanelLocators, PopupLocators, \
     PullRequestLocator, BranchesLocator, RepositorySettingsLocator, UserSettingsLocator, RepoCommitsLocator, \
     LogoutPageLocators
+
 
 class UrlManager:
 
@@ -18,7 +19,7 @@ class UrlManager:
         self.repo_params = f'{self.project_params}/repos/{self.repo_slug}'
         self.repo_pull_requests_params = f'{self.repo_params}/pull-requests'
         self.pull_request_params_overview = f'{self.repo_pull_requests_params}/{pull_request_key}/overview'
-        self.pull_request_params_diff= f'{self.repo_pull_requests_params}/{pull_request_key}/diff'
+        self.pull_request_params_diff = f'{self.repo_pull_requests_params}/{pull_request_key}/diff'
         self.pull_request_params_commits = f'{self.repo_pull_requests_params}/{pull_request_key}/commits'
         self.branches_params = f'{self.repo_params}/branches'
         self.fork_repo_params = f'/users/{self.user}/repos/{self.repo_slug}/settings'
@@ -69,7 +70,7 @@ class LoginPage(BasePage):
         self.get_element(LoginPageLocators.password_textfield).send_keys(password)
 
     def submit_login(self, interaction=None):
-        self.wait_until_visible(LoginPageLocators.submin_button, interaction).click()
+        self.wait_until_visible(LoginPageLocators.submit_button, interaction).click()
 
     def set_credentials(self, username, password):
         self.fill_username(username)
@@ -102,7 +103,7 @@ class Dashboard(BasePage):
         return self.verify_url(DashboardLocators.dashboard_params)
 
     def dashboard_presented(self, interaction):
-        return self.wait_until_present(DashboardLocators.dashboard_presens, interaction)
+        return self.wait_until_present(DashboardLocators.dashboard_presence, interaction)
 
 
 class Projects(BasePage):

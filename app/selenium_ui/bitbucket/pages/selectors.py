@@ -16,7 +16,7 @@ class LoginPageLocators:
     login_params = '/login?next=/getting-started'
     login_url = f"{BaseLocator.host}{login_params}"
 
-    submin_button = {'6': (By.ID, "submit"), '7': (By.ID, "submit")}
+    submit_button = {'6': (By.ID, "submit"), '7': (By.ID, "submit")}
     username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
     password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
     application_version = (By.ID, 'product-version')
@@ -39,7 +39,7 @@ class DashboardLocators:
     dashboard_params = '/dashboard'
     dashboard_url = f'{BaseLocator.host}{dashboard_params}'
 
-    dashboard_presens = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
+    dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
 
 
 class ProjectsLocators:
@@ -98,7 +98,7 @@ class RepoLocators:
 class PullRequestLocator:
 
     tab_panel = {'6': (By.CSS_SELECTOR, 'ul.tabs-menu'), '7': (By.CSS_SELECTOR, 'ul.tabs-menu')}
-    commit_files = {'6':(By.CSS_SELECTOR, '.commit-files>.file-tree-container'),
+    commit_files = {'6': (By.CSS_SELECTOR, '.commit-files>.file-tree-container'),
                     '7': (By.CSS_SELECTOR, '.changes-sidebar>.changes-scope-content')}
     diff_code_lines = {'6': (By.CLASS_NAME, 'CodeMirror-code'),
                        '7': (By.CLASS_NAME, "diff-segment")}
@@ -137,6 +137,7 @@ class RepositorySettingsLocator:
 
 class UserSettingsLocator:
     user_role_label = (By.CSS_SELECTOR, 'div.user-detail.username')
+
 
 class RepoCommitsLocator:
     repo_commits_graph = (By.CSS_SELECTOR, 'svg.commit-graph')
