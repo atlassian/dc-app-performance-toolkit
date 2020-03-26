@@ -160,7 +160,6 @@ def comment_pull_request_diff(webdriver, datasets):
             pull_request.add_code_comment_v6(interaction)
         elif webdriver.app_version == '7':
             pull_request.add_code_comment_v7(interaction)
-        pull_request.click_save_comment_button(interaction)
     measure(webdriver, 'selenium_comment_pull_request_file')
 
 
