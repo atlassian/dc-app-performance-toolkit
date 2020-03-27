@@ -270,7 +270,7 @@ class AnalyticsCollector:
         if finished:
             return finished, 'OK'
         else:
-            return finished, (f"Test run was aborted: actual test duration {self.actual_duration} sec "
+            return finished, (f"Actual test duration {self.actual_duration} sec "
                               f"< than expected test_duration {self.duration} sec in yml file")
 
     def __is_compliant(self):
