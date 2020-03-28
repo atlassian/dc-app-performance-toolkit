@@ -2,8 +2,7 @@ import random
 from selenium_ui.conftest import print_timing
 
 from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted, Dashboard, Projects, Project, Repository, \
-    RepoNavigationPanel, PopupManager, RepoPullRequests, PullRequest, RepositoryBranches, ForkRepositorySettings, \
-    UserSettings, RepositoryCommits, LogoutPage
+    RepoNavigationPanel, PopupManager, RepoPullRequests, PullRequest, RepositoryBranches, RepositoryCommits, LogoutPage
 
 
 def setup_run_data(datasets):
@@ -182,7 +181,8 @@ def comment_pull_request_overview(webdriver, datasets):
 
 def view_branches(webdriver, datasets):
     branches = RepositoryBranches(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'])
+                                  repo_slug=datasets['repo_slug'])
+
     @print_timing
     def measure(webdriver, interaction):
         branches.go_to()
