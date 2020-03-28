@@ -12,68 +12,42 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium_ui.conftest import print_timing, AnyEc, generate_random_string
 from util.conf import JIRA_SETTINGS
 
+from selenium_ui.jira.pages.pages import LoginPage, PopupManager
+
 timeout = 20
 
 ISSUE_TYPE_DROPDOWN = 'issuetype-field'
 APPLICATION_URL = JIRA_SETTINGS.server_url
 
 
-def _dismiss_popup(webdriver, *args):
-    for elem in args:
-        try:
-            webdriver.execute_script(f"document.querySelector(\'{elem}\').click()")
-        except:
-            pass
+def setup_run_data(datasets):
+    user = random.choice(datasets["users"])
+    issue = random.choice(datasets["issues"])
+    datasets['username'] = user[0]
+    datasets['password'] = user[1]
+    datasets['issue'] = issue[0]
 
 
 def login(webdriver, datasets):
+    setup_run_data(datasets)
     @print_timing
     def measure(webdriver, interaction):
+        login_page = LoginPage(webdriver)
         @print_timing
         # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/login.jsp')
-
+            login_page.go_to()
+            login_page.at()
         measure(webdriver, "selenium_login:open_login_page")
-
-        def _setup_page_is_presented():
-            elems = webdriver.find_elements_by_id('next')
-            return True if elems else False
-
-        def _user_setup():
-            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "next")), interaction)
-            next_el = webdriver.find_element_by_id('next')
-            next_el.send_keys(Keys.ESCAPE)
-            next_el.click()
-            _wait_until(webdriver,
-                        ec.visibility_of_element_located((By.CSS_SELECTOR, "input[value='Next']")), interaction
-                        ).click()
-            _wait_until(webdriver,
-                        ec.visibility_of_element_located((By.CSS_SELECTOR, "a[data-step-key='browseprojects']")),
-                        interaction
-                        ).click()
-            webdriver.get(f'{APPLICATION_URL}/secure/Dashboard.jspa')
-
-        user = random.choice(datasets["users"])
-        webdriver.find_element_by_id('login-form-username').send_keys(user[0])
-        webdriver.find_element_by_id('login-form-password').send_keys(user[1])
 
         @print_timing
         def measure(webdriver, interaction):
-            webdriver.find_element_by_id('login-form-submit').click()
-            if _setup_page_is_presented():
-                _user_setup()
-            _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
-
+            login_page.set_credentials(username=datasets['username'], password=datasets['password'])
+            if login_page.is_first_login():
+                login_page.first_login_setup(interaction)
         measure(webdriver, "selenium_login:login_and_view_dashboard")
-
     measure(webdriver, "selenium_login")
-
-    _dismiss_popup(webdriver,
-                   '.aui-message .icon-close',
-                   'form.tip-footer>.helptip-close',
-                   '.aui-inline-dialog-contents .cancel'
-                   )
+    PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_issue(webdriver, datasets):
