@@ -71,7 +71,7 @@ class Project(BasePage):
     def __init__(self, driver, project_key):
         BasePage.__init__(self, driver)
         self.project_key = project_key
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key)
+        url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.project_url()
         self.params_to_verify = url_manager.project_params
 
@@ -112,7 +112,7 @@ class Repository(BasePage):
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key, repo_slug=repo_slug)
+        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.repo_url()
         self.params_to_verify = url_manager.repo_params_browse
         self.repo_slug = repo_slug
@@ -142,7 +142,7 @@ class RepoPullRequests(BasePage):
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key, repo_slug=repo_slug)
+        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.repo_pull_requests()
         self.params_to_verify = url_manager.repo_pull_requests_params
 
@@ -195,7 +195,7 @@ class PullRequest(BasePage):
 
     def __init__(self, driver, project_key=None, repo_slug=None, pull_request_key=None):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key, repo_slug=repo_slug,
+        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug,
                                  pull_request_key=pull_request_key)
         self.page_url = url_manager.pull_request_overview()
         self.params_to_verify_overview = url_manager.pull_request_params_overview
@@ -273,7 +273,7 @@ class RepositoryBranches(BasePage):
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key, repo_slug=repo_slug)
+        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.repo_branches()
         self.params_to_verify = url_manager.branches_params
 
@@ -301,7 +301,7 @@ class RepositorySettings(BasePage):
 class ForkRepositorySettings(RepositorySettings):
     def __init__(self, driver, user, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, user=user, repo_slug=repo_slug)
+        url_manager = UrlManager(user=user, repo_slug=repo_slug)
         self.page_url = url_manager.fork_repo_url()
         self.params_to_verify = url_manager.fork_repo_params
 
@@ -313,7 +313,7 @@ class UserSettings(BasePage):
 
     def __init__(self, driver, user):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, user=user)
+        url_manager = UrlManager(user=user)
         self.page_url = url_manager.user_settings_url()
         self.params_to_verify = url_manager.user_settings_params
 
@@ -327,7 +327,7 @@ class UserSettings(BasePage):
 class RepositoryCommits(BasePage):
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(host=BaseLocator.host, project_key=project_key, repo_slug=repo_slug)
+        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.commits_url()
         self.params_to_verify = url_manager.repo_commits_params
 
