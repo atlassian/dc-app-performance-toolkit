@@ -93,10 +93,7 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(executable_path='/Users/smoro/.bzt/selenium-taurus/tools/chromedriver/80.0.3987.106/chromedriver', options=chrome_options)
-        driver.implicitly_wait(2)
-        driver.set_page_load_timeout(40)
-        driver.set_script_timeout(60)
+        driver = Chrome(options=chrome_options)
         return driver
 
 
