@@ -19,7 +19,7 @@ def test_3_selenium_view_project_repositories(webdriver, bitbucket_datasets, bit
     modules.view_project_repos(webdriver, bitbucket_datasets)
 
 
-def test_4_selenium_browse_repo(webdriver, bitbucket_datasets, bitbucket_screen_shots):
+def test_4_selenium_view_repo(webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_repo(webdriver, bitbucket_datasets)
 
 

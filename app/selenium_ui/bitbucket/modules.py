@@ -239,18 +239,6 @@ def create_pull_request(webdriver, datasets):
             PopupManager(webdriver).dismiss_default_popup()
             pull_request.merge_pull_request(interaction)
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
-
-        @print_timing
-        def measure(webdriver, interaction):
-            repo_settings = ForkRepositorySettings(webdriver,
-                                                   user=datasets['username'], repo_slug=datasets['fork_repo_name'])
-
-            repo_settings.go_to()
-            repo_settings.delete_repository(interaction, repo_slug=datasets['fork_repo_name'])
-            user_settings = UserSettings(webdriver, user=datasets['username'])
-            user_settings.at()
-            user_settings.user_role_visible(interaction)
-        measure(webdriver, 'selenium_create_pull_request:delete_fork_repo')
     measure(webdriver, 'selenium_create_pull_request')
 
 

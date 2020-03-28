@@ -24,6 +24,7 @@ services:
     shutdown:
       - python util/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+      - python util/data_preparation/bitbucket/forks_cleanup.py
     post-process:
       - python util/analytics.py bitbucket
 execution:

@@ -15,7 +15,8 @@ from selenium.webdriver.chrome.options import Options
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
+    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, BITBUCKET_USERS, BITBUCKET_PROJECTS, \
+    BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_USERS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -92,7 +93,10 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(executable_path='/Users/smoro/.bzt/selenium-taurus/tools/chromedriver/80.0.3987.106/chromedriver', options=chrome_options)
+        driver.implicitly_wait(2)
+        driver.set_page_load_timeout(40)
+        driver.set_script_timeout(60)
         return driver
 
 
@@ -182,28 +186,20 @@ def jira_datasets():
 
 @pytest.fixture(scope="module")
 def confluence_datasets():
-    # TODO extract paths to project_paths
     datasets = dict()
-    input_data_path = Path(__file__).parents[1] / "datasets" / "confluence"
-
-    datasets["pages"] = __read_input_file(input_data_path / "pages.csv")
-    datasets["blogs"] = __read_input_file(input_data_path / "blogs.csv")
-    datasets["users"] = __read_input_file(input_data_path / "users.csv")
-
+    datasets["pages"] = __read_input_file(CONFLUENCE_PAGES)
+    datasets["blogs"] = __read_input_file(CONFLUENCE_BLOGS)
+    datasets["users"] = __read_input_file(CONFLUENCE_USERS)
     return datasets
 
 
 @pytest.fixture(scope="module")
 def bitbucket_datasets():
-    # TODO extract paths to project_paths
     datasets = dict()
-    input_data_path = Path(__file__).parents[1] / "datasets" / "bitbucket"
-
-    datasets["projects"] = __read_input_file(input_data_path / "projects.csv")
-    datasets["users"] = __read_input_file(input_data_path / "users.csv")
-    datasets["repos"] = __read_input_file(input_data_path / "repos.csv")
-    datasets["pull_requests"] = __read_input_file(input_data_path / "pull_requests.csv")
-
+    datasets["projects"] = __read_input_file(BITBUCKET_PROJECTS)
+    datasets["users"] = __read_input_file(BITBUCKET_USERS)
+    datasets["repos"] = __read_input_file(BITBUCKET_REPOS)
+    datasets["pull_requests"] = __read_input_file(BITBUCKET_PRS)
     return datasets
 
 
