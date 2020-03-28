@@ -2,8 +2,74 @@ from selenium.webdriver.common.by import By
 from util.conf import BITBUCKET_SETTINGS
 
 
-class BaseLocator:
-    host = f"{BITBUCKET_SETTINGS.server_url}"
+class UrlManager:
+
+    def __init__(self, user=None, project_key=None, repo_slug=None, pull_request_key=None):
+        self.host = BITBUCKET_SETTINGS.server_url
+        self.user = user
+        self.project_key = project_key
+        self.repo_slug = repo_slug
+        self.project_params = f'/projects/{self.project_key}'
+        self.repo_params_browse = f'/projects/{self.project_key}/repos/{self.repo_slug}/browse'
+        self.repo_params = f'/projects/{self.project_key}/repos/{self.repo_slug}'
+        self.repo_pull_requests_params = f'{self.repo_params}/pull-requests'
+        self.pull_request_params_overview = f'{self.repo_params}/pull-requests/{pull_request_key}/overview'
+        self.pull_request_params_diff = f'{self.repo_params}/pull-requests/{pull_request_key}/diff'
+        self.pull_request_params_commits = f'{self.repo_params}/pull-requests/{pull_request_key}/commits'
+        self.branches_params = f'{self.repo_params}/branches'
+        self.fork_repo_params = f'/users/{self.user}/repos/{self.repo_slug}/settings'
+        self.user_settings_params = f'/users/{self.user}'
+        self.repo_commits_params = f'{self.repo_params}/commits'
+        self.login_params = '/login?next=/getting-started'
+        self.logout_params = '/j_atl_security_logout'
+        self.get_started_params = '/getting-started'
+        self.dashboard_params = '/dashboard'
+        self.projects_params = '/projects'
+
+    def project_url(self):
+        return f"{self.host}{self.project_params}"
+
+    def repo_url(self):
+        return f"{self.host}{self.repo_params_browse}"
+
+    def repo_pull_requests(self):
+        return f"{self.host}{self.repo_pull_requests_params}"
+
+    def repo_branches(self):
+        return f"{self.host}{self.branches_params}"
+
+    def pull_request_overview(self):
+        return f"{self.host}{self.pull_request_params_overview}"
+
+    def pull_request_diff(self):
+        return f"{self.host}{self.pull_request_params_diff}"
+
+    def pull_request_commits(self):
+        return f"{self.host}{self.pull_request_params_commits}"
+
+    def fork_repo_url(self):
+        return f"{self.host}{self.fork_repo_params}"
+
+    def user_settings_url(self):
+        return f"{self.host}{self.user_settings_params}"
+
+    def commits_url(self):
+        return f"{self.host}{self.repo_commits_params}"
+
+    def login_url(self):
+        return f"{self.host}{self.login_params}"
+
+    def logout_url(self):
+        return f"{self.host}{self.logout_params}"
+
+    def get_started_url(self):
+        return f"{self.host}{self.get_started_params}"
+
+    def dashboard_url(self):
+        return f"{self.host}{self.dashboard_params}"
+
+    def projects_url(self):
+        return f"{self.host}{self.projects_params}"
 
 
 class PopupLocators:
@@ -13,8 +79,8 @@ class PopupLocators:
 
 
 class LoginPageLocators:
-    login_params = '/login?next=/getting-started'
-    login_url = f"{BaseLocator.host}{login_params}"
+    login_params = UrlManager().login_params
+    login_url = UrlManager().login_url()
 
     submit_button = {'6': (By.ID, "submit"), '7': (By.ID, "submit")}
     username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
@@ -23,28 +89,28 @@ class LoginPageLocators:
 
 
 class LogoutPageLocators:
-    logout_params = '/j_atl_security_logout'
-    logout_url = f"{BaseLocator.host}{logout_params}"
+    logout_params = UrlManager().logout_params
+    logout_url = UrlManager().logout_url()
 
 
 class GetStartedLocators:
-    get_started_params = '/getting-started'
-    get_started_url = f"{BaseLocator.host}{get_started_params}"
+    get_started_params = UrlManager().get_started_params
+    get_started_url = UrlManager().get_started_url()
 
     bitbucket_is_ready_widget = {'6': (By.CLASS_NAME, "marketing-page-footer"),
                                  '7': (By.CLASS_NAME, "marketing-page-footer")}
 
 
 class DashboardLocators:
-    dashboard_params = '/dashboard'
-    dashboard_url = f'{BaseLocator.host}{dashboard_params}'
+    dashboard_params = UrlManager().dashboard_params
+    dashboard_url = UrlManager().dashboard_url()
 
     dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
 
 
 class ProjectsLocators:
-    projects_params = '/projects'
-    project_url = f"{BaseLocator.host}{projects_params}"
+    projects_params = UrlManager().projects_params
+    project_url = UrlManager().projects_url()
 
     projects_list = {'6': (By.ID, "projects-container"), '7': (By.ID, "projects-container")}
 

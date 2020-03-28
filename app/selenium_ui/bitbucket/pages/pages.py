@@ -4,61 +4,11 @@ from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import BaseLocator, LoginPageLocators, GetStartedLocators, \
     DashboardLocators, ProjectsLocators, ProjectLocators, RepoLocators, RepoNavigationPanelLocators, PopupLocators, \
     PullRequestLocator, BranchesLocator, RepositorySettingsLocator, UserSettingsLocator, RepoCommitsLocator, \
-    LogoutPageLocators
-
-
-class UrlManager:
-
-    def __init__(self, host=None, user=None, project_key=None, repo_slug=None, pull_request_key=None):
-        self.host = host
-        self.user = user
-        self.project_key = project_key
-        self.repo_slug = repo_slug
-        self.project_params = f'/projects/{self.project_key}'
-        self.repo_params_browse = f'{self.project_params}/repos/{self.repo_slug}/browse'
-        self.repo_params = f'{self.project_params}/repos/{self.repo_slug}'
-        self.repo_pull_requests_params = f'{self.repo_params}/pull-requests'
-        self.pull_request_params_overview = f'{self.repo_pull_requests_params}/{pull_request_key}/overview'
-        self.pull_request_params_diff = f'{self.repo_pull_requests_params}/{pull_request_key}/diff'
-        self.pull_request_params_commits = f'{self.repo_pull_requests_params}/{pull_request_key}/commits'
-        self.branches_params = f'{self.repo_params}/branches'
-        self.fork_repo_params = f'/users/{self.user}/repos/{self.repo_slug}/settings'
-        self.user_settings_params = f'/users/{self.user}'
-        self.repo_commits_params = f'{self.repo_params}/commits'
-
-    def project_url(self):
-        return f"{self.host}{self.project_params}"
-
-    def repo_url(self):
-        return f"{self.host}{self.repo_params_browse}"
-
-    def repo_pull_requests(self):
-        return f"{self.host}{self.repo_pull_requests_params}"
-
-    def repo_branches(self):
-        return f"{self.host}{self.branches_params}"
-
-    def pull_request_overview(self):
-        return f"{self.host}{self.pull_request_params_overview}"
-
-    def pull_request_diff(self):
-        return f"{self.host}{self.pull_request_params_diff}"
-
-    def pull_request_commits(self):
-        return f"{self.host}{self.pull_request_params_commits}"
-
-    def fork_repo_url(self):
-        return f"{self.host}{self.fork_repo_params}"
-
-    def user_settings_url(self):
-        return f"{self.host}{self.user_settings_params}"
-
-    def commits_url(self):
-        return f"{self.host}{self.repo_commits_params}"
+    LogoutPageLocators, UrlManager
 
 
 class LoginPage(BasePage):
-    page_url = LoginPageLocators.login_url
+    page_url = UrlManager()
 
     def at(self):
         return self.verify_url(LoginPageLocators.login_params)
