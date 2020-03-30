@@ -261,8 +261,8 @@ class PullRequest(BasePage):
 
     def merge_pull_request(self, interaction):
         if self.driver.app_version == '6':
-            self.wait_until_present(PullRequestLocator.merge_spinner, interaction, time_out=1)
-            self.wait_until_invisible(PullRequestLocator.merge_spinner, interaction)
+            if self.get_elements(PullRequestLocator.merge_spinner):
+                self.wait_until_invisible(PullRequestLocator.merge_spinner, interaction)
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
@@ -300,8 +300,9 @@ class RepositoryBranches(BasePage):
 
     def delete_branch(self, interaction, branch_name):
         self.wait_until_visible(BranchesLocator.search_branch_textfield, interaction).send_keys(branch_name)
+        self.wait_until_visible(BranchesLocator.branches_name, interaction)
         self.wait_until_visible(BranchesLocator.search_branch_action, interaction).click()
-        self.wait_until_present(BranchesLocator.search_action_delete_branch, interaction).click()
+        self.execute_js("document.querySelector('li>a.delete-branch').click()")
         self.wait_until_clickable(BranchesLocator.delete_branch_diaglog_submit, interaction).click()
 
 

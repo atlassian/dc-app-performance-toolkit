@@ -27,6 +27,11 @@ class BasePage:
         by, locator = selector_name[0], selector_name[1]
         return self.driver.find_element(by, locator)
 
+    def get_elements(self, selector):
+        selector_name = self.get_selector(selector)
+        by, locator = selector_name[0], selector_name[1]
+        return self.driver.find_elements(by, locator)
+
     def wait_until_invisible(self, selector_name, interaction=None):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector),
