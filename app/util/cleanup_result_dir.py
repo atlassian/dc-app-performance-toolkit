@@ -10,11 +10,11 @@ files_to_remove = ['jmeter.out',
                    'system.properties']
 
 
-for _ in files_to_remove:
-    file_path = Path(artifacts_dir + f'/{_}')
+for file in files_to_remove:
+    file_path = Path(artifacts_dir + f'/{file}')
     try:
         os.remove(file_path)
     except OSError as e:
-        print(f'Deleting of the {_} failed!'
+        print(f'Deleting of the {file} failed!'
               f'Error: {file_path}: {e.strerror}')
 

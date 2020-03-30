@@ -26,6 +26,7 @@ services:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
       - python util/analytics.py bitbucket
+      - python util/cleanup_result_dir.py
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
