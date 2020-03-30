@@ -1,5 +1,7 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
 from selenium_ui.conftest import AnyEc
 import random
 import string
@@ -27,6 +29,11 @@ class BasePage:
         by, locator = selector_name[0], selector_name[1]
         return self.driver.find_element(by, locator)
 
+    def get_elements(self, selector):
+        selector_name = self.get_selector(selector)
+        by, locator = selector_name[0], selector_name[1]
+        return self.driver.find_elements(by, locator)
+
     def wait_until_invisible(self, selector_name, interaction=None):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector),
@@ -35,6 +42,11 @@ class BasePage:
     def wait_until_visible(self, selector_name, interaction=None):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector),
+                                 interaction=interaction)
+
+    def wait_until_available_to_switch(self, selector_name, interaction=None):
+        selector = self.get_selector(selector_name)
+        return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
                                  interaction=interaction)
 
     def wait_until_present(self, selector_name, interaction=None, time_out=TIMEOUT):
@@ -51,6 +63,14 @@ class BasePage:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector),
                                  interaction=interaction)
+
+    def wait_until_any_ec_presented(self, selector_names, interaction):
+        origin_selectors = []
+        for selector in selector_names:
+            origin_selectors.append(self.get_selector(selector))
+        any_ec = AnyEc()
+        any_ec.ecs = tuple(ec.presence_of_element_located(origin_selector) for origin_selector in origin_selectors)
+        return self.__wait_until(expected_condition=any_ec, interaction=interaction)
 
     def __wait_until(self, expected_condition, interaction, time_out=TIMEOUT):
         message = f"Interaction: {interaction}. "
@@ -83,6 +103,9 @@ class BasePage:
             except:
                 pass
 
+    def return_to_parent_frame(self):
+        return self.driver.switch_to.parent_frame()
+
     def get_selector(self, selector_name):
         selector = selector_name.get(self.driver.app_version) if type(selector_name) == dict else selector_name
         if selector is None:
@@ -98,3 +121,9 @@ class BasePage:
     @staticmethod
     def generate_random_string(length):
         return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+
+    def select(self, element):
+        return Select(element)
+
+    def action_chains(self):
+        return ActionChains(self.driver)

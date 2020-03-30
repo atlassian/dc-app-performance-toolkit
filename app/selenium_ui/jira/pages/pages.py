@@ -1,7 +1,10 @@
 from selenium.webdriver.common.keys import Keys
+import time
+import random
 
 from selenium_ui.base_page import BasePage
-from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators
+from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
+    IssueLocators, ProjectLocators, SearchLocators
 
 
 class PopupManager(BasePage):
@@ -33,13 +36,108 @@ class LoginPage(BasePage):
         self.get_element(LoginPageLocators.login_submit_button).click()
 
 
-class Issue(BasePage):
+class IssuePage(BasePage):
 
-    def __init__(self, driver, issue):
+    def __init__(self, driver, issue_key=None, issue_id=None):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(issue=issue)
-        self.page_url = url_manager.issue_url()
-        self.params_to_verify = url_manager.issue_params
+        url_manager_modal = UrlManager(issue_key=issue_key)
+        url_manager_edit_page = UrlManager(issue_id=issue_id)
+        self.page_url = url_manager_modal.issue_url()
+        self.page_url_edit_issue = url_manager_edit_page.edit_issue_url()
+        self.params_to_verify = url_manager_modal.issue_params
 
     def at(self):
         return self.verify_url(self.params_to_verify)
+
+    def wait_issue_title_visible(self, interaction):
+        self.wait_until_visible(IssueLocators.issue_title, interaction)
+
+    def go_to_edit_issue(self, interaction):
+        self.go_to_url(self.page_url_edit_issue)
+        self.wait_until_visible(IssueLocators.edit_issue_page, interaction)
+
+    def fill_summary_edit(self):
+        text_summary = f"Edit summary form selenium - {self.generate_random_string(10)}"
+        self.get_element(IssueLocators.issue_summary_field).send_keys(text_summary)
+
+    def __fill_description(self, text, interaction):
+        self.wait_until_available_to_switch(IssueLocators.issue_description_field, interaction)
+        self.get_element(IssueLocators.tinymce_description_field).send_keys(text)
+        self.return_to_parent_frame()
+
+    def edit_issue_submit(self):
+        self.get_element(IssueLocators.edit_issue_submit).click()
+
+    def fill_description_edit(self, interaction):
+        text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
+        self.__fill_description(text_description, interaction)
+
+    def open_create_issue_modal(self, interaction):
+        self.wait_until_clickable(IssueLocators.create_issue_button, interaction).click()
+        self.wait_until_visible(IssueLocators.issue_modal, interaction)
+
+    def fill_description_create(self, interaction):
+        text_description = f'Description: {self.generate_random_string(100)}'
+        self.__fill_description(text_description, interaction)
+
+    def fill_summary_create(self, interaction):
+        summary = f"Issue created date {time.time()}"
+        self.wait_until_clickable(IssueLocators.issue_summary_field, interaction).send_keys(summary)
+
+    def assign_to_me(self):
+        assign_to_me_links = self.get_elements(IssueLocators.issue_assign_to_me_link)
+        for link in assign_to_me_links:
+            link.click()
+
+    def set_resolution(self):
+        resolution_field = self.get_elements(IssueLocators.issue_resolution_field)
+        if resolution_field:
+            dropdown_length = len(self.select(resolution_field[0]).options)
+            random_resolution_id = random.randint(1, dropdown_length - 1)
+            self.select(resolution_field[0]).select_by_index(random_resolution_id)
+
+    def set_issue_type(self, interaction):
+        def __filer_epic(element):
+            return "epic" not in element.get_attribute("class").lower()
+
+        self.get_element(IssueLocators.issue_type_field).click()
+        issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
+        if issue_dropdown_elements:
+            filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
+            rnd_issue_type_el = random.choice(filtered_issue_elements)
+            self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
+        self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner, interaction)
+
+    def submit_issue(self, interaction):
+        self.wait_until_clickable(IssueLocators.issue_submit_button, interaction).click()
+        self.wait_until_invisible(IssueLocators.issue_modal)
+
+
+class ProjectSummary(BasePage):
+
+    def __init__(self, driver, project_key):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.project_summary_url()
+        self.params_to_verify = url_manager.project_summary_params
+
+    def at(self):
+        return self.verify_url(self.params_to_verify)
+
+    def wait_until_summary_visible(self, interaction):
+        self.wait_until_visible(ProjectLocators.project_summary_property_column, interaction)
+
+
+class Search(BasePage):
+
+    def __init__(self, driver, jql):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(jql=jql)
+        self.page_url = url_manager.jql_search_url()
+
+    def wait_issue_search_presented(self, interaction):
+        self.wait_until_any_ec_presented(selector_names=[SearchLocators.search_issue_table,
+                                                         SearchLocators.search_issue_content,
+                                                         SearchLocators.search_no_issue_found],
+                                         interaction=interaction)
+
