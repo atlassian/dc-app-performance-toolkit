@@ -282,11 +282,11 @@ class AnalyticsCollector:
             error_msg = ''
             if self.actual_duration < MIN_DEFAULTS[self.application_type]['test_duration']:
                 error_msg = error_msg + (f"Test run duration {self.actual_duration} sec < than minimum test "
-                                         f"duration {MIN_DEFAULTS[self.application_type]['test_duration']} sec.")
+                                         f"duration {MIN_DEFAULTS[self.application_type]['test_duration']} sec")
 
             if self.concurrency < MIN_DEFAULTS[self.application_type]['concurrency']:
                 error_msg = error_msg + (f" Test run concurrency {self.concurrency} < than minimum test "
-                                         f"concurrency {MIN_DEFAULTS[self.application_type]['concurrency']}.")
+                                         f"concurrency {MIN_DEFAULTS[self.application_type]['concurrency']}")
             return compliant, error_msg
 
     def __is_git_operations_compliant(self):
@@ -300,6 +300,9 @@ class AnalyticsCollector:
                                               f"{expected_get_operations_count}")
 
     def generate_report_summary(self):
+        summary_report = []
+        summary_report_file = f'{self._log_dir}/results_summary.log'
+
         finished = self.__is_finished()
         success = self.__is_success()
         compliant = self.__is_compliant()
@@ -310,22 +313,50 @@ class AnalyticsCollector:
             git_compliant = self.__is_git_operations_compliant()
             overall_status = 'OK' if overall_status and git_compliant[0] else 'FAIL'
 
-        with open(f'{self._log_dir}/results_summary.log', 'w') as rs_file:
-            rs_file.write(f'Summary run status: {overall_status}\n\n')
-            rs_file.write(f'Action{" "*(50-6)}Success Rate{" "*(20-12)}Status\n')
-            for key, value in self.jmeter_test_rates.items():
-                status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-                rs_file.write(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
-            for key, value in self.selenium_test_rates.items():
-                status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-                rs_file.write(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
-            rs_file.write('\n')
-            rs_file.write(f'Finished: {finished}\n')
-            rs_file.write(f'Success: {success}\n')
-            rs_file.write(f'Compliant: {compliant}\n')
-            if self.application_type == BITBUCKET:
-                rs_file.write(f'Total Git operations count = {self.actual_git_operations_count}\n')
-                rs_file.write(f'Total Git operations compliant: {git_compliant}\n')
+        summary_report.append(f'Summary run status: {overall_status}\n\n')
+        summary_report.append(f'OS: {self.os}\n')
+        summary_report.append(f'DCAPT version: {self.tool_version}\n')
+        summary_report.append(f'Application: {self.application_type} {self.application_version}\n')
+        summary_report.append(f'Concurrency: {self.concurrency}\n')
+        summary_report.append(f'Actual test duration: {self.actual_duration} sec\n')
+        summary_report.append(f'Expected test duration: {self.duration} sec\n')
+
+        if self.application_type == BITBUCKET:
+            summary_report.append(f'Total Git operations count = {self.actual_git_operations_count}\n')
+            summary_report.append(f'Total Git operations compliant: {git_compliant}\n')
+
+        summary_report.append(f'Finished: {finished}\n')
+        summary_report.append(f'Success: {success}\n')
+        summary_report.append(f'Compliant: {compliant}\n')
+
+        summary_report.append(self.format_string(f'Action|Success Rate|Status'))
+
+        for key, value in self.jmeter_test_rates.items():
+            status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
+            #summary_report.append(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
+            summary_report.append(self.format_string(f'{key}|{value}|{status}'))
+        for key, value in self.selenium_test_rates.items():
+            status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
+            summary_report.append(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
+
+        self.__write_to_file(summary_report, summary_report_file)
+
+    @staticmethod
+    def __write_to_file(content, file):
+        with open(file, 'w') as f:
+            f.writelines(content)
+
+    @staticmethod
+    def format_string(string_to_format, offset=50):
+        # format string with delimiter "|"
+        return ''.join([f'{item}{" "*(offset-len(str(item)))}' for item in string_to_format.split("|")])
+
+
+
+
+
+
+
 
 
 class AnalyticsSender:
