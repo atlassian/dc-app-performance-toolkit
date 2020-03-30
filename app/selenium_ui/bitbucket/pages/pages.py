@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
-from selenium_ui.bitbucket.pages.selectors import BaseLocator, LoginPageLocators, GetStartedLocators, \
+from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedLocators, \
     DashboardLocators, ProjectsLocators, ProjectLocators, RepoLocators, RepoNavigationPanelLocators, PopupLocators, \
     PullRequestLocator, BranchesLocator, RepositorySettingsLocator, UserSettingsLocator, RepoCommitsLocator, \
     LogoutPageLocators, UrlManager
