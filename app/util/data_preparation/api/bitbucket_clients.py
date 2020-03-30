@@ -73,16 +73,6 @@ class BitbucketRestClient(RestClient):
                                  batch_size=BATCH_SIZE_REPOS,
                                  max_results=max_results)
 
-    def get_user_repos(self, user_name, max_results=500):
-        return self.get_entities(entity_name=f'users/{user_name}/repos',
-                                 batch_size=BATCH_SIZE_REPOS,
-                                 max_results=max_results)
-
-    def delete_user_repo(self, username, repo_slug):
-        url = f'{self.host}/rest/api/1.0/users/{username}/repos/{repo_slug}'
-        response = self.delete(url=url, error_msg=f'Can not delete repo {repo_slug}, user {username}')
-        return response.json()
-
     def get_project_repos(self, project_key):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos'
         response = self.get(api_url, f'Could not get repos of project {project_key}')

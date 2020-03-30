@@ -8,7 +8,7 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 
 
 class LoginPage(BasePage):
-    page_url = UrlManager()
+    page_url = UrlManager().login_url()
 
     def at(self):
         return self.verify_url(LoginPageLocators.login_params)
@@ -142,9 +142,9 @@ class RepoPullRequests(BasePage):
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
-        self.page_url = url_manager.repo_pull_requests()
-        self.params_to_verify = url_manager.repo_pull_requests_params
+        self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
+        self.page_url = self.url_manager.repo_pull_requests()
+        self.params_to_verify = self.url_manager.repo_pull_requests_params
 
     def at(self):
         return self.verify_url(self.params_to_verify)
@@ -152,9 +152,10 @@ class RepoPullRequests(BasePage):
     def pull_requests_list_visible(self, interaction):
         return self.wait_until_visible(RepoLocators.pull_requests_list, interaction)
 
-    def create_new_pull_request(self, interaction):
-        self.wait_until_visible(RepoLocators.create_pull_request_button, interaction).click()
-        self.wait_until_visible(RepoLocators.new_pull_request_branch_compare_window, interaction)
+    def create_new_pull_request(self, from_branch, to_branch, interaction):
+        self.go_to_url(url=self.url_manager.create_pull_request_url(from_branch=from_branch,
+                                                                    to_branch=to_branch))
+        self.submit_pull_request(interaction)
 
     def set_pull_request_source_branch(self, interaction, source_branch):
         self.wait_until_visible(RepoLocators.pr_source_branch_field, interaction).click()
@@ -265,6 +266,7 @@ class PullRequest(BasePage):
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
+        self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).click()
         self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button, interaction).click()
         self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector, interaction)
 
@@ -273,15 +275,34 @@ class RepositoryBranches(BasePage):
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
-        self.page_url = url_manager.repo_branches()
-        self.params_to_verify = url_manager.branches_params
+        self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
+        self.page_url = self.url_manager.repo_branches()
+        self.params_to_verify = self.url_manager.branches_params
 
     def at(self):
         self.verify_url(self.params_to_verify)
 
     def wait_branch_name_visible(self, interaction):
         self.wait_until_any_element_visible(BranchesLocator.branches_name, interaction)
+
+    def open_base_branch(self, base_branch_name, interaction):
+        self.go_to_url(f"{self.url_manager.base_branch_url()}{base_branch_name}")
+        self.wait_until_visible(BranchesLocator.branches_name, interaction)
+
+    def create_branch_fork_rnd_name(self, base_branch_name, interaction):
+        self.wait_until_visible(BranchesLocator.branches_action, interaction).click()
+        self.get_element(BranchesLocator.branches_action_create_branch).click()
+        self.wait_until_visible(BranchesLocator.new_branch_name_textfield, interaction)
+        branch_name = f"{base_branch_name}-{self.generate_random_string(5)}".replace(' ', '-')
+        self.get_element(BranchesLocator.new_branch_name_textfield).send_keys(branch_name)
+        self.wait_until_clickable(BranchesLocator.new_branch_submit_button, interaction).click()
+        return branch_name
+
+    def delete_branch(self, interaction, branch_name):
+        self.wait_until_visible(BranchesLocator.search_branch_textfield, interaction).send_keys(branch_name)
+        self.wait_until_visible(BranchesLocator.search_branch_action, interaction).click()
+        self.wait_until_present(BranchesLocator.search_action_delete_branch, interaction).click()
+        self.wait_until_clickable(BranchesLocator.delete_branch_diaglog_submit, interaction).click()
 
 
 class RepositorySettings(BasePage):

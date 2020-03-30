@@ -196,39 +196,33 @@ def create_pull_request(webdriver, datasets):
                             project_key=datasets['project_key'],
                             repo_slug=datasets['repo_slug'])
     repo_pull_requests = RepoPullRequests(webdriver, repo_slug=repository.repo_slug, project_key=repository.project_key)
+    repository_branches = RepositoryBranches(webdriver, repo_slug=repository.repo_slug,
+                                             project_key=repository.project_key)
     navigation_panel = RepoNavigationPanel(webdriver)
-    repository.go_to()
     PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
         def measure(webdriver, interaction):
+            branch_from = datasets['pull_request_branch_from']
+            branch_to = datasets['pull_request_branch_to']
+            repository_branches.open_base_branch(interaction=interaction,
+                                                 base_branch_name=branch_from)
+            fork_branch_from = repository_branches.create_branch_fork_rnd_name(interaction=interaction,
+                                                                               base_branch_name=branch_from)
             navigation_panel.wait_navigation_panel_presented(interaction)
-            navigation_panel.fork_repo(interaction).click()
-            repository.set_enable_fork_sync(interaction, value=False)
-            fork_repo_name = repository.set_fork_repo_name()
-            datasets['fork_repo_name'] = fork_repo_name
-            repository.submit_fork_repo()
+            repository_branches.open_base_branch(interaction=interaction,
+                                                 base_branch_name=branch_to)
+            fork_branch_to = repository_branches.create_branch_fork_rnd_name(interaction=interaction,
+                                                                               base_branch_name=branch_to)
+            datasets['pull_request_fork_branch_to'] = fork_branch_to
             navigation_panel.wait_navigation_panel_presented(interaction)
-        measure(webdriver, 'selenium_create_pull_request:create_repos_fork')
 
-        @print_timing
-        def measure(webdriver, interaction):
-            navigation_panel.create_pull_request(interaction)
-            repo_pull_requests.create_new_pull_request(interaction)
-            # Choose branch source
-            repo_pull_requests.set_pull_request_source_branch(interaction,
-                                                              source_branch=datasets['pull_request_branch_from'])
-            # Choose destination repo
-            repo_pull_requests.set_pull_request_destination_repo(interaction)
-            # Choose branch destination
-            dest_branch = datasets['pull_request_branch_to']
-            repo_pull_requests.set_pull_request_destination_branch(interaction,
-                                                                   destination_branch=dest_branch)
-            # Submit pull request
-            repo_pull_requests.submit_pull_request(interaction)
+            repo_pull_requests.create_new_pull_request(interaction=interaction, from_branch=fork_branch_from,
+                                                       to_branch=fork_branch_to)
             PopupManager(webdriver).dismiss_default_popup()
+
         measure(webdriver, 'selenium_create_pull_request:create_pull_request')
 
         @print_timing
@@ -238,7 +232,13 @@ def create_pull_request(webdriver, datasets):
             pull_request.wait_pull_request_activity_visible(interaction)
             PopupManager(webdriver).dismiss_default_popup()
             pull_request.merge_pull_request(interaction)
+            repository_branches.go_to()
+            repository_branches.delete_branch(interaction=interaction,
+                                              branch_name=datasets['pull_request_fork_branch_to'])
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
+        repository_branches.go_to()
+        repository_branches.delete_branch(interaction=interaction,
+                                          branch_name=datasets['pull_request_fork_branch_to'])
     measure(webdriver, 'selenium_create_pull_request')
 
 
