@@ -232,9 +232,6 @@ def create_pull_request(webdriver, datasets):
             pull_request.wait_pull_request_activity_visible(interaction)
             PopupManager(webdriver).dismiss_default_popup()
             pull_request.merge_pull_request(interaction)
-            repository_branches.go_to()
-            repository_branches.delete_branch(interaction=interaction,
-                                              branch_name=datasets['pull_request_fork_branch_to'])
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
         repository_branches.go_to()
         repository_branches.delete_branch(interaction=interaction,
