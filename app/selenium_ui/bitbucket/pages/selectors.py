@@ -25,6 +25,14 @@ class UrlManager:
         self.get_started_params = '/getting-started'
         self.dashboard_params = '/dashboard'
         self.projects_params = '/projects'
+        self.branches_base_branch = f'/projects/{self.project_key}/repos/{self.repo_slug}/branches?base='
+
+    def create_pull_request_url(self, from_branch, to_branch):
+        return f"{self.host}/projects/{self.project_key}/repos/{self.repo_slug}/pull-requests?create&targetBranch=" \
+               f"refs%2Fheads%2F{to_branch}&sourceBranch=refs%2Fheads%2F{from_branch}"
+
+    def base_branch_url(self):
+        return f"{self.host}{self.branches_base_branch}"
 
     def project_url(self):
         return f"{self.host}{self.project_params}"
@@ -187,11 +195,20 @@ class PullRequestLocator:
                                        '7': (By.CSS_SELECTOR, "button[type='submit']")}
     del_branch_checkbox_selector = {'6': (By.CSS_SELECTOR, 'span.pull-request-cleanup-checkbox-wrapper'),
                                     '7': (By.NAME, 'deleteSourceRef')}
+    delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
 
 
 class BranchesLocator:
 
     branches_name = (By.ID, "branch-name-column")
+    branches_action = (By.ID, "branch-actions")
+    branches_action_create_branch = (By.CSS_SELECTOR, "a.create-branch")
+    new_branch_name_textfield = (By.CSS_SELECTOR, "input.text.branch-name")
+    new_branch_submit_button = (By.ID, "create-branch-submit")
+    search_branch_textfield = (By.ID, 'paged-table-input-for-branch-list')
+    search_branch_action = (By.CSS_SELECTOR, '.branch-actions-column>button')
+    search_action_delete_branch = (By.CSS_SELECTOR, 'li>a.delete-branch')
+    delete_branch_diaglog_submit = (By.ID, 'delete-branch-dialog-submit')
 
 
 class RepositorySettingsLocator:
