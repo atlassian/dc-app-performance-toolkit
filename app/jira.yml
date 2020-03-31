@@ -25,7 +25,7 @@ services:
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
       - python util/analytics.py jira
-      - python util/cleanup_result_dir.py
+      - python util/cleanup_results_dir.py
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
