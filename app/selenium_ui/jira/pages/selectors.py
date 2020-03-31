@@ -10,14 +10,22 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, issue_key=None, issue_id=None, project_key=None, jql=None):
+    def __init__(self, issue_key=None, issue_id=None, project_key=None, jql=None, projects_list_page=None,
+                 board_id=None):
         self.host = JIRA_SETTINGS.server_url
         self.login_params = '/login.jsp'
+        self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
         self.issue_params = f"/browse/{issue_key}"
         self.project_summary_params = f"/projects/{project_key}/summary"
         self.jql_params = f"/issues/?jql={jql}"
         self.edit_issue_params = f"/secure/EditIssue!default.jspa?id={issue_id}"
+        self.edit_comments_params = f"/secure/AddComment!default.jspa?id={issue_id}"
+        self.projects_list_params = f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page=' \
+                                    f'{projects_list_page}'
+        self.boards_list_params = '/secure/ManageRapidViews.jspa'
+        self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
+        self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -37,6 +45,24 @@ class UrlManager:
     def edit_issue_url(self):
         return f"{self.host}{self.edit_issue_params}"
 
+    def edit_comments_url(self):
+        return f"{self.host}{self.edit_comments_params}"
+
+    def projects_list_page_url(self):
+        return f"{self.host}{self.projects_list_params}"
+
+    def boards_list_page_url(self):
+        return f"{self.host}{self.boards_list_params}"
+
+    def scrum_board_backlog_url(self):
+        return f"{self.host}{self.scrum_board_backlog_params}"
+
+    def scrum_board_url(self):
+        return f"{self.host}{self.scrum_board_params}"
+
+    def logout_url(self):
+        return f"{self.host}{self.logout_params}"
+
 
 class LoginPageLocators:
 
@@ -50,6 +76,13 @@ class LoginPageLocators:
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
     login_submit_button = (By.ID, 'login-form-submit')
+
+
+class LogoutLocators:
+
+    logout_url = UrlManager().logout_url()
+    logout_submit_button = (By.ID, "confirm-logout-submit")
+    login_button_link = (By.CLASS_NAME, "login-link")
 
 
 class DashboardLocators:
@@ -81,9 +114,18 @@ class IssueLocators:
     edit_issue_description = (By.ID, 'description')
     edit_issue_submit = (By.ID, 'issue-edit-submit')
 
+    # Edit Comments page
+    edit_comment_add_comment_button = (By.ID, "comment-add-submit")
+    edit_comment_text_field = (By.XPATH, f"//div[textarea[@id='comment']]//iframe")
+
+
 class ProjectLocators:
 
     project_summary_property_column = (By.CLASS_NAME, 'project-meta-column')
+
+    # projects list locators
+    projects_list = (By.CSS_SELECTOR, "tbody.projects-list")
+    projects_not_found = (By.CLASS_NAME, "none-panel")
 
 
 class SearchLocators:
@@ -91,3 +133,16 @@ class SearchLocators:
     search_issue_table = (By.ID, "issuetable")
     search_issue_content = (By.ID, "issue-content")
     search_no_issue_found = (By.ID, "issue-content")
+
+
+class BoardsListLocators:
+    boards_list_url = UrlManager().boards_list_page_url()
+    boards_list_params = UrlManager().boards_list_params
+
+    boards_list = (By.CSS_SELECTOR, "#ghx-content-main table.aui")
+
+
+class BoardLocators:
+    # Scrum boards
+    scrum_board_backlog_content = (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")
+    board_columns = (By.CSS_SELECTOR, ".ghx-column")

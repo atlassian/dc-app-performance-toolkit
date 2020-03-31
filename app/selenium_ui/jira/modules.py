@@ -1,42 +1,36 @@
 import random
-import time
 import urllib.parse
 
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.wait import WebDriverWait
-
-from selenium_ui.conftest import print_timing, AnyEc, generate_random_string
-from util.conf import JIRA_SETTINGS
-
-from selenium_ui.jira.pages.pages import LoginPage, PopupManager, IssuePage, ProjectSummary, Search
-
-timeout = 20
-
-ISSUE_TYPE_DROPDOWN = 'issuetype-field'
-APPLICATION_URL = JIRA_SETTINGS.server_url
+from selenium_ui.conftest import print_timing
+from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
+    BoardsList, Board, Dashboard, Logout
 
 
 def setup_run_data(datasets):
+    page_size = 25
+    projects_count = len(datasets['project_keys'])
     user = random.choice(datasets["users"])
     issue = random.choice(datasets["issues"])
+    scrum_boards = random.choice(datasets["scrum_boards"])
+    kanban_boards = random.choice(datasets["kanban_boards"])
     project_key = random.choice(datasets["issues"])[2]
     datasets['username'] = user[0]
     datasets['password'] = user[1]
     datasets['issue_key'] = issue[0]
     datasets['issue_id'] = issue[1]
     datasets['project_key'] = project_key
+    datasets['scrum_board_id'] = scrum_boards[0]
+    datasets['kanban_board_id'] = kanban_boards[0]
     datasets['jql'] = urllib.parse.quote(random.choice(datasets["jqls"][0]))
+    datasets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
+        else projects_count // page_size + 1
 
 
 def login(webdriver, datasets):
     setup_run_data(datasets)
     @print_timing
     def measure(webdriver, interaction):
-        login_page = LoginPage(webdriver)
+        login_page = Login(webdriver)
         @print_timing
         # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
@@ -55,7 +49,7 @@ def login(webdriver, datasets):
 
 
 def view_issue(webdriver, datasets):
-    issue = IssuePage(webdriver, issue_key=datasets['issue_key'])
+    issue = Issue(webdriver, issue_key=datasets['issue_key'])
     @print_timing
     def measure(webdriver, interaction):
         issue.go_to()
@@ -64,7 +58,7 @@ def view_issue(webdriver, datasets):
 
 
 def create_issue(webdriver, datasets):
-    issue_modal = IssuePage(webdriver)
+    issue_modal = Issue(webdriver)
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
@@ -90,7 +84,7 @@ def create_issue(webdriver, datasets):
 
 
 def view_project_summary(webdriver, datasets):
-    project = ProjectSummary(webdriver, project_key=datasets['project_key'])
+    project = Project(webdriver, project_key=datasets['project_key'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -110,7 +104,7 @@ def search_jql(webdriver, datasets):
 
 
 def edit_issue(webdriver, datasets):
-    issue = IssuePage(webdriver, issue_id=datasets['issue_id'])
+    issue = Issue(webdriver, issue_id=datasets['issue_id'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -131,147 +125,86 @@ def edit_issue(webdriver, datasets):
 
 
 def save_comment(webdriver, datasets):
-    # open comment editor
-    issue_id = random.choice(datasets["issues"])[1]
-
+    issue = Issue(webdriver, issue_id=datasets['issue_id'])
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
         def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/secure/AddComment!default.jspa?id={issue_id}')
-            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "comment-add-submit")), interaction)
-
+            issue.go_to_edit_comment(interaction)  # Open edit comment page
         measure(webdriver, "selenium_save_comment:open_comment_form")
 
-        # save editor
-        element = webdriver.find_element_by_id('comment')
-        text_comment = "Comment from selenium"
-        _write_to_text_area(webdriver, element, text_comment, interaction)
+        issue.fill_comment_edit(interaction)  # Fill comment text field
 
         @print_timing
         def measure(webdriver, interaction):
-            webdriver.find_element_by_id('comment-add-submit').click()
-            _wait_until(webdriver, ec.visibility_of_element_located((By.ID, "summary-val")), interaction)
-
+            issue.edit_comment_submit(interaction)  # Submit comment
         measure(webdriver, "selenium_save_comment:submit_form")
-
     measure(webdriver, "selenium_save_comment")
 
 
-def browse_project(webdriver, datasets):
+def browse_projects_list(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        page_size = 25
-        projects_count = len(datasets['project_keys'])
-        pages = projects_count // page_size if projects_count % page_size == 0 else projects_count // page_size + 1
-        webdriver.get(
-            APPLICATION_URL +
-            f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={random.randint(1, pages)}')
-        _wait_until(webdriver, AnyEc(ec.presence_of_element_located((By.CSS_SELECTOR, "tbody.projects-list")),
-                                     ec.presence_of_element_located((By.CLASS_NAME, "none-panel"))
-                                     ), interaction)
-    measure(webdriver, "selenium_browse_project")
+        projects_list = ProjectsList(webdriver, projects_list_pages=datasets['pages'])
+        projects_list.go_to()
+        projects_list.wait_projects_list_visible(interaction)
+    measure(webdriver, "selenium_browse_projects_list")
 
 
-def browse_board(webdriver, datasets):
+def browse_boards_list(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/secure/ManageRapidViews.jspa')
-        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, "#ghx-content-main table.aui")),
-                    interaction)
-
-    measure(webdriver, "selenium_browse_board")
-
-    _dismiss_popup(webdriver, 'aui-inline-dialog-contents .cancel')
+        boards_list = BoardsList(webdriver)
+        boards_list.go_to()
+        boards_list.at()
+        boards_list.boards_list_visible(interaction)
+    measure(webdriver, "selenium_browse_boards_list")
+    PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_backlog_for_scrum_board(webdriver, datasets):
-    board_id = random.choice(datasets["scrum_boards"])[0]
-
+    scrum_board = Board(webdriver, board_id=datasets['scrum_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}&view=planning')
-        _wait_until(webdriver, ec.presence_of_element_located(
-            (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")), interaction)
-
+        scrum_board.go_to_backlog()
+        scrum_board.wait_scrum_board_backlog_presented(interaction)
     measure(webdriver, "selenium_view_scrum_board_backlog")
 
 
 def view_scrum_board(webdriver, datasets):
-    board_id = random.choice(datasets["scrum_boards"])[0]
-
+    scrum_board = Board(webdriver, board_id=datasets['scrum_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}')
-        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
-
+        scrum_board.go_to()
+        scrum_board.wait_board_presented(interaction)
     measure(webdriver, "selenium_view_scrum_board")
 
 
 def view_kanban_board(webdriver, datasets):
-    board_id = random.choice(datasets["kanban_boards"])
-
+    kanban_board = Board(webdriver, board_id=datasets['kanban_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/secure/RapidBoard.jspa?rapidView={board_id}')
-        _wait_until(webdriver, ec.presence_of_element_located((By.CSS_SELECTOR, ".ghx-column")), interaction)
-
+        kanban_board.go_to()
+        kanban_board.wait_board_presented(interaction)
     measure(webdriver, "selenium_view_kanban_board")
 
 
 def view_dashboard(webdriver, datasets):
+    dashboard = Dashboard(webdriver)
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/secure/Dashboard.jspa')
-        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "page-type-dashboard")), interaction)
-
+        dashboard.go_to()
+        dashboard.at()
+        dashboard.wait_dashboard_presented(interaction)
     measure(webdriver, "selenium_view_dashboard")
 
 
 def log_out(webdriver, datasets):
+    logout_page = Logout(webdriver)
     @print_timing
     def measure(webdriver, interaction):
-        webdriver.get(f'{APPLICATION_URL}/logoutconfirm.jsp')
-        webdriver.find_element_by_id('confirm-logout-submit').click()
-        _wait_until(webdriver, ec.presence_of_element_located((By.CLASS_NAME, "login-link")), interaction)
-
+        logout_page.go_to()
+        logout_page.click_logout()
+        logout_page.wait_login_available(interaction)
     measure(webdriver, "selenium_log_out")
 
-
-def _write_to_text_area(webdriver, element, input_text, interaction):
-    # Rich Text Editor
-    if "richeditor-cover" in element.get_attribute("class"):
-        attribute_id = element.get_attribute("id")
-        iframe_xpath = f"//div[textarea[@id='{attribute_id}']]//iframe"
-        _wait_until(webdriver, ec.frame_to_be_available_and_switch_to_it((By.XPATH, iframe_xpath)), interaction)
-        # Send keys seems flaky when using Rich Text Editor (tinymce). Make the "input_text" small.
-        webdriver.find_element_by_id("tinymce").send_keys(input_text)
-        webdriver.switch_to.parent_frame()
-    # Plain text
-    else:
-        element.send_keys(input_text)
-
-
-def _wait_until(webdriver, expected_condition, interaction, time_out=timeout):
-    message = f"Interaction: {interaction}. "
-    ec_type = type(expected_condition)
-    if ec_type == AnyEc:
-        conditions_text = ""
-        for ecs in expected_condition.ecs:
-            conditions_text = conditions_text + " " + f"Condition: {str(ecs)} Locator: {ecs.locator}\n"
-
-        message += f"Timed out after {time_out} sec waiting for one of the conditions: \n{conditions_text}"
-
-    elif ec_type == ec.invisibility_of_element_located:
-        message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                    f"Locator: {expected_condition.target}")
-
-    elif ec_type == ec.frame_to_be_available_and_switch_to_it:
-        message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                    f"Locator: {expected_condition.frame_locator}")
-
-    else:
-        message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                    f"Locator: {expected_condition.locator}")
-
-    return WebDriverWait(webdriver, time_out).until(expected_condition, message=message)

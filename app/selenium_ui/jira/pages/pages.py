@@ -4,7 +4,7 @@ import random
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
-    IssueLocators, ProjectLocators, SearchLocators
+    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
 
 
 class PopupManager(BasePage):
@@ -13,7 +13,7 @@ class PopupManager(BasePage):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2)
 
 
-class LoginPage(BasePage):
+class Login(BasePage):
     page_url = LoginPageLocators.login_url
 
     def at(self):
@@ -36,7 +36,27 @@ class LoginPage(BasePage):
         self.get_element(LoginPageLocators.login_submit_button).click()
 
 
-class IssuePage(BasePage):
+class Logout(BasePage):
+    page_url = LogoutLocators.logout_url
+
+    def click_logout(self):
+        self.get_element(LogoutLocators.logout_submit_button).click()
+
+    def wait_login_available(self, interaction):
+        self.wait_until_present(LogoutLocators.login_button_link, interaction)
+
+
+class Dashboard(BasePage):
+    page_url = DashboardLocators.dashboard_url
+
+    def at(self):
+        self.verify_url(DashboardLocators.dashboard_params)
+
+    def wait_dashboard_presented(self, interaction):
+        self.wait_until_present(DashboardLocators.dashboard_window, interaction)
+
+
+class Issue(BasePage):
 
     def __init__(self, driver, issue_key=None, issue_id=None):
         BasePage.__init__(self, driver)
@@ -44,6 +64,7 @@ class IssuePage(BasePage):
         url_manager_edit_page = UrlManager(issue_id=issue_id)
         self.page_url = url_manager_modal.issue_url()
         self.page_url_edit_issue = url_manager_edit_page.edit_issue_url()
+        self.page_url_edit_comment = url_manager_edit_page.edit_comments_url()
         self.params_to_verify = url_manager_modal.issue_params
 
     def at(self):
@@ -56,12 +77,16 @@ class IssuePage(BasePage):
         self.go_to_url(self.page_url_edit_issue)
         self.wait_until_visible(IssueLocators.edit_issue_page, interaction)
 
+    def go_to_edit_comment(self, interaction):
+        self.go_to_url(self.page_url_edit_comment)
+        self.wait_until_visible(IssueLocators.edit_comment_add_comment_button, interaction)
+
     def fill_summary_edit(self):
         text_summary = f"Edit summary form selenium - {self.generate_random_string(10)}"
         self.get_element(IssueLocators.issue_summary_field).send_keys(text_summary)
 
-    def __fill_description(self, text, interaction):
-        self.wait_until_available_to_switch(IssueLocators.issue_description_field, interaction)
+    def __fill_rich_editor_textfield(self, text, interaction, selector):
+        self.wait_until_available_to_switch(selector, interaction)
         self.get_element(IssueLocators.tinymce_description_field).send_keys(text)
         self.return_to_parent_frame()
 
@@ -70,7 +95,7 @@ class IssuePage(BasePage):
 
     def fill_description_edit(self, interaction):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        self.__fill_description(text_description, interaction)
+        self.__fill_rich_editor_textfield(text_description, interaction, selector=IssueLocators.issue_description_field)
 
     def open_create_issue_modal(self, interaction):
         self.wait_until_clickable(IssueLocators.create_issue_button, interaction).click()
@@ -78,7 +103,7 @@ class IssuePage(BasePage):
 
     def fill_description_create(self, interaction):
         text_description = f'Description: {self.generate_random_string(100)}'
-        self.__fill_description(text_description, interaction)
+        self.__fill_rich_editor_textfield(text_description, interaction, selector=IssueLocators.issue_description_field)
 
     def fill_summary_create(self, interaction):
         summary = f"Issue created date {time.time()}"
@@ -112,8 +137,16 @@ class IssuePage(BasePage):
         self.wait_until_clickable(IssueLocators.issue_submit_button, interaction).click()
         self.wait_until_invisible(IssueLocators.issue_modal)
 
+    def fill_comment_edit(self, interaction):
+        text = 'Comment from selenium'
+        self.__fill_rich_editor_textfield(text, interaction, selector=IssueLocators.edit_comment_text_field)
 
-class ProjectSummary(BasePage):
+    def edit_comment_submit(self, interaction):
+        self.get_element(IssueLocators.edit_comment_add_comment_button).click()
+        self.wait_until_visible(IssueLocators.issue_title)
+
+
+class Project(BasePage):
 
     def __init__(self, driver, project_key):
         BasePage.__init__(self, driver)
@@ -126,6 +159,30 @@ class ProjectSummary(BasePage):
 
     def wait_until_summary_visible(self, interaction):
         self.wait_until_visible(ProjectLocators.project_summary_property_column, interaction)
+
+
+class ProjectsList(BasePage):
+
+    def __init__(self, driver, projects_list_pages):
+        BasePage.__init__(self, driver)
+        self.projects_list_page = random.randint(1, projects_list_pages)
+        url_manager = UrlManager(projects_list_page=self.projects_list_page)
+        self.page_url = url_manager.projects_list_page_url()
+
+    def wait_projects_list_visible(self, interaction):
+        self.wait_until_any_ec_presented(selector_names=[ProjectLocators.projects_list,
+                                                         ProjectLocators.projects_not_found],
+                                         interaction=interaction)
+
+
+class BoardsList(BasePage):
+    page_url = BoardsListLocators.boards_list_url
+
+    def at(self):
+        self.verify_url(BoardsListLocators.boards_list_params)
+
+    def boards_list_visible(self, interaction):
+        self.wait_until_visible(BoardsListLocators.boards_list, interaction)
 
 
 class Search(BasePage):
@@ -141,3 +198,20 @@ class Search(BasePage):
                                                          SearchLocators.search_no_issue_found],
                                          interaction=interaction)
 
+
+class Board(BasePage):
+
+    def __init__(self, driver, board_id):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(board_id=board_id)
+        self.page_url = url_manager.scrum_board_url()
+        self.backlog_url = url_manager.scrum_board_backlog_url()
+
+    def go_to_backlog(self):
+        self.go_to_url(self.backlog_url)
+
+    def wait_scrum_board_backlog_presented(self, interaction):
+        self.wait_until_present(BoardLocators.scrum_board_backlog_content, interaction)
+
+    def wait_board_presented(self, interaction):
+        self.wait_until_present(BoardLocators.board_columns, interaction)

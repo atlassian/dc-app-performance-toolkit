@@ -1,5 +1,5 @@
 from selenium_ui.jira import modules
-from extension.jira import extension_ui
+#from extension.jira import extension_ui
 
 
 # this action should be the first one
@@ -7,12 +7,12 @@ def test_0_selenium_a_login(webdriver, jira_datasets, jira_screen_shots):
     modules.login(webdriver, jira_datasets)
 
 
-def test_1_selenium_browse_project(webdriver, jira_datasets, jira_screen_shots):
-    modules.browse_project(webdriver, jira_datasets)
+def test_1_selenium_browse_projects_list(webdriver, jira_datasets, jira_screen_shots):
+    modules.browse_projects_list(webdriver, jira_datasets)
 
 
-def test_1_selenium_browse_board(webdriver, jira_datasets, jira_screen_shots):
-    modules.browse_board(webdriver, jira_datasets)
+def test_1_selenium_browse_boards_list(webdriver, jira_datasets, jira_screen_shots):
+    modules.browse_boards_list(webdriver, jira_datasets)
 
 
 def test_1_selenium_create_issue(webdriver, jira_datasets, jira_screen_shots):
