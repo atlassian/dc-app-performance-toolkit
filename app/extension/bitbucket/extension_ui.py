@@ -3,7 +3,6 @@ from selenium_ui.conftest import print_timing
 from util.conf import BITBUCKET_SETTINGS
 
 from app.selenium_ui.base_page import BasePage
-timeout = 20
 
 
 def custom_action(webdriver, datasets):
