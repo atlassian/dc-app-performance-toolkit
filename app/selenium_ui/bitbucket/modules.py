@@ -7,17 +7,14 @@ from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted, Dashboard, 
 
 def setup_run_data(datasets):
     user = random.choice(datasets["users"])
+    project_with_repo_prs = random.choice(datasets["pull_requests"])
     datasets['username'] = user[1]
     datasets['password'] = user[2]
-    datasets['user_id'] = int(user[0]) - 1
-    project_with_repo_prs = random.choice(datasets["pull_requests"])
     datasets['project_key'] = project_with_repo_prs[1]
     datasets['repo_slug'] = project_with_repo_prs[0]
-    # If PRs number > 2, choose random between first 2 PRs
-    datasets['pull_request_id'] = random.choice([project_with_repo_prs[2], project_with_repo_prs[5]
-                                                if len(project_with_repo_prs) > 5 else project_with_repo_prs[2]])
     datasets['pull_request_branch_from'] = project_with_repo_prs[3]
     datasets['pull_request_branch_to'] = project_with_repo_prs[4]
+    datasets['pull_request_id'] = project_with_repo_prs[2]
 
 
 def login(webdriver, datasets):
@@ -28,7 +25,6 @@ def login(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             login_page.go_to()
-            webdriver.app_version = login_page.get_app_version()
             login_page.at()
             webdriver.app_version = login_page.get_app_version()
         measure(webdriver, "selenium_login:open_login_page")

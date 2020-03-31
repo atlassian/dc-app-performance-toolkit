@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium_ui.conftest import print_timing
 from util.conf import BITBUCKET_SETTINGS
 
-from app.selenium_ui.base_page import BasePage
+from selenium_ui.base_page import BasePage
 
 
 def custom_action(webdriver, datasets):

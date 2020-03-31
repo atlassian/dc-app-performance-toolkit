@@ -72,12 +72,10 @@ def __get_prs(bitbucket_api):
     start_time = time.time()
     repos = bitbucket_api.get_non_fork_repos(REPOS_TO_FETCH)
     for repo in repos:
-        repo_prs = [repo['slug'], repo['project']['key']]
         if len(repos_prs) <= concurrency:
             prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
             for pr in prs['values']:
-                repo_prs.extend([pr['id'], pr['fromRef']['displayId'], pr['toRef']['displayId']])
-                repos_prs.append(repo_prs)
+                repos_prs.append([repo['slug'], repo['project']['key'], pr['id'], pr['fromRef']['displayId'], pr['toRef']['displayId']])
     if len(repos_prs) < concurrency:
         raise SystemExit(f'Repositories from list {[repo["project"]["key"] - repo["slug"] for repo in repos]} '
                          f'do not contain {concurrency} pull requests')
