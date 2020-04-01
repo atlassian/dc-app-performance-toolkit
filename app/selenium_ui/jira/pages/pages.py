@@ -36,10 +36,12 @@ class Login(BasePage):
 
 class Logout(BasePage):
     page_url = LogoutLocators.logout_url
-    page_loaded_selector = LogoutLocators.login_button_link
 
     def click_logout(self):
         self.get_element(LogoutLocators.logout_submit_button).click()
+
+    def wait_for_page_loaded(self, interaction):
+        self.wait_until_present(LogoutLocators.login_button_link, interaction)
 
 
 class Dashboard(BasePage):
