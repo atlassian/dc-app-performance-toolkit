@@ -258,54 +258,59 @@ class AnalyticsCollector:
         return True
 
     def __is_success(self):
+        message = 'OK'
+        if not self.jmeter_test_rates:
+            return False, f"JMeter test results was not found."
+        if not self.selenium_test_rates:
+            return False, f"Selenium test results was not found."
+
         success = (self.is_all_tests_successful(self.jmeter_test_rates) and
                    self.is_all_tests_successful(self.selenium_test_rates))
-        if success:
-            return success, 'OK'
-        else:
-            return success, f"One or more actions have success rate < {SUCCESS_TEST_RATE} %"
+
+        if not success:
+            message = f"One or more actions have success rate < {SUCCESS_TEST_RATE} %."
+        return success, message
 
     def __is_finished(self):
+        message = 'OK'
         finished = self.actual_duration >= self.duration
-        if finished:
-            return finished, 'OK'
-        else:
-            return finished, (f"Actual test duration {self.actual_duration} sec "
-                              f"< than expected test_duration {self.duration} sec in yml file")
+        if not finished:
+            message = (f"Actual test duration {self.actual_duration} sec "
+                       f"< than expected test_duration {self.duration} sec.")
+        return finished, message
 
     def __is_compliant(self):
+        message = 'OK'
         compliant = (self.actual_duration >= MIN_DEFAULTS[self.application_type]['test_duration'] and
                      self.concurrency >= MIN_DEFAULTS[self.application_type]['concurrency'])
-        if compliant:
-            return compliant, 'OK'
-        else:
-            error_msg = ''
+        if not compliant:
+            err_msg = []
             if self.actual_duration < MIN_DEFAULTS[self.application_type]['test_duration']:
-                error_msg = error_msg + (f"Test run duration {self.actual_duration} sec < than minimum test "
-                                         f"duration {MIN_DEFAULTS[self.application_type]['test_duration']} sec")
-
+                err_msg.append(f"Test run duration {self.actual_duration} sec < than minimum test "
+                               f"duration {MIN_DEFAULTS[self.application_type]['test_duration']} sec.")
             if self.concurrency < MIN_DEFAULTS[self.application_type]['concurrency']:
-                error_msg = error_msg + (f" Test run concurrency {self.concurrency} < than minimum test "
-                                         f"concurrency {MIN_DEFAULTS[self.application_type]['concurrency']}")
-            return compliant, error_msg
+                err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
+                               f"concurrency {MIN_DEFAULTS[self.application_type]['concurrency']}.")
+            message = ' '.join(err_msg)
+        return compliant, message
 
     def __is_git_operations_compliant(self):
         # calculate expected git operations for a particular test duration
+        message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
         git_operations_compliant = self.actual_git_operations_count >= expected_get_operations_count
-        if git_operations_compliant:
-            return git_operations_compliant, 'OK'
-        else:
-            return git_operations_compliant, (f"Total git operations < than minimum "
-                                              f"{expected_get_operations_count}")
+        if not git_operations_compliant:
+            message = (f"Total git operations {self.actual_git_operations_count} < than "
+                       f"{expected_get_operations_count} - minimum for expected duration {self.duration} sec.")
+        return git_operations_compliant, message
 
     def generate_report_summary(self):
         summary_report = []
         summary_report_file = f'{self._log_dir}/results_summary.log'
 
         finished = self.__is_finished()
-        success = self.__is_success()
         compliant = self.__is_compliant()
+        success = self.__is_success()
 
         overall_status = 'OK' if finished[0] and success[0] and compliant[0] else 'FAIL'
 
@@ -313,31 +318,27 @@ class AnalyticsCollector:
             git_compliant = self.__is_git_operations_compliant()
             overall_status = 'OK' if overall_status and git_compliant[0] else 'FAIL'
 
-        summary_report.append(f'Summary run status: {overall_status}\n\n')
-        summary_report.append(f'OS: {self.os}\n')
-        summary_report.append(f'DCAPT version: {self.tool_version}\n')
-        summary_report.append(f'Application: {self.application_type} {self.application_version}\n')
-        summary_report.append(f'Concurrency: {self.concurrency}\n')
-        summary_report.append(f'Actual test duration: {self.actual_duration} sec\n')
-        summary_report.append(f'Expected test duration: {self.duration} sec\n')
+        summary_report.append(self.format_string(f'Summary run status|{overall_status}\n'))
+        summary_report.append(self.format_string(f'OS|{self.os}'))
+        summary_report.append(self.format_string(f'DC Apps Performance Toolkit version|{self.tool_version}'))
+        summary_report.append(self.format_string(f'Application|{self.application_type} {self.application_version}'))
+        summary_report.append(self.format_string(f'Concurrency|{self.concurrency}'))
+        summary_report.append(self.format_string(f'Expected test run duration from yml file|{self.duration} sec'))
+        summary_report.append(self.format_string(f'Actual test run duration|{self.actual_duration} sec'))
 
         if self.application_type == BITBUCKET:
-            summary_report.append(f'Total Git operations count = {self.actual_git_operations_count}\n')
-            summary_report.append(f'Total Git operations compliant: {git_compliant}\n')
+            summary_report.append(self.format_string(f'Total Git operations count|{self.actual_git_operations_count}'))
+            summary_report.append(self.format_string(f'Total Git operations compliant|{git_compliant}'))
 
-        summary_report.append(f'Finished: {finished}\n')
-        summary_report.append(f'Success: {success}\n')
-        summary_report.append(f'Compliant: {compliant}\n')
+        summary_report.append(self.format_string(f'Finished|{finished}'))
+        summary_report.append(self.format_string(f'Compliant|{compliant}'))
+        summary_report.append(self.format_string(f'Success|{success}\n'))
 
         summary_report.append(self.format_string(f'Action|Success Rate|Status'))
 
-        for key, value in self.jmeter_test_rates.items():
+        for key, value in {**self.jmeter_test_rates, **self.selenium_test_rates}.items():
             status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-            #summary_report.append(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
             summary_report.append(self.format_string(f'{key}|{value}|{status}'))
-        for key, value in self.selenium_test_rates.items():
-            status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-            summary_report.append(f'{key}{" "*(50-len(key))}{value}{" "*(20-len(str(value)))}{status}\n')
 
         self.__write_to_file(summary_report, summary_report_file)
 
@@ -349,14 +350,7 @@ class AnalyticsCollector:
     @staticmethod
     def format_string(string_to_format, offset=50):
         # format string with delimiter "|"
-        return ''.join([f'{item}{" "*(offset-len(str(item)))}' for item in string_to_format.split("|")])
-
-
-
-
-
-
-
+        return ''.join([f'{item}{" "*(offset-len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
 
 
 class AnalyticsSender:
