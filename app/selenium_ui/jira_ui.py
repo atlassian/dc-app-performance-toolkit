@@ -1,5 +1,5 @@
 from selenium_ui.jira import modules
-#from extension.jira import extension_ui
+from extension.jira import extension_ui
 
 
 # this action should be the first one
