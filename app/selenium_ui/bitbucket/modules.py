@@ -25,7 +25,6 @@ def login(webdriver, datasets):
         @print_timing
         def measure(webdriver, interaction):
             login_page.go_to()
-            login_page.at()
             webdriver.app_version = login_page.get_app_version()
         measure(webdriver, "selenium_login:open_login_page")
 
@@ -35,8 +34,7 @@ def login(webdriver, datasets):
         def measure(webdriver, interaction):
             login_page.submit_login(interaction)
             get_started_page = GetStarted(webdriver)
-            get_started_page.at()
-            get_started_page.get_started_widget_visible(interaction)
+            get_started_page.wait_for_page_loaded(interaction)
         measure(webdriver, "selenium_login:login_get_started")
     measure(webdriver, "selenium_login")
 
@@ -46,8 +44,7 @@ def view_dashboard(webdriver, datasets):
     def measure(webdriver, interaction):
         dashboard = Dashboard(webdriver)
         dashboard.go_to()
-        dashboard.at()
-        dashboard.dashboard_presented(interaction)
+        dashboard.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_dashboard")
 
 
@@ -56,8 +53,7 @@ def view_projects(webdriver, datasets):
     def measure(webdriver, interaction):
         projects = Projects(webdriver)
         projects.go_to()
-        projects.at()
-        projects.projects_list_presented(interaction)
+        projects.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_projects")
 
 
@@ -66,7 +62,7 @@ def view_project_repos(webdriver, datasets):
     def measure(webdriver, interaction):
         project = Project(webdriver, project_key=datasets['project_key'])
         project.go_to()
-        project.repositories_visible(interaction)
+        project.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_project_repositories")
 
 
@@ -78,9 +74,8 @@ def view_repo(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         repository.go_to()
-        repository.at()
         nav_panel = RepoNavigationPanel(webdriver)
-        nav_panel.wait_navigation_panel_presented(interaction)
+        nav_panel.wait_for_page_loaded(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, "selenium_view_repository")
 
@@ -93,8 +88,7 @@ def view_list_pull_requests(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         repo_pull_requests.go_to()
-        repo_pull_requests.at()
-        repo_pull_requests.pull_requests_list_visible(interaction)
+        repo_pull_requests.wait_for_page_loaded(interaction)
     measure(webdriver, 'selenium_view_list_pull_requests')
 
 
@@ -106,8 +100,7 @@ def view_pull_request_overview_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         pull_request.go_to_overview()
-        pull_request.at()
-        pull_request.pull_request_tab_presented(interaction)
+        pull_request.wait_for_overview_tab(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, 'selenium_view_pull_request_overview')
 
@@ -120,7 +113,7 @@ def view_pull_request_diff_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         pull_request.go_to_diff()
-        pull_request.wait_diff_tab_presented(interaction)
+        pull_request.wait_for_diff_tab(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, 'selenium_view_pull_request_diff')
 
@@ -133,7 +126,7 @@ def view_pull_request_commits_tab(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         pull_request.go_to_commits()
-        pull_request.wait_commit_msg_label(interaction)
+        pull_request.wait_for_commits_tab(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, 'selenium_view_pull_request_commits')
 
@@ -146,15 +139,12 @@ def comment_pull_request_diff(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         PopupManager(webdriver).dismiss_default_popup()
-        pull_request.wait_diff_tab_presented(interaction)
+        pull_request.wait_for_diff_tab(interaction)
         PopupManager(webdriver).dismiss_default_popup()
-        pull_request.wait_code_diff_to_be_visible(interaction)
+        pull_request.wait_for_code_diff(interaction)
         PopupManager(webdriver).dismiss_default_popup()
         pull_request.click_inline_comment_button_js()
-        if webdriver.app_version == '6':
-            pull_request.add_code_comment_v6(interaction)
-        elif webdriver.app_version == '7':
-            pull_request.add_code_comment_v7(interaction)
+        pull_request.add_code_comment(interaction)
     measure(webdriver, 'selenium_comment_pull_request_file')
 
 
@@ -163,13 +153,11 @@ def comment_pull_request_overview(webdriver, datasets):
                                repo_slug=datasets['repo_slug'],
                                pull_request_key=datasets['pull_request_id'])
     pull_request.go_to()
-    pull_request.at()
     @print_timing
     def measure(webdriver, interaction):
         PopupManager(webdriver).dismiss_default_popup()
-        pull_request.wait_pull_request_activity_visible(interaction)
+        pull_request.wait_for_overview_tab(interaction)
         PopupManager(webdriver).dismiss_default_popup()
-        pull_request.wait_comment_text_area_visible(interaction).click()
         pull_request.add_overview_comment(interaction)
         pull_request.click_save_comment_button(interaction)
     measure(webdriver, 'selenium_comment_pull_request_overview')
@@ -182,7 +170,7 @@ def view_branches(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         branches.go_to()
-        branches.wait_branch_name_visible(interaction)
+        branches.wait_for_page_loaded(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, 'selenium_view_branches')
 
@@ -207,13 +195,13 @@ def create_pull_request(webdriver, datasets):
                                                  base_branch_name=branch_from)
             fork_branch_from = repository_branches.create_branch_fork_rnd_name(interaction=interaction,
                                                                                base_branch_name=branch_from)
-            navigation_panel.wait_navigation_panel_presented(interaction)
+            navigation_panel.wait_for_navigation_panel(interaction)
             repository_branches.open_base_branch(interaction=interaction,
                                                  base_branch_name=branch_to)
             fork_branch_to = repository_branches.create_branch_fork_rnd_name(interaction=interaction,
                                                                                base_branch_name=branch_to)
             datasets['pull_request_fork_branch_to'] = fork_branch_to
-            navigation_panel.wait_navigation_panel_presented(interaction)
+            navigation_panel.wait_for_navigation_panel(interaction)
 
             repo_pull_requests.create_new_pull_request(interaction=interaction, from_branch=fork_branch_from,
                                                        to_branch=fork_branch_to)
@@ -225,7 +213,7 @@ def create_pull_request(webdriver, datasets):
         def measure(webdriver, interaction):
             PopupManager(webdriver).dismiss_default_popup()
             pull_request = PullRequest(webdriver)
-            pull_request.wait_pull_request_activity_visible(interaction)
+            pull_request.wait_for_overview_tab(interaction)
             PopupManager(webdriver).dismiss_default_popup()
             pull_request.merge_pull_request(interaction)
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
@@ -240,8 +228,7 @@ def view_commits(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
         repo_commits.go_to()
-        repo_commits.at()
-        repo_commits.commit_graph_is_visible(interaction)
+        repo_commits.wait_for_page_loaded(interaction)
         PopupManager(webdriver).dismiss_default_popup()
     measure(webdriver, 'selenium_view_commits')
 

@@ -172,6 +172,7 @@ class RepoLocators:
 class PullRequestLocator:
 
     tab_panel = {'6': (By.CSS_SELECTOR, 'ul.tabs-menu'), '7': (By.CSS_SELECTOR, 'ul.tabs-menu')}
+
     commit_files = {'6': (By.CSS_SELECTOR, '.commit-files>.file-tree-container'),
                     '7': (By.CSS_SELECTOR, '.changes-sidebar>.changes-scope-content')}
     diff_code_lines = {'6': (By.CLASS_NAME, 'CodeMirror-code'),
