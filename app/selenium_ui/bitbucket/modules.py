@@ -68,8 +68,8 @@ def view_project_repos(webdriver, datasets):
 
 def view_repo(webdriver, datasets):
     repository_page = Repository(webdriver,
-                            project_key=datasets['project_key'],
-                            repo_slug=datasets['repo_slug'])
+                                 project_key=datasets['project_key'],
+                                 repo_slug=datasets['repo_slug'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -82,8 +82,8 @@ def view_repo(webdriver, datasets):
 
 def view_list_pull_requests(webdriver, datasets):
     repo_pull_requests_page = RepoPullRequests(webdriver,
-                                          project_key=datasets['project_key'],
-                                          repo_slug=datasets['repo_slug'])
+                                               project_key=datasets['project_key'],
+                                               repo_slug=datasets['repo_slug'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -94,8 +94,8 @@ def view_list_pull_requests(webdriver, datasets):
 
 def view_pull_request_overview_tab(webdriver, datasets):
     pull_request_page = PullRequest(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'],
-                               pull_request_key=datasets['pull_request_id'])
+                                    repo_slug=datasets['repo_slug'],
+                                    pull_request_key=datasets['pull_request_id'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -107,8 +107,8 @@ def view_pull_request_overview_tab(webdriver, datasets):
 
 def view_pull_request_diff_tab(webdriver, datasets):
     pull_request_page = PullRequest(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'],
-                               pull_request_key=datasets['pull_request_id'])
+                                    repo_slug=datasets['repo_slug'],
+                                    pull_request_key=datasets['pull_request_id'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -120,8 +120,8 @@ def view_pull_request_diff_tab(webdriver, datasets):
 
 def view_pull_request_commits_tab(webdriver, datasets):
     pull_request_page = PullRequest(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'],
-                               pull_request_key=datasets['pull_request_id'])
+                                    repo_slug=datasets['repo_slug'],
+                                    pull_request_key=datasets['pull_request_id'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -133,8 +133,8 @@ def view_pull_request_commits_tab(webdriver, datasets):
 
 def comment_pull_request_diff(webdriver, datasets):
     pull_request_page = PullRequest(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'],
-                               pull_request_key=datasets['pull_request_id'])
+                                    repo_slug=datasets['repo_slug'],
+                                    pull_request_key=datasets['pull_request_id'])
     pull_request_page.go_to_diff()
     @print_timing
     def measure(webdriver, interaction):
@@ -150,8 +150,8 @@ def comment_pull_request_diff(webdriver, datasets):
 
 def comment_pull_request_overview(webdriver, datasets):
     pull_request_page = PullRequest(webdriver, project_key=datasets['project_key'],
-                               repo_slug=datasets['repo_slug'],
-                               pull_request_key=datasets['pull_request_id'])
+                                    repo_slug=datasets['repo_slug'],
+                                    pull_request_key=datasets['pull_request_id'])
     pull_request_page.go_to()
     @print_timing
     def measure(webdriver, interaction):
@@ -165,7 +165,7 @@ def comment_pull_request_overview(webdriver, datasets):
 
 def view_branches(webdriver, datasets):
     branches_page = RepositoryBranches(webdriver, project_key=datasets['project_key'],
-                                  repo_slug=datasets['repo_slug'])
+                                       repo_slug=datasets['repo_slug'])
 
     @print_timing
     def measure(webdriver, interaction):
@@ -198,7 +198,7 @@ def create_pull_request(webdriver, datasets):
                                                                                     base_branch_name=branch_from)
             navigation_panel.wait_for_navigation_panel(interaction)
             repository_branches_page.open_base_branch(interaction=interaction,
-                                                 base_branch_name=branch_to)
+                                                      base_branch_name=branch_to)
             fork_branch_to = repository_branches_page.create_branch_fork_rnd_name(interaction=interaction,
                                                                                   base_branch_name=branch_to)
             datasets['pull_request_fork_branch_to'] = fork_branch_to
@@ -220,7 +220,7 @@ def create_pull_request(webdriver, datasets):
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
         repository_branches_page.go_to()
         repository_branches_page.delete_branch(interaction=interaction,
-                                          branch_name=datasets['pull_request_fork_branch_to'])
+                                               branch_name=datasets['pull_request_fork_branch_to'])
     measure(webdriver, 'selenium_create_pull_request')
 
 
