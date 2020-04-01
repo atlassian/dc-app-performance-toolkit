@@ -76,6 +76,7 @@ class LoginPageLocators:
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
     login_submit_button = (By.ID, 'login-form-submit')
+    system_dashboard = (By.ID, "dashboard")
 
 
 class LogoutLocators:

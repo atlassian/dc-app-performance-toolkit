@@ -35,7 +35,6 @@ def login(webdriver, datasets):
         # TODO do we need this unused argument? Suggest rewriting without using the same function names and inner funcs
         def measure(webdriver, interaction):
             login_page.go_to()
-            login_page.at()
         measure(webdriver, "selenium_login:open_login_page")
 
         @print_timing
@@ -43,17 +42,18 @@ def login(webdriver, datasets):
             login_page.set_credentials(username=datasets['username'], password=datasets['password'])
             if login_page.is_first_login():
                 login_page.first_login_setup(interaction)
+            login_page.wait_for_page_loaded(interaction)
         measure(webdriver, "selenium_login:login_and_view_dashboard")
     measure(webdriver, "selenium_login")
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_issue(webdriver, datasets):
-    issue = Issue(webdriver, issue_key=datasets['issue_key'])
+    issue_page = Issue(webdriver, issue_key=datasets['issue_key'])
     @print_timing
     def measure(webdriver, interaction):
-        issue.go_to()
-        issue.wait_issue_title_visible(interaction)
+        issue_page.go_to()
+        issue_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_issue")
 
 
@@ -84,60 +84,60 @@ def create_issue(webdriver, datasets):
 
 
 def view_project_summary(webdriver, datasets):
-    project = Project(webdriver, project_key=datasets['project_key'])
+    project_page = Project(webdriver, project_key=datasets['project_key'])
 
     @print_timing
     def measure(webdriver, interaction):
-        project.go_to()
-        project.wait_until_summary_visible(interaction)
+        project_page.go_to()
+        project_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_project_summary")
 
 
 def search_jql(webdriver, datasets):
-    search = Search(webdriver, jql=datasets['jql'])
+    search_page = Search(webdriver, jql=datasets['jql'])
 
     @print_timing
     def measure(webdriver, interaction):
-        search.go_to()
-        search.wait_issue_search_presented(interaction)
+        search_page.go_to()
+        search_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_search_jql")
 
 
 def edit_issue(webdriver, datasets):
-    issue = Issue(webdriver, issue_id=datasets['issue_id'])
+    issue_page = Issue(webdriver, issue_id=datasets['issue_id'])
 
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
         def measure(webdriver, interaction):
-            issue.go_to_edit_issue(interaction)  # open editor
+            issue_page.go_to_edit_issue(interaction)  # open editor
         measure(webdriver, "selenium_edit_issue:open_edit_issue_form")
 
-        issue.fill_summary_edit()  # edit summary
-        issue.fill_description_edit(interaction)  # edit description
+        issue_page.fill_summary_edit()  # edit summary
+        issue_page.fill_description_edit(interaction)  # edit description
 
         @print_timing
         def measure(webdriver, interaction):
-            issue.edit_issue_submit()  # submit edit issue
-            issue.wait_issue_title_visible(interaction)
+            issue_page.edit_issue_submit()  # submit edit issue
+            issue_page.wait_for_issue_title(interaction)
         measure(webdriver, "selenium_edit_issue:save_edit_issue_form")
     measure(webdriver, "selenium_edit_issue")
 
 
 def save_comment(webdriver, datasets):
-    issue = Issue(webdriver, issue_id=datasets['issue_id'])
+    issue_page = Issue(webdriver, issue_id=datasets['issue_id'])
     @print_timing
     def measure(webdriver, interaction):
         @print_timing
         def measure(webdriver, interaction):
-            issue.go_to_edit_comment(interaction)  # Open edit comment page
+            issue_page.go_to_edit_comment(interaction)  # Open edit comment page
         measure(webdriver, "selenium_save_comment:open_comment_form")
 
-        issue.fill_comment_edit(interaction)  # Fill comment text field
+        issue_page.fill_comment_edit(interaction)  # Fill comment text field
 
         @print_timing
         def measure(webdriver, interaction):
-            issue.edit_comment_submit(interaction)  # Submit comment
+            issue_page.edit_comment_submit(interaction)  # Submit comment
         measure(webdriver, "selenium_save_comment:submit_form")
     measure(webdriver, "selenium_save_comment")
 
@@ -145,57 +145,55 @@ def save_comment(webdriver, datasets):
 def browse_projects_list(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        projects_list = ProjectsList(webdriver, projects_list_pages=datasets['pages'])
-        projects_list.go_to()
-        projects_list.wait_projects_list_visible(interaction)
+        projects_list_page = ProjectsList(webdriver, projects_list_pages=datasets['pages'])
+        projects_list_page.go_to()
+        projects_list_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_browse_projects_list")
 
 
 def browse_boards_list(webdriver, datasets):
     @print_timing
     def measure(webdriver, interaction):
-        boards_list = BoardsList(webdriver)
-        boards_list.go_to()
-        boards_list.at()
-        boards_list.boards_list_visible(interaction)
+        boards_list_page = BoardsList(webdriver)
+        boards_list_page.go_to()
+        boards_list_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_browse_boards_list")
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_backlog_for_scrum_board(webdriver, datasets):
-    scrum_board = Board(webdriver, board_id=datasets['scrum_board_id'])
+    scrum_board_page = Board(webdriver, board_id=datasets['scrum_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        scrum_board.go_to_backlog()
-        scrum_board.wait_scrum_board_backlog_presented(interaction)
+        scrum_board_page.go_to_backlog()
+        scrum_board_page.wait_for_scrum_board_backlog(interaction)
     measure(webdriver, "selenium_view_scrum_board_backlog")
 
 
 def view_scrum_board(webdriver, datasets):
-    scrum_board = Board(webdriver, board_id=datasets['scrum_board_id'])
+    scrum_board_page = Board(webdriver, board_id=datasets['scrum_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        scrum_board.go_to()
-        scrum_board.wait_board_presented(interaction)
+        scrum_board_page.go_to()
+        scrum_board_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_scrum_board")
 
 
 def view_kanban_board(webdriver, datasets):
-    kanban_board = Board(webdriver, board_id=datasets['kanban_board_id'])
+    kanban_board_page = Board(webdriver, board_id=datasets['kanban_board_id'])
     @print_timing
     def measure(webdriver, interaction):
-        kanban_board.go_to()
-        kanban_board.wait_board_presented(interaction)
+        kanban_board_page.go_to()
+        kanban_board_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_view_kanban_board")
 
 
 def view_dashboard(webdriver, datasets):
-    dashboard = Dashboard(webdriver)
+    dashboard_page = Dashboard(webdriver)
     @print_timing
     def measure(webdriver, interaction):
-        dashboard.go_to()
-        dashboard.at()
-        dashboard.wait_dashboard_presented(interaction)
+        dashboard_page.go_to()
+        dashboard_page.wait_dashboard_presented(interaction)
     measure(webdriver, "selenium_view_dashboard")
 
 
@@ -205,6 +203,6 @@ def log_out(webdriver, datasets):
     def measure(webdriver, interaction):
         logout_page.go_to()
         logout_page.click_logout()
-        logout_page.wait_login_available(interaction)
+        logout_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_log_out")
 

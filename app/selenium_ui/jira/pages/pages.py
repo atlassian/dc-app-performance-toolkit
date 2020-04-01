@@ -15,9 +15,7 @@ class PopupManager(BasePage):
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
-
-    def at(self):
-        return self.verify_url(LoginPageLocators.login_params)
+    page_loaded_selector = LoginPageLocators.system_dashboard
 
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
@@ -38,25 +36,21 @@ class Login(BasePage):
 
 class Logout(BasePage):
     page_url = LogoutLocators.logout_url
+    page_loaded_selector = LogoutLocators.login_button_link
 
     def click_logout(self):
         self.get_element(LogoutLocators.logout_submit_button).click()
 
-    def wait_login_available(self, interaction):
-        self.wait_until_present(LogoutLocators.login_button_link, interaction)
-
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
-
-    def at(self):
-        self.verify_url(DashboardLocators.dashboard_params)
 
     def wait_dashboard_presented(self, interaction):
         self.wait_until_present(DashboardLocators.dashboard_window, interaction)
 
 
 class Issue(BasePage):
+    page_loaded_selector = IssueLocators.issue_title
 
     def __init__(self, driver, issue_key=None, issue_id=None):
         BasePage.__init__(self, driver)
@@ -65,12 +59,8 @@ class Issue(BasePage):
         self.page_url = url_manager_modal.issue_url()
         self.page_url_edit_issue = url_manager_edit_page.edit_issue_url()
         self.page_url_edit_comment = url_manager_edit_page.edit_comments_url()
-        self.params_to_verify = url_manager_modal.issue_params
 
-    def at(self):
-        return self.verify_url(self.params_to_verify)
-
-    def wait_issue_title_visible(self, interaction):
+    def wait_for_issue_title(self, interaction):
         self.wait_until_visible(IssueLocators.issue_title, interaction)
 
     def go_to_edit_issue(self, interaction):
@@ -147,18 +137,12 @@ class Issue(BasePage):
 
 
 class Project(BasePage):
+    page_loaded_selector = ProjectLocators.project_summary_property_column
 
     def __init__(self, driver, project_key):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.project_summary_url()
-        self.params_to_verify = url_manager.project_summary_params
-
-    def at(self):
-        return self.verify_url(self.params_to_verify)
-
-    def wait_until_summary_visible(self, interaction):
-        self.wait_until_visible(ProjectLocators.project_summary_property_column, interaction)
 
 
 class ProjectsList(BasePage):
@@ -169,7 +153,7 @@ class ProjectsList(BasePage):
         url_manager = UrlManager(projects_list_page=self.projects_list_page)
         self.page_url = url_manager.projects_list_page_url()
 
-    def wait_projects_list_visible(self, interaction):
+    def wait_for_page_loaded(self, interaction):
         self.wait_until_any_ec_presented(selector_names=[ProjectLocators.projects_list,
                                                          ProjectLocators.projects_not_found],
                                          interaction=interaction)
@@ -177,12 +161,7 @@ class ProjectsList(BasePage):
 
 class BoardsList(BasePage):
     page_url = BoardsListLocators.boards_list_url
-
-    def at(self):
-        self.verify_url(BoardsListLocators.boards_list_params)
-
-    def boards_list_visible(self, interaction):
-        self.wait_until_visible(BoardsListLocators.boards_list, interaction)
+    page_loaded_selector = BoardsListLocators.boards_list
 
 
 class Search(BasePage):
@@ -192,7 +171,7 @@ class Search(BasePage):
         url_manager = UrlManager(jql=jql)
         self.page_url = url_manager.jql_search_url()
 
-    def wait_issue_search_presented(self, interaction):
+    def wait_for_page_loaded(self, interaction):
         self.wait_until_any_ec_presented(selector_names=[SearchLocators.search_issue_table,
                                                          SearchLocators.search_issue_content,
                                                          SearchLocators.search_no_issue_found],
@@ -200,6 +179,7 @@ class Search(BasePage):
 
 
 class Board(BasePage):
+    page_loaded_selector = BoardLocators.board_columns
 
     def __init__(self, driver, board_id):
         BasePage.__init__(self, driver)
@@ -210,8 +190,5 @@ class Board(BasePage):
     def go_to_backlog(self):
         self.go_to_url(self.backlog_url)
 
-    def wait_scrum_board_backlog_presented(self, interaction):
+    def wait_for_scrum_board_backlog(self, interaction):
         self.wait_until_present(BoardLocators.scrum_board_backlog_content, interaction)
-
-    def wait_board_presented(self, interaction):
-        self.wait_until_present(BoardLocators.board_columns, interaction)
