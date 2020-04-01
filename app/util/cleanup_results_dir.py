@@ -10,7 +10,7 @@ FILES_TO_REMOVE = ['jmeter.out',
                    'system.properties']
 
 if ENV_TAURUS_ARTIFACT_DIR in os.environ:
-    artifacts_dir = os.environ.get('TAURUS_ARTIFACTS_DIR')
+    artifacts_dir = os.environ.get(ENV_TAURUS_ARTIFACT_DIR)
 else:
     raise SystemExit(f'Error: env variable {ENV_TAURUS_ARTIFACT_DIR} is not set')
 
