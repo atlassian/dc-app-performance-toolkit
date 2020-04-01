@@ -11,6 +11,7 @@ TIMEOUT = 20
 
 class BasePage:
     page_url = ''
+    page_loaded_selector = {}
 
     def __init__(self, driver):
         self.driver = driver
@@ -18,11 +19,15 @@ class BasePage:
     def go_to(self):
         self.driver.get(self.page_url)
 
+    def wait_for_page_loaded(self, interaction):
+        if type(self.page_loaded_selector) == list:
+            for selector in self.page_loaded_selector:
+                self.wait_until_visible(selector, interaction)
+        else:
+            self.wait_until_visible(self.page_loaded_selector, interaction)
+
     def go_to_url(self, url):
         self.driver.get(url)
-
-    def verify_url(self, params):
-        return WebDriverWait(self.driver, TIMEOUT).until(lambda driver: self.driver.current_url.endswith(params))
 
     def get_element(self, selector):
         selector_name = self.get_selector(selector)
@@ -107,15 +112,16 @@ class BasePage:
         return self.driver.switch_to.parent_frame()
 
     def get_selector(self, selector_name):
-        selector = selector_name.get(self.driver.app_version) if type(selector_name) == dict else selector_name
+        selector = selector_name.get(self.app_version) if type(selector_name) == dict else selector_name
         if selector is None:
-            raise Exception(f'Selector {selector_name} for version {self.driver.app_version} is not found')
+            raise Exception(f'Selector {selector_name} for version {self.app_version} is not found')
         return selector
 
     def execute_js(self, js):
         return self.driver.execute_script(js)
 
-    def driver_version(self):
+    @property
+    def app_version(self):
         return self.driver.app_version if 'app_version' in dir(self.driver) else None
 
     @staticmethod

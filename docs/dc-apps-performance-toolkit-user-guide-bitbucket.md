@@ -214,7 +214,7 @@ To populate the database with SQL:
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
-    export NFS_SERVER_IP=node_private_ip
+    export NFS_SERVER_IP=nfs_server_private_ip
     export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NFS_SERVER_IP}
     ```

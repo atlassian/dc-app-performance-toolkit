@@ -10,9 +10,6 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 class LoginPage(BasePage):
     page_url = UrlManager().login_url()
 
-    def at(self):
-        return self.verify_url(LoginPageLocators.login_params)
-
     def fill_username(self, username):
         self.get_element(LoginPageLocators.username_textfield).send_keys(username)
 
@@ -38,57 +35,36 @@ class LogoutPage(BasePage):
 
 class GetStarted(BasePage):
     page_url = GetStartedLocators.get_started_url
-
-    def at(self):
-        return self.verify_url(GetStartedLocators.get_started_params)
-
-    def get_started_widget_visible(self, interaction=None):
-        return self.wait_until_present(GetStartedLocators.bitbucket_is_ready_widget, interaction)
+    page_loaded_selector = GetStartedLocators.bitbucket_is_ready_widget
 
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
-
-    def at(self):
-        return self.verify_url(DashboardLocators.dashboard_params)
-
-    def dashboard_presented(self, interaction):
-        return self.wait_until_present(DashboardLocators.dashboard_presence, interaction)
+    page_loaded_selector = DashboardLocators.dashboard_presence
 
 
 class Projects(BasePage):
     page_url = ProjectsLocators.project_url
-
-    def at(self):
-        return self.verify_url(ProjectsLocators.projects_params)
-
-    def projects_list_presented(self, interaction):
-        return self.wait_until_present(ProjectsLocators.projects_list, interaction)
+    page_loaded_selector = ProjectsLocators.projects_list
 
 
 class Project(BasePage):
+    page_loaded_selector = [ProjectLocators.repositories_container, ProjectLocators.repository_name]
 
     def __init__(self, driver, project_key):
         BasePage.__init__(self, driver)
         self.project_key = project_key
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.project_url()
-        self.params_to_verify = url_manager.project_params
-
-    def at(self):
-        return self.verify_url(self.params_to_verify)
-
-    def repositories_visible(self, interaction):
-        return self.wait_until_visible(ProjectLocators.repositories_container, interaction) \
-               and self.wait_until_visible(ProjectLocators.repository_name, interaction)
 
 
 class RepoNavigationPanel(BasePage):
+    page_loaded_selector = RepoNavigationPanelLocators.navigation_panel
 
     def __clone_repo_button(self):
         return self.get_element(RepoNavigationPanelLocators.clone_repo_button)
 
-    def wait_navigation_panel_presented(self, interaction):
+    def wait_for_navigation_panel(self, interaction):
         return self.wait_until_present(RepoNavigationPanelLocators.navigation_panel, interaction)
 
     def clone_repo_click(self):
@@ -114,12 +90,8 @@ class Repository(BasePage):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.repo_url()
-        self.params_to_verify = url_manager.repo_params_browse
         self.repo_slug = repo_slug
         self.project_key = project_key
-
-    def at(self):
-        return self.verify_url(self.params_to_verify)
 
     def set_enable_fork_sync(self, interaction, value):
         checkbox = self.wait_until_visible(RepoLocators.repo_fork_sync, interaction)
@@ -139,18 +111,12 @@ class Repository(BasePage):
 
 
 class RepoPullRequests(BasePage):
+    page_loaded_selector = RepoLocators.pull_requests_list
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
         self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = self.url_manager.repo_pull_requests()
-        self.params_to_verify = self.url_manager.repo_pull_requests_params
-
-    def at(self):
-        return self.verify_url(self.params_to_verify)
-
-    def pull_requests_list_visible(self, interaction):
-        return self.wait_until_visible(RepoLocators.pull_requests_list, interaction)
 
     def create_new_pull_request(self, from_branch, to_branch, interaction):
         self.go_to_url(url=self.url_manager.create_pull_request_url(from_branch=from_branch,
@@ -199,15 +165,11 @@ class PullRequest(BasePage):
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug,
                                  pull_request_key=pull_request_key)
         self.page_url = url_manager.pull_request_overview()
-        self.params_to_verify_overview = url_manager.pull_request_params_overview
         self.diff_url = url_manager.pull_request_diff()
         self.commits_url = url_manager.pull_request_commits()
 
-    def at(self):
-        return self.verify_url(self.params_to_verify_overview)
-
-    def pull_request_tab_presented(self, interaction):
-        return self.wait_until_visible(PullRequestLocator.tab_panel, interaction)
+    def wait_for_overview_tab(self, interaction):
+        return self.wait_until_visible(PullRequestLocator.pull_request_activity_content, interaction)
 
     def go_to_overview(self):
         return self.go_to()
@@ -218,13 +180,13 @@ class PullRequest(BasePage):
     def go_to_commits(self):
         self.go_to_url(self.commits_url)
 
-    def wait_diff_tab_presented(self, interaction):
+    def wait_for_diff_tab(self, interaction):
         return self.wait_until_any_element_visible(PullRequestLocator.commit_files, interaction)
 
-    def wait_code_diff_to_be_visible(self, interaction):
+    def wait_for_code_diff(self, interaction):
         return self.wait_until_visible(PullRequestLocator.diff_code_lines, interaction)
 
-    def wait_commit_msg_label(self, interaction):
+    def wait_for_commits_tab(self, interaction):
         self.wait_until_any_element_visible(PullRequestLocator.commit_message_label, interaction)
 
     def click_inline_comment_button_js(self):
@@ -234,11 +196,11 @@ class PullRequest(BasePage):
                         "item.scrollIntoView();"
                         "item.click();")
 
-    def wait_comment_text_area_visible(self, interaction):
+    def wait_for_comment_text_area(self, interaction):
         return self.wait_until_visible(PullRequestLocator.comment_text_area, interaction)
 
     def add_code_comment_v6(self, interaction):
-        self.wait_comment_text_area_visible(interaction)
+        self.wait_for_comment_text_area(interaction)
         selector = self.get_selector(PullRequestLocator.comment_text_area)
         self.execute_js(f"document.querySelector('{selector[1]}').value = 'Comment from Selenium script';")
         self.click_save_comment_button(interaction)
@@ -247,13 +209,17 @@ class PullRequest(BasePage):
         self.wait_until_visible(PullRequestLocator.text_area, interaction).send_keys('Comment from Selenium script')
         self.click_save_comment_button(interaction)
 
+    def add_code_comment(self, interaction):
+        if self.app_version == '6':
+            self.add_code_comment_v6(interaction)
+        elif self.app_version == '7':
+            self.add_code_comment_v7(interaction)
+
     def click_save_comment_button(self, interaction):
         return self.wait_until_visible(PullRequestLocator.comment_button, interaction).click()
 
-    def wait_pull_request_activity_visible(self, interaction):
-        return self.wait_until_visible(PullRequestLocator.pull_request_activity_content, interaction)
-
     def add_overview_comment(self, interaction):
+        self.wait_for_comment_text_area(interaction).click()
         self.wait_until_clickable(PullRequestLocator.text_area, interaction).send_keys(self.generate_random_string(50))
 
     def wait_merge_button_clickable(self, interaction):
@@ -272,18 +238,12 @@ class PullRequest(BasePage):
 
 
 class RepositoryBranches(BasePage):
+    page_loaded_selector = BranchesLocator.branches_name
 
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
         self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = self.url_manager.repo_branches()
-        self.params_to_verify = self.url_manager.branches_params
-
-    def at(self):
-        self.verify_url(self.params_to_verify)
-
-    def wait_branch_name_visible(self, interaction):
-        self.wait_until_any_element_visible(BranchesLocator.branches_name, interaction)
 
     def open_base_branch(self, base_branch_name, interaction):
         self.go_to_url(f"{self.url_manager.base_branch_url()}{base_branch_name}")
@@ -325,10 +285,6 @@ class ForkRepositorySettings(RepositorySettings):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(user=user, repo_slug=repo_slug)
         self.page_url = url_manager.fork_repo_url()
-        self.params_to_verify = url_manager.fork_repo_params
-
-    def at(self):
-        self.verify_url(self.params_to_verify)
 
 
 class UserSettings(BasePage):
@@ -337,24 +293,15 @@ class UserSettings(BasePage):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(user=user)
         self.page_url = url_manager.user_settings_url()
-        self.params_to_verify = url_manager.user_settings_params
-
-    def at(self):
-        self.verify_url(self.params_to_verify)
 
     def user_role_visible(self, interaction):
         return self.wait_until_visible(UserSettingsLocator.user_role_label, interaction)
 
 
 class RepositoryCommits(BasePage):
+    page_loaded_selector = RepoCommitsLocator.repo_commits_graph
+
     def __init__(self, driver, project_key, repo_slug):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.commits_url()
-        self.params_to_verify = url_manager.repo_commits_params
-
-    def at(self):
-        self.verify_url(self.params_to_verify)
-
-    def commit_graph_is_visible(self, interaction):
-        self.wait_until_any_element_visible(RepoCommitsLocator.repo_commits_graph, interaction)
