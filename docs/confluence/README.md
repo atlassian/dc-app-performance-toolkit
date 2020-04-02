@@ -37,6 +37,8 @@ Results are located in the `resutls/confluence/YY-MM-DD-hh-mm-ss` directory:
 * `pytest.out` - detailed log of Selenium execution, including stacktraces of Selenium fails
 * `selenium.jtl` - Selenium raw data
 * `results.csv` - consolidated results of execution
+* `resutls_summary.log` - detailed summary of the run. Make sure that overall run status is `OK` before moving to the 
+next steps.
 
 
 # Useful information

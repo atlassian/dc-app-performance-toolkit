@@ -339,6 +339,7 @@ To receive performance baseline results without an app installed:
     bzt confluence.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
+    - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
@@ -347,6 +348,11 @@ To receive performance baseline results without an app installed:
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min)
 
@@ -362,6 +368,11 @@ To receive performance results with an app installed:
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### Generating a performance regression report
 
@@ -504,6 +515,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run4"></a> Run 4 (~50 min)
 
 To receive scalability benchmark results for two-node Confluence DC with app-specific actions:
@@ -544,6 +560,11 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run5"></a> Run 5 (~50 min)
 
 To receive scalability benchmark results for four-node Confluence DC with app-specific actions:
@@ -560,6 +581,11 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output.
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### Generating a report for scalability scenario
 
