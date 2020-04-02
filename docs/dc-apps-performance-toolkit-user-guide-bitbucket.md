@@ -495,7 +495,6 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
 1. Run bzt.
 
     ``` bash
