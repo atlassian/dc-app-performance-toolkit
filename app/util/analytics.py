@@ -41,7 +41,8 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
-APP_TYPE_MSG = 'ERROR: Please run util/analytics.py with application type as argument. E.g. python util/analytics.py jira'
+APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
+                'E.g. python util/analytics.py jira')
 
 
 def __validate_app_type():
