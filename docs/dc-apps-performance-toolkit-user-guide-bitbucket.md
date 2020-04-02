@@ -516,7 +516,6 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
 1. Run bzt.
 
     ``` bash
