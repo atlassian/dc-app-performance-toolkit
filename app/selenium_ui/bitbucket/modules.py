@@ -219,6 +219,7 @@ def create_pull_request(webdriver, datasets):
             pull_request_page.merge_pull_request(interaction)
         measure(webdriver, 'selenium_create_pull_request:merge_pull_request')
         repository_branches_page.go_to()
+        repository_branches_page.wait_for_page_loaded(interaction)
         repository_branches_page.delete_branch(interaction=interaction,
                                                branch_name=datasets['pull_request_fork_branch_to'])
     measure(webdriver, 'selenium_create_pull_request')
