@@ -77,6 +77,17 @@ class BasePage:
         any_ec.ecs = tuple(ec.presence_of_element_located(origin_selector) for origin_selector in origin_selectors)
         return self.__wait_until(expected_condition=any_ec, interaction=interaction)
 
+    def wait_until_any_ec_text_presented_in_el(self, selector_names, interaction):
+        origin_selectors = []
+        for selector_text in selector_names:
+            selector = self.get_selector(selector_text[0])
+            text = selector_text[1]
+            origin_selectors.append((selector, text))
+        any_ec = AnyEc()
+        any_ec.ecs = tuple(ec.text_to_be_present_in_element(locator=origin_selector[0], text_=origin_selector[1]) for
+                           origin_selector in origin_selectors)
+        return self.__wait_until(expected_condition=any_ec, interaction=interaction)
+
     def __wait_until(self, expected_condition, interaction, time_out=TIMEOUT):
         message = f"Interaction: {interaction}. "
         ec_type = type(expected_condition)
