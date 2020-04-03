@@ -62,7 +62,7 @@ def view_blog(webdriver, datasets):
 
 def view_dashboard(webdriver, datasets):
     dashboard_page = Dashboard(webdriver)
-    
+
     @print_timing
     def measure(webdriver, interaction):
         dashboard_page.go_to()

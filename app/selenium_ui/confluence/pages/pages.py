@@ -42,8 +42,9 @@ class AllUpdates(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.dialog_window)
+        return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
+                                  PopupLocators.skip_onboarding_2,
+                                  PopupLocators.time_saving_template)
 
 
 class Page(BasePage):

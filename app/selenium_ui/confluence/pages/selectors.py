@@ -29,10 +29,10 @@ class UrlManager:
 
 
 class PopupLocators:
-    default_popup = '.button-panel-button .set-timezone-button'
-    popup_1 = '.aui-button aui-button-link .skip-onboarding'
-    popup_2 = '.aui-button.aui-button-link.skip-onboarding'
-    dialog_window = '#closeDisDialog'
+    timezone_popups = '.button-panel-button .set-timezone-button'
+    skip_onbording_1 = '.aui-button aui-button-link .skip-onboarding'
+    skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
+    time_saving_template = '#closeDisDialog'
 
 
 class LoginPageLocators:
@@ -76,7 +76,6 @@ class EditorLocators:
     page_content_field = (By.ID, "wysiwygTextarea_ifr")
     tinymce_page_content_field = (By.ID, "tinymce")
     tinymce_page_content_parahraph = (By.TAG_NAME, 'p')
-
 
     status_indicator = (By.CLASS_NAME, "status-indicator-message")
     save_spinner = (By.ID, "rte-spinner")
