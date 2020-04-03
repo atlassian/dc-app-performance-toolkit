@@ -9,6 +9,8 @@ class UrlManager:
         self.login_params = '/login.action'
         self.page_params = f"/pages/viewpage.action?pageId={page_id}"
         self.dashboard_params = '/dashboard.action#all-updates'
+        self.edit_page_params = f'/pages/editpage.action?pageId={page_id}'
+        self.logout_params = "/logout.action"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -18,6 +20,12 @@ class UrlManager:
 
     def page_url(self):
         return f"{self.host}{self.page_params}"
+
+    def edit_page_url(self):
+        return f"{self.host}{self.edit_page_params}"
+
+    def logout_url(self):
+        return f"{self.host}{self.logout_params}"
 
 
 class PopupLocators:
@@ -49,11 +57,12 @@ class AllUpdatesLocators:
 
 class PageLocators:
     page_title = (By.ID, "title-text")
+    comment_text_field = (By.CSS_SELECTOR, ".quick-comment-prompt")
 
 
 class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
-    updated_items = (By.CLASS_NAME, ".update-items")
+    updated_items = (By.CLASS_NAME, "update-items")
 
 
 class TopPanelLocators:
@@ -62,5 +71,12 @@ class TopPanelLocators:
 
 class EditorLocators:
     publish_button = (By.ID, "rte-button-publish")
+    confirm_publishing_button = (By.ID, "qed-publish-button")
     title_field = (By.ID, "content-title")
     page_content_field = (By.ID, "wysiwygTextarea_ifr")
+    tinymce_page_content_field = (By.ID, "tinymce")
+    tinymce_page_content_parahraph = (By.TAG_NAME, 'p')
+
+
+    status_indicator = (By.CLASS_NAME, "status-indicator-message")
+    save_spinner = (By.ID, "rte-spinner")
