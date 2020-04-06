@@ -1,4 +1,4 @@
-## Reports generator - a tool that creates an aggregated .csv file and chart from multiple run results.
+## Reports generator - a tool that creates an aggregated .csv file, chart and summary report from multiple run results.
 Before you start, make sure you have installed Python packages from [requirements.txt](../../requirements.txt).
 
 Otherwise, run the `pip install -r requirements.txt` command from DCAPT [root](../..) directory to install necessary packages to your virtual environment.
@@ -6,7 +6,7 @@ Otherwise, run the `pip install -r requirements.txt` command from DCAPT [root](.
 To create reports, run the <br>
 `python csv_chart_generator.py [performance_profile.yml or scale_profile.yml]` command from the `reports_generation` folder.
 
-The aggregated .csv files and charts are stored in the `results/reports` directory.
+The aggregated .csv files, charts and summary report are stored in the `results/reports` directory.
 Before run, you should edit `performance_profile.yml` or `scale_profile.yml` and set appropriate `fullPath` values. 
 
 **Configuration**
