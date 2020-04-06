@@ -317,31 +317,34 @@ class AnalyticsCollector:
 
         if self.application_type == BITBUCKET:
             git_compliant = self.__is_git_operations_compliant()
-            overall_status = 'OK' if overall_status and git_compliant[0] else 'FAIL'
+            overall_status = 'OK' if finished[0] and success[0] and compliant[0] and git_compliant[0] else 'FAIL'
 
-        summary_report.append(self.format_string(f'Summary run status|{overall_status}\n'))
-        summary_report.append(self.format_string(f'OS|{self.os}'))
-        summary_report.append(self.format_string(f'DC Apps Performance Toolkit version|{self.tool_version}'))
-        summary_report.append(self.format_string(f'Application|{self.application_type} {self.application_version}'))
-        summary_report.append(self.format_string(f'Concurrency|{self.concurrency}'))
-        summary_report.append(self.format_string(f'Expected test run duration from yml file|{self.duration} sec'))
-        summary_report.append(self.format_string(f'Actual test run duration|{self.actual_duration} sec'))
+        summary_report.append(f'Summary run status|{overall_status}\n')
+        summary_report.append(f'Artifacts dir|{os.path.basename(self._log_dir)}')
+        summary_report.append(f'OS|{self.os}')
+        summary_report.append(f'DC Apps Performance Toolkit version|{self.tool_version}')
+        summary_report.append(f'Application|{self.application_type} {self.application_version}')
+        summary_report.append(f'Concurrency|{self.concurrency}')
+        summary_report.append(f'Expected test run duration from yml file|{self.duration} sec')
+        summary_report.append(f'Actual test run duration|{self.actual_duration} sec')
 
         if self.application_type == BITBUCKET:
-            summary_report.append(self.format_string(f'Total Git operations count|{self.actual_git_operations_count}'))
-            summary_report.append(self.format_string(f'Total Git operations compliant|{git_compliant}'))
+            summary_report.append(f'Total Git operations count|{self.actual_git_operations_count}')
+            summary_report.append(f'Total Git operations compliant|{git_compliant}')
 
-        summary_report.append(self.format_string(f'Finished|{finished}'))
-        summary_report.append(self.format_string(f'Compliant|{compliant}'))
-        summary_report.append(self.format_string(f'Success|{success}\n'))
+        summary_report.append(f'Finished|{finished}')
+        summary_report.append(f'Compliant|{compliant}')
+        summary_report.append(f'Success|{success}\n')
 
-        summary_report.append(self.format_string(f'Action|Success Rate|Status'))
+        summary_report.append(f'Action|Success Rate|Status')
 
         for key, value in {**self.jmeter_test_rates, **self.selenium_test_rates}.items():
             status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-            summary_report.append(self.format_string(f'{key}|{value}|{status}'))
+            summary_report.append(f'{key}|{value}|{status}')
 
-        self.__write_to_file(summary_report, summary_report_file)
+        pretty_report = map(self.format_string, summary_report)
+
+        self.__write_to_file(pretty_report, summary_report_file)
 
     @staticmethod
     def __write_to_file(content, file):
