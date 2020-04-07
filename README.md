@@ -3,19 +3,18 @@ The Data Center App Performance Toolkit extends [Taurus](https://gettaurus.org/)
 
 This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Confluence, and Bitbucket.
 
-At the moment, Jira DC, Confluence DC and Bitbucket DC support is in beta.
-
 ## Supported versions
 * Supported Jira versions: 
-    * The latest Platform Release: 8.0.3
-    * The following Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
+    * Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
+    * Jira Platform Release: 8.0.3
     
 * Supported Confluence versions:
-    * The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
-    * The latest Confluence Platform Release: 7.0.4
+    * Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
+    * Confluence Platform Release: 7.0.4
 
 * Supported Bitbucket Server versions:
-    * The latest Bitbucket Server [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
+    * Bitbucket Server [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
+    * Bitbucket Server Platform Release: 7.0.0
 
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

@@ -47,7 +47,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
 | One Node Jira DC | 1 - 1.3 |
-| Two Nodes Jira DC  1.7 - 2.1 |
+| Two Nodes Jira DC | 1.7 - 2.1 |
 | Four Nodes Jira DC | 3.1 - 3.8 |
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters
@@ -358,6 +358,7 @@ To receive performance baseline results without an app installed:
     ```
     
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+    - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
@@ -365,6 +366,10 @@ To receive performance baseline results without an app installed:
 
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
+{{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
 {{% /note %}}
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
@@ -402,6 +407,11 @@ After attaching both screenshots to your DC HELP ticket, move on to performance 
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 #### Generating a performance regression report
 
 To generate a performance regression report:  
@@ -415,7 +425,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
@@ -543,6 +553,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run4"></a> Run 4 (~50 min)
 
 To receive scalability benchmark results for two-node Jira DC with app-specific actions:
@@ -584,6 +599,11 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run5"></a> Run 5 (~50 min)
 
 To receive scalability benchmark results for four-node Jira DC with app-specific actions:
@@ -601,6 +621,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 #### Generating a report for scalability scenario
 
 To generate a scalability report:
@@ -615,7 +640,7 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 

@@ -19,11 +19,14 @@ services:
   - module: shellexec
     prepare:
       - python util/environment_checker.py
+      - python util/git_client_check.py
       - python util/data_preparation/bitbucket/prepare-data.py
     shutdown:
+      - python util/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
       - python util/analytics.py bitbucket
+      - python util/cleanup_results_dir.py
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
@@ -78,7 +81,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "80.0.3987.16" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
+      version: "80.0.3987.106" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

@@ -104,14 +104,15 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Elasticsearch instance type | m4.xlarge.elasticsearch|
+| Elasticsearch instance type | m4.xlarge.elasticsearch |
+| Elasticsearch disk-space per node (GB) | 1000 |
 
 **Networking (for new ASI)**
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region. Both zones must support EFS (see [Supported AWS regions](https://confluence.atlassian.com/enterprise/getting-started-with-jira-data-center-on-aws-969535550.html#GettingstartedwithJiraDataCenteronAWS-SupportedAWSregions) for details)._ |
+| Availability Zones | _Select two availability zones in your region_ |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Make instance internet facing | true |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
@@ -213,7 +214,7 @@ To populate the database with SQL:
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
-    export NFS_SERVER_IP=node_private_ip
+    export NFS_SERVER_IP=nfs_server_private_ip
     export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NFS_SERVER_IP}
     ```
@@ -293,16 +294,9 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ```
 
 {{% note %}}
-Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
+Do not close or interrupt the session. It will take about two hours to upload attachments.
 {{% /note %}}
-
-
-### Increase Elasticsearch Service EBS volume size
-Elasticsearch EBS volume size has to be increased in order to generate index needed for search functionality.
-
-1. In the AWS console, go to **Services > Elasticsearch Service > Select your domain**.
-1. Click **Edit domain** button, go to the **Storage configuration** section, set **750** GiB to the **EBS storage size per node** field.  
-1. Click **Submit** button.   
+ 
 
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
@@ -378,6 +372,7 @@ To receive performance baseline results without an app installed:
     bzt bitbucket.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
+    - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
@@ -386,6 +381,11 @@ To receive performance baseline results without an app installed:
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### <a id="regressionrun2"></a> Run 2 (~1 hour)
 
@@ -402,6 +402,11 @@ To receive performance results with an app installed:
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 #### Generating a performance regression report
 
 To generate a performance regression report:  
@@ -415,7 +420,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
@@ -478,6 +483,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run4"></a> Run 4 (~1 hour)
 
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
@@ -496,12 +506,16 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run5"></a> Run 5 (~1 hour)
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
 1. Run bzt.
 
     ``` bash
@@ -512,6 +526,11 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output.
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### Generating a report for scalability scenario
 
@@ -527,7 +546,7 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
