@@ -1,5 +1,3 @@
-from typing import List
-
 from util.data_preparation.api.abstract_clients import RestClient
 
 BATCH_SIZE_BOARDS = 1000
@@ -78,7 +76,7 @@ class JiraRestClient(RestClient):
 
         return users_list
 
-    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=['id']):
+    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
         :param jql: a JQL query string
@@ -93,20 +91,23 @@ class JiraRestClient(RestClient):
         :return: Returns the requested issues
         """
 
+        if fields is None:
+            fields = ['id']
         loop_count = max_results // BATCH_SIZE_ISSUES + 1
         issues = list()
         last_loop_remainder = max_results % BATCH_SIZE_ISSUES
+        api_url = f'{self.host}/rest/api/2/search'
 
         while loop_count > 0:
-            api_url = f'{self.host}/rest/api/2/search'
-            pay_load = {
-                    "jql": f"{jql}",
+
+            body = {
+                    "jql": jql,
                     "startAt": start_at,
                     "maxResults": max_results,
                     "fields": fields
             }
 
-            response = self.post(api_url, "Could not retrieve issues", body=pay_load)
+            response = self.post(api_url, "Could not retrieve issues", body=body)
 
             current_issues = response.json()['issues']
             issues.extend(current_issues)
