@@ -91,8 +91,6 @@ class JiraRestClient(RestClient):
         :return: Returns the requested issues
         """
 
-        if fields is None:
-            fields = ['id']
         loop_count = max_results // BATCH_SIZE_ISSUES + 1
         issues = list()
         last_loop_remainder = max_results % BATCH_SIZE_ISSUES
@@ -104,7 +102,7 @@ class JiraRestClient(RestClient):
                     "jql": jql,
                     "startAt": start_at,
                     "maxResults": max_results,
-                    "fields": fields
+                    "fields": ['id'] if fields is None else fields
             }
 
             response = self.post(api_url, "Could not retrieve issues", body=body)
