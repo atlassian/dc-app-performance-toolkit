@@ -76,13 +76,12 @@ class JiraRestClient(RestClient):
 
         return users_list
 
-    def issues_search(self, jql='order by key', start_at=0, max_results=1000, validate_query=True, fields='id'):
+    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
         :param jql: a JQL query string
         :param start_at: the index of the first issue to return (0-based)
         :param max_results: the maximum number of issues to return (defaults to 50).
-        :param validate_query: whether to validate the JQL query
         :param fields: the list of fields to return for each issue. By default, all navigable fields are returned.
         *all - include all fields
         *navigable - include just navigable fields
@@ -95,11 +94,18 @@ class JiraRestClient(RestClient):
         loop_count = max_results // BATCH_SIZE_ISSUES + 1
         issues = list()
         last_loop_remainder = max_results % BATCH_SIZE_ISSUES
+        api_url = f'{self.host}/rest/api/2/search'
 
         while loop_count > 0:
-            api_url = f'{self.host}/rest/api/2/search?jql={jql}&startAt={start_at}&maxResults={max_results}' \
-                      f'&validateQuery={validate_query}&fields={fields}'
-            response = self.get(api_url, "Could not retrieve issues")
+
+            body = {
+                    "jql": jql,
+                    "startAt": start_at,
+                    "maxResults": max_results,
+                    "fields": ['id'] if fields is None else fields
+            }
+
+            response = self.post(api_url, "Could not retrieve issues", body=body)
 
             current_issues = response.json()['issues']
             issues.extend(current_issues)
