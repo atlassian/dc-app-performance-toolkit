@@ -58,10 +58,11 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | 6.10.0 |
+| Version | 6.10.0 or 7.0.0 |
 
 The Data Center App Performance Toolkit officially supports:
 
+- Bitbucket Platform Release version: 7.0.0
 - Bitbucket [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
 
 **Cluster nodes**
