@@ -31,42 +31,33 @@ def __create_header(config) -> List[str]:
 
 
 def __validate_count_of_actions(key_files: dict):
-    # TODO consider doing validation and reading file avoiding opening the same file two times (see __get_data_to_write)
-    counter = 0
-    counter_dict = {}
-    for run in key_files['runs']:
-        filename = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
-        with filename.open(mode='r') as f:
-            records = csv.DictReader(f)
-            row_count = sum(1 for _ in records)
-            counter_dict[filename] = row_count
-            if counter == 0:
-                counter = row_count
-            if row_count != counter:
-                for filename, actions in counter_dict.items():
-                    print(f'Result file {filename} has {actions} actions\n')
-                raise SystemExit('Incorrect number of actions. '
-                                 'The number of actions should be the same for each results.csv.')
+    if any(file['lines'] != key_files[0]['lines'] for file in key_files):
+        for file in key_files:
+            print(f'Result file {file["file_name"]} has {file["lines"]} actions\n')
+        raise SystemExit('Incorrect number of actions. '
+                         'The number of actions should be the same for each results.csv.')
 
 
-def __get_data_to_write(config: dict) -> List[dict]:
-    __validate_count_of_actions(config)
-
+def __get_results_csv(config: dict) -> List[dict]:
     column_value_by_label_list = []
     column_name = config['column_name']
     for run in config['runs']:
         column_value_by_label = {}
+        line_count = 1
         filename = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
+        column_value_by_label['file_name'] = filename
         with filename.open(mode='r') as fs:
             for row in csv.DictReader(fs):
+                line_count += 1
                 column_value_by_label[row['Label']] = row[column_name]
+            column_value_by_label['lines'] = line_count
         column_value_by_label_list.append(column_value_by_label)
 
     return column_value_by_label_list
 
 
 def __write_list_to_csv(header: List[str], rows: List[dict], output_filename: Path):
-    first_file_labels = rows[0].keys()
+    first_file_labels = [label for label in rows[0] if label != 'file_name' and label != 'lines']
     with output_filename.open(mode='w', newline='') as file_stream:
         writer = csv.writer(file_stream)
         writer.writerow(header)
@@ -81,10 +72,11 @@ def __get_output_file_path(config, results_dir) -> Path:
 
 def aggregate(config: dict, results_dir: Path) -> Path:
     __validate_config(config)
+    results_csv = __get_results_csv(config)
+    __validate_count_of_actions(results_csv)
     output_file_path = __get_output_file_path(config, results_dir)
     header = __create_header(config)
-    data = __get_data_to_write(config)
-    __write_list_to_csv(header, data, output_file_path)
+    __write_list_to_csv(header, results_csv, output_file_path)
 
     validate_file_exists(output_file_path, f"Result file {output_file_path} is not created")
     print(f'Results file {output_file_path.absolute()} is created')
