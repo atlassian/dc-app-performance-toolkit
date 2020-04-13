@@ -152,7 +152,7 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_nodes_count_rest(self):
+    def get_nodes_info_via_rest(self):
         # Works for Jira version >= 8.1.0
         api_url = f'{self.host}/rest/api/2/cluster/nodes'
         response = self.get(api_url, 'Could not get Jira nodes count')
