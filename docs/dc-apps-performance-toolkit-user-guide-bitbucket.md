@@ -58,10 +58,11 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | 6.10.0 |
+| Version | 6.10.0 or 7.0.0 |
 
 The Data Center App Performance Toolkit officially supports:
 
+- Bitbucket Platform Release version: 7.0.0
 - Bitbucket [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
 
 **Cluster nodes**
@@ -420,7 +421,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
@@ -546,7 +547,7 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 

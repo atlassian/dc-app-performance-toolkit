@@ -63,8 +63,8 @@ All important parameters are listed and described in this section. For all other
 
 The Data Center App Performance Toolkit officially supports:
 
-- The latest Jira Platform Release version: 8.0.3
-- The following Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
+- Jira Platform Release version: 8.0.3
+- Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
 
 **Cluster nodes**
 
@@ -425,7 +425,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
@@ -640,7 +640,7 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
