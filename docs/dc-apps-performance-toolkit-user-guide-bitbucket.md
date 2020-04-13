@@ -453,18 +453,7 @@ In the `bitbucket-ui.py` script, view the following block of code:
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
-
-``` python
-def custom_action(webdriver, datasets):
-    @print_timing
-    def measure(webdriver, interaction):
-        @print_timing
-        def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/plugins/servlet/some-app/reporter')
-            WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'plugin-element')))
-        measure(webdriver, 'selenium_app_custom_action:view_report')
-```
+To implement the custom_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
 
 To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
 
