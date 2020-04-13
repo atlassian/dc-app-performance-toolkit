@@ -129,6 +129,11 @@ class ConfluenceRestClient(RestClient):
                                                'General Configuration - Further Configuration - Remote API')
         return response.status_code == 200
 
+    def get_confluence_nodes_count(self):
+        api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
+        response = self.get(api_url, error_msg='Could not get Confluence nodes count via API')
+        nodes_count = len(response.json())
+        return nodes_count
 
 class ConfluenceRpcClient(Client):
 

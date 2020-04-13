@@ -75,6 +75,7 @@ class AnalyticsCollector:
         self.date = ""
         self.application_version = ""
         self.summary = []
+        self.node_count = 0
 
     @property
     def config_yml(self):
@@ -188,6 +189,30 @@ class AnalyticsCollector:
         jira_server_version = jira_server_info.get('version', '')
         return jira_server_version
 
+    def get_jira_nodes_count(self):
+        html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
+        client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                password=self.config_yml.admin_password)
+        if self.get_application_version() >= '8.1.0':
+            jira_nodes_count_response = client.get_nodes_count_rest()
+            return len(jira_nodes_count_response)
+        else:
+            jira_system_page = client.get_system_info_page()
+            node_count = jira_system_page.replace(' ', '').replace('\n', '').count(html_pattern)
+            return node_count
+
+    def get_confluence_nodes_count(self):
+        client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                      password=self.config_yml.admin_password)
+        return client.get_confluence_nodes_count()
+
+    def get_bitbucket_nodes_count(self):
+        client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                     password=self.config_yml.admin_password)
+        cluster_page = client.get_bitbucket_cluster_page()
+        node_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
+        return node_count
+
     def get_confluence_version(self):
         client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                       password=self.config_yml.admin_password)
@@ -206,6 +231,14 @@ class AnalyticsCollector:
         if self.application_type.lower() == BITBUCKET:
             return self.get_bitbucket_version()
 
+    def get_node_count(self):
+        if self.application_type.lower() == JIRA:
+            return self.get_jira_nodes_count()
+        if self.application_type.lower() == CONFLUENCE:
+            return self.get_confluence_nodes_count()
+        if self.application_type.lower() == BITBUCKET:
+            return self.get_bitbucket_nodes_count()
+
     @property
     def uniq_user_id(self):
         user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
@@ -223,6 +256,7 @@ class AnalyticsCollector:
         self.set_actual_test_count()
         self.set_date_timestamp()
         self.application_version = self.get_application_version()
+        self.node_count = self.get_node_count()
 
     @property
     def actual_git_operations_count(self):
@@ -323,6 +357,7 @@ class AnalyticsCollector:
         summary_report.append(self.format_string(f'OS|{self.os}'))
         summary_report.append(self.format_string(f'DC Apps Performance Toolkit version|{self.tool_version}'))
         summary_report.append(self.format_string(f'Application|{self.application_type} {self.application_version}'))
+        summary_report.append(self.format_string(f'Application nodes count| {self.node_count}'))
         summary_report.append(self.format_string(f'Concurrency|{self.concurrency}'))
         summary_report.append(self.format_string(f'Expected test run duration from yml file|{self.duration} sec'))
         summary_report.append(self.format_string(f'Actual test run duration|{self.actual_duration} sec'))
