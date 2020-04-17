@@ -151,3 +151,37 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get the server information')
 
         return response.json()
+
+    def get_nodes_info_via_rest(self):
+        # Works for Jira version >= 8.1.0
+        api_url = f'{self.host}/rest/api/2/cluster/nodes'
+        response = self.get(api_url, 'Could not get Jira nodes count')
+
+        return response.json()
+
+    def get_system_info_page(self):
+        session = self._session
+        login_url = f'{self.host}/login.jsp'
+        auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        login_body = {
+            'atl_token': '',
+            'os_destination': '/secure/admin/ViewSystemInfo.jspa',
+            'os_password': self.password,
+            'os_username': self.user,
+            'user_role': 'ADMIN'
+        }
+        auth_body = {
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
+        }
+        headers = self.LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+
+        session.post(url=login_url, data=login_body, headers=headers)
+        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
+        system_info_html = auth_request.content.decode("utf-8")
+        if 'Cluster nodes' not in system_info_html:
+            print('Could not get Jira nodes count via parse html page')
+        return system_info_html
+
