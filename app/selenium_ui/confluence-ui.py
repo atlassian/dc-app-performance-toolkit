@@ -12,11 +12,11 @@ def test_1_selenium_view_page(webdriver, confluence_datasets, confluence_screen_
 
 
 def test_1_selenium_create_page(webdriver, confluence_datasets, confluence_screen_shots):
-    modules.create_page(webdriver, confluence_datasets)
+    modules.create_confluence_page(webdriver, confluence_datasets)
 
 
 def test_1_selenium_edit_page(webdriver, confluence_datasets, confluence_screen_shots):
-    modules.edit_page(webdriver, confluence_datasets)
+    modules.edit_confluence_page(webdriver, confluence_datasets)
 
 
 def test_1_selenium_create_comment(webdriver, confluence_datasets, confluence_screen_shots):
