@@ -145,4 +145,4 @@ def get_first_index(from_list: list, err):
 
 
 dataset = datasets()
-resources = read_json(file_json='locustio/resources.json')
+resources = read_json(file_json='locustio/jira/resources.json')
