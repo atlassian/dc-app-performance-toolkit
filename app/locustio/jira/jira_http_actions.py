@@ -1,10 +1,10 @@
-from locustio.common_utils import *
+from locustio.jira.common_utils import *
 import random
 import itertools
 from locust.exception import ResponseError
 import re
 import inspect
-from locustio.requests_params import *
+from locustio.jira.requests_params import *
 
 counter = itertools.count()
 
