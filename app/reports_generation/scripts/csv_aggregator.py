@@ -40,7 +40,7 @@ def __create_header(config) -> List[str]:
 def __validate_count_of_actions(tests_results: List[dict]):
     if any(len(tests_results[0].actions) != len(actions_count.actions) for actions_count in tests_results):
         for file in tests_results:
-            print(f'Result file {file.absolute_file_path} has {len(file.actions)} actions\n')  # Why do we need \n
+            print(f'Result file {file.absolute_file_path} has {len(file.actions)} actions\n') 
         raise SystemExit('Incorrect number of actions. '
                          'The number of actions should be the same for each results.csv.')
 
