@@ -12,6 +12,7 @@ counter = itertools.count()
 @measure
 def login_and_view_dashboard(locust):
     func_name = inspect.stack()[0][3]
+    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     user = random.choice(dataset["users"])
     body = LOGIN_BODY
@@ -21,10 +22,25 @@ def login_and_view_dashboard(locust):
     locust.client.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
     r = locust.client.get('/', catch_response=True)
     content = r.content.decode('utf-8')
+    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"],
+                       TEXT_HEADERS, catch_response=True)
     locust.client.post("/plugins/servlet/gadgets/dashboard-diagnostics",
                        {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"},
                        TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"],
+                       TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', resources_body["3"],
+                       TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', resources_body["4"],
+                       TEXT_HEADERS, catch_response=True)
 
+    locust.client.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}')
+    locust.client.get(f'/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard'
+                      f'&addDefault=true&enableSorting=true&paging=true&showActions=true'
+                      f'&jql=assignee+%3D+currentUser()+AND'
+                      f'+resolution+%3D+unresolved+ORDER+BY+priority+DESC%2C+created+ASC'
+                      f'&sortBy=&startIndex=0&_={timestamp_int()}')
+    locust.client.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}')
     logged_user_pattern = LOGGED_USER.replace('username', user[0])
     # Assertions
     token = re.findall(ATL_TOKEN_PATTERN_LOGIN, content)
