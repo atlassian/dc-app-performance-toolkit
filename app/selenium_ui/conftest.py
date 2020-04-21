@@ -1,7 +1,6 @@
 import atexit
 import csv
 import datetime
-import json
 import os
 import random
 import string
@@ -219,5 +218,5 @@ class AnyEc:
             try:
                 if fn(w_driver):
                     return True
-            except:
+            except:  # noqa E722
                 pass

@@ -116,7 +116,7 @@ class BasePage:
         for elem in args:
             try:
                 self.driver.execute_script(f"document.querySelector(\'{elem}\').click()")
-            except:
+            except:  # noqa E722
                 pass
 
     def return_to_parent_frame(self):

@@ -205,4 +205,3 @@ def log_out(webdriver, datasets):
         logout_page.click_logout()
         logout_page.wait_for_page_loaded(interaction)
     measure(webdriver, "selenium_log_out")
-

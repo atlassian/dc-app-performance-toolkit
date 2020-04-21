@@ -1,5 +1,4 @@
 import numbers
-import sys
 from pathlib import Path
 
 
@@ -26,6 +25,3 @@ def validate_is_number(config: dict, key: str):
 def validate_file_exists(file: Path, msg: str):
     if not file.exists():
         raise SystemExit(msg)
-
-
-

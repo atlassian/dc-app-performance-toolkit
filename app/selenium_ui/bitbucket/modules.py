@@ -228,6 +228,7 @@ def create_pull_request(webdriver, datasets):
 def view_commits(webdriver, datasets):
     repo_commits_page = RepositoryCommits(webdriver, project_key=datasets['project_key'],
                                           repo_slug=datasets['repo_slug'])
+
     @print_timing
     def measure(webdriver, interaction):
         repo_commits_page.go_to()

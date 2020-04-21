@@ -1,5 +1,5 @@
 from selenium_ui.bitbucket import modules
-from extension.bitbucket import extension_ui
+from extension.bitbucket import extension_ui  # noqa F401
 
 
 # this action should be the first one
@@ -65,7 +65,7 @@ def test_13_selenium_view_commits(webdriver, bitbucket_datasets, bitbucket_scree
 
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/jira/extension_ui.py`. 
+Write your custom selenium scripts in `app/extension/jira/extension_ui.py`.
 Refer to `app/selenium_ui/jira/modules.py` for examples.
 """
 # def test_1_selenium_custom_action(webdriver, bitbucket_datasets, bitbucket_screen_shots):
