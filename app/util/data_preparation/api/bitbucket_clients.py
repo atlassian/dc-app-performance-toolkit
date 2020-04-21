@@ -112,3 +112,20 @@ class BitbucketRestClient(RestClient):
         response = self.put(api_url, "Could not create user", params=params)
         print(f'Successfully applied user [{name}] permission [{permission.value}] in [{(time.time() - start_time)}]')
         return response
+
+    def get_bitbucket_cluster_page(self):
+        session = self._session
+        url = f"{self.host}/admin/clustering"
+        body = {
+            '_atl_remember_me': 'on',
+            'j_password': self.password,
+            'j_username': self.user,
+            'next': '/admin/clustering',
+            'queryString': 'next=/admin/clustering',
+            'submit': 'Log in'
+        }
+        headers = self.LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+        r = session.post(url, data=body, headers=headers)
+        cluster_html = r.content.decode("utf-8")
+        return cluster_html

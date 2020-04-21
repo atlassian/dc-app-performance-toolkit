@@ -29,6 +29,11 @@ class RestClient(Client):
         "Accept": "application/json",
         "Content-Type": "application/json"
     }
+    LOGIN_POST_HEADERS = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                      'application/signed-exchange;v=b3;q=0.9'
+        }
 
     @staticmethod
     def to_json(obj: dict) -> str:

@@ -6,6 +6,7 @@ import random
 import string
 import sys
 import time
+import functools
 from pathlib import Path
 
 import pytest
@@ -50,7 +51,41 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
-def print_timing(func):
+def print_timing(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to print_timing decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper():
+            f_interaction = interaction
+            start = time.time()
+            error_msg = 'Success'
+            full_exception = ''
+            try:
+                func()
+                success = True
+            except Exception:
+                success = False
+                # https://docs.python.org/2/library/sys.html#sys.exc_info
+                exc_type, full_exception = sys.exc_info()[:2]
+                error_msg = f"Failed measure: {f_interaction} - {exc_type.__name__}"
+            end = time.time()
+            timing = str(int((end - start) * 1000))
+
+            with open(selenium_results_file, "a+") as jtl_file:
+                timestamp = round(time.time() * 1000)
+                jtl_file.write(f"{timestamp},{timing},{f_interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+
+            print(f"{timestamp},{timing},{f_interaction},{error_msg},{success}")
+
+            if not success:
+                raise Exception(error_msg, full_exception)
+
+        return wrapper
+    return deco_wrapper
+
+
+def print_timing1(func):
     def wrapper(webdriver, interaction):
         start = time.time()
         error_msg = 'Success'
