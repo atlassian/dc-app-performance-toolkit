@@ -329,7 +329,7 @@
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">${application.postfix}/index.action</stringProp>
+            <stringProp name="HTTPSampler.path">${application.postfix}/</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -399,7 +399,6 @@
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="2081854856">quick-search</stringProp>
                 <stringProp name="2004794418">Log Out</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
