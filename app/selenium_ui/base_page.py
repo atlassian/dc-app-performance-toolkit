@@ -1,6 +1,7 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select
 from selenium_ui.conftest import AnyEc
 import random
@@ -110,7 +111,7 @@ class BasePage:
         for elem in args:
             try:
                 self.driver.execute_script(f"document.querySelector(\'{elem}\').click()")
-            except:  # noqa E722
+            except(WebDriverException, Exception):
                 pass
 
     def return_to_parent_frame(self):
