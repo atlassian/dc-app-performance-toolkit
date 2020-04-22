@@ -24,7 +24,7 @@ SCREEN_HEIGHT = 1080
 
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
-
+LOGIN_ACTION_NAME = 'login'
 
 def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
@@ -58,6 +58,12 @@ def print_timing(interaction=None):
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper():
+            global fail_login
+            if LOGIN_ACTION_NAME in interaction:
+                fail_login = False
+            if fail_login:
+                pytest.skip(f"login is failed")
+            fail_login = False
             f_interaction = interaction
             start = time.time()
             error_msg = 'Success'
@@ -80,38 +86,12 @@ def print_timing(interaction=None):
             print(f"{timestamp},{timing},{f_interaction},{error_msg},{success}")
 
             if not success:
+                if LOGIN_ACTION_NAME in interaction:
+                    fail_login = True
                 raise Exception(error_msg, full_exception)
 
         return wrapper
     return deco_wrapper
-
-
-def print_timing1(func):
-    def wrapper(webdriver, interaction):
-        start = time.time()
-        error_msg = 'Success'
-        full_exception = ''
-        try:
-            func(webdriver, interaction)
-            success = True
-        except Exception:
-            success = False
-            # https://docs.python.org/2/library/sys.html#sys.exc_info
-            exc_type, full_exception = sys.exc_info()[:2]
-            error_msg = exc_type.__name__
-        end = time.time()
-        timing = str(int((end - start) * 1000))
-
-        with open(selenium_results_file, "a+") as file:
-            timestamp = round(time.time() * 1000)
-            file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
-
-        print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
-
-        if not success:
-            raise Exception(error_msg, full_exception)
-
-    return wrapper
 
 
 @pytest.fixture(scope="module")
