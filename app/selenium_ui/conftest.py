@@ -1,7 +1,6 @@
 import atexit
 import csv
 import datetime
-import json
 import os
 import random
 import string
@@ -13,6 +12,7 @@ from pathlib import Path
 import pytest
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import WebDriverException
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -254,5 +254,5 @@ class AnyEc:
             try:
                 if fn(w_driver):
                     return True
-            except:
+            except(WebDriverException, Exception):
                 pass
