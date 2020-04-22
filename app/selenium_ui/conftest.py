@@ -28,19 +28,19 @@ JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,su
 
 def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-        return os.environ.get('TAURUS_ARTIFACTS_DIR')
+        return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
         # TODO we have error here if 'results' dir does not exist
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pytest_run_results = f'results/{results_dir_name}_local'
-        os.mkdir(pytest_run_results)
+        pytest_run_results = Path(f'results/{results_dir_name}_local')
+        os.makedirs(pytest_run_results, exist_ok=True)
         return pytest_run_results  # in case you just run pytest
 
 
 # create selenium output files
 current_results_dir = __get_current_results_dir()
-selenium_results_file = Path(current_results_dir + '/selenium.jtl')
-selenium_error_file = Path(current_results_dir + '/selenium.err')
+selenium_results_file = Path(str(current_results_dir) + '/selenium.jtl')
+selenium_error_file = Path(str(current_results_dir) + '/selenium.err')
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
@@ -128,7 +128,7 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(options=chrome_options, executable_path='/usr/bin/chromedriver')
         return driver
 
 
