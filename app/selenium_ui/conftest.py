@@ -58,13 +58,11 @@ def print_timing(interaction=None):
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper():
-            global fail_login
+            global login_failed
             if LOGIN_ACTION_NAME in interaction:
-                fail_login = False
-            if fail_login:
+                login_failed = False
+            if login_failed:
                 pytest.skip(f"login is failed")
-            fail_login = False
-            f_interaction = interaction
             start = time.time()
             error_msg = 'Success'
             full_exception = ''
@@ -75,19 +73,19 @@ def print_timing(interaction=None):
                 success = False
                 # https://docs.python.org/2/library/sys.html#sys.exc_info
                 exc_type, full_exception = sys.exc_info()[:2]
-                error_msg = f"Failed measure: {f_interaction} - {exc_type.__name__}"
+                error_msg = f"Failed measure: {interaction} - {exc_type.__name__}"
             end = time.time()
             timing = str(int((end - start) * 1000))
 
             with open(selenium_results_file, "a+") as jtl_file:
                 timestamp = round(time.time() * 1000)
-                jtl_file.write(f"{timestamp},{timing},{f_interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
-            print(f"{timestamp},{timing},{f_interaction},{error_msg},{success}")
+            print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
-                    fail_login = True
+                    login_failed = True
                 raise Exception(error_msg, full_exception)
 
         return wrapper
@@ -108,7 +106,7 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(executable_path='/Users/smoro/.bzt/selenium-taurus/tools/chromedriver/81.0.4044.69/chromedriver', options=chrome_options)
         return driver
 
 
