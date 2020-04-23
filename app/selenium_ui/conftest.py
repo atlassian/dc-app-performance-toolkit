@@ -128,7 +128,7 @@ def webdriver():
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options, executable_path='/usr/bin/chromedriver')
+        driver = Chrome(options=chrome_options)
         return driver
 
 
