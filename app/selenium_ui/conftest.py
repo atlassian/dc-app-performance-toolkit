@@ -26,6 +26,7 @@ JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,su
              "Latency,Hostname,Connect\n"
 LOGIN_ACTION_NAME = 'login'
 
+
 def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
         return os.environ.get('TAURUS_ARTIFACTS_DIR')
