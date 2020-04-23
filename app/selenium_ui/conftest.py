@@ -33,14 +33,14 @@ def __get_current_results_dir():
         # TODO we have error here if 'results' dir does not exist
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         pytest_run_results = Path(f'results/{results_dir_name}_local')
-        os.makedirs(pytest_run_results, exist_ok=True)
+        pytest_run_results.mkdir(parents=True)
         return pytest_run_results  # in case you just run pytest
 
 
 # create selenium output files
 current_results_dir = __get_current_results_dir()
-selenium_results_file = Path(str(current_results_dir) + '/selenium.jtl')
-selenium_error_file = Path(str(current_results_dir) + '/selenium.err')
+selenium_results_file = current_results_dir / 'selenium.jtl'
+selenium_error_file = current_results_dir / 'selenium.err'
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
