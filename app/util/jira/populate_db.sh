@@ -25,6 +25,11 @@ JIRA_DB_PASS="Password1!"
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
+if [[ -z "$JIRA_VERSION" ]]; then
+        echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
+         has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly
+        exit 1
+fi
 echo "Jira Version: ${JIRA_VERSION}"
 
 # Datasets AWS bucket and db dump name
