@@ -66,7 +66,7 @@ class Dataset:
             return list(reader)
 
 
-init_globals = InitGlobals()
+globals = InitGlobals()
 
 
 def __get_current_results_dir():
@@ -102,8 +102,8 @@ def print_timing(interaction=None):
         @functools.wraps(func)
         def wrapper():
             if LOGIN_ACTION_NAME in interaction:
-                init_globals.login_failed = False
-            if init_globals.login_failed:
+                globals.login_failed = False
+            if globals.login_failed:
                 pytest.skip(f"login is failed")
             start = time.time()
             error_msg = 'Success'
@@ -127,7 +127,7 @@ def print_timing(interaction=None):
 
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
-                    init_globals.login_failed = True
+                    globals.login_failed = True
                 raise Exception(error_msg, full_exception)
 
         return wrapper
@@ -136,8 +136,8 @@ def print_timing(interaction=None):
 
 @pytest.fixture(scope="module")
 def webdriver():
-    if init_globals.driver:
-        return init_globals.driver
+    if globals.driver:
+        return globals.driver
     else:
         chrome_options = Options()
         if os.getenv('WEBDRIVER_VISIBLE', 'False').lower() != 'true':
@@ -146,11 +146,11 @@ def webdriver():
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
         driver = Chrome(options=chrome_options)
-        init_globals.driver = driver
+        globals.driver = driver
         return driver
 
 
-atexit.register(init_globals.driver.quit())
+atexit.register(globals.driver.quit())
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
