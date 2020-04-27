@@ -31,7 +31,6 @@ def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
-        # TODO we have error here if 'results' dir does not exist
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         pytest_run_results = Path(f'results/{results_dir_name}_local')
         pytest_run_results.mkdir(parents=True)
