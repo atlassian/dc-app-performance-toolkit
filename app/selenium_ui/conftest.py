@@ -153,6 +153,7 @@ def webdriver():
     if not globals.driver:
         driver = driver_init()
         print('first driver inits')
+
         def driver_quit():
             driver.quit()
         globals.driver = driver
@@ -169,8 +170,6 @@ def webdriver():
             globals.driver = driver_init()
             print('reinit driver')
             return globals.driver
-
-
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
