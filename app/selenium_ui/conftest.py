@@ -8,6 +8,7 @@ import functools
 from pathlib import Path
 
 import pytest
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
@@ -27,6 +28,7 @@ LOGIN_ACTION_NAME = 'login'
 class InitGlobals:
     def __init__(self):
         self.driver = False
+        self.driver_title = False
         self.login_failed = False
 
 
@@ -136,21 +138,39 @@ def print_timing(interaction=None):
 
 @pytest.fixture(scope="module")
 def webdriver():
-    if globals.driver:
-        return globals.driver
-    else:
+    def driver_init():
         chrome_options = Options()
         if os.getenv('WEBDRIVER_VISIBLE', 'False').lower() != 'true':
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        driver = Chrome(options=chrome_options)
-        globals.driver = driver
+        driver = Chrome(
+            executable_path='/Users/smoro/.bzt/selenium-taurus/tools/chromedriver/81.0.4044.69/chromedriver',
+            options=chrome_options)
         return driver
+    # First time driver init
+    if not globals.driver:
+        driver = driver_init()
+        print('first driver inits')
+        def driver_quit():
+            driver.quit()
+        globals.driver = driver
+        atexit.register(driver_quit)
+        return driver
+    else:
+        try:
+            # check if driver is not broken
+            globals.driver_title = globals.driver.title
+            print('get driver from global')
+            return globals.driver
+        except WebDriverException:
+            # re-init driver if it broken
+            globals.driver = driver_init()
+            print('reinit driver')
+            return globals.driver
 
 
-atexit.register(globals.driver.quit())
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
