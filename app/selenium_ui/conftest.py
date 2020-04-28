@@ -29,19 +29,18 @@ LOGIN_ACTION_NAME = 'login'
 
 def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-        return os.environ.get('TAURUS_ARTIFACTS_DIR')
+        return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
-        # TODO we have error here if 'results' dir does not exist
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pytest_run_results = f'results/{results_dir_name}_local'
-        os.mkdir(pytest_run_results)
+        pytest_run_results = Path(f'results/{results_dir_name}_local')
+        pytest_run_results.mkdir(parents=True)
         return pytest_run_results  # in case you just run pytest
 
 
 # create selenium output files
 current_results_dir = __get_current_results_dir()
-selenium_results_file = Path(current_results_dir + '/selenium.jtl')
-selenium_error_file = Path(current_results_dir + '/selenium.err')
+selenium_results_file = current_results_dir / 'selenium.jtl'
+selenium_error_file = current_results_dir / 'selenium.err'
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
