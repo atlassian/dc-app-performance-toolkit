@@ -134,6 +134,11 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, error_msg='Could not get Confluence nodes count via API')
         return response.json()
 
+    def get_total_pages_count(self):
+        api_url = f"{self.host}/rest/api/search?cql=type=page"
+        response = self.get(api_url, 'Could not get issues count')
+        return response.json().get('totalSize', 0)
+
 
 class ConfluenceRpcClient(Client):
 
