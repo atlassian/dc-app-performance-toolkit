@@ -3,7 +3,6 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select
-from selenium_ui.conftest import AnyEc
 import random
 import string
 
@@ -139,3 +138,20 @@ class BasePage:
 
     def action_chains(self):
         return ActionChains(self.driver)
+
+
+class AnyEc:
+    """ Use with WebDriverWait to combine expected_conditions
+        in an OR.
+    """
+
+    def __init__(self, *args):
+        self.ecs = args
+
+    def __call__(self, w_driver):
+        for fn in self.ecs:
+            try:
+                if fn(w_driver):
+                    return True
+            except(WebDriverException, Exception):
+                pass
