@@ -14,7 +14,6 @@ from util.data_preparation.api.jira_clients import JiraRestClient
 from util.data_preparation.api.confluence_clients import ConfluenceRestClient
 from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
 from lxml import etree
-import lxml.html as html
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -45,7 +44,8 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
 
 APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
                 'E.g. python util/analytics.py jira')
-BITBUCKET_REPOS_SELECTOR = '#content-bitbucket\.atst\.repositories-0>.field-group>.field-value'
+BITBUCKET_REPOS_SELECTOR = "#content-bitbucket\.atst\.repositories-0>.field-group>.field-value"  # noqa W605
+
 
 def __validate_app_type():
     try:
@@ -133,8 +133,8 @@ class AnalyticsCollector:
                 str_duration = string.split('duration:')[1].replace('\n', '')
                 str_duration = str_duration.replace(' ', '')
                 duration_datetime_obj = datetime.strptime(str_duration, '%H:%M:%S')
-                test_duration = (duration_datetime_obj.hour*3600 +
-                                 duration_datetime_obj.minute*60 + duration_datetime_obj.second)
+                test_duration = (duration_datetime_obj.hour * 3600 +
+                                 duration_datetime_obj.minute * 60 + duration_datetime_obj.second)
                 break
         return test_duration
 
@@ -387,7 +387,7 @@ class AnalyticsCollector:
         summary_report.append(f'OS|{self.os}')
         summary_report.append(f'DC Apps Performance Toolkit version|{self.tool_version}')
         summary_report.append(f'Application|{self.application_type} {self.application_version}')
-        summary_report.append(f'Dataset info|{self.get_dataset_information()}')
+        summary_report.append(f'Dataset info|{self.get_dataset_information}')
         summary_report.append(f'Application nodes count|{self.nodes_count}')
         summary_report.append(f'Concurrency|{self.concurrency}')
         summary_report.append(f'Expected test run duration from yml file|{self.duration} sec')
@@ -419,7 +419,7 @@ class AnalyticsCollector:
     @staticmethod
     def format_string(string_to_format, offset=50):
         # format string with delimiter "|"
-        return ''.join([f'{item}{" "*(offset-len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
+        return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
 
 
 class AnalyticsSender:
@@ -438,7 +438,7 @@ class AnalyticsSender:
                    "os": self.analytics.os,
                    "tool_ver": self.analytics.tool_version,
                    "exp_dur": self.analytics.duration,
-                   "act_dur":  self.analytics.actual_duration,
+                   "act_dur": self.analytics.actual_duration,
                    "selenium_test_rates": self.analytics.selenium_test_rates,
                    "jmeter_test_rates": self.analytics.jmeter_test_rates,
                    "concurrency": self.analytics.concurrency
