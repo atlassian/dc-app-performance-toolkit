@@ -111,4 +111,5 @@ GT: If you would like to extend the JMeter tests, the following might help with 
 5. Enable View Results Tree
 6. Extend stanalone extension with new steps
 7. Run Jmeter with Green arrow button and see debug info in View Results Tree
+
 To include variables such as ${project_key} for debugging, you can edit file app/datasets/jira/project_keys.csv . But later on for bzt run, it may be better to edit app/util/data_preparation/jira/prepare-data.py to filter only needed project keys with jql.
