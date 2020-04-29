@@ -233,7 +233,7 @@ class AnalyticsCollector:
     def get_confluence_pages_count(self):
         client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                       password=self.config_yml.admin_password)
-        client.get_total_pages_count()
+        return client.get_total_pages_count()
 
     def get_bitbucket_repos_count(self):
         client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
