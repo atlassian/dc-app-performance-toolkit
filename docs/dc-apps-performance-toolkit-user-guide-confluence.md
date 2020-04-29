@@ -44,11 +44,11 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack                     | Estimated hourly cost ($)|
-| ------------------------- | -------------------------|
-| One Node Confluence DC    | 1,5 - 1,6                |
-| Two Nodes Confluence DC   | 1,7 - 2,5                |
-| Four Nodes Confluence DC  | 3,5 - 4,2                |
+| Stack | Estimated hourly cost ($) |
+| ----- | ------------------------- |
+| One Node Confluence DC | 1.5 - 1.6 |
+| Two Nodes Confluence DC | 1.7 - 2.5 |
+| Four Nodes Confluence DC | 3.5 - 4.2 |
 
 #### Quick Start parameters
 
@@ -59,7 +59,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 or 7.0.4|
+| Confluence Version | 6.13.8 or 7.0.4 |
 
 The Data Center App Performance Toolkit officially supports:
 
@@ -69,13 +69,13 @@ The Data Center App Performance Toolkit officially supports:
 **Cluster nodes**
 
 | Parameter | Recommended Value |
-| --------- | ----------------- |
+| ----------| ----------------- |
 | Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers.
+We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -182,7 +182,7 @@ To populate the database with SQL:
 1. In the AWS console, go to **Services > EC2 > Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ Confluence node instance.
+    - Copy the _Private IP_ of the Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
     For Windows, use Putty to connect to the Confluence node over SSH.
@@ -191,7 +191,8 @@ To populate the database with SQL:
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/populate_db.sh) script and make it executable:
@@ -235,7 +236,8 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/upload_attachments.sh) script and make it executable:
@@ -290,7 +292,8 @@ For more information, go to [Administer your Data Center search index](https://c
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Download the [index-snapshot.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh) file. Then, make it executable and run it:
 
@@ -327,14 +330,16 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - 200 by default
-    - `test_duration`: duration of the performance run - 45min by default
+    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
 1. Run bzt.
 
     ``` bash
     bzt confluence.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
+    - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
@@ -343,6 +348,11 @@ To receive performance baseline results without an app installed:
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
 {{% /note %}}
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min)
 
@@ -359,6 +369,11 @@ To receive performance results with an app installed:
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 #### Generating a performance regression report
 
 To generate a performance regression report:  
@@ -372,7 +387,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
@@ -500,6 +515,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run4"></a> Run 4 (~50 min)
 
 To receive scalability benchmark results for two-node Confluence DC with app-specific actions:
@@ -514,7 +534,8 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    ssh -o "proxycommand ssh -W %h:%p ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh) file. Then, make it executable and run it:
 
@@ -539,6 +560,11 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 ##### <a id="run5"></a> Run 5 (~50 min)
 
 To receive scalability benchmark results for four-node Confluence DC with app-specific actions:
@@ -556,6 +582,11 @@ When the execution is successfully completed, the `INFO: Artifacts dir:` line wi
 Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
 {{% /note %}}
 
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+{{% /note %}}
+
+
 #### Generating a report for scalability scenario
 
 To generate a scalability report:
@@ -570,10 +601,13 @@ To generate a scalability report:
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results) and the `.png` file.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 #### Analyzing report
 
 Once completed, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 After completing all your tests, delete your Confluence Data Center stacks.
+
+## Support
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

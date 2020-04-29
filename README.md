@@ -97,3 +97,18 @@ Remove DM specific data created by setup.py above.
 If you want to remove all objects created of setup and running    
 
     python cleanup.py
+
+
+## Extending JMeter tests
+
+GT: If you would like to extend the JMeter tests, the following might help with debugging. From the DC-Performance-Testing slack channel:
+
+```
+1. Open JMeter UI from app folder: ~/.bzt/jmeter-taurus/5.2.1/bin/jmeter
+2. File->Open-> jira.jmx
+3. In Test Plan->Global Variables setup your appication.hostname
+4. In Jira -> load profile set perc_standalone_extension to 100
+5. Enable View Results Tree
+6. Extend stanalone extension with new steps
+7. Run Jmeter with Green arrow button and see debug info in View Results Tree
+To include variables such as ${project_key} for debugging, you can edit file app/datasets/jira/project_keys.csv . But later on for bzt run, it may be better to edit app/util/data_preparation/jira/prepare-data.py to filter only needed project keys with jql.

@@ -13,9 +13,10 @@ import pytest
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
+    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, BITBUCKET_USERS, BITBUCKET_PROJECTS, \
+    BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_USERS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -39,13 +40,10 @@ def __get_current_results_dir():
 current_results_dir = __get_current_results_dir()
 selenium_results_file = Path(current_results_dir + '/selenium.jtl')
 selenium_error_file = Path(current_results_dir + '/selenium.err')
-w3c_timings_file = Path(current_results_dir + '/w3c_timings.txt')
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
         file.write(JTL_HEADER)
-    with open(w3c_timings_file, 'w'):
-        pass
 
 
 def datetime_now(prefix):
@@ -74,11 +72,6 @@ def print_timing(func):
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
-
-        w3c_timing = json.dumps(webdriver.execute_script("return window.performance.getEntries()"))
-        with open(w3c_timings_file, "a+") as file:
-            file.write(f"{{\"timestamp\": {timestamp}, \"timing\": {timing}, \"interation\": \"{interaction}\", "
-                       f"\"error\": \"{error_msg}\", \"success\": \"{success}\", \"w3c_timing\": {w3c_timing}}}\n")
 
         if not success:
             raise Exception(error_msg, full_exception)
@@ -133,29 +126,23 @@ def pytest_runtest_makereport(item):
 
 @pytest.fixture
 def jira_screen_shots(request, webdriver):
-    # TODO come up with a good solution to make 1 function from jira_screen_shots() and confluence_screen_shots()
     yield
-    # request.node is an "item" because we use the default
-    # "function" scope
-    if request.node.rep_call.failed:
-        mode = "w" if not selenium_error_file.exists() else "a+"
-        action_name = request.node.rep_call.head_line
-        error_text = request.node.rep_call.longreprtext
-        with open(selenium_error_file, mode) as err_file:
-            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
-        print(f"Action: {action_name}, Error: {error_text}\n")
-        os.makedirs(f"{current_results_dir}/errors_artifacts", exist_ok=True)
-        error_artifact_name = f'{current_results_dir}/errors_artifacts/{datetime_now(action_name)}'
-        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
-        with open(f'{error_artifact_name}.html', 'wb') as html_file:
-            html_file.write(webdriver.page_source.encode('utf-8'))
-        webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(JIRA_SETTINGS.server_url)
+    get_screen_shots(request, webdriver, app_settings=JIRA_SETTINGS)
 
 
 @pytest.fixture
 def confluence_screen_shots(request, webdriver):
     yield
+    get_screen_shots(request, webdriver, app_settings=CONFLUENCE_SETTINGS)
+
+
+@pytest.fixture
+def bitbucket_screen_shots(request, webdriver):
+    yield
+    get_screen_shots(request, webdriver, app_settings=BITBUCKET_SETTINGS)
+
+
+def get_screen_shots(request, webdriver, app_settings):
     # request.node is an "item" because we use the default
     # "function" scope
     if request.node.rep_call.failed:
@@ -171,7 +158,7 @@ def confluence_screen_shots(request, webdriver):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(CONFLUENCE_SETTINGS.server_url)
+        webdriver.get(app_settings.server_url)
 
 
 @pytest.fixture(scope="module")
@@ -196,14 +183,20 @@ def jira_datasets():
 
 @pytest.fixture(scope="module")
 def confluence_datasets():
-    # TODO extract paths to project_paths
     datasets = dict()
-    input_data_path = Path(__file__).parents[1] / "datasets" / "confluence"
+    datasets["pages"] = __read_input_file(CONFLUENCE_PAGES)
+    datasets["blogs"] = __read_input_file(CONFLUENCE_BLOGS)
+    datasets["users"] = __read_input_file(CONFLUENCE_USERS)
+    return datasets
 
-    datasets["pages"] = __read_input_file(input_data_path / "pages.csv")
-    datasets["blogs"] = __read_input_file(input_data_path / "blogs.csv")
-    datasets["users"] = __read_input_file(input_data_path / "users.csv")
 
+@pytest.fixture(scope="module")
+def bitbucket_datasets():
+    datasets = dict()
+    datasets["projects"] = __read_input_file(BITBUCKET_PROJECTS)
+    datasets["users"] = __read_input_file(BITBUCKET_USERS)
+    datasets["repos"] = __read_input_file(BITBUCKET_REPOS)
+    datasets["pull_requests"] = __read_input_file(BITBUCKET_PRS)
     return datasets
 
 

@@ -7,6 +7,7 @@ import os
 from os import path
 import random
 import pathlib
+import itertools
 
 #GET /rest/api/2/issueLinkType HTTP/1.1" 200 229 3 "http://localhost:8080/plugins/servlet/dependency-map/diagram" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) A
 #GET /rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25&_=1580893219884 HTTP/1.1" 200 153 2 "http://localhost:8080/plugins/servlet/dependenc
@@ -116,7 +117,9 @@ def change_color_mapping(session, diagramId):
     #Nr of field options
     print(nrOfFieldOptions)
 
-    for field in fieldIemList:
+    #We do not need to create boxColor entries for over 300 colors.
+    fieldIemList5 = itertools.islice(fieldIemList, 5)
+    for field in fieldIemList5:
         fieldOptionId = field["id"]
         colorPaletteEntryId = random.randint(0,19)
         #create box coloure resource entry

@@ -4,7 +4,7 @@ from pathlib import Path
 import yaml
 
 
-def get_csv_aggregator_config() -> dict:
+def get_config() -> dict:
     config_path = resolve_file_path(__get_config_file())
     config = __read_config_file(config_path)
     config['profile'] = config_path.stem
