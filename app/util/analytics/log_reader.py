@@ -2,6 +2,9 @@ import os
 import re
 from datetime import datetime, timezone
 
+GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
+                  'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
+                  'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
 class BaseLogReader:
 
@@ -14,6 +17,20 @@ class BaseLogReader:
         if len(file) == 0:
             raise SystemExit(f'ERROR: {file} file in {file} is empty')
 
+    def __validate_headers(self, headers_list, validation_dict):
+        for key, value in validation_dict.items():
+            if headers_list[key] != value:
+                raise SystemExit(f'Header validation error. '
+                                 f'Actual: {headers_list[key]}, Expected: {validation_dict[key]}')
+
+    @property
+    def log_dir(self):
+        if 'TAURUS_ARTIFACTS_DIR' in os.environ:
+            return os.environ.get('TAURUS_ARTIFACTS_DIR')
+        else:
+            raise SystemExit('ERROR: Taurus result directory could not be found')
+
+
 
 class BztLogReader(BaseLogReader):
 
@@ -25,14 +42,7 @@ class BztLogReader(BaseLogReader):
 
     def __init__(self):
         self.bzt_log = self.get_bzt_log()
-        self.results_part_bzt_log = self._get_results_bzt_log_part()
-
-    @property
-    def log_dir(self):
-        if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-            return os.environ.get('TAURUS_ARTIFACTS_DIR')
-        else:
-            raise SystemExit('ERROR: Taurus result directory could not be found')
+        self.bzt_log_results_part = self._get_results_bzt_log_part()
 
     def get_bzt_log(self):
         bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
@@ -92,14 +102,42 @@ class BztLogReader(BaseLogReader):
 
     @property
     def selenium_test_rates(self):
-        return self._get_test_count_by_type(tests_type='selenium', log=self.results_part_bzt_log)
+        return self._get_test_count_by_type(tests_type='selenium', log=self.bzt_log_results_part)
 
     @property
     def jmeter_test_rates(self):
-        return self._get_test_count_by_type(tests_type='jmeter', log=self.results_part_bzt_log)
+        return self._get_test_count_by_type(tests_type='jmeter', log=self.bzt_log_results_part)
 
     @property
     def actual_run_time(self):
         run_time_bzt = self._get_duration_by_test_duration()
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
+
+
+
+class ResultsLogReader(BaseLogReader):
+    header_validation = {0: 'Label', 1: '# Samples'}
+
+    def __init__(self):
+        self.results_log = self.get_results_log()
+
+    def get_results_log(self):
+        results_log_path = f'{self.log_dir}/results.csv'
+        self.__validate_file_exists(results_log_path)
+        with open(results_log_path) as res_file:
+            header = res_file.readline()
+            results = res_file.readlines()
+        self.__validate_file_not_empty(results)
+        headers_list = header.split(',')
+        self.__validate_headers(headers_list, self.header_validation)
+        return results
+
+
+    @property
+    def actual_git_operations_count(self):
+        count = 0
+        for line in self.results_log:
+            if any(s in line for s in GIT_OPERATIONS):
+                count = count + int(line.split(',')[1])
+        return count
 

@@ -1,6 +1,5 @@
 import sys
 import os
-import re
 import requests
 from datetime import datetime, timezone
 import platform
@@ -10,7 +9,7 @@ import socket
 import hashlib
 
 from util.analytics.application_info import ApplicationSelector
-from util.analytics.log_reader import BztLogReader
+from util.analytics.log_reader import BztLogReader, ResultsLogReader
 from util.conf import TOOLKIT_VERSION
 
 
@@ -25,28 +24,16 @@ MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
 
 # List in value in case of specific output appears for some OS for command platform.system()
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
-DT_REGEX = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
-SUCCESS_TEST_RATE_REGX = r'(\d{1,3}.\d{1,2}%)'
-JMETER_TEST_REGX = r'jmeter_\S*'
-SELENIUM_TEST_REGX = r'selenium_\S*'
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 SUCCESS_TEST_RATE = 95.00
-RESULTS_CSV = 'results.csv'
-BZT_LOG = 'bzt.log'
-LABEL_HEADER = 'Label'
-LABEL_HEADER_INDEX = 0
-SAMPLES_HEADER = '# Samples'
-SAMPLES_HEADER_INDEX = 1
-GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
-                  'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
-                  'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
 
 class AnalyticsCollector:
 
     def __init__(self, application):
         self.application = application
-        self.bzt_log = BztLogReader
+        self.bzt_log = BztLogReader()
+        self.results_log = ResultsLogReader()
         self.run_id = str(uuid.uuid1())
         self.tool_version = ""
         self.os = ""
@@ -100,32 +87,6 @@ class AnalyticsCollector:
         self.tool_version = TOOLKIT_VERSION
         self.set_date_timestamp()
 
-    @property
-    def actual_git_operations_count(self):
-        count = 0
-
-        if self.application.type != BITBUCKET:
-            raise Exception(f'ERROR: {self.application.type} is not {BITBUCKET}')
-        results_csv_file_path = f'{self._log_dir}/results.csv'
-        if not os.path.exists(results_csv_file_path):
-            raise SystemExit(f'ERROR: {results_csv_file_path} was not found.')
-        with open(results_csv_file_path) as res_file:
-            header = res_file.readline()
-            results = res_file.readlines()
-
-        headers_list = header.split(',')
-        if headers_list[LABEL_HEADER_INDEX] != LABEL_HEADER:
-            raise SystemExit(f'ERROR: {results_csv_file_path} has unexpected header. '
-                             f'Actual: {headers_list[LABEL_HEADER_INDEX]}, Expected: {LABEL_HEADER}')
-        if headers_list[SAMPLES_HEADER_INDEX] != SAMPLES_HEADER:
-            raise SystemExit(f'ERROR: {results_csv_file_path} has unexpected header. '
-                             f'Actual: {headers_list[SAMPLES_HEADER_INDEX]}, Expected: {SAMPLES_HEADER}')
-
-        for line in results:
-            if any(s in line for s in GIT_OPERATIONS):
-                count = count + int(line.split(',')[SAMPLES_HEADER_INDEX])
-
-        return count
 
     @staticmethod
     def is_all_tests_successful(tests):
@@ -175,9 +136,9 @@ class AnalyticsCollector:
         # calculate expected git operations for a particular test duration
         message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
-        git_operations_compliant = self.actual_git_operations_count >= expected_get_operations_count
+        git_operations_compliant = self.results_log.actual_git_operations_count >= expected_get_operations_count
         if not git_operations_compliant:
-            message = (f"Total git operations {self.actual_git_operations_count} < than "
+            message = (f"Total git operations {self.results_log.actual_git_operations_count} < than "
                        f"{expected_get_operations_count} - minimum for expected duration {self.duration} sec.")
         return git_operations_compliant, message
 
@@ -207,7 +168,7 @@ class AnalyticsCollector:
         summary_report.append(f'Actual test run duration|{self.actual_duration} sec')
 
         if self.application.type == BITBUCKET:
-            summary_report.append(f'Total Git operations count|{self.actual_git_operations_count}')
+            summary_report.append(f'Total Git operations count|{self.results_log.actual_git_operations_count}')
             summary_report.append(f'Total Git operations compliant|{git_compliant}')
 
         summary_report.append(f'Finished|{finished}')

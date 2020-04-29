@@ -8,6 +8,7 @@ JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 
+
 class BaseApplication:
 
     def __init__(self, api_client, config_yml):
@@ -18,8 +19,6 @@ class BaseApplication:
 
 class Jira(BaseApplication):
     type = JIRA
-    # def __init__(self, api_client, config_yml):
-    #     super().__init__(api_client=api_client, config_yml=config_yml)
 
     @property
     def version(self):
