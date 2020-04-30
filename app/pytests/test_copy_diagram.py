@@ -3,6 +3,7 @@ from conftest import print_timing
 from fixtures import session
 from fixtures import base_url
 from conftest import saveRemoveDiagramCmd
+from conftest import getRandomFilter
 import os
 import random
 import pathlib
@@ -14,8 +15,10 @@ class TestCopyDiagram:
     def test_copy_diagram(self, base_url, session):
         HOSTNAME = os.environ.get('application_hostname')
 
-        #create a copy of the diagram
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        #Get filterKey randomly among the project in the project file
+        filterKey= getRandomFilter(session)
+
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
         result = diagrams_response.json()['values']
         if len(result)>0:

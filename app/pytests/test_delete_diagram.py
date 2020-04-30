@@ -14,8 +14,6 @@ class TestDelete:
         # Prepare
         # request list of diagrams using the session id
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
 
         # To make it thread save need to create the diagram before removing
 
@@ -30,6 +28,9 @@ class TestDelete:
 
         #Get filterKey randomly among the project in the project file
         filterKey= getRandomFilter(session)
+
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
+        assert diagrams_response.status_code == 200
 
         # Get field status
         diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
@@ -59,7 +60,7 @@ class TestDelete:
         #print_in_shell( diagrams_response.json() );
 
         #get all diagrams after delete
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
         

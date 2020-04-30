@@ -72,6 +72,10 @@ def get_projects_with_permisions(nr_projects, session):
         diagrams_response = session.get(
             "/rest/api/2/user/permission/search?permissions=ASSIGN_ISSUE&projectKey=" + projectKey + "&username=per", auth=('admin','admin'))
 #        print(str(diagrams_response.json()))
+        #for local test with user ADMIN
+        if ((len(diagrams_response.json()))== 0):
+            diagrams_response = session.get(
+                "/rest/api/2/user/permission/search?permissions=ASSIGN_ISSUE&projectKey=" + projectKey + "&username=admin", auth=('admin','admin'))
         if (len(diagrams_response.json())) > 0:
             projectId = project['id']
             projects_with_perm.append(project)
@@ -154,7 +158,11 @@ class TestCreateIssueLinks:
         projStartAt = 0
 
         respProj = session.get('/rest/api/latest/project', auth=('admin', 'admin'))
+        print("GGGG")
         projects = get_projects_with_permisions(nr_projects, session)
+        print (projects)
+        print("GGGG")
+
         create_filter_if_missing(projects, session)
 
         issueLinkTypeId = get_link_type(session)

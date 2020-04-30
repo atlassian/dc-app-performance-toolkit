@@ -139,8 +139,11 @@ class TestCreateLink:
         #Get diagram
         diagram_ids = []
         startAt = 0
+        #Get filterKey randomly among the project in the project file
+        filterKey= getRandomFilter(session)
         while True:
-            resp =  session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+            resp = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
+
             assert resp.status_code == 200
             result=resp.json()
             if startAt >= result['total'] or startAt > 500 or not('values' in result):
@@ -164,7 +167,7 @@ class TestCreateLink:
 
 
         #JIRA Get project with everything in it
-        diagrams_response = session.get('/rest/api/2/search?jql=project+%3D+' + '10000' + '+ORDER+BY+Rank+ASC&startAt=0&maxResults=50')
+        diagrams_response = session.get('/rest/api/2/search?jql=project+%3D+' + projectId + '+ORDER+BY+Status+ASC&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
         #print_in_shell(diagrams_response.json());
 

@@ -22,7 +22,7 @@ def env_settings():
 def get_hostname_port():
     envSetting = env_settings()
     print(envSetting)
-    hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port'])
+    hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port']) + envSetting['application_postfix']
     return hostname_port_var
 
 
@@ -49,7 +49,7 @@ class LiveServerSession(Session):
 
 # get list of all users - except 'admin' if more than one user
 
-print(BASE_URL);
+print("BASE_URL:" + BASE_URL);
 users_reponse = requests.get(BASE_URL  + '/rest/api/latest/user/search?username=performance_', auth=('admin', 'admin'))
 assert users_reponse.status_code == 200
 users = list(map(lambda user : user['name'], users_reponse.json()))
@@ -59,8 +59,6 @@ if len(users) ==0:
 #print(users)
 
 
-
-
 # returns a random username/password dict
 # all users have password 'password', except user 'admin' that has password 'admin'
 def getRandomUsernamePassword():
@@ -68,8 +66,6 @@ def getRandomUsernamePassword():
     password = 'password'
     if username == 'admin':
         password = 'admin'
- #   print(username)
- #   print("RETURN USER: " + username)
     return {'username': username, 'password': password}
 
 # returns a logged in session for use in a test method

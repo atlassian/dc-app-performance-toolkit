@@ -120,6 +120,9 @@ def getRandomProject():
     project=projects[random.randint(0,nrProjects-1)]
     return project
 
+def getNrProjects():
+    return len(projects)
+
 
 
 def print_timing(func):
@@ -144,7 +147,6 @@ def print_timing(func):
         with open(pytest_results_file, "a") as file:
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
         global_lock.release()
-
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
         if not success:

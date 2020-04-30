@@ -117,7 +117,8 @@ class TestFlowShowDiagram:
         diagramId=create_data
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        filterKey= getRandomFilter(session)
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
         resp = session.get('/rest/api/latest/project')

@@ -1,6 +1,6 @@
 # Data Center App Performance Toolkit
 
-This is FindOuts fork of https://github.com/atlassian/dc-app-performance-toolkit - see original REAME there.
+This is FindOuts fork of https://github.com/atlassian/dc-app-performance-toolkit - see original README there.
 
 The pytests for DM can be run either directly with:
 

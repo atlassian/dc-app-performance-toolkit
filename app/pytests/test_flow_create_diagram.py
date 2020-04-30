@@ -10,6 +10,7 @@ import random
 from maxfreq import max_freq
 from conftest import print_in_shell
 from conftest import getRandomFilter
+from conftest import getNrProjects
 
 class TestFlowCreateDiagram:
 
@@ -29,8 +30,11 @@ class TestFlowCreateDiagram:
 
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
+
+        #Get filterKey randomly among the project in the project file
+        filterKey= getRandomFilter(session)
         while True:
-            resp =session.get(f'/rest/dependency-map/1.0/diagram?searchTerm=&{startAt}=0&maxResults=50')
+            resp = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
             assert resp.status_code == 200
             result = resp.json()
             if startAt >= result['total'] or startAt > 500 or not('values' in result):
@@ -46,8 +50,11 @@ class TestFlowCreateDiagram:
 
         filterKey1=  getRandomFilter(session)
         filterKey2=  getRandomFilter(session)
-        while filterKey1==filterKey2:
-            filterKey2= getRandomFilter(session)
+        nr = 0
+        if (getNrProjects()>1) :
+            while (filterKey2!=0 and filterKey1==filterKey2 and nr<100):
+                nr= nr+1
+                filterKey2= getRandomFilter(session)
 
         # Get filter 10000  ?Scrum?
         diagrams_response = session.get('/rest/api/2/filter/' + filterKey1)
