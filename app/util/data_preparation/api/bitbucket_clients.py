@@ -1,5 +1,6 @@
 import time
 from enum import Enum
+from bs4 import BeautifulSoup
 
 from util.data_preparation.api.abstract_clients import RestClient
 
@@ -140,3 +141,9 @@ class BitbucketRestClient(RestClient):
         headers['Origin'] = self.host
         r = session.post(url, data=body, headers=headers)
         return r.content.decode('utf-8')
+
+    def get_locale(self):
+        response = self.get(self.host, f'Could not retrieve page')
+        soup = BeautifulSoup(response.text, 'html.parser')
+        current_lang = soup.html['lang']
+        return current_lang

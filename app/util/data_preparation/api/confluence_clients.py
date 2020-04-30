@@ -1,4 +1,5 @@
 import xmlrpc.client
+from bs4 import BeautifulSoup
 
 from util.data_preparation.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
@@ -138,6 +139,12 @@ class ConfluenceRestClient(RestClient):
         api_url = f"{self.host}/rest/api/search?cql=type=page"
         response = self.get(api_url, 'Could not get issues count')
         return response.json().get('totalSize', 0)
+
+    def get_locale(self):
+        response = self.get(self.host, f'Could not retrieve page')
+        soup = BeautifulSoup(response.text, 'html.parser')
+        account_lng = soup.find('meta', {'name': 'ajs-user-locale'}).attrs['content']
+        return account_lng
 
 
 class ConfluenceRpcClient(Client):

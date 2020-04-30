@@ -113,6 +113,13 @@ def write_test_data_to_files(datasets):
     __write_to_file(BITBUCKET_PRS, prs)
 
 
+def __check_default_bitbucket_language(bitbucket_api):
+    bitbucket_language = bitbucket_api.get_locale()
+    if bitbucket_language != 'en_US':
+        raise SystemExit(f'Unfortunately, we do not support {bitbucket_language} language!'
+                         f'Please change your account language on "English (United States)"')
+
+
 def main():
     print("Started preparing data")
 
@@ -120,6 +127,9 @@ def main():
     print("Server url: ", url)
 
     client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
+
+    __check_default_bitbucket_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

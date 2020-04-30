@@ -90,6 +90,13 @@ def write_test_data_to_files(dataset):
     __write_to_file(CONFLUENCE_USERS, users)
 
 
+def __check_default_confluence_language(confluence_api):
+    confluence_language = confluence_api.get_locale()
+    if confluence_language != 'en_US':
+        raise SystemExit(f'Unfortunately, we do not support {confluence_language} language! '
+                         f'Please change your profile language on "English (US)"')
+
+
 def main():
     print("Started preparing data")
 
@@ -99,6 +106,7 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
+    __check_default_confluence_language(rest_client)
     __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
