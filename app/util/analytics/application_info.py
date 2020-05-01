@@ -1,7 +1,7 @@
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, TOOLKIT_VERSION
-from util.data_preparation.api.jira_clients import JiraRestClient
-from util.data_preparation.api.confluence_clients import ConfluenceRestClient
-from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS
+from api.jira_clients import JiraRestClient
+from api.confluence_clients import ConfluenceRestClient
+from api.bitbucket_clients import BitbucketRestClient
 from lxml import etree
 
 JIRA = 'jira'
@@ -82,8 +82,6 @@ class Bitbucket(BaseApplication):
         return f"{repos_count} repositories"
 
 
-
-
 class ApplicationSelector:
     APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
                     'E.g. python util/analytics.py jira')
@@ -108,4 +106,3 @@ class ApplicationSelector:
             return Confluence(api_client=ConfluenceRestClient, config_yml=CONFLUENCE_SETTINGS)
         if self.application_type == BITBUCKET:
             return Bitbucket(api_client=BitbucketRestClient, config_yml=BITBUCKET_SETTINGS)
-

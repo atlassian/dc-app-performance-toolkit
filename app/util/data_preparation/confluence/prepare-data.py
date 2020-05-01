@@ -4,7 +4,7 @@ import string
 import urllib3
 
 from util.conf import CONFLUENCE_SETTINGS
-from util.data_preparation.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
+from api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

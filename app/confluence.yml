@@ -18,14 +18,14 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - python util/environment_checker.py
+      - python util/pre_run/environment_checker.py
       - python util/data_preparation/confluence/prepare-data.py
     shutdown:
-      - python util/jmeter_post_check.py
+      - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
-      - python util/analytics.py confluence
-      - python util/cleanup_results_dir.py
+      - python util/analytics/analytics.py confluence
+      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}

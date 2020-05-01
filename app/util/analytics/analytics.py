@@ -12,7 +12,6 @@ from util.analytics.application_info import ApplicationSelector
 from util.analytics.log_reader import BztLogReader, ResultsLogReader
 from util.conf import TOOLKIT_VERSION
 
-
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
@@ -87,7 +86,6 @@ class AnalyticsCollector:
         self.tool_version = TOOLKIT_VERSION
         self.set_date_timestamp()
 
-
     @staticmethod
     def is_all_tests_successful(tests):
         for success_rate in tests.values():
@@ -142,33 +140,40 @@ class AnalyticsCollector:
                        f"{expected_get_operations_count} - minimum for expected duration {self.duration} sec.")
         return git_operations_compliant, message
 
+
+class Reporter:
+
+    def __init__(self, collector):
+        self.collector = collector
+
     def generate_report_summary(self):
         summary_report = []
-        summary_report_file = f'{self.bzt_log.log_dir}/results_summary.log'
+        summary_report_file = f'{self.collector.bzt_log.log_dir}/results_summary.log'
 
-        finished = self.__is_finished()
-        compliant = self.__is_compliant()
-        success = self.__is_success()
+        finished = self.collector.__is_finished()
+        compliant = self.collector.__is_compliant()
+        success = self.collector.__is_success()
 
         overall_status = 'OK' if finished[0] and success[0] and compliant[0] else 'FAIL'
 
-        if self.application.type == BITBUCKET:
-            git_compliant = self.__is_git_operations_compliant()
+        if self.collector.application.type == BITBUCKET:
+            git_compliant = self.collector.__is_git_operations_compliant()
             overall_status = 'OK' if finished[0] and success[0] and compliant[0] and git_compliant[0] else 'FAIL'
 
         summary_report.append(f'Summary run status|{overall_status}\n')
-        summary_report.append(f'Artifacts dir|{os.path.basename(self.bzt_log.log_dir)}')
-        summary_report.append(f'OS|{self.os}')
-        summary_report.append(f'DC Apps Performance Toolkit version|{self.tool_version}')
-        summary_report.append(f'Application|{self.application.type} {self.application_version}')
-        summary_report.append(f'Dataset info|{self.dataset_information}')
-        summary_report.append(f'Application nodes count|{self.nodes_count}')
-        summary_report.append(f'Concurrency|{self.concurrency}')
-        summary_report.append(f'Expected test run duration from yml file|{self.duration} sec')
-        summary_report.append(f'Actual test run duration|{self.actual_duration} sec')
+        summary_report.append(f'Artifacts dir|{os.path.basename(self.collector.bzt_log.log_dir)}')
+        summary_report.append(f'OS|{self.collector.os}')
+        summary_report.append(f'DC Apps Performance Toolkit version|{self.collector.tool_version}')
+        summary_report.append(f'Application|{self.collector.application.type} {self.collector.application_version}')
+        summary_report.append(f'Dataset info|{self.collector.dataset_information}')
+        summary_report.append(f'Application nodes count|{self.collector.nodes_count}')
+        summary_report.append(f'Concurrency|{self.collector.concurrency}')
+        summary_report.append(f'Expected test run duration from yml file|{self.collector.duration} sec')
+        summary_report.append(f'Actual test run duration|{self.collector.actual_duration} sec')
 
-        if self.application.type == BITBUCKET:
-            summary_report.append(f'Total Git operations count|{self.results_log.actual_git_operations_count}')
+        if self.collector.application.type == BITBUCKET:
+            total_git_count = self.collector.results_log.actual_git_operations_count
+            summary_report.append(f'Total Git operations count|{total_git_count}')
             summary_report.append(f'Total Git operations compliant|{git_compliant}')
 
         summary_report.append(f'Finished|{finished}')
@@ -177,7 +182,7 @@ class AnalyticsCollector:
 
         summary_report.append(f'Action|Success Rate|Status')
 
-        for key, value in {**self.jmeter_test_rates, **self.selenium_test_rates}.items():
+        for key, value in {**self.collector.jmeter_test_rates, **self.collector.selenium_test_rates}.items():
             status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
             summary_report.append(f'{key}|{value}|{status}')
 
@@ -227,7 +232,8 @@ def main():
     application = ApplicationSelector(sys.argv).application
     collector = AnalyticsCollector(application)
     collector.generate_analytics()
-    collector.generate_report_summary()
+    reporter = Reporter(collector)
+    reporter.generate_report_summary()
     if collector.is_analytics_enabled():
         sender = AnalyticsSender(collector)
         sender.send_request()

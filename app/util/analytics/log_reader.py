@@ -6,6 +6,7 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
+
 class BaseLogReader:
 
     @staticmethod
@@ -17,6 +18,7 @@ class BaseLogReader:
         if len(file) == 0:
             raise SystemExit(f'ERROR: {file} file in {file} is empty')
 
+    @staticmethod
     def __validate_headers(self, headers_list, validation_dict):
         for key, value in validation_dict.items():
             if headers_list[key] != value:
@@ -29,7 +31,6 @@ class BaseLogReader:
             return os.environ.get('TAURUS_ARTIFACTS_DIR')
         else:
             raise SystemExit('ERROR: Taurus result directory could not be found')
-
 
 
 class BztLogReader(BaseLogReader):
@@ -74,7 +75,6 @@ class BztLogReader(BaseLogReader):
                 break
         return test_duration
 
-
     def _get_test_count_by_type(self, tests_type, log):
         trigger = f' {tests_type}_'
         test_search_regx = ""
@@ -114,7 +114,6 @@ class BztLogReader(BaseLogReader):
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
 
 
-
 class ResultsLogReader(BaseLogReader):
     header_validation = {0: 'Label', 1: '# Samples'}
 
@@ -132,7 +131,6 @@ class ResultsLogReader(BaseLogReader):
         self.__validate_headers(headers_list, self.header_validation)
         return results
 
-
     @property
     def actual_git_operations_count(self):
         count = 0
@@ -140,4 +138,3 @@ class ResultsLogReader(BaseLogReader):
             if any(s in line for s in GIT_OPERATIONS):
                 count = count + int(line.split(',')[1])
         return count
-
