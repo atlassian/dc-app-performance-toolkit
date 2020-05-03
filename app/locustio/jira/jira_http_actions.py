@@ -93,11 +93,11 @@ def create_issue(locust):
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
         r = locust.client.post(OPEN_QUICK_CREATE_URL, ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        atl_token = re.findall(ATL_TOKEN_PATTERN_CREATE_ISSUE, content)
-        form_token = re.findall(FORM_TOKEN_PATTERN, content)
-        issue_type = re.findall(ISSUE_TYPE_PATTERN, content)
-        project_id = re.findall(PROJECT_ID_PATTERN, content)
-        resolution_done = re.findall(RESOLUTION_DONE_PATTERN, content)
+        atl_token = fetch_by_re(ATL_TOKEN_PATTERN_CREATE_ISSUE, content)
+        form_token = fetch_by_re(FORM_TOKEN_PATTERN, content)
+        issue_type = fetch_by_re(ISSUE_TYPE_PATTERN, content)
+        project_id = fetch_by_re(PROJECT_ID_PATTERN, content)
+        resolution_done = fetch_by_re(RESOLUTION_DONE_PATTERN, content)
         fields_to_retain = re.findall(FIELDS_TO_RETAIN_PATTERN, content)
         custom_fields_to_retain = re.findall(CUSTOM_FIELDS_TO_RETAIN_PATTERN, content)
 
@@ -125,7 +125,7 @@ def create_issue(locust):
         content = r.content.decode('utf-8')
 
         assert ASSERT_STRING_CREATE_ISSUE in content, ERR_CREATE_ISSUE
-        issue_key = re.findall(CREATED_ISSUE_KEY_PATTERN, content)[0]
+        issue_key = fetch_by_re(CREATED_ISSUE_KEY_PATTERN, content)
         locust.logger.info(f"Issue {issue_key} was successfully created")
     create_issue_submit_form()
     locust.storage.clear()
@@ -165,12 +165,8 @@ def search_jql(locust):
         r = locust.client.post('/rest/issueNav/1/issueTable/stable', data=body,
                                headers=NO_TOKEN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        issue_key = re.findall(SEARCH_JQL_ISSUE_KEY_PATTERN, content)
-        if issue_key:
-            issue_key = issue_key[0][1]
-        issue_id = re.findall(SEARCH_JQL_ISSUE_ID_PATTERN, content)
-        if issue_id:
-            issue_id = issue_id[0]
+        issue_key = fetch_by_re(SEARCH_JQL_ISSUE_KEY_PATTERN, content)
+        issue_id = fetch_by_re(SEARCH_JQL_ISSUE_ID_PATTERN, content)
         locust.logger.info(f"issue_key: {issue_key}, issue_id: {issue_id}")
     locust.client.post('/secure/QueryComponent!Jql.jspa', params={'jql': 'order by created DESC',
                                                                   'decorator': None}, headers=TEXT_HEADERS,

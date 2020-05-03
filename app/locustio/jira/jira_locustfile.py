@@ -17,9 +17,9 @@ class JiraBehavior(TaskSet):
     # def create_issue(self):
     #     create_issue(self)
     #
-    # @task(3)
-    # def search_jql(self):
-    #     search_jql(self)
+    @task(3)
+    def search_jql(self):
+        search_jql(self)
     #
     # @task(9)
     # def view_issue(self):
@@ -42,9 +42,9 @@ class JiraBehavior(TaskSet):
     #     add_comment(self)
 
 
-    @task(1)
-    def browse_projects(self):
-        browse_projects(self)
+    # @task(1)
+    # def browse_projects(self):
+    #     browse_projects(self)
 
 
     # browse projects
