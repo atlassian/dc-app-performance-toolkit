@@ -34,7 +34,6 @@ LOGIN_BODY = {
     }
 # login
 ATL_TOKEN_PATTERN_LOGIN = r'name="atlassian-token" content="(.+?)">'
-LOGGED_USER = 'title="loggedInUser" value="username">'
 
 
 # browse_issue
@@ -89,6 +88,12 @@ EDIT_ISSUE_REPORTER_PATTERN = 'assignee.*<option selected="selected" value="(.+?
 EDIT_ISSUE_RESOLUTION_PATTERN = '<option selected="selected" value="(.+?)">\n(.+?)Done'
 EDIT_ISSUE_LAST_VISITED_BODY = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
 
+
+# Add comment
+ADD_COMMENT_FORM_TOKEN_PATTERN = 'name="formToken"\s*type="hidden"\s*value="(.+?)"'
+
+# Browse projects
+BROWSE_PROJECTS_ASSERTION_STRING = 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="'
 
 
 # Error messages
