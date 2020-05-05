@@ -139,7 +139,8 @@ class BitbucketRestClient(RestClient):
                 'submit': 'Log in'}
         headers = self.LOGIN_POST_HEADERS
         headers['Origin'] = self.host
-        r = session.post(url, data=body, headers=headers)
+        session.post(url, data=body, headers=headers)
+        r = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
         return r.content.decode('utf-8')
 
     def get_locale(self):
