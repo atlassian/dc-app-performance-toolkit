@@ -1,8 +1,8 @@
 import time
 from enum import Enum
-from bs4 import BeautifulSoup
 
 from util.data_preparation.api.abstract_clients import RestClient
+import lxml.html as LH
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -143,7 +143,6 @@ class BitbucketRestClient(RestClient):
         return r.content.decode('utf-8')
 
     def get_locale(self):
-        response = self.get(self.host, f'Could not retrieve page')
-        soup = BeautifulSoup(response.text, 'html.parser')
-        current_lang = soup.html['lang']
-        return current_lang
+        page = LH.parse(self.host)
+        language = page.xpath('//html/@lang')[0]
+        return language

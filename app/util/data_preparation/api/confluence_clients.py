@@ -1,8 +1,8 @@
 import xmlrpc.client
-from bs4 import BeautifulSoup
 
 from util.data_preparation.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
+import lxml.html as LH
 
 BATCH_SIZE_SEARCH = 500
 
@@ -141,10 +141,9 @@ class ConfluenceRestClient(RestClient):
         return response.json().get('totalSize', 0)
 
     def get_locale(self):
-        response = self.get(self.host, f'Could not retrieve page')
-        soup = BeautifulSoup(response.text, 'html.parser')
-        account_lng = soup.find('meta', {'name': 'ajs-user-locale'}).attrs['content']
-        return account_lng
+        page = LH.parse(self.host)
+        language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        return language
 
 
 class ConfluenceRpcClient(Client):

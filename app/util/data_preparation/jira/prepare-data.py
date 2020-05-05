@@ -129,11 +129,11 @@ def __get_software_project_keys(jira_api):
     return software_project_keys
 
 
-def __check_default_jra_language(jira_api):
-    jira_language = jira_api.get_locale()
-    if jira_language != 'en_US':
-        raise SystemExit(f'Unfortunately, we do not support {jira_language} language! '
-                         f'Please change your profile language on "English (United States) [Default]"')
+def __check_current_language(jira_api):
+    language = jira_api.get_locale()
+    if language != 'en_US':
+        raise SystemExit(f'Unfortunately, we do not support "{language}" language! '
+                         f'Please change your profile language to "English (United States) [Default]"')
 
 
 def main():
@@ -144,7 +144,7 @@ def main():
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
-    __check_default_jra_language(client)
+    __check_current_language(client)
 
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
