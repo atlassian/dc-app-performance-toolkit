@@ -387,7 +387,7 @@ class AnalyticsCollector:
         summary_report.append(f'OS|{self.os}')
         summary_report.append(f'DC Apps Performance Toolkit version|{self.tool_version}')
         summary_report.append(f'Application|{self.application_type} {self.application_version}')
-        summary_report.append(f'Dataset info|{self.get_dataset_information}')
+        summary_report.append(f'Dataset info|{self.dataset_information}')
         summary_report.append(f'Application nodes count|{self.nodes_count}')
         summary_report.append(f'Concurrency|{self.concurrency}')
         summary_report.append(f'Expected test run duration from yml file|{self.duration} sec')
