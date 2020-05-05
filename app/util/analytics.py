@@ -239,9 +239,12 @@ class AnalyticsCollector:
         client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                      password=self.config_yml.admin_password)
         system_page_html = client.get_bitbucket_system_page()
-        dom = etree.HTML(system_page_html)
-        repos_count = dom.cssselect(BITBUCKET_REPOS_SELECTOR)[0].text
-        return repos_count
+        if 'Repositories' in system_page_html:
+            dom = etree.HTML(system_page_html)
+            repos_count = dom.cssselect(BITBUCKET_REPOS_SELECTOR)[0].text
+            return repos_count
+        else:
+            return 'Could not parse number of Bitbucket repositories'
 
     def get_application_version(self):
         if self.application_type.lower() == JIRA:
