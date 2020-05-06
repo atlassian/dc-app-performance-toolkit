@@ -13,6 +13,7 @@ from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, TO
 from util.data_preparation.api.jira_clients import JiraRestClient
 from util.data_preparation.api.confluence_clients import ConfluenceRestClient
 from util.data_preparation.api.bitbucket_clients import BitbucketRestClient
+from lxml import etree
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -43,6 +44,7 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
 
 APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
                 'E.g. python util/analytics.py jira')
+BITBUCKET_REPOS_SELECTOR = "#content-bitbucket\.atst\.repositories-0>.field-group>.field-value"  # noqa W605
 
 
 def __validate_app_type():
@@ -76,6 +78,7 @@ class AnalyticsCollector:
         self.application_version = ""
         self.summary = []
         self.nodes_count = 0
+        self.dataset_information = ""
 
     @property
     def config_yml(self):
@@ -130,8 +133,8 @@ class AnalyticsCollector:
                 str_duration = string.split('duration:')[1].replace('\n', '')
                 str_duration = str_duration.replace(' ', '')
                 duration_datetime_obj = datetime.strptime(str_duration, '%H:%M:%S')
-                test_duration = (duration_datetime_obj.hour*3600 +
-                                 duration_datetime_obj.minute*60 + duration_datetime_obj.second)
+                test_duration = (duration_datetime_obj.hour * 3600 +
+                                 duration_datetime_obj.minute * 60 + duration_datetime_obj.second)
                 break
         return test_duration
 
@@ -182,13 +185,6 @@ class AnalyticsCollector:
         self.time_stamp = int(round(utc_now.timestamp() * 1000))
         self.date = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat('T', 'seconds')
 
-    def get_jira_version(self):
-        client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
-                                password=self.config_yml.admin_password)
-        jira_server_info = client.get_server_info()
-        jira_server_version = jira_server_info.get('version', '')
-        return jira_server_version
-
     def get_jira_nodes_count(self):
         html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
         client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
@@ -212,6 +208,13 @@ class AnalyticsCollector:
         nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
         return nodes_count
 
+    def get_jira_version(self):
+        client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                password=self.config_yml.admin_password)
+        jira_server_info = client.get_server_info()
+        jira_server_version = jira_server_info.get('version', '')
+        return jira_server_version
+
     def get_confluence_version(self):
         client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                       password=self.config_yml.admin_password)
@@ -221,6 +224,27 @@ class AnalyticsCollector:
         client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
                                      password=self.config_yml.admin_password)
         return client.get_bitbucket_version()
+
+    def get_jira_issues_count(self):
+        client = JiraRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                password=self.config_yml.admin_password)
+        return client.get_total_issues_count()
+
+    def get_confluence_pages_count(self):
+        client = ConfluenceRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                      password=self.config_yml.admin_password)
+        return client.get_total_pages_count()
+
+    def get_bitbucket_repos_count(self):
+        client = BitbucketRestClient(host=self.config_yml.server_url, user=self.config_yml.admin_login,
+                                     password=self.config_yml.admin_password)
+        system_page_html = client.get_bitbucket_system_page()
+        if 'Repositories' in system_page_html:
+            dom = etree.HTML(system_page_html)
+            repos_count = dom.cssselect(BITBUCKET_REPOS_SELECTOR)[0].text
+            return repos_count
+        else:
+            return 'Could not parse number of Bitbucket repositories'
 
     def get_application_version(self):
         if self.application_type.lower() == JIRA:
@@ -238,6 +262,14 @@ class AnalyticsCollector:
         if self.application_type.lower() == BITBUCKET:
             return self.get_bitbucket_nodes_count()
 
+    def get_dataset_information(self):
+        if self.application_type.lower() == JIRA:
+            return f"{self.get_jira_issues_count()} issues"
+        if self.application_type.lower() == CONFLUENCE:
+            return f"{self.get_confluence_pages_count()} pages"
+        if self.application_type.lower() == BITBUCKET:
+            return f"{self.get_bitbucket_repos_count()} repositories"
+
     @property
     def uniq_user_id(self):
         user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
@@ -254,6 +286,7 @@ class AnalyticsCollector:
         self.tool_version = TOOLKIT_VERSION
         self.set_actual_test_count()
         self.set_date_timestamp()
+        self.dataset_information = self.get_dataset_information()
         self.application_version = self.get_application_version()
         self.nodes_count = self.get_node_count()
 
@@ -357,6 +390,7 @@ class AnalyticsCollector:
         summary_report.append(f'OS|{self.os}')
         summary_report.append(f'DC Apps Performance Toolkit version|{self.tool_version}')
         summary_report.append(f'Application|{self.application_type} {self.application_version}')
+        summary_report.append(f'Dataset info|{self.dataset_information}')
         summary_report.append(f'Application nodes count|{self.nodes_count}')
         summary_report.append(f'Concurrency|{self.concurrency}')
         summary_report.append(f'Expected test run duration from yml file|{self.duration} sec')
@@ -388,7 +422,7 @@ class AnalyticsCollector:
     @staticmethod
     def format_string(string_to_format, offset=50):
         # format string with delimiter "|"
-        return ''.join([f'{item}{" "*(offset-len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
+        return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
 
 
 class AnalyticsSender:
@@ -407,7 +441,7 @@ class AnalyticsSender:
                    "os": self.analytics.os,
                    "tool_ver": self.analytics.tool_version,
                    "exp_dur": self.analytics.duration,
-                   "act_dur":  self.analytics.actual_duration,
+                   "act_dur": self.analytics.actual_duration,
                    "selenium_test_rates": self.analytics.selenium_test_rates,
                    "jmeter_test_rates": self.analytics.jmeter_test_rates,
                    "concurrency": self.analytics.concurrency

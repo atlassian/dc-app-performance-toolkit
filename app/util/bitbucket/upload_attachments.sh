@@ -8,6 +8,11 @@ pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. 
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
 SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
+if [[ -z "$BITBUCKET_VERSION" ]]; then
+        echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
+         has a valid file path of the Bitbucket version file or set your Cluster BITBUCKET_VERSION explicitly.
+        exit 1
+fi
 echo "Bitbucket Version: ${BITBUCKET_VERSION}"
 
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
