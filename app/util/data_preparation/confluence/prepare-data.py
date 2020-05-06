@@ -15,6 +15,7 @@ BLOGS = "blogs"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 
+ENGLISH = 'en_US'
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -92,8 +93,8 @@ def write_test_data_to_files(dataset):
 
 def __check_current_language(confluence_api):
     language = confluence_api.get_locale()
-    if language != 'en_US':
-        raise SystemExit(f'Unfortunately, we do not support "{language}" language! '
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your profile language to "English (US)"')
 
 

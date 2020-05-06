@@ -144,5 +144,8 @@ class BitbucketRestClient(RestClient):
 
     def get_locale(self):
         page = LH.parse(self.host)
-        language = page.xpath('//html/@lang')[0]
+        try:
+            language = page.xpath('//html/@lang')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
         return language

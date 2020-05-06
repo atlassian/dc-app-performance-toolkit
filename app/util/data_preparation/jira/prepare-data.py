@@ -20,6 +20,8 @@ PROJECT_KEYS = "project_keys"
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
 
+ENGLISH = 'en_US'
+
 
 def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
@@ -131,8 +133,8 @@ def __get_software_project_keys(jira_api):
 
 def __check_current_language(jira_api):
     language = jira_api.get_locale()
-    if language != 'en_US':
-        raise SystemExit(f'Unfortunately, we do not support "{language}" language! '
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your profile language to "English (United States) [Default]"')
 
 

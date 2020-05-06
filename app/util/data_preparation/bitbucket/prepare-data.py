@@ -15,6 +15,8 @@ PULL_REQUESTS = "pull_requests"
 FETCH_LIMIT_REPOS = 50
 FETCH_LIMIT_PROJECTS = FETCH_LIMIT_REPOS
 
+ENGLISH = 'en'
+
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -115,8 +117,8 @@ def write_test_data_to_files(datasets):
 
 def __check_current_language(bitbucket_api):
     language = bitbucket_api.get_locale()
-    if language != 'en':
-        raise SystemExit(f'Unfortunately, we do not support "{language}" language!'
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your account language to "English (United States)"')
 
 

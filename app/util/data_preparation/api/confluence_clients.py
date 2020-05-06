@@ -142,7 +142,10 @@ class ConfluenceRestClient(RestClient):
 
     def get_locale(self):
         page = LH.parse(self.host)
-        language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        try:
+            language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
         return language
 
 
