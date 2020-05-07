@@ -90,17 +90,13 @@ class ApplicationSelector:
     APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
                     'E.g. python util/analytics.py jira')
 
-    def __init__(self, *args):
-        self.application_type = self.__get_application_type(args)
+    def __init__(self, app_name):
+        self.application_type = self.__get_application_type(app_name)
 
-    def __get_application_type(self, args):
-        try:
-            app_type = args[0][1].lower()
-            if app_type not in [JIRA, CONFLUENCE, BITBUCKET]:
-                raise SystemExit(self.APP_TYPE_MSG)
-            return app_type
-        except IndexError:
-            SystemExit(self.APP_TYPE_MSG)
+    def __get_application_type(self, app_name):
+        if app_name not in [JIRA, CONFLUENCE, BITBUCKET]:
+            raise SystemExit(self.APP_TYPE_MSG)
+        return app_name
 
     @property
     def application(self):

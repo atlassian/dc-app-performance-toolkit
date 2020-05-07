@@ -7,19 +7,20 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
 # naming LOG -> FILE
-class BaseLogReader:
+class BaseFileReader:
 
     @staticmethod
-    def __validate_file_exists(path):
-        return os.path.exists(path)
+    def validate_file_exists(path):
+        if not os.path.exists(path):
+            raise Exception(f'{path} does not exist')
 
     @staticmethod
-    def __validate_file_not_empty(file):
+    def validate_file_not_empty(file):
         if len(file) == 0:
             raise SystemExit(f'ERROR: {file} file in {file} is empty')
 
     @staticmethod
-    def __validate_headers(self, headers_list, validation_dict):
+    def validate_headers(headers_list, validation_dict):
         for key, value in validation_dict.items():
             if headers_list[key] != value:
                 raise SystemExit(f'Header validation error. '
@@ -33,7 +34,7 @@ class BaseLogReader:
             raise SystemExit('ERROR: Taurus result directory could not be found')
 
 
-class BztLogReader(BaseLogReader):
+class BztFileReader(BaseFileReader):
 
     bzt_log_name = 'bzt.log'
     dt_regexp = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
@@ -47,10 +48,10 @@ class BztLogReader(BaseLogReader):
 
     def get_bzt_log(self):
         bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
-        self.__validate_file_exists(bzt_log_path)
+        self.validate_file_exists(bzt_log_path)
         with open(bzt_log_path) as log_file:
             log_file = log_file.readlines()
-            self.__validate_file_not_empty(log_file)
+            self.validate_file_not_empty(log_file)
             return log_file
 
     def _get_duration_by_start_finish_strings(self):
@@ -114,7 +115,7 @@ class BztLogReader(BaseLogReader):
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
 
 
-class ResultsLogReader(BaseLogReader):  #ResultsReader
+class ResultsFileReader(BaseFileReader):
     header_validation = {0: 'Label', 1: '# Samples'}
 
     def __init__(self):
@@ -122,13 +123,13 @@ class ResultsLogReader(BaseLogReader):  #ResultsReader
 
     def get_results_log(self):
         results_log_path = f'{self.log_dir}/results.csv'
-        self.__validate_file_exists(results_log_path)
+        self.validate_file_exists(results_log_path)
         with open(results_log_path) as res_file:
             header = res_file.readline()
             results = res_file.readlines()
-        self.__validate_file_not_empty(results)
+        self.validate_file_not_empty(results)
         headers_list = header.split(',')
-        self.__validate_headers(headers_list, self.header_validation)
+        self.validate_headers(headers_list, self.header_validation)
         return results
 
     @property

@@ -20,7 +20,7 @@ services:
     prepare:
       - python util/pre_run/environment_checker.py
       - python util/pre_run/git_client_check.py
-      - python util/data_preparation/bitbucket/prepare-data.py
+      - python util/data_preparation/bitbucket_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
