@@ -81,9 +81,12 @@ class Bitbucket(BaseApplication):
     @property
     def dataset_information(self):
         system_page_html = self.client.get_bitbucket_system_page()
-        dom = etree.HTML(system_page_html)
-        repos_count = dom.cssselect(self.bitbucket_repos_selector)[0].text
-        return f"{repos_count} repositories"
+        if 'Repositories' in system_page_html:
+            dom = etree.HTML(system_page_html)
+            repos_count = dom.cssselect(self.bitbucket_repos_selector)[0].text
+            return f'{repos_count} repositories'
+        else:
+            return 'Could not parse number of Bitbucket repositories'
 
 
 class ApplicationSelector:
