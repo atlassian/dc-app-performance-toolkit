@@ -90,6 +90,12 @@ def write_test_data_to_files(dataset):
     __write_to_file(CONFLUENCE_USERS, users)
 
 
+def __check_collaborative_editing_enable(confluence_api):
+    status = confluence_api.get_collaborative_editing_status()
+    if not status['sharedDraftsEnabled']:
+        raise Exception('Collaborative Editing is disabled on the Confluence side. Please turn this mode on.')
+
+
 def main():
     print("Started preparing data")
 
@@ -99,6 +105,7 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
+    __check_collaborative_editing_enable(rest_client)
     __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)

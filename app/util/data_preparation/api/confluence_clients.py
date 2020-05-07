@@ -139,6 +139,11 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, 'Could not get issues count')
         return response.json().get('totalSize', 0)
 
+    def get_collaborative_editing_status(self):
+        api_url = f'{self.host}/rest/synchrony-interop/status'
+        response = self.get(api_url, error_msg='Could not get collaborative editing status').json()
+        return response
+
 
 class ConfluenceRpcClient(Client):
 
