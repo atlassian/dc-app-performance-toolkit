@@ -35,7 +35,7 @@ class BaseResource:
 
     def __init__(self):
         self.resources_json = self.read_json()
-        self.resource = self.action_resources()
+        self.body = self.action_resources()
 
     def read_json(self):
         with open(self.resources_file) as f:
