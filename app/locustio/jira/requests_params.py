@@ -96,6 +96,12 @@ ADD_COMMENT_FORM_TOKEN_PATTERN = 'name="formToken"\s*type="hidden"\s*value="(.+?
 BROWSE_PROJECTS_ASSERTION_STRING = 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="'
 
 
+# Browse kanban boards
+BROWSE_KANBAN_BOARDS_PROJECT_KEY = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  #'\["project-key"\]="\\\"(.+?)\\\"'
+BROWSE_KANBAN_BOARDS_PROJECT_ID = '\["project-id"\]=\"(.+?)\"'
+BROWSE_KANBAN_BOARDS_PROJECT_PLAN = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'
+
+
 # Error messages
 ERR_TOKEN_NOT_FOUND = 'Atlassian token not found in login requests'
 ERR_CREATE_ISSUE = 'Issue was not created'

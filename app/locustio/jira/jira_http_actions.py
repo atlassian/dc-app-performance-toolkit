@@ -101,16 +101,14 @@ def create_issue(locust):
         fields_to_retain = re.findall(FIELDS_TO_RETAIN_PATTERN, content)
         custom_fields_to_retain = re.findall(CUSTOM_FIELDS_TO_RETAIN_PATTERN, content)
 
-        issue_body_params_dict = {'atl_token': get_first_index(atl_token, 'atl_token not found'),
-                                  'form_token': get_first_index(form_token, 'form_token not found'),
-                                  'issue_type': get_first_index(issue_type, 'issue_type not found'),
-                                  'project_id': get_first_index(project_id, 'project_id not found'),
-                                  'resolution_done': get_first_index(resolution_done, 'resolution_done not found'),
+        issue_body_params_dict = {'atl_token': atl_token,
+                                  'form_token': form_token,
+                                  'issue_type': issue_type,
+                                  'project_id': project_id,
+                                  'resolution_done': resolution_done,
                                   'fields_to_retain': fields_to_retain,
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
-
-        locust.logger.info(issue_body_params_dict)
         assert ASSERT_STRING_CREATE_ISSUE in content, ERR_CREATE_ISSUE
         locust.client.post('/rest/quickedit/1.0/userpreferences/create', USERPREFERENCES_PAYLOAD,
                            ADMIN_HEADERS, catch_response=True)
@@ -349,7 +347,7 @@ def add_comment(locust):
         content = r.content.decode('utf-8')
         assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Could not save comment'
     add_comment_save_comment()
-
+    locust.storage.clear()
 
 @measure
 def browse_projects(locust):
@@ -365,5 +363,19 @@ def browse_projects(locust):
     locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', resources_body["3"], TEXT_HEADERS, catch_response=True)
 
+
+@measure
+def view_kanban_boards(locust):
+    func_name = inspect.stack()[0][3]
+    #resources_body = resources[func_name]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    kanban_board_id = random.choice(dataset["kanban_boards"])[0]
+    locust.logger.info(f"board_id = {kanban_board_id}")
+    r = locust.client.get(f'/secure/RapidBoard.jspa?rapidView={kanban_board_id}', catch_response=True)
+    content = r.content.decode('utf-8')
+    project_key = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_KEY, content)
+    project_id = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_ID, content)
+    project_plan = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_PLAN, content, group_no=2).replace('\\', '')
+    locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
 
 
