@@ -47,6 +47,7 @@ class TestCreateDiagram:
         with open(out_file_path, "a") as f:
             # print( diagrams_response.json() );
             for filterKey in filterKeyList:
+                print("filterKey: ")
                 print(filterKey)
                 for c in range(0, 10):
                     diagramId = create_diagram(filterKey, session)
@@ -59,29 +60,36 @@ def create_diagram(filterKey, session):
     # Get filter key
     HOSTNAME = os.environ.get('application_hostname')
 
-    # Get field
-    diagrams_response = session.get('/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
-    assert diagrams_response.status_code == 200
-    field = diagrams_response.json()["fields"][1]["id"]
-    print(field)
-
-    # Get field
-    diagrams_response = session.get('/rest/dependency-map/1.0/field?searchTerm=&page=0&resultsPerPage=25')
-    assert diagrams_response.status_code == 200
-    field2 = diagrams_response.json()["fields"][8]["id"]
-    print(field)
-
     # Get user
     diagrams_response = session.get('/rest/dependency-map/1.0/user')
     assert diagrams_response.status_code == 200
     userKey = diagrams_response.json()["key"]
     print("User key: " + userKey)
 
+    # Get field priority
+    diagrams_response = session.get('/rest/dependency-map/1.0/field/priority')
+    assert diagrams_response.status_code == 200
+    field = diagrams_response.json()["id"]
+    print(field)
+
+   # Get field status
+    diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
+    assert diagrams_response.status_code == 200
+    field2 = diagrams_response.json()["id"]
+    print(field2)
+
+    # Get field fix version
+    diagrams_response = session.get('/rest/dependency-map/1.0/field/fixVersions')
+    assert diagrams_response.status_code == 200
+    field3 = diagrams_response.json()["id"]
+    print(field3)
+
+
     # Create diagram
     payload = {'name': "A100", 'author': userKey,
                'lastEditedBy': userKey, 'layoutId': 2, 'filterKey': filterKey,
-               'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
-               'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
+               'boxColorFieldKey': field, 'groupedLayoutFieldKey': field2,
+               'matrixLayoutHorizontalFieldKey': field2, 'matrixLayoutVerticalFieldKey': field3}
 
     diagram_response = session.post('/rest/dependency-map/1.0/diagram',
                                     json=payload)

@@ -15,8 +15,7 @@ class TestDelete:
         # request list of diagrams using the session id
         HOSTNAME = os.environ.get('application_hostname')
 
-        # To make it thread save need to create the diagram before removing
-
+        ##CREATE DIAGRAM
         # Get user
         diagrams_response = session.get('/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
@@ -26,21 +25,18 @@ class TestDelete:
         diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
 
-        #Get filterKey randomly among the project in the project file
-        filterKey= getRandomFilter(session)
-
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
-
         # Get field status
         diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
         assert diagrams_response.status_code == 200
         field= diagrams_response.json()["id"]
 
-        # Get field sprint
-        diagrams_response = session.get('/rest/dependency-map/1.0/field/sprint')
+        # Get field priority
+        diagrams_response = session.get('/rest/dependency-map/1.0/field/priority')
         assert diagrams_response.status_code == 200
         field2= diagrams_response.json()["id"]
+
+        #Get filterKey randomly among the project in the project file
+        filterKey= getRandomFilter(session)
 
         # Create diagram
         payload ={ 'name':"F100", 'author':userKey,
@@ -53,6 +49,38 @@ class TestDelete:
         assert diagrams_response.status_code == 200
         diagramId = diagrams_response.json()['id']
 
+        print("Hej")
+
+        ##FIND DIAGRAM
+
+        # To make it thread save need to create the diagram before removing
+        # Get user
+        diagrams_response = session.get('/rest/dependency-map/1.0/user')
+        assert diagrams_response.status_code == 200
+        userKey = diagrams_response.json()["key"]
+
+        # Get filter key
+        diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
+        assert diagrams_response.status_code == 200
+
+
+        #Get favoritDiagram
+        diagrams_response = session.get('/rest/dependency-map/1.0/favoriteDiagram')
+        assert diagrams_response.status_code == 200
+
+        #Get diagrams with filterKey
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
+        assert diagrams_response.status_code == 200
+
+     #   #Get filter
+        diagrams_response = session.get('/rest/api/2/filter/' + filterKey)
+        assert diagrams_response.status_code == 200
+
+        #Get diagram
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram/' + str(diagramId))
+        assert diagrams_response.status_code == 200
+
+        ##REMOVE
         #remove
         diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + str(diagramId))
         assert diagrams_response2.status_code == 200

@@ -110,6 +110,12 @@ def getRandomFilter(session):
     filterKey = project["filterId"]
     return filterKey
 
+def getFilterId(project):
+    for pro in projects:
+        if pro['id']==project:
+          return pro["filterId"];
+    return '0'
+
 def getRandomProjectId():
     nrProjects = len(projects)
     projectId=projects[random.randint(0,nrProjects-1)]['id']
