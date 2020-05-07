@@ -20,6 +20,11 @@ CONFLUENCE_DB_PASS="Password1!"
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
+if [[ -z "$CONFLUENCE_VERSION" ]]; then
+        echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
+         has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
+        exit 1
+fi
 echo "Confluence Version: ${CONFLUENCE_VERSION}"
 
 # Datasets AWS bucket and db dump name
