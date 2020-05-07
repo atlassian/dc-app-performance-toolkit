@@ -1,12 +1,12 @@
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
-# naming LOG -> FILE
+
 class BaseFileReader:
 
     @staticmethod
