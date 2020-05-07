@@ -17,6 +17,7 @@ DEFAULT_USER_PASSWORD = 'password'
 
 ENGLISH = 'en_US'
 
+
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
