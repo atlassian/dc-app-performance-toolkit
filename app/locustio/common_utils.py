@@ -152,4 +152,3 @@ def assert_jira_logged_user(user, content):
 
 
 dataset = datasets()
-resources = read_json(file_json='locustio/jira/resources.json')

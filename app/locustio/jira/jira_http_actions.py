@@ -14,27 +14,27 @@ counter = itertools.count()
 @measure
 def login_and_view_dashboard(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = Login()
+
     user = random.choice(dataset["users"])
-    #body = Login().login_body
-    body = LOGIN_BODY
+    body = params.login_body
     body['os_username'] = user[0]
     body['os_password'] = user[1]
 
     locust.client.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
     r = locust.client.get('/', catch_response=True)
     content = r.content.decode('utf-8')
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"],
                        TEXT_HEADERS, catch_response=True)
     locust.client.post("/plugins/servlet/gadgets/dashboard-diagnostics",
                        {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"},
                        TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"],
                        TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["3"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["3"],
                        TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["4"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["4"],
                        TEXT_HEADERS, catch_response=True)
 
     locust.client.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
@@ -46,7 +46,7 @@ def login_and_view_dashboard(locust):
     locust.client.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}',
                       catch_response=True)
     # Assertions
-    token = fetch_by_re(ATL_TOKEN_PATTERN_LOGIN, content)
+    token = fetch_by_re(params.atl_token_pattern, content)
     if not token:
         locust.logger.info(f'{content}')
         raise ResponseError(ERR_TOKEN_NOT_FOUND)
@@ -62,24 +62,24 @@ def view_issue(locust):
     func_name = inspect.stack()[0][3]
     issue_key = random.choice(dataset['issues'])[0]
     project_key = random.choice(dataset['issues'])[2]
-
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = BrowseIssue()
+
     r = locust.client.get(f'/browse/{issue_key}', catch_response=True)
     content = r.content.decode('utf-8')
-    issue_id = fetch_by_re(ISSUE_ID_PATTERN, content)
-    project_avatar_id = fetch_by_re(PROJECT_AVATAR_ID_PATTERN, content)
-    edit_allowed = fetch_by_re(EDIT_ALLOWED_PATTERN, content, group_no=0)
+    issue_id = fetch_by_re(params.issue_id_pattern, content)
+    project_avatar_id = fetch_by_re(params.project_avatar_id_pattern, content)
+    edit_allowed = fetch_by_re(params.edit_allow_pattern, content, group_no=0)
     locust.client.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
     # Assertions
-    assert_str = ASSERT_ISSUE_KEY.replace('issuekey', issue_key)
-    assert assert_str in content, f'Issue {issue_key} not found'
+    assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue {issue_key} not found'
     locust.logger.info(f"Issue {issue_key} is opened successfully")
 
     locust.logger.info(f'Issue key: {issue_key}, issue_id {issue_id}')
     if edit_allowed:
         url = f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId={issue_id}&_={timestamp_int()}'
         locust.client.get(url, catch_response=True)
-    locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', BROWSE_PROJECT_PAYLOAD,
+    locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', params.browse_project_payload,
                       catch_response=True)
 
 
@@ -87,20 +87,22 @@ def view_issue(locust):
 def create_issue(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = CreateIssue()
 
     @measure
     def create_issue_open_quick_create():
         func_name = inspect.stack()[0][3]
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-        r = locust.client.post(OPEN_QUICK_CREATE_URL, ADMIN_HEADERS, catch_response=True)
+        r = locust.client.post('/secure/QuickCreateIssue!default.jspa?decorator=none',
+                               ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        atl_token = fetch_by_re(ATL_TOKEN_PATTERN_CREATE_ISSUE, content)
-        form_token = fetch_by_re(FORM_TOKEN_PATTERN, content)
-        issue_type = fetch_by_re(ISSUE_TYPE_PATTERN, content)
-        project_id = fetch_by_re(PROJECT_ID_PATTERN, content)
-        resolution_done = fetch_by_re(RESOLUTION_DONE_PATTERN, content)
-        fields_to_retain = re.findall(FIELDS_TO_RETAIN_PATTERN, content)
-        custom_fields_to_retain = re.findall(CUSTOM_FIELDS_TO_RETAIN_PATTERN, content)
+        atl_token = fetch_by_re(params.atl_token_pattern, content)
+        form_token = fetch_by_re(params.form_token_pattern, content)
+        issue_type = fetch_by_re(params.issue_type_pattern, content)
+        project_id = fetch_by_re(params.project_id_pattern, content)
+        resolution_done = fetch_by_re(params.resolution_done_pattern, content)
+        fields_to_retain = re.findall(params.fields_to_retain_pattern, content)
+        custom_fields_to_retain = re.findall(params.custom_fields_to_retain_pattern, content)
 
         issue_body_params_dict = {'atl_token': atl_token,
                                   'form_token': form_token,
@@ -110,8 +112,8 @@ def create_issue(locust):
                                   'fields_to_retain': fields_to_retain,
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
-        assert ASSERT_STRING_CREATE_ISSUE in content, ERR_CREATE_ISSUE
-        locust.client.post('/rest/quickedit/1.0/userpreferences/create', USERPREFERENCES_PAYLOAD,
+        assert params.create_issue_assertion in content, ERR_CREATE_ISSUE
+        locust.client.post('/rest/quickedit/1.0/userpreferences/create', params.user_preferences_payload,
                            ADMIN_HEADERS, catch_response=True)
         locust.storage['issue_body_params_dict'] = issue_body_params_dict
     create_issue_open_quick_create()
@@ -123,8 +125,8 @@ def create_issue(locust):
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
 
-        assert ASSERT_STRING_CREATE_ISSUE in content, ERR_CREATE_ISSUE
-        issue_key = fetch_by_re(CREATED_ISSUE_KEY_PATTERN, content)
+        assert params.create_issue_assertion in content, ERR_CREATE_ISSUE
+        issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         locust.logger.info(f"Issue {issue_key} was successfully created")
     create_issue_submit_form()
     locust.storage.clear()
@@ -133,14 +135,14 @@ def create_issue(locust):
 @measure
 def search_jql(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     jql = random.choice(dataset['jqls'])[0]
+    params = SearchJql()
+
     r = locust.client.get(f'/issues/?jql={jql}', catch_response=True)
     assert locust.atl_token in r.content.decode('utf-8'), f'Can not search by {jql}'
 
-    # first post resources request
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"],
                        TEXT_HEADERS, catch_response=True)
 
     locust.client.get(f'/rest/api/2/filter/favourite?expand=subscriptions[-5:]&_={timestamp_int()}',
@@ -148,31 +150,28 @@ def search_jql(locust):
     locust.client.post('/rest/issueNav/latest/preferredSearchLayout', params={'layoutKey': 'split-view'},
                        headers=NO_TOKEN_HEADERS, catch_response=True)
 
-    # seconds post resources request
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"],
                        TEXT_HEADERS, catch_response=True)
-    r = locust.client.post('/rest/issueNav/1/issueTable', data=PAYLOAD_ISSUE_TABLE,
+    r = locust.client.post('/rest/issueNav/1/issueTable', data=params.issue_table_payload,
                            headers=NO_TOKEN_HEADERS, catch_response=True)
     content = r.content.decode('utf-8')
-    issue_ids = re.findall(ISSUE_IDS_PATTERN, content)
+    issue_ids = re.findall(params.ids_pattern, content)
 
-    # third post resources request
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["3"],
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["3"],
                        TEXT_HEADERS, catch_response=True)
     if issue_ids:
         body = prepare_jql_body(issue_ids)
         r = locust.client.post('/rest/issueNav/1/issueTable/stable', data=body,
                                headers=NO_TOKEN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        issue_key = fetch_by_re(SEARCH_JQL_ISSUE_KEY_PATTERN, content)
-        issue_id = fetch_by_re(SEARCH_JQL_ISSUE_ID_PATTERN, content)
+        issue_key = fetch_by_re(params.issue_key_pattern, content)
+        issue_id = fetch_by_re(params.issue_id_pattern, content)
         locust.logger.info(f"issue_key: {issue_key}, issue_id: {issue_id}")
     locust.client.post('/secure/QueryComponent!Jql.jspa', params={'jql': 'order by created DESC',
                                                                   'decorator': None}, headers=TEXT_HEADERS,
                        catch_response=True)
     locust.client.post('/rest/orderbycomponent/latest/orderByOptions/primary',
                        data={"jql": "order by created DESC"}, headers=TEXT_HEADERS, catch_response=True)
-
     if issue_ids:
         r = locust.client.post('/secure/AjaxIssueAction!default.jspa', params={"decorator": None,
                                                                                "issueKey": issue_key,
@@ -181,7 +180,7 @@ def search_jql(locust):
                                                                                "loadFields": False,
                                                                                "_": timestamp_int()},
                                headers=TEXT_HEADERS, catch_response=True)
-        if SEARCH_JQL_EDIT_ALLOW in r.content.decode('utf-8'):
+        if params.edit_allow_string in r.content.decode('utf-8'):
             locust.client.get(f'/secure/AjaxIssueEditAction!default.jspa?'
                               f'decorator=none&issueId={issue_id}&_={timestamp_int()}', catch_response=True)
 
@@ -189,33 +188,32 @@ def search_jql(locust):
 @measure
 def view_project_summary(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     project_key = random.choice(dataset["issues"])[2]
+    params = ViewProjectSummary()
+
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
-    x_st = re.findall(VIEW_PROJECT_SUMMARY_X_ST_PATTERN, content)
     locust.logger.info(f"View project {project_key}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
     assert assert_string in content, f'{ERR_VIEW_PROJECT_SUMMARY} {project_key}'
 
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
     locust.client.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["3"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["3"], TEXT_HEADERS, catch_response=True)
     locust.client.get(f'/plugins/servlet/streams?maxResults=10&relativeLinks=true&streams=key+IS+{project_key}'
                       f'&providers=thirdparty+dvcs-streams-provider+issues&_={timestamp_int()}',
                       catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["4"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["4"], TEXT_HEADERS, catch_response=True)
     r = locust.client.get(f'/projects/{project_key}?selectedItem=com.atlassian.jira.jira-projects-plugin:'
                           f'project-activity-summary&decorator=none&contentOnly=true&_={timestamp_int()}',
                           catch_response=True)
-    x_st = re.findall(VIEW_PROJECT_SUMMARY_X_ST_PATTERN, r.content.decode('utf-8'))
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["5"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["5"], TEXT_HEADERS, catch_response=True)
     locust.client.put(f'/rest/api/2/user/properties/lastViewedVignette?username={locust.user}', data={"id": "priority"},
                       headers=TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["6"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["6"], TEXT_HEADERS, catch_response=True)
     locust.client.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
     locust.client.get(f'/plugins/servlet/streams?maxResults=10&relativeLinks=true&streams=key+IS+{project_key}'
                       f'&providers=thirdparty+dvcs-streams-provider+issues&_={timestamp_int()}',
@@ -225,32 +223,30 @@ def view_project_summary(locust):
 @measure
 def edit_issue(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     issue = random.choice(dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
+    params = EditIssue()
 
     @measure
     def edit_issue_open_editor():
         r = locust.client.get(f'/secure/EditIssue!default.jspa?id={issue_id}', catch_response=True)
         content = r.content.decode('utf-8')
 
-        issue_type = fetch_by_re(EDIT_ISSUE_TYPE_PATTERN, content)
-        atl_token = fetch_by_re(EDIT_ISSUE_ATL_TOKEN_PATTERN, content)
-        summary = fetch_by_re(EDIT_ISSUE_SUMMARY_PATTERN, content)
-        priority = fetch_by_re(EDIT_ISSUE_PRIORITY_PATTERN, content, group_no=2)
-        assignee = fetch_by_re(EDIT_ISSUE_ASSIGNEE_REPORTER_PATTERN, content, group_no=2)
-        reporter = fetch_by_re(EDIT_ISSUE_REPORTER_PATTERN, content)
-        resolution = fetch_by_re(EDIT_ISSUE_RESOLUTION_PATTERN, content)
+        issue_type = fetch_by_re(params.issue_type_pattern, content)
+        atl_token = fetch_by_re(params.atl_token_pattern, content)
+        priority = fetch_by_re(params.issue_priority_pattern, content, group_no=2)
+        assignee = fetch_by_re(params.issue_assigneee_reporter_pattern, content, group_no=2)
+        reporter = fetch_by_re(params.issue_reporter_pattern, content)
 
         assert f' Edit Issue:  [{issue_key}]' in content, f'{ERR_EDIT_ISSUE} - {issue_id}, {issue_key}'
         locust.logger.info(f"Editing issue {issue_key}")
 
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["1"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["3"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["3"], TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/rest/internal/2/user/mention/search?issueKey={issue_key}'
                           f'&projectKey={project_key}&maxResults=10&_={timestamp_int()}', catch_response=True)
 
@@ -271,13 +267,13 @@ def edit_issue(locust):
         assert f'[{issue_key}]' in r.content.decode('utf-8')
 
         locust.client.get(f'/browse/{issue_key}', catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["4"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["5"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["6"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["4"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["5"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["6"], TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId='
                           f'{issue_id}&_={timestamp_int()}', catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["7"], TEXT_HEADERS, catch_response=True)
-        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', EDIT_ISSUE_LAST_VISITED_BODY,
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["7"], TEXT_HEADERS, catch_response=True)
+        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', params.last_visited_body,
                           catch_response=True)
     edit_issue_save_edit()
     locust.storage.clear()
@@ -286,18 +282,19 @@ def edit_issue(locust):
 @measure
 def view_dashboard(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = ViewDashboard()
+
     r = locust.client.get('/secure/Dashboard.jspa', catch_response=True)
     content = r.content.decode('utf-8')
     assert_jira_logged_user(locust.user, content)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
     r = locust.client.post('/plugins/servlet/gadgets/dashboard-diagnostics',
                            params={'uri': f'{JIRA_SETTINGS.server_url.lower()}//secure/Dashboard.jspa'},
                            headers=TEXT_HEADERS, catch_response=True)
     content = r.content.decode('utf-8')
     assert 'Dashboard Diagnostics: OK' in content, 'view_dashboard dashboard-diagnostics failed'
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
     locust.client.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
     locust.client.get(f'/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard&addDefault=true'
                       f'&enableSorting=true&paging=true&showActions=true'
@@ -310,12 +307,12 @@ def view_dashboard(locust):
 @measure
 def add_comment(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     issue = random.choice(dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
+    params = AddComment()
 
     @measure
     def add_comment_open_comment():
@@ -323,13 +320,13 @@ def add_comment(locust):
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
         r = locust.client.get(f'/secure/AddComment!default.jspa?id={issue_id}', catch_response=True)
         content = r.content.decode('utf-8')
-        token = fetch_by_re(ATL_TOKEN_PATTERN_LOGIN, content)
-        form_token = fetch_by_re(ADD_COMMENT_FORM_TOKEN_PATTERN, content)
+        token = fetch_by_re(params.atl_token_pattern, content)
+        form_token = fetch_by_re(params.form_token_pattern, content)
         assert f'Add Comment: {issue_key}' in content, f'Could not open comment in the {issue_key} issue'
 
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["1"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
-        locust.client.post('/rest/webResources/1.0/resources', resources_body["3"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
+        locust.client.post('/rest/webResources/1.0/resources', params.resource["3"], TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/rest/internal/2/user/mention/search?issueKey={issue_key}&projectKey={project_key}'
                           f'&maxResults=10&_={timestamp_int()}', catch_response=True)
         locust.storage['token'] = token
@@ -350,33 +347,72 @@ def add_comment(locust):
     add_comment_save_comment()
     locust.storage.clear()
 
+
 @measure
 def browse_projects(locust):
     func_name = inspect.stack()[0][3]
-    resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = BrowseProjects()
+
     page = random.randint(1, dataset['pages'])
     r = locust.client.get(f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={page}',
                           catch_response=True)
     content = r.content.decode('utf-8')
-    assert BROWSE_PROJECTS_ASSERTION_STRING in content, 'Could not browse projects'
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["1"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["2"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', resources_body["3"], TEXT_HEADERS, catch_response=True)
+    assert params.assertion_string in content, 'Could not browse projects'
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["3"], TEXT_HEADERS, catch_response=True)
 
 
 @measure
-def view_kanban_boards(locust):
+def view_kanban_board(locust):
     func_name = inspect.stack()[0][3]
-    #resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = ViewBoard()
+
     kanban_board_id = random.choice(dataset["kanban_boards"])[0]
-    locust.logger.info(f"board_id = {kanban_board_id}")
     r = locust.client.get(f'/secure/RapidBoard.jspa?rapidView={kanban_board_id}', catch_response=True)
     content = r.content.decode('utf-8')
-    project_key = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_KEY, content)
-    project_id = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_ID, content)
-    project_plan = fetch_by_re(BROWSE_KANBAN_BOARDS_PROJECT_PLAN, content, group_no=2).replace('\\', '')
+    project_key = fetch_by_re(params.project_key_pattern, content)
+    project_id = fetch_by_re(params.project_id_pattern, content)
+    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2).replace('\\', '')
     locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
+    assert f'currentViewConfig\"{{\"id\":{kanban_board_id}', f'Could not open kanban board {kanban_board_id}'
+
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["3"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["4"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["5"], TEXT_HEADERS, catch_response=True)
+
+    if project_key:
+        locust.client.get(f'/rest/api/2/project/{project_key}?_={timestamp_int()}', catch_response=True)
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={kanban_board_id}'
+                          f'&selectedProjectKey={project_key}&_={timestamp_int()}', catch_response=True)
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={kanban_board_id}'
+                          f'&selectedProjectKey={project_key}&_={timestamp_int()}', catch_response=True)
+    else:
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={kanban_board_id}'
+                          f'&_={timestamp_int()}', catch_response=True)
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={kanban_board_id}'
+                          f'&selectedProjectKey={project_key}', catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["6"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.resource["7"], TEXT_HEADERS, catch_response=True)
+    if project_key:
+        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
+                          {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
+                          catch_response=True)
+
+@measure
+def view_scrum_board(locust):
+    func_name = inspect.stack()[0][3]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    params = ViewBoard()
+
+
+
+
+
+
 
 

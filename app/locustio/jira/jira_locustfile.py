@@ -46,11 +46,14 @@ class JiraBehavior(TaskSet):
     # def browse_projects(self):
     #     browse_projects(self)
 
-    @task(1)
-    def view_kanban_boards(self):
-        view_kanban_boards(self)
+    # @task(1)
+    # def view_kanban_board(self):
+    #     view_kanban_board(self)
 
-    # view_kanban_boards
+    @task(1)
+    def view_scrum_board(self):
+        view_scrum_board(self)
+
     # view_scrum_boards
     # view_backlog
     # browse_boards
