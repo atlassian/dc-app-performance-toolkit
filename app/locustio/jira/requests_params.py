@@ -24,7 +24,10 @@ NO_TOKEN_HEADERS = {
     "X-Atlassian-Token": "no-check"
 }
 
-LOGIN_BODY = {
+
+class Login:
+    atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
+    login_body = {
         'os_username': '',
         'os_password': '',
         'os_destination': '',
@@ -32,8 +35,17 @@ LOGIN_BODY = {
         'atl_token': '',
         'login': 'Log in'
     }
-# login
-ATL_TOKEN_PATTERN_LOGIN = r'name="atlassian-token" content="(.+?)">'
+
+# LOGIN_BODY = {
+#         'os_username': '',
+#         'os_password': '',
+#         'os_destination': '',
+#         'user_role': '',
+#         'atl_token': '',
+#         'login': 'Log in'
+#     }
+# # login
+# ATL_TOKEN_PATTERN_LOGIN = r'name="atlassian-token" content="(.+?)">'
 
 
 # browse_issue

@@ -17,6 +17,7 @@ def login_and_view_dashboard(locust):
     resources_body = resources[func_name]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     user = random.choice(dataset["users"])
+    #body = Login().login_body
     body = LOGIN_BODY
     body['os_username'] = user[0]
     body['os_password'] = user[1]
