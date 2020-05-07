@@ -8,7 +8,7 @@ import getpass
 import socket
 import hashlib
 
-from util.analytics.application_info import ApplicationSelector
+from util.analytics.application_info import ApplicationSelector, BaseApplication
 from util.analytics.log_reader import BztLogReader, ResultsLogReader
 from util.conf import TOOLKIT_VERSION
 
@@ -29,24 +29,26 @@ SUCCESS_TEST_RATE = 95.00
 
 class AnalyticsCollector:
 
-    def __init__(self, application):
-        self.application = application
-        self.bzt_log = BztLogReader()
+    def __init__(self, application: BaseApplication):
+        bzt_log = BztLogReader()
+
+        self.conf = application.config
+        self.app_type = application.type
         self.results_log = ResultsLogReader()
         self.run_id = str(uuid.uuid1())
         self.tool_version = ""
         self.os = ""
         self.duration = 0
         self.concurrency = 0
-        self.actual_duration = self.bzt_log.actual_run_time
-        self.selenium_test_rates = self.bzt_log.selenium_test_rates
-        self.jmeter_test_rates = self.bzt_log.jmeter_test_rates
+        self.actual_duration = bzt_log.actual_run_time
+        self.selenium_test_rates = bzt_log.selenium_test_rates
+        self.jmeter_test_rates = bzt_log.jmeter_test_rates
         self.time_stamp = ""
         self.date = ""
-        self.application_version = self.application.version
+        self.application_version = application.version
         self.summary = []
-        self.nodes_count = self.application.nodes_count
-        self.dataset_information = self.application.dataset_information
+        self.nodes_count = application.nodes_count
+        self.dataset_information = application.dataset_information
 
     @staticmethod
     def get_os():
@@ -56,7 +58,7 @@ class AnalyticsCollector:
         return os_type
 
     def is_analytics_enabled(self):
-        return str(self.application.config.analytics_collector).lower() in ['yes', 'true', 'y']
+        return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
 
     @staticmethod
     def __convert_to_sec(duration):
@@ -80,8 +82,8 @@ class AnalyticsCollector:
         return uid
 
     def generate_analytics(self):
-        self.concurrency = self.application.config.concurrency
-        self.duration = self.__convert_to_sec(self.application.config.duration)
+        self.concurrency = self.conf.concurrency
+        self.duration = self.__convert_to_sec(self.conf.duration)
         self.os = self.get_os()
         self.tool_version = TOOLKIT_VERSION
         self.set_date_timestamp()
@@ -117,16 +119,16 @@ class AnalyticsCollector:
 
     def __is_compliant(self):
         message = 'OK'
-        compliant = (self.actual_duration >= MIN_DEFAULTS[self.application.type]['test_duration'] and
-                     self.concurrency >= MIN_DEFAULTS[self.application.type]['concurrency'])
+        compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                     self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
         if not compliant:
             err_msg = []
-            if self.actual_duration < MIN_DEFAULTS[self.application.type]['test_duration']:
+            if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
                 err_msg.append(f"Test run duration {self.actual_duration} sec < than minimum test "
-                               f"duration {MIN_DEFAULTS[self.application.type]['test_duration']} sec.")
-            if self.concurrency < MIN_DEFAULTS[self.application.type]['concurrency']:
+                               f"duration {MIN_DEFAULTS[self.app_type]['test_duration']} sec.")
+            if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
                 err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
-                               f"concurrency {MIN_DEFAULTS[self.application.type]['concurrency']}.")
+                               f"concurrency {MIN_DEFAULTS[self.app_type]['concurrency']}.")
             message = ' '.join(err_msg)
         return compliant, message
 
@@ -156,7 +158,7 @@ class Reporter:
 
         overall_status = 'OK' if finished[0] and success[0] and compliant[0] else 'FAIL'
 
-        if self.collector.application.type == BITBUCKET:
+        if self.collector.app_type == BITBUCKET:
             git_compliant = self.collector.__is_git_operations_compliant()
             overall_status = 'OK' if finished[0] and success[0] and compliant[0] and git_compliant[0] else 'FAIL'
 
@@ -164,14 +166,14 @@ class Reporter:
         summary_report.append(f'Artifacts dir|{os.path.basename(self.collector.bzt_log.log_dir)}')
         summary_report.append(f'OS|{self.collector.os}')
         summary_report.append(f'DC Apps Performance Toolkit version|{self.collector.tool_version}')
-        summary_report.append(f'Application|{self.collector.application.type} {self.collector.application_version}')
+        summary_report.append(f'Application|{self.collector.app_type} {self.collector.application_version}')
         summary_report.append(f'Dataset info|{self.collector.dataset_information}')
         summary_report.append(f'Application nodes count|{self.collector.nodes_count}')
         summary_report.append(f'Concurrency|{self.collector.concurrency}')
         summary_report.append(f'Expected test run duration from yml file|{self.collector.duration} sec')
         summary_report.append(f'Actual test run duration|{self.collector.actual_duration} sec')
 
-        if self.collector.application.type == BITBUCKET:
+        if self.collector.app_type == BITBUCKET:
             total_git_count = self.collector.results_log.actual_git_operations_count
             summary_report.append(f'Total Git operations count|{total_git_count}')
             summary_report.append(f'Total Git operations compliant|{git_compliant}')

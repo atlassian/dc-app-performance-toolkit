@@ -10,6 +10,10 @@ BITBUCKET = 'bitbucket'
 
 
 class BaseApplication:
+    type = None
+    version = None
+    nodes_count = None
+    dataset_information = None
 
     def __init__(self, api_client, config_yml):
         self.client = api_client(host=config_yml.server_url,

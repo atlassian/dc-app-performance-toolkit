@@ -6,7 +6,7 @@ GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
 
-
+# naming LOG -> FILE
 class BaseLogReader:
 
     @staticmethod
@@ -114,7 +114,7 @@ class BztLogReader(BaseLogReader):
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
 
 
-class ResultsLogReader(BaseLogReader):
+class ResultsLogReader(BaseLogReader):  #ResultsReader
     header_validation = {0: 'Label', 1: '# Samples'}
 
     def __init__(self):
