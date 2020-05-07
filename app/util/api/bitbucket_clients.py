@@ -1,7 +1,7 @@
 import time
 from enum import Enum
 
-from api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100

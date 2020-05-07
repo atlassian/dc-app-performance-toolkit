@@ -5,7 +5,7 @@ import urllib3
 
 
 from util.conf import JIRA_SETTINGS
-from api.jira_clients import JiraRestClient
+from util.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
 

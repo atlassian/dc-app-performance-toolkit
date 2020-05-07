@@ -1,6 +1,6 @@
 import xmlrpc.client
 
-from api.abstract_clients import RestClient, Client
+from util.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
 
 BATCH_SIZE_SEARCH = 500

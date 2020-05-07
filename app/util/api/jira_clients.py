@@ -1,4 +1,4 @@
-from api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000

@@ -1,7 +1,7 @@
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS
-from api.jira_clients import JiraRestClient
-from api.confluence_clients import ConfluenceRestClient
-from api.bitbucket_clients import BitbucketRestClient
+from util.api.jira_clients import JiraRestClient
+from util.api.confluence_clients import ConfluenceRestClient
+from util.api.bitbucket_clients import BitbucketRestClient
 from lxml import etree
 
 JIRA = 'jira'
