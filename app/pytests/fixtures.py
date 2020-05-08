@@ -22,7 +22,12 @@ def env_settings():
 def get_hostname_port():
     envSetting = env_settings()
     print(envSetting)
-    hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port']) + envSetting['application_postfix']
+    postfix = envSetting['application_postfix']
+
+    if postfix is None:
+        postfix = ""
+
+    hostname_port_var = 'http://' + envSetting['application_hostname'] + ':' + str(envSetting['application_port']) + postfix
     return hostname_port_var
 
 

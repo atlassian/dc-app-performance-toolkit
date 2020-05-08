@@ -1,0 +1,123 @@
+---
+version: '3'
+settings:
+  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%ST
+  aggregator: consolidator
+  verbose: false
+  env:
+    application_hostname: jira-loadb-un7ge638biqq-489725381.eu-central-1.elb.amazonaws.com      # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 2990, etc
+    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+    admin_login: admin
+    admin_password: admin
+    concurrency: 200
+    test_duration: 45m
+    WEBDRIVER_VISIBLE: False
+    JMETER_VERSION: 5.2.1
+    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    print_in_shell: No
+    max_nr_projects_to_use: 100
+ #   TAURUS_ARTIFACTS_DIR: /bzt-configs/results/jira
+services:
+  - module: shellexec
+    prepare:
+      - pip install pytest-parallel
+      - python3 util/environment_checker.py
+      - python3 util/data_preparation/jira/prepare-data.py
+    shutdown:
+      - python3 util/jmeter_post_check.py
+      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytests_run.jtl
+    post-process:
+      - python3 util/analytics.py jira
+      - python3 util/cleanup_results_dir.py
+execution:
+  - scenario: jmeter
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: 3m
+  - executor: selenium
+    scenario: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+    concurrency:  ${concurrency}
+    ramp-up: 3m
+  - scenario: pytest-run
+    executor: pytest
+    runner: pytest
+    hold-for: ${test_duration}
+    ramp-up: 3m
+scenarios:
+  pytest-run:
+    additional-args: --workers 8 --tests-per-worker 25
+    script: pytests/
+  selenium:
+    script: selenium_ui/jira_ui.py
+  jmeter:
+    script: jmeter/jira.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hr: 54500
+      perc_create_issue: 4
+      perc_search_jql: 13
+      perc_view_issue: 43
+      perc_view_project_summary: 4
+      perc_view_dashboard: 12
+      perc_edit_issue: 4
+      perc_add_comment: 2
+      perc_browse_projects: 4
+      perc_view_scrum_board: 3
+      perc_view_kanban_board: 3
+      perc_view_backlog: 6
+      perc_browse_boards: 2
+      perc_standalone_extension: 0 # By default disabled
+modules:
+  consolidator:
+    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
+    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+  jmeter:
+    version: ${JMETER_VERSION}
+    detect-plugins: true
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    plugins:
+      - bzm-parallel=0.4
+      - bzm-random-csv=0.6
+      - jpgc-casutg=2.5
+      - jpgc-dummy=0.2
+      - jpgc-ffw=2.0
+      - jpgc-fifo=0.2
+      - jpgc-functions=2.1
+      - jpgc-json=2.6
+      - jpgc-perfmon=2.1
+      - jpgc-prmctl=0.4
+      - jpgc-tst=2.4
+      - jpgc-wsc=0.3
+      - tilln-sshmon=1.0
+      - jpgc-cmd=2.2
+      - jpgc-synthesis=2.2
+    system-properties:
+      server.rmi.ssl.disable: true
+      java.rmi.server.hostname: localhost
+      httpsampler.ignore_failed_embedded_resources: "true"
+  selenium:
+    chromedriver:
+      version: "80.0.3987.106" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
+reporting:
+- data-source: sample-labels
+  module: junit-xml
+  summary: true
+  percentiles: true
+  failed-labels: false
+  test-duration: true
+  dump-csv: result.csv
+- module: final-stats
+  summary: true
+  percentiles: true 
+  summary-labels: true
+  failed-labels: false
+  test-duration: true
+  dump-csv: results.csv

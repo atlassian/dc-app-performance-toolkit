@@ -4,7 +4,7 @@ This is FindOuts fork of https://github.com/atlassian/dc-app-performance-toolkit
 
 The pytests for DM can be run either directly with:
 
-    git clone https://github.com/findout/dc-app-performance-toolkit fo-dcapt
+    git clone https://github.com/FindOut/dc-app-performance-toolkit fo-dcapt
     cd fo-dcapt
     cd app
     pytest pytests
@@ -48,16 +48,32 @@ Run it with:
 * requests - https://requests.readthedocs.io/en/master/user/quickstart/#response-headers
 * jira rest api authentication - https://community.atlassian.com/t5/Jira-questions/How-to-authenticate-to-Jira-REST-API/qaq-p/814987
 
+## Have to install crome and cromedriver
+
+    download crome from:
+        https://www.google.com/chrome/?platform=linux
+    sudo apt install ./google-chrome-stable_current_amd64.deb
+    # download ChromeDriver 80.0.3987.106 
+    #    you will find https://chromedriver.chromium.org/downloads or
+    wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+    unzip chromedriver_linux64.zip
+    sudo mv chromedriver /usr/bin/chromedriver
+    sudo chown root:root /usr/bin/chromedriver
+    sudo chmod +x /usr/bin/chromedriver
+    
 ## Run tests on an AWS server
 
-    git clone https://github.com/FindOut/dc-app-performance-toolkit.git
-    cd dc-app-performance-toolkit
+    git clone https://github.com/FindOut/dc-app-performance-toolkit.git fo-dcapt
+    cd fo-dcapt
+    sudo apt install virtualenv
     virtualenv venv -p python3
     source venv/bin/activate
     pip install pytest
     deactivate
     source venv/bin/activate
     pip install -r requirements.txt
+    
+
     
 Now we have an environment with python and pytest using python3 and the required python packages.
 
