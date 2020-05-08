@@ -19,7 +19,7 @@ PROJECT_KEYS = "project_keys"
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
-
+ERROR_LIMIT = 10
 
 def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
@@ -32,11 +32,15 @@ performance_users_count = 1000 if JIRA_SETTINGS.concurrency > 1000 else JIRA_SET
 
 
 def generate_perf_users(cur_perf_user, api):
+    errors_count = 0
     config_perf_users_count = JIRA_SETTINGS.concurrency
     if len(cur_perf_user) >= config_perf_users_count:
         return cur_perf_user[:config_perf_users_count]
     else:
         while len(cur_perf_user) < config_perf_users_count:
+            if errors_count >= ERROR_LIMIT:
+                raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
+                                f'Please check the errors above')
             username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
             try:
                 user = api.create_user(name=username, password=DEFAULT_USER_PASSWORD)
@@ -45,7 +49,8 @@ def generate_perf_users(cur_perf_user, api):
                 cur_perf_user.append(user)
             # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
             except Exception as error:
-                print(error)
+                print(f"{error}. Error limits {errors_count}/{ERROR_LIMIT}")
+                errors_count = errors_count + 1
         print('All performance test users were successfully created')
         return cur_perf_user
 
