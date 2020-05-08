@@ -86,5 +86,8 @@ class RestClient(Client):
             if denied_reason and denied_reason.startswith('CAPTCHA_CHALLENGE'):
                 raise Exception(f"User name [{self.user}] is in Captcha Mode. " +
                                 "Please login via Web UI first and re-run tests.")
-
+        elif status_code == 404:
+            raise Exception(f"Could not found URL {response.url}. "
+                            f"Please check environment variables in "
+                            f"config.yml file (hostname, port, protocol, postfix).")
         raise Exception(f"{error_msg}. Response code:[{response.status_code}], response text:[{response.text}]")
