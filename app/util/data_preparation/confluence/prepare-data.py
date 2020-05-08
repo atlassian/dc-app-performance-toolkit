@@ -16,6 +16,7 @@ DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
 
+
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 

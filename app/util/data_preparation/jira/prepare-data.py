@@ -21,6 +21,7 @@ DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
 ERROR_LIMIT = 10
 
+
 def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
     return ['text ~ "{}*" order by key'.format(
