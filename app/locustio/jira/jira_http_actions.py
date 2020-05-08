@@ -377,7 +377,7 @@ def view_kanban_board(locust):
     project_id = fetch_by_re(params.project_id_pattern, content)
     project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2).replace('\\', '')
     locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{kanban_board_id}', f'Could not open kanban board {kanban_board_id}'
+    assert f'currentViewConfig\"{{\"id\":{kanban_board_id}', f'Could not open board {kanban_board_id}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
@@ -408,6 +408,26 @@ def view_scrum_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = ViewBoard()
+
+    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
+    r = locust.client.get(f'/secure/RapidBoard.jspa?rapidView={scrum_board_id}', catch_response=True)
+    content = r.content.decode('utf-8')
+    project_key = fetch_by_re(params.project_key_pattern, content)
+    project_id = fetch_by_re(params.project_id_pattern, content)
+    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2).replace('\\', '')
+    locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
+    assert f'currentViewConfig\"{{\"id\":{scrum_board_id}', f'Could not open board {scrum_board_id}'
+
+    locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["3"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["4"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["5"], TEXT_HEADERS, catch_response=True)
+
+
+
+
+
 
 
 
