@@ -92,8 +92,9 @@ def write_test_data_to_files(dataset):
 
 def __check_collaborative_editing_enable(confluence_api):
     status = confluence_api.get_collaborative_editing_status()
-    if not status['sharedDraftsEnabled']:
-        raise Exception('Collaborative Editing is disabled on the Confluence side. Please turn this mode on.')
+    if not all(status.values()):
+        raise Exception('Synchrony plugin and/or the collaborative editing feature are disabled in Confluence. '
+                        'Please turn collaborative editing back on.')
 
 
 def main():
