@@ -1,0 +1,70 @@
+from locust import HttpLocust, TaskSet, task, between
+from locustio.jira.http_actions import *
+from util.conf import JIRA_SETTINGS
+from locustio.common_utils import *
+
+init_logger()
+
+
+class JiraBehavior(TaskSet):
+
+    def on_start(self):
+        login_and_view_dashboard(self)
+
+    def login_and_view_dashboard(self):
+        login_and_view_dashboard(self)
+
+    @task(2)
+    def create_issue(self):
+        create_issue(self)
+
+    @task(6)
+    def search_jql(self):
+        search_jql(self)
+
+    @task(20)
+    def view_issue(self):
+        view_issue(self)
+
+    @task(3)
+    def view_project_sumamry(self):
+        view_project_summary(self)
+
+    @task(6)
+    def view_dashboard(self):
+        view_dashboard(self)
+
+    @task(2)
+    def edit_issue(self):
+        edit_issue(self)
+
+    @task(1)
+    def add_comment(self):
+        add_comment(self)
+
+    @task(2)
+    def browse_projects(self):
+        browse_projects(self)
+
+    @task(2)
+    def view_kanban_board(self):
+        view_kanban_board(self)
+
+    @task(2)
+    def view_scrum_board(self):
+        view_scrum_board(self)
+
+    @task(3)
+    def view_backlog(self):
+        view_backlog(self)
+
+    @task(1)
+    def browse_boards(self):
+        browse_boards(self)
+
+
+class JiraUser(HttpLocust):
+    host = JIRA_SETTINGS.server_url
+    task_set = JiraBehavior
+    wait_time = between(0, 0)
+

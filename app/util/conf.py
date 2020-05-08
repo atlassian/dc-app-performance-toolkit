@@ -24,6 +24,7 @@ class AppSettings:
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
         self.analytics_collector = env_settings['allow_analytics']
+        self.scenarios = obj['scenarios']
 
     @property
     def server_url(self):

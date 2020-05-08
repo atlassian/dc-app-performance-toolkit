@@ -129,6 +129,8 @@ class ViewBoard(BaseResource):
     project_plan_pattern = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'
 
 
+class BrowseBoards(BaseResource):
+    action_name = 'browse_boards'
 
 
 

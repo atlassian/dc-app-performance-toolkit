@@ -368,16 +368,55 @@ def browse_projects(locust):
 def view_kanban_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    params = ViewBoard()
-
     kanban_board_id = random.choice(dataset["kanban_boards"])[0]
-    r = locust.client.get(f'/secure/RapidBoard.jspa?rapidView={kanban_board_id}', catch_response=True)
+    view_board(locust, kanban_board_id)
+
+
+@measure
+def view_scrum_board(locust):
+    func_name = inspect.stack()[0][3]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
+    view_board(locust, scrum_board_id)
+
+
+@measure
+def view_backlog(locust):
+    func_name = inspect.stack()[0][3]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
+    view_board(locust, scrum_board_id, view_backlog=True)
+
+
+@measure
+def browse_boards(locust):
+    func_name = inspect.stack()[0][3]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    locust.client.get('/secure/ManageRapidViews.jspa', catch_response=True)
+    params = BrowseBoards()
+    locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["3"], TEXT_HEADERS, catch_response=True)
+    locust.client.post('/rest/webResources/1.0/resources', params.body["4"], TEXT_HEADERS, catch_response=True)
+    locust.client.get(f'/rest/greenhopper/1.0/rapidviews/viewsData?_{timestamp_int()}', catch_response=True)
+
+
+def view_board(locust, board_id, view_backlog=False):
+    params = ViewBoard()
+    if view_backlog:
+        url = f'/secure/RapidBoard.jspa?rapidView={board_id}&view=planning'
+    else:
+        url = f'/secure/RapidBoard.jspa?rapidView={board_id}'
+
+    r = locust.client.get(url, catch_response=True)
     content = r.content.decode('utf-8')
     project_key = fetch_by_re(params.project_key_pattern, content)
     project_id = fetch_by_re(params.project_id_pattern, content)
-    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2).replace('\\', '')
+    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2)
+    if project_plan:
+        project_plan = project_plan.replace('\\', '')
     locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{kanban_board_id}', f'Could not open board {kanban_board_id}'
+    assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board {board_id}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
@@ -387,52 +426,25 @@ def view_kanban_board(locust):
 
     if project_key:
         locust.client.get(f'/rest/api/2/project/{project_key}?_={timestamp_int()}', catch_response=True)
-        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={kanban_board_id}'
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={board_id}'
                           f'&selectedProjectKey={project_key}&_={timestamp_int()}', catch_response=True)
-        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={kanban_board_id}'
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={board_id}'
                           f'&selectedProjectKey={project_key}&_={timestamp_int()}', catch_response=True)
+        if view_backlog:
+            locust.client.get(f'/rest/inline-create/1.0/context/bootstrap?query='
+                              f'project%20%3D%20{project_key}%20ORDER%20BY%20Rank%20ASC&&_={timestamp_int()}',
+                              catch_response=True)
     else:
-        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={kanban_board_id}'
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={board_id}'
                           f'&_={timestamp_int()}', catch_response=True)
-        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={kanban_board_id}'
+        locust.client.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={board_id}'
                           f'&selectedProjectKey={project_key}', catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["6"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["7"], TEXT_HEADERS, catch_response=True)
+    if view_backlog:
+        locust.client.get(f'/rest/greenhopper/1.0/rapidviewconfig/editmodel.json?rapidViewId={board_id}'
+                          f'&_={timestamp_int()}', catch_response=True)
     if project_key:
         locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
                           {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
                           catch_response=True)
-
-@measure
-def view_scrum_board(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    params = ViewBoard()
-
-    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
-    r = locust.client.get(f'/secure/RapidBoard.jspa?rapidView={scrum_board_id}', catch_response=True)
-    content = r.content.decode('utf-8')
-    project_key = fetch_by_re(params.project_key_pattern, content)
-    project_id = fetch_by_re(params.project_id_pattern, content)
-    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2).replace('\\', '')
-    locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{scrum_board_id}', f'Could not open board {scrum_board_id}'
-
-    locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', params.body["3"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', params.body["4"], TEXT_HEADERS, catch_response=True)
-    locust.client.post('/rest/webResources/1.0/resources', params.body["5"], TEXT_HEADERS, catch_response=True)
-
-
-
-
-
-
-
-
-
-
-
-
-

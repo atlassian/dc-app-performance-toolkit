@@ -13,6 +13,10 @@ from logging.handlers import RotatingFileHandler
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 from datetime import datetime
+from util.conf import JIRA_SETTINGS
+
+jira_total_requests_per_hr = JIRA_SETTINGS.scenarios['locust']['properties']['total_actions_per_hr']
+action = 3600 / (jira_total_requests_per_hr / JIRA_SETTINGS.concurrency)
 
 
 def read_input_file(file_path):
@@ -68,6 +72,11 @@ def measure(func):
                                         name=f"locust_{func.__name__}",
                                         response_time=total,
                                         response_length=0)
+        total = (time.time() - start)
+        if total < action:
+            sleep = (action - total)
+            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            time.sleep(sleep)
         return result
     return wrapper
 
