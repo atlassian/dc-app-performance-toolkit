@@ -1,7 +1,7 @@
 ---
 version: '3'
 settings:
-  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%ST
+  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%STF
   aggregator: consolidator
   verbose: false
   env:

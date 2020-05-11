@@ -6,7 +6,9 @@ The pytests for DM can be run either directly with:
 
     git clone https://github.com/FindOut/dc-app-performance-toolkit fo-dcapt
     cd fo-dcapt
-    cd app
+    cd app/pytest
+    pytest setup.py
+    cd ..
     pytest pytests
     
 ## Run tests in docker
@@ -83,9 +85,9 @@ In the Jira Datacenter App Perfomance test, one step is to run tests specific fo
 
     cd app/pytests
 
-Create initial data specific to DM, like links between random issues and dependency map objects.
+Create initial data specific to DM, like links between random issues and dependency map objects. The nohup command executes another command, and instructs the system to continue running it even if the session is disconnected. This will take a couple of hours.
 
-    python setup.py
+    nohup python setup.py &
     
 Here we should probably re-index Jira.
 
@@ -108,17 +110,36 @@ Remove DM specific data created during run
     
 Remove DM specific data created by setup.py above.
 
-    pythone cleanupObjCreatedDuringRun.py
+    nohup python cleanupObjCreatedDuringRun.py &
     
 If you want to remove all objects created of setup and running    
 
-    python cleanup.py
+    nohup python cleanup.py &
+    
+## Log in on the  Jira server
+    I have scp the jira-dc-test.pem fil to bastion. 
+    
+    export BASTION_IP=18.195.132.253
+    export NODE_IP=10.0.42.73
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh -i jira-dc-test.pem ${SSH_OPTS} -o 'proxycommand ssh -i jira-dc-test.pem -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}' ec2-user@${NODE_IP}
 
+
+
+## Stop and start Jira command line
+
+    JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
+    STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
+    START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
+    sudo su jira
+    cd  /home/jira
+    /opt/atlassian/jira-software/current/bin/stop-jira.sh
+    /opt/atlassian/jira-software/current/bin/start-jira.sh 
 
 ## Extending JMeter tests
 
 GT: If you would like to extend the JMeter tests, the following might help with debugging. From the DC-Performance-Testing slack channel:
-
+S
 ```
 1. Open JMeter UI from app folder: ~/.bzt/jmeter-taurus/5.2.1/bin/jmeter
 2. File->Open-> jira.jmx
@@ -129,3 +150,4 @@ GT: If you would like to extend the JMeter tests, the following might help with 
 7. Run Jmeter with Green arrow button and see debug info in View Results Tree
 
 To include variables such as ${project_key} for debugging, you can edit file app/datasets/jira/project_keys.csv . But later on for bzt run, it may be better to edit app/util/data_preparation/jira/prepare-data.py to filter only needed project keys with jql.
+
