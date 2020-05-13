@@ -90,6 +90,10 @@ def __create_data_set(bitbucket_api):
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
     dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Projects count: {len(dataset[PROJECTS])}')
+    print(f'Repos count: {len(dataset[REPOS])}')
+    print(f'Pull requests count: {len(dataset[PULL_REQUESTS])}')
     return dataset
 
 
