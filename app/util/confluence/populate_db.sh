@@ -10,6 +10,8 @@ DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
 
 # Depending on Confluence installation directory
 CONFLUENCE_CURRENT_DIR="/opt/atlassian/confluence/current"
+sudo su confluence -c "! test -e $CONFLUENCE_CURRENT_DIR && echo The $CONFLUENCE_CURRENT_DIR directory does not exists. Please check if CONFLUENCE_CURRENT_DIR variable has a valid directory path and you are on the right Confluence node." && exit 1
+
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 
 # DB admin user name, password and DB name

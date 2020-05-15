@@ -13,6 +13,8 @@ DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
 
 # Depending on BITBUCKET installation directory
 BITBUCKET_CURRENT_DIR="/opt/atlassian/bitbucket/current/"
+sudo su bitbucket -c "! test -e $BITBUCKET_CURRENT_DIR && echo The $BITBUCKET_CURRENT_DIR directory does not exists. Please check if BITBUCKET_CURRENT_DIR variable has a valid directory path and you are on the right Bitbucket node." && exit 1
+
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
 
 # DB admin user name, password and DB name

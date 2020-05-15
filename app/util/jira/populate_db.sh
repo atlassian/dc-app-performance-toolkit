@@ -10,6 +10,8 @@ DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
 # Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
+sudo su jira -c "! test -e $JIRA_CURRENT_DIR && echo The $JIRA_CURRENT_DIR directory does not exists. Please check if JIRA_CURRENT_DIR variable has a valid directory path and you are on the right Jira node." && exit 1
+
 STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
 CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
