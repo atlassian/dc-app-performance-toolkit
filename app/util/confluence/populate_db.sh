@@ -9,9 +9,6 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
 
 # Depending on Confluence installation directory
-CONFLUENCE_CURRENT_DIR="/opt/atlassian/confluence/current"
-sudo su confluence -c "! test -e $CONFLUENCE_CURRENT_DIR && echo The $CONFLUENCE_CURRENT_DIR directory does not exists. Please check if CONFLUENCE_CURRENT_DIR variable has a valid directory path and you are on the right Confluence node." && exit 1
-
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 
 # DB admin user name, password and DB name
@@ -21,6 +18,8 @@ CONFLUENCE_DB_PASS="Password1!"
 
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
+
+[[ ! $(sudo su confluence -c "systemctl status confluence") ]] && echo "Confluence service was not found please check if you run this script on the right Confluence node" && exit 1
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -68,7 +67,6 @@ echo "This script restores Postgres DB from SQL DB dump for Confluence DC create
 echo "You can review or modify default variables in 'Variables section' of this script."
 echo # move to a new line
 echo "Variables:"
-echo "CONFLUENCE_CURRENT_DIR=${CONFLUENCE_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
 echo "CONFLUENCE_DB_NAME=${CONFLUENCE_DB_NAME}"
 echo "CONFLUENCE_DB_USER=${CONFLUENCE_DB_USER}"

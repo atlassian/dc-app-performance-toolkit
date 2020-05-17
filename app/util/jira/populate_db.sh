@@ -10,8 +10,6 @@ DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
 # Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-sudo su jira -c "! test -e $JIRA_CURRENT_DIR && echo The $JIRA_CURRENT_DIR directory does not exists. Please check if JIRA_CURRENT_DIR variable has a valid directory path and you are on the right Jira node." && exit 1
-
 STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
 CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
@@ -26,6 +24,8 @@ JIRA_DB_PASS="Password1!"
 
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
+
+[[ ! $(sudo su jira -c "systemctl status jira") ]] && echo "Jira service was not found please check if you run this script on the right Jira node" && exit 1
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
         echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \

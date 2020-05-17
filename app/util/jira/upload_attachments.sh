@@ -22,6 +22,8 @@ TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
 
+[[ ! $(sudo su jira -c "systemctl status jira") ]] && echo "Jira service was not found please check if you run this script on the right Jira node" && exit 1
+
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."

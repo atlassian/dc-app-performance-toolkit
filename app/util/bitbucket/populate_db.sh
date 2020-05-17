@@ -12,9 +12,6 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
 
 # Depending on BITBUCKET installation directory
-BITBUCKET_CURRENT_DIR="/opt/atlassian/bitbucket/current/"
-sudo su bitbucket -c "! test -e $BITBUCKET_CURRENT_DIR && echo The $BITBUCKET_CURRENT_DIR directory does not exists. Please check if BITBUCKET_CURRENT_DIR variable has a valid directory path and you are on the right Bitbucket node." && exit 1
-
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
 
 # DB admin user name, password and DB name
@@ -40,6 +37,7 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_D
 
 ###################    End of variables section  ###################
 
+[[ ! $(sudo su bitbucket -c "systemctl status bitbucket") ]] && echo "Bitbucket service was not found please check if you run this script on the right Bitbucket node" && exit 1
 
 # Check if Bitbucket version is supported
 if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
@@ -71,7 +69,6 @@ echo "This script restores Postgres DB from SQL DB dump for Bitbucket DC created
 echo "You can review or modify default variables in 'Variables section' of this script."
 echo # move to a new line
 echo "Variables:"
-echo "BITBUCKET_CURRENT_DIR=${BITBUCKET_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
 echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
 echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
