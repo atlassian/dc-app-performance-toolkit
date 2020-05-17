@@ -23,8 +23,6 @@ NFS_DIR="/media/atl/bitbucket/shared"
 ATTACHMENT_DIR_DATA="data"
 ###################    End of variables section  ###################
 
-[[ ! $(sudo su bitbucket -c "systemctl status bitbucket") ]] && echo "Bitbucket service was not found please check if you run this script on the right Bitbucket node" && exit 1
-
 # Check if Bitbucket version is supported
 if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Peformance Toolkit."
