@@ -90,11 +90,11 @@ def write_test_data_to_files(dataset):
     __write_to_file(CONFLUENCE_USERS, users)
 
 
-def __check_collaborative_editing_enable(confluence_api):
+def __is_collaborative_editing_enabled(confluence_api):
     status = confluence_api.get_collaborative_editing_status()
     if not all(status.values()):
-        raise Exception('Synchrony plugin and/or the collaborative editing feature are disabled in Confluence. '
-                        'Please turn collaborative editing back on.')
+        raise Exception('Please turn on collaborative editing in Confluence System Preferences page '
+                        'in order to run DC Apps Performance Toolkit.')
 
 
 def main():
@@ -106,7 +106,7 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
-    __check_collaborative_editing_enable(rest_client)
+    __is_collaborative_editing_enabled(rest_client)
     __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)

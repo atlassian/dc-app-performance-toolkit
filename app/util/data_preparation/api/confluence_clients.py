@@ -141,8 +141,8 @@ class ConfluenceRestClient(RestClient):
 
     def get_collaborative_editing_status(self):
         api_url = f'{self.host}/rest/synchrony-interop/status'
-        response = self.get(api_url, error_msg='Could not get collaborative editing status').json()
-        return response
+        response = self.get(api_url, error_msg='Could not get collaborative editing status')
+        return response.json()
 
 
 class ConfluenceRpcClient(Client):
