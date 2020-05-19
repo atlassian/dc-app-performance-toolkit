@@ -16,6 +16,8 @@ DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
 
+ENGLISH = 'en_US'
+
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -96,11 +98,19 @@ def write_test_data_to_files(dataset):
     __write_to_file(CONFLUENCE_USERS, users)
 
 
+
 def __is_collaborative_editing_enabled(confluence_api):
     status = confluence_api.get_collaborative_editing_status()
     if not all(status.values()):
         raise Exception('Please turn on collaborative editing in Confluence System Preferences page '
                         'in order to run DC Apps Performance Toolkit.')
+             
+             
+def __check_current_language(confluence_api):
+    language = confluence_api.get_locale()
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
+                         f'Please change your profile language to "English (US)"')
 
 
 def main():
@@ -113,6 +123,9 @@ def main():
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
     __is_collaborative_editing_enabled(rest_client)
+
+    __check_current_language(rest_client)
+
     __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
