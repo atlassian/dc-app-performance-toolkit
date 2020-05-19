@@ -8876,7 +8876,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If uploadable" enabled="true">
               <stringProp name="TestPlan.comments">Page has to be viewed at least once to extract token
 </stringProp>
-              <stringProp name="IfController.condition">${__groovy(&quot;${x_editable_g2}&quot; != &quot;&quot; || &quot;${x_atl_token_view_issue}&quot; != &quot;&quot; )}</stringProp>
+              <stringProp name="IfController.condition">${__javaScript(vars.get(&quot;x_editable_g2&quot;) != null || vars.get(&quot;x_atl_token_view_issue&quot;) != null )}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
