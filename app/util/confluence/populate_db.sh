@@ -19,7 +19,7 @@ CONFLUENCE_DB_PASS="Password1!"
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 
-[[ ! $(sudo su confluence -c "systemctl status confluence") ]] && echo "Confluence service was not found please check if you run this script on the right Confluence node" && exit 1
+[[ ! $(sudo su confluence -c "systemctl status confluence") ]] && echo "The Confluence service was not found on this host. Please make sure you are running this script on a host that is running Confluence." && exit 1
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \

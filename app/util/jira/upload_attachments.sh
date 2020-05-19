@@ -22,7 +22,7 @@ TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
 
-[[ ! $(sudo su jira -c "systemctl status jira") ]] && echo "Jira service was not found please check if you run this script on the right Jira node" && exit 1
+[[ ! $(sudo su jira -c "systemctl status jira") ]] && echo "The Jira service was not found on this host. Please make sure you are running this script on a host that is running Jira." && exit 1
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
