@@ -21,6 +21,8 @@ DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
 ERROR_LIMIT = 10
 
+ENGLISH = 'en_US'
+
 
 def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
@@ -94,6 +96,12 @@ def __create_data_set(jira_api):
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
     dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Project keys count: {len(dataset[PROJECT_KEYS])}')
+    print(f'Issues count: {len(dataset[ISSUES])}')
+    print(f'Scrum boards count: {len(dataset[SCRUM_BOARDS])}')
+    print(f'Kanban boards count: {len(dataset[KANBAN_BOARDS])}')
+    print(f'Jqls count: {len(dataset[JQLS])}')
 
     return dataset
 
@@ -135,6 +143,13 @@ def __get_software_project_keys(jira_api):
     return software_project_keys
 
 
+def __check_current_language(jira_api):
+    language = jira_api.get_locale()
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
+                         f'Please change your profile language to "English (United States) [Default]"')
+
+
 def main():
     print("Started preparing data")
 
@@ -142,6 +157,9 @@ def main():
     print("Server url: ", url)
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+
+    __check_current_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 
