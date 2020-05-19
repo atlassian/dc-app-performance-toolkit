@@ -144,7 +144,7 @@ class ConfluenceRestClient(RestClient):
         api_url = f'{self.host}/rest/synchrony-interop/status'
         response = self.get(api_url, error_msg='Could not get collaborative editing status')
         return response.json()
-      
+
     def get_locale(self):
         page = LH.parse(self.host)
         try:
