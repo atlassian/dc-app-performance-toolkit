@@ -25,7 +25,12 @@ JIRA_DB_PASS="Password1!"
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 
-[[ ! $(sudo su jira -c "systemctl status jira") ]] && echo "The Jira service was not found on this host. Please make sure you are running this script on a host that is running Jira." && exit 1
+if [[ ! `systemctl status jira` ]]; then
+ echo "The Jira service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Jira."
+ exit 1
+fi
+
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
         echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
