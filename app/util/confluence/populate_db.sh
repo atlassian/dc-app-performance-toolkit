@@ -19,7 +19,7 @@ CONFLUENCE_DB_PASS="Password1!"
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 
-if [[ ! `systemctl status confluencea` ]]; then
+if [[ ! `systemctl status confluence` ]]; then
  echo "The Confluence service was not found on this host." \
  "Please make sure you are running this script on a host that is running Confluence."
  exit 1
