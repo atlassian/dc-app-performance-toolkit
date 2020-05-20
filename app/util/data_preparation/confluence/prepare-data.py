@@ -28,6 +28,9 @@ def __create_data_set(rest_client, rpc_client):
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
     dataset[PAGES] = __get_pages(rest_client, 5000)
     dataset[BLOGS] = __get_blogs(rest_client, 5000)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Pages count: {len(dataset[PAGES])}')
+    print(f'Blogs count: {len(dataset[BLOGS])}')
     return dataset
 
 

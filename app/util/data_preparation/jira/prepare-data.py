@@ -96,6 +96,12 @@ def __create_data_set(jira_api):
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
     dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Project keys count: {len(dataset[PROJECT_KEYS])}')
+    print(f'Issues count: {len(dataset[ISSUES])}')
+    print(f'Scrum boards count: {len(dataset[SCRUM_BOARDS])}')
+    print(f'Kanban boards count: {len(dataset[KANBAN_BOARDS])}')
+    print(f'Jqls count: {len(dataset[JQLS])}')
 
     return dataset
 
