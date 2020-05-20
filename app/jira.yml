@@ -30,7 +30,7 @@ execution:
   - scenario: jmeter
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
+    ramp-up: 3s
   - scenario: selenium
     executor: selenium
     runner: pytest
