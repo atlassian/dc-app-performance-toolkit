@@ -2,6 +2,7 @@ import xmlrpc.client
 
 from util.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
+import lxml.html as LH
 
 BATCH_SIZE_SEARCH = 500
 
@@ -138,6 +139,19 @@ class ConfluenceRestClient(RestClient):
         api_url = f"{self.host}/rest/api/search?cql=type=page"
         response = self.get(api_url, 'Could not get issues count')
         return response.json().get('totalSize', 0)
+
+    def get_collaborative_editing_status(self):
+        api_url = f'{self.host}/rest/synchrony-interop/status'
+        response = self.get(api_url, error_msg='Could not get collaborative editing status')
+        return response.json()
+
+    def get_locale(self):
+        page = LH.parse(self.host)
+        try:
+            language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
+        return language
 
 
 class ConfluenceRpcClient(Client):

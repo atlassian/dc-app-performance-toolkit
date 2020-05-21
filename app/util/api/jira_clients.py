@@ -190,3 +190,8 @@ class JiraRestClient(RestClient):
         if 'Cluster nodes' not in system_info_html:
             print('Could not get Jira nodes count via parse html page')
         return system_info_html
+
+    def get_locale(self):
+        api_url = f'{self.host}/rest/api/2/myself'
+        user_properties = self.get(api_url, "Could not retrieve user")
+        return user_properties.json()['locale']

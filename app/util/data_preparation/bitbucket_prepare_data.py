@@ -15,6 +15,8 @@ PULL_REQUESTS = "pull_requests"
 FETCH_LIMIT_REPOS = 50
 FETCH_LIMIT_PROJECTS = FETCH_LIMIT_REPOS
 
+ENGLISH = 'en'
+
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -90,6 +92,10 @@ def __create_data_set(bitbucket_api):
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
     dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Projects count: {len(dataset[PROJECTS])}')
+    print(f'Repos count: {len(dataset[REPOS])}')
+    print(f'Pull requests count: {len(dataset[PULL_REQUESTS])}')
     return dataset
 
 
@@ -113,6 +119,13 @@ def write_test_data_to_files(datasets):
     __write_to_file(BITBUCKET_PRS, prs)
 
 
+def __check_current_language(bitbucket_api):
+    language = bitbucket_api.get_locale()
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
+                         f'Please change your account language to "English (United States)"')
+
+
 def main():
     print("Started preparing data")
 
@@ -120,6 +133,9 @@ def main():
     print("Server url: ", url)
 
     client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
+
+    __check_current_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 
