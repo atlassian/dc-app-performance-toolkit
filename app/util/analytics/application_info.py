@@ -66,7 +66,7 @@ class Confluence(BaseApplication):
 
 class Bitbucket(BaseApplication):
     type = BITBUCKET
-    bitbucket_repos_selector = "#content-bitbucket\.atst\.repositories-0>.field-group>.field-value"
+    bitbucket_repos_selector = "#content-bitbucket\.atst\.repositories-0>.field-group>.field-value"  # noqa W605
 
     @property
     def version(self):
