@@ -11,9 +11,6 @@ class JiraBehavior(TaskSet):
     def on_start(self):
         login_and_view_dashboard(self)
 
-    def login_and_view_dashboard(self):
-        login_and_view_dashboard(self)
-
     @task(2)
     def create_issue(self):
         create_issue(self)

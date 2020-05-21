@@ -15,8 +15,9 @@ from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATA
 from datetime import datetime
 from util.conf import JIRA_SETTINGS
 
+
 jira_total_requests_per_hr = JIRA_SETTINGS.scenarios['locust']['properties']['total_actions_per_hr']
-action = 3600 / (jira_total_requests_per_hr / JIRA_SETTINGS.concurrency)
+jira_action_time = 3600 / (jira_total_requests_per_hr / JIRA_SETTINGS.concurrency)
 
 
 def read_input_file(file_path):
@@ -38,7 +39,7 @@ def read_json(file_json):
         return json.load(f)
 
 
-def datasets():
+def jira_datasets():
     data_sets = dict()
     data_sets["issues"] = read_input_file(JIRA_DATASET_ISSUES)
     data_sets["users"] = read_input_file(JIRA_DATASET_USERS)
@@ -73,8 +74,8 @@ def measure(func):
                                         response_time=total,
                                         response_length=0)
         total = (time.time() - start)
-        if total < action:
-            sleep = (action - total)
+        if total < jira_action_time:
+            sleep = (jira_action_time - total)
             print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
             time.sleep(sleep)
         return result
@@ -106,49 +107,6 @@ def generate_random_string(length):
     return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
 
 
-def prepare_issue_body(issue_body_dict: dict, user):
-    description = f"Locust description {generate_random_string(20)}"
-    summary = f"Locust summary {generate_random_string(10)}"
-    environment = f'Locust environment {generate_random_string(10)}'
-    duedate = ""
-    reporter = user
-    timetracking_originalestimate = ""
-    timetracking_remainingestimate = ""
-    is_create_issue = "true"
-    has_work_started = ""
-    project_id = issue_body_dict['project_id']
-    atl_token = issue_body_dict['atl_token']
-    form_token = issue_body_dict['form_token']
-    issue_type = issue_body_dict['issue_type']
-    resolution_done = issue_body_dict['resolution_done']
-    fields_to_retain = issue_body_dict['fields_to_retain']
-    custom_fields_to_retain = issue_body_dict['custom_fields_to_retain']
-
-    request_body = f"pid={project_id}&issuetype={issue_type}&atl_token={atl_token}&formToken={form_token}" \
-                   f"&summary={summary}&duedate={duedate}&reporter={reporter}&environment={environment}" \
-                   f"&description={description}&timetracking_originalestimate={timetracking_originalestimate}" \
-                   f"&timetracking_remainingestimate={timetracking_remainingestimate}" \
-                   f"&is_create_issue={is_create_issue}&hasWorkStarted={has_work_started}&resolution={resolution_done}"
-    fields_to_retain_body = ''
-    custom_fields_to_retain_body = ''
-    for field in fields_to_retain:
-        fields_to_retain_body = fields_to_retain_body + 'fieldsToRetain=' + field[0] + '&'
-    for custom_field in custom_fields_to_retain:
-        custom_fields_to_retain_body = custom_fields_to_retain_body + 'fieldsToRetain=customfield_' \
-                                       + custom_field[0] + '&'
-    custom_fields_to_retain_body = custom_fields_to_retain_body[:-1]  # remove last &
-    request_body = request_body + f"&{fields_to_retain_body}{custom_fields_to_retain_body}"
-    return request_body
-
-
-def prepare_jql_body(issue_ids):
-    request_body = "layoutKey=split-view"
-    issue_ids = issue_ids[0].split(',')
-    for issue_id in issue_ids:
-        request_body = request_body + '&id=' + issue_id
-    return request_body
-
-
 def get_first_index(from_list: list, err):
     if len(from_list) > 0:
         return from_list[0]
@@ -156,8 +114,4 @@ def get_first_index(from_list: list, err):
         raise IndexError(err)
 
 
-def assert_jira_logged_user(user, content):
-    assert f'title="loggedInUser" value="{user}">' in content, f'User {user} authentication failed'
-
-
-dataset = datasets()
+jira_dataset = jira_datasets()

@@ -1,9 +1,5 @@
-from locustio.common_utils import *
-import random
 import itertools
 from locust.exception import ResponseError
-import re
-import inspect
 from locustio.jira.requests_params import *
 
 from util.conf import JIRA_SETTINGS
@@ -17,7 +13,7 @@ def login_and_view_dashboard(locust):
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = Login()
 
-    user = random.choice(dataset["users"])
+    user = random.choice(jira_dataset["users"])
     body = params.login_body
     body['os_username'] = user[0]
     body['os_password'] = user[1]
@@ -50,7 +46,7 @@ def login_and_view_dashboard(locust):
     if not token:
         locust.logger.info(f'{content}')
         raise ResponseError(ERR_TOKEN_NOT_FOUND)
-    assert_jira_logged_user(user[0], content)
+    assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
     locust.user = user[0]
     locust.atl_token = token
     locust.storage = dict()  # Define locust storage dict for getting cross-functional variables access
@@ -60,8 +56,8 @@ def login_and_view_dashboard(locust):
 @measure
 def view_issue(locust):
     func_name = inspect.stack()[0][3]
-    issue_key = random.choice(dataset['issues'])[0]
-    project_key = random.choice(dataset['issues'])[2]
+    issue_key = random.choice(jira_dataset['issues'])[0]
+    project_key = random.choice(jira_dataset['issues'])[2]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = BrowseIssue()
 
@@ -83,7 +79,6 @@ def view_issue(locust):
                       catch_response=True)
 
 
-@measure
 def create_issue(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -120,7 +115,7 @@ def create_issue(locust):
 
     @measure
     def create_issue_submit_form():
-        issue_body = prepare_issue_body(locust.storage['issue_body_params_dict'], user=locust.user)
+        issue_body = params.prepare_issue_body(locust.storage['issue_body_params_dict'], user=locust.user)
         r = locust.client.post('/secure/QuickCreateIssue.jspa?decorator=none', params=issue_body,
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
@@ -136,7 +131,7 @@ def create_issue(locust):
 def search_jql(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    jql = random.choice(dataset['jqls'])[0]
+    jql = random.choice(jira_dataset['jqls'])[0]
     params = SearchJql()
 
     r = locust.client.get(f'/issues/?jql={jql}', catch_response=True)
@@ -160,7 +155,7 @@ def search_jql(locust):
     locust.client.post('/rest/webResources/1.0/resources', params.body["3"],
                        TEXT_HEADERS, catch_response=True)
     if issue_ids:
-        body = prepare_jql_body(issue_ids)
+        body = params.prepare_jql_body(issue_ids)
         r = locust.client.post('/rest/issueNav/1/issueTable/stable', data=body,
                                headers=NO_TOKEN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
@@ -189,7 +184,7 @@ def search_jql(locust):
 def view_project_summary(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    project_key = random.choice(dataset["issues"])[2]
+    project_key = random.choice(jira_dataset["issues"])[2]
     params = ViewProjectSummary()
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
@@ -220,11 +215,10 @@ def view_project_summary(locust):
                       catch_response=True)
 
 
-@measure
 def edit_issue(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    issue = random.choice(dataset['issues'])
+    issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
@@ -287,7 +281,7 @@ def view_dashboard(locust):
 
     r = locust.client.get('/secure/Dashboard.jspa', catch_response=True)
     content = r.content.decode('utf-8')
-    assert_jira_logged_user(locust.user, content)
+    assert f'title="loggedInUser" value="{locust.user}">' in content, f'User {locust.user} authentication failed'
     locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
     r = locust.client.post('/plugins/servlet/gadgets/dashboard-diagnostics',
                            params={'uri': f'{JIRA_SETTINGS.server_url.lower()}//secure/Dashboard.jspa'},
@@ -304,11 +298,10 @@ def view_dashboard(locust):
                       catch_response=True)
 
 
-@measure
 def add_comment(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    issue = random.choice(dataset['issues'])
+    issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
@@ -354,7 +347,7 @@ def browse_projects(locust):
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = BrowseProjects()
 
-    page = random.randint(1, dataset['pages'])
+    page = random.randint(1, jira_dataset['pages'])
     r = locust.client.get(f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={page}',
                           catch_response=True)
     content = r.content.decode('utf-8')
@@ -368,7 +361,7 @@ def browse_projects(locust):
 def view_kanban_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    kanban_board_id = random.choice(dataset["kanban_boards"])[0]
+    kanban_board_id = random.choice(jira_dataset["kanban_boards"])[0]
     view_board(locust, kanban_board_id)
 
 
@@ -376,7 +369,7 @@ def view_kanban_board(locust):
 def view_scrum_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
+    scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id)
 
 
@@ -384,7 +377,7 @@ def view_scrum_board(locust):
 def view_backlog(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    scrum_board_id = random.choice(dataset["scrum_boards"])[0]
+    scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id, view_backlog=True)
 
 

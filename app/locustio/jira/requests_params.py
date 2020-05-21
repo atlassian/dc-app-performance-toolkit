@@ -1,4 +1,5 @@
 import json
+from locustio.common_utils import *
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -83,6 +84,41 @@ class CreateIssue(BaseResource):
     create_issue_key_pattern = '"issueKey":"(.+?)"'
     create_issue_assertion = '"id":"project","label":"Project"'
 
+    @staticmethod
+    def prepare_issue_body(issue_body_dict: dict, user):
+        description = f"Locust description {generate_random_string(20)}"
+        summary = f"Locust summary {generate_random_string(10)}"
+        environment = f'Locust environment {generate_random_string(10)}'
+        duedate = ""
+        reporter = user
+        timetracking_originalestimate = ""
+        timetracking_remainingestimate = ""
+        is_create_issue = "true"
+        has_work_started = ""
+        project_id = issue_body_dict['project_id']
+        atl_token = issue_body_dict['atl_token']
+        form_token = issue_body_dict['form_token']
+        issue_type = issue_body_dict['issue_type']
+        resolution_done = issue_body_dict['resolution_done']
+        fields_to_retain = issue_body_dict['fields_to_retain']
+        custom_fields_to_retain = issue_body_dict['custom_fields_to_retain']
+
+        request_body = f"pid={project_id}&issuetype={issue_type}&atl_token={atl_token}&formToken={form_token}" \
+                       f"&summary={summary}&duedate={duedate}&reporter={reporter}&environment={environment}" \
+                       f"&description={description}&timetracking_originalestimate={timetracking_originalestimate}" \
+                       f"&timetracking_remainingestimate={timetracking_remainingestimate}" \
+                       f"&is_create_issue={is_create_issue}&hasWorkStarted={has_work_started}&resolution={resolution_done}"
+        fields_to_retain_body = ''
+        custom_fields_to_retain_body = ''
+        for field in fields_to_retain:
+            fields_to_retain_body = fields_to_retain_body + 'fieldsToRetain=' + field[0] + '&'
+        for custom_field in custom_fields_to_retain:
+            custom_fields_to_retain_body = custom_fields_to_retain_body + 'fieldsToRetain=customfield_' \
+                                           + custom_field[0] + '&'
+        custom_fields_to_retain_body = custom_fields_to_retain_body[:-1]  # remove last &
+        request_body = request_body + f"&{fields_to_retain_body}{custom_fields_to_retain_body}"
+        return request_body
+
 
 class SearchJql(BaseResource):
     action_name = 'search_jql'
@@ -94,6 +130,14 @@ class SearchJql(BaseResource):
     issue_key_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,\"key\"\:\"(.+?)\"'
     issue_id_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,'
     edit_allow_string = 'secure/EditLabels!default'
+
+    @staticmethod
+    def prepare_jql_body(issue_ids):
+        request_body = "layoutKey=split-view"
+        issue_ids = issue_ids[0].split(',')
+        for issue_id in issue_ids:
+            request_body = request_body + '&id=' + issue_id
+        return request_body
 
 
 class ViewProjectSummary(BaseResource):
