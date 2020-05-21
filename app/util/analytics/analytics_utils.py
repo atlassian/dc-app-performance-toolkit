@@ -22,7 +22,7 @@ def write_to_file(content, file):
 def generate_report_summary(collector):
     bitbucket = 'bitbucket'
     git_compliant = None
-    
+
     summary_report = []
     summary_report_file = f'{collector.log_dir}/results_summary.log'
 
