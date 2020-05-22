@@ -108,7 +108,7 @@ def create_issue(locust):
                                   'fields_to_retain': fields_to_retain,
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
-        assert params.create_issue_assertion in content, ERR_CREATE_ISSUE
+        assert '"id":"project","label":"Project"' in content, ERR_CREATE_ISSUE
         locust.client.post('/rest/quickedit/1.0/userpreferences/create', params.user_preferences_payload,
                            ADMIN_HEADERS, catch_response=True)
         locust.storage['issue_body_params_dict'] = issue_body_params_dict
@@ -121,7 +121,7 @@ def create_issue(locust):
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
 
-        assert params.create_issue_assertion in content, ERR_CREATE_ISSUE
+        assert '"id":"project","label":"Project"' in content, ERR_CREATE_ISSUE
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         locust.logger.info(f"Issue {issue_key} was successfully created")
     create_issue_submit_form()
@@ -352,7 +352,7 @@ def browse_projects(locust):
     r = locust.client.get(f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={page}',
                           catch_response=True)
     content = r.content.decode('utf-8')
-    assert params.assertion_string in content, 'Could not browse projects'
+    assert 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="' in content, 'Could not browse projects'
     locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["3"], TEXT_HEADERS, catch_response=True)
@@ -442,3 +442,12 @@ def view_board(locust, board_id, view_backlog=False):
         locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
                           {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
                           catch_response=True)
+
+
+def custom_action(locust):
+    func_name = inspect.stack()[0][3]
+    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
+    r = locust.client.get(f'/plugin/report')
+    content = r.content.decode('utf-8')
+    locust.logger.info(f'debug: {content}')
+    assert 'assertion string' in content

@@ -58,9 +58,12 @@ class JiraBehavior(TaskSet):
     def browse_boards(self):
         browse_boards(self)
 
+    # @task(1)
+    # def custom_action(self):
+    #     custom_action(self)
+
 
 class JiraUser(HttpLocust):
     host = JIRA_SETTINGS.server_url
     task_set = JiraBehavior
     wait_time = between(0, 0)
-

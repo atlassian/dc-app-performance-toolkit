@@ -82,7 +82,6 @@ class CreateIssue(BaseResource):
                                                                   "priority", "versions", "components"],
                                 "showWelcomeScreen": True}
     create_issue_key_pattern = '"issueKey":"(.+?)"'
-    create_issue_assertion = '"id":"project","label":"Project"'
 
     @staticmethod
     def prepare_issue_body(issue_body_dict: dict, user):
@@ -163,7 +162,6 @@ class AddComment(BaseResource):
 
 class BrowseProjects(BaseResource):
     action_name = 'browse_projects'
-    assertion_string = 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="'
 
 
 class ViewBoard(BaseResource):
