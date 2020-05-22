@@ -1,15 +1,14 @@
 import atexit
 import csv
 import datetime
-import json
 import os
-import random
-import string
 import sys
 import time
+import functools
 from pathlib import Path
 
 import pytest
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
@@ -23,23 +22,69 @@ SCREEN_HEIGHT = 1080
 
 JTL_HEADER = "timeStamp,elapsed,label,responseCode,responseMessage,threadName,success,bytes,grpThreads,allThreads," \
              "Latency,Hostname,Connect\n"
+LOGIN_ACTION_NAME = 'login'
+
+
+class InitGlobals:
+    def __init__(self):
+        self.driver = False
+        self.driver_title = False
+        self.login_failed = False
+
+
+class Dataset:
+    def __init__(self):
+        self.dataset = dict()
+
+    def jira_dataset(self):
+        if not self.dataset:
+            self.dataset["issues"] = self.__read_input_file(JIRA_DATASET_ISSUES)
+            self.dataset["users"] = self.__read_input_file(JIRA_DATASET_USERS)
+            self.dataset["jqls"] = self.__read_input_file(JIRA_DATASET_JQLS)
+            self.dataset["scrum_boards"] = self.__read_input_file(JIRA_DATASET_SCRUM_BOARDS)
+            self.dataset["kanban_boards"] = self.__read_input_file(JIRA_DATASET_KANBAN_BOARDS)
+            self.dataset["project_keys"] = self.__read_input_file(JIRA_DATASET_PROJECT_KEYS)
+        return self.dataset
+
+    def confluence_dataset(self):
+        if not self.dataset:
+            self.dataset["pages"] = self.__read_input_file(CONFLUENCE_PAGES)
+            self.dataset["blogs"] = self.__read_input_file(CONFLUENCE_BLOGS)
+            self.dataset["users"] = self.__read_input_file(CONFLUENCE_USERS)
+        return self.dataset
+
+    def bitbucket_dataset(self):
+        if not self.dataset:
+            self.dataset["projects"] = self.__read_input_file(BITBUCKET_PROJECTS)
+            self.dataset["users"] = self.__read_input_file(BITBUCKET_USERS)
+            self.dataset["repos"] = self.__read_input_file(BITBUCKET_REPOS)
+            self.dataset["pull_requests"] = self.__read_input_file(BITBUCKET_PRS)
+        return self.dataset
+
+    @staticmethod
+    def __read_input_file(file_path):
+        with open(file_path, 'r') as fs:
+            reader = csv.reader(fs)
+            return list(reader)
+
+
+globals = InitGlobals()
 
 
 def __get_current_results_dir():
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-        return os.environ.get('TAURUS_ARTIFACTS_DIR')
+        return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
-        # TODO we have error here if 'results' dir does not exist
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pytest_run_results = f'results/{results_dir_name}_local'
-        os.mkdir(pytest_run_results)
+        pytest_run_results = Path(f'results/{results_dir_name}_local')
+        pytest_run_results.mkdir(parents=True)
         return pytest_run_results  # in case you just run pytest
 
 
 # create selenium output files
 current_results_dir = __get_current_results_dir()
-selenium_results_file = Path(current_results_dir + '/selenium.jtl')
-selenium_error_file = Path(current_results_dir + '/selenium.err')
+selenium_results_file = current_results_dir / 'selenium.jtl'
+selenium_error_file = current_results_dir / 'selenium.err'
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
@@ -51,42 +96,48 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
-def print_timing(func):
-    def wrapper(webdriver, interaction):
-        start = time.time()
-        error_msg = 'Success'
-        full_exception = ''
-        try:
-            func(webdriver, interaction)
-            success = True
-        except Exception:
-            success = False
-            # https://docs.python.org/2/library/sys.html#sys.exc_info
-            exc_type, full_exception = sys.exc_info()[:2]
-            error_msg = exc_type.__name__
-        end = time.time()
-        timing = str(int((end - start) * 1000))
+def print_timing(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
-        with open(selenium_results_file, "a+") as file:
-            timestamp = round(time.time() * 1000)
-            file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper():
+            if LOGIN_ACTION_NAME in interaction:
+                globals.login_failed = False
+            if globals.login_failed:
+                pytest.skip(f"login is failed")
+            start = time.time()
+            error_msg = 'Success'
+            full_exception = ''
+            try:
+                func()
+                success = True
+            except Exception:
+                success = False
+                # https://docs.python.org/2/library/sys.html#sys.exc_info
+                exc_type, full_exception = sys.exc_info()[:2]
+                error_msg = f"Failed measure: {interaction} - {exc_type.__name__}"
+            end = time.time()
+            timing = str(int((end - start) * 1000))
 
-        print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
+            with open(selenium_results_file, "a+") as jtl_file:
+                timestamp = round(time.time() * 1000)
+                jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
-        if not success:
-            raise Exception(error_msg, full_exception)
+            print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
-    return wrapper
+            if not success:
+                if LOGIN_ACTION_NAME in interaction:
+                    globals.login_failed = True
+                raise Exception(error_msg, full_exception)
+
+        return wrapper
+    return deco_wrapper
 
 
 @pytest.fixture(scope="module")
 def webdriver():
-    # TODO consider extract common logic with globals to separate function
-    global driver
-    if 'driver' in globals():
-        driver = globals()['driver']
-        return driver
-    else:
+    def driver_init():
         chrome_options = Options()
         if os.getenv('WEBDRIVER_VISIBLE', 'False').lower() != 'true':
             chrome_options.add_argument("--headless")
@@ -95,24 +146,27 @@ def webdriver():
         chrome_options.add_argument("--disable-infobars")
         driver = Chrome(options=chrome_options)
         return driver
+    # First time driver init
+    if not globals.driver:
+        driver = driver_init()
+        print('first driver inits')
 
-
-# Global instance driver quit
-def driver_quit():
-    driver.quit()
-
-
-atexit.register(driver_quit)
-
-
-def generate_random_string(length):
-    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
-
-
-def generate_jqls(max_length=3, count=100):
-    # Generate jqls like "abc*"
-    return ['text ~ "{}*" order by key'.format(
-        ''.join(random.choices(string.ascii_lowercase, k=random.randrange(1, max_length + 1)))) for _ in range(count)]
+        def driver_quit():
+            driver.quit()
+        globals.driver = driver
+        atexit.register(driver_quit)
+        return driver
+    else:
+        try:
+            # check if driver is not broken
+            globals.driver_title = globals.driver.title
+            print('get driver from global')
+            return globals.driver
+        except WebDriverException:
+            # re-init driver if it broken
+            globals.driver = driver_init()
+            print('reinit driver')
+            return globals.driver
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -161,63 +215,19 @@ def get_screen_shots(request, webdriver, app_settings):
         webdriver.get(app_settings.server_url)
 
 
+application_dataset = Dataset()
+
+
 @pytest.fixture(scope="module")
 def jira_datasets():
-    # TODO consider extract common logic with globals to separate function
-    global data_sets
-    if 'data_sets' in globals():
-        data_sets = globals()['data_sets']
-
-        return data_sets
-    else:
-        data_sets = dict()
-        data_sets["issues"] = __read_input_file(JIRA_DATASET_ISSUES)
-        data_sets["users"] = __read_input_file(JIRA_DATASET_USERS)
-        data_sets["jqls"] = __read_input_file(JIRA_DATASET_JQLS)
-        data_sets["scrum_boards"] = __read_input_file(JIRA_DATASET_SCRUM_BOARDS)
-        data_sets["kanban_boards"] = __read_input_file(JIRA_DATASET_KANBAN_BOARDS)
-        data_sets["project_keys"] = __read_input_file(JIRA_DATASET_PROJECT_KEYS)
-
-        return data_sets
+    return application_dataset.jira_dataset()
 
 
 @pytest.fixture(scope="module")
 def confluence_datasets():
-    datasets = dict()
-    datasets["pages"] = __read_input_file(CONFLUENCE_PAGES)
-    datasets["blogs"] = __read_input_file(CONFLUENCE_BLOGS)
-    datasets["users"] = __read_input_file(CONFLUENCE_USERS)
-    return datasets
+    return application_dataset.confluence_dataset()
 
 
 @pytest.fixture(scope="module")
 def bitbucket_datasets():
-    datasets = dict()
-    datasets["projects"] = __read_input_file(BITBUCKET_PROJECTS)
-    datasets["users"] = __read_input_file(BITBUCKET_USERS)
-    datasets["repos"] = __read_input_file(BITBUCKET_REPOS)
-    datasets["pull_requests"] = __read_input_file(BITBUCKET_PRS)
-    return datasets
-
-
-def __read_input_file(file_path):
-    with open(file_path, 'r') as fs:
-        reader = csv.reader(fs)
-        return list(reader)
-
-
-class AnyEc:
-    """ Use with WebDriverWait to combine expected_conditions
-        in an OR.
-    """
-
-    def __init__(self, *args):
-        self.ecs = args
-
-    def __call__(self, w_driver):
-        for fn in self.ecs:
-            try:
-                if fn(w_driver):
-                    return True
-            except:
-                pass
+    return application_dataset.bitbucket_dataset()

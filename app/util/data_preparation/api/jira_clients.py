@@ -116,6 +116,12 @@ class JiraRestClient(RestClient):
 
         return issues
 
+    def get_total_issues_count(self):
+        api_url = f'{self.host}/rest/api/2/search'
+        body = {"jql": "order by key"}
+        response = self.post(api_url, "Could not retrieve issues", body=body)
+        return response.json().get('total', 0)
+
     def create_user(self, display_name=None, email=None, name='', password=''):
         """
         Creates a user. This resource is retained for legacy compatibility.
@@ -185,3 +191,7 @@ class JiraRestClient(RestClient):
             print('Could not get Jira nodes count via parse html page')
         return system_info_html
 
+    def get_locale(self):
+        api_url = f'{self.host}/rest/api/2/myself'
+        user_properties = self.get(api_url, "Could not retrieve user")
+        return user_properties.json()['locale']

@@ -2,6 +2,7 @@ import time
 from enum import Enum
 
 from util.data_preparation.api.abstract_clients import RestClient
+import lxml.html as LH
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -129,3 +130,23 @@ class BitbucketRestClient(RestClient):
         r = session.post(url, data=body, headers=headers)
         cluster_html = r.content.decode("utf-8")
         return cluster_html
+
+    def get_bitbucket_system_page(self):
+        session = self._session
+        url = f"{self.host}/j_atl_security_check"
+        body = {'j_username': self.user, 'j_password': self.password, '_atl_remember_me': 'on',
+                'next': f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
+                'submit': 'Log in'}
+        headers = self.LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+        session.post(url, data=body, headers=headers)
+        r = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
+        return r.content.decode('utf-8')
+
+    def get_locale(self):
+        page = LH.parse(self.host)
+        try:
+            language = page.xpath('//html/@lang')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
+        return language

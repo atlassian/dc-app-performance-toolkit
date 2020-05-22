@@ -11,6 +11,6 @@ if python_version < MIN_SUPPORTED_PYTHON_VERSION:
 
 
 # Print toolkit version after Python check
-from util.conf import TOOLKIT_VERSION
+from util.conf import TOOLKIT_VERSION  # noqa E402
 
 print("Data Center App Performance Toolkit version: {}".format(TOOLKIT_VERSION))

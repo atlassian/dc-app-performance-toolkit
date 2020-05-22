@@ -1,5 +1,5 @@
 from selenium_ui.confluence import modules
-from extension.confluence import extension_ui
+from extension.confluence import extension_ui  # noqa F401
 
 
 # this action should be the first one
@@ -12,11 +12,11 @@ def test_1_selenium_view_page(webdriver, confluence_datasets, confluence_screen_
 
 
 def test_1_selenium_create_page(webdriver, confluence_datasets, confluence_screen_shots):
-    modules.create_page(webdriver, confluence_datasets)
+    modules.create_confluence_page(webdriver, confluence_datasets)
 
 
 def test_1_selenium_edit_page(webdriver, confluence_datasets, confluence_screen_shots):
-    modules.edit_page(webdriver, confluence_datasets)
+    modules.edit_confluence_page(webdriver, confluence_datasets)
 
 
 def test_1_selenium_create_comment(webdriver, confluence_datasets, confluence_screen_shots):
@@ -33,7 +33,7 @@ def test_1_selenium_view_dashboard(webdriver, confluence_datasets, confluence_sc
 
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/confluence/extension_ui.py`. 
+Write your custom selenium scripts in `app/extension/confluence/extension_ui.py`.
 Refer to `app/selenium_ui/confluence/modules.py` for examples.
 """
 # def test_1_selenium_custom_action(webdriver, confluence_datasets, confluence_screen_shots):
