@@ -1,5 +1,5 @@
+from locustio.common_utils import generate_random_string
 import json
-from locustio.common_utils import *
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -25,9 +25,6 @@ NO_TOKEN_HEADERS = {
 }
 # Error messages
 ERR_TOKEN_NOT_FOUND = 'Atlassian token not found in login requests'
-ERR_CREATE_ISSUE = 'Issue was not created'
-ERR_VIEW_PROJECT_SUMMARY = 'Project not found'
-ERR_EDIT_ISSUE = 'Issue not found'
 
 
 class BaseResource:
@@ -62,7 +59,7 @@ class Login(BaseResource):
 class BrowseIssue(BaseResource):
     issue_id_pattern = r'id="key-val" rel="(.+?)">'
     project_avatar_id_pattern = r'projectavatar\?avatarId\=(.+?)" '
-    edit_allow_pattern = "secure\/EditLabels\!default"
+    edit_allow_pattern = "secure\/EditLabels\!default"  # noqa W605
     browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
 
 
@@ -73,15 +70,16 @@ class ViewDashboard(BaseResource):
 class CreateIssue(BaseResource):
     atl_token_pattern = '"atl_token":"(.+?)"'
     form_token_pattern = '"formToken":"(.+?)"'
-    issue_type_pattern = '\{&quot;label&quot;:&quot;Story&quot;,&quot;value&quot;:&quot;([0-9]*)&quot;'
+    issue_type_pattern = '\{&quot;label&quot;:&quot;Story&quot;,&quot;value&quot;:&quot;([0-9]*)&quot;'  # noqa W605
     project_id_pattern = r'class=\\"project-field\\" value=\\"(.+?)\\"'
     resolution_done_pattern = r'<option value=\\"([0-9]*)\\">\\n            Done\\n'
-    fields_to_retain_pattern = '"id":"([a-z]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'
-    custom_fields_to_retain_pattern = '"id":"customfield_([0-9]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'
+    fields_to_retain_pattern = '"id":"([a-z]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'  # noqa W605
+    custom_fields_to_retain_pattern = '"id":"customfield_([0-9]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'  # noqa W605
     user_preferences_payload = {"useQuickForm": False, "fields": ["summary", "description",
                                                                   "priority", "versions", "components"],
                                 "showWelcomeScreen": True}
     create_issue_key_pattern = '"issueKey":"(.+?)"'
+    err_message_create_issue = 'Issue was not created'
 
     @staticmethod
     def prepare_issue_body(issue_body_dict: dict, user):
@@ -106,7 +104,8 @@ class CreateIssue(BaseResource):
                        f"&summary={summary}&duedate={duedate}&reporter={reporter}&environment={environment}" \
                        f"&description={description}&timetracking_originalestimate={timetracking_originalestimate}" \
                        f"&timetracking_remainingestimate={timetracking_remainingestimate}" \
-                       f"&is_create_issue={is_create_issue}&hasWorkStarted={has_work_started}&resolution={resolution_done}"
+                       f"&is_create_issue={is_create_issue}" \
+                       f"&hasWorkStarted={has_work_started}&resolution={resolution_done}"
         fields_to_retain_body = ''
         custom_fields_to_retain_body = ''
         for field in fields_to_retain:
@@ -125,9 +124,9 @@ class SearchJql(BaseResource):
                            "jql": "order by created DESC",
                            "layoutKey": "split-view",
                            "filterId": "-4"}
-    ids_pattern = '"issueIds":\[([0-9\, ]*)\]'
-    issue_key_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,\"key\"\:\"(.+?)\"'
-    issue_id_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,'
+    ids_pattern = '"issueIds":\[([0-9\, ]*)\]'  # noqa W605
+    issue_key_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,\"key\"\:\"(.+?)\"'  # noqa W605
+    issue_id_pattern = '\"table\"\:\[\{\"id\"\:(.+?)\,'  # noqa W605
     edit_allow_string = 'secure/EditLabels!default'
 
     @staticmethod
@@ -141,6 +140,7 @@ class SearchJql(BaseResource):
 
 class ViewProjectSummary(BaseResource):
     action_name = 'view_project_summary'
+    err_message = 'Project not found'
 
 
 class EditIssue(BaseResource):
@@ -152,11 +152,12 @@ class EditIssue(BaseResource):
                                        '(.+?)<option selected="selected" value="(.+?)"'
     issue_reporter_pattern = 'assignee.*<option selected="selected" value="(.+?)"'
     last_visited_body = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
+    err_message_issue_not_found = 'Issue not found'
 
 
 class AddComment(BaseResource):
     action_name = 'add_comment'
-    form_token_pattern = 'name="formToken"\s*type="hidden"\s*value="(.+?)"'
+    form_token_pattern = 'name="formToken"\s*type="hidden"\s*value="(.+?)"'  # noqa W605
     atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
 
 
@@ -166,8 +167,8 @@ class BrowseProjects(BaseResource):
 
 class ViewBoard(BaseResource):
     action_name = 'view_kanban_board'
-    project_key_pattern = '\["project-key"\]=\"\\\\"(.+?)\\\\""'
-    project_id_pattern = '\["project-id"\]=\"(.+?)\"'
+    project_key_pattern = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  # noqa W605
+    project_id_pattern = '\["project-id"\]=\"(.+?)\"'  # noqa W605
     project_plan_pattern = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'
 
 

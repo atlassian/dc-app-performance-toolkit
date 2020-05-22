@@ -1,7 +1,13 @@
 import itertools
 import inspect
+import logging
+import random
+import re
 from locust.exception import ResponseError
-from locustio.jira.requests_params import *
+from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
+    BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, TEXT_HEADERS, ADMIN_HEADERS, \
+    ERR_TOKEN_NOT_FOUND, NO_TOKEN_HEADERS
+from locustio.common_utils import measure, jira_dataset, fetch_by_re, timestamp_int, generate_random_string
 
 from util.conf import JIRA_SETTINGS
 
@@ -108,7 +114,7 @@ def create_issue(locust):
                                   'fields_to_retain': fields_to_retain,
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
-        assert '"id":"project","label":"Project"' in content, ERR_CREATE_ISSUE
+        assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         locust.client.post('/rest/quickedit/1.0/userpreferences/create', params.user_preferences_payload,
                            ADMIN_HEADERS, catch_response=True)
         locust.storage['issue_body_params_dict'] = issue_body_params_dict
@@ -121,7 +127,7 @@ def create_issue(locust):
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
 
-        assert '"id":"project","label":"Project"' in content, ERR_CREATE_ISSUE
+        assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         locust.logger.info(f"Issue {issue_key} was successfully created")
     create_issue_submit_form()
@@ -193,7 +199,7 @@ def view_project_summary(locust):
     locust.logger.info(f"View project {project_key}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
-    assert assert_string in content, f'{ERR_VIEW_PROJECT_SUMMARY} {project_key}'
+    assert assert_string in content, f'{params.err_message} {project_key}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.body["2"], TEXT_HEADERS, catch_response=True)
@@ -236,7 +242,8 @@ def edit_issue(locust):
         assignee = fetch_by_re(params.issue_assigneee_reporter_pattern, content, group_no=2)
         reporter = fetch_by_re(params.issue_reporter_pattern, content)
 
-        assert f' Edit Issue:  [{issue_key}]' in content, f'{ERR_EDIT_ISSUE} - {issue_id}, {issue_key}'
+        assert f' Edit Issue:  [{issue_key}]' in content, \
+            f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}'
         locust.logger.info(f"Editing issue {issue_key}")
 
         locust.client.post('/rest/webResources/1.0/resources', params.body["1"], TEXT_HEADERS, catch_response=True)
