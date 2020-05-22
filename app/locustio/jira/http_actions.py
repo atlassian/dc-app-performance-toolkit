@@ -1,4 +1,5 @@
 import itertools
+import inspect
 from locust.exception import ResponseError
 from locustio.jira.requests_params import *
 

@@ -7,7 +7,6 @@ import random
 import string
 import json
 import os
-import inspect
 import socket
 from logging.handlers import RotatingFileHandler
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -16,7 +15,7 @@ from datetime import datetime
 from util.conf import JIRA_SETTINGS
 
 
-jira_total_requests_per_hr = JIRA_SETTINGS.scenarios['locust']['properties']['total_actions_per_hr']
+jira_total_requests_per_hr = JIRA_SETTINGS.total_actions_per_hour
 jira_action_time = 3600 / (jira_total_requests_per_hr / JIRA_SETTINGS.concurrency)
 
 

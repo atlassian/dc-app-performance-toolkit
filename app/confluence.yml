@@ -15,6 +15,7 @@ settings:
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    total_actions_per_hour: 20000
 services:
   - module: shellexec
     prepare:
@@ -46,7 +47,7 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       # Workload model
-      total_actions_per_hr: 20000
+      total_actions_per_hr: ${total_actions_per_hour}
       perc_view_page: 54
       perc_view_dashboard: 6
       perc_view_blog: 8

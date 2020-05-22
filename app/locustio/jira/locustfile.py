@@ -1,6 +1,5 @@
 from locust import HttpLocust, TaskSet, task, between
 from locustio.jira.http_actions import *
-from util.conf import JIRA_SETTINGS
 from locustio.common_utils import *
 
 init_logger()

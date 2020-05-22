@@ -175,13 +175,3 @@ class ViewBoard(BaseResource):
 
 class BrowseBoards(BaseResource):
     action_name = 'browse_boards'
-
-
-
-
-# # Browse kanban boards
-# BROWSE_KANBAN_BOARDS_PROJECT_KEY = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  #'\["project-key"\]="\\\"(.+?)\\\"'
-# BROWSE_KANBAN_BOARDS_PROJECT_ID = '\["project-id"\]=\"(.+?)\"'
-# BROWSE_KANBAN_BOARDS_PROJECT_PLAN = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'
-#
-
