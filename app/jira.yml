@@ -14,7 +14,9 @@ settings:
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
+    LOAD_EXECUTOR: jmeter          # Jmeter and Locust are supported. Jmeter by default.
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    total_actions_per_hour: 54500
 services:
   - module: shellexec
     prepare:
@@ -27,7 +29,8 @@ services:
       - python util/analytics.py jira
       - python util/cleanup_results_dir.py
 execution:
-  - scenario: jmeter
+  - scenario: ${LOAD_EXECUTOR}
+    executor: ${LOAD_EXECUTOR}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
@@ -38,6 +41,8 @@ execution:
 scenarios:
   selenium:
     script: selenium_ui/jira_ui.py
+  locust:
+    script: locustio/jira/locustfile.py
   jmeter:
     script: jmeter/jira.jmx
     properties:
@@ -46,7 +51,7 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       # Workload model
-      total_actions_per_hr: 54500
+      total_actions_per_hr: ${total_actions_per_hour}
       perc_create_issue: 4
       perc_search_jql: 13
       perc_view_issue: 43

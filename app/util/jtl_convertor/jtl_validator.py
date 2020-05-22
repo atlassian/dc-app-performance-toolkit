@@ -24,6 +24,8 @@ TIME_STAMP = 'timeStamp'
 SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE, THREAD_NAME,
                                    SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY, HOSTNAME, CONNECT]
 
+JTL_HEADERS_DIFF_LOCUST_JMETER: List[str] = [THREAD_NAME, CONNECT, HOSTNAME]
+
 VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     TIME_STAMP: [is_not_none, is_number],
     ELAPSED: [is_not_none, is_number],
@@ -64,8 +66,11 @@ def __validate_row(jtl_row: Dict) -> None:
 
 
 def __validate_header(header: List) -> None:
-    if not (SUPPORTED_JTL_HEADER == header):
-        __raise_validation_error(f"Header is not correct. Supported header is {SUPPORTED_JTL_HEADER}")
+    locust_headers = [header for header in SUPPORTED_JTL_HEADER if header not in JTL_HEADERS_DIFF_LOCUST_JMETER]
+    if not ((SUPPORTED_JTL_HEADER == header) or (locust_headers == header)):
+        if not list(set(SUPPORTED_JTL_HEADER) - set(header)) == JTL_HEADERS_DIFF_LOCUST_JMETER:
+            __raise_validation_error(f"Header is not correct. Supported Jmeter header is {SUPPORTED_JTL_HEADER} or "
+                                     f"Locust header is {locust_headers}")
 
 
 def __raise_validation_error(error_msg: str) -> None:
