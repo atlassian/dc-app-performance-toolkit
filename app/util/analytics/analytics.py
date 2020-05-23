@@ -38,7 +38,8 @@ class AnalyticsCollector:
         self.concurrency = self.conf.concurrency
         self.actual_duration = bzt_log.actual_run_time
         self.selenium_test_rates = bzt_log.selenium_test_rates
-        self.jmeter_test_rates = bzt_log.jmeter_test_rates
+        self.jmeter_test_rates = bzt_log.jmeter_test_rates if self.conf.load_executor == 'jmeter' else dict()
+        self.locust_test_rates = bzt_log.locust_test_rates if self.conf.load_executor == 'locust' else dict()
         self.time_stamp = get_timestamp()
         self.date = get_date()
         self.application_version = application.version
@@ -55,12 +56,18 @@ class AnalyticsCollector:
 
     def is_success(self):
         message = 'OK'
-        if not self.jmeter_test_rates:
-            return False, f"JMeter test results was not found."
+        load_test_rates = dict()
+        if self.conf.load_executor == 'jmeter':
+            load_test_rates = self.jmeter_test_rates
+        elif self.conf.load_executor == 'locust':
+            load_test_rates = self.locust_test_rates
+        if not load_test_rates:
+            return False, f"Jmeter/Locust test results was not found."
+
         if not self.selenium_test_rates:
             return False, f"Selenium test results was not found."
 
-        success = (is_all_tests_successful(self.jmeter_test_rates) and
+        success = (is_all_tests_successful(load_test_rates) and
                    is_all_tests_successful(self.selenium_test_rates))
 
         if not success:
@@ -128,8 +135,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    if collector.is_analytics_enabled():
-        send_analytics(collector)
+    # if collector.is_analytics_enabled():
+    #     send_analytics(collector)
 
 
 if __name__ == '__main__':

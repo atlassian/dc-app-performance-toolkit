@@ -97,9 +97,9 @@ class ApplicationSelector:
         self.application_type = self.__get_application_type(app_name)
 
     def __get_application_type(self, app_name):
-        if app_name not in [JIRA, CONFLUENCE, BITBUCKET]:
+        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
             raise SystemExit(self.APP_TYPE_MSG)
-        return app_name
+        return app_name.lower()
 
     @property
     def application(self):

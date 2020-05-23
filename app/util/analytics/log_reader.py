@@ -40,6 +40,7 @@ class BztFileReader(BaseFileReader):
     dt_regexp = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
     jmeter_test_regexp = r'jmeter_\S*'
     selenium_test_regexp = r'selenium_\S*'
+    locust_test_regexp = r'locust_\S*'
     success_test_rate_regexp = r'(\d{1,3}.\d{1,2}%)'
 
     def __init__(self):
@@ -83,6 +84,8 @@ class BztFileReader(BaseFileReader):
             test_search_regx = self.jmeter_test_regexp
         elif tests_type == 'selenium':
             test_search_regx = self.selenium_test_regexp
+        elif tests_type == 'locust':
+            test_search_regx = self.locust_test_regexp
         tests = {}
         for line in log:
             if trigger in line and ('FAIL' in line or 'OK' in line):
@@ -108,6 +111,10 @@ class BztFileReader(BaseFileReader):
     @property
     def jmeter_test_rates(self):
         return self._get_test_count_by_type(tests_type='jmeter', log=self.bzt_log_results_part)
+
+    @property
+    def locust_test_rates(self):
+        return self._get_test_count_by_type(tests_type='locust', log=self.bzt_log_results_part)
 
     @property
     def actual_run_time(self):
