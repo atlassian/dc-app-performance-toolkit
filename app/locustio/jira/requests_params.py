@@ -1,4 +1,6 @@
-from locustio.common_utils import generate_random_string
+from locustio.common_utils import generate_random_string, read_input_file
+from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
+    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 import json
 
 TEXT_HEADERS = {
@@ -23,8 +25,21 @@ NO_TOKEN_HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01",
     "X-Atlassian-Token": "no-check"
 }
-# Error messages
-ERR_TOKEN_NOT_FOUND = 'Atlassian token not found in login requests'
+
+
+def jira_datasets():
+    data_sets = dict()
+    data_sets["issues"] = read_input_file(JIRA_DATASET_ISSUES)
+    data_sets["users"] = read_input_file(JIRA_DATASET_USERS)
+    data_sets["jqls"] = read_input_file(JIRA_DATASET_JQLS)
+    data_sets["scrum_boards"] = read_input_file(JIRA_DATASET_SCRUM_BOARDS)
+    data_sets["kanban_boards"] = read_input_file(JIRA_DATASET_KANBAN_BOARDS)
+    data_sets["project_keys"] = read_input_file(JIRA_DATASET_PROJECT_KEYS)
+    page_size = 25
+    projects_count = len(data_sets['project_keys'])
+    data_sets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
+        else projects_count // page_size + 1
+    return data_sets
 
 
 class BaseResource:
