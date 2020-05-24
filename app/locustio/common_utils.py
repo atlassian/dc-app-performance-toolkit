@@ -10,13 +10,83 @@ import os
 import socket
 from logging.handlers import RotatingFileHandler
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
+    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, \
+    CONFLUENCE_USERS
 from datetime import datetime
-from util.conf import JIRA_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
 
 
-jira_total_requests_per_hr = JIRA_SETTINGS.total_actions_per_hour
-jira_action_time = 3600 / (jira_total_requests_per_hr / JIRA_SETTINGS.concurrency)
+jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
+confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
+
+
+def jira_datasets():
+    data_sets = dict()
+    data_sets["issues"] = read_input_file(JIRA_DATASET_ISSUES)
+    data_sets["users"] = read_input_file(JIRA_DATASET_USERS)
+    data_sets["jqls"] = read_input_file(JIRA_DATASET_JQLS)
+    data_sets["scrum_boards"] = read_input_file(JIRA_DATASET_SCRUM_BOARDS)
+    data_sets["kanban_boards"] = read_input_file(JIRA_DATASET_KANBAN_BOARDS)
+    data_sets["project_keys"] = read_input_file(JIRA_DATASET_PROJECT_KEYS)
+    page_size = 25
+    projects_count = len(data_sets['project_keys'])
+    data_sets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
+        else projects_count // page_size + 1
+    return data_sets
+
+
+def confluence_datasets():
+    data_sets = dict()
+    data_sets["pages"] = read_input_file(CONFLUENCE_PAGES)
+    data_sets["blogs"] = read_input_file(CONFLUENCE_BLOGS)
+    data_sets["users"] = read_input_file(CONFLUENCE_USERS)
+    return data_sets
+
+
+def jira_measure(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = global_measure(func, start, *args, **kwargs)
+        total = (time.time() - start)
+        if total < jira_action_time:
+            sleep = (jira_action_time - total)
+            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            time.sleep(sleep)
+        return result
+    return wrapper
+
+
+def confluence_measure(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = global_measure(func, start, *args, **kwargs)
+        total = (time.time() - start)
+        if total < confluence_action_time:
+            sleep = (confluence_action_time - total)
+            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            time.sleep(sleep)
+        return result
+    return wrapper
+
+
+def global_measure(func, start_time, *args, **kwargs):
+    result = None
+    try:
+        result = func(*args, **kwargs)
+    except Exception as e:
+        total = int((time.time() - start_time) * 1000)
+        events.request_failure.fire(request_type="Action",
+                                    name=f"locust_{func.__name__}",
+                                    response_time=total,
+                                    exception=e,
+                                    response_length=0)
+    else:
+        total = int((time.time() - start_time) * 1000)
+        events.request_success.fire(request_type="Action",
+                                    name=f"locust_{func.__name__}",
+                                    response_time=total,
+                                    response_length=0)
+    return result
 
 
 def read_input_file(file_path):
@@ -36,49 +106,6 @@ def fetch_by_re(pattern, text, group_no=1, default_value=None):
 def read_json(file_json):
     with open(file_json) as f:
         return json.load(f)
-
-
-def jira_datasets():
-    data_sets = dict()
-    data_sets["issues"] = read_input_file(JIRA_DATASET_ISSUES)
-    data_sets["users"] = read_input_file(JIRA_DATASET_USERS)
-    data_sets["jqls"] = read_input_file(JIRA_DATASET_JQLS)
-    data_sets["scrum_boards"] = read_input_file(JIRA_DATASET_SCRUM_BOARDS)
-    data_sets["kanban_boards"] = read_input_file(JIRA_DATASET_KANBAN_BOARDS)
-    data_sets["project_keys"] = read_input_file(JIRA_DATASET_PROJECT_KEYS)
-    page_size = 25
-    projects_count = len(data_sets['project_keys'])
-    data_sets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
-        else projects_count // page_size + 1
-    return data_sets
-
-
-def measure(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = None
-        try:
-            result = func(*args, **kwargs)
-        except Exception as e:
-            total = int((time.time() - start) * 1000)
-            events.request_failure.fire(request_type="Action",
-                                        name=f"locust_{func.__name__}",
-                                        response_time=total,
-                                        exception=e,
-                                        response_length=0)
-        else:
-            total = int((time.time() - start) * 1000)
-            events.request_success.fire(request_type="Action",
-                                        name=f"locust_{func.__name__}",
-                                        response_time=total,
-                                        response_length=0)
-        total = (time.time() - start)
-        if total < jira_action_time:
-            sleep = (jira_action_time - total)
-            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-            time.sleep(sleep)
-        return result
-    return wrapper
 
 
 def init_logger():
