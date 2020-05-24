@@ -7,9 +7,9 @@ init_logger()
 
 
 class ConfluenceBehavior(TaskSet):
-    pass
-    # def on_start(self):
-    #     login_and_view_dashboard(self)
+
+    def on_start(self):
+        login_and_view_dashboard(self)
 
 
     # @task(1)
