@@ -6,13 +6,13 @@ import re
 from locust.exception import ResponseError
 from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, TEXT_HEADERS, ADMIN_HEADERS, \
-    ERR_TOKEN_NOT_FOUND, NO_TOKEN_HEADERS
-from locustio.common_utils import jira_measure, jira_dataset, fetch_by_re, timestamp_int, generate_random_string
+    NO_TOKEN_HEADERS, jira_datasets
+from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string
 
 from util.conf import JIRA_SETTINGS
 
 counter = itertools.count()
-
+jira_dataset = jira_datasets()
 
 @jira_measure
 def login_and_view_dashboard(locust):
@@ -52,7 +52,7 @@ def login_and_view_dashboard(locust):
     token = fetch_by_re(params.atl_token_pattern, content)
     if not token:
         locust.logger.info(f'{content}')
-        raise ResponseError(ERR_TOKEN_NOT_FOUND)
+        raise ResponseError('Atlassian token not found in login requests')
     assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
     locust.user = user[0]
     locust.atl_token = token

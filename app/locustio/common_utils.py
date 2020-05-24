@@ -9,38 +9,12 @@ import json
 import os
 import socket
 from logging.handlers import RotatingFileHandler
-from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, \
-    CONFLUENCE_USERS
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
 
 
 jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
 confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
-
-
-def jira_datasets():
-    data_sets = dict()
-    data_sets["issues"] = read_input_file(JIRA_DATASET_ISSUES)
-    data_sets["users"] = read_input_file(JIRA_DATASET_USERS)
-    data_sets["jqls"] = read_input_file(JIRA_DATASET_JQLS)
-    data_sets["scrum_boards"] = read_input_file(JIRA_DATASET_SCRUM_BOARDS)
-    data_sets["kanban_boards"] = read_input_file(JIRA_DATASET_KANBAN_BOARDS)
-    data_sets["project_keys"] = read_input_file(JIRA_DATASET_PROJECT_KEYS)
-    page_size = 25
-    projects_count = len(data_sets['project_keys'])
-    data_sets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
-        else projects_count // page_size + 1
-    return data_sets
-
-
-def confluence_datasets():
-    data_sets = dict()
-    data_sets["pages"] = read_input_file(CONFLUENCE_PAGES)
-    data_sets["blogs"] = read_input_file(CONFLUENCE_BLOGS)
-    data_sets["users"] = read_input_file(CONFLUENCE_USERS)
-    return data_sets
 
 
 def jira_measure(func):
@@ -138,6 +112,3 @@ def get_first_index(from_list: list, err):
         return from_list[0]
     else:
         raise IndexError(err)
-
-
-jira_dataset = jira_datasets()
