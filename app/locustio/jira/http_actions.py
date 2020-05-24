@@ -7,14 +7,14 @@ from locust.exception import ResponseError
 from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, TEXT_HEADERS, ADMIN_HEADERS, \
     ERR_TOKEN_NOT_FOUND, NO_TOKEN_HEADERS
-from locustio.common_utils import measure, jira_dataset, fetch_by_re, timestamp_int, generate_random_string
+from locustio.common_utils import jira_measure, jira_dataset, fetch_by_re, timestamp_int, generate_random_string
 
 from util.conf import JIRA_SETTINGS
 
 counter = itertools.count()
 
 
-@measure
+@jira_measure
 def login_and_view_dashboard(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -60,7 +60,7 @@ def login_and_view_dashboard(locust):
     locust.logger.info(f"User {user[0]} logged in with atl_token: {token}")
 
 
-@measure
+@jira_measure
 def view_issue(locust):
     func_name = inspect.stack()[0][3]
     issue_key = random.choice(jira_dataset['issues'])[0]
@@ -91,7 +91,7 @@ def create_issue(locust):
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = CreateIssue()
 
-    @measure
+    @jira_measure
     def create_issue_open_quick_create():
         func_name = inspect.stack()[0][3]
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -120,7 +120,7 @@ def create_issue(locust):
         locust.storage['issue_body_params_dict'] = issue_body_params_dict
     create_issue_open_quick_create()
 
-    @measure
+    @jira_measure
     def create_issue_submit_form():
         issue_body = params.prepare_issue_body(locust.storage['issue_body_params_dict'], user=locust.user)
         r = locust.client.post('/secure/QuickCreateIssue.jspa?decorator=none', params=issue_body,
@@ -134,7 +134,7 @@ def create_issue(locust):
     locust.storage.clear()
 
 
-@measure
+@jira_measure
 def search_jql(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -187,7 +187,7 @@ def search_jql(locust):
                               f'decorator=none&issueId={issue_id}&_={timestamp_int()}', catch_response=True)
 
 
-@measure
+@jira_measure
 def view_project_summary(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -231,7 +231,7 @@ def edit_issue(locust):
     project_key = issue[2]
     params = EditIssue()
 
-    @measure
+    @jira_measure
     def edit_issue_open_editor():
         r = locust.client.get(f'/secure/EditIssue!default.jspa?id={issue_id}', catch_response=True)
         content = r.content.decode('utf-8')
@@ -261,7 +261,7 @@ def edit_issue(locust):
         locust.storage['atl_token'] = atl_token
     edit_issue_open_editor()
 
-    @measure
+    @jira_measure
     def edit_issue_save_edit():
         r = locust.client.post(f'/secure/EditIssue.jspa?atl_token={locust.storage["atl_token"]}',
                                params=locust.storage['edit_issue_body'],
@@ -281,7 +281,7 @@ def edit_issue(locust):
     locust.storage.clear()
 
 
-@measure
+@jira_measure
 def view_dashboard(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -315,7 +315,7 @@ def add_comment(locust):
     project_key = issue[2]
     params = AddComment()
 
-    @measure
+    @jira_measure
     def add_comment_open_comment():
         func_name = inspect.stack()[0][3]
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -334,7 +334,7 @@ def add_comment(locust):
         locust.storage['form_token'] = form_token
     add_comment_open_comment()
 
-    @measure
+    @jira_measure
     def add_comment_save_comment():
         func_name = inspect.stack()[0][3]
         locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -349,7 +349,7 @@ def add_comment(locust):
     locust.storage.clear()
 
 
-@measure
+@jira_measure
 def browse_projects(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -365,7 +365,7 @@ def browse_projects(locust):
     locust.client.post('/rest/webResources/1.0/resources', params.body["3"], TEXT_HEADERS, catch_response=True)
 
 
-@measure
+@jira_measure
 def view_kanban_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -373,7 +373,7 @@ def view_kanban_board(locust):
     view_board(locust, kanban_board_id)
 
 
-@measure
+@jira_measure
 def view_scrum_board(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -381,7 +381,7 @@ def view_scrum_board(locust):
     view_board(locust, scrum_board_id)
 
 
-@measure
+@jira_measure
 def view_backlog(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
@@ -389,7 +389,7 @@ def view_backlog(locust):
     view_board(locust, scrum_board_id, view_backlog=True)
 
 
-@measure
+@jira_measure
 def browse_boards(locust):
     func_name = inspect.stack()[0][3]
     locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
