@@ -13,74 +13,74 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
 
-#
-# jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
-# confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
 
-#
-# def jira_measure(func):
-#     def wrapper(*args, **kwargs):
-#         start = time.time()
-#         result = global_measure(func, start, *args, **kwargs)
-#         total = (time.time() - start)
-#         if total < jira_action_time:
-#             sleep = (jira_action_time - total)
-#             print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-#             time.sleep(sleep)
-#         return result
-#     return wrapper
-#
-#
-# def confluence_measure(func):
-#     def wrapper(*args, **kwargs):
-#         start = time.time()
-#         result = global_measure(func, start, *args, **kwargs)
-#         total = (time.time() - start)
-#         if total < confluence_action_time:
-#             sleep = (confluence_action_time - total)
-#             print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-#             time.sleep(sleep)
-#         return result
-#     return wrapper
-#
-#
-# def global_measure(func, start_time, *args, **kwargs):
-#     result = None
-#     try:
-#         result = func(*args, **kwargs)
-#     except Exception as e:
-#         total = int((time.time() - start_time) * 1000)
-#         events.request_failure.fire(request_type="Action",
-#                                     name=f"locust_{func.__name__}",
-#                                     response_time=total,
-#                                     exception=e,
-#                                     response_length=0)
-#     else:
-#         total = int((time.time() - start_time) * 1000)
-#         events.request_success.fire(request_type="Action",
-#                                     name=f"locust_{func.__name__}",
-#                                     response_time=total,
-#                                     response_length=0)
-#     return result
-#
-#
-# def read_input_file(file_path):
-#     with open(file_path, 'r') as fs:
-#         reader = csv.reader(fs)
-#         return list(reader)
-#
-#
-# def fetch_by_re(pattern, text, group_no=1, default_value=None):
-#     search = re.search(pattern, text)
-#     if search:
-#         return search.group(group_no)
-#     else:
-#         return default_value
-#
-#
-# def read_json(file_json):
-#     with open(file_json) as f:
-#         return json.load(f)
+jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
+confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
+
+
+def jira_measure(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = global_measure(func, start, *args, **kwargs)
+        total = (time.time() - start)
+        if total < jira_action_time:
+            sleep = (jira_action_time - total)
+            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            time.sleep(sleep)
+        return result
+    return wrapper
+
+
+def confluence_measure(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = global_measure(func, start, *args, **kwargs)
+        total = (time.time() - start)
+        if total < confluence_action_time:
+            sleep = (confluence_action_time - total)
+            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            time.sleep(sleep)
+        return result
+    return wrapper
+
+
+def global_measure(func, start_time, *args, **kwargs):
+    result = None
+    try:
+        result = func(*args, **kwargs)
+    except Exception as e:
+        total = int((time.time() - start_time) * 1000)
+        events.request_failure.fire(request_type="Action",
+                                    name=f"locust_{func.__name__}",
+                                    response_time=total,
+                                    exception=e,
+                                    response_length=0)
+    else:
+        total = int((time.time() - start_time) * 1000)
+        events.request_success.fire(request_type="Action",
+                                    name=f"locust_{func.__name__}",
+                                    response_time=total,
+                                    response_length=0)
+    return result
+
+
+def read_input_file(file_path):
+    with open(file_path, 'r') as fs:
+        reader = csv.reader(fs)
+        return list(reader)
+
+
+def fetch_by_re(pattern, text, group_no=1, default_value=None):
+    search = re.search(pattern, text)
+    if search:
+        return search.group(group_no)
+    else:
+        return default_value
+
+
+def read_json(file_json):
+    with open(file_json) as f:
+        return json.load(f)
 
 
 def init_logger():
@@ -102,19 +102,17 @@ def init_logger():
     root_logger.addHandler(file_handler)
 
 
-# def timestamp_int():
-#     now = datetime.now()
-#     return int(datetime.timestamp(now))
-#
-#
-# def generate_random_string(length):
-#     return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
-#
-#
-# def get_first_index(from_list: list, err):
-#     if len(from_list) > 0:
-#         return from_list[0]
-#     else:
-#         raise IndexError(err)
+def timestamp_int():
+    now = datetime.now()
+    return int(datetime.timestamp(now))
 
-init_logger()
+
+def generate_random_string(length):
+    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+
+
+def get_first_index(from_list: list, err):
+    if len(from_list) > 0:
+        return from_list[0]
+    else:
+        raise IndexError(err)
