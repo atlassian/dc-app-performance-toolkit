@@ -1,0 +1,5 @@
+{
+  "login_and_view_dashboard": {
+    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","baseurl-checker-resource","dashboard","backbone-dashboard","atl.general","main"],"xr":["confluence.macros.advanced:blogpost-resources"]}
+  }
+}

@@ -24,9 +24,11 @@ class BaseResource:
             return json.load(f)
 
     def action_resources(self):
-        return self.resources_json[self.action_name] if self.action_name in self.resources_json else None
+        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
+
 
 class Login(BaseResource):
+    action_name = 'login_and_view_dashboard'
     login_body = {
         'os_username': '',
         'os_password': '',
@@ -34,3 +36,7 @@ class Login(BaseResource):
         'os_destination': '',
         'login': 'Log in'
     }
+    keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+    static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
+    version_number_re = 'meta name=\"ajs-version-number\" content=\"(.*?)\">'
+    build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
