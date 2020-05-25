@@ -1,5 +1,5 @@
 from locust import HttpLocust, TaskSet, task, between
-from locustio.confluence.http_actions import *
+from locustio.confluence.http_actions import login_and_view_dashboard, view_page
 from locustio.common_utils import init_logger
 from util.conf import CONFLUENCE_SETTINGS
 
@@ -11,6 +11,9 @@ class ConfluenceBehavior(TaskSet):
     def on_start(self):
         login_and_view_dashboard(self)
 
+    @task(1)
+    def view_page(self):
+        view_page(self)
 
     # @task(1)
     # def custom_action(self):

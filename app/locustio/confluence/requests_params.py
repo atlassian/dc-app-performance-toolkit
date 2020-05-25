@@ -40,3 +40,19 @@ class Login(BaseResource):
     static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
     version_number_re = 'meta name=\"ajs-version-number\" content=\"(.*?)\">'
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
+
+
+class ViewPage(BaseResource):
+    action_name = 'view_page'
+    parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
+    page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
+    space_key_re = 'meta id=\"confluence-space-key\" name=\"confluence-space-key\" content=\"(.*?)\"'
+    ancestor_ids_re = 'name=\"ancestorId\" value=\"(.*?)\"'
+    tree_result_id_re = 'name="treeRequestId" value="(.+?)"'
+    has_no_root_re = '"noRoot" value="(.+?)"'
+    root_page_id_re = 'name="rootPageId" value="(.+?)"'
+    atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
+    editable_re = 'id=\"editPageLink\" href="(.+?)\?pageId=(.+?)\"'
+
+
+
