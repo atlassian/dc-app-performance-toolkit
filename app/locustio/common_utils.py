@@ -13,6 +13,28 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
 
+TEXT_HEADERS = {
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                }
+ADMIN_HEADERS = {
+        'Accept-Language': 'en-US,en;q=0.5',
+        'X-AUSERNAME': 'admin',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept': '*/*'
+                }
+NO_TOKEN_HEADERS = {
+    "Accept-Language": "en-US,en;q=0.5",
+    "X-Requested-With": "XMLHttpRequest",
+    "__amdModuleName": "jira/issue/utils/xsrf-token-header",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "X-Atlassian-Token": "no-check"
+}
 
 jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
 confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)

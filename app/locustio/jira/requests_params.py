@@ -3,29 +3,6 @@ from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATA
     JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 import json
 
-TEXT_HEADERS = {
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                }
-ADMIN_HEADERS = {
-        'Accept-Language': 'en-US,en;q=0.5',
-        'X-AUSERNAME': 'admin',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept': '*/*'
-                }
-NO_TOKEN_HEADERS = {
-    "Accept-Language": "en-US,en;q=0.5",
-    "X-Requested-With": "XMLHttpRequest",
-    "__amdModuleName": "jira/issue/utils/xsrf-token-header",
-    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "Accept-Encoding": "gzip, deflate",
-    "Accept": "application/json, text/javascript, */*; q=0.01",
-    "X-Atlassian-Token": "no-check"
-}
-
 
 def jira_datasets():
     data_sets = dict()
@@ -55,7 +32,7 @@ class BaseResource:
             return json.load(f)
 
     def action_resources(self):
-        return self.resources_json[self.action_name] if self.action_name in self.resources_json else None
+        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
 
 
 class Login(BaseResource):
