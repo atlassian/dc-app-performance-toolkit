@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECT_KEYS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, BITBUCKET_USERS, BITBUCKET_PROJECTS, \
+    JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, BITBUCKET_USERS, BITBUCKET_PROJECTS, \
     BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_USERS
 
 SCREEN_WIDTH = 1920
@@ -43,7 +43,7 @@ class Dataset:
             self.dataset["jqls"] = self.__read_input_file(JIRA_DATASET_JQLS)
             self.dataset["scrum_boards"] = self.__read_input_file(JIRA_DATASET_SCRUM_BOARDS)
             self.dataset["kanban_boards"] = self.__read_input_file(JIRA_DATASET_KANBAN_BOARDS)
-            self.dataset["project_keys"] = self.__read_input_file(JIRA_DATASET_PROJECT_KEYS)
+            self.dataset["projects"] = self.__read_input_file(JIRA_DATASET_PROJECTS)
         return self.dataset
 
     def confluence_dataset(self):
