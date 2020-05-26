@@ -1,6 +1,6 @@
 {
   "login_and_view_dashboard": {
-    "1": {
+    "110": {
       "r": [],
       "c": [
         "browser-metrics-plugin.contrib"
@@ -25,7 +25,7 @@
         "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs"
       ]
     },
-    "2": {
+    "120": {
       "r": [],
       "c": [
         "jira.webresources:mentions-feature"
@@ -61,7 +61,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "3": {
+    "125": {
       "r": [
         "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
       ],
@@ -99,7 +99,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "4": {
+    "130": {
       "r": [],
       "c": [
         "browser-metrics-plugin.contrib"
@@ -135,7 +135,7 @@
     }
   },
   "search_jql": {
-    "1": {
+    "305": {
       "r": [
       ],
       "c": [
@@ -156,7 +156,7 @@
         "jira.filter.deletion.warning:styles"
       ]
     },
-    "2": {
+    "320": {
       "r": [
         "com.atlassian.jira.plugins.jira-editor-plugin:api",
         "com.atlassian.jira.plugins.jira-editor-plugin:resources",
@@ -190,7 +190,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "3": {
+    "330": {
       "r": [
         "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
       ],
@@ -240,7 +240,7 @@
     }
   },
   "view_project_summary": {
-    "1": {
+    "505": {
       "r": [
       ],
       "c": [
@@ -265,7 +265,7 @@
         "jira.webresources:global-static"
       ]
     },
-    "2": {
+    "510": {
       "r": [
       ],
       "c": [
@@ -300,7 +300,7 @@
         "com.atlassian.jira.gadgets:core-gadget-resources"
       ]
     },
-    "3": {
+    "520": {
       "r": [
       ],
       "c": [
@@ -339,7 +339,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "4": {
+    "530": {
       "r": [
       ],
       "c": [
@@ -379,7 +379,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "5": {
+    "545": {
       "r": [
         "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
       ],
@@ -418,7 +418,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "6": {
+    "555": {
       "r": [
       ],
       "c": [
@@ -455,7 +455,7 @@
     }
   },
   "edit_issue": {
-    "1": {
+    "705": {
       "r": [
       ],
       "c": [
@@ -474,7 +474,7 @@
         "jira.webresources:global-static"
       ]
     },
-    "2": {
+    "710": {
       "r": [
       ],
       "c": [
@@ -502,7 +502,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "3": {
+    "720": {
       "r": [
         "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip",
         "com.atlassian.jira.plugins.jira-editor-plugin:api",
@@ -534,7 +534,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "4": {
+    "740": {
       "r": [
       ],
       "c": [
@@ -551,7 +551,7 @@
       "xr": [
       ]
     },
-    "5": {
+    "745": {
       "r": [
       ],
       "c": [
@@ -579,7 +579,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "6": {
+    "765": {
       "r": [
         "com.atlassian.jira.plugins.jira-editor-plugin:api",
         "com.atlassian.jira.plugins.jira-editor-plugin:resources",
@@ -613,7 +613,7 @@
         "jira.webresources:bigpipe-init"
       ]
     },
-    "7": {
+    "775": {
       "r": [
       ],
       "c": [
@@ -665,34 +665,34 @@
     }
   },
   "view_dashboard": {
-    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general"],"xr":[]},
-    "2": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":["jira.webresources:mentions-feature","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general","browser-metrics-plugin.contrib","atl.global","jira.dashboard","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "605": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general"],"xr":[]},
+    "620": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":["jira.webresources:mentions-feature","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general","browser-metrics-plugin.contrib","atl.global","jira.dashboard","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
 
   },
   "add_comment": {
-    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "2": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "3": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "805": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "810": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "820": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
   },
   "browse_projects": {
-    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.general","jira.global"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "2": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "3": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "905": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.general","jira.global"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "910": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "920": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
   },
   "view_kanban_board": {
-    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts"],"xr":[]},
-    "2": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
-    "3": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "4": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "5": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "6": {"r":["com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3"]},
-    "7": {"r":[],"c":["jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","com.atlassian.jira.plugins.jira-editor-plugin:schema-builder","com.atlassian.jira.plugins.jira-editor-plugin:schema","com.atlassian.jira.plugins.jira-editor-plugin:i18n","com.atlassian.jira.plugins.jira-editor-plugin:wrm","com.atlassian.jira.plugins.jira-editor-plugin:converter-util","com.atlassian.jira.plugins.jira-editor-plugin:context-detector","com.atlassian.jira.plugins.jira-editor-plugin:context-manager","com.atlassian.jira.plugins.jira-editor-plugin:selection","com.atlassian.jira.plugins.jira-editor-plugin:instance","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:renderer","com.atlassian.jira.plugins.jira-editor-plugin:mentions","com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin","com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"]}
+    "1000": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts"],"xr":[]},
+    "1005": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
+    "1010": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1015": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1020": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1025": {"r":["com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3"]},
+    "1030": {"r":[],"c":["jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","com.atlassian.jira.plugins.jira-editor-plugin:schema-builder","com.atlassian.jira.plugins.jira-editor-plugin:schema","com.atlassian.jira.plugins.jira-editor-plugin:i18n","com.atlassian.jira.plugins.jira-editor-plugin:wrm","com.atlassian.jira.plugins.jira-editor-plugin:converter-util","com.atlassian.jira.plugins.jira-editor-plugin:context-detector","com.atlassian.jira.plugins.jira-editor-plugin:context-manager","com.atlassian.jira.plugins.jira-editor-plugin:selection","com.atlassian.jira.plugins.jira-editor-plugin:instance","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:renderer","com.atlassian.jira.plugins.jira-editor-plugin:mentions","com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin","com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"]}
   },
   "browse_boards": {
-    "1": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "2": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
-    "3": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "4": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "1205": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "1210": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
+    "1215": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1225": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
   }
 
 }

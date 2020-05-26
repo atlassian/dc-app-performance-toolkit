@@ -36,8 +36,11 @@ NO_TOKEN_HEADERS = {
     "X-Atlassian-Token": "no-check"
 }
 
+jira_action_percentage = JIRA_SETTINGS.action_percentage
+confluence_action_percentage = CONFLUENCE_SETTINGS.action_percentage
+
 jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
-confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
+confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / CONFLUENCE_SETTINGS.concurrency)
 
 
 def jira_measure(func):
