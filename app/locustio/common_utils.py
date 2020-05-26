@@ -63,7 +63,7 @@ def confluence_measure(func):
         total = (time.time() - start)
         if total < confluence_action_time:
             sleep = (confluence_action_time - total)
-            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
+            logger.info(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
             time.sleep(sleep)
         return result
     return wrapper
@@ -80,12 +80,14 @@ def global_measure(func, start_time, *args, **kwargs):
                                     response_time=total,
                                     exception=e,
                                     response_length=0)
+        logger.error(Exception)
     else:
         total = int((time.time() - start_time) * 1000)
         events.request_success.fire(request_type="Action",
                                     name=f"locust_{func.__name__}",
                                     response_time=total,
                                     response_length=0)
+        logger.info(f'{func.__name__} is finished successfully')
     return result
 
 
@@ -125,6 +127,7 @@ def init_logger():
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
     root_logger.addHandler(file_handler)
+    return root_logger
 
 
 def timestamp_int():
@@ -141,3 +144,5 @@ def get_first_index(from_list: list, err):
         return from_list[0]
     else:
         raise IndexError(err)
+
+logger = init_logger()

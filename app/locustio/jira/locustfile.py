@@ -1,11 +1,10 @@
 from locust import HttpLocust, TaskSet, task, between
 from locustio.jira.http_actions import login_and_view_dashboard, create_issue, search_jql, view_issue, \
     view_project_summary, view_dashboard, edit_issue, add_comment, browse_boards, view_kanban_board, view_scrum_board, \
-    view_backlog, browse_projects, custom_action
-from locustio.common_utils import init_logger, jira_action_percentage
+    view_backlog, browse_projects
+from locustio.common_utils import jira_action_percentage
+from extension.jira.extension_locust import custom_action
 from util.conf import JIRA_SETTINGS
-
-init_logger()
 
 
 class JiraBehavior(TaskSet):

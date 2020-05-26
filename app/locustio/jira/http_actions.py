@@ -7,7 +7,7 @@ from locust.exception import ResponseError
 from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, jira_datasets
 from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string, TEXT_HEADERS, \
-    ADMIN_HEADERS, NO_TOKEN_HEADERS
+    ADMIN_HEADERS, NO_TOKEN_HEADERS, logger
 
 from util.conf import JIRA_SETTINGS
 
@@ -17,8 +17,6 @@ jira_dataset = jira_datasets()
 
 @jira_measure
 def login_and_view_dashboard(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = Login()
 
     user = random.choice(jira_dataset["users"])
@@ -28,6 +26,8 @@ def login_and_view_dashboard(locust):
 
     locust.client.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
     r = locust.client.get('/', catch_response=True)
+    if not r.content:
+        raise Exception('Please check server hostname in jira.yml file')
     content = r.content.decode('utf-8')
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("110"),
                        TEXT_HEADERS, catch_response=True)
@@ -52,21 +52,19 @@ def login_and_view_dashboard(locust):
     # Assertions
     token = fetch_by_re(params.atl_token_pattern, content)
     if not token:
-        locust.logger.info(f'{content}')
+        logger.info(f'{params.action_name}: {content}')
         raise ResponseError('Atlassian token not found in login requests')
     assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
     locust.user = user[0]
     locust.atl_token = token
     locust.storage = dict()  # Define locust storage dict for getting cross-functional variables access
-    locust.logger.info(f"User {user[0]} logged in with atl_token: {token}")
+    logger.info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
 
 
 @jira_measure
 def view_issue(locust):
-    func_name = inspect.stack()[0][3]
     issue_key = random.choice(jira_dataset['issues'])[0]
     project_key = random.choice(jira_dataset['issues'])[2]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = BrowseIssue()
 
     r = locust.client.get(f'/browse/{issue_key}', catch_response=True)
@@ -77,9 +75,9 @@ def view_issue(locust):
     locust.client.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
     # Assertions
     assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue {issue_key} not found'
-    locust.logger.info(f"Issue {issue_key} is opened successfully")
+    logger.info(f"{params.action_name}: Issue {issue_key} is opened successfully")
 
-    locust.logger.info(f'Issue key: {issue_key}, issue_id {issue_id}')
+    logger.info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
     if edit_allowed:
         url = f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId={issue_id}&_={timestamp_int()}'
         locust.client.get(url, catch_response=True)
@@ -88,14 +86,10 @@ def view_issue(locust):
 
 
 def create_issue(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = CreateIssue()
 
     @jira_measure
     def create_issue_open_quick_create():
-        func_name = inspect.stack()[0][3]
-        locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
         r = locust.client.post('/secure/QuickCreateIssue!default.jspa?decorator=none',
                                ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
@@ -130,15 +124,13 @@ def create_issue(locust):
 
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
-        locust.logger.info(f"Issue {issue_key} was successfully created")
+        logger.info(f"{params.action_name}: Issue {issue_key} was successfully created")
     create_issue_submit_form()
     locust.storage.clear()
 
 
 @jira_measure
 def search_jql(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     jql = random.choice(jira_dataset['jqls'])[0]
     params = SearchJql()
 
@@ -169,7 +161,6 @@ def search_jql(locust):
         content = r.content.decode('utf-8')
         issue_key = fetch_by_re(params.issue_key_pattern, content)
         issue_id = fetch_by_re(params.issue_id_pattern, content)
-        locust.logger.info(f"issue_key: {issue_key}, issue_id: {issue_id}")
     locust.client.post('/secure/QueryComponent!Jql.jspa', params={'jql': 'order by created DESC',
                                                                   'decorator': None}, headers=TEXT_HEADERS,
                        catch_response=True)
@@ -190,14 +181,12 @@ def search_jql(locust):
 
 @jira_measure
 def view_project_summary(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     project_key = random.choice(jira_dataset["issues"])[2]
     params = ViewProjectSummary()
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
-    locust.logger.info(f"View project {project_key}")
+    logger.info(f"{params.action_name}: View project {project_key}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
     assert assert_string in content, f'{params.err_message} {project_key}'
@@ -230,8 +219,6 @@ def view_project_summary(locust):
 
 
 def edit_issue(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
@@ -251,7 +238,7 @@ def edit_issue(locust):
 
         assert f' Edit Issue:  [{issue_key}]' in content, \
             f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}'
-        locust.logger.info(f"Editing issue {issue_key}")
+        logger.info(f"{params.action_name}: Editing issue {issue_key}")
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("705"),
                            TEXT_HEADERS, catch_response=True)
@@ -297,8 +284,6 @@ def edit_issue(locust):
 
 @jira_measure
 def view_dashboard(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = ViewDashboard()
 
     r = locust.client.get('/secure/Dashboard.jspa', catch_response=True)
@@ -323,8 +308,6 @@ def view_dashboard(locust):
 
 
 def add_comment(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
@@ -333,8 +316,6 @@ def add_comment(locust):
 
     @jira_measure
     def add_comment_open_comment():
-        func_name = inspect.stack()[0][3]
-        locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
         r = locust.client.get(f'/secure/AddComment!default.jspa?id={issue_id}', catch_response=True)
         content = r.content.decode('utf-8')
         token = fetch_by_re(params.atl_token_pattern, content)
@@ -355,8 +336,6 @@ def add_comment(locust):
 
     @jira_measure
     def add_comment_save_comment():
-        func_name = inspect.stack()[0][3]
-        locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
         r = locust.client.post(f'/secure/AddComment.jspa?atl_token={locust.storage["token"]}',
                                params={"id": {issue_id}, "formToken": locust.storage["form_token"],
                                        "dnd-dropzone": None, "comment": generate_random_string(20),
@@ -370,8 +349,6 @@ def add_comment(locust):
 
 @jira_measure
 def browse_projects(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     params = BrowseProjects()
 
     page = random.randint(1, jira_dataset['pages'])
@@ -389,32 +366,24 @@ def browse_projects(locust):
 
 @jira_measure
 def view_kanban_board(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     kanban_board_id = random.choice(jira_dataset["kanban_boards"])[0]
     view_board(locust, kanban_board_id)
 
 
 @jira_measure
 def view_scrum_board(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id)
 
 
 @jira_measure
 def view_backlog(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id, view_backlog=True)
 
 
 @jira_measure
 def browse_boards(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
     locust.client.get('/secure/ManageRapidViews.jspa', catch_response=True)
     params = BrowseBoards()
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1205"),
@@ -442,7 +411,7 @@ def view_board(locust, board_id, view_backlog=False):
     project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2)
     if project_plan:
         project_plan = project_plan.replace('\\', '')
-    locust.logger.info(f"key = {project_key}, id = {project_id}, plan = {project_plan}")
+    logger.info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
     assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board {board_id}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1000"),
@@ -482,12 +451,3 @@ def view_board(locust, board_id, view_backlog=False):
         locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
                           {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
                           catch_response=True)
-
-
-def custom_action(locust):
-    func_name = inspect.stack()[0][3]
-    locust.logger = logging.getLogger(f'{func_name}-%03d' % next(counter))
-    r = locust.client.get(f'/plugin/report')
-    content = r.content.decode('utf-8')
-    locust.logger.info(f'debug: {content}')
-    assert 'assertion string' in content
