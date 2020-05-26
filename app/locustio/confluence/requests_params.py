@@ -17,7 +17,7 @@ class BaseResource:
 
     def __init__(self):
         self.resources_json = self.read_json()
-        self.body = self.action_resources()
+        self.resources_body = self.action_resources()
 
     def read_json(self):
         with open(self.resources_file) as f:
@@ -54,5 +54,6 @@ class ViewPage(BaseResource):
     atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
     editable_re = 'id=\"editPageLink\" href="(.+?)\?pageId=(.+?)\"'
 
+    inline_comment_re = '\"id\":(.+?)\,\"'
 
 

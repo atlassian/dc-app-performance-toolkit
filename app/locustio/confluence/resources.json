@@ -1,6 +1,9 @@
 {
   "login_and_view_dashboard": {
-    "1": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","baseurl-checker-resource","dashboard","backbone-dashboard","atl.general","main"],"xr":["confluence.macros.advanced:blogpost-resources"]},
-    "2": {"r":[],"c":["com.atlassian.confluence.extra.team-calendars.resources-batch"],"xc":["_super","baseurl-checker-resource","dashboard","backbone-dashboard","atl.general","main"],"xr":["confluence.macros.advanced:blogpost-resources"]}
+    "010": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","baseurl-checker-resource","dashboard","backbone-dashboard","atl.general","main"],"xr":["confluence.macros.advanced:blogpost-resources"]},
+    "025": {"r":[],"c":["com.atlassian.confluence.extra.team-calendars.resources-batch"],"xc":["_super","baseurl-checker-resource","dashboard","backbone-dashboard","atl.general","main"],"xr":["confluence.macros.advanced:blogpost-resources"]}
+  },
+  "view_page": {
+    "110": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","baseurl-checker-resource","atl.confluence.plugins.pagetree-desktop","main","viewcontent","page","atl.general","atl.comments"],"xr":[]}
   }
 }
