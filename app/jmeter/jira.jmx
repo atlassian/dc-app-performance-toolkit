@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, jira-LoadB-TXZ3NODI10HK-302437502.us-east-2.elb.amazonaws.com)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, your_jira_instance)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
@@ -104,7 +104,7 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -227,7 +227,7 @@ props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
             </elementProp>
             <elementProp name="perc_view_project_summary" elementType="Argument">
               <stringProp name="Argument.name">perc_view_project_summary</stringProp>
-              <stringProp name="Argument.value">${__P(perc_view_project_summary, 100)}</stringProp>
+              <stringProp name="Argument.value">${__P(perc_view_project_summary, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_view_dashboard" elementType="Argument">
