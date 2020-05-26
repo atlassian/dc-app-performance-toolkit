@@ -145,4 +145,5 @@ def get_first_index(from_list: list, err):
     else:
         raise IndexError(err)
 
+
 logger = init_logger()
