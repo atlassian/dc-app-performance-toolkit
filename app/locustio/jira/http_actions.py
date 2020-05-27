@@ -1,6 +1,4 @@
 import itertools
-import inspect
-import logging
 import random
 import re
 from locust.exception import ResponseError
@@ -11,7 +9,6 @@ from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, gene
 
 from util.conf import JIRA_SETTINGS
 
-counter = itertools.count()
 jira_dataset = jira_datasets()
 
 
@@ -63,9 +60,9 @@ def login_and_view_dashboard(locust):
 
 @jira_measure
 def view_issue(locust):
+    params = BrowseIssue()
     issue_key = random.choice(jira_dataset['issues'])[0]
     project_key = random.choice(jira_dataset['issues'])[2]
-    params = BrowseIssue()
 
     r = locust.client.get(f'/browse/{issue_key}', catch_response=True)
     content = r.content.decode('utf-8')
@@ -131,8 +128,8 @@ def create_issue(locust):
 
 @jira_measure
 def search_jql(locust):
-    jql = random.choice(jira_dataset['jqls'])[0]
     params = SearchJql()
+    jql = random.choice(jira_dataset['jqls'])[0]
 
     r = locust.client.get(f'/issues/?jql={jql}', catch_response=True)
     assert locust.atl_token in r.content.decode('utf-8'), f'Can not search by {jql}'
@@ -181,8 +178,8 @@ def search_jql(locust):
 
 @jira_measure
 def view_project_summary(locust):
-    project_key = random.choice(jira_dataset["issues"])[2]
     params = ViewProjectSummary()
+    project_key = random.choice(jira_dataset["issues"])[2]
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
@@ -203,9 +200,9 @@ def view_project_summary(locust):
                       catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("530"),
                        TEXT_HEADERS, catch_response=True)
-    r = locust.client.get(f'/projects/{project_key}?selectedItem=com.atlassian.jira.jira-projects-plugin:'
-                          f'project-activity-summary&decorator=none&contentOnly=true&_={timestamp_int()}',
-                          catch_response=True)
+    locust.client.get(f'/projects/{project_key}?selectedItem=com.atlassian.jira.jira-projects-plugin:'
+                      f'project-activity-summary&decorator=none&contentOnly=true&_={timestamp_int()}',
+                      catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("545"),
                        TEXT_HEADERS, catch_response=True)
     locust.client.put(f'/rest/api/2/user/properties/lastViewedVignette?username={locust.user}', data={"id": "priority"},
@@ -219,11 +216,11 @@ def view_project_summary(locust):
 
 
 def edit_issue(locust):
+    params = EditIssue()
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
-    params = EditIssue()
 
     @jira_measure
     def edit_issue_open_editor():
@@ -308,11 +305,11 @@ def view_dashboard(locust):
 
 
 def add_comment(locust):
+    params = AddComment()
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
     issue_key = issue[0]
     project_key = issue[2]
-    params = AddComment()
 
     @jira_measure
     def add_comment_open_comment():
@@ -384,8 +381,8 @@ def view_backlog(locust):
 
 @jira_measure
 def browse_boards(locust):
-    locust.client.get('/secure/ManageRapidViews.jspa', catch_response=True)
     params = BrowseBoards()
+    locust.client.get('/secure/ManageRapidViews.jspa', catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1205"),
                        TEXT_HEADERS, catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1210"),

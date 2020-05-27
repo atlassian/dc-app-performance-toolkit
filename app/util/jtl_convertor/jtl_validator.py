@@ -23,14 +23,9 @@ ELAPSED = 'elapsed'
 TIME_STAMP = 'timeStamp'
 METHOD = 'method'
 
-SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE, THREAD_NAME,
-                                   SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY, HOSTNAME, CONNECT]
-# Workaround for https://github.com/Blazemeter/taurus/pull/1311
-OLD_LOCUST_JTL_HEADER: List[str] = [TIME_STAMP, LABEL, METHOD, ELAPSED, BYTES, RESPONSE_CODE, RESPONSE_MESSAGE, SUCCESS,
-                                    ALL_THREADS, LATENCY]
-
-CORRECT_LOCUST_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE, SUCCESS, BYTES,
-                                    GRP_THREADS, ALL_THREADS, LATENCY]
+SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE,
+                                   SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY]
+OPTIONAL_JTL_HEADER: List[str] = [GRP_THREADS]
 
 JTL_HEADERS_DIFF_LOCUST_JMETER: List[str] = [THREAD_NAME, CONNECT, HOSTNAME]
 
@@ -48,6 +43,7 @@ VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     LATENCY: [],
     HOSTNAME: [],
     CONNECT: [],
+    METHOD: [],
 }
 
 
@@ -73,10 +69,11 @@ def __validate_row(jtl_row: Dict) -> None:
         __validate_value(column, str(value))
 
 
-def __validate_header(header: List) -> None:
-    if not ((SUPPORTED_JTL_HEADER == header) or (CORRECT_LOCUST_HEADER == header)):
-        __raise_validation_error(f"Header is not correct. Supported Jmeter header is {SUPPORTED_JTL_HEADER} or "
-                                 f"Locust header is {CORRECT_LOCUST_HEADER}")
+def __validate_header(headers: List) -> None:
+    for header in SUPPORTED_JTL_HEADER:
+        if header not in headers and header not in OPTIONAL_JTL_HEADER:
+            __raise_validation_error(f"Headers is not correct. Supported headers is {SUPPORTED_JTL_HEADER}. "
+                                     f"{header} is missed")
 
 
 def __raise_validation_error(error_msg: str) -> None:
@@ -91,21 +88,36 @@ def __validate_rows(reader) -> None:
             __raise_validation_error(f"File row number: {file_row_num}. {str(e)}")
 
 
+def validate_kpi_file(file_path: Path):
+    print(f'Started validating jtl file: {file_path}')
+    start_time = time.time()
+    try:
+        with file_path.open(mode='r') as f:
+            reader: DictReader = DictReader(f)
+            __validate_header(reader.fieldnames)
+            __validate_rows(reader)
+
+    except (ValidationException, FileNotFoundError) as e:
+        raise SystemExit(f"ERROR: Validation failed. File path: [{file_path}]. Validation details: {str(e)}")
+
+    print(f'File: {file_path} validated in {time.time() - start_time} seconds')
+
+
 # https://github.com/Blazemeter/taurus/pull/1311
-def reorder_locust_jtl_header(file_path):
+def reorder_kpi_jtl(file_path):
     updated_row = []
     with file_path.open(mode='r') as kpi:
         reader = DictReader(kpi)
-        if reader.fieldnames == OLD_LOCUST_JTL_HEADER:
-            print('Reordering columns for locust kpi.jtl')
-        else:
-            return
+        usupported_headers = list(set(reader.fieldnames) - set(SUPPORTED_JTL_HEADER))
         for row in reader:
-            del row[METHOD]
-            row[GRP_THREADS] = row[ALL_THREADS]
+            for unsupported_header in usupported_headers:
+                if unsupported_header in row.keys():
+                    del row[unsupported_header]
+            if GRP_THREADS not in row.keys():
+                row[GRP_THREADS] = row[ALL_THREADS]
             updated_row.append(row)
     with file_path.open(mode='w') as out_kpi:
-        writer = DictWriter(out_kpi, fieldnames=CORRECT_LOCUST_HEADER)
+        writer = DictWriter(out_kpi, fieldnames=SUPPORTED_JTL_HEADER)
         writer.writeheader()
         for row in updated_row:
             writer.writerow(row)
@@ -113,16 +125,6 @@ def reorder_locust_jtl_header(file_path):
 
 
 def validate(file_path: Path) -> None:
-    print(f'Started validating jtl file: {file_path}')
-    start_time = time.time()
+    validate_kpi_file(file_path)
     if file_path.name == 'kpi.jtl':
-        reorder_locust_jtl_header(file_path)
-    try:
-        with file_path.open(mode='r') as f:
-            reader: DictReader = DictReader(f)
-            __validate_header(reader.fieldnames)
-            __validate_rows(reader)
-    except (ValidationException, FileNotFoundError) as e:
-        raise SystemExit(f"ERROR: Validation failed. File path: [{file_path}]. Validation details: {str(e)}")
-
-    print(f'File: {file_path} validated in {time.time() - start_time} seconds')
+        reorder_kpi_jtl(file_path)
