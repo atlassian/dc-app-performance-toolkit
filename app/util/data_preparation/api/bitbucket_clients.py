@@ -52,10 +52,16 @@ class BitbucketRestClient(RestClient):
         while len(non_fork_repos) < max_results:
             api_url = f'{self.host}/rest/api/1.0/repos?limit={batch_size}&start={start_at}'
             response = self.get(api_url, f'Could not retrieve entities list')
-            for repo in response.json()['values']:
-                if 'origin' not in repo and len(non_fork_repos) < max_results:
+            repos = response.json()['values']
+            for repo in repos:
+                if 'origin' not in repo:
                     non_fork_repos.append(repo)
-            start_at = start_at + batch_size
+                    if len(non_fork_repos) == max_results:
+                        break
+            if len(repos) == batch_size:
+                start_at = start_at + batch_size
+            else:
+                break
         return non_fork_repos
 
     def get_projects(self, max_results=500):
