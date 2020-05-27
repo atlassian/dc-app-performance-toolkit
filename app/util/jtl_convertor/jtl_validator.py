@@ -74,11 +74,9 @@ def __validate_row(jtl_row: Dict) -> None:
 
 
 def __validate_header(header: List) -> None:
-    locust_headers = [header for header in SUPPORTED_JTL_HEADER if header not in JTL_HEADERS_DIFF_LOCUST_JMETER]
-    if not ((SUPPORTED_JTL_HEADER == header) or (locust_headers == header)):
-        if not list(set(SUPPORTED_JTL_HEADER) - set(header)) == JTL_HEADERS_DIFF_LOCUST_JMETER:
-            __raise_validation_error(f"Header is not correct. Supported Jmeter header is {SUPPORTED_JTL_HEADER} or "
-                                     f"Locust header is {locust_headers}")
+    if not ((SUPPORTED_JTL_HEADER == header) or (CORRECT_LOCUST_HEADER == header)):
+        __raise_validation_error(f"Header is not correct. Supported Jmeter header is {SUPPORTED_JTL_HEADER} or "
+                                 f"Locust header is {CORRECT_LOCUST_HEADER}")
 
 
 def __raise_validation_error(error_msg: str) -> None:
