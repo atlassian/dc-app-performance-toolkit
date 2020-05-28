@@ -172,7 +172,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
   echo "Required space: ${REQUIRED_SPACE_GB} GB"
   exit 1
 fi
- use computer style progress bar
+#use computer style progress bar
 time wget --progress=dot:giga ${DB_DUMP_URL}
 if [[ $? -ne 0 ]]; then
   echo "DB dump download failed! Pls check available disk space."
