@@ -162,7 +162,7 @@ fi
 echo "Step5: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
-ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/ 1024))
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
 FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
 FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
