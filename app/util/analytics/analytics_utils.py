@@ -57,8 +57,11 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}\n')
 
     summary_report.append(f'Action|Success Rate|Status')
-    load_test_rates = collector.jmeter_test_rates if collector.conf.load_executor == 'jmeter' \
-        else collector.locust_test_rates
+    load_test_rates = {}
+    if collector.conf.load_executor == 'jmeter':
+        load_test_rates = collector.jmeter_test_rates
+    elif collector.conf.load_executor == 'locust':
+        load_test_rates = collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'

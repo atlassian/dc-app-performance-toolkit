@@ -122,6 +122,7 @@ def send_analytics(collector: AnalyticsCollector):
                "act_dur": collector.actual_duration,
                "selenium_test_rates": collector.selenium_test_rates,
                "jmeter_test_rates": collector.jmeter_test_rates,
+               "locust_test_rates": collector.locust_test_rates,
                "concurrency": collector.concurrency
                }
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
@@ -135,8 +136,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    # if collector.is_analytics_enabled():
-    #     send_analytics(collector)
+    if collector.is_analytics_enabled():
+        send_analytics(collector)
 
 
 if __name__ == '__main__':
