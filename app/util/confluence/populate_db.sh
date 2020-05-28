@@ -213,7 +213,7 @@ echo "Step9: Remove ${CONFLUENCE_BASE_URL_FILE} file"
 sudo rm ${CONFLUENCE_BASE_URL_FILE}
 
 echo "Finished"
-echo # move to a new line
+echo  # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Wait a couple of minutes until Confluence is started."
