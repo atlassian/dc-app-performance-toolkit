@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import IO, List, Set
 
 from util.jtl_convertor import jtl_validator
+from util.jtl_convertor.jtl_modifier import reorder_kpi_jtl
 
 RESULTS_CSV_NAME = 'results.csv'
 ENV_JMETER_VERSION = 'JMETER_VERSION'
@@ -112,6 +113,8 @@ def main():
         for file_name in file_names:
             jtl_file_path = artifacts_dir_path / file_name
             jtl_validator.validate(jtl_file_path)
+            if jtl_file_path.name == 'kpi.jtl':
+                jtl_file_path = reorder_kpi_jtl(jtl_file_path, tmp_dir)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
             __convert_jtl_to_csv(jtl_file_path, csv_file_path, jmeter_lib_dir)
             temp_csv_list.append(csv_file_path)

@@ -30,6 +30,16 @@ class AppSettings:
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
 
-JIRA_SETTINGS = AppSettings(config_yml=JIRA_YML)
-CONFLUENCE_SETTINGS = AppSettings(config_yml=CONFLUENCE_YML)
+class AppSettingsExtLoadExecutor(AppSettings):
+
+    def __init__(self, config_yml):
+        super().__init__(config_yml)
+        obj = read_yml_file(config_yml)
+        self.total_actions_per_hour = obj['settings']['env']['total_actions_per_hour']
+        self.load_executor = obj['settings']['env']['LOAD_EXECUTOR']
+        self.action_percentage = obj['settings']['env']['action_percentage']
+
+
+JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)
+CONFLUENCE_SETTINGS = AppSettingsExtLoadExecutor(config_yml=CONFLUENCE_YML)
 BITBUCKET_SETTINGS = AppSettings(config_yml=BITBUCKET_YML)
