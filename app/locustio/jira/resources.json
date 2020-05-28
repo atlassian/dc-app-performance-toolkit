@@ -1,0 +1,698 @@
+{
+  "login_and_view_dashboard": {
+    "110": {
+      "r": [],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "_super",
+        "atl.dashboard",
+        "jira.global",
+        "atl.general",
+        "jira.general"
+      ],
+      "xr": [
+        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
+        "com.atlassian.gadgets.dashboard:gadgets-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:adgs",
+        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
+        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
+        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
+        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs"
+      ]
+    },
+    "120": {
+      "r": [],
+      "c": [
+        "jira.webresources:mentions-feature"
+      ],
+      "xc": [
+        "_super",
+        "atl.dashboard",
+        "jira.global",
+        "atl.general",
+        "jira.general",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.dashboard",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
+        "com.atlassian.gadgets.dashboard:gadgets-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:adgs",
+        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
+        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
+        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
+        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "125": {
+      "r": [
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
+      ],
+      "c": [
+        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
+      ],
+      "xc": [
+        "_super",
+        "atl.dashboard",
+        "jira.global",
+        "atl.general",
+        "jira.general",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.dashboard",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
+        "com.atlassian.gadgets.dashboard:gadgets-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:adgs",
+        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
+        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
+        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
+        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
+        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "130": {
+      "r": [],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "jira.webresources:almond",
+        "jira.webresources:aui-core-amd-shim",
+        "jira.webresources:jira-metadata",
+        "jira.webresources:jquery-livestamp",
+        "com.atlassian.auiplugin:ajs-underscorejs",
+        "com.atlassian.analytics.analytics-client:js-events",
+        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
+        "com.atlassian.gadgets.publisher:ajs-gadgets",
+        "com.atlassian.streams:streamsGadgetResources"
+      ],
+      "xr": [
+        "jira.webresources:icons",
+        "jira.webresources:list-styles",
+        "jira.webresources:inline-layer",
+        "jira.webresources:dropdown",
+        "com.atlassian.auiplugin:aui-lozenge",
+        "com.atlassian.auiplugin:aui-tipsy",
+        "com.atlassian.auiplugin:aui-tooltips",
+        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
+        "jira.webresources:frother-queryable-dropdown-select",
+        "jira.webresources:frother-singleselect",
+        "jira.webresources:frother-multiselect",
+        "jira.webresources:frother-checkbox-multiselect",
+        "jira.webresources:select-pickers",
+        "jira.webresources:autocomplete",
+        "com.atlassian.jira.gadgets:core-gadget-resources"
+      ]
+    }
+  },
+  "search_jql": {
+    "305": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "_super",
+        "jira.view.issue",
+        "jira.navigator.kickass",
+        "viewissue.standalone",
+        "jira.navigator.simple",
+        "jira.navigator.advanced",
+        "atl.general",
+        "jira.general",
+        "jira.global"
+      ],
+      "xr": [
+        "jira.filter.deletion.warning:styles"
+      ]
+    },
+    "320": {
+      "r": [
+        "com.atlassian.jira.plugins.jira-editor-plugin:api",
+        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
+      ],
+      "c": [
+        "jira.webresources:mentions-feature",
+        "jira.rich.editor"
+      ],
+      "xc": [
+        "_super",
+        "jira.view.issue",
+        "jira.navigator.kickass",
+        "viewissue.standalone",
+        "jira.navigator.simple",
+        "jira.navigator.advanced",
+        "atl.general",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "jira.filter.deletion.warning:styles",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "330": {
+      "r": [
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
+      ],
+      "c": [
+      ],
+      "xc": [
+        "_super",
+        "jira.view.issue",
+        "jira.navigator.kickass",
+        "viewissue.standalone",
+        "jira.navigator.simple",
+        "jira.navigator.advanced",
+        "atl.general",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel",
+        "jira.rich.editor"
+      ],
+      "xr": [
+        "jira.filter.deletion.warning:styles",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init",
+        "com.atlassian.jira.plugins.jira-editor-plugin:tinymce",
+        "com.atlassian.jira.plugins.jira-editor-plugin:schema-builder",
+        "com.atlassian.jira.plugins.jira-editor-plugin:schema",
+        "com.atlassian.jira.plugins.jira-editor-plugin:i18n",
+        "com.atlassian.jira.plugins.jira-editor-plugin:wrm",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter-util",
+        "com.atlassian.jira.plugins.jira-editor-plugin:context-detector",
+        "com.atlassian.jira.plugins.jira-editor-plugin:context-manager",
+        "com.atlassian.jira.plugins.jira-editor-plugin:selection",
+        "com.atlassian.jira.plugins.jira-editor-plugin:instance",
+        "com.atlassian.jira.plugins.jira-editor-plugin:api",
+        "com.atlassian.jira.plugins.jira-editor-plugin:renderer",
+        "com.atlassian.jira.plugins.jira-editor-plugin:mentions",
+        "com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin",
+        "com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with",
+        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
+      ]
+    }
+  },
+  "view_project_summary": {
+    "505": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "_super",
+        "com.atlassian.jira.project.summary.page",
+        "jira.project.sidebar",
+        "com.atlassian.jira.projects.sidebar.init",
+        "atl.general",
+        "jira.general",
+        "jira.global"
+      ],
+      "xr": [
+        "jira.webresources:calendar-lib",
+        "jira.webresources:autocomplete",
+        "jira.webresources:groupbrowser",
+        "jira.webresources:group-pickers",
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static"
+      ]
+    },
+    "510": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "jira.webresources:almond",
+        "jira.webresources:aui-core-amd-shim",
+        "jira.webresources:jira-metadata",
+        "jira.webresources:jquery-livestamp",
+        "com.atlassian.auiplugin:ajs-underscorejs",
+        "com.atlassian.analytics.analytics-client:js-events",
+        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
+        "com.atlassian.gadgets.publisher:ajs-gadgets",
+        "com.atlassian.streams:streamsGadgetResources"
+      ],
+      "xr": [
+        "jira.webresources:icons",
+        "jira.webresources:list-styles",
+        "jira.webresources:inline-layer",
+        "jira.webresources:dropdown",
+        "com.atlassian.auiplugin:aui-lozenge",
+        "com.atlassian.auiplugin:aui-tipsy",
+        "com.atlassian.auiplugin:aui-tooltips",
+        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
+        "jira.webresources:frother-queryable-dropdown-select",
+        "jira.webresources:frother-singleselect",
+        "jira.webresources:frother-multiselect",
+        "jira.webresources:frother-checkbox-multiselect",
+        "jira.webresources:select-pickers",
+        "jira.webresources:autocomplete",
+        "com.atlassian.jira.gadgets:core-gadget-resources"
+      ]
+    },
+    "520": {
+      "r": [
+      ],
+      "c": [
+        "jira.webresources:mentions-feature"
+      ],
+      "xc": [
+        "_super",
+        "com.atlassian.jira.project.summary.page",
+        "jira.project.sidebar",
+        "com.atlassian.jira.projects.sidebar.init",
+        "atl.general",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "jira.webresources:calendar-lib",
+        "jira.webresources:autocomplete",
+        "jira.webresources:groupbrowser",
+        "jira.webresources:group-pickers",
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar",
+        "jira.webresources:group-label-lozenge",
+        "jira.webresources:ie-imitation-placeholder",
+        "jira.webresources:jira-project-issuetype-fields",
+        "jira.webresources:jira-fields",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "530": {
+      "r": [
+      ],
+      "c": [
+        "jira.project.sidebar",
+        "jira.project.sidebar.software"
+      ],
+      "xc": [
+        "_super",
+        "com.atlassian.jira.project.summary.page",
+        "jira.project.sidebar",
+        "com.atlassian.jira.projects.sidebar.init",
+        "atl.general",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "jira.webresources:calendar-lib",
+        "jira.webresources:autocomplete",
+        "jira.webresources:groupbrowser",
+        "jira.webresources:group-pickers",
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar",
+        "jira.webresources:group-label-lozenge",
+        "jira.webresources:ie-imitation-placeholder",
+        "jira.webresources:jira-project-issuetype-fields",
+        "jira.webresources:jira-fields",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "545": {
+      "r": [
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
+      ],
+      "c": [
+      ],
+      "xc": [
+        "_super",
+        "com.atlassian.jira.project.summary.page",
+        "jira.project.sidebar",
+        "com.atlassian.jira.projects.sidebar.init",
+        "atl.general",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "jira.webresources:calendar-lib",
+        "jira.webresources:autocomplete",
+        "jira.webresources:groupbrowser",
+        "jira.webresources:group-pickers",
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar",
+        "jira.webresources:group-label-lozenge",
+        "jira.webresources:ie-imitation-placeholder",
+        "jira.webresources:jira-project-issuetype-fields",
+        "jira.webresources:jira-fields",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "555": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "jira.webresources:almond",
+        "jira.webresources:aui-core-amd-shim",
+        "jira.webresources:jira-metadata",
+        "jira.webresources:jquery-livestamp",
+        "com.atlassian.auiplugin:ajs-underscorejs",
+        "com.atlassian.analytics.analytics-client:js-events",
+        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
+        "com.atlassian.gadgets.publisher:ajs-gadgets",
+        "com.atlassian.streams:streamsGadgetResources"
+      ],
+      "xr": [
+        "jira.webresources:icons",
+        "jira.webresources:list-styles",
+        "jira.webresources:inline-layer",
+        "jira.webresources:dropdown",
+        "com.atlassian.auiplugin:aui-lozenge",
+        "com.atlassian.auiplugin:aui-tipsy",
+        "com.atlassian.auiplugin:aui-tooltips",
+        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
+        "jira.webresources:frother-queryable-dropdown-select",
+        "jira.webresources:frother-singleselect",
+        "jira.webresources:frother-multiselect",
+        "jira.webresources:frother-checkbox-multiselect",
+        "jira.webresources:select-pickers",
+        "jira.webresources:autocomplete",
+        "com.atlassian.jira.gadgets:core-gadget-resources"
+      ]
+    }
+  },
+  "edit_issue": {
+    "705": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "_super",
+        "atl.general",
+        "jira.edit.issue",
+        "jira.general",
+        "jira.global"
+      ],
+      "xr": [
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static"
+      ]
+    },
+    "710": {
+      "r": [
+      ],
+      "c": [
+        "jira.webresources:mentions-feature"
+      ],
+      "xc": [
+        "_super",
+        "atl.general",
+        "jira.edit.issue",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "720": {
+      "r": [
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip",
+        "com.atlassian.jira.plugins.jira-editor-plugin:api",
+        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
+      ],
+      "c": [
+        "jira.rich.editor"
+      ],
+      "xc": [
+        "_super",
+        "atl.general",
+        "jira.edit.issue",
+        "jira.general",
+        "jira.global",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "com.atlassian.auiplugin:aui-labels",
+        "jira.webresources:global-static-adgs",
+        "jira.webresources:global-static",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "740": {
+      "r": [
+      ],
+      "c": [
+        "browser-metrics-plugin.contrib"
+      ],
+      "xc": [
+        "_super",
+        "project.issue.navigator",
+        "jira.view.issue",
+        "jira.global",
+        "atl.general",
+        "jira.general"
+      ],
+      "xr": [
+      ]
+    },
+    "745": {
+      "r": [
+      ],
+      "c": [
+        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
+      ],
+      "xc": [
+        "_super",
+        "project.issue.navigator",
+        "jira.view.issue",
+        "jira.global",
+        "atl.general",
+        "jira.general",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "com.atlassian.jira.projects.sidebar.init",
+        "jira.global.look-and-feel"
+      ],
+      "xr": [
+        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "765": {
+      "r": [
+        "com.atlassian.jira.plugins.jira-editor-plugin:api",
+        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter",
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
+      ],
+      "c": [
+        "jira.webresources:mentions-feature",
+        "jira.rich.editor"
+      ],
+      "xc": [
+        "_super",
+        "project.issue.navigator",
+        "jira.view.issue",
+        "jira.global",
+        "atl.general",
+        "jira.general",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "com.atlassian.jira.projects.sidebar.init",
+        "jira.global.look-and-feel",
+        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
+      ],
+      "xr": [
+        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init"
+      ]
+    },
+    "775": {
+      "r": [
+      ],
+      "c": [
+        "jira.project.sidebar",
+        "jira.project.sidebar.software"
+      ],
+      "xc": [
+        "_super",
+        "project.issue.navigator",
+        "jira.view.issue",
+        "jira.global",
+        "atl.general",
+        "jira.general",
+        "browser-metrics-plugin.contrib",
+        "atl.global",
+        "com.atlassian.jira.projects.sidebar.init",
+        "jira.global.look-and-feel",
+        "com.atlassian.jira.plugins.jira-development-integration-plugin:0",
+        "jira.rich.editor"
+      ],
+      "xr": [
+        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
+        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
+        "jira.webresources:calendar-en",
+        "jira.webresources:calendar-localisation-moment",
+        "jira.webresources:bigpipe-js",
+        "jira.webresources:bigpipe-init",
+        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip",
+        "com.atlassian.jira.plugins.jira-editor-plugin:tinymce",
+        "com.atlassian.jira.plugins.jira-editor-plugin:schema-builder",
+        "com.atlassian.jira.plugins.jira-editor-plugin:schema",
+        "com.atlassian.jira.plugins.jira-editor-plugin:i18n",
+        "com.atlassian.jira.plugins.jira-editor-plugin:wrm",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter-util",
+        "com.atlassian.jira.plugins.jira-editor-plugin:context-detector",
+        "com.atlassian.jira.plugins.jira-editor-plugin:context-manager",
+        "com.atlassian.jira.plugins.jira-editor-plugin:selection",
+        "com.atlassian.jira.plugins.jira-editor-plugin:instance",
+        "com.atlassian.jira.plugins.jira-editor-plugin:api",
+        "com.atlassian.jira.plugins.jira-editor-plugin:renderer",
+        "com.atlassian.jira.plugins.jira-editor-plugin:mentions",
+        "com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin",
+        "com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with",
+        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
+        "com.atlassian.jira.plugins.jira-editor-plugin:converter",
+        "com.atlassian.plugin.jslibs:underscore-1.8.3"
+      ]
+    }
+  },
+  "view_dashboard": {
+    "605": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general"],"xr":[]},
+    "620": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":["jira.webresources:mentions-feature","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general","browser-metrics-plugin.contrib","atl.global","jira.dashboard","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+
+  },
+  "add_comment": {
+    "805": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "810": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "820": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+  },
+  "browse_projects": {
+    "905": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.general","jira.global"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "910": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "920": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+  },
+  "view_kanban_board": {
+    "1000": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts"],"xr":[]},
+    "1005": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
+    "1010": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1015": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1020": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1025": {"r":["com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3"]},
+    "1030": {"r":[],"c":["jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","com.atlassian.jira.plugins.jira-editor-plugin:schema-builder","com.atlassian.jira.plugins.jira-editor-plugin:schema","com.atlassian.jira.plugins.jira-editor-plugin:i18n","com.atlassian.jira.plugins.jira-editor-plugin:wrm","com.atlassian.jira.plugins.jira-editor-plugin:converter-util","com.atlassian.jira.plugins.jira-editor-plugin:context-detector","com.atlassian.jira.plugins.jira-editor-plugin:context-manager","com.atlassian.jira.plugins.jira-editor-plugin:selection","com.atlassian.jira.plugins.jira-editor-plugin:instance","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:renderer","com.atlassian.jira.plugins.jira-editor-plugin:mentions","com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin","com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"]}
+  },
+  "browse_boards": {
+    "1205": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
+    "1210": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
+    "1215": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1225": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+  }
+
+}
