@@ -8,9 +8,9 @@ def reorder_kpi_jtl(file_path, output_dir):
     updated_row = []
     with file_path.open(mode='r') as kpi:
         reader = DictReader(kpi)
-        usupported_headers = list(set(reader.fieldnames) - set(SUPPORTED_JTL_HEADER))
+        unsupported_headers = list(set(reader.fieldnames) - set(SUPPORTED_JTL_HEADER))
         for row in reader:
-            for unsupported_header in usupported_headers:
+            for unsupported_header in unsupported_headers:
                 if unsupported_header in row.keys():
                     del row[unsupported_header]
             if GRP_THREADS not in row.keys():

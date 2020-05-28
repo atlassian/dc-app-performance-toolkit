@@ -1,6 +1,6 @@
 import time
 
-from csv import DictReader, DictWriter
+from csv import DictReader
 from pathlib import Path
 from types import FunctionType
 from typing import List, Dict
