@@ -15,7 +15,9 @@ CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 CONFLUENCE_DB_NAME="confluence"
 CONFLUENCE_DB_USER="postgres"
 CONFLUENCE_DB_PASS="Password1!"
-CONFLUENCE_DB_BASE_URL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
+
+# Confluence DB requests
+GET_CONFLUENCE_SETTINGS="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
@@ -109,7 +111,7 @@ echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write confluence baseUrl to file"
 CONFLUENCE_BASE_URL_FILE="base_url"
-PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c "${CONFLUENCE_DB_BASE_URL}" \
+PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c "${GET_CONFLUENCE_SETTINGS}" \
 | awk -F' {2,}' '/.<baseUrl>/{print $2}' >${CONFLUENCE_BASE_URL_FILE}
 
 if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
@@ -179,7 +181,7 @@ fi
 
 echo "Step7: Update confluence baseUrl value in database"
 BASE_URL_TO_REPLACE=$(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c \
-"${CONFLUENCE_DB_BASE_URL}" | awk -F' {2,}' '/.<baseUrl>/{print $2}')
+"${GET_CONFLUENCE_SETTINGS}" | awk -F' {2,}' '/.<baseUrl>/{print $2}')
 
 if [[ -z "${BASE_URL_TO_REPLACE}" ]]; then
   echo "The BASE_URL_TO_REPLACE variable is empty. Please check that the confluence baseUrl value is exist in the database."
@@ -207,7 +209,7 @@ echo "Step8: Start Confluence"
 sudo systemctl start confluence
 rm -rf ${DB_DUMP_NAME}
 
-echo "Step9: Start Confluence"
+echo "Step9: Remove ${CONFLUENCE_BASE_URL_FILE} file"
 sudo rm ${CONFLUENCE_BASE_URL_FILE}
 
 echo "Finished"
