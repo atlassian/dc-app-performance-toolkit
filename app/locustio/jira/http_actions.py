@@ -1,4 +1,3 @@
-import itertools
 import random
 import re
 from locust.exception import ResponseError
