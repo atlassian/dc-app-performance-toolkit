@@ -242,3 +242,4 @@ echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Wait a couple of minutes until Jira is started."
+
