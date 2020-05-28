@@ -17,7 +17,7 @@ JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SHUT_DOWN_TOMCAT="${JIRA_CURRENT_DIR}/bin/shutdown.sh"
 
-# DB admin user name password and DB name
+# DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
 JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
@@ -27,7 +27,7 @@ SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
   echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
-    has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
+  has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
   exit 1
 fi
 echo "Jira Version: ${JIRA_VERSION}"
@@ -39,6 +39,7 @@ DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
+
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
@@ -161,9 +162,9 @@ fi
 echo "Step5: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
-ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES} / 1024 / 1024 / 1024))
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/ 1024))
 FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
-FREE_SPACE_GB=$((${FREE_SPACE_KB} / 1024 / 1024))
+FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
   echo "Not enough free space for download."
