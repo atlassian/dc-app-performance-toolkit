@@ -5,24 +5,31 @@ from selenium_ui.conftest import print_timing
 from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
     BoardsList, Board, Dashboard, Logout
 
+KANBAN_BOARDS = "kanban_boards"
+SCRUM_BOARDS = "scrum_boards"
+USERS = "users"
+ISSUES = "issues"
+JQLS = "jqls"
+PROJECTS = "projects"
+
 
 def setup_run_data(datasets):
     page_size = 25
-    projects_count = len(datasets['project_keys'])
-    user = random.choice(datasets["users"])
-    issue = random.choice(datasets["issues"])
-    scrum_boards = random.choice(datasets["scrum_boards"])
-    kanban_boards = random.choice(datasets["kanban_boards"])
-    project_key = random.choice(datasets["issues"])[2]
+    projects_count = len(datasets[PROJECTS])
+    user = random.choice(datasets[USERS])
+    issue = random.choice(datasets[ISSUES])
+    scrum_boards = random.choice(datasets[SCRUM_BOARDS])
+    kanban_boards = random.choice(datasets[KANBAN_BOARDS])
+    projects = random.choice(datasets[PROJECTS])
     datasets['username'] = user[0]
     datasets['password'] = user[1]
     datasets['issue_key'] = issue[0]
     datasets['issue_id'] = issue[1]
-    datasets['project_key'] = project_key
+    datasets['project_key'] = projects[0]
     datasets['scrum_board_id'] = scrum_boards[0]
     datasets['kanban_board_id'] = kanban_boards[0]
-    datasets['jql'] = urllib.parse.quote(random.choice(datasets["jqls"][0]))
-    datasets['pages'] = projects_count // page_size if projects_count % page_size == 0 \
+    datasets['jql'] = urllib.parse.quote(random.choice(datasets[JQLS][0]))
+    datasets['project_pages_count'] = projects_count // page_size if projects_count % page_size == 0 \
         else projects_count // page_size + 1
 
 
@@ -59,6 +66,16 @@ def view_issue(webdriver, datasets):
     measure()
 
 
+def view_project_summary(webdriver, datasets):
+    project_page = Project(webdriver, project_key=datasets['project_key'])
+
+    @print_timing("selenium_project_summary")
+    def measure():
+        project_page.go_to()
+        project_page.wait_for_page_loaded()
+    measure()
+
+
 def create_issue(webdriver, dataset):
     issue_modal = Issue(webdriver)
 
@@ -85,16 +102,6 @@ def create_issue(webdriver, dataset):
         sub_measure()
     measure()
     PopupManager(webdriver).dismiss_default_popup()
-
-
-def view_project_summary(webdriver, datasets):
-    project_page = Project(webdriver, project_key=datasets['project_key'])
-
-    @print_timing("selenium_project_summary")
-    def measure():
-        project_page.go_to()
-        project_page.wait_for_page_loaded()
-    measure()
 
 
 def search_jql(webdriver, datasets):
@@ -152,7 +159,7 @@ def save_comment(webdriver, datasets):
 def browse_projects_list(webdriver, datasets):
     @print_timing("selenium_browse_projects_list")
     def measure():
-        projects_list_page = ProjectsList(webdriver, projects_list_pages=datasets['pages'])
+        projects_list_page = ProjectsList(webdriver, projects_list_pages=datasets['project_pages_count'])
         projects_list_page.go_to()
         projects_list_page.wait_for_page_loaded()
     measure()

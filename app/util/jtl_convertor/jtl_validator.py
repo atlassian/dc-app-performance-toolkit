@@ -1,4 +1,5 @@
 import time
+
 from csv import DictReader
 from pathlib import Path
 from types import FunctionType
@@ -20,9 +21,12 @@ RESPONSE_CODE = 'responseCode'
 LABEL = 'label'
 ELAPSED = 'elapsed'
 TIME_STAMP = 'timeStamp'
+METHOD = 'method'
 
-SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE, THREAD_NAME,
-                                   SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY, HOSTNAME, CONNECT]
+SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE,
+                                   SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY]
+
+JTL_HEADERS_DIFF_LOCUST_JMETER: List[str] = [THREAD_NAME, CONNECT, HOSTNAME]
 
 VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     TIME_STAMP: [is_not_none, is_number],
@@ -38,6 +42,7 @@ VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     LATENCY: [],
     HOSTNAME: [],
     CONNECT: [],
+    METHOD: [],
 }
 
 
@@ -63,9 +68,14 @@ def __validate_row(jtl_row: Dict) -> None:
         __validate_value(column, str(value))
 
 
-def __validate_header(header: List) -> None:
-    if not (SUPPORTED_JTL_HEADER == header):
-        __raise_validation_error(f"Header is not correct. Supported header is {SUPPORTED_JTL_HEADER}")
+def __validate_header(headers: List) -> None:
+    for header in SUPPORTED_JTL_HEADER:
+        # By default Taurus creates kpi.jtl file (locust load tests executor) with incompatible with
+        # Jmeter Aggregate Plugin headers. 'grp_threads' is missed by this field is required for report aggregation.
+        # https://github.com/Blazemeter/taurus/pull/1311
+        if header not in headers and header not in [GRP_THREADS]:
+            __raise_validation_error(f"Headers is not correct. Supported headers is {SUPPORTED_JTL_HEADER}. "
+                                     f"{header} is missed")
 
 
 def __raise_validation_error(error_msg: str) -> None:
@@ -83,12 +93,12 @@ def __validate_rows(reader) -> None:
 def validate(file_path: Path) -> None:
     print(f'Started validating jtl file: {file_path}')
     start_time = time.time()
-
     try:
         with file_path.open(mode='r') as f:
             reader: DictReader = DictReader(f)
             __validate_header(reader.fieldnames)
             __validate_rows(reader)
+
     except (ValidationException, FileNotFoundError) as e:
         raise SystemExit(f"ERROR: Validation failed. File path: [{file_path}]. Validation details: {str(e)}")
 

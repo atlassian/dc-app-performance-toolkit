@@ -22,6 +22,12 @@ TMP_DIR="/tmp"
 EFS_DIR="/media/atl/confluence/shared-home"
 ###################    End of variables section  ###################
 
+if [[ ! `systemctl status confluence` ]]; then
+ echo "The Confluence service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Confluence."
+ exit 1
+fi
+
 # Check if Confluence version is supported
 if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Peformance Toolkit."
