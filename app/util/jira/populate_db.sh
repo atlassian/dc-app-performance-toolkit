@@ -211,7 +211,6 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Step7: Update jira.baseurl property in database"
-#check jira_basurl_file (empty or doesn't exist)
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat $JIRA_BASE_URL_FILE)
   if [[ ! $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
@@ -234,11 +233,11 @@ echo "Step8: Start Jira"
 sudo su jira -c "${START_JIRA}"
 rm -rf ${DB_DUMP_NAME}
 
+echo "Step9: Remove ${JIRA_BASE_URL_FILE} file"
+sudo rm ${JIRA_BASE_URL_FILE}
+
 echo "Finished"
 echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Wait a couple of minutes until Jira is started."
-
-echo "Step9: Remove ${JIRA_BASE_URL_FILE} file"
-sudo rm ${JIRA_BASE_URL_FILE}
