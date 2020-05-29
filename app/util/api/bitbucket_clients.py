@@ -1,7 +1,7 @@
 import time
 from enum import Enum
 
-from util.data_preparation.api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient
 import lxml.html as LH
 
 BATCH_SIZE_PROJECTS = 100

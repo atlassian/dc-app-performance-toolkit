@@ -2,4 +2,5 @@ matplotlib==3.2.1
 pandas==1.0.3
 importlib-metadata==1.6.0
 zipp==2.2.0 # hard requirement of bzt 1.14.2
-bzt==1.14.2
+bzt==1.14.1
+locustio==0.13.5
