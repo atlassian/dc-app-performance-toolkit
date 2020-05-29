@@ -53,10 +53,10 @@ def __get_repos(bitbucket_api):
         FETCH_LIMIT_REPOS if concurrency < FETCH_LIMIT_REPOS else concurrency
     )
     print(f'Repos number to fetch via API is {FETCH_LIMIT_REPOS}')
-    repos_len = len(repos)
-    if repos_len < concurrency:
+    repos_count = len(repos)
+    if repos_count < concurrency:
         raise SystemExit(f'Required number of repositories based on concurrency was not found'
-                         f' Found [{repos_len}] repos, needed at least [{concurrency}]')
+                         f' Found [{repos_count}] repos, needed at least [{concurrency}]')
 
     return repos
 
@@ -80,8 +80,8 @@ def __get_prs(bitbucket_api):
                 repos_prs.append([repo['slug'], repo['project']['key'], pr['id'],
                                   pr['fromRef']['displayId'], pr['toRef']['displayId']])
     if len(repos_prs) < concurrency:
-        raise SystemExit(f'Repositories from list {[repo["project"]["key"] - repo["slug"] for repo in repos]} '
-                         f'do not contain {concurrency} pull requests')
+        repos_without_prs = [f'{repo["project"]["key"]}/{repo["slug"]}' for repo in repos]
+        raise SystemExit(f'Repositories {repos_without_prs} do not contain at least {concurrency} pull requests')
     print(f"Successfully fetched pull requests in  [{(time.time() - start_time)}]")
     return repos_prs
 
