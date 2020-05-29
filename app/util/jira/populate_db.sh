@@ -27,7 +27,7 @@ SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
   echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
-  has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
+    has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
   exit 1
 fi
 echo "Jira Version: ${JIRA_VERSION}"
@@ -39,7 +39,6 @@ DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
-
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
@@ -115,17 +114,20 @@ echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write jira.baseurl property to file"
 JIRA_BASE_URL_FILE="base_url"
-PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
+if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
+  echo "File ${JIRA_BASE_URL_FILE} was found. Base url: $(cat ${JIRA_BASE_URL_FILE})."
+else
+  PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
   "select propertyvalue from propertyentry PE
   join propertystring PS on PE.id=PS.id
-  where PE.property_key = 'jira.baseurl';" \
-  | awk '/.htt/{print $1}' > ${JIRA_BASE_URL_FILE}
-
-if [[ -z $(cat "$JIRA_BASE_URL_FILE") ]]; then
-  echo "Failed to get Base URL value form database. Check DB configuration variables."
-  exit 1
+  where PE.property_key = 'jira.baseurl';" |
+  awk '/.htt/{print $1}' >${JIRA_BASE_URL_FILE}
+  if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value form database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
 fi
-echo "The $(cat ${JIRA_BASE_URL_FILE}) base url was written to the ${JIRA_BASE_URL_FILE} file."
 
 echo "Step4: Stop Jira"
 CATALINA_PID=$(pgrep -f "catalina")
@@ -162,9 +164,9 @@ fi
 echo "Step5: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
-ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES} / 1024 / 1024 / 1024))
 FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
-FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
+FREE_SPACE_GB=$((${FREE_SPACE_KB} / 1024 / 1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
   echo "Not enough free space for download."
@@ -238,7 +240,7 @@ echo "Step9: Remove ${JIRA_BASE_URL_FILE} file"
 sudo rm ${JIRA_BASE_URL_FILE}
 
 echo "Finished"
-echo  # move to a new line
+echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Wait a couple of minutes until Jira is started."

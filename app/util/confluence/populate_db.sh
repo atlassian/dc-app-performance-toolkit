@@ -111,14 +111,17 @@ echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write confluence baseUrl to file"
 CONFLUENCE_BASE_URL_FILE="base_url"
-PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c "${GET_CONFLUENCE_SETTINGS}" \
-| awk -F' {2,}' '/.<baseUrl>/{print $2}' >${CONFLUENCE_BASE_URL_FILE}
-
-if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
-  echo "Failed to get Base URL value form database. Check DB configuration variables."
-  exit 1
+if [[ -s ${CONFLUENCE_BASE_URL_FILE} ]];then
+  echo "File ${CONFLUENCE_BASE_URL_FILE} was found. Base url: $(cat ${CONFLUENCE_BASE_URL_FILE})."
+else
+  PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c "${GET_CONFLUENCE_SETTINGS}" \
+  | awk -F' {2,}' '/.<baseUrl>/{print $2}' > ${CONFLUENCE_BASE_URL_FILE}
+  if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value form database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${CONFLUENCE_BASE_URL_FILE}) was written to the ${CONFLUENCE_BASE_URL_FILE} file."
 fi
-echo "The $(cat ${CONFLUENCE_BASE_URL_FILE}) base url was written to the ${CONFLUENCE_BASE_URL_FILE} file."
 
 echo "Step4: Stop Confluence"
 sudo systemctl stop confluence

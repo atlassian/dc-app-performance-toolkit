@@ -104,15 +104,18 @@ echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write 'instance.url' property to file"
 BITBUCKET_BASE_URL_FILE="base_url"
-PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+  echo "File ${BITBUCKET_BASE_URL_FILE} was found. Base url: $(cat ${BITBUCKET_BASE_URL_FILE})."
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
   "select prop_value from app_property where prop_key='instance.url';" |
   awk '/.htt/{print $1}' > ${BITBUCKET_BASE_URL_FILE}
-
-if [[ ! -s ${BITBUCKET_BASE_URL_FILE} ]]; then
-  echo "Failed to get Base URL value form database. Check DB configuration variables."
-  exit 1
+  if [[ ! -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value form database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
 fi
-echo "The $(cat ${BITBUCKET_BASE_URL_FILE}) base url was written to the ${BITBUCKET_BASE_URL_FILE} file."
 
 echo "Step4: Download DB dump"
 DUMP_DIR='/media/atl/bitbucket/shared'
