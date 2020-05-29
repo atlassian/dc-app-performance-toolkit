@@ -14,19 +14,20 @@ settings:
     test_duration: 50m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
+    LOAD_EXECUTOR: jmeter
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
     prepare:
-      - python util/environment_checker.py
-      - python util/git_client_check.py
-      - python util/data_preparation/bitbucket/prepare-data.py
+      - python util/pre_run/environment_checker.py
+      - python util/pre_run/git_client_check.py
+      - python util/data_preparation/bitbucket_prepare_data.py
     shutdown:
-      - python util/jmeter_post_check.py
+      - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
-      - python util/analytics.py bitbucket
-      - python util/cleanup_results_dir.py
+      - python util/analytics/analytics.py bitbucket
+      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: jmeter
     concurrency: ${concurrency}
@@ -81,7 +82,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "80.0.3987.106" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
+      version: "83.0.4103.39" # Supports Chrome version 83. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

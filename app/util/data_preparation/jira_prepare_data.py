@@ -3,10 +3,11 @@ import string
 
 import urllib3
 
+
 from util.conf import JIRA_SETTINGS
-from util.data_preparation.api.jira_clients import JiraRestClient
+from util.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -15,7 +16,7 @@ SCRUM_BOARDS = "scrum_boards"
 USERS = "users"
 ISSUES = "issues"
 JQLS = "jqls"
-PROJECT_KEYS = "project_keys"
+PROJECTS = "projects"
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
@@ -77,8 +78,8 @@ def write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets[ISSUES]]
     __write_to_file(JIRA_DATASET_ISSUES, issues)
 
-    keys = datasets[PROJECT_KEYS]
-    __write_to_file(JIRA_DATASET_PROJECT_KEYS, keys)
+    keys = datasets[PROJECTS]
+    __write_to_file(JIRA_DATASET_PROJECTS, keys)
 
 
 def __write_to_file(file_path, items):
@@ -90,14 +91,14 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_project_keys = __get_software_project_keys(jira_api)
-    dataset[PROJECT_KEYS] = software_project_keys
-    dataset[ISSUES] = __get_issues(jira_api, software_project_keys)
+    software_projects = __get_software_projects(jira_api)
+    dataset[PROJECTS] = software_projects
+    dataset[ISSUES] = __get_issues(jira_api, software_projects)
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
     dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
     print(f'Users count: {len(dataset[USERS])}')
-    print(f'Project keys count: {len(dataset[PROJECT_KEYS])}')
+    print(f'Projects: {len(dataset[PROJECTS])}')
     print(f'Issues count: {len(dataset[ISSUES])}')
     print(f'Scrum boards count: {len(dataset[SCRUM_BOARDS])}')
     print(f'Kanban boards count: {len(dataset[KANBAN_BOARDS])}')
@@ -106,8 +107,9 @@ def __create_data_set(jira_api):
     return dataset
 
 
-def __get_issues(jira_api, software_project_keys):
-    jql_projects_str = ','.join(f'"{prj}"' for prj in software_project_keys)
+def __get_issues(jira_api, software_projects):
+    project_keys = [f"{prj.split(',')[0]}" for prj in software_projects]
+    jql_projects_str = ','.join(f'"{prj_key}"' for prj_key in project_keys)
     issues = jira_api.issues_search(
         jql=f"project in ({jql_projects_str}) AND status != Closed order by key", max_results=8000
     )
@@ -134,13 +136,14 @@ def __get_users(jira_api):
     return users
 
 
-def __get_software_project_keys(jira_api):
+def __get_software_projects(jira_api):
     all_projects = jira_api.get_all_projects()
-    software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
-    if not software_project_keys:
+    software_projects = \
+        [f"{project['key']},{project['id']}" for project in all_projects if 'software' == project.get('projectTypeKey')]
+    if not software_projects:
         raise SystemExit("There are no software projects in Jira")
     # Limit number of projects to avoid "Request header is too large" for further requests.
-    return software_project_keys
+    return software_projects
 
 
 def __check_current_language(jira_api):
