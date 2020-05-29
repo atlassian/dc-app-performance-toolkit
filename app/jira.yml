@@ -34,14 +34,14 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - python util/environment_checker.py
-      - python util/data_preparation/jira/prepare-data.py
+      - python util/pre_run/environment_checker.py
+      - python util/data_preparation/jira_prepare_data.py
     shutdown:
-      - python util/jmeter_post_check.py
+      - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
-      - python util/analytics.py jira
-      - python util/cleanup_results_dir.py
+      - python util/analytics/analytics.py jira
+      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: ${LOAD_EXECUTOR}
     executor: ${LOAD_EXECUTOR}

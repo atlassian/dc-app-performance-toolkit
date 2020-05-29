@@ -1,6 +1,6 @@
 import xmlrpc.client
 
-from util.data_preparation.api.abstract_clients import RestClient, Client
+from util.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
 import lxml.html as LH
 

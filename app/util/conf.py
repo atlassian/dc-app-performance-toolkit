@@ -24,6 +24,7 @@ class AppSettings:
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
         self.analytics_collector = env_settings['allow_analytics']
+        self.load_executor = env_settings['LOAD_EXECUTOR']
 
     @property
     def server_url(self):
@@ -36,7 +37,6 @@ class AppSettingsExtLoadExecutor(AppSettings):
         super().__init__(config_yml)
         obj = read_yml_file(config_yml)
         self.total_actions_per_hour = obj['settings']['env']['total_actions_per_hour']
-        self.load_executor = obj['settings']['env']['LOAD_EXECUTOR']
         self.action_percentage = obj['settings']['env']['action_percentage']
 
 
