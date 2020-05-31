@@ -1,4 +1,4 @@
-from locust import HttpLocust, TaskSet, task
+from locust import HttpLocust, TaskSet, task, between
 from locustio.jira.http_actions import login_and_view_dashboard, create_issue, search_jql, view_issue, \
     view_project_summary, view_dashboard, edit_issue, add_comment, browse_boards, view_kanban_board, view_scrum_board, \
     view_backlog, browse_projects
@@ -70,3 +70,4 @@ class JiraBehavior(TaskSet):
 class JiraUser(HttpLocust):
     host = JIRA_SETTINGS.server_url
     task_set = JiraBehavior
+    wait_time = between(0, 0)
