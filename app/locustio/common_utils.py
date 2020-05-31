@@ -36,8 +36,8 @@ NO_TOKEN_HEADERS = {
     "X-Atlassian-Token": "no-check"
 }
 
-jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
-confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / CONFLUENCE_SETTINGS.concurrency)
+jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
+confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 
 
 class ActionPercentage:
