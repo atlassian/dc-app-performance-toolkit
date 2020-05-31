@@ -193,11 +193,11 @@ fi
 
 if [[ -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat ${CONFLUENCE_BASE_URL_FILE})
-  if [[ ! $(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c \
+  if [[ $(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c \
     "update BANDANA
       set BANDANAVALUE = replace(BANDANAVALUE, '${BASE_URL_TO_REPLACE}', '${BASE_URL}')
       where BANDANACONTEXT = '_GLOBAL'
-      and BANDANAKEY = 'atlassian.confluence.settings';") ]]; then
+      and BANDANAKEY = 'atlassian.confluence.settings';") != "UPDATE 1" ]]; then
     echo "Couldn't update database baseUrl value. Please check your DB configuration variables."
     exit 1
   else

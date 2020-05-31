@@ -178,8 +178,8 @@ sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 echo "Step6: Update 'instance.url' property in database"
 if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat ${BITBUCKET_BASE_URL_FILE})
-  if [[ ! $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
-    "UPDATE app_property SET prop_value = '${BASE_URL}' WHERE prop_key = 'instance.url';") ]]; then
+  if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+    "UPDATE app_property SET prop_value = '${BASE_URL}' WHERE prop_key = 'instance.url';") != "UPDATE 1" ]]; then
     echo "Couldn't update database 'instance.url' property. Please check your database connection."
     exit 1
   else

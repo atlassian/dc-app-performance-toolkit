@@ -121,7 +121,7 @@ else
   "select propertyvalue from propertyentry PE
   join propertystring PS on PE.id=PS.id
   where PE.property_key = 'jira.baseurl';" |
-  awk '/.htt/{print $1}' >${JIRA_BASE_URL_FILE}
+  awk '/.htt/{print $1}' > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
     echo "Failed to get Base URL value form database. Check DB configuration variables."
     exit 1
@@ -216,12 +216,12 @@ fi
 echo "Step7: Update jira.baseurl property in database"
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat $JIRA_BASE_URL_FILE)
-  if [[ ! $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
+  if [[ $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
     "update propertystring
     set propertyvalue = '${BASE_URL}'
     from propertyentry PE
     where PE.id=propertystring.id
-    and PE.property_key = 'jira.baseurl';") ]]; then
+    and PE.property_key = 'jira.baseurl';") != "UPDATE 1" ]]; then
     echo "Couldn't update database jira.baseurl property. Please check your database connection."
     exit 1
   else
