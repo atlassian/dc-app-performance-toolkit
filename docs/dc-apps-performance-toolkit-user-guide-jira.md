@@ -323,6 +323,33 @@ Jira will be unavailable for some time during the re-indexing process. When fini
 Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration**, click **Edit Settings** and set **Base URL** to **LoadBalancerURL** value.
 {{% /note %}}
 
+## Execution environment
+
+There are two options for running DC App Performance Toolkit:
+ - Run Toolkit on your local machine.  It is recommended for spiking, debugging and custom actions developing. 
+ - Run Toolkit on the performer instance (dedicated AWS EC2 machine).  It is strongly recommended to use performer instance for submission process results generation.
+ In comparison with local execution running Toolkit on the performer instance provides fixed CPU, memory and network performance which guarantees stable and accurate results.
+ ### Local execution environment set up
+ Recommended hardware requirements:
+ - Supported platforms: Linux, MacOS, Windows
+ - CPU: 4 cores
+ - Memory: 16 GB
+
+To set up local execution environment follow [README.md](https://github.com/atlassian/dc-app-performance-toolkit) instructions.
+ 
+ ### Performer instance execution environment set up
+ 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+ 2. Connect to the AWS EC2 instance via SSH and [install Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+ 3. Get your code to the performer instance:
+    3. Create fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+    3. Clone your fork locally, make changes in the `jira.yml` configuration file and other files if needed.
+    3. Push your changes to the forked repository.
+    3. Clone repository fork to the performer instance `/home/ubuntu` directory.
+ 4. Navigate to `/home/ubuntu` directory. Run toolkit by following command`docker run --shm-size=4g  -v "$PWD:/dcapt" atlassian/dcapt jira.yml`
+ 5. After finishing all testing scenarios on the performer instance copy successful run results to the local machine for charts generation. You can use `scp` command or push zipped archive of results folder to the fork repository.
+
+
+
 ## Testing scenarios
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
