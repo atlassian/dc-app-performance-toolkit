@@ -16,7 +16,8 @@ DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
 
-ENGLISH = 'en_US'
+ENGLISH_US = 'en_US'
+ENGLISH_GB = 'en_GB'
 
 
 def generate_random_string(length=20):
@@ -110,7 +111,7 @@ def __is_collaborative_editing_enabled(confluence_api):
 
 def __check_current_language(confluence_api):
     language = confluence_api.get_locale()
-    if language != ENGLISH:
+    if language not in [ENGLISH_US, ENGLISH_GB]:
         raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your profile language to "English (US)"')
 
