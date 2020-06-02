@@ -111,7 +111,7 @@ class AnalyticsCollector:
 def send_analytics(collector: AnalyticsCollector):
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,
-               "user_id": uniq_user_id(),
+               "user_id": uniq_user_id(collector.conf.server_url),
                "app_version": collector.application_version,
                "date": collector.date,
                "time_stamp": collector.time_stamp,
@@ -125,6 +125,7 @@ def send_analytics(collector: AnalyticsCollector):
                "locust_test_rates": collector.locust_test_rates,
                "concurrency": collector.concurrency
                }
+    print('asd')
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
     if r.status_code != 200:
@@ -136,8 +137,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    if collector.is_analytics_enabled():
-        send_analytics(collector)
+    #if collector.is_analytics_enabled():
+    send_analytics(collector)
 
 
 if __name__ == '__main__':
