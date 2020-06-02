@@ -125,7 +125,6 @@ def send_analytics(collector: AnalyticsCollector):
                "locust_test_rates": collector.locust_test_rates,
                "concurrency": collector.concurrency
                }
-    print('asd')
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
     if r.status_code != 200:
@@ -137,8 +136,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    #if collector.is_analytics_enabled():
-    send_analytics(collector)
+    if collector.is_analytics_enabled():
+        send_analytics(collector)
 
 
 if __name__ == '__main__':
