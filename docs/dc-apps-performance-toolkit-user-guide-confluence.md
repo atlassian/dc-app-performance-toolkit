@@ -327,8 +327,8 @@ To set up local execution environment follow [README.md](https://github.com/atla
     3. Create fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
     3. Clone your fork locally, make changes in the `confluence.yml` configuration file and other files if needed.
     3. Push your changes to the forked repository.
-    3. Clone repository fork to the performer instance `/home/ubuntu` directory.
- 4. Navigate to `/home/ubuntu` directory. Run toolkit by following command`docker run --shm-size=4g  -v "$PWD:/dcapt" atlassian/dcapt confluence.yml`
+    3. Clone repository fork.
+ 4. Run toolkit by following command `docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml`
  5. After finishing all testing scenarios on the performer instance copy successful run results to the local machine for charts generation. You can use `scp` command or push zipped archive of results folder to the fork repository.
 
 
