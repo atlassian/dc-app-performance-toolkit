@@ -107,9 +107,8 @@ BITBUCKET_BASE_URL_FILE="base_url"
 if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
   echo "File ${BITBUCKET_BASE_URL_FILE} was found. Base url: $(cat ${BITBUCKET_BASE_URL_FILE})."
 else
-  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
-  "select prop_value from app_property where prop_key='instance.url';" |
-  awk '/.htt/{print $1}' > ${BITBUCKET_BASE_URL_FILE}
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -Atc \
+  "select prop_value from app_property where prop_key='instance.url';" > ${BITBUCKET_BASE_URL_FILE}
   if [[ ! -s ${BITBUCKET_BASE_URL_FILE} ]]; then
     echo "Failed to get Base URL value form database. Check DB configuration variables."
     exit 1
