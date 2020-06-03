@@ -113,7 +113,7 @@ else
     echo "Failed to get Base URL value form database. Check DB configuration variables."
     exit 1
   fi
-  echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
+  echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${BITBUCKET_BASE_URL_FILE} file."
 fi
 
 echo "Step4: Download DB dump"

@@ -117,11 +117,10 @@ JIRA_BASE_URL_FILE="base_url"
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   echo "File ${JIRA_BASE_URL_FILE} was found. Base url: $(cat ${JIRA_BASE_URL_FILE})."
 else
-  PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
+  PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -Atc \
   "select propertyvalue from propertyentry PE
   join propertystring PS on PE.id=PS.id
-  where PE.property_key = 'jira.baseurl';" |
-  awk '/.htt/{print $1}' > ${JIRA_BASE_URL_FILE}
+  where PE.property_key = 'jira.baseurl';" > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
     echo "Failed to get Base URL value form database. Check DB configuration variables."
     exit 1
