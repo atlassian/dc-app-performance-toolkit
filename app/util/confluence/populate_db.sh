@@ -17,7 +17,7 @@ CONFLUENCE_DB_USER="postgres"
 CONFLUENCE_DB_PASS="Password1!"
 
 # Confluence DB requests
-GET_CONFLUENCE_SETTINGS="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
+SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
@@ -114,8 +114,8 @@ CONFLUENCE_BASE_URL_FILE="base_url"
 if [[ -s ${CONFLUENCE_BASE_URL_FILE} ]];then
   echo "File ${CONFLUENCE_BASE_URL_FILE} was found. Base url: $(cat ${CONFLUENCE_BASE_URL_FILE})."
 else
-  PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c "${GET_CONFLUENCE_SETTINGS}" \
-  | awk -F' {2,}' '/.<baseUrl>/{print $2}' > ${CONFLUENCE_BASE_URL_FILE}
+  PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -Atc "${SELECT_CONFLUENCE_SETTING_SQL}" \
+  | grep -i "<baseurl>" > ${CONFLUENCE_BASE_URL_FILE}
   if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
     echo "Failed to get Base URL value form database. Check DB configuration variables."
     exit 1
@@ -183,8 +183,8 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Step7: Update confluence baseUrl value in database"
-BASE_URL_TO_REPLACE=$(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c \
-"${GET_CONFLUENCE_SETTINGS}" | awk -F' {2,}' '/.<baseUrl>/{print $2}')
+BASE_URL_TO_REPLACE=$(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -Atc \
+"${SELECT_CONFLUENCE_SETTING_SQL}" | grep -i "<baseurl>")
 
 if [[ -z "${BASE_URL_TO_REPLACE}" ]]; then
   echo "The BASE_URL_TO_REPLACE variable is empty. Please check that the confluence baseUrl value is exist in the database."
