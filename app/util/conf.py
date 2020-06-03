@@ -36,8 +36,8 @@ class AppSettingsExtLoadExecutor(AppSettings):
     def __init__(self, config_yml):
         super().__init__(config_yml)
         obj = read_yml_file(config_yml)
-        self.total_actions_per_hour = obj['settings']['env']['total_actions_per_hour']
-        self.action_percentage = obj['settings']['env']['action_percentage']
+        self.env = obj['settings']['env']
+        self.total_actions_per_hour = self.env['total_actions_per_hour']
 
 
 JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)
