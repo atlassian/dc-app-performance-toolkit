@@ -116,7 +116,21 @@ else
   echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${BITBUCKET_BASE_URL_FILE} file."
 fi
 
-echo "Step4: Download DB dump"
+echo "Step4: Write license to file"
+BITBUCKET_LICENSE_FILE="license"
+if [[ -s ${BITBUCKET_LICENSE_FILE} ]]; then
+  echo "File ${BITBUCKET_LICENSE_FILE} was found. License: $(cat ${BITBUCKET_LICENSE_FILE})."
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -tAc \
+  "select prop_value from app_property where prop_key = 'license';" | sed "s/\r//g" > ${BITBUCKET_LICENSE_FILE}
+  if [[ ! -s ${BITBUCKET_LICENSE_FILE} ]]; then
+    echo "Failed to get bitbucket license from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${BITBUCKET_LICENSE_FILE}) was written to the ${BITBUCKET_LICENSE_FILE} file."
+fi
+
+echo "Step5: Download DB dump"
 DUMP_DIR='/media/atl/bitbucket/shared'
 if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
@@ -141,7 +155,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step5: SQL Restore"
+echo "Step6: SQL Restore"
 echo "Check DB connection"
 PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
@@ -174,7 +188,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 
-echo "Step6: Update 'instance.url' property in database"
+echo "Step7: Update 'instance.url' property in database"
 if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat ${BITBUCKET_BASE_URL_FILE})
   if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
@@ -189,8 +203,26 @@ else
   exit 1
 fi
 
-echo "Step7: Remove ${BITBUCKET_BASE_URL_FILE} file"
+echo "Step8: Update license property in database"
+if [[ -s ${BITBUCKET_LICENSE_FILE} ]]; then
+  LICENSE=$(cat ${BITBUCKET_LICENSE_FILE})
+  if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+    "update app_property set prop_value = '${LICENSE}' where prop_key = 'license';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database bitbucket license property. Please check your database connection."
+    exit 1
+  else
+    echo "The database bitbucket license property was updated with ${LICENSE}"
+  fi
+else
+  echo "The ${BITBUCKET_LICENSE_FILE} file doesn't exist or empty. Please check file existence or 'bitbucket license' property in the database."
+  exit 1
+fi
+
+echo "Step9: Remove ${BITBUCKET_BASE_URL_FILE} file"
 sudo rm ${BITBUCKET_BASE_URL_FILE}
+
+echo "Step10: Remove ${BITBUCKET_LICENSE_FILE} file"
+sudo rm ${BITBUCKET_LICENSE_FILE}
 
 echo "Finished"
 echo # move to a new line
