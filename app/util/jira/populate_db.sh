@@ -122,7 +122,7 @@ else
   join propertystring PS on PE.id=PS.id
   where PE.property_key = 'jira.baseurl';" > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
-    echo "Failed to get Base URL value form database. Check DB configuration variables."
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
     exit 1
   fi
   echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
@@ -163,9 +163,9 @@ fi
 echo "Step5: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
-ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES} / 1024 / 1024 / 1024))
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
 FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
-FREE_SPACE_GB=$((${FREE_SPACE_KB} / 1024 / 1024))
+FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
 REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
   echo "Not enough free space for download."

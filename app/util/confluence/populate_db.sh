@@ -117,7 +117,7 @@ else
   PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -Atc "${SELECT_CONFLUENCE_SETTING_SQL}" \
   | grep -i "<baseurl>" > ${CONFLUENCE_BASE_URL_FILE}
   if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
-    echo "Failed to get Base URL value form database. Check DB configuration variables."
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
     exit 1
   fi
   echo "$(cat ${CONFLUENCE_BASE_URL_FILE}) was written to the ${CONFLUENCE_BASE_URL_FILE} file."

@@ -11,7 +11,7 @@ from pathlib import Path
 import socket
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -36,11 +36,20 @@ NO_TOKEN_HEADERS = {
     "X-Atlassian-Token": "no-check"
 }
 
-jira_action_percentage = JIRA_SETTINGS.action_percentage
-confluence_action_percentage = CONFLUENCE_SETTINGS.action_percentage
+jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
+confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 
-jira_action_time = 3600 / (JIRA_SETTINGS.total_actions_per_hour / JIRA_SETTINGS.concurrency)
-confluence_action_time = 3600 / (CONFLUENCE_SETTINGS.total_actions_per_hour / CONFLUENCE_SETTINGS.concurrency)
+
+class ActionPercentage:
+
+    def __init__(self, config_yml: AppSettingsExtLoadExecutor):
+        self.env = config_yml.env
+
+    def percentage(self, action_name: str):
+        if action_name in self.env:
+            return int(self.env[action_name])
+        else:
+            raise Exception(f'Action percentage for {action_name} does not set in yml configuration file')
 
 
 def jira_measure(func):
