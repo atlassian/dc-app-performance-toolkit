@@ -128,7 +128,21 @@ else
   echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
 fi
 
-echo "Step4: Stop Jira"
+echo "Step4: Write jira license to file"
+JIRA_LICENSE_FILE="license"
+if [[ -s ${JIRA_LICENSE_FILE} ]]; then
+  echo "File ${JIRA_LICENSE_FILE} was found. License: $(cat ${JIRA_LICENSE_FILE})."
+  else
+    PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -Atc \
+    "select license from productlicense;" > ${JIRA_LICENSE_FILE}
+    if [[ ! -s ${JIRA_LICENSE_FILE} ]]; then
+      echo "Failed to get jira license from database. Check DB configuration variables."
+      exit 1
+    fi
+    echo "$(cat ${JIRA_LICENSE_FILE}) was written to the ${JIRA_LICENSE_FILE} file."
+fi
+
+echo "Step5: Stop Jira"
 CATALINA_PID=$(pgrep -f "catalina")
 echo "CATALINA_PID=${CATALINA_PID}"
 if [[ -z ${CATALINA_PID} ]]; then
@@ -160,7 +174,7 @@ else
   fi
 fi
 
-echo "Step5: Download DB dump"
+echo "Step6: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
@@ -180,7 +194,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step6: SQL Restore"
+echo "Step7: SQL Restore"
 echo "Check DB connection"
 PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
@@ -212,7 +226,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step7: Update jira.baseurl property in database"
+echo "Step8: Update jira.baseurl property in database"
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   BASE_URL=$(cat $JIRA_BASE_URL_FILE)
   if [[ $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
@@ -231,12 +245,38 @@ else
   exit 1
 fi
 
-echo "Step8: Start Jira"
+echo "Step9: Update jira license in database"
+if [[ -s ${JIRA_LICENSE_FILE} ]]; then
+  LICENSE=$(cat ${JIRA_LICENSE_FILE})
+  LICENSE_ID=$(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -Atc \
+  "select id from productlicense;")
+  if [[ -z "${LICENSE_ID}" ]]; then
+    echo "The LICENSE_ID variable is empty. Please check that the license is exist in the database."
+    exit 1
+  fi
+  if [[ $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
+    "update productlicense
+    set license = '${LICENSE}'
+    where id = '${LICENSE_ID}';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database jira license. Please check your database connection."
+    exit 1
+  else
+    echo "The database jira license was updated with ${LICENSE}"
+  fi
+else
+  echo "The ${JIRA_LICENSE_FILE} file doesn't exist or empty. Please check file existence or jira license in the database."
+  exit 1
+fi
+
+echo "Step10: Start Jira"
 sudo su jira -c "${START_JIRA}"
 rm -rf ${DB_DUMP_NAME}
 
-echo "Step9: Remove ${JIRA_BASE_URL_FILE} file"
+echo "Step11: Remove ${JIRA_BASE_URL_FILE} file"
 sudo rm ${JIRA_BASE_URL_FILE}
+
+echo "Step12: Remove ${JIRA_LICENSE_FILE} file"
+sudo rm ${JIRA_LICENSE_FILE}
 
 echo "Finished"
 echo # move to a new line
