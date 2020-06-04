@@ -1,18 +1,13 @@
 import os
 from pathlib import Path
 from shutil import rmtree
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 
-ENV_TAURUS_ARTIFACT_DIR = 'TAURUS_ARTIFACTS_DIR'
 JMETER_JTL_FILE_NAME = 'kpi.jtl'
 
-artifacts_dir = os.getenv(ENV_TAURUS_ARTIFACT_DIR)
-if artifacts_dir is None:
-    raise SystemExit(f'Error: env variable {ENV_TAURUS_ARTIFACT_DIR} is not set')
-
 jmeter_home_path = Path().home() / '.bzt' / 'jmeter-taurus'
-
-jmeter_jtl_file = f"{artifacts_dir}/{JMETER_JTL_FILE_NAME}"
+jmeter_jtl_file = ENV_TAURUS_ARTIFACT_DIR / JMETER_JTL_FILE_NAME
 
 if not os.path.exists(jmeter_jtl_file):
     if jmeter_home_path.exists():
