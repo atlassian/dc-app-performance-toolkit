@@ -1,3 +1,5 @@
+import datetime
+import os
 from pathlib import Path
 
 
@@ -41,6 +43,16 @@ def __get_bitbucket_dataset(file_name):
     return __get_bitbucket_datasets() / file_name
 
 
+def __get_taurus_artifacts_dir():
+    if 'TAURUS_ARTIFACTS_DIR' in os.environ:
+        return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
+    else:
+        results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        pytest_run_results = Path(f'results/{results_dir_name}_local')
+        pytest_run_results.mkdir(parents=True)
+        return pytest_run_results  # in case you just run pytest
+
+
 JIRA_YML = __get_jira_yml()
 JIRA_DATASETS = __get_jira_datasets()
 JIRA_DATASET_JQLS = __get_jira_dataset('jqls.csv')
@@ -62,3 +74,5 @@ BITBUCKET_USERS = __get_bitbucket_dataset('users.csv')
 BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
+
+ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()
