@@ -5,7 +5,6 @@ import os
 import sys
 import time
 import functools
-from pathlib import Path
 
 import pytest
 from selenium.common.exceptions import WebDriverException
