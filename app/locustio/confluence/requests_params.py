@@ -14,6 +14,7 @@ def confluence_datasets():
 class BaseResource:
     resources_file = 'locustio/jira/resources.json'
     action_name = ''
+    storage = dict()
 
     def __init__(self):
         self.resources_json = self.read_json()
@@ -53,7 +54,32 @@ class ViewPage(BaseResource):
     root_page_id_re = 'name="rootPageId" value="(.+?)"'
     atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
     editable_re = 'id=\"editPageLink\" href="(.+?)\?pageId=(.+?)\"'
-
     inline_comment_re = '\"id\":(.+?)\,\"'
 
+
+class ViewDashboard(BaseResource):
+    action_name = 'view_dashboard'
+    keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+    static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
+    version_number_re = 'meta name=\"ajs-version-number\" content=\"(.*?)\">'
+    build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
+
+
+class ViewBlog(BaseResource):
+    action_name = 'view_blog'
+    parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
+    page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
+    space_key_re = 'meta id=\"confluence-space-key\" name=\"confluence-space-key\" content=\"(.*?)\"'
+    atl_token_re = '"ajs-atl-token" content="(.+?)"'
+    inline_comment_re = '\"id\":(.+?)\,\"'
+
+
+class CreateBlog(BaseResource):
+    action_name = 'create_blog'
+    atl_token_re = 'name=\"ajs-atl-token\" content=\"(.*?)\">'
+    content_id_re = 'name=\"ajs-content-id\" content=\"(.*?)\">'
+    space_key = 'createpage.action\?spaceKey=(.+?)\&'
+    contribution_hash = '\"contributorsHash\":\"\"'
+
+    created_blog_title_re = 'anonymous_export_view.*?\"webui\":\"(.*?)\"'
 
