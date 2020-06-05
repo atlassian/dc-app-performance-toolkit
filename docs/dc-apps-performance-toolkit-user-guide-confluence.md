@@ -267,10 +267,6 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 ### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-4 hours)
 
-{{% note %}}
-Before re-index, go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; General configuration**, click **Edit** for **Site Configuration** and set **Base URL** to **LoadBalancerURL** value.
-{{% /note %}}
-
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).

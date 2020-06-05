@@ -320,10 +320,6 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
-{{% note %}}
-Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration**, click **Edit Settings** and set **Base URL** to **LoadBalancerURL** value.
-{{% /note %}}
-
 ## <a id="executionhost"></a> Setting up an execution environment
 
 {{% note %}}
@@ -351,6 +347,9 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ## <a id="testscenario"></a> Running the test scenarios on your execution environment
 
+=======
+## Testing scenarios
+>>>>>>> origin/dev
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 

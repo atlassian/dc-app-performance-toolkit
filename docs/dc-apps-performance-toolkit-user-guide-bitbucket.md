@@ -319,10 +319,6 @@ Do not close or interrupt the session. It will take about two hours to upload at
     sudo systemctl start bitbucket
     ```
 1. Wait 10-15 minutes until Bitbucket Server is started.
-1. Open browser and navigate to **LoadBalancerURL**.
-1. Login with admin user.
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings**, set **Base URL** to **LoadBalancerURL** value and click **Save**.
-
 
 ### Elasticsearch Index
 If your app does not use Bitbucket search functionality just **skip** this section.
