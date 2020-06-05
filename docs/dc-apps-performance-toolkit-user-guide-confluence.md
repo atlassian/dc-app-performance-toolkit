@@ -318,14 +318,16 @@ If you're using the DC App Performance Toolkit to produce the required [performa
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
 1. Connect to the instance using the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
-1. Create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `confluence.yml` configuration file and other files as needed.
 1. Push your changes to the forked repository.
+1. Connect to the AWS EC2 instance and clone forked repository.
 
 Once your environment is set up, you can run the DC App Performance Toolkit:
 
 ``` bash
-docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+cd dc-app-performance-toolkit
+docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
 ```
 
 You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
