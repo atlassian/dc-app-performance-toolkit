@@ -251,7 +251,7 @@ if [[ -s ${JIRA_LICENSE_FILE} ]]; then
   LICENSE_ID=$(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -Atc \
   "select id from productlicense;")
   if [[ -z "${LICENSE_ID}" ]]; then
-    echo "The LICENSE_ID variable is empty. Please check that the license is exist in the database."
+    echo "License update failed. License id value in the database is empty."
     exit 1
   fi
   if [[ $(PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c \
