@@ -55,6 +55,7 @@ CONFLUENCE_DATASETS = __get_confluence_datasets()
 CONFLUENCE_USERS = __get_confluence_dataset('users.csv')
 CONFLUENCE_PAGES = __get_confluence_dataset('pages.csv')
 CONFLUENCE_BLOGS = __get_confluence_dataset('blogs.csv')
+CONFLUENCE_STATIC_CONTENT = __get_confluence_dataset('static-content/files_upload.csv')
 
 BITBUCKET_YML = __get_bitbucket_yml()
 BITBUCKET_DATASETS = __get_bitbucket_datasets()
