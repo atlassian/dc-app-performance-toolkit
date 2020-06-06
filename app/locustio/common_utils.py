@@ -73,7 +73,7 @@ def confluence_measure(func):
         if total < confluence_action_time:
             sleep = (confluence_action_time - total)
             logger.info(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-            #time.sleep(sleep)
+            time.sleep(sleep)
         return result
     return wrapper
 
