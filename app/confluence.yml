@@ -64,17 +64,17 @@ scenarios:
       application_postfix: ${application_postfix}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
-      perc_view_page: ${perc_view_page}
-      perc_view_dashboard: ${perc_view_dashboard}
-      perc_view_blog: ${perc_view_blog}
-      perc_search_cql: ${perc_search_cql}
-      perc_create_blog: ${perc_create_blog}
-      perc_create_and_edit_page: ${perc_create_and_edit_page}
-      perc_comment_page: ${perc_comment_page}
-      perc_view_attachment: ${perc_view_attachment}
-      perc_upload_attachment: ${perc_upload_attachment}
-      perc_like_page: ${perc_like_page}
-      perc_standalone_extension: ${perc_standalone_extension}
+      perc_view_page: ${view_page}
+      perc_view_dashboard: ${view_dashboard}
+      perc_view_blog: ${view_blog}
+      perc_search_cql: ${search_cql}
+      perc_create_blog: ${create_blog}
+      perc_create_and_edit_page: ${create_and_edit_page}
+      perc_comment_page: ${comment_page}
+      perc_view_attachment: ${view_attachment}
+      perc_upload_attachment: ${upload_attachment}
+      perc_like_page: ${like_page}
+      perc_standalone_extension: ${standalone_extension}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling

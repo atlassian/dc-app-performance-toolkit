@@ -3,7 +3,7 @@ import re
 import uuid
 
 from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int,\
-    TEXT_HEADERS, ADMIN_HEADERS, NO_TOKEN_HEADERS, logger, generate_random_string
+    TEXT_HEADERS, NO_TOKEN_HEADERS, logger, generate_random_string
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
     CreateBlog, CreateEditPage, CommentPage, UploadAttachments, LikePage
 
@@ -210,9 +210,9 @@ def search_cql(locust):
 
     @confluence_measure
     def search_results():
-        r = locust.client.get(f'/rest/api/search?cql=siteSearch~{generate_random_string(3, only_letters=True)}'
+        r = locust.client.get(f'/rest/api/search?cql=siteSearch~{generate_random_string(2, only_letters=True)}'
                               f'&start=0&limit=20', catch_response=True)
-        if not '{"results":[' in r.content.decode('utf-8'):
+        if '{"results":[' not in r.content.decode('utf-8'):
             logger.info(r.content.decode('utf-8'))
         assert '{"results":[' in r.content.decode('utf-8')
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
@@ -237,7 +237,6 @@ def create_blog(locust):
         atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
         parsed_space_key = fetch_by_re(params.space_key, content)
-
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("910"),
                            TEXT_HEADERS, catch_response=True)
@@ -641,10 +640,10 @@ def create_and_edit_page(locust):
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1230"),
                            TEXT_HEADERS, catch_response=True)
 
-        create_page_editor()
-        create_page()
-        open_editor()
-        edit_page()
+    create_page_editor()
+    create_page()
+    open_editor()
+    edit_page()
 
 
 @confluence_measure
@@ -653,7 +652,7 @@ def comment_page(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
     comment = f'<p>{generate_random_string(length=15, only_letters=True)}</p>'
-    uid = str(uuid.uuid1())
+    uid = str(uuid.uuid4())
     r = locust.client.post(f'/rest/tinymce/1/content/{page_id}/comment?actions=true',
                            params={'html': comment, 'watch': True, 'uuid': uid}, headers=NO_TOKEN_HEADERS,
                            catch_response=True)
@@ -665,10 +664,9 @@ def view_attachments(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
     r = locust.client.get(f'/pages/viewpageattachments.action?pageId={page_id}', catch_response=True)
-    logger.info(str(r))
-    logger.info(r.content.decode('utf-8'))
     assert 'Upload file' and 'Attach more files' and 'Download All' \
            or 'currently no attachments' in r.content.decode('utf-8')
+
 
 @confluence_measure
 def upload_attachments(locust):
@@ -680,7 +678,6 @@ def upload_attachments(locust):
     file_extension = static_content[1]
     page_id = page[0]
 
-    logger.info(f'stat comnten {static_content}, {file_path}')
     r = locust.client.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
     content = r.content.decode('utf-8')
     assert 'Created by' and 'Save for later' in content, f'Fail to open page {page_id}'
@@ -708,9 +705,12 @@ def like_page(locust):
                           catch_response=True)
     content = r.content.decode('utf-8')
     like = fetch_by_re(params.like_re, content)
+    TEXT_HEADERS['Content-Type'] = 'application/json'
 
     if like:
         r = locust.client.delete(f'/rest/likes/1.0/content/{page_id}/likes', catch_response=True)
     if not like:
         r = locust.client.post(f'/rest/likes/1.0/content/{page_id}/likes', TEXT_HEADERS, catch_response=True)
+    if 'likes' not in r.content.decode('utf-8'):
+        logger.info(str(r))
     assert 'likes' in r.content.decode('utf-8'), f'Could not set like to the page {page_id}'

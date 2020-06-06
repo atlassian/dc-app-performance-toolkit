@@ -97,15 +97,18 @@ class CreateEditPage(BaseResource):
 
     editor_page_title_re = 'name=\"ajs-page-title\" content=\"(.*?)\"'
     editor_page_version_re = 'name=\"ajs-page-version\" content=\"(.*?)\">'
-    editor_page_content_re = 'id=\"wysiwygTextarea\" name=\"wysiwygContent\" class=\"hidden tinymce-editor\">([\w\W]*?)</textarea>'
+    editor_page_content_re = 'id=\"wysiwygTextarea\" name=\"wysiwygContent\" class=\
+                              "hidden tinymce-editor\">([\w\W]*?)</textarea>'
 
 
 class CommentPage(BaseResource):
     action_name = 'comment_page'
 
+
 class UploadAttachments(BaseResource):
     action_name = 'upload_attachments'
     atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
+
 
 class LikePage(BaseResource):
     action_name = 'like_page'

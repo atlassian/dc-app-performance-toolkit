@@ -3,6 +3,7 @@ from locustio.confluence.http_actions import login_and_view_dashboard, view_page
     search_cql, create_blog, create_and_edit_page, comment_page, view_attachments, upload_attachments, like_page
 from locustio.common_utils import ActionPercentage
 from util.conf import CONFLUENCE_SETTINGS
+from extension.confluence.extension_locust import custom_action
 
 action = ActionPercentage(config_yml=CONFLUENCE_SETTINGS)
 
@@ -40,11 +41,11 @@ class ConfluenceBehavior(TaskSet):
     def comment_page(self):
         comment_page(self)
 
-    @task(action.percentage('view_attachments'))
+    @task(action.percentage('view_attachment'))
     def view_attachments(self):
         view_attachments(self)
 
-    @task(action.percentage('upload_attachments'))
+    @task(action.percentage('upload_attachment'))
     def upload_attachments(self):
         upload_attachments(self)
 
@@ -52,9 +53,9 @@ class ConfluenceBehavior(TaskSet):
     def like_page(self):
         like_page(self)
 
-    # @task(1)
-    # def custom_action(self):
-    #     custom_action(self)
+    @task(action.percentage('standalone_extension'))
+    def custom_action(self):
+        custom_action(self)
 
 
 class ConfluenceUser(HttpLocust):
