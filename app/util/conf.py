@@ -24,12 +24,22 @@ class AppSettings:
         self.concurrency = env_settings['concurrency']
         self.duration = env_settings['test_duration']
         self.analytics_collector = env_settings['allow_analytics']
+        self.load_executor = env_settings['LOAD_EXECUTOR']
 
     @property
     def server_url(self):
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
 
-JIRA_SETTINGS = AppSettings(config_yml=JIRA_YML)
-CONFLUENCE_SETTINGS = AppSettings(config_yml=CONFLUENCE_YML)
+class AppSettingsExtLoadExecutor(AppSettings):
+
+    def __init__(self, config_yml):
+        super().__init__(config_yml)
+        obj = read_yml_file(config_yml)
+        self.env = obj['settings']['env']
+        self.total_actions_per_hour = self.env['total_actions_per_hour']
+
+
+JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)
+CONFLUENCE_SETTINGS = AppSettingsExtLoadExecutor(config_yml=CONFLUENCE_YML)
 BITBUCKET_SETTINGS = AppSettings(config_yml=BITBUCKET_YML)

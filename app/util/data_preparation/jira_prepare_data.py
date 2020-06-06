@@ -3,10 +3,11 @@ import string
 
 import urllib3
 
+
 from util.conf import JIRA_SETTINGS
-from util.data_preparation.api.jira_clients import JiraRestClient
+from util.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECT_KEYS
+    JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -15,10 +16,13 @@ SCRUM_BOARDS = "scrum_boards"
 USERS = "users"
 ISSUES = "issues"
 JQLS = "jqls"
-PROJECT_KEYS = "project_keys"
+PROJECTS = "projects"
 
 DEFAULT_USER_PASSWORD = 'password'
 DEFAULT_USER_PREFIX = 'performance_'
+ERROR_LIMIT = 10
+
+ENGLISH = 'en_US'
 
 
 def __generate_jqls(max_length=3, count=100):
@@ -32,11 +36,15 @@ performance_users_count = 1000 if JIRA_SETTINGS.concurrency > 1000 else JIRA_SET
 
 
 def generate_perf_users(cur_perf_user, api):
+    errors_count = 0
     config_perf_users_count = JIRA_SETTINGS.concurrency
     if len(cur_perf_user) >= config_perf_users_count:
         return cur_perf_user[:config_perf_users_count]
     else:
         while len(cur_perf_user) < config_perf_users_count:
+            if errors_count >= ERROR_LIMIT:
+                raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
+                                f'Please check the errors above')
             username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
             try:
                 user = api.create_user(name=username, password=DEFAULT_USER_PASSWORD)
@@ -45,7 +53,8 @@ def generate_perf_users(cur_perf_user, api):
                 cur_perf_user.append(user)
             # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
             except Exception as error:
-                print(error)
+                print(f"{error}. Error limits {errors_count}/{ERROR_LIMIT}")
+                errors_count = errors_count + 1
         print('All performance test users were successfully created')
         return cur_perf_user
 
@@ -69,8 +78,8 @@ def write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets[ISSUES]]
     __write_to_file(JIRA_DATASET_ISSUES, issues)
 
-    keys = datasets[PROJECT_KEYS]
-    __write_to_file(JIRA_DATASET_PROJECT_KEYS, keys)
+    keys = datasets[PROJECTS]
+    __write_to_file(JIRA_DATASET_PROJECTS, keys)
 
 
 def __write_to_file(file_path, items):
@@ -82,18 +91,25 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_project_keys = __get_software_project_keys(jira_api)
-    dataset[PROJECT_KEYS] = software_project_keys
-    dataset[ISSUES] = __get_issues(jira_api, software_project_keys)
+    software_projects = __get_software_projects(jira_api)
+    dataset[PROJECTS] = software_projects
+    dataset[ISSUES] = __get_issues(jira_api, software_projects)
     dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
     dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Projects: {len(dataset[PROJECTS])}')
+    print(f'Issues count: {len(dataset[ISSUES])}')
+    print(f'Scrum boards count: {len(dataset[SCRUM_BOARDS])}')
+    print(f'Kanban boards count: {len(dataset[KANBAN_BOARDS])}')
+    print(f'Jqls count: {len(dataset[JQLS])}')
 
     return dataset
 
 
-def __get_issues(jira_api, software_project_keys):
-    jql_projects_str = ','.join(f'"{prj}"' for prj in software_project_keys)
+def __get_issues(jira_api, software_projects):
+    project_keys = [f"{prj.split(',')[0]}" for prj in software_projects]
+    jql_projects_str = ','.join(f'"{prj_key}"' for prj_key in project_keys)
     issues = jira_api.issues_search(
         jql=f"project in ({jql_projects_str}) AND status != Closed order by key", max_results=8000
     )
@@ -120,13 +136,21 @@ def __get_users(jira_api):
     return users
 
 
-def __get_software_project_keys(jira_api):
+def __get_software_projects(jira_api):
     all_projects = jira_api.get_all_projects()
-    software_project_keys = [project['key'] for project in all_projects if 'software' == project.get('projectTypeKey')]
-    if not software_project_keys:
+    software_projects = \
+        [f"{project['key']},{project['id']}" for project in all_projects if 'software' == project.get('projectTypeKey')]
+    if not software_projects:
         raise SystemExit("There are no software projects in Jira")
     # Limit number of projects to avoid "Request header is too large" for further requests.
-    return software_project_keys
+    return software_projects
+
+
+def __check_current_language(jira_api):
+    language = jira_api.get_locale()
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
+                         f'Please change your profile language to "English (United States) [Default]"')
 
 
 def main():
@@ -136,6 +160,9 @@ def main():
     print("Server url: ", url)
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+
+    __check_current_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

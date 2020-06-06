@@ -1,7 +1,8 @@
 import time
 from enum import Enum
 
-from util.data_preparation.api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient
+import lxml.html as LH
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -45,16 +46,23 @@ class BitbucketRestClient(RestClient):
         return entities
 
     def get_non_fork_repos(self, max_results):
-        batch_size = 1000
+        batch_size = None
         non_fork_repos = []
         start_at = 0
         while len(non_fork_repos) < max_results:
-            api_url = f'{self.host}/rest/api/1.0/repos?limit={batch_size}&start={start_at}'
+            api_url = f'{self.host}/rest/api/1.0/repos?limit={batch_size if batch_size else 1000}&start={start_at}'
             response = self.get(api_url, f'Could not retrieve entities list')
-            for repo in response.json()['values']:
-                if 'origin' not in repo and len(non_fork_repos) < max_results:
+            if not batch_size:
+                batch_size = response.json()['limit']
+            repos = response.json()['values']
+            for repo in repos:
+                if 'origin' not in repo:
                     non_fork_repos.append(repo)
-            start_at = start_at + batch_size
+                    if len(non_fork_repos) == max_results:
+                        return non_fork_repos
+            if response.json()['isLastPage']:
+                break
+            start_at = response.json()['nextPageStart']
         return non_fork_repos
 
     def get_projects(self, max_results=500):
@@ -129,3 +137,23 @@ class BitbucketRestClient(RestClient):
         r = session.post(url, data=body, headers=headers)
         cluster_html = r.content.decode("utf-8")
         return cluster_html
+
+    def get_bitbucket_system_page(self):
+        session = self._session
+        url = f"{self.host}/j_atl_security_check"
+        body = {'j_username': self.user, 'j_password': self.password, '_atl_remember_me': 'on',
+                'next': f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
+                'submit': 'Log in'}
+        headers = self.LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+        session.post(url, data=body, headers=headers)
+        r = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
+        return r.content.decode('utf-8')
+
+    def get_locale(self):
+        page = LH.parse(self.host)
+        try:
+            language = page.xpath('//html/@lang')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
+        return language

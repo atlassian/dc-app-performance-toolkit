@@ -6,6 +6,11 @@
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
+if [[ -z "$CONFLUENCE_VERSION" ]]; then
+        echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
+         has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
+        exit 1
+fi
 echo "Confluence Version: ${CONFLUENCE_VERSION}"
 
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/confluence"
@@ -16,6 +21,12 @@ ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZ
 TMP_DIR="/tmp"
 EFS_DIR="/media/atl/confluence/shared-home"
 ###################    End of variables section  ###################
+
+if [[ ! `systemctl status confluence` ]]; then
+ echo "The Confluence service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Confluence."
+ exit 1
+fi
 
 # Check if Confluence version is supported
 if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; then

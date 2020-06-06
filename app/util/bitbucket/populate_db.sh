@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################    Check if NFS exists        ###################
-pgrep nfsd > /dev/null && echo "NFS found" || (echo "NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine."; exit 1)
+pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
@@ -12,7 +12,6 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
 
 # Depending on BITBUCKET installation directory
-BITBUCKET_CURRENT_DIR="/opt/atlassian/bitbucket/current/"
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
 
 # DB admin user name, password and DB name
@@ -23,6 +22,11 @@ BITBUCKET_DB_PASS="Password1!"
 # BITBUCKET version variables
 SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
+if [[ -z "$BITBUCKET_VERSION" ]]; then
+  echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
+  has a valid file path of the Bitbucket version file or set your Cluster BITBUCKET_VERSION explicitly.
+  exit 1
+fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
@@ -32,7 +36,6 @@ DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
-
 
 # Check if Bitbucket version is supported
 if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
@@ -64,7 +67,6 @@ echo "This script restores Postgres DB from SQL DB dump for Bitbucket DC created
 echo "You can review or modify default variables in 'Variables section' of this script."
 echo # move to a new line
 echo "Variables:"
-echo "BITBUCKET_CURRENT_DIR=${BITBUCKET_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
 echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
 echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
@@ -92,7 +94,29 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Download DB dump"
+echo "Step2: Get DB Host"
+DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
+if [[ -z ${DB_HOST} ]]; then
+  echo "DataBase URL was not found in ${DB_CONFIG}"
+  exit 1
+fi
+echo "DB_HOST=${DB_HOST}"
+
+echo "Step3: Write 'instance.url' property to file"
+BITBUCKET_BASE_URL_FILE="base_url"
+if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+  echo "File ${BITBUCKET_BASE_URL_FILE} was found. Base url: $(cat ${BITBUCKET_BASE_URL_FILE})."
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -Atc \
+  "select prop_value from app_property where prop_key='instance.url';" > ${BITBUCKET_BASE_URL_FILE}
+  if [[ ! -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${BITBUCKET_BASE_URL_FILE} file."
+fi
+
+echo "Step4: Download DB dump"
 DUMP_DIR='/media/atl/bitbucket/shared'
 if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
@@ -117,15 +141,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step3: Get DB Host"
-DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
-if [[ -z ${DB_HOST} ]]; then
-  echo "DataBase URL was not found in ${DB_CONFIG}"
-  exit 1
-fi
-echo "DB_HOST=${DB_HOST}"
-
-echo "Step4: SQL Restore"
+echo "Step5: SQL Restore"
 echo "Check DB connection"
 PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
@@ -158,10 +174,26 @@ if [[ $? -ne 0 ]]; then
 fi
 sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 
+echo "Step6: Update 'instance.url' property in database"
+if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+  BASE_URL=$(cat ${BITBUCKET_BASE_URL_FILE})
+  if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+    "UPDATE app_property SET prop_value = '${BASE_URL}' WHERE prop_key = 'instance.url';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database 'instance.url' property. Please check your database connection."
+    exit 1
+  else
+    echo "The database 'instance.url' property was updated with ${BASE_URL}"
+  fi
+else
+  echo "The ${BITBUCKET_BASE_URL_FILE} file doesn't exist or empty. Please check file existence or 'instance.url' property in the database."
+  exit 1
+fi
+
+echo "Step7: Remove ${BITBUCKET_BASE_URL_FILE} file"
+sudo rm ${BITBUCKET_BASE_URL_FILE}
+
 echo "Finished"
-echo  # move to a new line
+echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
-
-

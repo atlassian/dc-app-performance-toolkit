@@ -9,7 +9,6 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
 
 # Depending on Confluence installation directory
-CONFLUENCE_CURRENT_DIR="/opt/atlassian/confluence/current"
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 
 # DB admin user name, password and DB name
@@ -17,9 +16,24 @@ CONFLUENCE_DB_NAME="confluence"
 CONFLUENCE_DB_USER="postgres"
 CONFLUENCE_DB_PASS="Password1!"
 
+# Confluence DB requests
+SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
+
 # Confluence version variables
 SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
+
+if [[ ! $(systemctl status confluence) ]]; then
+  echo "The Confluence service was not found on this host." \
+  "Please make sure you are running this script on a host that is running Confluence."
+  exit 1
+fi
+
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
+if [[ -z "$CONFLUENCE_VERSION" ]]; then
+  echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
+  has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
+  exit 1
+fi
 echo "Confluence Version: ${CONFLUENCE_VERSION}"
 
 # Datasets AWS bucket and db dump name
@@ -29,7 +43,6 @@ DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
-
 
 # Check if Confluence version is supported
 if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; then
@@ -61,7 +74,6 @@ echo "This script restores Postgres DB from SQL DB dump for Confluence DC create
 echo "You can review or modify default variables in 'Variables section' of this script."
 echo # move to a new line
 echo "Variables:"
-echo "CONFLUENCE_CURRENT_DIR=${CONFLUENCE_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
 echo "CONFLUENCE_DB_NAME=${CONFLUENCE_DB_NAME}"
 echo "CONFLUENCE_DB_USER=${CONFLUENCE_DB_USER}"
@@ -89,34 +101,7 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Stop Confluence"
-sudo systemctl stop confluence
-if [[ $? -ne 0 ]]; then
-  echo "Confluence did not stop. Please try to rerun script."
-  exit 1
-fi
-
-echo "Step3: Download DB dump"
-rm -rf ${DB_DUMP_NAME}
-ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
-ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
-FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
-FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
-REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
-if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
-   echo "Not enough free space for download."
-   echo "Free space: ${FREE_SPACE_GB} GB"
-   echo "Required space: ${REQUIRED_SPACE_GB} GB"
-   exit 1
-fi;
-# use computer style progress bar
-time wget --progress=dot:giga ${DB_DUMP_URL}
-if [[ $? -ne 0 ]]; then
-  echo "DB dump download failed! Pls check available disk space."
-  exit 1
-fi
-
-echo "Step4: Get DB Host"
+echo "Step2: Get DB Host"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -124,7 +109,48 @@ if [[ -z ${DB_HOST} ]]; then
 fi
 echo "DB_HOST=${DB_HOST}"
 
-echo "Step5: SQL Restore"
+echo "Step3: Write confluence baseUrl to file"
+CONFLUENCE_BASE_URL_FILE="base_url"
+if [[ -s ${CONFLUENCE_BASE_URL_FILE} ]];then
+  echo "File ${CONFLUENCE_BASE_URL_FILE} was found. Base url: $(cat ${CONFLUENCE_BASE_URL_FILE})."
+else
+  PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -Atc "${SELECT_CONFLUENCE_SETTING_SQL}" \
+  | grep -i "<baseurl>" > ${CONFLUENCE_BASE_URL_FILE}
+  if [[ ! -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${CONFLUENCE_BASE_URL_FILE}) was written to the ${CONFLUENCE_BASE_URL_FILE} file."
+fi
+
+echo "Step4: Stop Confluence"
+sudo systemctl stop confluence
+if [[ $? -ne 0 ]]; then
+  echo "Confluence did not stop. Please try to rerun script."
+  exit 1
+fi
+
+echo "Step5: Download DB dump"
+rm -rf ${DB_DUMP_NAME}
+ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
+ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
+FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
+FREE_SPACE_GB=$((${FREE_SPACE_KB}/1024/1024))
+REQUIRED_SPACE_GB=$((5 + ${ARTIFACT_SIZE_GB}))
+if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
+  echo "Not enough free space for download."
+  echo "Free space: ${FREE_SPACE_GB} GB"
+  echo "Required space: ${REQUIRED_SPACE_GB} GB"
+  exit 1
+fi
+# use computer style progress bar
+time wget --progress=dot:giga ${DB_DUMP_URL}
+if [[ $? -ne 0 ]]; then
+  echo "DB dump download failed! Pls check available disk space."
+  exit 1
+fi
+
+echo "Step6: SQL Restore"
 echo "Check DB connection"
 PGPASSWORD=${CONFLUENCE_DB_PASS} pg_isready -U ${CONFLUENCE_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
@@ -156,9 +182,38 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step6: Start Confluence"
+echo "Step7: Update confluence baseUrl value in database"
+BASE_URL_TO_REPLACE=$(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -Atc \
+"${SELECT_CONFLUENCE_SETTING_SQL}" | grep -i "<baseurl>")
+
+if [[ -z "${BASE_URL_TO_REPLACE}" ]]; then
+  echo "The BASE_URL_TO_REPLACE variable is empty. Please check that the confluence baseUrl value is exist in the database."
+  exit 1
+fi
+
+if [[ -s ${CONFLUENCE_BASE_URL_FILE} ]]; then
+  BASE_URL=$(cat ${CONFLUENCE_BASE_URL_FILE})
+  if [[ $(PGPASSWORD=${CONFLUENCE_DB_PASS} psql -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} -U ${CONFLUENCE_DB_USER} -c \
+    "update BANDANA
+      set BANDANAVALUE = replace(BANDANAVALUE, '${BASE_URL_TO_REPLACE}', '${BASE_URL}')
+      where BANDANACONTEXT = '_GLOBAL'
+      and BANDANAKEY = 'atlassian.confluence.settings';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database baseUrl value. Please check your DB configuration variables."
+    exit 1
+  else
+    echo "The database baseUrl value was updated with ${BASE_URL}"
+  fi
+else
+  echo "The ${CONFLUENCE_BASE_URL_FILE} file doesn't exist or empty. Check DB configuration variables."
+  exit 1
+fi
+
+echo "Step8: Start Confluence"
 sudo systemctl start confluence
 rm -rf ${DB_DUMP_NAME}
+
+echo "Step9: Remove ${CONFLUENCE_BASE_URL_FILE} file"
+sudo rm ${CONFLUENCE_BASE_URL_FILE}
 
 echo "Finished"
 echo  # move to a new line

@@ -6,6 +6,11 @@
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
+if [[ -z "$JIRA_VERSION" ]]; then
+        echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
+         has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
+        exit 1
+fi
 echo "Jira Version: ${JIRA_VERSION}"
 
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
@@ -16,6 +21,12 @@ ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${A
 TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
+
+if [[ ! `systemctl status jira` ]]; then
+ echo "The Jira service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Jira."
+ exit 1
+fi
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1 r1853635">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -56,6 +56,7 @@
       <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
         <collectionProp name="CookieManager.cookies"/>
         <boolProp name="CookieManager.clearEachIteration">true</boolProp>
+        <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
       </CookieManager>
       <hashTree/>
       <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -150,6 +151,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </SetupThreadGroup>
       <hashTree>
         <TestAction guiclass="TestActionGui" testclass="TestAction" testname="page count" enabled="true">
@@ -165,7 +167,7 @@
             <stringProp name="script">import org.apache.commons.io.FileUtils;
 
 // TODO Rework hard-codded path
-int projects = FileUtils.readLines(new File(&quot;datasets/jira/project_keys.csv&quot;)).size();
+int projects = FileUtils.readLines(new File(&quot;datasets/jira/projects.csv&quot;)).size();
 int page_size = 25;
 int pages = (projects % page_size == 0) ? projects / page_size : projects / page_size + 1;
 props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
@@ -186,6 +188,7 @@ props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">0</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
@@ -1087,6 +1090,20 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <hashTree/>
           </hashTree>
         </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login checker" enabled="true">
+          <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+          <stringProp name="TestPlan.comments">Check if login action is success</stringProp>
+        </IfController>
+        <hashTree>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="break loop if login unsuccessful" enabled="true">
+            <intProp name="ActionProcessor.action">5</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree/>
+        </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="actions per login" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
@@ -1096,7 +1113,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <stringProp name="filename">datasets/jira/issues.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">issue_key,issue_id,project_key</stringProp>
+            <stringProp name="variableNames">issue_key,issue_id,issue_project_key</stringProp>
             <boolProp name="randomOrder">false</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
@@ -1136,6 +1153,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="stopThread">false</boolProp>
             <stringProp name="shareMode">shareMode.all</stringProp>
           </CSVDataSet>
+          <hashTree/>
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="projects" enabled="true">
+            <stringProp name="filename">datasets/jira/projects.csv</stringProp>
+            <stringProp name="fileEncoding">UTF-8</stringProp>
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="variableNames">project_key,project_id</stringProp>
+            <boolProp name="randomOrder">true</boolProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="rewindOnTheEndOfList">true</boolProp>
+            <boolProp name="independentListPerThread">false</boolProp>
+          </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
             <intProp name="ActionProcessor.action">1</intProp>
@@ -1263,24 +1291,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                   <stringProp name="RegexExtractor.match_number">1</stringProp>
                 </RegexExtractor>
                 <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_type_bug" enabled="false">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">x_issue_type</stringProp>
-                  <stringProp name="RegexExtractor.regex">{&amp;quot;label&amp;quot;:&amp;quot;Bug&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;([0-9]*)&amp;quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_project_id" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">x_project_id</stringProp>
-                  <stringProp name="RegexExtractor.regex">class=\\&quot;project-field\\&quot; value=\\&quot;(.+?)\\&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_resolution_done" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">x_resolution_done</stringProp>
@@ -1309,15 +1319,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                   <stringProp name="RegexExtractor.default"></stringProp>
                   <stringProp name="RegexExtractor.match_number">-1</stringProp>
                   <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
-                </RegexExtractor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_fields_to_retain -  extract all fields" enabled="false">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">x_fields_to_retain</stringProp>
-                  <stringProp name="RegexExtractor.regex">{&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -1460,7 +1461,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
 }
 
 // static
-def pid = vars.get(&quot;x_project_id&quot;)
+def pid = vars.get(&quot;project_id&quot;)
 def issuetype = vars.get(&quot;x_issue_type&quot;)
 def atl_token = vars.get(&quot;x_atl_token&quot;)
 def formToken = vars.get(&quot;x_form_token&quot;)
@@ -1505,73 +1506,6 @@ if (custom_fields_to_retain_total &gt; 0) {
 request_body = request_body + &quot;&amp;${custom_fields_to_retain}&amp;${fields_to_retain}&quot;
 vars.put(&quot;p_request_body&quot;, request_body.toString())
 </stringProp>
-                </JSR223PreProcessor>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="p_request_body generator" enabled="false">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">def generator = { String alphabet, int n -&gt;
-    new Random().with {
-        (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
-    }
-
-}
-
-// static
-def pid = vars.get(&quot;x_project_id&quot;)
-def issuetype = vars.get(&quot;x_issue_type&quot;)
-def atl_token = vars.get(&quot;x_atl_token&quot;)
-def formToken = vars.get(&quot;x_form_token&quot;)
-def summary = &quot;Summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;)+ &apos; &apos;*5).join(), 20)
-def duedate = &quot;&quot;
-def reporter = vars.get(&quot;username&quot;)
-def environment = &quot;Environment - &quot; + generator(((&apos;a&apos;..&apos;z&apos;)+ &apos; &apos;*5).join(), 20)
-def description = &quot;Description - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos;*10).join(), 500);
-def timetracking_originalestimate = &quot;&quot;
-def timetracking_remainingestimate = &quot;&quot;
-def isCreateIssue = &quot;true&quot;
-def hasWorkStarted = &quot;&quot;
-def resolution = vars.get(&quot;x_resolution_done&quot;)
-def request_body = &quot;pid=${pid}&amp;issuetype=${issuetype}&amp;atl_token=${atl_token}&amp;formToken=${formToken}&amp;summary=${summary}&amp;duedate=${duedate}&amp;reporter=${reporter}&amp;environment=${environment}&amp;description=${description}&amp;timetracking_originalestimate=${timetracking_originalestimate}&amp;timetracking_remainingestimate=${timetracking_remainingestimate}&amp;isCreateIssue=${isCreateIssue}&amp;hasWorkStarted=${hasWorkStarted}&amp;resolution=${resolution}&quot;
-
-//if (vars.get(&quot;x_fields_to_retain&quot;) == &quot;none&quot; || vars.get(&quot;x_custom_fields_to_retain&quot;) == &quot;none&quot;) {
-//    vars.put(&quot;p_request_body&quot;, request_body.toString())
-//} else {
-    // dynamic (generic fields)
-    def fields_to_retain  = &quot;&quot;
-    def fields_to_retain_total = vars.get(&quot;x_fields_to_retain_matchNr&quot;).toInteger();
-    counter = 1;
-    if (fields_to_retain_total &gt;= 0)
-    {
-        while (counter &lt; fields_to_retain_total)
-        {
-            fields_to_retain = fields_to_retain + &quot;fieldsToRetain=&quot; + vars.get(&quot;x_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
-            counter = counter + 1;
-        }
-        fields_to_retain = fields_to_retain.substring(0,fields_to_retain.length() - 1)
-    }
-
-    // dynamic (custom fields)
-    def custom_fields_to_retain  = &quot;&quot;
-    def custom_fields_to_retain_total = vars.get(&quot;x_custom_fields_to_retain_matchNr&quot;).toInteger();
-    counter = 1;
-    if (custom_fields_to_retain_total &gt;= 0)
-    {
-        while (counter &lt; custom_fields_to_retain_total)
-        {
-            custom_fields_to_retain = custom_fields_to_retain + &quot;fieldsToRetain=customfield_&quot; + vars.get(&quot;x_custom_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
-            counter = counter + 1;
-        }
-        custom_fields_to_retain = custom_fields_to_retain.substring(0,custom_fields_to_retain.length() - 1)
-    }
-
-
-    // request
-    request_body = request_body + &quot;&amp;${custom_fields_to_retain}&amp;${fields_to_retain}&quot;
-    vars.put(&quot;p_request_body&quot;, request_body.toString())
-//}</stringProp>
                 </JSR223PreProcessor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -3032,7 +2966,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${issue_project_key}/lastVisited</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -5227,7 +5161,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="projectKey" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">projectKey</stringProp>
-                      <stringProp name="Argument.value">${project_key}</stringProp>
+                      <stringProp name="Argument.value">${issue_project_key}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -5754,7 +5688,7 @@ vars.put(&quot;random_string_long&quot;, random_string_long)
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/bamboo/latest/deploy/${project_key}/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/bamboo/latest/deploy/${issue_project_key}/${issue_key}</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -5973,7 +5907,7 @@ vars.put(&quot;random_string_long&quot;, random_string_long)
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${issue_project_key}/lastVisited</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -6340,7 +6274,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                     <elementProp name="projectKey" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">projectKey</stringProp>
-                      <stringProp name="Argument.value">${project_key}</stringProp>
+                      <stringProp name="Argument.value">${issue_project_key}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
