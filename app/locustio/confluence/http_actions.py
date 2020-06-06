@@ -27,8 +27,6 @@ def login_and_view_dashboard(locust):
     assert 'Log Out' in content, f'Login with {username}, {password} failed.'
     logger.info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
-    static_resource_url = fetch_by_re(params.static_resource_url_re, content)
-    version_number = fetch_by_re(params.version_number_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("010"),
                        TEXT_HEADERS, catch_response=True)
@@ -139,8 +137,6 @@ def view_dashboard(locust):
     r = locust.client.get('/index.action', catch_response=True)
     content = r.content.decode('utf-8')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
-    static_resource_url = fetch_by_re(params.static_resource_url_re, content)
-    version_number = fetch_by_re(params.version_number_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
     assert 'quick-search' and 'Log Out' in content
 
@@ -168,7 +164,6 @@ def view_blog(locust):
     parent_page_id = fetch_by_re(params.parent_page_id_re, content)
     parsed_blog_id = fetch_by_re(params.page_id_re, content)
     space_key = fetch_by_re(params.space_key_re, content)
-    atl_token = fetch_by_re(params.atl_token_re, content)
 
     locust.client.get('/rest/helptips/1.0/tips', catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("310"),
@@ -490,16 +485,13 @@ def create_and_edit_page(locust):
     @confluence_measure
     def open_editor():
         create_page_id = locust.storage['create_page_id']
-        parent_page_id = locust.storage['parent_page_id']
 
         r = locust.client.get(f'/pages/editpage.action?pageId={create_page_id}', catch_response=True)
         content = r.content.decode('utf-8')
         assert '<title>Edit' and 'Update</button>' in content, f'Could not open PAGE {create_page_id} to edit'
 
-        edit_page_title = fetch_by_re(params.editor_page_title_re, content)
         edit_page_version = fetch_by_re(params.editor_page_version_re, content)
         edit_atl_token = fetch_by_re(params.atl_token_re, content)
-        edit_page_content = fetch_by_re(params.editor_page_content_re, content)
         edit_space_key = fetch_by_re(params.space_key_re, content)
         edit_content_id = fetch_by_re(params.content_id_re, content)
         edit_page_id = fetch_by_re(params.page_id_re, content)
@@ -648,7 +640,6 @@ def create_and_edit_page(locust):
 
 @confluence_measure
 def comment_page(locust):
-    params = CommentPage()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
     comment = f'<p>{generate_random_string(length=15, only_letters=True)}</p>'
