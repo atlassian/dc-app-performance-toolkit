@@ -343,6 +343,7 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
+    - `load_executor`: executor for load tests. There are two options available - [locust](https://locust.io/) and [jmeter](https://jmeter.apache.org/). JMeter is default executor.
     - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
     - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
     - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
@@ -436,7 +437,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`jira.jmx`) and Selenium (`jira-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions.
+Extension scripts, which extend the base JMeter (`jira.jmx`), Selenium (`jira-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions. As there are two options for load tests executor available for selection, you can modify either Locust or JMeter scripts. 
 
 ##### Modifying JMeter
 
@@ -463,11 +464,11 @@ The controllers in the extension script, which are executed along with the base 
 When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `jira.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
 
 ``` yml
-#      perc_create_issue: 4
-#      perc_search_jql: 16
-      perc_view_issue: 100
-#      perc_view_project_summary: 4
-#      perc_view_dashboard: 8
+#      create_issue: 4
+#      search_jql: 16
+      view_issue: 100
+#      view_project_summary: 4
+#      view_dashboard: 8
 ```
 
 {{% note %}}
@@ -483,7 +484,7 @@ In such a case, you extend the `extend_standalone_extension` controller, which i
 The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
 
 ``` yml
-      perc_standalone_extension: 10
+      standalone_extension: 10
 ```
 
 ##### Using JMeter variables from the base script
@@ -503,9 +504,31 @@ Use or access the following variables of the extension script from the base scri
 If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
 {{% /note %}}
 
+##### Modifying Locust
+
+The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`
+You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/jira/exntesion_locust.py` script. To enable `custom_action` set the `standalone_extension` with any other than `0` value in  `jira.yml` configuration file.
+```yaml
+    # Action percentage for Jmeter and Locust load executors
+    create_issue: 4
+    search_jql: 13
+    view_issue: 43
+    view_project_summary: 4
+    view_dashboard: 12
+    edit_issue: 4
+    add_comment: 2
+    browse_projects: 4
+    view_scrum_board: 3
+    view_kanban_board: 3
+    view_backlog: 6
+    browse_boards: 2
+    standalone_extension: 0 # By default disabled
+```
+As opposed to JMeter, Locust use actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute) (e.g. setting `standalone_extension` value to `100` means that `custom_action` will be executed 50 times more likely than `browse_boards` action). To run just your app-specific action you can disable all other actions by settings their value to `0`.
+
 ##### Modifying Selenium
 
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
+In addition to JMeter or Locust, you can extend Selenium scripts to measure the end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
