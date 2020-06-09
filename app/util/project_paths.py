@@ -48,9 +48,9 @@ def __get_taurus_artifacts_dir():
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pytest_run_results = Path(f'results/{results_dir_name}_local')
-        pytest_run_results.mkdir(parents=True)
-        return pytest_run_results  # in case you just run pytest
+        local_run_results = Path(f'results/{results_dir_name}_local')
+        local_run_results.mkdir(parents=True)
+        return local_run_results  # in case you just run pytest
 
 
 JIRA_YML = __get_jira_yml()
