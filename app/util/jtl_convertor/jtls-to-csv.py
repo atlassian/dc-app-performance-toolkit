@@ -7,10 +7,10 @@ from typing import IO, List, Set
 
 from util.jtl_convertor import jtl_validator
 from util.jtl_convertor.jtl_modifier import reorder_kpi_jtl
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 RESULTS_CSV_NAME = 'results.csv'
 ENV_JMETER_VERSION = 'JMETER_VERSION'
-ENV_TAURUS_ARTIFACT_DIR = 'TAURUS_ARTIFACTS_DIR'
 TEMPLATE_PLUGIN_COMMAND = 'java -Djava.awt.headless=true -jar {libs_home}cmdrunner-2.2.jar ' \
                           '--tool Reporter ' \
                           '--tool Reporter --generate-csv {output_csv} ' \
@@ -102,16 +102,12 @@ def __validate_file_names(file_names: List[str]):
 def main():
     file_names = sys.argv[1:]
     __validate_file_names(file_names)
-    artifacts_dir: str = os.getenv(ENV_TAURUS_ARTIFACT_DIR)
-    if artifacts_dir is None:
-        raise SystemExit(f'Error: env variable {ENV_TAURUS_ARTIFACT_DIR} is not set')
 
-    artifacts_dir_path = Path(artifacts_dir)
     with tempfile.TemporaryDirectory() as tmp_dir:
         jmeter_lib_dir = __get_jmeter_lib_dir()
         temp_csv_list: List[Path] = []
         for file_name in file_names:
-            jtl_file_path = artifacts_dir_path / file_name
+            jtl_file_path = ENV_TAURUS_ARTIFACT_DIR / file_name
             jtl_validator.validate(jtl_file_path)
             if jtl_file_path.name == 'kpi.jtl':
                 jtl_file_path = reorder_kpi_jtl(jtl_file_path, tmp_dir)
@@ -119,7 +115,7 @@ def main():
             __convert_jtl_to_csv(jtl_file_path, csv_file_path, jmeter_lib_dir)
             temp_csv_list.append(csv_file_path)
 
-        results_file_path = artifacts_dir_path / RESULTS_CSV_NAME
+        results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
         __create_results_csv(temp_csv_list, results_file_path)
 
 

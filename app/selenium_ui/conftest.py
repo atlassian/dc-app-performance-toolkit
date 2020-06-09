@@ -5,7 +5,6 @@ import os
 import sys
 import time
 import functools
-from pathlib import Path
 
 import pytest
 from selenium.common.exceptions import WebDriverException
@@ -15,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, BITBUCKET_USERS, BITBUCKET_PROJECTS, \
-    BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_USERS
+    BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -70,21 +69,8 @@ class Dataset:
 
 globals = InitGlobals()
 
-
-def __get_current_results_dir():
-    if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-        return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
-    else:
-        results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pytest_run_results = Path(f'results/{results_dir_name}_local')
-        pytest_run_results.mkdir(parents=True)
-        return pytest_run_results  # in case you just run pytest
-
-
-# create selenium output files
-current_results_dir = __get_current_results_dir()
-selenium_results_file = current_results_dir / 'selenium.jtl'
-selenium_error_file = current_results_dir / 'selenium.err'
+selenium_results_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.jtl'
+selenium_error_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.err'
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
@@ -206,8 +192,9 @@ def get_screen_shots(request, webdriver, app_settings):
         with open(selenium_error_file, mode) as err_file:
             err_file.write(f"Action: {action_name}, Error: {error_text}\n")
         print(f"Action: {action_name}, Error: {error_text}\n")
-        os.makedirs(f"{current_results_dir}/errors_artifacts", exist_ok=True)
-        error_artifact_name = f'{current_results_dir}/errors_artifacts/{datetime_now(action_name)}'
+        errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
+        errors_artifacts.mkdir(parents=True, exist_ok=True)
+        error_artifact_name = errors_artifacts / datetime_now(action_name)
         webdriver.save_screenshot('{}.png'.format(error_artifact_name))
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))

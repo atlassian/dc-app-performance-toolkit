@@ -1,7 +1,6 @@
-from pathlib import Path
 import os
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
-ENV_TAURUS_ARTIFACT_DIR = 'TAURUS_ARTIFACTS_DIR'
 FILES_TO_REMOVE = ['jmeter.out',
                    'jmeter-bzt.properties',
                    'merged.json',
@@ -10,13 +9,8 @@ FILES_TO_REMOVE = ['jmeter.out',
                    'system.properties',
                    'locust.out']
 
-if ENV_TAURUS_ARTIFACT_DIR in os.environ:
-    artifacts_dir = os.environ.get(ENV_TAURUS_ARTIFACT_DIR)
-else:
-    raise SystemExit(f'Error: env variable {ENV_TAURUS_ARTIFACT_DIR} is not set')
-
 for file in FILES_TO_REMOVE:
-    file_path = Path(f'{artifacts_dir}/{file}')
+    file_path = ENV_TAURUS_ARTIFACT_DIR / file
     if file_path.exists():
         try:
             os.remove(file_path)
