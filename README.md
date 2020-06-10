@@ -66,7 +66,7 @@ pip install -r requirements.txt
 
 1. Install [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and a Linux distribution of your choice (Ubuntu is recommended)
 1. Start bash 
-   1. Install dependencies ``sudo apt-get update; sudo apt-get install python3-pip``
+   1. Install dependencies `sudo apt-get update; sudo apt-get install python3-pip`
    1. Install Chrome Browser
       1. `wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -`
       1. `sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'`
