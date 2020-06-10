@@ -6,12 +6,11 @@ import logging
 import random
 import string
 import json
-import os
-from pathlib import Path
 import socket
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -120,15 +119,7 @@ def read_json(file_json):
 
 
 def init_logger():
-    taurus_result_dir = 'TAURUS_ARTIFACTS_DIR'
-    if taurus_result_dir in os.environ:
-        artifacts_dir = os.environ.get(taurus_result_dir)
-        logfile_path = f"{artifacts_dir}/locust.log"
-    else:
-        results_dir_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        local_locust_result_dir = Path(f'{Path(__file__).parents[1]}/results/{results_dir_name}_local')
-        local_locust_result_dir.mkdir(parents=True)
-        logfile_path = f'{local_locust_result_dir}/locust.log'
+    logfile_path = ENV_TAURUS_ARTIFACT_DIR / 'locust.log'
     root_logger = logging.getLogger()
     log_format = f"[%(asctime)s.%(msecs)03d] [%(levelname)s] {socket.gethostname()}/%(name)s : %(message)s"
     formatter = logging.Formatter(log_format, '%Y-%m-%d %H:%M:%S')
