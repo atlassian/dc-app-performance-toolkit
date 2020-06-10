@@ -469,7 +469,7 @@ If there are some additional variables from the base script required by the exte
 ##### Modifying Locust
 
 The main Locust script for Confluence is `locustio/confluence/locustfile.py` which executes `HTTP` actions from `locustio/confluence/http_actions.py`.
-You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/confluence/extension_locust.py` script. To enable `custom_action` set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
+You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/confluence/extension_locust.py` script. To enable `custom_action` set non-zero percentage value for `standalone_extension` in  `confluence.yml` configuration file.
 ```yaml
     # Action percentage for Jmeter and Locust load executors
     view_page: 54
@@ -489,7 +489,7 @@ Locust use actions percentage as relative [weights](https://docs.locust.io/en/st
 
 ##### Modifying Selenium
 
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
+In addition to JMeter or Locust, you can extend Selenium scripts to measure the end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `confluence-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
