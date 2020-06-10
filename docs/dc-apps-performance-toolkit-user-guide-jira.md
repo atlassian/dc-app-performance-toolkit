@@ -506,8 +506,8 @@ If there are some additional variables from the base script required by the exte
 
 ##### Modifying Locust
 
-The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`
-You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/jira/exntesion_locust.py` script. To enable `custom_action` set the `standalone_extension` with any other than `0` value in  `jira.yml` configuration file.
+The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`.
+You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/jira/extension_locust.py` script. To enable `custom_action` set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
 ```yaml
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
@@ -524,7 +524,7 @@ You can extend Locust actions with app-specific action by editing the function `
     browse_boards: 2
     standalone_extension: 0 # By default disabled
 ```
-As opposed to JMeter, Locust use actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute) (e.g. setting `standalone_extension` value to `100` means that `custom_action` will be executed 50 times more likely than `browse_boards` action). To run just your app-specific action you can disable all other actions by settings their value to `0`.
+Locust use actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute) (e.g. setting `standalone_extension` value to `100` means that `custom_action` will be executed 50 times more likely than `browse_boards` action). To run just your app-specific action you can disable all other actions by setting their value to `0`.
 
 ##### Modifying Selenium
 
