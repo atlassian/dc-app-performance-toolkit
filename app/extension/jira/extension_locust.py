@@ -3,7 +3,7 @@ from locustio.common_utils import logger
 
 
 def custom_action(locust):
-    r = locust.client.get(f'/plugin/report')  # navigate to page
+    r = locust.client.get('/plugin/report')  # navigate to page
 
     content = r.content.decode('utf-8')  # parse page content
     token_pattern_example = '"token":"(.+?)"'

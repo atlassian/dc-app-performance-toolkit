@@ -5,7 +5,7 @@ import uuid
 from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int,\
     TEXT_HEADERS, NO_TOKEN_HEADERS, logger, generate_random_string
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
-    CreateBlog, CreateEditPage, CommentPage, UploadAttachments, LikePage
+    CreateBlog, CreateEditPage, UploadAttachments, LikePage
 
 confluence_dataset = confluence_datasets()
 
@@ -235,7 +235,7 @@ def create_blog(locust):
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("910"),
                            TEXT_HEADERS, catch_response=True)
-        locust.client.get(f'/rest/mywork/latest/status/notification/count?pageId=0', catch_response=True)
+        locust.client.get('/rest/mywork/latest/status/notification/count?pageId=0', catch_response=True)
         locust.client.get('/plugins/servlet/notifications-miniview', catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("925"),
                            TEXT_HEADERS, catch_response=True)
@@ -449,7 +449,7 @@ def create_and_edit_page(locust):
         locust.client.post('/json/stopheartbeatactivity.action', params=heartbeat_activity_body,
                            headers=TEXT_HEADERS, catch_response=True)
 
-        locust.client.get(f'/rest/helptips/1.0/tips', catch_response=True)
+        locust.client.get('/rest/helptips/1.0/tips', catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("795"),
                            TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/rest/jira-metadata/1.0/metadata/aggregate?pageId={create_page_id}&_={timestamp_int()}',

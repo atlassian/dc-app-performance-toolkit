@@ -15,7 +15,7 @@ def confluence_datasets():
 
 
 class BaseResource:
-    resources_file = 'locustio/jira/resources.json'
+    resources_file = 'locustio/confluence/resources.json'
     action_name = ''
     storage = dict()
 
