@@ -9,6 +9,14 @@ SUCCESS_TEST_RATE = 95.00
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 
 
+def is_docker():
+    path = '/proc/self/cgroup'
+    return (
+        os.path.exists('/.dockerenv') or
+        os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def format_string_summary_report(string_to_format, offset=50):
     # format string with delimiter "|"
     return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
@@ -78,8 +86,11 @@ def get_os():
     return os_type
 
 
-def uniq_user_id():
-    user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
+def uniq_user_id(server_url: str):
+    if is_docker():
+        user_info = server_url
+    else:
+        user_info = str(platform.node()) + str(getpass.getuser()) + str(socket.gethostname())
     uid = hashlib.pbkdf2_hmac('sha256', user_info.encode('utf-8'),
                               b"DCAPT Centaurus",
                               100000).hex()
