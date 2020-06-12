@@ -57,27 +57,29 @@ Be sure to run this command inside the `app` directory. The main [confluence.jmx
 
 ### Debugging JMeter scripts
 1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-2. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-3. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/results/confluence/YY-MM-DD-hh-mm-ss` folder.
+1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
+1. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/results/confluence/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
 In addition, you can run and monitor JMeter test real-time with GUI.
 1. Launch the test with GUI by running `bzt confluence.yml -gui`.
-2. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-3. Click the start button to start running the test.
+1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
+1. Click the start button to start running the test.
 
 ### Run one JMeter action
 ####Option 1: Run one JMeter action via GUI
 1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-2. Go to `File` > `Open`, and then open `jmeter/confluence.jmx`.
-2. In the`Global Variables` section, add correct confluence hostname, port, protocol, and postfix (if required).
-3. In `confluence` > `load profile`, set `perc_desired_action` to 100.
-4. Run JMeter.
+1. Go to `File` > `Open`, and then open `jmeter/confluence.jmx`.
+1. In the `Global Variables` section, add correct confluence hostname, port, protocol, and postfix (if required).
+1. In `confluence` > `load profile`, set `perc_desired_action` to 100.
+1. Enable `View Results Tree` controller.
+1. Run JMeter.
+1. `View Results Tree` controller will have all details for every request and corresponding response.
 
 ####Option 2: Run one JMeter action via bzt
 1. In [confluence.yml](../../app/confluence.yml), set `perc_desired_action` to 100 and all other perc_* to 0.
-2. Run `bzt confluence.yml`.
+1. Run `bzt confluence.yml`.
 
 ## Selenium
 ### Debugging Selenium scripts
@@ -88,15 +90,15 @@ Also, screenshots and HTMLs of Selenium fails are stared in the `results/conflue
 ### Running Selenium tests with Browser GUI
 There are two options of running Selenium tests with browser GUI:
 1. In [confluence.yml](../../app/confluence.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-2. Set environment variable with the `export WEBDRIVER_VISIBLE=True` command.
+1. Set environment variable with the `export WEBDRIVER_VISIBLE=True` command.
 
 
 ### Running Selenium tests locally without the Performance Toolkit
 1. Activate virualenv for the Performance Toolkit.
-2. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
-3. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
-4. Run all Selenium PyTest tests with the `pytest confluence-ui.py` command.
-5. To run one Selenium PyTest test (e.g., `test_1_selenium_view_page`), execute the first login test and the required one with this command:
+1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
+1. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
+1. Run all Selenium PyTest tests with the `pytest confluence-ui.py` command.
+1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_page`), execute the first login test and the required one with this command:
 
 `pytest confluence-ui.py::test_0_selenium_a_login confluence-ui.py::test_1_selenium_view_page`.
 
