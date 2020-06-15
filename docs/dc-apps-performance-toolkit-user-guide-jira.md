@@ -347,7 +347,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ## <a id="testscenario"></a> Running the test scenarios on your execution environment
 
-=======
+
 ## Testing scenarios
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
