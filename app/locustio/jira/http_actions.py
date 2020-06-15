@@ -83,6 +83,8 @@ def view_issue(locust):
 
 def create_issue(locust):
     params = CreateIssue()
+    project = random.choice(jira_dataset['projects'])
+    project_id = project[1]
 
     @jira_measure
     def create_issue_open_quick_create():
@@ -92,7 +94,6 @@ def create_issue(locust):
         atl_token = fetch_by_re(params.atl_token_pattern, content)
         form_token = fetch_by_re(params.form_token_pattern, content)
         issue_type = fetch_by_re(params.issue_type_pattern, content)
-        project_id = fetch_by_re(params.project_id_pattern, content)
         resolution_done = fetch_by_re(params.resolution_done_pattern, content)
         fields_to_retain = re.findall(params.fields_to_retain_pattern, content)
         custom_fields_to_retain = re.findall(params.custom_fields_to_retain_pattern, content)
