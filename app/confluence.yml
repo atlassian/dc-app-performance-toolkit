@@ -14,21 +14,21 @@ settings:
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
-    LOAD_EXECUTOR: jmeter          # jmeter and locust are supported. jmeter by default.
+    load_executor: jmeter          # jmeter and locust are supported. jmeter by default.
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     total_actions_per_hour: 20000
-    action_percentage:
-      perc_view_page: 54
-      perc_view_dashboard: 6
-      perc_view_blog: 8
-      perc_search_cql: 7
-      perc_create_blog: 3
-      perc_create_and_edit_page: 6
-      perc_comment_page: 5
-      perc_view_attachment: 3
-      perc_upload_attachment: 5
-      perc_like_page: 3
-      perc_standalone_extension: 0 # By default disabled
+    # Action percentage for Jmeter and Locust load executors
+    view_page: 54
+    view_dashboard: 6
+    view_blog: 8
+    search_cql: 7
+    create_blog: 3
+    create_and_edit_page: 6
+    comment_page: 5
+    view_attachment: 3
+    upload_attachment: 5
+    like_page: 3
+    standalone_extension: 0 # By default disabled
 services:
   - module: shellexec
     prepare:
@@ -41,7 +41,8 @@ services:
       - python util/analytics/analytics.py confluence
       - python util/post_run/cleanup_results_dir.py
 execution:
-  - scenario: jmeter
+  - scenario: ${load_executor}
+    executor: ${load_executor}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 3m
@@ -52,6 +53,8 @@ execution:
 scenarios:
   selenium:
     script: selenium_ui/confluence-ui.py
+  locust:
+    script: locustio/confluence/locustfile.py
   jmeter:
     script: jmeter/confluence.jmx
     properties:
@@ -61,17 +64,17 @@ scenarios:
       application_postfix: ${application_postfix}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
-      perc_view_page: ${perc_view_page}
-      perc_view_dashboard: ${perc_view_dashboard}
-      perc_view_blog: ${perc_view_blog}
-      perc_search_cql: ${perc_search_cql}
-      perc_create_blog: ${perc_create_blog}
-      perc_create_and_edit_page: ${perc_create_and_edit_page}
-      perc_comment_page: ${perc_comment_page}
-      perc_view_attachment: ${perc_view_attachment}
-      perc_upload_attachment: ${perc_upload_attachment}
-      perc_like_page: ${perc_like_page}
-      perc_standalone_extension: ${perc_standalone_extension}
+      perc_view_page: ${view_page}
+      perc_view_dashboard: ${view_dashboard}
+      perc_view_blog: ${view_blog}
+      perc_search_cql: ${search_cql}
+      perc_create_blog: ${create_blog}
+      perc_create_and_edit_page: ${create_and_edit_page}
+      perc_comment_page: ${comment_page}
+      perc_view_attachment: ${view_attachment}
+      perc_upload_attachment: ${upload_attachment}
+      perc_like_page: ${like_page}
+      perc_standalone_extension: ${standalone_extension}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
