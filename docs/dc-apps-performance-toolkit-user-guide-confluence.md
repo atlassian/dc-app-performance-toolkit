@@ -8,19 +8,20 @@ date: "2018-07-19"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
-To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
+This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-``` bash
-git clone git@github.com:atlassian/dc-app-performance-toolkit.git
-```
+To use the Data Center App Performance Toolkit, you'll need to:
 
-Follow installation instructions described in the `dc-app-performance-toolkit/README.md` file.
+1. [Set up Confluence Data Center on AWS](#instancesetup).
+1. [Load an enterprise-scale dataset on your Confluence Data Center deployment](#preloading).
+1. [Set up an execution environment for the toolkit](#executionhost).
+1. [Run all the testing scenarios in the toolkit](#testscenario).
 
-If you need performance testing results at a production level, follow instructions in this chapter to set up Confluence Data Center with the corresponding dataset.
+{{% note %}}
+For simple spikes or tests, you can skip steps 1-2 and target any Confluence test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
+{{% /note %}}
 
-For spiking, testing, or developing, your local Confluence instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-confluence/#testing-scenarios). Still, script adjustments for your local dataset may be required.
-
-## Setting up Confluence Data Center
+## <a id="instancesetup"></a> Setting up Confluence Data Center
 
 We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -63,7 +64,7 @@ All important parameters are listed and described in this section. For all other
 
 The Data Center App Performance Toolkit officially supports:
 
-- Confluence Platform Release version: 7.0.4 
+- Confluence Platform Release version: 7.0.4
 - Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
 
 **Cluster nodes**
@@ -269,7 +270,7 @@ Do not close or interrupt the session. It will take some time to upload attachme
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
 1. Click **Rebuild** and wait until re-indexing is completed.
 
 Confluence will be unavailable for some time during the re-indexing process.
@@ -280,7 +281,7 @@ For more information, go to [Administer your Data Center search index](https://c
 
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Create any new page with a random content (without a new page index snapshot job will not be triggered).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Scheduled Jobs**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Scheduled Jobs**.
 1. Find **Clean Journal Entries** job and click **Run**.
 1. Make sure that Confluence index snapshot was created. To do that, use SSH to connect to the Confluence node via Bastion (where `NODE_IP` is the IP of the node):
 
@@ -302,7 +303,32 @@ For more information, go to [Administer your Data Center search index](https://c
     Snapshot was created successfully.
     ```
 
-## Testing scenarios
+## <a id="executionhost"></a> Setting up an execution environment
+
+{{% note %}}
+For simple spikes or tests, you can set up an execution environment on your local machine. To do this, clone the [DC App Performance Toolkit repo](https://github.com/atlassian/dc-app-performance-toolkit) and follow the instructions on the `dc-app-performance-toolkit/README.md` file. Make sure your local machine has at least a 4-core CPU and 16GB of RAM.
+{{% /note %}}  
+
+If you're using the DC App Performance Toolkit to produce the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/), we recommend that you set up your execution environment on AWS:
+
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. Connect to the instance using the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `confluence.yml` configuration file and other files as needed.
+1. Push your changes to the forked repository.
+1. Connect to the AWS EC2 instance and clone forked repository.
+
+Once your environment is set up, you can run the DC App Performance Toolkit:
+
+``` bash
+cd dc-app-performance-toolkit
+docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+```
+
+You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
+
+## <a id="testscenario"></a> Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -534,7 +560,7 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
     Index recovery is required for main index, starting now
     main index recovered from shared home directory
     ```
-    
+
 1. Run bzt.
 
     ``` bash
