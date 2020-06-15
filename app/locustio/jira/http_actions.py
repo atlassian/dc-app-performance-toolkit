@@ -179,7 +179,8 @@ def search_jql(locust):
 @jira_measure
 def view_project_summary(locust):
     params = ViewProjectSummary()
-    project_key = random.choice(jira_dataset["issues"])[2]
+    project = random.choice(jira_dataset['projects'])
+    project_key = project[0]
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
