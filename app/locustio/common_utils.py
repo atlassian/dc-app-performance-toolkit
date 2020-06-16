@@ -6,12 +6,11 @@ import logging
 import random
 import string
 import json
-import os
-from pathlib import Path
 import socket
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -89,7 +88,7 @@ def global_measure(func, start_time, *args, **kwargs):
                                     response_time=total,
                                     exception=e,
                                     response_length=0)
-        logger.error(Exception)
+        logger.error(f'{func.__name__} action failed. Reason: {e}')
     else:
         total = int((time.time() - start_time) * 1000)
         events.request_success.fire(request_type="Action",
@@ -120,15 +119,7 @@ def read_json(file_json):
 
 
 def init_logger():
-    taurus_result_dir = 'TAURUS_ARTIFACTS_DIR'
-    if taurus_result_dir in os.environ:
-        artifacts_dir = os.environ.get(taurus_result_dir)
-        logfile_path = f"{artifacts_dir}/locust.log"
-    else:
-        results_dir_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        local_locust_result_dir = Path(f'{Path(__file__).parents[1]}/results/{results_dir_name}_local')
-        local_locust_result_dir.mkdir(parents=True)
-        logfile_path = f'{local_locust_result_dir}/locust.log'
+    logfile_path = ENV_TAURUS_ARTIFACT_DIR / 'locust.log'
     root_logger = logging.getLogger()
     log_format = f"[%(asctime)s.%(msecs)03d] [%(levelname)s] {socket.gethostname()}/%(name)s : %(message)s"
     formatter = logging.Formatter(log_format, '%Y-%m-%d %H:%M:%S')
@@ -144,8 +135,11 @@ def timestamp_int():
     return int(datetime.timestamp(now))
 
 
-def generate_random_string(length):
-    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+def generate_random_string(length, only_letters=False):
+    if not only_letters:
+        return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+    else:
+        return "".join([random.choice(string.ascii_lowercase + ' ') for _ in range(length)])
 
 
 def get_first_index(from_list: list, err):

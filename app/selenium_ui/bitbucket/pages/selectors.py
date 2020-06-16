@@ -183,7 +183,7 @@ class PullRequestLocator:
                              '7': (By.CSS_SELECTOR, ".diff-line-comment-trigger")}
     comment_text_area = {'6': (By.CSS_SELECTOR, "textarea.text"), '7': (By.CLASS_NAME, "comment-editor-wrapper")}
     text_area = {'6': (By.CSS_SELECTOR, 'textarea.text'), '7': (By.CLASS_NAME, 'CodeMirror-code')}
-    comment_button = {'6': (By.CSS_SELECTOR, "div.buttons>button:nth-child(1)"),
+    comment_button = {'6': (By.CSS_SELECTOR, "div.comment-form-footer>div.buttons>button:nth-child(1)"),
                       '7': (By.CSS_SELECTOR, "div.editor-controls>button:nth-child(1)")}
     pull_request_activity_content = {'6': (By.CSS_SELECTOR, ".pull-request-activity-content"),
                                      '7': (By.CSS_SELECTOR, ".pull-request-activities")}
