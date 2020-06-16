@@ -111,7 +111,7 @@ class AnalyticsCollector:
 def send_analytics(collector: AnalyticsCollector):
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,
-               "user_id": uniq_user_id(),
+               "user_id": uniq_user_id(collector.conf.server_url),
                "app_version": collector.application_version,
                "date": collector.date,
                "time_stamp": collector.time_stamp,

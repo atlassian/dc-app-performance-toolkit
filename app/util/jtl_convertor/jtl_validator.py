@@ -1,5 +1,4 @@
 import time
-
 from csv import DictReader
 from pathlib import Path
 from types import FunctionType
@@ -25,8 +24,6 @@ METHOD = 'method'
 
 SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE,
                                    SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY]
-
-JTL_HEADERS_DIFF_LOCUST_JMETER: List[str] = [THREAD_NAME, CONNECT, HOSTNAME]
 
 VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     TIME_STAMP: [is_not_none, is_number],

@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
@@ -28,10 +29,7 @@ class BaseFileReader:
 
     @property
     def log_dir(self):
-        if 'TAURUS_ARTIFACTS_DIR' in os.environ:
-            return os.environ.get('TAURUS_ARTIFACTS_DIR')
-        else:
-            raise SystemExit('ERROR: Taurus result directory could not be found')
+        return ENV_TAURUS_ARTIFACT_DIR
 
 
 class BztFileReader(BaseFileReader):

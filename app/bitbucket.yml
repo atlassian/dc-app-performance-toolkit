@@ -14,7 +14,7 @@ settings:
     test_duration: 50m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
-    LOAD_EXECUTOR: jmeter
+    load_executor: jmeter
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
@@ -29,7 +29,7 @@ services:
       - python util/analytics/analytics.py bitbucket
       - python util/post_run/cleanup_results_dir.py
 execution:
-  - scenario: jmeter
+  - scenario: ${load_executor}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: 10m
