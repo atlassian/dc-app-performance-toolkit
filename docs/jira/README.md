@@ -97,7 +97,6 @@ Enter `Hatch rate (users spawned/secods)` and press `Start spawning` button.
 1. Without Locust UI: execute command `locust -f locustio/jira/locustfile.py -с N --no-web` where `N` is the number of users to simulate.  
 Full logs of local run you can find in the `results/jira/YY-MM-DD-hh-mm-ss_local/` directory.
 
-
 To execute one locust action, navigate to `jira.yml` and set percentage value `100` to the action you would like to run separately, set percentage value `0` to all other actions.
 
 
