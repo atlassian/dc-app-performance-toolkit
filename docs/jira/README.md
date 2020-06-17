@@ -86,15 +86,22 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 
 ## Locust
 ### Debugging Locust scripts
-Detailed log of Locust executor is located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.log`. Locust errors and stacktrace are located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.err`.
+Detailed log of Locust executor is located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.log` file. Locust errors and stacktrace are located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.err` file.
+
+Additional debug information could be logged by adding `logger.info('your INFO message')` string in the code.
 ### Running Locust tests locally without the Performance Toolkit
+#### Start locust UI mode
 1. Activate virualenv for the Performance Toolkit.
-1. With Locust UI: execute command `locust -f locustio/jira/locustfile.py`. Find the message in console:   
-`[2020-06-17 13:52:35,973] macbook718/INFO/locust.main: Starting web monitor at http://*:8089`.  
-Find the Locust monitor port (default is `8089`). Open your browser, navigate to `localhost:8089`.  
-Enter `Number of total users to simulate` (`1` is recommended value for debug purpose)  
-Enter `Hatch rate (users spawned/secods)` and press `Start spawning` button.
-1. Without Locust UI: execute command `locust -f locustio/jira/locustfile.py -с N --no-web` where `N` is the number of users to simulate.  
+1. Navigate to `app` directory and execute command `locust --locustfile locustio/jira/locustfile.py`. 
+1. Open your browser, navigate to `localhost:8089`.  
+1. Enter `Number of total users to simulate` (`1` is recommended value for debug purpose)  
+1. Enter `Hatch rate (users spawned/secods)` 
+1. Press `Start spawning` button.
+
+#### Start Locust console mode
+1. Activate virualenv for the Performance Toolkit.
+1. Navigate to `app` and execute command `locust --no-web --locustfile locustio/jira/locustfile.py --clients N --hatch-rate R`, where `N` is the number of total users to simulate and `R` is the hatch rate.  
+
 Full logs of local run you can find in the `results/jira/YY-MM-DD-hh-mm-ss_local/` directory.
 
 To execute one locust action, navigate to `jira.yml` and set percentage value `100` to the action you would like to run separately, set percentage value `0` to all other actions.
