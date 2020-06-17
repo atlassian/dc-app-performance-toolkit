@@ -21,6 +21,7 @@ For spiking, testing, or developing, your local Jira instance would work well.
 * `concurrency`: number of concurrent users for JMeter scenario
 * `test_duration`: duration of test execution (45m is by default)
 * `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default)
+* `load_executor`: `jmeter` or `locust` load executor. `jmeter` is using by default.
 
 ## Step 2: Run tests
 Run Taurus.
@@ -33,6 +34,7 @@ Results are located in the `resutls/jira/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
 * `error_artifacts` - folder with screenshots and HTMLs of Selenium fails
 * `jmeter.err` - JMeter errors log
+* `locust.err` - Locust errors log
 * `kpi.jtl` - JMeter raw data
 * `pytest.out` - detailed log of Selenium execution, including stacktraces of Selenium fails
 * `selenium.jtl` - Selenium raw data
@@ -43,14 +45,14 @@ next steps.
 
 # Useful information
 
-## Jmeter
-### Changing JMeter workload
-The [jira.yml](../../app/jira.yml) has a workload section with `perc_action_name` fields. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
+## Changing performance workload for JMeter and Locust
+The [jira.yml](../../app/jira.yml) has a `action_name` fields in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
 throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 54500 user transactions per hour at 200 concurrency.
 
 To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
 
+## JMeter
 ### Opening JMeter scripts
 JMeter is written in XML and requires the JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
 Be sure to run this command inside the `app` directory. The main [jira.jmx](../../app/jmeter/jira.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
@@ -80,6 +82,24 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 #### Option 2: Run one JMeter action via bzt
 1. In [jira.yml](../../app/jira.yml), set `perc_desired_action` to 100 and all other perc_* to 0.
 1. Run `bzt jira.yml`.
+
+
+## Locust
+### Debugging Locust scripts
+Detailed log of Locust executor is located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.log`. Locust errors and stacktrace are located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.err`.
+### Running Locust tests locally without the Performance Toolkit
+1. Activate virualenv for the Performance Toolkit.
+1. With Locust UI: execute command `locust -f locustio/jira/locustfile.py`. Find the message in console:   
+`[2020-06-17 13:52:35,973] macbook718/INFO/locust.main: Starting web monitor at http://*:8089`.  
+Find the Locust monitor port (default is `8089`). Open your browser, navigate to `localhost:8089`.  
+Enter `Number of total users to simulate` (`1` is recommended value for debug purpose)  
+Enter `Hatch rate (users spawned/secods)` and press `Start spawning` button.
+1. Without Locust UI: execute command `locust -f locustio/jira/locustfile.py -с N --no-web` where `N` is the number of users to simulate.  
+Full logs of local run you can find in the `results/jira/YY-MM-DD-hh-mm-ss_local/` directory.
+
+
+To execute one locust action, navigate to `jira.yml` and set percentage value `100` to the action you would like to run separately, set percentage value `0` to all other actions.
+
 
 ## Selenium
 ### Debugging Selenium scripts
