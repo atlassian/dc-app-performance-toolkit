@@ -21,6 +21,8 @@ For spiking, testing, or developing, your local Confluence instance would work w
 * `concurrency`: number of concurrent users for JMeter scenario
 * `test_duration`: duration of test execution (45m is by default)
 * `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default)
+* `load_executor`: `jmeter` or `locust` load executor. `jmeter` is using by default.
+
 
 ## Step 2: Run tests
 Run Taurus.
