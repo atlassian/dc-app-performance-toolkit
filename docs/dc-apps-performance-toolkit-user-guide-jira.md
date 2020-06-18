@@ -372,7 +372,7 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
-    - `load_executor`: executor for load tests. There are two options available - [locust](https://locust.io/) and [jmeter](https://jmeter.apache.org/). JMeter is default executor.
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
     - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
     - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
     - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
@@ -466,7 +466,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`jira.jmx`), Selenium (`jira-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions. As there are two options for load tests executor available for selection, you can modify either Locust or JMeter scripts. 
+Extension scripts, which extend the base JMeter (`jira.jmx`), Selenium (`jira-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions. As there are two options for load tests executor available for selection, you can modify either Locust or JMeter scripts.
 
 ##### Modifying JMeter
 
@@ -536,7 +536,7 @@ If there are some additional variables from the base script required by the exte
 ##### Modifying Locust
 
 The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`.
-You can extend Locust actions with app-specific action by editing the function `custom_action` in the `extension/jira/extension_locust.py` script. To enable `custom_action` set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
+To customize Locust with app-specific actions, edit the function `custom_action` in the `extension/jira/extension_locust.py` script. To enable `custom_action`, set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
 ```yaml
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
@@ -553,11 +553,11 @@ You can extend Locust actions with app-specific action by editing the function `
     browse_boards: 2
     standalone_extension: 0 # By default disabled
 ```
-Locust use actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute) (e.g. setting `standalone_extension` value to `100` means that `custom_action` will be executed 50 times more likely than `browse_boards` action). To run just your app-specific action you can disable all other actions by setting their value to `0`.
+Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `custom_action` will be executed 50 times more than `browse_boards`. To run just your app-specific action, disable all other actions by setting their value to `0`.
 
 ##### Modifying Selenium
 
-In addition to JMeter or Locust, you can extend Selenium scripts to measure the end-to-end browser timings.
+In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
