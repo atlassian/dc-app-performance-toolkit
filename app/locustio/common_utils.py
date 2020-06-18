@@ -88,7 +88,7 @@ def global_measure(func, start_time, *args, **kwargs):
                                     response_time=total,
                                     exception=e,
                                     response_length=0)
-        logger.error(Exception)
+        logger.error(f'{func.__name__} action failed. Reason: {e}')
     else:
         total = int((time.time() - start_time) * 1000)
         events.request_success.fire(request_type="Action",
@@ -135,8 +135,11 @@ def timestamp_int():
     return int(datetime.timestamp(now))
 
 
-def generate_random_string(length):
-    return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+def generate_random_string(length, only_letters=False):
+    if not only_letters:
+        return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+    else:
+        return "".join([random.choice(string.ascii_lowercase + ' ') for _ in range(length)])
 
 
 def get_first_index(from_list: list, err):
