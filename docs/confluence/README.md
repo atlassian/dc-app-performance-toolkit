@@ -35,6 +35,7 @@ Results are located in the `resutls/confluence/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
 * `error_artifacts` - folder with screenshots and HTMLs of Selenium fails
 * `jmeter.err` - JMeter errors log
+* `locust.err` - Locust errors log
 * `kpi.jtl` - JMeter raw data
 * `pytest.out` - detailed log of Selenium execution, including stacktraces of Selenium fails
 * `selenium.jtl` - Selenium raw data
