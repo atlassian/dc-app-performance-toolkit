@@ -8,19 +8,20 @@ date: "2019-09-12"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
-To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
+This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-``` bash
-git clone git@github.com:atlassian/dc-app-performance-toolkit.git
-```
+To use the Data Center App Performance Toolkit, you'll need to:
 
-Follow installation instructions described in the `dc-app-performance-toolkit/README.md` file.
+1. [Set up Jira Data Center on AWS](#instancesetup).
+1. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
+1. [Set up an execution environment for the toolkit](#executionhost).
+1. [Run all the testing scenarios in the toolkit](#testscenario).
 
-If you need performance testing results at a production level, follow instructions in this chapter to set up Jira Data Center with the corresponding dataset.
+{{% note %}}
+For simple spikes or tests, you can skip steps 1-2 and target any Jira test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
+{{% /note %}}
 
-For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#testing-scenarios). Still, script adjustments for your local dataset may be required.
-
-## Setting up Jira Data Center
+## <a id="instancesetup"></a> Setting up Jira Data Center
 
 We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Data Center testing environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -264,7 +265,7 @@ We recommend that you only use this method if you are having problems with the [
     sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JIRA_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. From a different computer, log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
 1. Populate the **File name** field with `xml_backup.zip`.
 1. Click **Restore** and wait until the import is completed.
 
@@ -313,11 +314,39 @@ Do not close or interrupt the session. It will take about two hours to upload at
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
+
+## <a id="executionhost"></a> Setting up an execution environment
+
+{{% note %}}
+For simple spikes or tests, you can set up an execution environment on your local machine. To do this, clone the [DC App Performance Toolkit repo](https://github.com/atlassian/dc-app-performance-toolkit) and follow the instructions on the `dc-app-performance-toolkit/README.md` file. Make sure your local machine has at least a 4-core CPU and 16GB of RAM.
+{{% /note %}}  
+
+If you're using the DC App Performance Toolkit to produce the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/), we recommend that you set up your execution environment on AWS:
+
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. Connect to the instance using the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `jira.yml` configuration file and other files as needed.
+1. Push your changes to the forked repository.
+1. Connect to the AWS EC2 instance and clone forked repository.
+
+Once your environment is set up, you can run the DC App Performance Toolkit:
+
+``` bash
+cd dc-app-performance-toolkit
+docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+```
+
+You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
+
+## <a id="testscenario"></a> Running the test scenarios on your execution environment
+
 
 ## Testing scenarios
 
@@ -353,7 +382,7 @@ To receive performance baseline results without an app installed:
     ``` bash
     bzt jira.yml
     ```
-    
+
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -371,7 +400,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues. 
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
 
 First, benchmark your re-index time without your app installed:
 
@@ -387,7 +416,7 @@ Jira 7 index time for 1M issues on a User Guide [recommended configuration](#qui
 
 Next, benchmark your re-index time with your app installed:
 
-1. Install the app you want to test. 
+1. Install the app you want to test.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Lock one Jira node and rebuild index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
@@ -399,7 +428,7 @@ After attaching both screenshots to your DC HELP ticket, move on to performance 
     ``` bash
     bzt jira.yml
     ```
-    
+
 {{% note %}}
 When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
 {{% /note %}}

@@ -10,7 +10,7 @@ All the changes are welcome. Please help us to improve code, examples and docume
  
 Pull requests, issues and comments are welcome. For pull requests:
 
-  - Create your own fork of the repository and raise a pull request targeting master branch in the main repository
+  - Create your own fork of the repository and raise a pull request targeting `dev` branch in the main repository
   - Separate unrelated changes into multiple pull requests
   
 See the [existing issues](https://ecosystem.atlassian.net/projects/DAPT/issues) for things to start contributing.
