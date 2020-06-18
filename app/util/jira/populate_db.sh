@@ -113,10 +113,10 @@ fi
 echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write jira.baseurl property to file"
-echo "Check DB connection"
+echo "Check database connection"
 PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
-  echo "Connection to DB failed. Please check correctness of following variables:"
+  echo "Connection to database failed. Please check correctness of following variables:"
   echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
   echo "JIRA_DB_USER=${JIRA_DB_USER}"
   echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
@@ -132,7 +132,7 @@ else
   join propertystring PS on PE.id=PS.id
   where PE.property_key = 'jira.baseurl';" > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
-    echo "Failed to get Base URL value from database. Check if 'jira.baseurl' key is exist in DB in propertyentry."
+    echo "Failed to get Base URL value from database. Check if 'jira.baseurl' key is exist in propertyentry."
     exit 1
   fi
   echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
@@ -184,7 +184,7 @@ else
   fi
 fi
 
-echo "Step6: Download DB dump"
+echo "Step6: Download database dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
@@ -200,22 +200,22 @@ fi
 # use computer style progress bar
 time wget --progress=dot:giga ${DB_DUMP_URL}
 if [[ $? -ne 0 ]]; then
-  echo "DB dump download failed! Pls check available disk space."
+  echo "Database dump download failed! Pls check available disk space."
   exit 1
 fi
 
 echo "Step7: SQL Restore"
-echo "Drop DB"
+echo "Drop database"
 PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} ${JIRA_DB_NAME}
 if [[ $? -ne 0 ]]; then
   echo "Drop DB failed."
   exit 1
 fi
 sleep 5
-echo "Create DB"
+echo "Create database"
 PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" ${JIRA_DB_NAME}
 if [[ $? -ne 0 ]]; then
-  echo "Create DB failed."
+  echo "Create database failed."
   exit 1
 fi
 sleep 5
