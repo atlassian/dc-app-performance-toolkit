@@ -132,7 +132,7 @@ else
   join propertystring PS on PE.id=PS.id
   where PE.property_key = 'jira.baseurl';" > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
-    echo "Failed to get Base URL value from database. Check if 'jira.baseurl' key is exist in propertyentry."
+    echo "Failed to get Base URL value from database."
     exit 1
   fi
   echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
