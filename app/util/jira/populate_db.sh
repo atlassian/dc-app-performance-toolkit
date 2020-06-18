@@ -113,6 +113,16 @@ fi
 echo "DB_HOST=${DB_HOST}"
 
 echo "Step3: Write jira.baseurl property to file"
+echo "Check DB connection"
+PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
+if [[ $? -ne 0 ]]; then
+  echo "Connection to DB failed. Please check correctness of following variables:"
+  echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
+  echo "JIRA_DB_USER=${JIRA_DB_USER}"
+  echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
+  echo "DB_HOST=${DB_HOST}"
+  exit 1
+fi
 JIRA_BASE_URL_FILE="base_url"
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   echo "File ${JIRA_BASE_URL_FILE} was found. Base url: $(cat ${JIRA_BASE_URL_FILE})."
@@ -122,7 +132,7 @@ else
   join propertystring PS on PE.id=PS.id
   where PE.property_key = 'jira.baseurl';" > ${JIRA_BASE_URL_FILE}
   if [[ ! -s ${JIRA_BASE_URL_FILE} ]]; then
-    echo "Failed to get Base URL value from database. Check DB configuration variables."
+    echo "Failed to get Base URL value from database. Check if 'jira.baseurl' key is exist in DB in propertyentry."
     exit 1
   fi
   echo "$(cat ${JIRA_BASE_URL_FILE}) was written to the ${JIRA_BASE_URL_FILE} file."
@@ -195,16 +205,6 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Step7: SQL Restore"
-echo "Check DB connection"
-PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
-if [[ $? -ne 0 ]]; then
-  echo "Connection to DB failed. Please check correctness of following variables:"
-  echo "JIRA_DB_NAME=${JIRA_DB_NAME}"
-  echo "JIRA_DB_USER=${JIRA_DB_USER}"
-  echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
-  echo "DB_HOST=${DB_HOST}"
-  exit 1
-fi
 echo "Drop DB"
 PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} ${JIRA_DB_NAME}
 if [[ $? -ne 0 ]]; then
