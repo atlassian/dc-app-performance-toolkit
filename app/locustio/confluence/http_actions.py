@@ -26,6 +26,8 @@ def login_and_view_dashboard(locust):
     locust.client.post('/dologin.action', login_body, TEXT_HEADERS, catch_response=True)
     r = locust.client.get('/', catch_response=True)
     content = r.content.decode('utf-8')
+    if 'Log Out' not in content:
+        logger.error(f'Login with {username}, {password} failed: {content}')
     assert 'Log Out' in content, f'Login with {username}, {password} failed.'
     logger.locust_info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
@@ -46,7 +48,7 @@ def login_and_view_dashboard(locust):
     locust.user = username
 
 
-def view_page(locust):
+def view_page_and_tree(locust):
     params = ViewPage()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
@@ -55,7 +57,9 @@ def view_page(locust):
     def view_page():
         r = locust.client.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'Created by' and 'Save for later' in content, f'Fail to open page {page_id}'
+        if 'Created by' not in content or 'Save for later' not in content:
+            logger.error(f'Fail to open page {page_id}: {content}')
+        assert 'Created by' in content and 'Save for later' in content, f'Fail to open page {page_id}'
         parent_page_id = fetch_by_re(params.parent_page_id_re, content)
         parsed_page_id = fetch_by_re(params.page_id_re, content)
         space_key = fetch_by_re(params.space_key_re, content)
@@ -91,7 +95,9 @@ def view_page(locust):
         r = locust.client.get(f'/rest/inlinecomments/1.0/comments?containerId={parsed_page_id}&_={timestamp_int()}',
                               catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'authorDisplayName' or '[]' in content, f'Could not open comments for page {parsed_page_id}'
+        if 'authorDisplayName' not in content and '[]' not in content:
+            logger.error(f'Could not open comments for page {parsed_page_id}: {content}')
+        assert 'authorDisplayName' in content or '[]' in content, f'Could not open comments for page {parsed_page_id}'
         locust.client.get(f'/plugins/editor-loader/editor.action?parentPageId={parent_page_id}&pageId={parsed_page_id}'
                           f'&spaceKey={space_key}&atl_after_login_redirect=/pages/viewpage.action'
                           f'&timeout=12000&_={timestamp_int()}', catch_response=True)
@@ -125,8 +131,10 @@ def view_page(locust):
                       f"&{ancestors}treePageId={viewed_page_id}&_={timestamp_int()}"
             r = locust.client.get(f'{request}', catch_response=True)
         content = r.content.decode('utf-8')
-
-        assert 'plugin_pagetree_children_span' and 'plugin_pagetree_children_list' in content
+        if 'plugin_pagetree_children_span' not in content or 'plugin_pagetree_children_list' not in content:
+            logger.error(f'Could not view page tree: {content}')
+        assert 'plugin_pagetree_children_span' in content and 'plugin_pagetree_children_list' in content, \
+            f'Could not view page tree.'
 
     view_page()
     view_page_tree()
@@ -140,7 +148,9 @@ def view_dashboard(locust):
     content = r.content.decode('utf-8')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
-    assert 'quick-search' and 'Log Out' in content
+    if 'quick-search' not in content or 'Log Out' not in content:
+        logger.error(f'Could not view dashboard: {content}')
+    assert 'quick-search' in content and 'Log Out' in content, f'Could not view dashboard.'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("205"),
                        TEXT_HEADERS, catch_response=True)
@@ -150,7 +160,10 @@ def view_dashboard(locust):
                       f'favourite%20desc&expand=space.icon&limit=100&_={timestamp_int()}', catch_response=True)
     r = locust.client.get('/rest/dashboardmacros/1.0/updates?maxResults=40&tab=all&showProfilePic=true&labels='
                           '&spaces=&users=&types=&category=&spaceKey=', catch_response=True)
-    assert 'changeSets' in r.content.decode('utf-8')
+    content = r.content.decode('utf-8')
+    if 'changeSets' not in content:
+        logger.error(f'Could not view dashboard macros: {content}')
+    assert 'changeSets' in content, f'Could not view dashboard macros.'
 
 
 @confluence_measure
@@ -161,7 +174,9 @@ def view_blog(locust):
 
     r = locust.client.get(f'/pages/viewpage.action?pageId={blog_id}', catch_response=True)
     content = r.content.decode('utf-8')
-    assert 'Created by' and 'Save for later' in content, f'Fail to open blog {blog_id}'
+    if 'Created by' not in content or 'Save for later' not in content:
+        logger.error(f'Fail to open blog {blog_id}: {content}')
+    assert 'Created by' in content and 'Save for later' in content, f'Fail to open blog {blog_id}.'
 
     parent_page_id = fetch_by_re(params.parent_page_id_re, content)
     parsed_blog_id = fetch_by_re(params.page_id_re, content)
@@ -179,12 +194,17 @@ def view_blog(locust):
     r = locust.client.get(f'/rest/inlinecomments/1.0/comments?containerId={parsed_blog_id}&_={timestamp_int()}',
                           catch_response=True)
     content = r.content.decode('utf-8')
-    assert 'authorDisplayName' or '[]' in content, f'Could not open comments for page {parsed_blog_id}'
+    if 'authorDisplayName' not in content and '[]' not in content:
+        logger.error(f'Could not open comments for page {parsed_blog_id}: {content}')
+    assert 'authorDisplayName' in content or '[]' in content, f'Could not open comments for page {parsed_blog_id}.'
 
     r = locust.client.get(f'/plugins/editor-loader/editor.action?parentPageId={parent_page_id}&pageId={parsed_blog_id}'
                           f'&spaceKey={space_key}&atl_after_login_redirect=/pages/viewpage.action'
                           f'&timeout=12000&_={timestamp_int()}', catch_response=True)
-    assert 'draftId' in r.content.decode('utf-8'), f'Could not open editor for blog {parsed_blog_id}'
+    content = r.content.decode('utf-8')
+    if 'draftId' not in content:
+        logger.error(f'Could not open editor for blog {parsed_blog_id}: {content}')
+    assert 'draftId' in content, f'Could not open editor for blog {parsed_blog_id}.'
 
     locust.client.get(f'/rest/watch-button/1.0/watchState/{parsed_blog_id}?_={timestamp_int()}', catch_response=True)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("345"),
@@ -199,26 +219,29 @@ def view_blog(locust):
                       catch_response=True)
 
 
-def search_cql(locust):
+def search_cql_and_view_results(locust):
 
     @confluence_measure
-    def recently_viewed():
+    def search_recently_viewed():
         locust.client.get('/rest/recentlyviewed/1.0/recent?limit=8', catch_response=True)
 
     @confluence_measure
-    def search_results():
-        r = locust.client.get(f'/rest/api/search?cql=siteSearch~{generate_random_string(2, only_letters=True)}'
-                              f'&start=0&limit=20', catch_response=True)
+    def search_cql():
+        r = locust.client.get(f"/rest/api/search?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
+                              f"&start=0&limit=20", catch_response=True)
         if '{"results":[' not in r.content.decode('utf-8'):
             logger.locust_info(r.content.decode('utf-8'))
-        assert '{"results":[' in r.content.decode('utf-8')
+        content = r.content.decode('utf-8')
+        if 'results' not in content:
+            logger.error(f"Search cql failed: {content}")
+        assert 'results' in content, f"Search cql failed."
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
 
-    recently_viewed()
-    search_results()
+    search_recently_viewed()
+    search_cql()
 
 
-def create_blog(locust):
+def open_editor_and_create_blog(locust):
     params = CreateBlog()
     blog = random.choice(confluence_dataset["blogs"])
     blog_space_key = blog[1]
@@ -229,7 +252,9 @@ def create_blog(locust):
     def create_blog_editor():
         r = locust.client.get(f'/pages/createblogpost.action?spaceKey={blog_space_key}', catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'Blog post title' in content, f'Could not open editor for {blog_space_key}'
+        if 'Blog post title' not in content:
+            logger.error(f'Could not open editor for {blog_space_key}: {content}')
+        assert 'Blog post title' in content, f'Could not open editor for {blog_space_key}.'
 
         atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
@@ -256,13 +281,18 @@ def create_blog(locust):
         r = locust.client.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                                TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert atl_token in content
+        if atl_token not in content:
+            logger.error(f'Token {atl_token} not found in content: {content}')
+        assert atl_token in content, f'Token not found in content.'
 
         contributor_hash = fetch_by_re(params.contribution_hash, content)
         locust.storage['contributor_hash'] = contributor_hash
 
         r = locust.client.get(f'/rest/ui/1.0/content/{content_id}/labels', catch_response=True)
-        assert '"success":true' in r.content.decode('utf-8'), f'Could not get labels for content {content_id}'
+        content = r.content.decode('utf-8')
+        if '"success":true' not in content:
+            logger.error(f'Could not get labels for content {content_id}: {content}')
+        assert '"success":true' in content, f'Could not get labels for content {content_id}.'
 
         draft_name = f"Performance Blog - {generate_random_string(10, only_letters=True)}"
         locust.storage['draft_name'] = draft_name
@@ -280,7 +310,10 @@ def create_blog(locust):
 
         TEXT_HEADERS['Content-Type'] = 'application/json'
         r = locust.client.post('/rest/tinymce/1/drafts', json=draft_body, headers=TEXT_HEADERS, catch_response=True)
-        assert 'draftId' in r.content.decode('utf-8'), f'Could not create blogpost draft in space {parsed_space_key}'
+        content = r.content.decode('utf-8')
+        if 'draftId' not in content:
+            logger.error(f'Could not create blog post draft in space {parsed_space_key}: {content}')
+        assert 'draftId' in content, f'Could not create blog post draft in space {parsed_space_key}.'
 
     @confluence_measure
     def create_blog():
@@ -298,12 +331,17 @@ def create_blog(locust):
         r = locust.client.put(f'/rest/api/content/{content_id}?status=draft', json=draft_body,
                               headers=TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'current' and 'title' in content, f'Could not open draft {draft_name} in space {parsed_space_key}'
+        if 'current' not in content or 'title' not in content:
+            logger.error(f'Could not open draft {draft_name}: {content}')
+        assert 'current' in content and 'title' in content, f'Could not open draft {draft_name}.'
         created_blog_title = fetch_by_re(params.created_blog_title_re, content)
         logger.locust_info(f'Blog {created_blog_title} created')
 
         r = locust.client.get(f'/{created_blog_title}', catch_response=True)
-        assert 'Created by' in r.content.decode('utf-8'), f'Could not open created blog {created_blog_title}'
+        content = r.content.decode('utf-8')
+        if 'Created by' not in content:
+            logger.error(f'Could not open created blog {created_blog_title}: {content}')
+        assert 'Created by' in content, f'Could not open created blog {created_blog_title}.'
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("970"),
                            TEXT_HEADERS, catch_response=True)
@@ -341,7 +379,9 @@ def create_blog(locust):
         r = locust.client.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                                TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert atl_token in content
+        if atl_token not in content:
+            logger.error(f'Token {atl_token} not found in content: {content}')
+        assert atl_token in content, f'Token {atl_token} not found in content.'
 
     create_blog_editor()
     create_blog()
@@ -360,7 +400,9 @@ def create_and_edit_page(locust):
         r = locust.client.get(f'/pages/createpage.action?spaceKey={space_key}&fromPageId={page_id}&src=quick-create',
                               catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'Page Title' in content
+        if 'Page Title' not in content:
+            logger.error(f'Could not open page editor: {content}')
+        assert 'Page Title' in content, f'Could not open page editor.'
 
         parsed_space_key = fetch_by_re(params.space_key_re, content)
         atl_token = fetch_by_re(params.atl_token_re, content)
@@ -392,7 +434,9 @@ def create_and_edit_page(locust):
         r = locust.client.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                                TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert atl_token in content
+        if atl_token not in content:
+            logger.error(f'Token {atl_token} not found in content: {content}')
+        assert atl_token in content, f'Token {atl_token} not found in content.'
 
     @confluence_measure
     def create_page():
@@ -430,12 +474,16 @@ def create_and_edit_page(locust):
         r = locust.client.put(f'/rest/api/content/{content_id}?status=draft', json=create_page_body,
                               headers=TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'draftId' in content, f'Could not create PAGE draft in space {space_key}'
+        if 'draftId' not in content:
+            logger.error(f'Could not create PAGE draft: {content}')
+        assert 'draftId' in content, f'Could not create PAGE draft.'
         page_title = fetch_by_re(params.page_title_re, content)
 
         r = locust.client.get(f'{page_title}', catch_response=True)
         content = r.content.decode('utf-8')
-        assert 'Created by' in content, f'Page {page_title} is not created'
+        if 'Created by' not in content:
+            logger.error(f'Page {page_title} was not created: {content}')
+        assert 'Created by' in content, f'Page {page_title} was not created.'
 
         parent_page_id = fetch_by_re(params.parent_page_id, content)
         create_page_id = fetch_by_re(params.create_page_id, content)
@@ -475,7 +523,10 @@ def create_and_edit_page(locust):
                               f'&pageId={create_page_id}&spaceKey={space_key}'
                               f'&atl_after_login_redirect={page_title}&timeout=12000&_={timestamp_int()}',
                               catch_response=True)
-        assert page_title in r.content.decode('utf-8'), f'Editor loader failed in space {space_key}. Page {page_title}'
+        content = r.content.decode('utf-8')
+        if page_title not in content:
+            logger.error(f'Page editor load failed for page {page_title}: {content}')
+        assert page_title in content, f'Page editor load failed for page {page_title}.'
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("845"),
                            TEXT_HEADERS, catch_response=True)
@@ -490,7 +541,10 @@ def create_and_edit_page(locust):
 
         r = locust.client.get(f'/pages/editpage.action?pageId={create_page_id}', catch_response=True)
         content = r.content.decode('utf-8')
-        assert '<title>Edit' and 'Update</button>' in content, f'Could not open PAGE {create_page_id} to edit'
+        if '<title>Edit' not in content or 'Update</button>' not in content:
+            logger.error(f'Could not open PAGE {create_page_id} to edit: {content}')
+        assert '<title>Edit' in content and 'Update</button>' in content, \
+            f'Could not open PAGE {create_page_id} to edit.'
 
         edit_page_version = fetch_by_re(params.editor_page_version_re, content)
         edit_atl_token = fetch_by_re(params.atl_token_re, content)
@@ -595,12 +649,17 @@ def create_and_edit_page(locust):
 
         if 'history' not in content:
             logger.info(f'Could not edit page. Response content: {content}')
+        if 'history' not in content:
+            logger.error(f'User {locust.user} could not edit page {content_id}, '
+                         f'parent page id: {edit_parent_page_id}: {content}')
         assert 'history' in content, \
-            f'User {locust.user} could not edit page {content_id}, parent page id: {edit_parent_page_id}'
+            f'User {locust.user} could not edit page {content_id}, parent page id: {edit_parent_page_id}.'
 
         r = locust.client.get(f'/pages/viewpage.action?pageId={edit_page_id}', catch_response=True)
-        assert 'last-modified' and 'Created by' in r.content.decode('utf-8'),\
-            f"Could not open page {edit_page_id}"
+        content = r.content.decode('utf-8')
+        if not('last-modified' in content and 'Created by' in content):
+            logger.error(f"Could not open page {edit_page_id}: {content}")
+        assert 'last-modified' in content and 'Created by' in content, f"Could not open page {edit_page_id}."
 
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
         heartbeat_activity_body = {"dataType": "json",
@@ -653,7 +712,10 @@ def comment_page(locust):
     r = locust.client.post(f'/rest/tinymce/1/content/{page_id}/comment?actions=true',
                            params={'html': comment, 'watch': True, 'uuid': uid}, headers=NO_TOKEN_HEADERS,
                            catch_response=True)
-    assert 'reply-comment' and 'edit-comment' in r.content.decode('utf-8'), 'Could not add comment'
+    content = r.content.decode('utf-8')
+    if not('reply-comment' in content and 'edit-comment' in content):
+        logger.error(f'Could not add comment: {content}')
+    assert 'reply-comment' in content and 'edit-comment' in content, 'Could not add comment.'
 
 
 @confluence_measure
@@ -661,8 +723,11 @@ def view_attachments(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
     r = locust.client.get(f'/pages/viewpageattachments.action?pageId={page_id}', catch_response=True)
-    assert 'Upload file' and 'Attach more files' and 'Download All' \
-           or 'currently no attachments' in r.content.decode('utf-8')
+    content = r.content.decode('utf-8')
+    if not('Upload file' in content and 'Attach more files' in content or 'currently no attachments' in content):
+        logger.error(f'View attachments failed: {content}')
+    assert 'Upload file' in content and 'Attach more files' in content \
+           or 'currently no attachments' in content, f'View attachments failed.'
 
 
 @confluence_measure
@@ -677,7 +742,9 @@ def upload_attachments(locust):
 
     r = locust.client.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
     content = r.content.decode('utf-8')
-    assert 'Created by' and 'Save for later' in content, f'Fail to open page {page_id}'
+    if not('Created by' in content and 'Save for later' in content):
+        logger.error(f'Failed to open page {page_id}: {content}')
+    assert 'Created by' in content and 'Save for later' in content, f'Failed to open page {page_id}.'
     atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
 
     multipart_form_data = {
@@ -689,7 +756,9 @@ def upload_attachments(locust):
                                    "comment_3": "", "comment_4": "0", "confirm": "Attach"}, files=multipart_form_data,
                            catch_response=True)
     content = r.content.decode('utf-8')
-    assert 'Upload file' and 'Attach more files' in content, 'Could not upload attachments'
+    if not('Upload file' in content and 'Attach more files' in content):
+        logger.error(f'Could not upload attachments: {content}')
+    assert 'Upload file' in content and 'Attach more files' in content, 'Could not upload attachments.'
 
 
 @confluence_measure
@@ -708,6 +777,7 @@ def like_page(locust):
     else:
         r = locust.client.delete(f'/rest/likes/1.0/content/{page_id}/likes', catch_response=True)
 
-    if 'likes' not in r.content.decode('utf-8'):
-        logger.locust_info(str(r))
-    assert 'likes' in r.content.decode('utf-8'), f'Could not set like to the page {page_id}'
+    content = r.content.decode('utf-8')
+    if 'likes' not in content:
+        logger.error(f"Could not set like to the page {page_id}: {content}")
+    assert 'likes' in r.content.decode('utf-8'), f'Could not set like to the page {page_id}.'
