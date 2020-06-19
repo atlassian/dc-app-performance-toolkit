@@ -88,7 +88,7 @@ In addition, you can run and monitor JMeter test real-time with GUI.
 ### Debugging Locust scripts
 Detailed log of Locust executor is located in the `results/confluence/YY-MM-DD-hh-mm-ss/locust.log` file. Locust errors and stacktrace are located in the `results/confluence/YY-MM-DD-hh-mm-ss/locust.err` file.
 
-Additional debug information could be logged by adding `logger.info('your INFO message')` string in the code.
+Additional debug information could be enabled by setting `verbose` flag to `true` in `confluence.yml` configuration file. To add log message use `logger.locust_info('your INFO message')` string in the code.
 ### Running Locust tests locally without the Performance Toolkit
 #### Start locust UI mode
 1. Activate virualenv for the Performance Toolkit.

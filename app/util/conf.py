@@ -37,6 +37,7 @@ class AppSettingsExtLoadExecutor(AppSettings):
         super().__init__(config_yml)
         obj = read_yml_file(config_yml)
         self.env = obj['settings']['env']
+        self.verbose = obj['settings']['verbose']
         self.total_actions_per_hour = self.env['total_actions_per_hour']
 
 

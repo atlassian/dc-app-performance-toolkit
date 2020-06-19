@@ -3,10 +3,12 @@ import re
 import uuid
 
 from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int,\
-    TEXT_HEADERS, NO_TOKEN_HEADERS, logger, generate_random_string
+    TEXT_HEADERS, NO_TOKEN_HEADERS, JSON_HEADERS, generate_random_string, init_logger
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
     CreateBlog, CreateEditPage, UploadAttachments, LikePage
+from util.conf import CONFLUENCE_SETTINGS
 
+logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
 
 
@@ -25,7 +27,7 @@ def login_and_view_dashboard(locust):
     r = locust.client.get('/', catch_response=True)
     content = r.content.decode('utf-8')
     assert 'Log Out' in content, f'Login with {username}, {password} failed.'
-    logger.info(f'User {username} is successfully logged in')
+    logger.locust_info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("010"),
@@ -208,7 +210,7 @@ def search_cql(locust):
         r = locust.client.get(f'/rest/api/search?cql=siteSearch~{generate_random_string(2, only_letters=True)}'
                               f'&start=0&limit=20', catch_response=True)
         if '{"results":[' not in r.content.decode('utf-8'):
-            logger.info(r.content.decode('utf-8'))
+            logger.locust_info(r.content.decode('utf-8'))
         assert '{"results":[' in r.content.decode('utf-8')
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
 
@@ -298,7 +300,7 @@ def create_blog(locust):
         content = r.content.decode('utf-8')
         assert 'current' and 'title' in content, f'Could not open draft {draft_name} in space {parsed_space_key}'
         created_blog_title = fetch_by_re(params.created_blog_title_re, content)
-        logger.info(f'Blog {created_blog_title} created')
+        logger.locust_info(f'Blog {created_blog_title} created')
 
         r = locust.client.get(f'/{created_blog_title}', catch_response=True)
         assert 'Created by' in r.content.decode('utf-8'), f'Could not open created blog {created_blog_title}'
@@ -501,6 +503,7 @@ def create_and_edit_page(locust):
         locust.storage['edit_page_version'] = edit_page_version
         locust.storage['edit_page_id'] = edit_page_id
         locust.storage['atl_token'] = edit_atl_token
+        locust.storage['edit_content_id'] = edit_content_id
 
         locust.client.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
         heartbeat_activity_body = {"dataType": "json",
@@ -525,10 +528,10 @@ def create_and_edit_page(locust):
 
     @confluence_measure
     def edit_page():
-        draft_name = f"{generate_random_string(10, only_letters=True)}"
+        locust.storage['draft_name'] = f"{generate_random_string(10, only_letters=True)}"
         edit_parent_page_id = locust.storage['edit_parent_page_id']
         edit_page_id = locust.storage['edit_page_id']
-        content_id = locust.storage['content_id']
+        content_id = locust.storage['edit_content_id']
         edit_page_version = int(locust.storage['edit_page_version']) + 1
         edit_atl_token = locust.storage['atl_token']
         edit_page_body = dict()
@@ -536,13 +539,13 @@ def create_and_edit_page(locust):
         if edit_parent_page_id:
             edit_page_body = {
                   "status": "current",
-                  "title": f"Test Performance Edit with locust {draft_name}",
+                  "title": f"Test Performance Edit with locust {locust.storage['draft_name']}",
                   "space": {
                     "key": f"{space_key}"
                   },
                   "body": {
                     "storage": {
-                      "value": f"Page edit with locust {draft_name}",
+                      "value": f"Page edit with locust {locust.storage['draft_name']}",
                       "representation": "storage",
                       "content": {
                         "id": f"{content_id}"
@@ -565,13 +568,13 @@ def create_and_edit_page(locust):
         if not edit_parent_page_id:
             edit_page_body = {
                               "status": "current",
-                              "title": f"Test Performance Edit with JMeter {draft_name}",
+                              "title": f"Test Performance Edit with locust {locust.storage['draft_name']}",
                               "space": {
                                 "key": f"{space_key}"
                               },
                               "body": {
                                 "storage": {
-                                  "value": f"Page edit with JMeter {draft_name}",
+                                  "value": f"Page edit with locust {locust.storage['draft_name']}",
                                   "representation": "storage",
                                   "content": {
                                     "id": f"{content_id}"
@@ -589,12 +592,15 @@ def create_and_edit_page(locust):
         r = locust.client.put(f'/rest/api/content/{content_id}?status=draft', json=edit_page_body,
                               headers=TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-        assert f'"title":"Test Performance Edit with locust {draft_name}"' in content, \
+
+        if 'history' not in content:
+            logger.info(f'Could not edit page. Response content: {content}')
+        assert 'history' in content, \
             f'User {locust.user} could not edit page {content_id}, parent page id: {edit_parent_page_id}'
 
         r = locust.client.get(f'/pages/viewpage.action?pageId={edit_page_id}', catch_response=True)
         assert 'last-modified' and 'Created by' in r.content.decode('utf-8'),\
-            f'Could not open page {edit_page_id}, name: Test Performance Edit with locust {draft_name}'
+            f"Could not open page {edit_page_id}"
 
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
         heartbeat_activity_body = {"dataType": "json",
@@ -692,16 +698,16 @@ def like_page(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
 
-    r = locust.client.get(f'/rest/likes/1.0/content/{page_id}/likes?commentLikes=true&_={timestamp_int()}',
-                          catch_response=True)
+    JSON_HEADERS['Origin'] = CONFLUENCE_SETTINGS.server_url
+    r = locust.client.get(f'/rest/likes/1.0/content/{page_id}/likes', headers=JSON_HEADERS, catch_response=True)
     content = r.content.decode('utf-8')
     like = fetch_by_re(params.like_re, content)
-    TEXT_HEADERS['Content-Type'] = 'application/json'
 
-    if like:
+    if like is None:
+        r = locust.client.post(f'/rest/likes/1.0/content/{page_id}/likes', headers=JSON_HEADERS, catch_response=True)
+    else:
         r = locust.client.delete(f'/rest/likes/1.0/content/{page_id}/likes', catch_response=True)
-    if not like:
-        r = locust.client.post(f'/rest/likes/1.0/content/{page_id}/likes', TEXT_HEADERS, catch_response=True)
+
     if 'likes' not in r.content.decode('utf-8'):
-        logger.info(str(r))
+        logger.locust_info(str(r))
     assert 'likes' in r.content.decode('utf-8'), f'Could not set like to the page {page_id}'

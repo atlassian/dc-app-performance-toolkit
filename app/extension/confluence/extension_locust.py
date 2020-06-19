@@ -1,5 +1,7 @@
 import re
-from locustio.common_utils import logger
+from locustio.common_utils import init_logger
+
+logger = init_logger(app_type='confluence')
 
 
 def custom_action(locust):
@@ -10,7 +12,7 @@ def custom_action(locust):
     id_pattern_example = '"id":"(.+?)"'
     token = re.findall(token_pattern_example, content)  # parse variables from response using regexp
     id = re.findall(id_pattern_example, content)
-    logger.debug(f'token: {token}, id: {id}')  # logger for debug
+    logger.locust_info(f'token: {token}, id: {id}')  # logger for debug
     assert 'assertion string' in content  # assertion after GET request
 
     body = {"id": id, "token": token}  # include parsed variables to POST body

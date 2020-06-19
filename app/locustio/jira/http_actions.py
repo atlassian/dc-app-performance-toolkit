@@ -4,10 +4,11 @@ from locust.exception import ResponseError
 from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, jira_datasets
 from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string, TEXT_HEADERS, \
-    ADMIN_HEADERS, NO_TOKEN_HEADERS, logger
+    ADMIN_HEADERS, NO_TOKEN_HEADERS, init_logger
 
 from util.conf import JIRA_SETTINGS
 
+logger = init_logger(app_type='jira')
 jira_dataset = jira_datasets()
 
 
@@ -48,13 +49,13 @@ def login_and_view_dashboard(locust):
     # Assertions
     token = fetch_by_re(params.atl_token_pattern, content)
     if not token:
-        logger.info(f'{params.action_name}: {content}')
+        logger.locust_info(f'{params.action_name}: {content}')
         raise ResponseError('Atlassian token not found in login requests')
     assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
     locust.user = user[0]
     locust.atl_token = token
     locust.storage = dict()  # Define locust storage dict for getting cross-functional variables access
-    logger.info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
+    logger.locust_info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
 
 
 @jira_measure
@@ -71,9 +72,9 @@ def view_issue(locust):
     locust.client.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
     # Assertions
     assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue {issue_key} not found'
-    logger.info(f"{params.action_name}: Issue {issue_key} is opened successfully")
+    logger.locust_info(f"{params.action_name}: Issue {issue_key} is opened successfully")
 
-    logger.info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
+    logger.locust_info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
     if edit_allowed:
         url = f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId={issue_id}&_={timestamp_int()}'
         locust.client.get(url, catch_response=True)
@@ -121,7 +122,7 @@ def create_issue(locust):
 
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
-        logger.info(f"{params.action_name}: Issue {issue_key} was successfully created")
+        logger.locust_info(f"{params.action_name}: Issue {issue_key} was successfully created")
     create_issue_submit_form()
     locust.storage.clear()
 
@@ -184,7 +185,7 @@ def view_project_summary(locust):
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
-    logger.info(f"{params.action_name}: View project {project_key}")
+    logger.locust_info(f"{params.action_name}: View project {project_key}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
     assert assert_string in content, f'{params.err_message} {project_key}'
@@ -236,7 +237,7 @@ def edit_issue(locust):
 
         assert f' Edit Issue:  [{issue_key}]' in content, \
             f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}'
-        logger.info(f"{params.action_name}: Editing issue {issue_key}")
+        logger.locust_info(f"{params.action_name}: Editing issue {issue_key}")
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("705"),
                            TEXT_HEADERS, catch_response=True)
@@ -409,7 +410,7 @@ def view_board(locust, board_id, view_backlog=False):
     project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2)
     if project_plan:
         project_plan = project_plan.replace('\\', '')
-    logger.info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
+    logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
     assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board {board_id}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1000"),
