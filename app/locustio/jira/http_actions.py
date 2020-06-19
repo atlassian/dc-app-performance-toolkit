@@ -48,9 +48,8 @@ def login_and_view_dashboard(locust):
                       catch_response=True)
     # Assertions
     token = fetch_by_re(params.atl_token_pattern, content)
-    if not token:
-        logger.locust_info(f'{params.action_name}: {content}')
-        raise ResponseError('Atlassian token not found in login requests')
+    if not (f'title="loggedInUser" value="{user[0]}">' in content):
+        logger.error(f'User {user[0]} authentication failed')
     assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
     locust.user = user[0]
     locust.atl_token = token
@@ -71,6 +70,8 @@ def view_issue(locust):
     edit_allowed = fetch_by_re(params.edit_allow_pattern, content, group_no=0)
     locust.client.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
     # Assertions
+    if not(f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
+        logger.error(f'Issue {issue_key} not found')
     assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue {issue_key} not found'
     logger.locust_info(f"{params.action_name}: Issue {issue_key} is opened successfully")
 
@@ -107,6 +108,8 @@ def create_issue(locust):
                                   'fields_to_retain': fields_to_retain,
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
+        if not ('"id":"project","label":"Project"' in content):
+            logger.error(params.err_message_create_issue)
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         locust.client.post('/rest/quickedit/1.0/userpreferences/create', params.user_preferences_payload,
                            ADMIN_HEADERS, catch_response=True)
@@ -119,7 +122,8 @@ def create_issue(locust):
         r = locust.client.post('/secure/QuickCreateIssue.jspa?decorator=none', params=issue_body,
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
-
+        if not ('"id":"project","label":"Project"') in content:
+            logger.error(params.err_message_create_issue)
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         logger.locust_info(f"{params.action_name}: Issue {issue_key} was successfully created")
@@ -133,7 +137,10 @@ def search_jql(locust):
     jql = random.choice(jira_dataset['jqls'])[0]
 
     r = locust.client.get(f'/issues/?jql={jql}', catch_response=True)
-    assert locust.atl_token in r.content.decode('utf-8'), f'Can not search by {jql}'
+    content = r.content.decode('utf-8')
+    if not (locust.atl_token in content):
+        logger.error(f'Can not search by {jql}')
+    assert locust.atl_token in content, f'Can not search by {jql}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("305"),
                        TEXT_HEADERS, catch_response=True)
@@ -188,6 +195,8 @@ def view_project_summary(locust):
     logger.locust_info(f"{params.action_name}: View project {project_key}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
+    if not (assert_string in content):
+        logger.error(f'{params.err_message} {project_key}')
     assert assert_string in content, f'{params.err_message} {project_key}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("505"),
@@ -235,6 +244,8 @@ def edit_issue(locust):
         assignee = fetch_by_re(params.issue_assigneee_reporter_pattern, content, group_no=2)
         reporter = fetch_by_re(params.issue_reporter_pattern, content)
 
+        if not (f' Edit Issue:  [{issue_key}]' in content):
+            logger.error(f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}')
         assert f' Edit Issue:  [{issue_key}]' in content, \
             f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}'
         logger.locust_info(f"{params.action_name}: Editing issue {issue_key}")
@@ -262,7 +273,10 @@ def edit_issue(locust):
         r = locust.client.post(f'/secure/EditIssue.jspa?atl_token={locust.storage["atl_token"]}',
                                params=locust.storage['edit_issue_body'],
                                headers=TEXT_HEADERS, catch_response=True)
-        assert f'[{issue_key}]' in r.content.decode('utf-8')
+        content = r.content.decode('utf-8')
+        if not (f'[{issue_key}]' in content):
+            logger.error('Could not save edited page')
+        assert f'[{issue_key}]' in content, 'Could not save edited page'
 
         locust.client.get(f'/browse/{issue_key}', catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("740"),
@@ -287,6 +301,8 @@ def view_dashboard(locust):
 
     r = locust.client.get('/secure/Dashboard.jspa', catch_response=True)
     content = r.content.decode('utf-8')
+    if not (f'title="loggedInUser" value="{locust.user}">' in content):
+        logger.error(f'User {locust.user} authentication failed: {content}')
     assert f'title="loggedInUser" value="{locust.user}">' in content, f'User {locust.user} authentication failed'
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("605"),
                        TEXT_HEADERS, catch_response=True)
@@ -294,6 +310,8 @@ def view_dashboard(locust):
                            params={'uri': f'{JIRA_SETTINGS.server_url.lower()}//secure/Dashboard.jspa'},
                            headers=TEXT_HEADERS, catch_response=True)
     content = r.content.decode('utf-8')
+    if not ('Dashboard Diagnostics: OK' in content):
+        logger.error(f'view_dashboard dashboard-diagnostics failed: {content}')
     assert 'Dashboard Diagnostics: OK' in content, 'view_dashboard dashboard-diagnostics failed'
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("620"),
                        TEXT_HEADERS, catch_response=True)
@@ -319,6 +337,8 @@ def add_comment(locust):
         content = r.content.decode('utf-8')
         token = fetch_by_re(params.atl_token_pattern, content)
         form_token = fetch_by_re(params.form_token_pattern, content)
+        if not (f'Add Comment: {issue_key}' in content):
+            logger.error(f'Could not open comment in the {issue_key} issue: {content}')
         assert f'Add Comment: {issue_key}' in content, f'Could not open comment in the {issue_key} issue'
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("805"),
@@ -341,6 +361,8 @@ def add_comment(locust):
                                        "commentLevel": None, "atl_token": locust.storage["token"],
                                        "Add": "Add"}, headers=TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
+        if not (f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
+            logger.error(f'Could not save comment: {content}')
         assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Could not save comment'
     add_comment_save_comment()
     locust.storage.clear()
@@ -354,6 +376,8 @@ def browse_projects(locust):
     r = locust.client.get(f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={page}',
                           catch_response=True)
     content = r.content.decode('utf-8')
+    if not ('WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="' in content):
+        logger.error(f'Could not browse projects: {content}')
     assert 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="' in content, 'Could not browse projects'
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("905"),
                        TEXT_HEADERS, catch_response=True)
