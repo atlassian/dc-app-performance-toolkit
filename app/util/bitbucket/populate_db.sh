@@ -94,13 +94,23 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Get DB Host"
+echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
   exit 1
 fi
 echo "DB_HOST=${DB_HOST}"
+
+PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
+if [[ $? -ne 0 ]]; then
+  echo "Connection to DB failed. Please check correctness of following variables:"
+  echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
+  echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
+  echo "BITBUCKET_DB_PASS=${BITBUCKET_DB_PASS}"
+  echo "DB_HOST=${DB_HOST}"
+  exit 1
+fi
 
 echo "Step3: Write 'instance.url' property to file"
 BITBUCKET_BASE_URL_FILE="base_url"
@@ -157,15 +167,6 @@ fi
 
 echo "Step6: SQL Restore"
 echo "Check DB connection"
-PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
-if [[ $? -ne 0 ]]; then
-  echo "Connection to DB failed. Please check correctness of following variables:"
-  echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
-  echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
-  echo "BITBUCKET_DB_PASS=${BITBUCKET_DB_PASS}"
-  echo "DB_HOST=${DB_HOST}"
-  exit 1
-fi
 echo "Drop DB"
 sudo su -c "PGPASSWORD=${BITBUCKET_DB_PASS} dropdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} ${BITBUCKET_DB_NAME}"
 if [[ $? -ne 0 ]]; then
