@@ -104,7 +104,7 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Get DB Host"
+echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -112,7 +112,6 @@ if [[ -z ${DB_HOST} ]]; then
 fi
 echo "DB_HOST=${DB_HOST}"
 
-echo "Step3: Write jira.baseurl property to file"
 echo "Check database connection"
 PGPASSWORD=${JIRA_DB_PASS} pg_isready -U ${JIRA_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then
@@ -123,6 +122,8 @@ if [[ $? -ne 0 ]]; then
   echo "DB_HOST=${DB_HOST}"
   exit 1
 fi
+
+echo "Step3: Write jira.baseurl property to file"
 JIRA_BASE_URL_FILE="base_url"
 if [[ -s ${JIRA_BASE_URL_FILE} ]]; then
   echo "File ${JIRA_BASE_URL_FILE} was found. Base url: $(cat ${JIRA_BASE_URL_FILE})."
