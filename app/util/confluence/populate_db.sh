@@ -101,13 +101,24 @@ else
   echo "Postgres client is already installed"
 fi
 
-echo "Step2: Get DB Host"
+echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
   exit 1
 fi
 echo "DB_HOST=${DB_HOST}"
+
+echo "Check DB connection"
+PGPASSWORD=${CONFLUENCE_DB_PASS} pg_isready -U ${CONFLUENCE_DB_USER} -h ${DB_HOST}
+if [[ $? -ne 0 ]]; then
+  echo "Connection to DB failed. Please check correctness of following variables:"
+  echo "CONFLUENCE_DB_NAME=${CONFLUENCE_DB_NAME}"
+  echo "CONFLUENCE_DB_USER=${CONFLUENCE_DB_USER}"
+  echo "CONFLUENCE_DB_PASS=${CONFLUENCE_DB_PASS}"
+  echo "DB_HOST=${DB_HOST}"
+  exit 1
+fi
 
 echo "Step3: Write confluence baseUrl to file"
 CONFLUENCE_BASE_URL_FILE="base_url"
@@ -151,16 +162,6 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Step6: SQL Restore"
-echo "Check DB connection"
-PGPASSWORD=${CONFLUENCE_DB_PASS} pg_isready -U ${CONFLUENCE_DB_USER} -h ${DB_HOST}
-if [[ $? -ne 0 ]]; then
-  echo "Connection to DB failed. Please check correctness of following variables:"
-  echo "CONFLUENCE_DB_NAME=${CONFLUENCE_DB_NAME}"
-  echo "CONFLUENCE_DB_USER=${CONFLUENCE_DB_USER}"
-  echo "CONFLUENCE_DB_PASS=${CONFLUENCE_DB_PASS}"
-  echo "DB_HOST=${DB_HOST}"
-  exit 1
-fi
 echo "Drop DB"
 PGPASSWORD=${CONFLUENCE_DB_PASS} dropdb -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} ${CONFLUENCE_DB_NAME}
 if [[ $? -ne 0 ]]; then
