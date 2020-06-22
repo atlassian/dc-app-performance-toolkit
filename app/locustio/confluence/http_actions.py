@@ -134,7 +134,7 @@ def view_page_and_tree(locust):
         if 'plugin_pagetree_children_span' not in content or 'plugin_pagetree_children_list' not in content:
             logger.error(f'Could not view page tree: {content}')
         assert 'plugin_pagetree_children_span' in content and 'plugin_pagetree_children_list' in content, \
-            f'Could not view page tree.'
+               'Could not view page tree.'
 
     view_page()
     view_page_tree()
@@ -150,7 +150,7 @@ def view_dashboard(locust):
     build_number = fetch_by_re(params.build_number_re, content)
     if 'quick-search' not in content or 'Log Out' not in content:
         logger.error(f'Could not view dashboard: {content}')
-    assert 'quick-search' in content and 'Log Out' in content, f'Could not view dashboard.'
+    assert 'quick-search' in content and 'Log Out' in content, 'Could not view dashboard.'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("205"),
                        TEXT_HEADERS, catch_response=True)
@@ -163,7 +163,7 @@ def view_dashboard(locust):
     content = r.content.decode('utf-8')
     if 'changeSets' not in content:
         logger.error(f'Could not view dashboard macros: {content}')
-    assert 'changeSets' in content, f'Could not view dashboard macros.'
+    assert 'changeSets' in content, 'Could not view dashboard macros.'
 
 
 @confluence_measure
@@ -234,7 +234,7 @@ def search_cql_and_view_results(locust):
         content = r.content.decode('utf-8')
         if 'results' not in content:
             logger.error(f"Search cql failed: {content}")
-        assert 'results' in content, f"Search cql failed."
+        assert 'results' in content, "Search cql failed."
         locust.client.get('/rest/mywork/latest/status/notification/count', catch_response=True)
 
     search_recently_viewed()
@@ -283,7 +283,7 @@ def open_editor_and_create_blog(locust):
         content = r.content.decode('utf-8')
         if atl_token not in content:
             logger.error(f'Token {atl_token} not found in content: {content}')
-        assert atl_token in content, f'Token not found in content.'
+        assert atl_token in content, 'Token not found in content.'
 
         contributor_hash = fetch_by_re(params.contribution_hash, content)
         locust.storage['contributor_hash'] = contributor_hash
@@ -402,7 +402,7 @@ def create_and_edit_page(locust):
         content = r.content.decode('utf-8')
         if 'Page Title' not in content:
             logger.error(f'Could not open page editor: {content}')
-        assert 'Page Title' in content, f'Could not open page editor.'
+        assert 'Page Title' in content, 'Could not open page editor.'
 
         parsed_space_key = fetch_by_re(params.space_key_re, content)
         atl_token = fetch_by_re(params.atl_token_re, content)
@@ -476,7 +476,7 @@ def create_and_edit_page(locust):
         content = r.content.decode('utf-8')
         if 'draftId' not in content:
             logger.error(f'Could not create PAGE draft: {content}')
-        assert 'draftId' in content, f'Could not create PAGE draft.'
+        assert 'draftId' in content, 'Could not create PAGE draft.'
         page_title = fetch_by_re(params.page_title_re, content)
 
         r = locust.client.get(f'{page_title}', catch_response=True)
@@ -727,7 +727,7 @@ def view_attachments(locust):
     if not('Upload file' in content and 'Attach more files' in content or 'currently no attachments' in content):
         logger.error(f'View attachments failed: {content}')
     assert 'Upload file' in content and 'Attach more files' in content \
-           or 'currently no attachments' in content, f'View attachments failed.'
+           or 'currently no attachments' in content, 'View attachments failed.'
 
 
 @confluence_measure
