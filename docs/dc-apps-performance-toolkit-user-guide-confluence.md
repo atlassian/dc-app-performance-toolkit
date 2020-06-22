@@ -352,6 +352,7 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
     - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
     - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
     - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
@@ -424,7 +425,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`confluence.jmx`) and Selenium (`confluence-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
+Extension scripts, which extend the base JMeter (`confluence.jmx`), Selenium (`confluence-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying JMeter
 
@@ -451,11 +452,11 @@ The controllers in the extension script, which are executed along with the base 
 When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `confluence.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
 
 ``` yml
-#      perc_create_issue: 4
-#      perc_search_jql: 16
-      perc_view_issue: 100
-#      perc_view_project_summary: 4
-#      perc_view_dashboard: 8
+#      create_issue: 4
+#      search_jql: 16
+      view_issue: 100
+#      view_project_summary: 4
+#      view_dashboard: 8
 ```
 
 {{% note %}}
@@ -471,7 +472,7 @@ In such a case, you extend the `extend_standalone_extension` controller, which i
 The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
 
 ``` yml
-      perc_standalone_extension: 10
+      standalone_extension: 10
 ```
 
 ##### Using JMeter variables from the base script
@@ -491,9 +492,30 @@ Use or access the following variables of the extension script from the base scri
 If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
 {{% /note %}}
 
+##### Modifying Locust
+
+The main Locust script for Confluence is `locustio/confluence/locustfile.py` which executes `HTTP` actions from `locustio/confluence/http_actions.py`.
+To customize Locust with app-specific actions, edit the function `custom_action` in the `extension/confluence/extension_locust.py` script. To enable `custom_action`, set a non-zero percentage value for `standalone_extension` in  `confluence.yml` configuration file.
+```yaml
+    # Action percentage for Jmeter and Locust load executors
+    view_page: 54
+    view_dashboard: 6
+    view_blog: 8
+    search_cql: 7
+    create_blog: 3
+    create_and_edit_page: 6
+    comment_page: 5
+    view_attachment: 3
+    upload_attachment: 5
+    like_page: 3
+    standalone_extension: 0 # By default disabled
+```
+Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `custom_action` will be executed 20 times more than `upload_attachments`. To run just your app-specific action, disable all other actions by setting their value to `0`.
+
+
 ##### Modifying Selenium
 
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
+In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `confluence-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
