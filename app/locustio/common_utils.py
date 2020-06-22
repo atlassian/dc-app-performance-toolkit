@@ -11,6 +11,7 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
+import inspect
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -34,6 +35,13 @@ NO_TOKEN_HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01",
     "X-Atlassian-Token": "no-check"
 }
+JSON_HEADERS = {
+    "Accept-Language": "en-US,en;q=0.5",
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-Type": "application/json",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept": "application/json, text/javascript, */*; q=0.01"
+}
 
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
@@ -49,6 +57,23 @@ class ActionPercentage:
             return int(self.env[action_name])
         else:
             raise Exception(f'Action percentage for {action_name} does not set in yml configuration file')
+
+
+class Logger(logging.Logger):
+
+    def __init__(self, name, level, app_type):
+        super().__init__(name=name, level=level)
+        self.type = app_type
+
+    def locust_info(self, msg, *args, **kwargs):
+        is_verbose = False
+        if self.type.lower() == 'confluence':
+            is_verbose = CONFLUENCE_SETTINGS.verbose
+        elif self.type.lower() == 'jira':
+            is_verbose = JIRA_SETTINGS.verbose
+        if is_verbose or not self.type:
+            if self.isEnabledFor(logging.INFO):
+                self._log(logging.INFO, msg, args, **kwargs)
 
 
 def jira_measure(func):
@@ -83,11 +108,31 @@ def global_measure(func, start_time, *args, **kwargs):
         result = func(*args, **kwargs)
     except Exception as e:
         total = int((time.time() - start_time) * 1000)
-        events.request_failure.fire(request_type="Action",
-                                    name=f"locust_{func.__name__}",
-                                    response_time=total,
-                                    exception=e,
-                                    response_length=0)
+
+        # Delete this workaround after fix from Taurus.
+        for handler in events.request_failure._handlers:
+            argspec = inspect.getfullargspec(handler)
+            if argspec.varkw is None and 'self' in argspec.args:
+                # Special case for incompatible Taurus handler
+                handler(request_type='Action',
+                        name=f"locust_{func.__name__}",
+                        response_time=total,
+                        exception=e)
+            else:
+                handler(
+                    request_type='Action',
+                    name=f"locust_{func.__name__}",
+                    response_time=total,
+                    exception=e,
+                    response_length=0,
+                )
+
+        # Uncomment with fix of __on_failure() function from Taurus. Expected Taurus version with the fix is 1.14.3
+        # events.request_failure.fire(request_type="Action",
+        #                             name=f"locust_{func.__name__}",
+        #                             response_time=total,
+        #                             response_length=0,
+        #                             exception=e)
         logger.error(f'{func.__name__} action failed. Reason: {e}')
     else:
         total = int((time.time() - start_time) * 1000)
@@ -118,9 +163,9 @@ def read_json(file_json):
         return json.load(f)
 
 
-def init_logger():
+def init_logger(app_type=None):
     logfile_path = ENV_TAURUS_ARTIFACT_DIR / 'locust.log'
-    root_logger = logging.getLogger()
+    root_logger = Logger(name='locust', level=logging.INFO, app_type=app_type)
     log_format = f"[%(asctime)s.%(msecs)03d] [%(levelname)s] {socket.gethostname()}/%(name)s : %(message)s"
     formatter = logging.Formatter(log_format, '%Y-%m-%d %H:%M:%S')
     file_handler = RotatingFileHandler(logfile_path, maxBytes=5 * 1024 * 1024, backupCount=3)
