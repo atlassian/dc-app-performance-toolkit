@@ -332,7 +332,7 @@ If you're using the DC App Performance Toolkit to produce the required [performa
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
-    ssh -i path_to_pem_file ubuntu@INTANCE_PUBLIC_IP
+    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
     ```
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
