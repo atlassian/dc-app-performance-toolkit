@@ -69,7 +69,7 @@ Write your custom selenium scripts in `app/extension/jira/extension_ui.py`.
 Refer to `app/selenium_ui/jira/modules.py` for examples.
 """
 # def test_1_selenium_custom_action(webdriver, bitbucket_datasets, bitbucket_screen_shots):
-#     extension_ui.custom_action(webdriver, bitbucket_datasets)
+#     extension_ui.app_specific_action(webdriver, bitbucket_datasets)
 
 
 def test_14_selenium_logout(webdriver, bitbucket_datasets, bitbucket_screen_shots):

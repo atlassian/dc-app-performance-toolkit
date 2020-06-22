@@ -123,10 +123,10 @@ There are two options of running Selenium tests with browser GUI:
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
 1. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
-1. Run all Selenium PyTest tests with the `pytest confluence-ui.py` command.
+1. Run all Selenium PyTest tests with the `pytest confluence_ui.py` command.
 1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_page`), execute the first login test and the required one with this command:
 
-`pytest confluence-ui.py::test_0_selenium_a_login confluence-ui.py::test_1_selenium_view_page`.
+`pytest confluence_ui.py::test_0_selenium_a_login confluence_ui.py::test_1_selenium_view_page`.
 
 
 ### Comparing different runs
