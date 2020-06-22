@@ -197,7 +197,7 @@ def view_project_summary(locust):
     assert_string = f'["project-key"]="\\"{project_key}\\"'
     if not (assert_string in content):
         logger.error(f'{params.err_message} {project_key}')
-    assert assert_string in content, f'{params.err_message}'
+    assert assert_string in content, params.err_message
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("505"),
                        TEXT_HEADERS, catch_response=True)
@@ -247,7 +247,7 @@ def edit_issue(locust):
         if not (f' Edit Issue:  [{issue_key}]' in content):
             logger.error(f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}: {content}')
         assert f' Edit Issue:  [{issue_key}]' in content, \
-            f'{params.err_message_issue_not_found}.'
+            params.err_message_issue_not_found
         logger.locust_info(f"{params.action_name}: Editing issue {issue_key}")
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("705"),

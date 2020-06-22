@@ -430,7 +430,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`confluence.jmx`), Selenium (`confluence-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
+Extension scripts, which extend the base JMeter (`confluence.jmx`), Selenium (`confluence_ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying JMeter
 
@@ -500,7 +500,7 @@ If there are some additional variables from the base script required by the exte
 ##### Modifying Locust
 
 The main Locust script for Confluence is `locustio/confluence/locustfile.py` which executes `HTTP` actions from `locustio/confluence/http_actions.py`.
-To customize Locust with app-specific actions, edit the function `custom_action` in the `extension/confluence/extension_locust.py` script. To enable `custom_action`, set a non-zero percentage value for `standalone_extension` in  `confluence.yml` configuration file.
+To customize Locust with app-specific actions, edit the function `app_specific_action` in the `extension/confluence/extension_locust.py` script. To enable `app_specific_action`, set a non-zero percentage value for `standalone_extension` in  `confluence.yml` configuration file.
 ```yaml
     # Action percentage for Jmeter and Locust load executors
     view_page: 54
@@ -515,25 +515,25 @@ To customize Locust with app-specific actions, edit the function `custom_action`
     like_page: 3
     standalone_extension: 0 # By default disabled
 ```
-Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `custom_action` will be executed 20 times more than `upload_attachments`. To run just your app-specific action, disable all other actions by setting their value to `0`.
+Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `app_specific_action` will be executed 20 times more than `upload_attachments`. To run just your app-specific action, disable all other actions by setting their value to `0`.
 
 
 ##### Modifying Selenium
 
 In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
 
-We use **Pytest** to drive Selenium tests. The `confluence-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+We use **Pytest** to drive Selenium tests. The `confluence_ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
-In the `confluence-ui.py` script, view the following block of code:
+In the `confluence_ui.py` script, view the following block of code:
 
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     custom_action(webdriver, datasets)
+#     app_specific_action(webdriver, datasets)
 ```
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/confluence/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
+To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/confluence/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
 
 To view more examples, see the `modules.py` file in the `selenium_ui/confluence` directory.
 

@@ -5,7 +5,7 @@ from util.conf import JIRA_SETTINGS
 from selenium_ui.base_page import BasePage
 
 
-def custom_action(webdriver, datasets):
+def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
 
     @print_timing("selenium_app_custom_action")
