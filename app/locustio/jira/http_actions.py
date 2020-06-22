@@ -50,7 +50,7 @@ def login_and_view_dashboard(locust):
     token = fetch_by_re(params.atl_token_pattern, content)
     if not (f'title="loggedInUser" value="{user[0]}">' in content):
         logger.error(f'User {user[0]} authentication failed: {content}')
-    assert f'title="loggedInUser" value="{user[0]}">' in content, f'User authentication failed'
+    assert f'title="loggedInUser" value="{user[0]}">' in content, 'User authentication failed'
     locust.user = user[0]
     locust.atl_token = token
     locust.storage = dict()  # Define locust storage dict for getting cross-functional variables access
@@ -72,7 +72,7 @@ def view_issue(locust):
     # Assertions
     if not(f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
         logger.error(f'Issue {issue_key} not found: {content}')
-    assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue not found'
+    assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Issue not found'
     logger.locust_info(f"{params.action_name}: Issue {issue_key} is opened successfully")
 
     logger.locust_info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
@@ -140,7 +140,7 @@ def search_jql(locust):
     content = r.content.decode('utf-8')
     if not (locust.atl_token in content):
         logger.error(f'Can not search by {jql}: {content}')
-    assert locust.atl_token in content, f'Can not search by jql'
+    assert locust.atl_token in content, 'Can not search by jql'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("305"),
                        TEXT_HEADERS, catch_response=True)
@@ -303,7 +303,7 @@ def view_dashboard(locust):
     content = r.content.decode('utf-8')
     if not (f'title="loggedInUser" value="{locust.user}">' in content):
         logger.error(f'User {locust.user} authentication failed: {content}')
-    assert f'title="loggedInUser" value="{locust.user}">' in content, f'User authentication failed'
+    assert f'title="loggedInUser" value="{locust.user}">' in content, 'User authentication failed'
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("605"),
                        TEXT_HEADERS, catch_response=True)
     r = locust.client.post('/plugins/servlet/gadgets/dashboard-diagnostics',
@@ -339,7 +339,7 @@ def add_comment(locust):
         form_token = fetch_by_re(params.form_token_pattern, content)
         if not (f'Add Comment: {issue_key}' in content):
             logger.error(f'Could not open comment in the {issue_key} issue: {content}')
-        assert f'Add Comment: {issue_key}' in content, f'Could not open comment in the issue'
+        assert f'Add Comment: {issue_key}' in content, 'Could not open comment in the issue'
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("805"),
                            TEXT_HEADERS, catch_response=True)
@@ -435,7 +435,7 @@ def view_board(locust, board_id, view_backlog=False):
     if project_plan:
         project_plan = project_plan.replace('\\', '')
     logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board'
+    assert f'currentViewConfig\"{{\"id\":{board_id}', 'Could not open board'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1000"),
                        TEXT_HEADERS, catch_response=True)
