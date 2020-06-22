@@ -49,8 +49,8 @@ def login_and_view_dashboard(locust):
     # Assertions
     token = fetch_by_re(params.atl_token_pattern, content)
     if not (f'title="loggedInUser" value="{user[0]}">' in content):
-        logger.error(f'User {user[0]} authentication failed')
-    assert f'title="loggedInUser" value="{user[0]}">' in content, f'User {user[0]} authentication failed'
+        logger.error(f'User {user[0]} authentication failed: {content}')
+    assert f'title="loggedInUser" value="{user[0]}">' in content, f'User authentication failed'
     locust.user = user[0]
     locust.atl_token = token
     locust.storage = dict()  # Define locust storage dict for getting cross-functional variables access
@@ -71,8 +71,8 @@ def view_issue(locust):
     locust.client.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
     # Assertions
     if not(f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
-        logger.error(f'Issue {issue_key} not found')
-    assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue {issue_key} not found'
+        logger.error(f'Issue {issue_key} not found: {content}')
+    assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, f'Issue not found'
     logger.locust_info(f"{params.action_name}: Issue {issue_key} is opened successfully")
 
     logger.locust_info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
@@ -109,7 +109,7 @@ def create_issue(locust):
                                   'custom_fields_to_retain': custom_fields_to_retain
                                   }
         if not ('"id":"project","label":"Project"' in content):
-            logger.error(params.err_message_create_issue)
+            logger.error(f'{params.err_message_create_issue}: {content}')
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         locust.client.post('/rest/quickedit/1.0/userpreferences/create', params.user_preferences_payload,
                            ADMIN_HEADERS, catch_response=True)
@@ -123,7 +123,7 @@ def create_issue(locust):
                                headers=ADMIN_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
         if not ('"id":"project","label":"Project"') in content:
-            logger.error(params.err_message_create_issue)
+            logger.error(f'{params.err_message_create_issue}: {content}')
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         logger.locust_info(f"{params.action_name}: Issue {issue_key} was successfully created")
@@ -139,8 +139,8 @@ def search_jql(locust):
     r = locust.client.get(f'/issues/?jql={jql}', catch_response=True)
     content = r.content.decode('utf-8')
     if not (locust.atl_token in content):
-        logger.error(f'Can not search by {jql}')
-    assert locust.atl_token in content, f'Can not search by {jql}'
+        logger.error(f'Can not search by {jql}: {content}')
+    assert locust.atl_token in content, f'Can not search by jql'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("305"),
                        TEXT_HEADERS, catch_response=True)
@@ -192,12 +192,12 @@ def view_project_summary(locust):
 
     r = locust.client.get(f'/projects/{project_key}/summary', catch_response=True)
     content = r.content.decode('utf-8')
-    logger.locust_info(f"{params.action_name}: View project {project_key}")
+    logger.locust_info(f"{params.action_name}. View project {project_key}: {content}")
 
     assert_string = f'["project-key"]="\\"{project_key}\\"'
     if not (assert_string in content):
         logger.error(f'{params.err_message} {project_key}')
-    assert assert_string in content, f'{params.err_message} {project_key}'
+    assert assert_string in content, f'{params.err_message}'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("505"),
                        TEXT_HEADERS, catch_response=True)
@@ -245,9 +245,9 @@ def edit_issue(locust):
         reporter = fetch_by_re(params.issue_reporter_pattern, content)
 
         if not (f' Edit Issue:  [{issue_key}]' in content):
-            logger.error(f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}')
+            logger.error(f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}: {content}')
         assert f' Edit Issue:  [{issue_key}]' in content, \
-            f'{params.err_message_issue_not_found} - {issue_id}, {issue_key}'
+            f'{params.err_message_issue_not_found}.'
         logger.locust_info(f"{params.action_name}: Editing issue {issue_key}")
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("705"),
@@ -275,7 +275,7 @@ def edit_issue(locust):
                                headers=TEXT_HEADERS, catch_response=True)
         content = r.content.decode('utf-8')
         if not (f'[{issue_key}]' in content):
-            logger.error('Could not save edited page')
+            logger.error(f'Could not save edited page: {content}')
         assert f'[{issue_key}]' in content, 'Could not save edited page'
 
         locust.client.get(f'/browse/{issue_key}', catch_response=True)
@@ -303,7 +303,7 @@ def view_dashboard(locust):
     content = r.content.decode('utf-8')
     if not (f'title="loggedInUser" value="{locust.user}">' in content):
         logger.error(f'User {locust.user} authentication failed: {content}')
-    assert f'title="loggedInUser" value="{locust.user}">' in content, f'User {locust.user} authentication failed'
+    assert f'title="loggedInUser" value="{locust.user}">' in content, f'User authentication failed'
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("605"),
                        TEXT_HEADERS, catch_response=True)
     r = locust.client.post('/plugins/servlet/gadgets/dashboard-diagnostics',
@@ -339,7 +339,7 @@ def add_comment(locust):
         form_token = fetch_by_re(params.form_token_pattern, content)
         if not (f'Add Comment: {issue_key}' in content):
             logger.error(f'Could not open comment in the {issue_key} issue: {content}')
-        assert f'Add Comment: {issue_key}' in content, f'Could not open comment in the {issue_key} issue'
+        assert f'Add Comment: {issue_key}' in content, f'Could not open comment in the issue'
 
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("805"),
                            TEXT_HEADERS, catch_response=True)
@@ -435,7 +435,7 @@ def view_board(locust, board_id, view_backlog=False):
     if project_plan:
         project_plan = project_plan.replace('\\', '')
     logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board {board_id}'
+    assert f'currentViewConfig\"{{\"id\":{board_id}', f'Could not open board'
 
     locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("1000"),
                        TEXT_HEADERS, catch_response=True)
