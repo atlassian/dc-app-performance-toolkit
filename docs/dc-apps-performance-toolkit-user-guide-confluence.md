@@ -318,7 +318,7 @@ If you're using the DC App Performance Toolkit to produce the required [performa
     ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
     ```
 
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `confluence.yml` configuration file and other files as needed.
 1. Push your changes to the forked repository.
