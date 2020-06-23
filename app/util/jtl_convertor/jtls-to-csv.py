@@ -11,7 +11,8 @@ from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 RESULTS_CSV_NAME = 'results.csv'
 ENV_JMETER_VERSION = 'JMETER_VERSION'
-TEMPLATE_PLUGIN_COMMAND = 'java -Djava.awt.headless=true -jar {libs_home}cmdrunner-2.2.jar ' \
+TEMPLATE_PLUGIN_COMMAND = 'java -Djava.awt.headless=true -jar ' \
+                          'util/jtl_convertor/jmeter-jtls-plugins/lib/cmdrunner-2.2.jar ' \
                           '--tool Reporter ' \
                           '--tool Reporter --generate-csv {output_csv} ' \
                           '--input-jtl "{input_jtl}" ' \
@@ -28,30 +29,17 @@ def __reset_file_stream(stream: IO) -> None:
     stream.seek(0)
 
 
-def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, jmeter_libs_home: Path) -> None:
+def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path) -> None:
     if not input_file_path.exists():
         raise SystemExit(f'Input file {output_file_path} does not exist')
 
-    command = TEMPLATE_PLUGIN_COMMAND.format(libs_home=str(jmeter_libs_home) + os.path.sep,
-                                             output_csv=output_file_path,
+    command = TEMPLATE_PLUGIN_COMMAND.format(output_csv=output_file_path,
                                              input_jtl=input_file_path)
     print(os.popen(command).read())
     if not output_file_path.exists():
         raise SystemExit(f'Something went wrong. Output file {output_file_path} does not exist')
 
     print(f'Created file {output_file_path}')
-
-
-def __get_jmeter_home() -> Path:
-    jmeter_version = os.getenv(ENV_JMETER_VERSION)
-    if jmeter_version is None:
-        raise SystemExit(f'Error: env variable {ENV_JMETER_VERSION} is not set')
-
-    return Path().home() / '.bzt' / 'jmeter-taurus' / jmeter_version
-
-
-def __get_jmeter_lib_dir() -> Path:
-    return __get_jmeter_home() / 'lib'
 
 
 def __change_file_extension(file_name: str, new_extension) -> str:
@@ -104,7 +92,6 @@ def main():
     __validate_file_names(file_names)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        jmeter_lib_dir = __get_jmeter_lib_dir()
         temp_csv_list: List[Path] = []
         for file_name in file_names:
             jtl_file_path = ENV_TAURUS_ARTIFACT_DIR / file_name
@@ -112,7 +99,7 @@ def main():
             if jtl_file_path.name == 'kpi.jtl':
                 jtl_file_path = reorder_kpi_jtl(jtl_file_path, tmp_dir)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
-            __convert_jtl_to_csv(jtl_file_path, csv_file_path, jmeter_lib_dir)
+            __convert_jtl_to_csv(jtl_file_path, csv_file_path)
             temp_csv_list.append(csv_file_path)
 
         results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
