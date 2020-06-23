@@ -12,7 +12,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 USERS = "users"
 PAGES = "pages"
 BLOGS = "blogs"
-DEFAULT_USER_PREFIX = 'mperformance_'
+DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
 
