@@ -48,7 +48,7 @@ def __get_users(confluence_api, rpc_api, count):
         username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
         try:
             user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
-            print(f"User {user['name']} is created, number of users to create is "
+            print(f"User {user['user']['username']} is created, number of users to create is "
                   f"{count - len(cur_perf_users)}")
             cur_perf_users.append(user)
         # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
