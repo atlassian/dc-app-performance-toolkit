@@ -22,8 +22,7 @@ ELAPSED = 'elapsed'
 TIME_STAMP = 'timeStamp'
 METHOD = 'method'
 
-SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, RESPONSE_CODE, RESPONSE_MESSAGE,
-                                   SUCCESS, BYTES, GRP_THREADS, ALL_THREADS, LATENCY]
+SUPPORTED_JTL_HEADER: List[str] = [TIME_STAMP, ELAPSED, LABEL, SUCCESS]
 
 VALIDATION_FUNCS_BY_COLUMN: Dict[str, List[FunctionType]] = {
     TIME_STAMP: [is_not_none, is_number],
@@ -67,11 +66,8 @@ def __validate_row(jtl_row: Dict) -> None:
 
 def __validate_header(headers: List) -> None:
     for header in SUPPORTED_JTL_HEADER:
-        # By default Taurus creates kpi.jtl file (locust load tests executor) with incompatible with
-        # Jmeter Aggregate Plugin headers. 'grp_threads' is missed by this field is required for report aggregation.
-        # https://github.com/Blazemeter/taurus/pull/1311
-        if header not in headers and header not in [GRP_THREADS]:
-            __raise_validation_error(f"Headers is not correct. Supported headers is {SUPPORTED_JTL_HEADER}. "
+        if header not in headers:
+            __raise_validation_error(f"Headers is not correct. Required headers is {SUPPORTED_JTL_HEADER}. "
                                      f"{header} is missed")
 
 
