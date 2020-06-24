@@ -97,7 +97,6 @@ modules:
       - jpgc-tst=2.4
       - jpgc-wsc=0.3
       - tilln-sshmon=1.0
-      - jpgc-cmd=2.2
       - jpgc-synthesis=2.2
     system-properties:
       server.rmi.ssl.disable: true
