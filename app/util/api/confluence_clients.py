@@ -176,6 +176,6 @@ class ConfluenceRpcClient(Client):
             }
             proxy.confluence2.addUser(token, user_definition, password)
             user_definition['password'] = password
-            return user_definition
+            return {'user': {'username': user_definition["name"], 'email': user_definition["email"]}}
         else:
             raise Exception(f"Can't create user {username}: user already exists.")
