@@ -11,6 +11,7 @@ settings:
     admin_login: admin
     admin_password: admin
     concurrency: 200
+    ramp-up: 3m
     test_duration: 45m
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
@@ -45,7 +46,7 @@ execution:
     executor: ${load_executor}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
+    ramp-up: ${ramp-up}
   - scenario: selenium
     executor: selenium
     runner: pytest
