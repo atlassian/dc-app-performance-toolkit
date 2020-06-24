@@ -10,13 +10,14 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 200
+    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
+    ramp-up: 3m                     # time to spin all concurrent users
+    total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     load_executor: jmeter          # jmeter and locust are supported. jmeter by default.
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    total_actions_per_hour: 20000
     # Action percentage for Jmeter and Locust load executors
     view_page: 54
     view_dashboard: 6
@@ -45,7 +46,7 @@ execution:
     executor: ${load_executor}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
+    ramp-up: ${ramp-up}
   - scenario: selenium
     executor: selenium
     runner: pytest
