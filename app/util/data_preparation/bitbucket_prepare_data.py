@@ -74,14 +74,14 @@ def __get_prs(bitbucket_api):
     start_time = time.time()
     repos = bitbucket_api.get_non_fork_repos(REPOS_TO_FETCH)
     for repo in repos:
-        if len(repos_prs) <= 1: #concurrency:
+        if len(repos_prs) <= concurrency:
             prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
             for pr in prs['values']:
                 # filter PRs created by selenium and not merged
                 if 'Selenium' not in pr['title']:
                     repos_prs.append([repo['slug'], repo['project']['key'], pr['id'],
                                       pr['fromRef']['displayId'], pr['toRef']['displayId']])
-    if len(repos_prs) < 1: #concurrency:
+    if len(repos_prs) < concurrency:
         repos_without_prs = [f'{repo["project"]["key"]}/{repo["slug"]}' for repo in repos]
         raise SystemExit(f'Repositories {repos_without_prs} do not contain at least {concurrency} pull requests')
     print(f"Successfully fetched pull requests in  [{(time.time() - start_time)}]")
