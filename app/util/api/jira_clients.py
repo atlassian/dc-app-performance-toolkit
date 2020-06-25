@@ -1,4 +1,4 @@
-from util.data_preparation.api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -76,13 +76,12 @@ class JiraRestClient(RestClient):
 
         return users_list
 
-    def issues_search(self, jql='order by key', start_at=0, max_results=1000, validate_query=True, fields='id'):
+    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
         :param jql: a JQL query string
         :param start_at: the index of the first issue to return (0-based)
         :param max_results: the maximum number of issues to return (defaults to 50).
-        :param validate_query: whether to validate the JQL query
         :param fields: the list of fields to return for each issue. By default, all navigable fields are returned.
         *all - include all fields
         *navigable - include just navigable fields
@@ -95,11 +94,18 @@ class JiraRestClient(RestClient):
         loop_count = max_results // BATCH_SIZE_ISSUES + 1
         issues = list()
         last_loop_remainder = max_results % BATCH_SIZE_ISSUES
+        api_url = f'{self.host}/rest/api/2/search'
 
         while loop_count > 0:
-            api_url = f'{self.host}/rest/api/2/search?jql={jql}&startAt={start_at}&maxResults={max_results}' \
-                      f'&validateQuery={validate_query}&fields={fields}'
-            response = self.get(api_url, "Could not retrieve issues")
+
+            body = {
+                    "jql": jql,
+                    "startAt": start_at,
+                    "maxResults": max_results,
+                    "fields": ['id'] if fields is None else fields
+            }
+
+            response = self.post(api_url, "Could not retrieve issues", body=body)
 
             current_issues = response.json()['issues']
             issues.extend(current_issues)
@@ -109,6 +115,12 @@ class JiraRestClient(RestClient):
                 max_results = last_loop_remainder
 
         return issues
+
+    def get_total_issues_count(self):
+        api_url = f'{self.host}/rest/api/2/search'
+        body = {"jql": "order by key"}
+        response = self.post(api_url, "Could not retrieve issues", body=body)
+        return response.json().get('total', 0)
 
     def create_user(self, display_name=None, email=None, name='', password=''):
         """
@@ -145,3 +157,41 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get the server information')
 
         return response.json()
+
+    def get_nodes_info_via_rest(self):
+        # Works for Jira version >= 8.1.0
+        api_url = f'{self.host}/rest/api/2/cluster/nodes'
+        response = self.get(api_url, 'Could not get Jira nodes count')
+
+        return response.json()
+
+    def get_system_info_page(self):
+        session = self._session
+        login_url = f'{self.host}/login.jsp'
+        auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        login_body = {
+            'atl_token': '',
+            'os_destination': '/secure/admin/ViewSystemInfo.jspa',
+            'os_password': self.password,
+            'os_username': self.user,
+            'user_role': 'ADMIN'
+        }
+        auth_body = {
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
+        }
+        headers = self.LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+
+        session.post(url=login_url, data=login_body, headers=headers)
+        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
+        system_info_html = auth_request.content.decode("utf-8")
+        if 'Cluster nodes' not in system_info_html:
+            print('Could not get Jira nodes count via parse html page')
+        return system_info_html
+
+    def get_locale(self):
+        api_url = f'{self.host}/rest/api/2/myself'
+        user_properties = self.get(api_url, "Could not retrieve user")
+        return user_properties.json()['locale']

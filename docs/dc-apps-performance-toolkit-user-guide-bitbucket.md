@@ -8,19 +8,20 @@ date: "2020-02-13"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
-To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
+This document walks you through the process of testing your app on Bitbucket using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-``` bash
-git clone git@github.com:atlassian/dc-app-performance-toolkit.git
-```
+To use the Data Center App Performance Toolkit, you'll need to:
 
-Follow installation instructions described in the `dc-app-performance-toolkit/README.md` file.
+1. [Set up Bitbucket Data Center on AWS](#instancesetup).
+1. [Load an enterprise-scale dataset on your Bitbucket Data Center deployment](#preloading).
+1. [Set up an execution environment for the toolkit](#executionhost).
+1. [Run all the testing scenarios in the toolkit](#testscenario).
 
-If you need performance testing results at a production level, follow instructions in this chapter to set up Bitbucket Data Center with the corresponding dataset.
+{{% note %}}
+For simple spikes or tests, you can skip steps 1-2 and target any Bitbucket test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
+{{% /note %}}
 
-For spiking, testing, or developing, your local Bitbucket instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-bitbucket/#testing-scenarios). Still, script adjustments for your local dataset may be required.
-
-## Setting up Bitbucket Data Center
+## <a id="instancesetup"></a> Setting up Bitbucket Data Center
 
 We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -58,10 +59,11 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | 6.10.0 |
+| Version | 6.10.0 or 7.0.0 |
 
 The Data Center App Performance Toolkit officially supports:
 
+- Bitbucket Platform Release version: 7.0.0
 - Bitbucket [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.0
 
 **Cluster nodes**
@@ -230,7 +232,7 @@ To populate the database with SQL:
     ``` bash
     INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
-    
+
     # Depending on BITBUCKET installation directory
     BITBUCKET_CURRENT_DIR="/opt/atlassian/bitbucket/current/"
     BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
@@ -239,7 +241,7 @@ To populate the database with SQL:
     BITBUCKET_DB_NAME="bitbucket"
     BITBUCKET_DB_USER="postgres"
     BITBUCKET_DB_PASS="Password1!"
-    
+
     # Datasets AWS bucket and db dump name
     DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
     DATASETS_SIZE="large"
@@ -296,7 +298,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 {{% note %}}
 Do not close or interrupt the session. It will take about two hours to upload attachments.
 {{% /note %}}
- 
+
 
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
@@ -317,10 +319,6 @@ Do not close or interrupt the session. It will take about two hours to upload at
     sudo systemctl start bitbucket
     ```
 1. Wait 10-15 minutes until Bitbucket Server is started.
-1. Open browser and navigate to **LoadBalancerURL**.
-1. Login with admin user.
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings**, set **Base URL** to **LoadBalancerURL** value and click **Save**.
-
 
 ### Elasticsearch Index
 If your app does not use Bitbucket search functionality just **skip** this section.
@@ -335,11 +333,40 @@ To check status of indexing:
 1. Navigate to **LoadBalancerURL**/rest/indexing/latest/status page.
 
 {{% note %}}
-If case of any difficulties with Index generation, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of any difficulties with Index generation, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
 {{% /note %}}
 
+## <a id="executionhost"></a> Setting up an execution environment
 
-## Testing scenarios
+{{% note %}}
+For simple spikes or tests, you can set up an execution environment on your local machine. To do this, clone the [DC App Performance Toolkit repo](https://github.com/atlassian/dc-app-performance-toolkit) and follow the instructions on the `dc-app-performance-toolkit/README.md` file. Make sure your local machine has at least a 4-core CPU and 16GB of RAM.
+{{% /note %}}  
+
+If you're using the DC App Performance Toolkit to produce the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/), we recommend that you set up your execution environment on AWS:
+
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+    ```bash
+    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+    ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `bitbucket.yml` configuration file and other files as needed.
+1. Push your changes to the forked repository.
+1. Connect to the AWS EC2 instance and clone forked repository.
+
+Once your environment is set up, you can run the DC App Performance Toolkit:
+
+``` bash
+cd dc-app-performance-toolkit
+docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+```
+
+You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
+
+## <a id="testscenario"></a> Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -447,23 +474,12 @@ In the `bitbucket-ui.py` script, view the following block of code:
 
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     custom_action(webdriver, datasets)
+#     app_specific_action(webdriver, datasets)
 ```
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
-
-``` python
-def custom_action(webdriver, datasets):
-    @print_timing
-    def measure(webdriver, interaction):
-        @print_timing
-        def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/plugins/servlet/some-app/reporter')
-            WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'plugin-element')))
-        measure(webdriver, 'selenium_app_custom_action:view_report')
-```
+To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
 
 To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
 

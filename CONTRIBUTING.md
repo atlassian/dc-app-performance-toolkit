@@ -10,7 +10,7 @@ All the changes are welcome. Please help us to improve code, examples and docume
  
 Pull requests, issues and comments are welcome. For pull requests:
 
-  - Create your own fork of the repository and raise a pull request targeting master branch in the main repository
+  - Create your own fork of the repository and raise a pull request targeting `dev` branch in the main repository
   - Separate unrelated changes into multiple pull requests
   
 See the [existing issues](https://ecosystem.atlassian.net/projects/DAPT/issues) for things to start contributing.
@@ -31,5 +31,5 @@ link below to digitally sign the CLA. The Corporate CLA is for those who are
 contributing as a member of an organization and the individual CLA is for
 those contributing as an individual.
 
-* [CLA for corporate contributors](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=e1c17c66-ca4d-4aab-a953-2c231af4a20b)
-* [CLA for individuals](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=3f94fbdc-2fbe-46ac-b14c-5d152700ae5d)
+* [CLA for corporate contributors](https://opensource.atlassian.com/corporate)
+* [CLA for individuals](https://opensource.atlassian.com/individual)

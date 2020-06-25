@@ -3,7 +3,7 @@ import string
 import time
 
 from util.conf import BITBUCKET_SETTINGS
-from util.data_preparation.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
+from util.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
 
 DEFAULT_USER_PREFIX = 'dcapt-perf-user'
@@ -14,6 +14,8 @@ PULL_REQUESTS = "pull_requests"
 
 FETCH_LIMIT_REPOS = 50
 FETCH_LIMIT_PROJECTS = FETCH_LIMIT_REPOS
+
+ENGLISH = 'en'
 
 
 def generate_random_string(length=20):
@@ -51,10 +53,10 @@ def __get_repos(bitbucket_api):
         FETCH_LIMIT_REPOS if concurrency < FETCH_LIMIT_REPOS else concurrency
     )
     print(f'Repos number to fetch via API is {FETCH_LIMIT_REPOS}')
-    repos_len = len(repos)
-    if repos_len < concurrency:
+    repos_count = len(repos)
+    if repos_count < concurrency:
         raise SystemExit(f'Required number of repositories based on concurrency was not found'
-                         f' Found [{repos_len}] repos, needed at least [{concurrency}]')
+                         f' Found [{repos_count}] repos, needed at least [{concurrency}]')
 
     return repos
 
@@ -75,10 +77,13 @@ def __get_prs(bitbucket_api):
         if len(repos_prs) <= concurrency:
             prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
             for pr in prs['values']:
-                repos_prs.append([repo['slug'], repo['project']['key'], pr['id'], pr['fromRef']['displayId'], pr['toRef']['displayId']])
+                # filter PRs created by selenium and not merged
+                if 'Selenium' not in pr['title']:
+                    repos_prs.append([repo['slug'], repo['project']['key'], pr['id'],
+                                      pr['fromRef']['displayId'], pr['toRef']['displayId']])
     if len(repos_prs) < concurrency:
-        raise SystemExit(f'Repositories from list {[repo["project"]["key"] - repo["slug"] for repo in repos]} '
-                         f'do not contain {concurrency} pull requests')
+        repos_without_prs = [f'{repo["project"]["key"]}/{repo["slug"]}' for repo in repos]
+        raise SystemExit(f'Repositories {repos_without_prs} do not contain at least {concurrency} pull requests')
     print(f"Successfully fetched pull requests in  [{(time.time() - start_time)}]")
     return repos_prs
 
@@ -89,6 +94,10 @@ def __create_data_set(bitbucket_api):
     dataset[PROJECTS] = __get_projects(bitbucket_api)
     dataset[REPOS] = __get_repos(bitbucket_api)
     dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
+    print(f'Users count: {len(dataset[USERS])}')
+    print(f'Projects count: {len(dataset[PROJECTS])}')
+    print(f'Repos count: {len(dataset[REPOS])}')
+    print(f'Pull requests count: {len(dataset[PULL_REQUESTS])}')
     return dataset
 
 
@@ -112,6 +121,13 @@ def write_test_data_to_files(datasets):
     __write_to_file(BITBUCKET_PRS, prs)
 
 
+def __check_current_language(bitbucket_api):
+    language = bitbucket_api.get_locale()
+    if language != ENGLISH:
+        raise SystemExit(f'"{language}" language is not supported. '
+                         f'Please change your account language to "English (United States)"')
+
+
 def main():
     print("Started preparing data")
 
@@ -119,6 +135,9 @@ def main():
     print("Server url: ", url)
 
     client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
+
+    __check_current_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

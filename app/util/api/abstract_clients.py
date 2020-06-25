@@ -29,6 +29,11 @@ class RestClient(Client):
         "Accept": "application/json",
         "Content-Type": "application/json"
     }
+    LOGIN_POST_HEADERS = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                      'application/signed-exchange;v=b3;q=0.9'
+        }
 
     @staticmethod
     def to_json(obj: dict) -> str:
@@ -81,5 +86,8 @@ class RestClient(Client):
             if denied_reason and denied_reason.startswith('CAPTCHA_CHALLENGE'):
                 raise Exception(f"User name [{self.user}] is in Captcha Mode. " +
                                 "Please login via Web UI first and re-run tests.")
-
+        elif status_code == 404:
+            raise Exception(f"The URL or content are not found for {response.url}. "
+                            f"Please check environment variables in "
+                            f"config.yml file (hostname, port, protocol, postfix).")
         raise Exception(f"{error_msg}. Response code:[{response.status_code}], response text:[{response.text}]")

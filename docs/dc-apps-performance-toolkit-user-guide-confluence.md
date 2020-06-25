@@ -8,19 +8,20 @@ date: "2018-07-19"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
-To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
+This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-``` bash
-git clone git@github.com:atlassian/dc-app-performance-toolkit.git
-```
+To use the Data Center App Performance Toolkit, you'll need to:
 
-Follow installation instructions described in the `dc-app-performance-toolkit/README.md` file.
+1. [Set up Confluence Data Center on AWS](#instancesetup).
+1. [Load an enterprise-scale dataset on your Confluence Data Center deployment](#preloading).
+1. [Set up an execution environment for the toolkit](#executionhost).
+1. [Run all the testing scenarios in the toolkit](#testscenario).
 
-If you need performance testing results at a production level, follow instructions in this chapter to set up Confluence Data Center with the corresponding dataset.
+{{% note %}}
+For simple spikes or tests, you can skip steps 1-2 and target any Confluence test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
+{{% /note %}}
 
-For spiking, testing, or developing, your local Confluence instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-confluence/#testing-scenarios). Still, script adjustments for your local dataset may be required.
-
-## Setting up Confluence Data Center
+## <a id="instancesetup"></a> Setting up Confluence Data Center
 
 We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -63,8 +64,8 @@ All important parameters are listed and described in this section. For all other
 
 The Data Center App Performance Toolkit officially supports:
 
-- The latest Confluence Platform Release version: 7.0.4 
-- The latest Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
+- Confluence Platform Release version: 7.0.4
+- Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
 
 **Cluster nodes**
 
@@ -266,14 +267,10 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 ### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-4 hours)
 
-{{% note %}}
-Before re-index, go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; General configuration**, click **Edit** for **Site Configuration** and set **Base URL** to **LoadBalancerURL** value.
-{{% /note %}}
-
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
 1. Click **Rebuild** and wait until re-indexing is completed.
 
 Confluence will be unavailable for some time during the re-indexing process.
@@ -284,7 +281,7 @@ For more information, go to [Administer your Data Center search index](https://c
 
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Create any new page with a random content (without a new page index snapshot job will not be triggered).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Scheduled Jobs**.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Scheduled Jobs**.
 1. Find **Clean Journal Entries** job and click **Run**.
 1. Make sure that Confluence index snapshot was created. To do that, use SSH to connect to the Confluence node via Bastion (where `NODE_IP` is the IP of the node):
 
@@ -306,7 +303,37 @@ For more information, go to [Administer your Data Center search index](https://c
     Snapshot was created successfully.
     ```
 
-## Testing scenarios
+## <a id="executionhost"></a> Setting up an execution environment
+
+{{% note %}}
+For simple spikes or tests, you can set up an execution environment on your local machine. To do this, clone the [DC App Performance Toolkit repo](https://github.com/atlassian/dc-app-performance-toolkit) and follow the instructions on the `dc-app-performance-toolkit/README.md` file. Make sure your local machine has at least a 4-core CPU and 16GB of RAM.
+{{% /note %}}  
+
+If you're using the DC App Performance Toolkit to produce the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/), we recommend that you set up your execution environment on AWS:
+
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+    ```bash
+    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+    ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `confluence.yml` configuration file and other files as needed.
+1. Push your changes to the forked repository.
+1. Connect to the AWS EC2 instance and clone forked repository.
+
+Once your environment is set up, you can run the DC App Performance Toolkit:
+
+``` bash
+cd dc-app-performance-toolkit
+docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+```
+
+You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
+
+## <a id="testscenario"></a> Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -330,6 +357,7 @@ To receive performance baseline results without an app installed:
     - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
     - `admin_login`: admin user username
     - `admin_password`: admin user password
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
     - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
     - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
     - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
@@ -402,7 +430,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
-Extension scripts, which extend the base JMeter (`confluence.jmx`) and Selenium (`confluence-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
+Extension scripts, which extend the base JMeter (`confluence.jmx`), Selenium (`confluence_ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/app/extension/confluence`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying JMeter
 
@@ -429,11 +457,11 @@ The controllers in the extension script, which are executed along with the base 
 When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `confluence.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
 
 ``` yml
-#      perc_create_issue: 4
-#      perc_search_jql: 16
-      perc_view_issue: 100
-#      perc_view_project_summary: 4
-#      perc_view_dashboard: 8
+#      create_issue: 4
+#      search_jql: 16
+      view_issue: 100
+#      view_project_summary: 4
+#      view_dashboard: 8
 ```
 
 {{% note %}}
@@ -449,7 +477,7 @@ In such a case, you extend the `extend_standalone_extension` controller, which i
 The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
 
 ``` yml
-      perc_standalone_extension: 10
+      standalone_extension: 10
 ```
 
 ##### Using JMeter variables from the base script
@@ -469,33 +497,43 @@ Use or access the following variables of the extension script from the base scri
 If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
 {{% /note %}}
 
+##### Modifying Locust
+
+The main Locust script for Confluence is `locustio/confluence/locustfile.py` which executes `HTTP` actions from `locustio/confluence/http_actions.py`.
+To customize Locust with app-specific actions, edit the function `app_specific_action` in the `extension/confluence/extension_locust.py` script. To enable `app_specific_action`, set a non-zero percentage value for `standalone_extension` in  `confluence.yml` configuration file.
+```yaml
+    # Action percentage for Jmeter and Locust load executors
+    view_page: 54
+    view_dashboard: 6
+    view_blog: 8
+    search_cql: 7
+    create_blog: 3
+    create_and_edit_page: 6
+    comment_page: 5
+    view_attachment: 3
+    upload_attachment: 5
+    like_page: 3
+    standalone_extension: 0 # By default disabled
+```
+Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `app_specific_action` will be executed 20 times more than `upload_attachments`. To run just your app-specific action, disable all other actions by setting their value to `0`.
+
+
 ##### Modifying Selenium
 
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
+In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
 
-We use **Pytest** to drive Selenium tests. The `confluence-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+We use **Pytest** to drive Selenium tests. The `confluence_ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
-In the `confluence-ui.py` script, view the following block of code:
+In the `confluence_ui.py` script, view the following block of code:
 
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     custom_action(webdriver, datasets)
+#     app_specific_action(webdriver, datasets)
 ```
 
 This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
 
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/confluence/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
-
-``` python
-def custom_action(webdriver, datasets):
-    @print_timing
-    def measure(webdriver, interaction):
-        @print_timing
-        def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/plugins/servlet/some-app/reporter')
-            WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'plugin-element')))
-        measure(webdriver, 'selenium_app_custom_action:view_report')
-```
+To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/confluence/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
 
 To view more examples, see the `modules.py` file in the `selenium_ui/confluence` directory.
 
@@ -549,7 +587,7 @@ To receive scalability benchmark results for two-node Confluence DC with app-spe
     Index recovery is required for main index, starting now
     main index recovered from shared home directory
     ```
-    
+
 1. Run bzt.
 
     ``` bash

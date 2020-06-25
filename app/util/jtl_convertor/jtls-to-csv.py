@@ -4,19 +4,31 @@ import tempfile
 import time
 from pathlib import Path
 from typing import IO, List, Set
+import csv
+import pandas
 
 from util.jtl_convertor import jtl_validator
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
+LABEL = 'Label'
+SAMPLES = '# Samples'
+AVERAGE = 'Average'
+MEDIAN = 'Median'
+PERC_90 = '90% Line'
+PERC_95 = '95% Line'
+PERC_99 = '99% Line'
+MIN = 'Min'
+MAX = 'Max'
+ERROR_RATE = 'Error %'
+LABEL_JTL = 'label'
+ELAPSED_JTL_TMP = 'elapsed_tmp'
+ELAPSED_JTL = 'elapsed'
+SUCCESS_JTL = 'success'
+SUCCESS_JTL_TMP = 'success_tmp'
+FALSE_JTL = 'false'
+
+CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE}\n'
 RESULTS_CSV_NAME = 'results.csv'
-ENV_JMETER_VERSION = 'JMETER_VERSION'
-ENV_TAURUS_ARTIFACT_DIR = 'TAURUS_ARTIFACTS_DIR'
-TEMPLATE_PLUGIN_COMMAND = 'java -Djava.awt.headless=true -jar {libs_home}cmdrunner-2.2.jar ' \
-                          '--tool Reporter ' \
-                          '--tool Reporter --generate-csv {output_csv} ' \
-                          '--input-jtl "{input_jtl}" ' \
-                          '--plugin-type AggregateReport'
-CSV_HEADER = 'Label,# Samples,Average,Median,90% Line,95% Line,99% Line,' \
-             'Min,Max,Error %,Throughput,Received KB/sec,Std. Dev.\n'
 
 
 def __count_file_lines(stream: IO) -> int:
@@ -27,30 +39,15 @@ def __reset_file_stream(stream: IO) -> None:
     stream.seek(0)
 
 
-def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, jmeter_libs_home: Path) -> None:
+def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path) -> None:
     if not input_file_path.exists():
         raise SystemExit(f'Input file {output_file_path} does not exist')
-
-    command = TEMPLATE_PLUGIN_COMMAND.format(libs_home=str(jmeter_libs_home) + os.path.sep,
-                                             output_csv=output_file_path,
-                                             input_jtl=input_file_path)
-    print(os.popen(command).read())
+    start = time.time()
+    convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path)
     if not output_file_path.exists():
         raise SystemExit(f'Something went wrong. Output file {output_file_path} does not exist')
 
-    print(f'Created file {output_file_path}')
-
-
-def __get_jmeter_home() -> Path:
-    jmeter_version = os.getenv(ENV_JMETER_VERSION)
-    if jmeter_version is None:
-        raise SystemExit(f'Error: env variable {ENV_JMETER_VERSION} is not set')
-
-    return Path().home() / '.bzt' / 'jmeter-taurus' / jmeter_version
-
-
-def __get_jmeter_lib_dir() -> Path:
-    return __get_jmeter_home() / 'lib'
+    print(f'Created file {output_file_path}. Converted from jtl to csv in {time.time() - start} ')
 
 
 def __change_file_extension(file_name: str, new_extension) -> str:
@@ -61,13 +58,12 @@ def __get_file_name_without_extension(file_name):
     return os.path.splitext(file_name)[0]
 
 
-def __read_csv_without_first_and_last_line(results_file_stream, input_csv):
+def __read_csv_without_first_line(results_file_stream, input_csv):
     with input_csv.open(mode='r') as file_stream:
-        lines_number: int = __count_file_lines(file_stream)
         __reset_file_stream(file_stream)
 
         for cnt, line in enumerate(file_stream, 1):
-            if cnt != 1 and cnt != lines_number:
+            if cnt != 1:
                 results_file_stream.write(line)
     print(f'File {input_csv} successfully read')
 
@@ -77,7 +73,7 @@ def __create_results_csv(csv_list: List[Path], results_file_path: Path) -> None:
         results_file_stream.write(CSV_HEADER)
 
         for temp_csv_path in csv_list:
-            __read_csv_without_first_and_last_line(results_file_stream, temp_csv_path)
+            __read_csv_without_first_line(results_file_stream, temp_csv_path)
 
     if not results_file_path.exists():
         raise SystemExit(f'Something went wrong. Output file {results_file_path} does not exist')
@@ -98,25 +94,67 @@ def __validate_file_names(file_names: List[str]):
         file_names_set.add(file_name_without_extension)
 
 
+def convert_to_csv(input_jtl: Path, output_csv: Path):
+    reader = csv.DictReader(input_jtl.open(mode='r'))
+
+    jtl_list = [row for row in reader]
+    csv_list = []
+
+    for jtl_sample in jtl_list:
+        sample = {}
+        if jtl_sample[LABEL_JTL] not in [processed_sample[LABEL] for processed_sample in csv_list]:
+            sample[LABEL] = jtl_sample[LABEL_JTL]
+            sample[SAMPLES] = 1
+            sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current label
+            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL]]  # Temp list with 'success' value for current label
+            csv_list.append(sample)
+
+        else:
+            # Get and update processed row with current label
+            processed_sample = [row for row in csv_list if row[LABEL] == jtl_sample['label']][0]
+            processed_sample[SAMPLES] = processed_sample[SAMPLES] + 1  # Count samples
+            processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
+            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL])  # list of success values
+
+        # Calculation after the last row in kpi.jtl is processed
+        if jtl_sample == jtl_list[-1]:
+            for processed_sample in csv_list:
+                elapsed_df = pandas.Series(processed_sample[ELAPSED_JTL_TMP])
+                processed_sample[AVERAGE] = int(round(elapsed_df.mean()))
+                processed_sample[MEDIAN] = int(round(elapsed_df.quantile(0.5)))
+                processed_sample[PERC_90] = int(round(elapsed_df.quantile(0.9)))
+                processed_sample[PERC_95] = int(round(elapsed_df.quantile(0.95)))
+                processed_sample[PERC_99] = int(round(elapsed_df.quantile(0.99)))
+                processed_sample[MIN] = min(processed_sample[ELAPSED_JTL_TMP])
+                processed_sample[MAX] = max(processed_sample[ELAPSED_JTL_TMP])
+
+                success_list = processed_sample[SUCCESS_JTL_TMP]
+                processed_sample[ERROR_RATE] = round(success_list.count(FALSE_JTL) / len(success_list), 2) * 100.00
+                del processed_sample[SUCCESS_JTL_TMP]
+                del processed_sample[ELAPSED_JTL_TMP]
+
+    headers = csv_list[0].keys()
+    with output_csv.open('w') as output_file:
+        dict_writer = csv.DictWriter(output_file, headers)
+        dict_writer.writeheader()
+        for row in csv_list:
+            dict_writer.writerow(row)
+
+
 def main():
     file_names = sys.argv[1:]
     __validate_file_names(file_names)
-    artifacts_dir: str = os.getenv(ENV_TAURUS_ARTIFACT_DIR)
-    if artifacts_dir is None:
-        raise SystemExit(f'Error: env variable {ENV_TAURUS_ARTIFACT_DIR} is not set')
 
-    artifacts_dir_path = Path(artifacts_dir)
     with tempfile.TemporaryDirectory() as tmp_dir:
-        jmeter_lib_dir = __get_jmeter_lib_dir()
         temp_csv_list: List[Path] = []
         for file_name in file_names:
-            jtl_file_path = artifacts_dir_path / file_name
+            jtl_file_path = ENV_TAURUS_ARTIFACT_DIR / file_name
             jtl_validator.validate(jtl_file_path)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
-            __convert_jtl_to_csv(jtl_file_path, csv_file_path, jmeter_lib_dir)
+            __convert_jtl_to_csv(jtl_file_path, csv_file_path)
             temp_csv_list.append(csv_file_path)
 
-        results_file_path = artifacts_dir_path / RESULTS_CSV_NAME
+        results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
         __create_results_csv(temp_csv_list, results_file_path)
 
 

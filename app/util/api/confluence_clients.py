@@ -1,7 +1,8 @@
 import xmlrpc.client
 
-from util.data_preparation.api.abstract_clients import RestClient, Client
+from util.api.abstract_clients import RestClient, Client
 import xml.etree.ElementTree as ET
+import lxml.html as LH
 
 BATCH_SIZE_SEARCH = 500
 
@@ -129,6 +130,29 @@ class ConfluenceRestClient(RestClient):
                                                'General Configuration - Further Configuration - Remote API')
         return response.status_code == 200
 
+    def get_confluence_nodes_count(self):
+        api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
+        response = self.get(api_url, error_msg='Could not get Confluence nodes count via API')
+        return response.json()
+
+    def get_total_pages_count(self):
+        api_url = f"{self.host}/rest/api/search?cql=type=page"
+        response = self.get(api_url, 'Could not get issues count')
+        return response.json().get('totalSize', 0)
+
+    def get_collaborative_editing_status(self):
+        api_url = f'{self.host}/rest/synchrony-interop/status'
+        response = self.get(api_url, error_msg='Could not get collaborative editing status')
+        return response.json()
+
+    def get_locale(self):
+        page = LH.parse(self.host)
+        try:
+            language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        except Exception:
+            raise Exception('Could not get user locale')
+        return language
+
 
 class ConfluenceRpcClient(Client):
 
@@ -152,6 +176,6 @@ class ConfluenceRpcClient(Client):
             }
             proxy.confluence2.addUser(token, user_definition, password)
             user_definition['password'] = password
-            return user_definition
+            return {'user': {'username': user_definition["name"], 'email': user_definition["email"]}}
         else:
             raise Exception(f"Can't create user {username}: user already exists.")
