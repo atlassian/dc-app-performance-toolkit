@@ -64,8 +64,8 @@ All important parameters are listed and described in this section. For all other
 
 The Data Center App Performance Toolkit officially supports:
 
-- Confluence Platform Release version: 7.0.4
-- Confluence [Enterprise Release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
+- Confluence Platform release version: 7.0.4
+- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
 
 **Cluster nodes**
 
