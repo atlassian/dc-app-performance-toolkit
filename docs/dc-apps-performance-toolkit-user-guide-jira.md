@@ -91,10 +91,6 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Application user database password | Password1! |
 
 {{% note %}}
-The Jira indexing is a database resource-intense process. Underprovisioned database instance could become a bottleneck which may lead to a slow index process or errors during the indexing. It's highly recommended to stick to a suggested database instance class. 
-{{% /note %}}
-
-{{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).
 {{% /note %}}
 
@@ -414,7 +410,11 @@ If you are submitting a Jira app, you are required to conduct a Lucene Index tim
 First, benchmark your re-index time without your app installed:
 
 {{% note %}}
-Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~40 min.
+Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~30 min.
+{{% /note %}}
+
+{{% note %}}
+If your Amazon RDS DB instance classes less then db.m5.xlarge you need wait ~2 hours before starting reindexing.
 {{% /note %}}
 
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
