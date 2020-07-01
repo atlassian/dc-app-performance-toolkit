@@ -91,7 +91,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Application user database password | Password1! |
 
 {{% note %}}
-The indexing process places high demands on the database. Weak database instance class can become a bottle neck, for long ping times or poor response from the database that can also lead to an error during the reindex process! 
+The Jira indexing is a database resource-intense process. Underprovisioned database instance could become a bottleneck which may lead to a slow index process or errors during the indexing. It's highly recommended to stick to a suggested database instance class. 
 {{% /note %}}
 
 {{% note %}}
