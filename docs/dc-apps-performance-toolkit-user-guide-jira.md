@@ -84,11 +84,15 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | true |
 | Application user database password | Password1! |
+
+{{% note %}}
+The indexing process places high demands on the database. Weak database instance class can become a bottle neck, for long ping times or poor response from the database that can also lead to an error during the reindex process! 
+{{% /note %}}
 
 {{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).
@@ -309,7 +313,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-### <a id="reindexing"></a> Re-indexing Jira Data Center (~1 hour)
+### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 minutes)
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
