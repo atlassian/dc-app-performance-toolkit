@@ -309,7 +309,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 minutes)
+### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 min)
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
@@ -317,7 +317,8 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
-1. Attach the screenshot to your DC HELP ticket.
+1. Take a screenshot of the acknowledgment screen displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DCHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
@@ -413,17 +414,17 @@ Jira 7 index time for 1M issues on a User Guide [recommended configuration](#qui
 {{% /note %}}
 
 {{% note %}}
-If your Amazon RDS DB instance classes less then db.m5.xlarge you need wait (~2 hours after first reindex) before starting reindex.
+If your Amazon RDS DB instance class is lower then db.m5.xlarge it is required to wait ~2 hours after previous reindex finish before starting a new one.
 {{% /note %}}
 
-Please, benchmark your re-index time with your app installed:
+Benchmark your re-index time with your app installed:
 
 1. Install the app you want to test.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DC HELP ticket.
+1. Attach the screenshot to your DCHELP ticket.
 
 After attaching both screenshots to your DC HELP ticket, move on to performance results generation with an app installed:
 
