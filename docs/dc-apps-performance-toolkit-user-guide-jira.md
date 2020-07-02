@@ -317,7 +317,7 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
-1. Take a screenshot of the acknowledgment screen displaying the re-index time and Lucene index timing.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 1. Attach the screenshot to your DCHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
