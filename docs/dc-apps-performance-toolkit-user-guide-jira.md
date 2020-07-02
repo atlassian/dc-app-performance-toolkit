@@ -315,8 +315,9 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
+1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
+1. Attach the screenshot to your DC HELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
@@ -405,29 +406,21 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 #### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues.
-
-First, benchmark your re-index time without your app installed:
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
 
 {{% note %}}
 Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~30 min.
 {{% /note %}}
 
 {{% note %}}
-If your Amazon RDS DB instance classes less then db.m5.xlarge you need wait ~2 hours before starting reindexing.
+If your Amazon RDS DB instance classes less then db.m5.xlarge you need wait (~2 hours after first reindex) before starting reindex.
 {{% /note %}}
 
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
-1. Click **Re-Index** and wait until re-indexing is completed.
-1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DC HELP ticket.
-
-Next, benchmark your re-index time with your app installed:
+Please, benchmark your re-index time with your app installed:
 
 1. Install the app you want to test.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
+1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 1. Attach the screenshot to your DC HELP ticket.
