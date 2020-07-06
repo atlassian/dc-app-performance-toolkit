@@ -112,7 +112,7 @@ def __is_collaborative_editing_enabled(confluence_api):
 
 def __check_current_language(confluence_api):
     language = confluence_api.get_locale()
-    if language not in [ENGLISH_US, ENGLISH_GB]:
+    if language and language not in [ENGLISH_US, ENGLISH_GB]:
         raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your profile language to "English (US)"')
 
@@ -126,11 +126,11 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
+    __is_remote_api_enabled(rest_client)
+
     __is_collaborative_editing_enabled(rest_client)
 
     __check_current_language(rest_client)
-
-    __is_remote_api_enabled(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
     write_test_data_to_files(dataset)

@@ -1,8 +1,7 @@
 import xmlrpc.client
 
 from util.api.abstract_clients import RestClient, Client
-import xml.etree.ElementTree as ET
-import lxml.html as LH
+from lxml import html
 
 BATCH_SIZE_SEARCH = 500
 
@@ -89,7 +88,7 @@ class ConfluenceRestClient(RestClient):
         version = ''
         api_url = f'{self.host}/rest/applinks/1.0/manifest'
         response = self.get(api_url, 'Could not get Confluence manifest')
-        tree = ET.fromstring(response.content)
+        tree = html.fromstring(response.content)
         for child in tree:
             if child.tag == 'version':
                 version = child.text
@@ -146,11 +145,13 @@ class ConfluenceRestClient(RestClient):
         return response.json()
 
     def get_locale(self):
-        page = LH.parse(self.host)
+        language = None
+        page = self.get(self.host, "Could not get page content.").content
+        tree = html.fromstring(page)
         try:
-            language = page.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
-        except Exception:
-            raise Exception('Could not get user locale')
+            language = tree.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+        except Exception as error:
+            print(f"Warning: Could not get user locale: {error}")
         return language
 
 
