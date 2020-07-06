@@ -133,7 +133,8 @@ class ConfluenceRestClient(RestClient):
         api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
         response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
                             expected_status_codes=[200,500])
-        return 'Server' if response.status_code == 500 else len(response.json())
+        return 'Server' if response.status_code == 500 and 'NonClusterMonitoring' in response.text\
+            else len(response.json())
 
     def get_total_pages_count(self):
         api_url = f"{self.host}/rest/api/search?cql=type=page"
