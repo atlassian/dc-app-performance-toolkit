@@ -24,6 +24,9 @@ ERROR_LIMIT = 10
 
 ENGLISH = 'en_US'
 
+URL = JIRA_SETTINGS.server_url
+CLIENT = JiraRestClient(URL, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+
 
 def __generate_jqls(max_length=3, count=100):
     # Generate jqls like "abc*"
@@ -153,17 +156,18 @@ def __check_current_language(jira_api):
                          f'Please change your profile language to "English (United States) [Default]"')
 
 
+def __check_rte_status(jira_api):
+    app_prop = jira_api.get_applications_properties()
+    rte_status = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled'][0]
+    return rte_status
+
+
 def main():
     print("Started preparing data")
+    print("Server url: ", URL)
 
-    url = JIRA_SETTINGS.server_url
-    print("Server url: ", url)
-
-    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
-
-    __check_current_language(client)
-
-    dataset = __create_data_set(client)
+    __check_current_language(CLIENT)
+    dataset = __create_data_set(CLIENT)
     write_test_data_to_files(dataset)
 
     print("Finished preparing data")
