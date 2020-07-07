@@ -6,6 +6,10 @@ from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
     IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
 
+from util.data_preparation.jira_prepare_data import CLIENT, __check_rte_status
+
+RTE_STATUS = __check_rte_status(CLIENT)
+
 
 class PopupManager(BasePage):
 
@@ -82,12 +86,18 @@ class Issue(BasePage):
         self.get_element(IssueLocators.tinymce_description_field).send_keys(text)
         self.return_to_parent_frame()
 
+    def __fill_textfield(self, text, selector):
+        self.get_element(selector).send_keys(text)
+
     def edit_issue_submit(self):
         self.get_element(IssueLocators.edit_issue_submit).click()
 
     def fill_description_edit(self):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if RTE_STATUS == 'true':
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def open_create_issue_modal(self):
         self.wait_until_clickable(IssueLocators.create_issue_button).click()
@@ -95,7 +105,10 @@ class Issue(BasePage):
 
     def fill_description_create(self):
         text_description = f'Description: {self.generate_random_string(100)}'
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if RTE_STATUS == 'true':
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def fill_summary_create(self):
         summary = f"Issue created date {time.time()}"
@@ -131,7 +144,10 @@ class Issue(BasePage):
 
     def fill_comment_edit(self):
         text = 'Comment from selenium'
-        self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field)
+        if RTE_STATUS == 'true':
+            self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
+        else:
+            self.__fill_textfield(text, selector=IssueLocators.edit_comment_text_field)
 
     def edit_comment_submit(self):
         self.get_element(IssueLocators.edit_comment_add_comment_button).click()
