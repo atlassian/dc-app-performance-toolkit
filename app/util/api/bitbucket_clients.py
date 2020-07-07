@@ -2,7 +2,7 @@ import time
 from enum import Enum
 
 from util.api.abstract_clients import RestClient
-import lxml.html as LH
+from lxml import html
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -151,9 +151,11 @@ class BitbucketRestClient(RestClient):
         return r.content.decode('utf-8')
 
     def get_locale(self):
-        page = LH.parse(self.host)
+        language = None
+        page = self.get(self.host, "Could not get page content.").content
+        tree = html.fromstring(page)
         try:
-            language = page.xpath('//html/@lang')[0]
-        except Exception:
-            raise Exception('Could not get user locale')
+            language = tree.xpath('//html/@lang')[0]
+        except Exception as error:
+            print(f"Warning: Could not get user locale: {error}")
         return language
