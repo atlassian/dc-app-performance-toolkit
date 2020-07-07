@@ -5,7 +5,7 @@ import urllib3
 
 
 from util.conf import JIRA_SETTINGS
-from util.api.jira_clients import JiraRestClient
+from util.api.jira_clients import JIRA_CLIENT
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS
 
@@ -23,9 +23,6 @@ DEFAULT_USER_PREFIX = 'performance_'
 ERROR_LIMIT = 10
 
 ENGLISH = 'en_US'
-
-URL = JIRA_SETTINGS.server_url
-CLIENT = JiraRestClient(URL, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
 
 def __generate_jqls(max_length=3, count=100):
@@ -156,18 +153,14 @@ def __check_current_language(jira_api):
                          f'Please change your profile language to "English (United States) [Default]"')
 
 
-def __check_rte_status(jira_api):
-    app_prop = jira_api.get_applications_properties()
-    rte_status = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled'][0]
-    return rte_status
-
-
 def main():
     print("Started preparing data")
-    print("Server url: ", URL)
 
-    __check_current_language(CLIENT)
-    dataset = __create_data_set(CLIENT)
+    url = JIRA_SETTINGS.server_url
+    print("Server url: ", url)
+
+    __check_current_language(JIRA_CLIENT)
+    dataset = __create_data_set(JIRA_CLIENT)
     write_test_data_to_files(dataset)
 
     print("Finished preparing data")

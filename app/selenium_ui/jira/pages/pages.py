@@ -6,9 +6,9 @@ from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
     IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
 
-from util.data_preparation.jira_prepare_data import CLIENT, __check_rte_status
+from util.api.jira_clients import JIRA_CLIENT
 
-RTE_STATUS = __check_rte_status(CLIENT)
+RTE_STATUS = JIRA_CLIENT.check_rte_status()
 
 
 class PopupManager(BasePage):
@@ -94,7 +94,7 @@ class Issue(BasePage):
 
     def fill_description_edit(self):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        if RTE_STATUS == 'true':
+        if RTE_STATUS:
             self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
         else:
             self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
@@ -105,7 +105,7 @@ class Issue(BasePage):
 
     def fill_description_create(self):
         text_description = f'Description: {self.generate_random_string(100)}'
-        if RTE_STATUS == 'true':
+        if RTE_STATUS:
             self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
         else:
             self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
@@ -144,7 +144,7 @@ class Issue(BasePage):
 
     def fill_comment_edit(self):
         text = 'Comment from selenium'
-        if RTE_STATUS == 'true':
+        if RTE_STATUS:
             self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
         else:
             self.__fill_textfield(text, selector=IssueLocators.edit_comment_text_field)

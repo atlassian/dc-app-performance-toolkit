@@ -1,4 +1,7 @@
+from pprint import pprint
+
 from util.api.abstract_clients import RestClient
+from util.conf import JIRA_SETTINGS
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -198,5 +201,13 @@ class JiraRestClient(RestClient):
 
     def get_applications_properties(self):
         api_url = f'{self.host}/rest/api/2/application-properties'
-        user_properties = self.get(api_url, "Could not retrieve user")
+        user_properties = self.get(api_url, "Could not retrieve application properties")
         return user_properties.json()
+
+    def check_rte_status(self):
+        app_prop = self.get_applications_properties()
+        rte = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled'][0]
+        return eval(rte.capitalize())
+
+
+JIRA_CLIENT = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
