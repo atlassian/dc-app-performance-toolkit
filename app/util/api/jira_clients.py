@@ -198,5 +198,5 @@ class JiraRestClient(RestClient):
 
     def get_applications_properties(self):
         api_url = f'{self.host}/rest/api/2/application-properties'
-        user_properties = self.get(api_url, "Could not retrieve user")
+        user_properties = self.get(api_url, "Could not retrieve application properties")
         return user_properties.json()
