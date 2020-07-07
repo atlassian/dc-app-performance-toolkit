@@ -57,7 +57,7 @@ class Confluence(BaseApplication):
 
     @property
     def nodes_count(self):
-        return len(self.client.get_confluence_nodes_count())
+        return self.client.get_confluence_nodes_count()
 
     @property
     def dataset_information(self):

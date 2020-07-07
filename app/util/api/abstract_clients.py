@@ -57,9 +57,9 @@ class RestClient(Client):
     def base_auth(self):
         return self.user, self.password
 
-    def get(self, url: str, error_msg: str):
+    def get(self, url: str, error_msg: str, expected_status_codes: list = None):
         response = self.session.get(url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
-        self.__verify_response(response, error_msg)
+        self.__verify_response(response, error_msg, expected_status_codes)
         return response
 
     def post(self, url: str, error_msg: str, body: dict = None, params=None):
@@ -76,8 +76,8 @@ class RestClient(Client):
         self.__verify_response(response, error_msg)
         return response
 
-    def __verify_response(self, response: Response, error_msg: str):
-        if response.ok:
+    def __verify_response(self, response: Response, error_msg: str, expected_status_codes: list = None):
+        if response.ok or response.status_code in expected_status_codes:
             return
 
         status_code = response.status_code
