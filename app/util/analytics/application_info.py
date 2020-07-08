@@ -32,15 +32,7 @@ class Jira(BaseApplication):
 
     @property
     def nodes_count(self):
-        html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
-        if self.version >= '8.1.0':
-            return self.client.get_nodes_info_via_rest()
-        else:
-            jira_system_page = self.client.get_system_info_page()
-            node_count = jira_system_page.replace(' ', '').replace('\n', '').count(html_pattern)
-            if node_count == 0:
-                return 'Server'
-            return node_count
+        return self.client.get_cluster_nodes_count(jira_version=self.version)
 
     def __issues_count(self):
         return self.client.get_total_issues_count()

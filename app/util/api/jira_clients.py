@@ -158,7 +158,7 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_nodes_info_via_rest(self):
+    def get_nodes_count_via_rest(self):
         # Works for Jira version >= 8.1.0
         api_url = f'{self.host}/rest/api/2/cluster/nodes'
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
@@ -188,9 +188,18 @@ class JiraRestClient(RestClient):
         session.post(url=login_url, data=login_body, headers=headers)
         auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
         system_info_html = auth_request.content.decode("utf-8")
-        if 'Cluster nodes' not in system_info_html:
-            print('Could not get Jira nodes count via parse html page')
         return system_info_html
+
+    def get_cluster_nodes_count(self, jira_version):
+        html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
+        if jira_version >= '8.1.0':
+            return self.get_nodes_count_via_rest()
+        else:
+            jira_system_page = self.get_system_info_page()
+            nodes_count = jira_system_page.replace(' ', '').replace('\n', '').count(html_pattern)
+            if nodes_count == 0:
+                return 'Server'
+            return nodes_count
 
     def get_locale(self):
         api_url = f'{self.host}/rest/api/2/myself'
