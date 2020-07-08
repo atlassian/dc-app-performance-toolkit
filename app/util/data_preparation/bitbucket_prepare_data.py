@@ -123,7 +123,7 @@ def write_test_data_to_files(datasets):
 
 def __check_current_language(bitbucket_api):
     language = bitbucket_api.get_locale()
-    if language != ENGLISH:
+    if language and language != ENGLISH:
         raise SystemExit(f'"{language}" language is not supported. '
                          f'Please change your account language to "English (United States)"')
 
