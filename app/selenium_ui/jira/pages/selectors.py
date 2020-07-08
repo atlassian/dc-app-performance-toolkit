@@ -133,7 +133,7 @@ class SearchLocators:
 
     search_issue_table = (By.ID, "issuetable")
     search_issue_content = (By.ID, "issue-content")
-    search_no_issue_found = (By.ID, "issue-content")
+    search_no_issue_found = (By.CLASS_NAME, "no-results-message")
 
 
 class BoardsListLocators:
