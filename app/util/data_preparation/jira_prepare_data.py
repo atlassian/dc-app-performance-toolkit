@@ -159,7 +159,7 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    client = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
     __check_current_language(client)
     dataset = __create_data_set(client)
