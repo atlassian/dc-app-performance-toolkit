@@ -5,7 +5,7 @@ import urllib3
 
 
 from util.conf import JIRA_SETTINGS
-from util.api.jira_clients import JIRA_CLIENT
+from util.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS
 
@@ -159,8 +159,10 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    __check_current_language(JIRA_CLIENT)
-    dataset = __create_data_set(JIRA_CLIENT)
+    client = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+
+    __check_current_language(client)
+    dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 
     print("Finished preparing data")
