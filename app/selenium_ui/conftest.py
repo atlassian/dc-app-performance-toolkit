@@ -126,7 +126,7 @@ def print_timing(interaction=None):
 def webdriver():
     def driver_init():
         chrome_options = Options()
-        if (webdriver_visible is None and not webdriver_visible) or not JIRA_SETTINGS.webdriver_visible:
+        if (webdriver_visible is None or not webdriver_visible) or not JIRA_SETTINGS.webdriver_visible:
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
