@@ -414,7 +414,7 @@ Jira 7 index time for 1M issues on a User Guide [recommended configuration](#qui
 {{% /note %}}
 
 {{% note %}}
-If your Amazon RDS DB instance class is lower then db.m5.xlarge it is required to wait ~2 hours after previous reindex finish before starting a new one.
+If your Amazon RDS DB instance class is lower than db.m5.xlarge it is required to wait ~2 hours after previous reindex finish before starting a new one.
 {{% /note %}}
 
 Benchmark your re-index time with your app installed:
