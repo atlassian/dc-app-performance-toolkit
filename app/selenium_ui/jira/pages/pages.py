@@ -88,25 +88,23 @@ class Issue(BasePage):
     def edit_issue_submit(self):
         self.get_element(IssueLocators.edit_issue_submit).click()
 
-    def fill_description_edit_rte(self):
+    def fill_description_edit(self, rte):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
-
-    def fill_description_edit(self):
-        text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def open_create_issue_modal(self):
         self.wait_until_clickable(IssueLocators.create_issue_button).click()
         self.wait_until_visible(IssueLocators.issue_modal)
 
-    def fill_description_create_rte(self):
+    def fill_description_create(self, rte):
         text_description = f'Description: {self.generate_random_string(100)}'
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
-
-    def fill_description_create(self):
-        text_description = f'Description: {self.generate_random_string(100)}'
-        self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def fill_summary_create(self):
         summary = f"Issue created date {time.time()}"
@@ -140,13 +138,12 @@ class Issue(BasePage):
         self.wait_until_clickable(IssueLocators.issue_submit_button).click()
         self.wait_until_invisible(IssueLocators.issue_modal)
 
-    def fill_comment_edit_rte(self):
+    def fill_comment_edit(self, rte):
         text = 'Comment from selenium'
-        self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
-
-    def fill_comment_edit(self):
-        text = 'Comment from selenium'
-        self.__fill_textfield(text, selector=IssueLocators.edit_comment_text_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
+        else:
+            self.__fill_textfield(text, selector=IssueLocators.edit_comment_text_field)
 
     def edit_comment_submit(self):
         self.get_element(IssueLocators.edit_comment_add_comment_button).click()

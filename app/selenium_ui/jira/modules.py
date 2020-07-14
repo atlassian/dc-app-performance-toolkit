@@ -96,11 +96,7 @@ def create_issue(webdriver, dataset):
         @print_timing("selenium_create_issue:fill_and_submit_issue_form")
         def sub_measure():
             issue_modal.fill_summary_create()  # Fill summary field
-            if rte_status:
-                issue_modal.fill_description_create_rte()  # Fill description field
-            else:
-                issue_modal.fill_description_create()
-
+            issue_modal.fill_description_create(rte_status)  # Fill description field
             issue_modal.assign_to_me()  # Click assign to me
             issue_modal.set_resolution()  # Set resolution if there is such field
             issue_modal.set_issue_type()  # Set issue type, use non epic type
@@ -136,10 +132,7 @@ def edit_issue(webdriver, datasets):
         sub_measure()
 
         issue_page.fill_summary_edit()  # edit summary
-        if rte_status:
-            issue_page.fill_description_edit_rte()  # edit description
-        else:
-            issue_page.fill_description_edit()
+        issue_page.fill_description_edit(rte_status)  # edit description
 
         @print_timing("selenium_edit_issue:save_edit_issue_form")
         def sub_measure():
@@ -160,10 +153,7 @@ def save_comment(webdriver, datasets):
             issue_page.go_to_edit_comment()  # Open edit comment page
         sub_measure()
 
-        if rte_status:
-            issue_page.fill_comment_edit_rte()  # Fill comment text field
-        else:
-            issue_page.fill_comment_edit()
+        issue_page.fill_comment_edit(rte_status)  # Fill comment text field
 
         @print_timing("selenium_save_comment:submit_form")
         def sub_measure():

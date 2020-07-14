@@ -1,4 +1,5 @@
 from util.api.abstract_clients import RestClient
+from selenium.common.exceptions import WebDriverException
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -202,9 +203,14 @@ class JiraRestClient(RestClient):
         return app_properties.json()
 
     def check_rte_status(self):
-        app_prop = self.get_applications_properties()
-        rte = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled']
-        if rte:
-            return rte[0] == 'true'
-        else:
-            raise Exception("Couldn't get Jira RTE status")
+        # Safe check for RTE status. Return RTE status or return default value (True).
+        try:
+            app_prop = self.get_applications_properties()
+            rte = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled']
+            if rte:
+                return rte[0] == 'true'
+            else:
+                raise Exception("RTE status was nof found in application properties.")
+        except (Exception, WebDriverException) as e:
+            print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
+            return True
