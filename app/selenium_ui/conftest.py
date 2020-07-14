@@ -73,7 +73,6 @@ selenium_results_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.jtl'
 selenium_error_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.err'
 webdriver_visible = os.getenv('WEBDRIVER_VISIBLE', False)
 
-
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
         file.write(JTL_HEADER)
