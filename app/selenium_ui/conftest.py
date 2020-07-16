@@ -71,7 +71,6 @@ globals = InitGlobals()
 
 selenium_results_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.jtl'
 selenium_error_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.err'
-webdriver_visible = os.getenv('WEBDRIVER_VISIBLE', False)
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
@@ -126,7 +125,7 @@ def print_timing(interaction=None):
 def webdriver():
     def driver_init():
         chrome_options = Options()
-        if not JIRA_SETTINGS.webdriver_visible and (webdriver_visible == 'False' or not webdriver_visible):
+        if not JIRA_SETTINGS.webdriver_visible:
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
