@@ -41,14 +41,11 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
     if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
-    elif [[ "${2}" == "--max" ]]; then
+    else
       LAST_ATTACHMENTS_VERSION=${SUPPORTED_CONFLUENCE_VERSIONS[${#SUPPORTED_CONFLUENCE_VERSIONS[@]}-1]}
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_ATTACHMENTS_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
-      echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
-    else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
-      exit 1
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_ATTACHMENTS_VERSION}"
+      echo "Dataset URL: ${ATTACHMENTS_TAR_URL}
     fi
   else
     # No force flag
