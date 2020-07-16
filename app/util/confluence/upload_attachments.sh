@@ -38,8 +38,12 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Confluence version is in list of supported
-    if [[ "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+      echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
+    elif [[ "${2}" == "--max" ]]; then
+      LAST_ATTACHMENTS_VERSION=${SUPPORTED_CONFLUENCE_VERSIONS[${#SUPPORTED_CONFLUENCE_VERSIONS[@]}-1]}
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_ATTACHMENTS_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
       echo "Correct dataset version was not specified after --force flag."
