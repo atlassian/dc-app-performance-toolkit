@@ -45,7 +45,7 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
       LAST_ATTACHMENTS_VERSION=${SUPPORTED_CONFLUENCE_VERSIONS[${#SUPPORTED_CONFLUENCE_VERSIONS[@]}-1]}
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_ATTACHMENTS_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_ATTACHMENTS_VERSION}"
-      echo "Dataset URL: ${ATTACHMENTS_TAR_URL}
+      echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
     fi
   else
     # No force flag

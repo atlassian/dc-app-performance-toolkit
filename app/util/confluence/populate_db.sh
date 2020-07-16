@@ -61,7 +61,7 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
       LAST_DATASET_VERSION=${SUPPORTED_CONFLUENCE_VERSIONS[${#SUPPORTED_CONFLUENCE_VERSIONS[@]}-1]}
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
-      echo "Dataset URL: ${DB_DUMP_URL}
+      echo "Dataset URL: ${DB_DUMP_URL}"
     fi
   else
     # No force flag
