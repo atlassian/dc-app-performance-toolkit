@@ -1,7 +1,6 @@
 import atexit
 import csv
 import datetime
-import os
 import sys
 import time
 import functools
@@ -71,7 +70,6 @@ globals = InitGlobals()
 
 selenium_results_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.jtl'
 selenium_error_file = ENV_TAURUS_ARTIFACT_DIR / 'selenium.err'
-webdriver_visible = os.getenv('WEBDRIVER_VISIBLE', False)
 
 if not selenium_results_file.exists():
     with open(selenium_results_file, "w") as file:
@@ -122,16 +120,16 @@ def print_timing(interaction=None):
     return deco_wrapper
 
 
-@pytest.fixture(scope="module")
-def webdriver():
+def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
-        if not JIRA_SETTINGS.webdriver_visible and (webdriver_visible == 'False' or not webdriver_visible):
+        if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
         driver = Chrome(options=chrome_options)
+        driver.app_settings = app_settings
         return driver
     # First time driver init
     if not globals.driver:
@@ -156,6 +154,21 @@ def webdriver():
             return globals.driver
 
 
+@pytest.fixture(scope="module")
+def jira_webdriver():
+    return webdriver(app_settings=JIRA_SETTINGS)
+
+
+@pytest.fixture(scope="module")
+def confluence_webdriver():
+    return webdriver(app_settings=CONFLUENCE_SETTINGS)
+
+
+@pytest.fixture(scope="module")
+def bitbucket_webdriver():
+    return webdriver(app_settings=BITBUCKET_SETTINGS)
+
+
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item):
     # Making test result information available in fixtures
@@ -166,24 +179,24 @@ def pytest_runtest_makereport(item):
 
 
 @pytest.fixture
-def jira_screen_shots(request, webdriver):
+def jira_screen_shots(request, jira_webdriver):
     yield
-    get_screen_shots(request, webdriver, app_settings=JIRA_SETTINGS)
+    get_screen_shots(request, jira_webdriver)
 
 
 @pytest.fixture
-def confluence_screen_shots(request, webdriver):
+def confluence_screen_shots(request, confluence_webdriver):
     yield
-    get_screen_shots(request, webdriver, app_settings=CONFLUENCE_SETTINGS)
+    get_screen_shots(request, confluence_webdriver)
 
 
 @pytest.fixture
-def bitbucket_screen_shots(request, webdriver):
+def bitbucket_screen_shots(request, bitbucket_webdriver):
     yield
-    get_screen_shots(request, webdriver, app_settings=BITBUCKET_SETTINGS)
+    get_screen_shots(request, bitbucket_webdriver)
 
 
-def get_screen_shots(request, webdriver, app_settings):
+def get_screen_shots(request, webdriver):
     # request.node is an "item" because we use the default
     # "function" scope
     if request.node.rep_call.failed:
@@ -200,7 +213,7 @@ def get_screen_shots(request, webdriver, app_settings):
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
         webdriver.execute_script("window.onbeforeunload = function() {};")  # to prevent alert window (force get link)
-        webdriver.get(app_settings.server_url)
+        webdriver.get(webdriver.app_settings.server_url)
 
 
 application_dataset = Dataset()
