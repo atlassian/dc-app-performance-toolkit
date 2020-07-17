@@ -27,8 +27,7 @@ class Client(ABC):
 class RestClient(Client):
     JSON_HEADERS = {
         "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Connection": "keep-alive"
+        "Content-Type": "application/json"
     }
 
     LOGIN_POST_HEADERS = {
