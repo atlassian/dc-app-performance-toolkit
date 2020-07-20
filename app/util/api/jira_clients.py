@@ -150,7 +150,6 @@ class JiraRestClient(RestClient):
         """
         api_url = f'{self.host}/rest/api/2/project'
         response = self.get(api_url, 'Could not get the list of projects', auth=auth)
-        l = len(response.json())
         return response.json()
 
     def get_server_info(self):
