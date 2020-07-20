@@ -38,12 +38,14 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ "${2}" ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_JIRA_VERSIONS[@]}"
+      LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
+      echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
       exit 1
     fi
   else
