@@ -91,11 +91,12 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_projects = __get_software_projects(jira_api)
+    perf_user = (random.choice(dataset[USERS])['name'], DEFAULT_USER_PASSWORD)
+    software_projects = __get_software_projects(jira_api, auth=perf_user)
     dataset[PROJECTS] = software_projects
     dataset[ISSUES] = __get_issues(jira_api, software_projects)
-    dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
-    dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
+    dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum', auth=perf_user)
+    dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban', auth=perf_user)
     dataset[JQLS] = __generate_jqls(count=150)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Projects: {len(dataset[PROJECTS])}')
@@ -119,8 +120,8 @@ def __get_issues(jira_api, software_projects):
     return issues
 
 
-def __get_boards(jira_api, board_type):
-    boards = jira_api.get_boards(board_type=board_type, max_results=250)
+def __get_boards(jira_api, board_type, auth):
+    boards = jira_api.get_boards(board_type=board_type, max_results=250, auth=auth)
     if not boards:
         raise SystemExit(f"There are no {board_type} boards in Jira")
 
@@ -136,8 +137,8 @@ def __get_users(jira_api):
     return users
 
 
-def __get_software_projects(jira_api):
-    all_projects = jira_api.get_all_projects()
+def __get_software_projects(jira_api, auth=None):
+    all_projects = jira_api.get_all_projects(auth)
     software_projects = \
         [f"{project['key']},{project['id']}" for project in all_projects if 'software' == project.get('projectTypeKey')]
     if not software_projects:
@@ -162,6 +163,7 @@ def main():
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
     __check_current_language(client)
+
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

@@ -27,8 +27,10 @@ class Client(ABC):
 class RestClient(Client):
     JSON_HEADERS = {
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Connection": "keep-alive"
     }
+
     LOGIN_POST_HEADERS = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,'
@@ -57,21 +59,21 @@ class RestClient(Client):
     def base_auth(self):
         return self.user, self.password
 
-    def get(self, url: str, error_msg: str, expected_status_codes: list = None):
-        response = self.session.get(url, auth=self.base_auth, verify=False, timeout=self.requests_timeout)
+    def get(self, url: str, error_msg: str, expected_status_codes: list = None, auth=base_auth):
+        response = self.session.get(url, auth=auth, verify=False, timeout=self.requests_timeout)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
 
-    def post(self, url: str, error_msg: str, body: dict = None, params=None):
+    def post(self, url: str, error_msg: str, body: dict = None, params=None, auth=base_auth):
         body_data = self.to_json(body) if body else None
-        response = self.session.post(url, body_data, params=params, auth=self.base_auth, headers=self.JSON_HEADERS)
+        response = self.session.post(url, body_data, params=params, auth=auth, headers=self.JSON_HEADERS)
 
         self.__verify_response(response, error_msg)
         return response
 
-    def put(self, url: str, error_msg: str, body: dict = None, params=None):
+    def put(self, url: str, error_msg: str, body: dict = None, params=None, auth=base_auth):
         body_data = self.to_json(body) if body else None
-        response = self.session.put(url, body_data, params=params, auth=self.base_auth, headers=self.JSON_HEADERS)
+        response = self.session.put(url, body_data, params=params, auth=auth, headers=self.JSON_HEADERS)
 
         self.__verify_response(response, error_msg)
         return response

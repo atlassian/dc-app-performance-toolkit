@@ -1,5 +1,4 @@
 from util.api.abstract_clients import RestClient
-from selenium.common.exceptions import WebDriverException
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -8,7 +7,7 @@ BATCH_SIZE_ISSUES = 1000
 
 class JiraRestClient(RestClient):
 
-    def get_boards(self, start_at=0, max_results=100, board_type=None, name=None, project_key_or_id=None):
+    def get_boards(self, start_at=0, max_results=100, board_type=None, name=None, project_key_or_id=None, auth=None):
         """
         Returns all boards. This only includes boards that the user has permission to view.
         :param start_at: The starting index of the returned boards. Base index: 0.
@@ -16,6 +15,7 @@ class JiraRestClient(RestClient):
         :param board_type: Filters results to boards of the specified type. Valid values: scrum, kanban.
         :param name: Filters results to boards that match or partially match the specified name.
         :param project_key_or_id: Filters results to boards that are relevant to a project.
+        :param auth: The user login and password required for API requests.
         Relevance meaning that the jql filter defined in board contains a reference to a project.
         :return: Returns the requested boards, at the specified page of the results.
         """
@@ -35,7 +35,7 @@ class JiraRestClient(RestClient):
             if project_key_or_id:
                 api_url += f"&projectKeyOrID={project_key_or_id}"
 
-            response = self.get(api_url, "Could not retrieve boards")
+            response = self.get(api_url, "Could not retrieve boards", auth=auth)
 
             boards_list.extend(response.json()['values'])
             loop_count -= 1
@@ -144,13 +144,13 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_all_projects(self):
+    def get_all_projects(self, auth):
         """
         :return: Returns the projects list of all project types - all categories
         """
         api_url = f'{self.host}/rest/api/2/project'
-        response = self.get(api_url, 'Could not get the list of projects')
-
+        response = self.get(api_url, 'Could not get the list of projects', auth=auth)
+        l = len(response.json())
         return response.json()
 
     def get_server_info(self):
@@ -206,21 +206,3 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/api/2/myself'
         user_properties = self.get(api_url, "Could not retrieve user")
         return user_properties.json()['locale']
-
-    def get_applications_properties(self):
-        api_url = f'{self.host}/rest/api/2/application-properties'
-        app_properties = self.get(api_url, "Could not retrieve application properties")
-        return app_properties.json()
-
-    def check_rte_status(self):
-        # Safe check for RTE status. Return RTE status or return default value (True).
-        try:
-            app_prop = self.get_applications_properties()
-            rte = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled']
-            if rte:
-                return rte[0] == 'true'
-            else:
-                raise Exception("RTE status was nof found in application properties.")
-        except (Exception, WebDriverException) as e:
-            print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
-            return True
