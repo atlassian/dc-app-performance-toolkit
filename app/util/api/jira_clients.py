@@ -15,7 +15,7 @@ class JiraRestClient(RestClient):
         :param board_type: Filters results to boards of the specified type. Valid values: scrum, kanban.
         :param name: Filters results to boards that match or partially match the specified name.
         :param project_key_or_id: Filters results to boards that are relevant to a project.
-        :param auth: The user login and password required for API requests.
+        :param auth: The user login and password.
         Relevance meaning that the jql filter defined in board contains a reference to a project.
         :return: Returns the requested boards, at the specified page of the results.
         """
