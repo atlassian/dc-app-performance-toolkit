@@ -44,13 +44,14 @@ class ConfluenceRestClient(RestClient):
 
         return content
 
-    def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
+    def get_content_search(self, start=0, limit=100, cql=None, expand="space", auth=None):
         """
         Fetch a list of content using the Confluence Query Language (CQL).
         :param start: The starting index of the returned boards. Base index: 0.
         :param limit: The maximum number of boards to return per page. Default: 50.
         :param cql: Filters results to boards of the specified type. Valid values: page, blogpost
         :param expand: Responds with additional values. Valid values: space,history,body.view,metadata.label
+        :param auth: The user login and password.
         :return: Returns the requested content, at the specified page of the results.
         """
         BATCH_SIZE_SEARCH = 200
@@ -66,7 +67,7 @@ class ConfluenceRestClient(RestClient):
                                 f'&limit={limit}'
                                 f'&expand={expand}'
             )
-            request = self.get(api_url, "Could not retrieve content")
+            request = self.get(api_url, "Could not retrieve content", auth=auth)
 
             content.extend(request.json()['results'])
             if len(content) < 0:

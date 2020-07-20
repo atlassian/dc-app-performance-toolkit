@@ -27,8 +27,9 @@ def generate_random_string(length=20):
 def __create_data_set(rest_client, rpc_client):
     dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
-    dataset[PAGES] = __get_pages(rest_client, 5000)
-    dataset[BLOGS] = __get_blogs(rest_client, 5000)
+    perf_user = (random.choice(dataset[USERS])['user']['username'], DEFAULT_USER_PASSWORD)
+    dataset[PAGES] = __get_pages(rest_client, 5000, perf_user)
+    dataset[BLOGS] = __get_blogs(rest_client, 5000, perf_user)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
     print(f'Blogs count: {len(dataset[BLOGS])}')
@@ -59,23 +60,23 @@ def __get_users(confluence_api, rpc_api, count):
     return cur_perf_users
 
 
-def __get_pages(confluence_api, count):
+def __get_pages(confluence_api, count, auth=None):
     pages = confluence_api.get_content_search(
         0, count, cql='type=page'
                       ' and title !~ JMeter'  # filter out pages created by JMeter
                       ' and title !~ Selenium'  # filter out pages created by Selenium
                       ' and title !~ locust'  # filter out pages created by locust
-                      ' and title !~ Home')  # filter out space Home pages
+                      ' and title !~ Home', auth=auth)  # filter out space Home pages
     if not pages:
         raise SystemExit("There are no Pages in Confluence")
 
     return pages
 
 
-def __get_blogs(confluence_api, count):
+def __get_blogs(confluence_api, count, auth=None):
     blogs = confluence_api.get_content_search(
         0, count, cql='type=blogpost'
-                      ' and title !~ Performance')
+                      ' and title !~ Performance', auth=auth)
     if not blogs:
         raise SystemExit(f"There are no Blog posts in Confluence")
 
