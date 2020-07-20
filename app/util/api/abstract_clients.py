@@ -65,14 +65,16 @@ class RestClient(Client):
 
     def post(self, url: str, error_msg: str, body: dict = None, params=None, auth=None):
         body_data = self.to_json(body) if body else None
-        response = self.session.post(url, body_data, params=params, auth=auth or self.base_auth, headers=self.JSON_HEADERS)
+        response = self.session.post(url, body_data, params=params, auth=auth or self.base_auth,
+                                     headers=self.JSON_HEADERS)
 
         self.__verify_response(response, error_msg)
         return response
 
     def put(self, url: str, error_msg: str, body: dict = None, params=None, auth=None):
         body_data = self.to_json(body) if body else None
-        response = self.session.put(url, body_data, params=params, auth=auth or self.base_auth, headers=self.JSON_HEADERS)
+        response = self.session.put(url, body_data, params=params, auth=auth or self.base_auth,
+                                    headers=self.JSON_HEADERS)
 
         self.__verify_response(response, error_msg)
         return response
