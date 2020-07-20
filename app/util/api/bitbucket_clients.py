@@ -18,7 +18,7 @@ class BitbucketUserPermission(Enum):
 
 class BitbucketRestClient(RestClient):
 
-    def get_entities(self, entity_name, batch_size, filter_=None, max_results=500):
+    def get_entities(self, entity_name, batch_size, filter_=None, max_results=500, auth=None):
         print(f'Attempt to fetch [{max_results}] [{entity_name}] from the server')
         entities = []
         entities_to_fetch = max_results
@@ -30,7 +30,7 @@ class BitbucketRestClient(RestClient):
             if filter_:
                 api_url += f'&filter={filter_}'
 
-            response = self.get(api_url, f'Could not retrieve entities list')
+            response = self.get(api_url, f'Could not retrieve entities list', auth=auth)
             returned_entities = response.json()['values']
             entities.extend(returned_entities)
             returned_entities_count = len(returned_entities)
@@ -45,13 +45,13 @@ class BitbucketRestClient(RestClient):
         print(f'Totally fetched [{len(entities)}] [{entity_name}] from the server')
         return entities
 
-    def get_non_fork_repos(self, max_results):
+    def get_non_fork_repos(self, max_results, auth=None):
         batch_size = None
         non_fork_repos = []
         start_at = 0
         while len(non_fork_repos) < max_results:
             api_url = f'{self.host}/rest/api/1.0/repos?limit={batch_size if batch_size else 1000}&start={start_at}'
-            response = self.get(api_url, f'Could not retrieve entities list')
+            response = self.get(api_url, f'Could not retrieve entities list', auth=auth)
             if not batch_size:
                 batch_size = response.json()['limit']
             repos = response.json()['values']
@@ -65,8 +65,8 @@ class BitbucketRestClient(RestClient):
             start_at = response.json()['nextPageStart']
         return non_fork_repos
 
-    def get_projects(self, max_results=500):
-        return self.get_entities(entity_name='projects',
+    def get_projects(self, max_results=500, auth=None):
+        return self.get_entities(auth=auth, entity_name='projects',
                                  batch_size=BATCH_SIZE_PROJECTS,
                                  max_results=max_results)
 
@@ -86,9 +86,9 @@ class BitbucketRestClient(RestClient):
         response = self.get(api_url, f'Could not get repos of project {project_key}')
         return response.json()
 
-    def get_pull_request(self, project_key, repo_key):
+    def get_pull_request(self, project_key, repo_key, auth=None):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests'
-        response = self.get(api_url, f'Could not retrieve pull requests list')
+        response = self.get(api_url, f'Could not retrieve pull requests list', auth=auth)
         return response.json()
 
     def create_user(self, username, password=None, email=None):

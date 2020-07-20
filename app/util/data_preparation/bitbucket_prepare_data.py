@@ -47,10 +47,10 @@ def __create_users(client: BitbucketRestClient, perf_user_count_to_create):
         perf_user_count_to_create = perf_user_count_to_create - 1
 
 
-def __get_repos(bitbucket_api):
+def __get_repos(bitbucket_api, auth=None):
     concurrency = BITBUCKET_SETTINGS.concurrency
     repos = bitbucket_api.get_non_fork_repos(
-        FETCH_LIMIT_REPOS if concurrency < FETCH_LIMIT_REPOS else concurrency
+        FETCH_LIMIT_REPOS if concurrency < FETCH_LIMIT_REPOS else concurrency, auth=auth
     )
     print(f'Repos number to fetch via API is {FETCH_LIMIT_REPOS}')
     repos_count = len(repos)
@@ -61,13 +61,13 @@ def __get_repos(bitbucket_api):
     return repos
 
 
-def __get_projects(bitbucket_api):
-    projects = bitbucket_api.get_projects(max_results=FETCH_LIMIT_PROJECTS)
+def __get_projects(bitbucket_api, auth=None):
+    projects = bitbucket_api.get_projects(max_results=FETCH_LIMIT_PROJECTS, auth=auth)
     print(f'Projects number to fetch via API is {FETCH_LIMIT_PROJECTS}')
     return projects
 
 
-def __get_prs(bitbucket_api):
+def __get_prs(bitbucket_api, auth=None):
     concurrency = BITBUCKET_SETTINGS.concurrency
     repos_prs = []
     REPOS_TO_FETCH = 1000
@@ -75,7 +75,7 @@ def __get_prs(bitbucket_api):
     repos = bitbucket_api.get_non_fork_repos(REPOS_TO_FETCH)
     for repo in repos:
         if len(repos_prs) <= concurrency:
-            prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
+            prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'], auth=auth)
             for pr in prs['values']:
                 # filter PRs created by selenium and not merged
                 if 'Selenium' not in pr['title']:
@@ -91,9 +91,11 @@ def __get_prs(bitbucket_api):
 def __create_data_set(bitbucket_api):
     dataset = dict()
     dataset[USERS] = __get_users(bitbucket_api)
-    dataset[PROJECTS] = __get_projects(bitbucket_api)
-    dataset[REPOS] = __get_repos(bitbucket_api)
-    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api)
+    perf_username = random.choice(dataset[USERS])['name']
+    perf_user = (perf_username, perf_username)
+    dataset[PROJECTS] = __get_projects(bitbucket_api, perf_user)
+    dataset[REPOS] = __get_repos(bitbucket_api, perf_user)
+    dataset[PULL_REQUESTS] = __get_prs(bitbucket_api, perf_user)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Projects count: {len(dataset[PROJECTS])}')
     print(f'Repos count: {len(dataset[REPOS])}')
