@@ -46,7 +46,6 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
       echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
-      exit 1
     fi
   else
     # No force flag
