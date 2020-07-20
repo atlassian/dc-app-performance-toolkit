@@ -77,7 +77,7 @@ class RestClient(Client):
         return response
 
     def __verify_response(self, response: Response, error_msg: str, expected_status_codes: list = None):
-        if expected_status_codes is None:
+        if not expected_status_codes:
             expected_status_codes = []
         if response.ok or response.status_code in expected_status_codes:
             return
