@@ -5,6 +5,12 @@ from selenium_ui.conftest import print_timing
 from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
     BoardsList, Board, Dashboard, Logout
 
+from util.api.jira_clients import JiraRestClient
+from util.conf import JIRA_SETTINGS
+
+client = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+rte_status = client.check_rte_status()
+
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
 USERS = "users"
@@ -90,7 +96,7 @@ def create_issue(webdriver, dataset):
         @print_timing("selenium_create_issue:fill_and_submit_issue_form")
         def sub_measure():
             issue_modal.fill_summary_create()  # Fill summary field
-            issue_modal.fill_description_create()  # Fill description field
+            issue_modal.fill_description_create(rte_status)  # Fill description field
             issue_modal.assign_to_me()  # Click assign to me
             issue_modal.set_resolution()  # Set resolution if there is such field
             issue_modal.set_issue_type()  # Set issue type, use non epic type
@@ -126,7 +132,7 @@ def edit_issue(webdriver, datasets):
         sub_measure()
 
         issue_page.fill_summary_edit()  # edit summary
-        issue_page.fill_description_edit()  # edit description
+        issue_page.fill_description_edit(rte_status)  # edit description
 
         @print_timing("selenium_edit_issue:save_edit_issue_form")
         def sub_measure():
@@ -147,7 +153,7 @@ def save_comment(webdriver, datasets):
             issue_page.go_to_edit_comment()  # Open edit comment page
         sub_measure()
 
-        issue_page.fill_comment_edit()  # Fill comment text field
+        issue_page.fill_comment_edit(rte_status)  # Fill comment text field
 
         @print_timing("selenium_save_comment:submit_form")
         def sub_measure():

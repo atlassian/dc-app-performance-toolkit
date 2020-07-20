@@ -1,4 +1,5 @@
 from util.api.abstract_clients import RestClient
+from selenium.common.exceptions import WebDriverException
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -158,12 +159,13 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_nodes_info_via_rest(self):
+    def get_nodes_count_via_rest(self):
         # Works for Jira version >= 8.1.0
         api_url = f'{self.host}/rest/api/2/cluster/nodes'
-        response = self.get(api_url, 'Could not get Jira nodes count')
-
-        return response.json()
+        response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
+        if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
+            return 'Server'
+        return len(response.json())
 
     def get_system_info_page(self):
         session = self._session
@@ -187,11 +189,38 @@ class JiraRestClient(RestClient):
         session.post(url=login_url, data=login_body, headers=headers)
         auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
         system_info_html = auth_request.content.decode("utf-8")
-        if 'Cluster nodes' not in system_info_html:
-            print('Could not get Jira nodes count via parse html page')
         return system_info_html
+
+    def get_cluster_nodes_count(self, jira_version):
+        html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
+        if jira_version >= '8.1.0':
+            return self.get_nodes_count_via_rest()
+        else:
+            jira_system_page = self.get_system_info_page()
+            nodes_count = jira_system_page.replace(' ', '').replace('\n', '').count(html_pattern)
+            if nodes_count == 0:
+                return 'Server'
+            return nodes_count
 
     def get_locale(self):
         api_url = f'{self.host}/rest/api/2/myself'
         user_properties = self.get(api_url, "Could not retrieve user")
         return user_properties.json()['locale']
+
+    def get_applications_properties(self):
+        api_url = f'{self.host}/rest/api/2/application-properties'
+        app_properties = self.get(api_url, "Could not retrieve application properties")
+        return app_properties.json()
+
+    def check_rte_status(self):
+        # Safe check for RTE status. Return RTE status or return default value (True).
+        try:
+            app_prop = self.get_applications_properties()
+            rte = [i['value'] for i in app_prop if i['id'] == 'jira.rte.enabled']
+            if rte:
+                return rte[0] == 'true'
+            else:
+                raise Exception("RTE status was nof found in application properties.")
+        except (Exception, WebDriverException) as e:
+            print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
+            return True

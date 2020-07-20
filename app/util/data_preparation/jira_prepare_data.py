@@ -162,7 +162,6 @@ def main():
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
     __check_current_language(client)
-
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

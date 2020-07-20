@@ -101,7 +101,8 @@ class IssueLocators:
     # Issue create modal form
     issue_modal = (By.ID, "create-issue-dialog")
     issue_summary_field = (By.ID, "summary")
-    issue_description_field = (By.XPATH, f"//div[textarea[@id='description']]//iframe")
+    issue_description_field_RTE = (By.XPATH, "//div[textarea[@id='description']]//iframe")
+    issue_description_field = (By.XPATH, "//textarea[@id='description']")
     tinymce_description_field = (By.ID, "tinymce")
     issue_assign_to_me_link = (By.ID, 'assign-to-me-trigger')
     issue_resolution_field = (By.ID, 'resolution')
@@ -117,7 +118,8 @@ class IssueLocators:
 
     # Edit Comments page
     edit_comment_add_comment_button = (By.ID, "comment-add-submit")
-    edit_comment_text_field = (By.XPATH, f"//div[textarea[@id='comment']]//iframe")
+    edit_comment_text_field_RTE = (By.XPATH, "//div[textarea[@id='comment']]//iframe")
+    edit_comment_text_field = (By.XPATH, "//textarea[@id='comment']")
 
 
 class ProjectLocators:
@@ -133,7 +135,7 @@ class SearchLocators:
 
     search_issue_table = (By.ID, "issuetable")
     search_issue_content = (By.ID, "issue-content")
-    search_no_issue_found = (By.ID, "issue-content")
+    search_no_issue_found = (By.CLASS_NAME, "no-results-message")
 
 
 class BoardsListLocators:
