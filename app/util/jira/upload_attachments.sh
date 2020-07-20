@@ -38,7 +38,7 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ "${2}" ]]; then
+    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${2} " ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
