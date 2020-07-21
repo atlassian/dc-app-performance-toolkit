@@ -79,7 +79,7 @@ def __get_blogs(confluence_api, count, auth=None):
         0, count, cql='type=blogpost'
                       ' and title !~ Performance', auth=auth)
     if not blogs:
-        raise SystemExit(f"There are no Blog posts in Confluence")
+        raise SystemExit("There are no Blog posts in Confluence")
 
     return blogs
 
