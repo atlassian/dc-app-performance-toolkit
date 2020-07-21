@@ -153,6 +153,14 @@ def __check_current_language(jira_api):
                          f'Please change your profile language to "English (United States) [Default]"')
 
 
+def __check_for_admin_permission(jira_api):
+    user_permissions = jira_api.get_user_permissions()
+    if not any((user_permissions['permissions']['ADMINISTER']['havePermission'],
+                user_permissions['permissions']['SYSTEM_ADMIN']['havePermission'])):
+        raise SystemExit(f"The '{JIRA_SETTINGS.admin_login}' user "
+                         f"does not has admin permission to perform actions.")
+
+
 def main():
     print("Started preparing data")
 
@@ -161,6 +169,7 @@ def main():
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
+    __check_for_admin_permission(client)
     __check_current_language(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
