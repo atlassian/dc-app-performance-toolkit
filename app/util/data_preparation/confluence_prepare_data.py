@@ -66,7 +66,8 @@ def __get_pages(confluence_api, count, auth=None):
                       ' and title !~ JMeter'  # filter out pages created by JMeter
                       ' and title !~ Selenium'  # filter out pages created by Selenium
                       ' and title !~ locust'  # filter out pages created by locust
-                      ' and title !~ Home', auth=auth)  # filter out space Home pages
+                      ' and title !~ Home',  # filter out space Home pages
+        auth=auth)
     if not pages:
         raise SystemExit("There are no Pages in Confluence")
 
