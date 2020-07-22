@@ -91,11 +91,13 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_projects = __get_software_projects(jira_api)
+    perf_user = dict(dataset[USERS][0])
+    perf_user_api = JiraRestClient(JIRA_SETTINGS.server_url, perf_user['name'], DEFAULT_USER_PASSWORD)
+    software_projects = __get_software_projects(perf_user_api)
     dataset[PROJECTS] = software_projects
-    dataset[ISSUES] = __get_issues(jira_api, software_projects)
-    dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
-    dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
+    dataset[ISSUES] = __get_issues(perf_user_api, software_projects)
+    dataset[SCRUM_BOARDS] = __get_boards(perf_user_api, 'scrum')
+    dataset[KANBAN_BOARDS] = __get_boards(perf_user_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Projects: {len(dataset[PROJECTS])}')
