@@ -1,11 +1,8 @@
 import time
 from enum import Enum
-from pprint import pprint
 
 from util.api.abstract_clients import RestClient
 from lxml import html
-
-from util.conf import BITBUCKET_SETTINGS
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -163,13 +160,9 @@ class BitbucketRestClient(RestClient):
             print(f"Warning: Could not get user locale: {error}")
         return language
 
-    def get_permissions(self):
-        api_url = f'{self.host}/rest/api/1.0/admin/permissions/users'
-        self.get(api_url, 'Could not get Bitbucket properties')
-
-
-client = BitbucketRestClient(BITBUCKET_SETTINGS.server_url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
-
-res = client.get_permissions()
-
-pprint(res)
+    def get_user_global_permissions(self, user=''):
+        api_url = f'{self.host}/rest/api/1.0/admin/permissions/users?filter={user}'
+        response = self.get(api_url, f"'Could not get user global permissions")
+        if response.json()['size'] == 0:
+            raise SystemExit(f"The '{user}' doesn't have any global permissions.")
+        return response.json()
