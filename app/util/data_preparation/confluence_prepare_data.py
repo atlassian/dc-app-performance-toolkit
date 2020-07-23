@@ -27,8 +27,10 @@ def generate_random_string(length=20):
 def __create_data_set(rest_client, rpc_client):
     dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
-    dataset[PAGES] = __get_pages(rest_client, 5000)
-    dataset[BLOGS] = __get_blogs(rest_client, 5000)
+    perf_user = random.choice(dataset[USERS])['user']
+    perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
+    dataset[PAGES] = __get_pages(perf_user_api, 5000)
+    dataset[BLOGS] = __get_blogs(perf_user_api, 5000)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
     print(f'Blogs count: {len(dataset[BLOGS])}')
@@ -133,7 +135,7 @@ def main():
     __check_current_language(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
-    write_test_data_to_files(dataset)
+    # write_test_data_to_files(dataset)
 
     print("Finished preparing data")
 
