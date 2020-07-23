@@ -120,8 +120,7 @@ def __check_current_language(confluence_api):
 def __check_for_admin_permissions(confluence_api):
     groups = confluence_api.get_groups_membership(CONFLUENCE_SETTINGS.admin_login)
     if 'confluence-administrators' not in groups:
-        raise SystemExit(f"The '{CONFLUENCE_SETTINGS.admin_login}' user "
-                         f"does not has admin permission to perform actions.")
+        raise SystemExit(f"The '{confluence_api.user}' user does not have admin permissions.")
 
 
 def main():
