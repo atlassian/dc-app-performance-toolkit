@@ -155,10 +155,9 @@ def __check_current_language(jira_api):
 
 def __check_for_admin_permission(jira_api):
     user_permissions = jira_api.get_user_permissions()
-    if not any((user_permissions['permissions']['ADMINISTER']['havePermission'],
-                user_permissions['permissions']['SYSTEM_ADMIN']['havePermission'])):
-        raise SystemExit(f"The '{JIRA_SETTINGS.admin_login}' user "
-                         f"does not has admin permission to perform actions.")
+    if not (user_permissions['permissions']['ADMINISTER']['havePermission'] or
+            user_permissions['permissions']['SYSTEM_ADMIN']['havePermission']):
+        raise SystemExit(f"The '{jira_api.user}' user does not have admin permissions.")
 
 
 def main():
