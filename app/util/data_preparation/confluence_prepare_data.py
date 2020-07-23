@@ -69,7 +69,8 @@ def __get_pages(confluence_api, count):
                       ' and title !~ locust'  # filter out pages created by locust
                       ' and title !~ Home')  # filter out space Home pages
     if not pages:
-        raise SystemExit("There are no Pages in Confluence")
+        raise SystemExit(f"There are no Pages in Confluence accessible by a random performance user: "
+                         f"{confluence_api.user}")
 
     return pages
 
@@ -79,7 +80,8 @@ def __get_blogs(confluence_api, count):
         0, count, cql='type=blogpost'
                       ' and title !~ Performance')
     if not blogs:
-        raise SystemExit(f"There are no Blog posts in Confluence")
+        raise SystemExit(f"There are no Blog posts in Confluence accessible by a random performance user: "
+                         f"{confluence_api.user}")
 
     return blogs
 
@@ -135,7 +137,7 @@ def main():
     __check_current_language(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
-    # write_test_data_to_files(dataset)
+    write_test_data_to_files(dataset)
 
     print("Finished preparing data")
 
