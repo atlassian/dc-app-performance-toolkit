@@ -227,5 +227,5 @@ class JiraRestClient(RestClient):
 
     def get_user_permissions(self):
         api_url = f'{self.host}/rest/api/2/mypermissions'
-        app_properties = self.get(api_url, "Could not retrieve user permission")
+        app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
