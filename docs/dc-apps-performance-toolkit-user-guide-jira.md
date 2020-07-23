@@ -57,13 +57,13 @@ Jira node might be stopped by using [Suspending and Resuming Scaling Processes](
 
 To stop one node within the Jira cluster follow the instructions:
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
 1. Go to `Instances` and stop Jira node.
 
 To return Jira node into a working state follow the instructions:  
 1. Go to `Instances` and start Jira node, wait a few minutes for Jira node to become responsible.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters
