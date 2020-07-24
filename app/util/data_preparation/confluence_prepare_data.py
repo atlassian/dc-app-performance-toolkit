@@ -27,8 +27,10 @@ def generate_random_string(length=20):
 def __create_data_set(rest_client, rpc_client):
     dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
-    dataset[PAGES] = __get_pages(rest_client, 5000)
-    dataset[BLOGS] = __get_blogs(rest_client, 5000)
+    perf_user = random.choice(dataset[USERS])['user']
+    perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
+    dataset[PAGES] = __get_pages(perf_user_api, 5000)
+    dataset[BLOGS] = __get_blogs(perf_user_api, 5000)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
     print(f'Blogs count: {len(dataset[BLOGS])}')
@@ -67,7 +69,8 @@ def __get_pages(confluence_api, count):
                       ' and title !~ locust'  # filter out pages created by locust
                       ' and title !~ Home')  # filter out space Home pages
     if not pages:
-        raise SystemExit("There are no Pages in Confluence")
+        raise SystemExit(f"There are no Pages in Confluence accessible by a random performance user: "
+                         f"{confluence_api.user}")
 
     return pages
 
@@ -77,7 +80,8 @@ def __get_blogs(confluence_api, count):
         0, count, cql='type=blogpost'
                       ' and title !~ Performance')
     if not blogs:
-        raise SystemExit(f"There are no Blog posts in Confluence")
+        raise SystemExit(f"There are no Blog posts in Confluence accessible by a random performance user: "
+                         f"{confluence_api.user}")
 
     return blogs
 
