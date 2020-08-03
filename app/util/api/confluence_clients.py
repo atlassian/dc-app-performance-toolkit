@@ -156,8 +156,8 @@ class ConfluenceRestClient(RestClient):
             print(f"Warning: Could not get user locale: {error}")
         return language
 
-    def get_groups_membership(self, login):
-        api_url = f'{self.host}/rest/api/user/memberof?username={login}'
+    def get_groups_membership(self, username):
+        api_url = f'{self.host}/rest/api/user/memberof?username={username}'
         response = self.get(api_url, error_msg='Could not get group members')
         groups = [group['name'] for group in response.json()['results']]
         return groups
