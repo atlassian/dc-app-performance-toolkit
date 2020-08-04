@@ -163,6 +163,4 @@ class BitbucketRestClient(RestClient):
     def get_user_global_permissions(self, user=''):
         api_url = f'{self.host}/rest/api/1.0/admin/permissions/users?filter={user}'
         response = self.get(api_url, f"'Could not get user global permissions")
-        if response.json()['size'] == 0:
-            raise SystemExit(f"The '{user}' doesn't have any global permissions.")
         return response.json()
