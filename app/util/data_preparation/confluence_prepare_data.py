@@ -121,6 +121,12 @@ def __check_current_language(confluence_api):
                          f'Please change your profile language to "English (US)"')
 
 
+def __check_for_admin_permissions(confluence_api):
+    groups = confluence_api.get_groups_membership(CONFLUENCE_SETTINGS.admin_login)
+    if 'confluence-administrators' not in groups:
+        raise SystemExit(f"The '{confluence_api.user}' user does not have admin permissions.")
+
+
 def main():
     print("Started preparing data")
 
@@ -130,10 +136,9 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
+    __check_for_admin_permissions(rest_client)
     __is_remote_api_enabled(rest_client)
-
     __is_collaborative_editing_enabled(rest_client)
-
     __check_current_language(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
