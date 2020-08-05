@@ -25,6 +25,7 @@ class AppSettings:
         self.duration = env_settings['test_duration']
         self.analytics_collector = env_settings['allow_analytics']
         self.load_executor = env_settings['load_executor']
+        self.webdriver_visible = env_settings['WEBDRIVER_VISIBLE']
 
     @property
     def server_url(self):
