@@ -100,10 +100,10 @@ class JiraRestClient(RestClient):
         while loop_count > 0:
 
             body = {
-                    "jql": jql,
-                    "startAt": start_at,
-                    "maxResults": max_results,
-                    "fields": ['id'] if fields is None else fields
+                "jql": jql,
+                "startAt": start_at,
+                "maxResults": max_results,
+                "fields": ['id'] if fields is None else fields
             }
 
             response = self.post(api_url, "Could not retrieve issues", body=body)
@@ -224,3 +224,8 @@ class JiraRestClient(RestClient):
         except (Exception, WebDriverException) as e:
             print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
             return True
+
+    def get_user_permissions(self):
+        api_url = f'{self.host}/rest/api/2/mypermissions'
+        app_properties = self.get(api_url, "Could not retrieve user permissions")
+        return app_properties.json()
