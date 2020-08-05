@@ -128,6 +128,10 @@ def __check_current_language(bitbucket_api):
                          f'Please change your account language to "English (United States)"')
 
 
+def __check_for_admin_permissions(bitbucket_api):
+    bitbucket_api.get_user_global_permissions()
+
+
 def main():
     print("Started preparing data")
 
@@ -137,6 +141,7 @@ def main():
     client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
 
     __check_current_language(client)
+    __check_for_admin_permissions(client)
 
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)

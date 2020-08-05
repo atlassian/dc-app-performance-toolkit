@@ -159,3 +159,8 @@ class BitbucketRestClient(RestClient):
         except Exception as error:
             print(f"Warning: Could not get user locale: {error}")
         return language
+
+    def get_user_global_permissions(self, user=''):
+        api_url = f'{self.host}/rest/api/1.0/admin/permissions/users?filter={user}'
+        response = self.get(api_url, "Could not get user global permissions")
+        return response.json()
