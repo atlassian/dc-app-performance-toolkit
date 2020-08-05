@@ -43,8 +43,8 @@ def test_9_selenium_view_pull_request_commits(bitbucket_webdriver, bitbucket_dat
     modules.view_pull_request_commits_tab(bitbucket_webdriver, bitbucket_datasets)
 
 
-def test_10_selenium_comment_pull_request_diff(webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.comment_pull_request_diff(webdriver, bitbucket_datasets)
+def test_10_selenium_comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets)
 
 
 def test_11_selenium_comment_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
