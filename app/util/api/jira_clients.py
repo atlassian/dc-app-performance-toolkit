@@ -165,7 +165,8 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
         if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
             return 'Server'
-        return len(response.json())
+        nodes = [1 if node['state'] == "ACTIVE" else 0 for node in response.json()]
+        return nodes.count(1)
 
     def get_system_info_page(self):
         session = self._session
