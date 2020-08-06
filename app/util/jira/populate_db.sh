@@ -50,7 +50,7 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it
@@ -60,9 +60,10 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
         echo "Flag -${DOWNGRADE_OPT} was set in ${JIRA_SETENV_FILE}"
       fi
     else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_JIRA_VERSIONS[@]}"
-      exit 1
+      LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
+      echo "Dataset URL: ${DB_DUMP_URL}"
     fi
   else
     # No force flag
