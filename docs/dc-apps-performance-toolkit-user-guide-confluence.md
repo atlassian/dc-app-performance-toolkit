@@ -47,9 +47,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Confluence DC | 1.5 - 1.6 |
-| Two Nodes Confluence DC | 1.7 - 2.5 |
-| Four Nodes Confluence DC | 3.5 - 4.2 |
+| One Node Confluence DC | 0.70 |
+| Two Nodes Confluence DC | 1.05 |
+| Four Nodes Confluence DC | 1,93 |
 
 #### Quick Start parameters
 
@@ -71,12 +71,12 @@ The Data Center App Performance Toolkit officially supports:
 
 | Parameter | Recommended Value |
 | ----------| ----------------- |
-| Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
+| Cluster node instance type | [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
+We recommend [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -87,7 +87,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
-| Enable RDS Multi-AZ deployment | true |
+| Enable RDS Multi-AZ deployment | false |
 | Application user database password | Password1! |
 | Database storage | 200 |
 
