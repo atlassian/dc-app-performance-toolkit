@@ -51,6 +51,20 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Bitbucket DC | 1.5 - 1.8 |
 | Four Nodes Bitbucket DC | 2.1 - 2.5 |
 
+#### Stop Bitbucket cluster nodes
+To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  
+Bitbucket node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+
+To stop one node within the Bitbucket cluster follow the instructions:
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to `Instances` and stop Bitbucket node.
+
+To return Bitbucket node into a working state follow the instructions:  
+1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become responsible.
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
 #### <a id="quick-start-parameters"></a>  Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
