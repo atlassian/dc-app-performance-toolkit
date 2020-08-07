@@ -47,9 +47,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 1 - 1.3 |
-| Two Nodes Bitbucket DC | 1.5 - 1.8 |
-| Four Nodes Bitbucket DC | 2.1 - 2.5 |
+| One Node Bitbucket DC | 1.03 |
+| Two Nodes Bitbucket DC | 1.47 |
+| Four Nodes Bitbucket DC | 2.25 |
 
 #### <a id="quick-start-parameters"></a>  Quick Start parameters
 
