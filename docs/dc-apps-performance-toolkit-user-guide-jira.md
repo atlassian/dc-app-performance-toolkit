@@ -60,7 +60,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | 8.0.3 or 7.13.6 or 8.5.0 |
+| Jira Version | 8.0.3 or 7.13.15 or 8.5.6 |
 
 The Data Center App Performance Toolkit officially supports:
 
