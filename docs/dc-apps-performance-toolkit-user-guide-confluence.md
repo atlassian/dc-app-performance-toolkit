@@ -49,7 +49,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | ----- | ------------------------- |
 | One Node Confluence DC | 0.70 |
 | Two Nodes Confluence DC | 1.05 |
-| Four Nodes Confluence DC | 1,93 |
+| Four Nodes Confluence DC | 1.93 |
 
 #### Stop Confluence cluster nodes
 To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
