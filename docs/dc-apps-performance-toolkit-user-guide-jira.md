@@ -49,7 +49,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | ----- | ------------------------- |
 | One Node Jira DC | 0.71 |
 | Two Nodes Jira DC | 1.05 |
-| Four Nodes Jira DC | 1,93 |
+| Four Nodes Jira DC | 1.93 |
 
 #### Stop Jira cluster nodes
 To reduce AWS infrastructure costs you could stop Jira nodes when the cluster is standing idle.  
