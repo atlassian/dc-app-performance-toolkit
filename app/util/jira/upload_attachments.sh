@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Jira version variables
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
-SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.6 8.5.0)
+SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.6)
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
         echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \

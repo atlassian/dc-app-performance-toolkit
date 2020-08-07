@@ -51,6 +51,20 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Confluence DC | 1.05 |
 | Four Nodes Confluence DC | 1,93 |
 
+#### Stop Confluence cluster nodes
+To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
+Confluence node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+
+To stop one node within the Confluence cluster follow the instructions:
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to `Instances` and stop Confluence node.
+
+To return Confluence node into a working state follow the instructions:  
+1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become responsible.
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
 #### Quick Start parameters
 
 All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
@@ -60,12 +74,12 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 or 7.0.4 |
+| Confluence Version | 6.13.13 or 7.0.5 or 7.4.3 |
 
 The Data Center App Performance Toolkit officially supports:
 
-- Confluence Platform release version: 7.0.4
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
+- Confluence Platform release version: 7.0.5
+- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.3
 
 **Cluster nodes**
 
