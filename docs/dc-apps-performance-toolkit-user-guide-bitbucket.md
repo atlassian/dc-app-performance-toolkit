@@ -47,9 +47,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 1.03 |
-| Two Nodes Bitbucket DC | 1.47 |
-| Four Nodes Bitbucket DC | 2.25 |
+| One Node Bitbucket DC | 1.39 - 1.81 |
+| Two Nodes Bitbucket DC | 1.73 - 2.36 |
+| Four Nodes Bitbucket DC | 2.43 - 3.43 |
 
 #### Stop Bitbucket cluster nodes
 To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  

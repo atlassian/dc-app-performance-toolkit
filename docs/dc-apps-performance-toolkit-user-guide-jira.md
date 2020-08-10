@@ -47,7 +47,7 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Jira DC | 0.71 |
+| One Node Jira DC | 0.71 -  |
 | Two Nodes Jira DC | 1.05 |
 | Four Nodes Jira DC | 1.93 |
 
