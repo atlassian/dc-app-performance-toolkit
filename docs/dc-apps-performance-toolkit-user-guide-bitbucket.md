@@ -107,7 +107,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Database instance class | [db.m4.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master password | Password1! |
-| Enable RDS Multi-AZ deployment | true |
+| Enable RDS Multi-AZ deployment | false |
 | Bitbucket database password | Password1! |
 | Database storage | 100 |
 
