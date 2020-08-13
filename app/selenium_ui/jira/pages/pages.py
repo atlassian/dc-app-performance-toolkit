@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 import time
 import random
 
@@ -127,6 +128,15 @@ class Issue(BasePage):
             return "epic" not in element.get_attribute("class").lower()
 
         self.get_element(IssueLocators.issue_type_field).click()
+
+        active_element = None
+        type_list = self.driver.find_elements_by_css_selector('#issuetype-suggestions>div>ul>li')
+        for el in type_list:
+            if 'active' in el.get_attribute('class'):
+                active_element = el
+
+        self.wait_until_visible((By.ID, active_element.get_attribute('id')))
+
         issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
         if issue_dropdown_elements:
             filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
