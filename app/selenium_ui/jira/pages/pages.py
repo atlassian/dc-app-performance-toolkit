@@ -129,13 +129,15 @@ class Issue(BasePage):
 
         self.get_element(IssueLocators.issue_type_field).click()
 
-        active_element = None
-        type_list = self.driver.find_elements_by_css_selector('#issuetype-suggestions>div>ul>li')
-        for el in type_list:
-            if 'active' in el.get_attribute('class'):
-                active_element = el
+        # active_element = None
+        # type_list = self.driver.find_elements_by_css_selector('#issuetype-suggestions>div>ul>li')
+        # for el in type_list:
+        #     if 'active' in el.get_attribute('class'):
+        #         active_element = el
 
-        self.wait_until_visible((By.ID, active_element.get_attribute('id')))
+        #self.wait_until_visible((By.ID, active_element.get_attribute('id')))
+        self.wait_until_visible((By.CSS_SELECTOR, "#issuetype-suggestions>div.aui-list-scroll>ul"))
+
 
         issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
         if issue_dropdown_elements:
