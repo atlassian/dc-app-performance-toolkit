@@ -148,6 +148,9 @@ class Issue(BasePage):
         if issue_dropdown_elements:
             filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
             rnd_issue_type_el = random.choice(filtered_issue_elements)
+
+            self.driver.execute_script(
+                f"window.scrollTo({rnd_issue_type_el.location['x']}, {rnd_issue_type_el.location['y']});")
             self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
         self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
 
