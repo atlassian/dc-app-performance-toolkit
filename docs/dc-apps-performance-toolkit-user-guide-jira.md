@@ -40,16 +40,16 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Jira DC | 0.85 - 1.09  |
-| Two Nodes Jira DC | 1.25 - 1.73 |
-| Four Nodes Jira DC | 2.05 - 3.0 |
+| One Node Jira DC | 0.8 - 1.1 |
+| Two Nodes Jira DC | 1.2 - 1.7 |
+| Four Nodes Jira DC | 2.0 - 3.0 |
 
 #### Stop Jira cluster nodes
 To reduce AWS infrastructure costs you could stop Jira nodes when the cluster is standing idle.  

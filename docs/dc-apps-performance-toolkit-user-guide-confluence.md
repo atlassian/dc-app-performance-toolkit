@@ -40,16 +40,16 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Confluence DC | 0.87 - 1.12 |
-| Two Nodes Confluence DC | 1.28- 1.78 |
-| Four Nodes Confluence DC | 2.1 - 3.11 |
+| One Node Confluence DC | 0.9 - 1.1 |
+| Two Nodes Confluence DC | 1.3 - 1.8 |
+| Four Nodes Confluence DC | 2.1 - 3.1 |
 
 #### Stop Confluence cluster nodes
 To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  

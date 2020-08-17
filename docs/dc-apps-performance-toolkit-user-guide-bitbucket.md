@@ -40,16 +40,16 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 1.39 - 2.0 |
-| Two Nodes Bitbucket DC | 1.73 - 2.54 |
-| Four Nodes Bitbucket DC | 2.43 - 3.61 |
+| One Node Bitbucket DC | 1.4 - 2.0 |
+| Two Nodes Bitbucket DC | 1.7 - 2.5 |
+| Four Nodes Bitbucket DC | 2.4 - 3.6 |
 
 #### Stop Bitbucket cluster nodes
 To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  
