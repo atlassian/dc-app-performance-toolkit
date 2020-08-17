@@ -106,7 +106,7 @@ class IssueLocators:
     tinymce_description_field = (By.ID, "tinymce")
     issue_assign_to_me_link = (By.ID, 'assign-to-me-trigger')
     issue_resolution_field = (By.ID, 'resolution')
-    #issue_type_field = (By.ID, 'issuetype-field')
+    issue_type_field_old = (By.ID, 'issuetype-field')
     issue_type_field = (By.CSS_SELECTOR, '#issuetype-single-select>.noloading.drop-menu')
     issue_type_dropdown_elements = (By.CLASS_NAME, "aui-list-item")
     issue_ready_to_save_spinner = (By.CSS_SELECTOR, ".buttons>.throbber")
