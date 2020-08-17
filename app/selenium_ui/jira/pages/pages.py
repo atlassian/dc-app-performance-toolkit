@@ -137,13 +137,13 @@ class Issue(BasePage):
         #         active_element = el
 
         #self.wait_until_visible((By.ID, active_element.get_attribute('id')))
-
-        if not self.driver.find_element_by_css_selector('#issuetype-suggestions>div.aui-list-scroll>ul').is_displayed():
-            self.get_element(IssueLocators.issue_type_field).click()
-            try:
-                self.wait_until_visible((By.CSS_SELECTOR, "#issuetype-suggestions>div.aui-list-scroll>ul"), timeout=1)
-            except:
-                self.get_element(IssueLocators.issue_type_field).click()
+        #
+        # if not self.driver.find_element_by_css_selector('#issuetype-suggestions>div.aui-list-scroll>ul').is_displayed():
+        #     self.get_element(IssueLocators.issue_type_field).click()
+        #     try:
+        #         self.wait_until_visible((By.CSS_SELECTOR, "#issuetype-suggestions>div.aui-list-scroll>ul"), timeout=1)
+        #     except:
+        #         self.get_element(IssueLocators.issue_type_field).click()
 
 
         issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
