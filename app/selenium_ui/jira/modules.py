@@ -99,7 +99,7 @@ def create_issue(webdriver, dataset):
             issue_modal.fill_description_create(rte_status)  # Fill description field
             issue_modal.assign_to_me()  # Click assign to me
             issue_modal.set_resolution()  # Set resolution if there is such field
-            #issue_modal.set_issue_type()  # Set issue type, use non epic type
+            issue_modal.set_issue_type()  # Set issue type, use non epic type
 
             @print_timing("selenium_create_issue:fill_and_submit_issue_form:submit_issue_form")
             def sub_sub_measure():
