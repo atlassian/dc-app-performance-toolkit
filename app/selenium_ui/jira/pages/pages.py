@@ -127,7 +127,8 @@ class Issue(BasePage):
         def __filer_epic(element):
             return "epic" not in element.get_attribute("class").lower()
 
-        self.get_element(IssueLocators.issue_type_field).click()
+        #self.get_element(IssueLocators.issue_type_field).click()
+        self.driver.execute_script('document.getElementById("issuetype-field").click()')
 
         # active_element = None
         # type_list = self.driver.find_elements_by_css_selector('#issuetype-suggestions>div>ul>li')
@@ -138,7 +139,8 @@ class Issue(BasePage):
         #self.wait_until_visible((By.ID, active_element.get_attribute('id')))
 
         if not self.driver.find_element_by_css_selector('#issuetype-suggestions>div.aui-list-scroll>ul').is_displayed():
-            self.get_element(IssueLocators.issue_type_field).click()
+            #self.get_element(IssueLocators.issue_type_field).click()
+            self.driver.execute_script('document.getElementById("issuetype-field").click()')
             self.wait_until_visible((By.CSS_SELECTOR, "#issuetype-suggestions>div.aui-list-scroll>ul"))
 
 
