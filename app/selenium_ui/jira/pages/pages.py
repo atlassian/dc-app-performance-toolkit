@@ -128,6 +128,8 @@ class Issue(BasePage):
             return "epic" not in element.get_attribute("class").lower()
 
         #self.get_element(IssueLocators.issue_type_field).click()
+        issue_type = self.get_element(IssueLocators.issue_type_field)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", issue_type)
         self.driver.execute_script('document.getElementById("issuetype-field").click()')
 
         # active_element = None
@@ -140,6 +142,7 @@ class Issue(BasePage):
 
         if not self.driver.find_element_by_css_selector('#issuetype-suggestions>div.aui-list-scroll>ul').is_displayed():
             #self.get_element(IssueLocators.issue_type_field).click()
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", issue_type)
             self.driver.execute_script('document.getElementById("issuetype-field").click()')
             self.wait_until_visible((By.CSS_SELECTOR, "#issuetype-suggestions>div.aui-list-scroll>ul"))
 
@@ -148,9 +151,6 @@ class Issue(BasePage):
         if issue_dropdown_elements:
             filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
             rnd_issue_type_el = random.choice(filtered_issue_elements)
-
-            self.driver.execute_script(
-                f"window.scrollTo({rnd_issue_type_el.location['x']}, {rnd_issue_type_el.location['y']});")
             self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
         self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
 
