@@ -135,25 +135,24 @@ class Issue(BasePage):
                 for label in items:
                     if label['label'] not in issue_types:
                         issue_types[label['label']] = label['selected']
-                        if 'Issue' in label['label']:
-                            print('asdasd')
+
         if 'Epic' in issue_types:
-            if issue_types['Epic']:
-                self.get_element(IssueLocators.issue_type_field_old).clear()
-                del issue_types['Epic']
-                self.get_element(IssueLocators.issue_type_field_old).send_keys(random.choice(list(issue_types.keys())))
-                self.wait_until_visible((By.CSS_SELECTOR, 'div.box-shadow.active'))
-                self.get_element(IssueLocators.issue_type_field_old).send_keys(Keys.ENTER)
+            # if issue_types['Epic']:
+            #     self.get_element(IssueLocators.issue_type_field_old).clear()
+            #     del issue_types['Epic']
+            #     self.get_element(IssueLocators.issue_type_field_old).send_keys(random.choice(list(issue_types.keys())))
+            #     self.wait_until_visible((By.CSS_SELECTOR, 'div.box-shadow.active'))
+            #     self.get_element(IssueLocators.issue_type_field_old).send_keys(Keys.ENTER)
 
 
-                    #
-                    # self.get_element(IssueLocators.issue_type_field).click()
-                    # issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
-                    # if issue_dropdown_elements:
-                    #     filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
-                    #     rnd_issue_type_el = random.choice(filtered_issue_elements)
-                    #     self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
-                    # self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
+
+            self.get_element(IssueLocators.issue_type_field).click()
+            issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
+            if issue_dropdown_elements:
+                filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
+                rnd_issue_type_el = random.choice(filtered_issue_elements)
+                self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
+            self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
 
 
     def submit_issue(self):
