@@ -143,8 +143,7 @@ class Issue(BasePage):
                 # self.wait_until_visible((By.CSS_SELECTOR, 'div.box-shadow.active'))
                 # self.get_element(IssueLocators.issue_type_field_old).send_keys(Keys.ENTER)
 
-
-
+                self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
                 self.get_element(IssueLocators.issue_type_field).click()
                 time.sleep(0.5)
                 issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
