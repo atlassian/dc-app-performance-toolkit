@@ -40,16 +40,16 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 1 - 1.3 |
-| Two Nodes Bitbucket DC | 1.5 - 1.8 |
-| Four Nodes Bitbucket DC | 2.1 - 2.5 |
+| One Node Bitbucket DC | 1.4 - 2.0 |
+| Two Nodes Bitbucket DC | 1.7 - 2.5 |
+| Four Nodes Bitbucket DC | 2.4 - 3.6 |
 
 #### Stop Bitbucket cluster nodes
 To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  
@@ -108,7 +108,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Database instance class | [db.m4.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master password | Password1! |
-| Enable RDS Multi-AZ deployment | true |
+| Enable RDS Multi-AZ deployment | false |
 | Bitbucket database password | Password1! |
 | Database storage | 100 |
 
