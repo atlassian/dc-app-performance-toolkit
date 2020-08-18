@@ -130,13 +130,17 @@ class Issue(BasePage):
         issue_types = {}
         data_suggestions = json.loads(self.get_element((By.ID, "issuetype-options")).get_attribute('data-suggestions'))
         for type in data_suggestions:
-            items = type['items']
-            for label in items:
-                if 'Please select' not in label['label'] and label['label'] not in issue_types:
-                    issue_types[label['label']] = label['selected']
+            if 'Please select' not in str(type):
+                items = type['items']
+                for label in items:
+                    if label['label'] not in issue_types:
+                        issue_types[label['label']] = label['selected']
+                        if 'Issue' in label['label']:
+                            print('asdasd')
         if 'Epic' in issue_types:
             if issue_types['Epic']:
                 self.get_element(IssueLocators.issue_type_field_old).clear()
+                del issue_types['Epic']
                 self.get_element(IssueLocators.issue_type_field_old).send_keys(random.choice(list(issue_types.keys())))
                 self.wait_until_visible((By.CSS_SELECTOR, 'div.box-shadow.active'))
                 self.get_element(IssueLocators.issue_type_field_old).send_keys(Keys.ENTER)
