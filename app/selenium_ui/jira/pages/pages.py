@@ -128,31 +128,26 @@ class Issue(BasePage):
         def __filer_epic(element):
             return "epic" not in element.get_attribute("class").lower()
         issue_types = {}
-        data_suggestions = json.loads(self.get_element((By.ID, "issuetype-options")).get_attribute('data-suggestions'))
-        for type in data_suggestions:
-            if 'Please select' not in str(type):
-                items = type['items']
+        data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
+                                      .get_attribute('data-suggestions'))
+        for data in data_suggestions:
+            # 'Please select' is label in items list where all issue types are presented (not for current project)
+            if 'Please select' not in str(data):
+                items = data['items']
                 for label in items:
                     if label['label'] not in issue_types:
                         issue_types[label['label']] = label['selected']
         if 'Epic' in issue_types:
             if issue_types['Epic']:
-                # self.get_element(IssueLocators.issue_type_field_old).clear()
-                # del issue_types['Epic']
-                # self.get_element(IssueLocators.issue_type_field_old).send_keys(random.choice(list(issue_types.keys())))
-                # self.wait_until_visible((By.CSS_SELECTOR, 'div.box-shadow.active'))
-                # self.get_element(IssueLocators.issue_type_field_old).send_keys(Keys.ENTER)
-
+                # Do in case of 'Epic' issue type is selected
                 self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
                 self.get_element(IssueLocators.issue_type_field).click()
-                #time.sleep(0.5)
                 issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
                 if issue_dropdown_elements:
                     filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
                     rnd_issue_type_el = random.choice(filtered_issue_elements)
                     self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
                 self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
-
 
     def submit_issue(self):
         self.wait_until_clickable(IssueLocators.issue_submit_button).click()
