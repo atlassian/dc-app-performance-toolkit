@@ -104,6 +104,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | false |
 | Application user database password | Password1! |
+| Database storage | 200 |
 
 {{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).

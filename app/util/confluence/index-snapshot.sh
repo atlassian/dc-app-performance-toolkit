@@ -2,7 +2,8 @@
 
 # Wait until index snapshot for Confluence DC is generated
 
-SNAPSHOT="/media/atl/confluence/shared-home/index-snapshots/IndexSnapshot_main_index_*zip"
+# Get the latest snapshot from the index-snapshots folder
+SNAPSHOT=$(sudo su -c "ls -tr /media/atl/confluence/shared-home/index-snapshots/IndexSnapshot_main_index_*zip" | tail -1)
 
 TEMP_DIR="/var/atlassian/application-data/confluence/temp"
 TEMP_ZIP="/var/atlassian/application-data/confluence/index/*main_index*zip"
