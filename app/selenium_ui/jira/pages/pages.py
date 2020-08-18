@@ -145,7 +145,7 @@ class Issue(BasePage):
 
                 self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
                 self.get_element(IssueLocators.issue_type_field).click()
-                time.sleep(0.5)
+                #time.sleep(0.5)
                 issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
                 if issue_dropdown_elements:
                     filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
