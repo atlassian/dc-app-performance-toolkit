@@ -74,12 +74,12 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.3 |
+| Confluence Version | 6.13.13 or 7.0.5 |
 
 The Data Center App Performance Toolkit officially supports:
 
 - Confluence Platform release version: 7.0.5
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.3
+- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13
 
 **Cluster nodes**
 
