@@ -148,7 +148,7 @@ class ConfluenceRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(self.host, "Could not get page content.").content
+        page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.").content
         tree = html.fromstring(page)
         try:
             language = tree.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
