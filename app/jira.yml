@@ -109,7 +109,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "83.0.4103.39" # Supports Chrome version 83. You can refer to http://chromedriver.chromium.org/downloads
+      version: "84.0.4147.30" # Supports Chrome version 84. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

@@ -148,13 +148,19 @@ class ConfluenceRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(self.host, "Could not get page content.").content
+        page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.").content
         tree = html.fromstring(page)
         try:
             language = tree.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
         except Exception as error:
             print(f"Warning: Could not get user locale: {error}")
         return language
+
+    def get_groups_membership(self, username):
+        api_url = f'{self.host}/rest/api/user/memberof?username={username}'
+        response = self.get(api_url, error_msg='Could not get group members')
+        groups = [group['name'] for group in response.json()['results']]
+        return groups
 
 
 class ConfluenceRpcClient(Client):

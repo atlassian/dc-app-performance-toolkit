@@ -68,15 +68,13 @@ Detailed log and stacktrace of Selenium PyTest fails are located in the `results
 Also, screenshots and HTMLs of Selenium fails are stared in the `results/bitbucket/YY-MM-DD-hh-mm-ss/error_artifacts` folder. 
 
 ### Running Selenium tests with Browser GUI
-There are two options of running Selenium tests with browser GUI:
-1. In [bitbucket.yml](../../app/bitbucket.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-1. Set environment variable with the `export WEBDRIVER_VISIBLE=True` command.
+In [bitbucket.yml](../../app/bitbucket.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 
 
 ### Running Selenium tests locally without the Performance Toolkit
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
-1. Set browser visibility using the `export WEBDRIVER_VISIBLE=True` command.
+1. In [bitbucket.yml](../../app/bitbucket.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 1. Run all Selenium PyTest tests with the `pytest bitbucket-ui.py` command.
 1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_dashboard`), execute the first login test and the required one with this command:
 

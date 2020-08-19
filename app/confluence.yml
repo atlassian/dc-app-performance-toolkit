@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 1990, etc
     application_postfix:            # e.g. /confluence in case of url like http://localhost:1990/confluence
@@ -105,7 +105,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "83.0.4103.39" # Supports Chrome version 83. You can refer to http://chromedriver.chromium.org/downloads
+      version: "84.0.4147.30" # Supports Chrome version 84. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

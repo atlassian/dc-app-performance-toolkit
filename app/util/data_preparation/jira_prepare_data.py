@@ -91,11 +91,13 @@ def __write_to_file(file_path, items):
 def __create_data_set(jira_api):
     dataset = dict()
     dataset[USERS] = __get_users(jira_api)
-    software_projects = __get_software_projects(jira_api)
+    perf_user = random.choice(dataset[USERS])
+    perf_user_api = JiraRestClient(JIRA_SETTINGS.server_url, perf_user['name'], DEFAULT_USER_PASSWORD)
+    software_projects = __get_software_projects(perf_user_api)
     dataset[PROJECTS] = software_projects
-    dataset[ISSUES] = __get_issues(jira_api, software_projects)
-    dataset[SCRUM_BOARDS] = __get_boards(jira_api, 'scrum')
-    dataset[KANBAN_BOARDS] = __get_boards(jira_api, 'kanban')
+    dataset[ISSUES] = __get_issues(perf_user_api, software_projects)
+    dataset[SCRUM_BOARDS] = __get_boards(perf_user_api, 'scrum')
+    dataset[KANBAN_BOARDS] = __get_boards(perf_user_api, 'kanban')
     dataset[JQLS] = __generate_jqls(count=150)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Projects: {len(dataset[PROJECTS])}')
@@ -114,7 +116,7 @@ def __get_issues(jira_api, software_projects):
         jql=f"project in ({jql_projects_str}) AND status != Closed order by key", max_results=8000
     )
     if not issues:
-        raise SystemExit("There are no issues in Jira")
+        raise SystemExit("There are no issues in Jira accessible by a random performance user: {jira_api.user}")
 
     return issues
 
@@ -122,7 +124,8 @@ def __get_issues(jira_api, software_projects):
 def __get_boards(jira_api, board_type):
     boards = jira_api.get_boards(board_type=board_type, max_results=250)
     if not boards:
-        raise SystemExit(f"There are no {board_type} boards in Jira")
+        raise SystemExit(
+            f"There are no {board_type} boards in Jira accessible by a random performance user: {jira_api.user}")
 
     return boards
 
@@ -131,7 +134,7 @@ def __get_users(jira_api):
     perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
     users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
     if not users:
-        raise SystemExit("There are no users in Jira")
+        raise SystemExit("There are no users in Jira accessible by a random performance user: {jira_api.user}")
 
     return users
 
@@ -141,8 +144,8 @@ def __get_software_projects(jira_api):
     software_projects = \
         [f"{project['key']},{project['id']}" for project in all_projects if 'software' == project.get('projectTypeKey')]
     if not software_projects:
-        raise SystemExit("There are no software projects in Jira")
-    # Limit number of projects to avoid "Request header is too large" for further requests.
+        raise SystemExit(
+            f"There are no software projects in Jira accessible by a random performance user: {jira_api.user}")
     return software_projects
 
 
@@ -153,6 +156,13 @@ def __check_current_language(jira_api):
                          f'Please change your profile language to "English (United States) [Default]"')
 
 
+def __check_for_admin_permissions(jira_api):
+    user_permissions = jira_api.get_user_permissions()
+    if not (user_permissions['permissions']['ADMINISTER']['havePermission'] or
+            user_permissions['permissions']['SYSTEM_ADMIN']['havePermission']):
+        raise SystemExit(f"The '{jira_api.user}' user does not have admin permissions.")
+
+
 def main():
     print("Started preparing data")
 
@@ -161,8 +171,8 @@ def main():
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
 
+    __check_for_admin_permissions(client)
     __check_current_language(client)
-
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

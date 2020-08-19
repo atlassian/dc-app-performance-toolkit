@@ -20,7 +20,7 @@ BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -47,13 +47,14 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Bitbucket version is in list of supported
-    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
-      exit 1
+      LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
+      echo "Dataset URL: ${DB_DUMP_URL}"
     fi
   else
     # No force flag

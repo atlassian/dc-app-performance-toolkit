@@ -40,16 +40,30 @@ You are responsible for the cost of the AWS services used while running this Qui
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
 ### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Confluence DC | 1.5 - 1.6 |
-| Two Nodes Confluence DC | 1.7 - 2.5 |
-| Four Nodes Confluence DC | 3.5 - 4.2 |
+| One Node Confluence DC | 0.9 - 1.1 |
+| Two Nodes Confluence DC | 1.3 - 1.8 |
+| Four Nodes Confluence DC | 2.1 - 3.1 |
+
+#### Stop Confluence cluster nodes
+To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
+Confluence node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+
+To stop one node within the Confluence cluster follow the instructions:
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to `Instances` and stop Confluence node.
+
+To return Confluence node into a working state follow the instructions:  
+1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become responsible.
+1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
+1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
 #### Quick Start parameters
 
@@ -60,23 +74,23 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.8 or 7.0.4 |
+| Confluence Version | 6.13.13 or 7.0.5 |
 
 The Data Center App Performance Toolkit officially supports:
 
-- Confluence Platform release version: 7.0.4
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.8
+- Confluence Platform release version: 7.0.5
+- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13
 
 **Cluster nodes**
 
 | Parameter | Recommended Value |
 | ----------| ----------------- |
-| Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
+| Cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
+We recommend [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -87,7 +101,7 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 | Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
-| Enable RDS Multi-AZ deployment | true |
+| Enable RDS Multi-AZ deployment | false |
 | Application user database password | Password1! |
 | Database storage | 200 |
 
@@ -100,7 +114,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region. Both zones must support EFS (see [Supported AWS regions](https://confluence.atlassian.com/enterprise/getting-started-with-jira-data-center-on-aws-969535550.html#GettingstartedwithJiraDataCenteronAWS-SupportedAWSregions) for details)._ |
+| Availability Zones | _Select two availability zones in your region_ |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Make instance internet facing | true |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |

@@ -1,6 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 import time
 import random
+import json
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
@@ -82,20 +83,29 @@ class Issue(BasePage):
         self.get_element(IssueLocators.tinymce_description_field).send_keys(text)
         self.return_to_parent_frame()
 
+    def __fill_textfield(self, text, selector):
+        self.get_element(selector).send_keys(text)
+
     def edit_issue_submit(self):
         self.get_element(IssueLocators.edit_issue_submit).click()
 
-    def fill_description_edit(self):
+    def fill_description_edit(self, rte):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def open_create_issue_modal(self):
         self.wait_until_clickable(IssueLocators.create_issue_button).click()
         self.wait_until_visible(IssueLocators.issue_modal)
 
-    def fill_description_create(self):
+    def fill_description_create(self, rte):
         text_description = f'Description: {self.generate_random_string(100)}'
-        self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
+        else:
+            self.__fill_textfield(text_description, selector=IssueLocators.issue_description_field)
 
     def fill_summary_create(self):
         summary = f"Issue created date {time.time()}"
@@ -116,22 +126,38 @@ class Issue(BasePage):
     def set_issue_type(self):
         def __filer_epic(element):
             return "epic" not in element.get_attribute("class").lower()
-
-        self.get_element(IssueLocators.issue_type_field).click()
-        issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
-        if issue_dropdown_elements:
-            filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
-            rnd_issue_type_el = random.choice(filtered_issue_elements)
-            self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
-        self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
+        issue_types = {}
+        data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
+                                      .get_attribute('data-suggestions'))
+        for data in data_suggestions:
+            # 'Please select' is label in items list where all issue types are presented (not for current project)
+            if 'Please select' not in str(data):
+                items = data['items']
+                for label in items:
+                    if label['label'] not in issue_types:
+                        issue_types[label['label']] = label['selected']
+        if 'Epic' in issue_types:
+            if issue_types['Epic']:
+                # Do in case of 'Epic' issue type is selected
+                self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
+                self.get_element(IssueLocators.issue_type_field).click()
+                issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
+                if issue_dropdown_elements:
+                    filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
+                    rnd_issue_type_el = random.choice(filtered_issue_elements)
+                    self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
+                self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
 
     def submit_issue(self):
         self.wait_until_clickable(IssueLocators.issue_submit_button).click()
         self.wait_until_invisible(IssueLocators.issue_modal)
 
-    def fill_comment_edit(self):
+    def fill_comment_edit(self, rte):
         text = 'Comment from selenium'
-        self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field)
+        if rte:
+            self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
+        else:
+            self.__fill_textfield(text, selector=IssueLocators.edit_comment_text_field)
 
     def edit_comment_submit(self):
         self.get_element(IssueLocators.edit_comment_add_comment_button).click()

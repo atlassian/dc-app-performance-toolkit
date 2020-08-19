@@ -2,7 +2,7 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML
 
-TOOLKIT_VERSION = '3.0.1'
+TOOLKIT_VERSION = '3.1.0'
 
 
 def read_yml_file(file):
@@ -25,6 +25,7 @@ class AppSettings:
         self.duration = env_settings['test_duration']
         self.analytics_collector = env_settings['allow_analytics']
         self.load_executor = env_settings['load_executor']
+        self.webdriver_visible = env_settings['WEBDRIVER_VISIBLE']
 
     @property
     def server_url(self):

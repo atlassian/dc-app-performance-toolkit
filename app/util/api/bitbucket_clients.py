@@ -152,10 +152,15 @@ class BitbucketRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(self.host, "Could not get page content.").content
+        page = self.get(f'{self.host}/dashboard', "Could not get page content.").content
         tree = html.fromstring(page)
         try:
             language = tree.xpath('//html/@lang')[0]
         except Exception as error:
             print(f"Warning: Could not get user locale: {error}")
         return language
+
+    def get_user_global_permissions(self, user=''):
+        api_url = f'{self.host}/rest/api/1.0/admin/permissions/users?filter={user}'
+        response = self.get(api_url, "Could not get user global permissions")
+        return response.json()

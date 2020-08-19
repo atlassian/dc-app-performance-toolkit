@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.8 7.0.4)
+SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -38,13 +38,14 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Confluence version is in list of supported
-    if [[ "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
-      exit 1
+      LAST_ATTACHMENTS_VERSION=${SUPPORTED_CONFLUENCE_VERSIONS[${#SUPPORTED_CONFLUENCE_VERSIONS[@]}-1]}
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_ATTACHMENTS_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_ATTACHMENTS_VERSION}"
+      echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
     fi
   else
     # No force flag

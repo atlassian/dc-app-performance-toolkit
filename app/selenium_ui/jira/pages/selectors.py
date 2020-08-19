@@ -101,11 +101,13 @@ class IssueLocators:
     # Issue create modal form
     issue_modal = (By.ID, "create-issue-dialog")
     issue_summary_field = (By.ID, "summary")
-    issue_description_field = (By.XPATH, f"//div[textarea[@id='description']]//iframe")
+    issue_description_field_RTE = (By.XPATH, "//div[textarea[@id='description']]//iframe")
+    issue_description_field = (By.XPATH, "//textarea[@id='description']")
     tinymce_description_field = (By.ID, "tinymce")
     issue_assign_to_me_link = (By.ID, 'assign-to-me-trigger')
     issue_resolution_field = (By.ID, 'resolution')
     issue_type_field = (By.ID, 'issuetype-field')
+    issue_types_options = (By.ID, "issuetype-options")
     issue_type_dropdown_elements = (By.CLASS_NAME, "aui-list-item")
     issue_ready_to_save_spinner = (By.CSS_SELECTOR, ".buttons>.throbber")
     issue_submit_button = (By.ID, "create-issue-submit")
@@ -117,7 +119,8 @@ class IssueLocators:
 
     # Edit Comments page
     edit_comment_add_comment_button = (By.ID, "comment-add-submit")
-    edit_comment_text_field = (By.XPATH, f"//div[textarea[@id='comment']]//iframe")
+    edit_comment_text_field_RTE = (By.XPATH, "//div[textarea[@id='comment']]//iframe")
+    edit_comment_text_field = (By.XPATH, "//textarea[@id='comment']")
 
 
 class ProjectLocators:
