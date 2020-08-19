@@ -17,7 +17,7 @@ settings:
     total_actions_per_hour: 54500
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
-    allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
     search_jql: 13
@@ -85,7 +85,6 @@ modules:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
     percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
   jmeter:
-    download-link: https://dcapt-downloads.s3.us-east-2.amazonaws.com/apache-jmeter-5.2.1.zip
     version: ${JMETER_VERSION}
     detect-plugins: true
     memory-xmx: 8G  # allow JMeter to use up to 8G of memory
