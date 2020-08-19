@@ -74,12 +74,12 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.3 |
+| Confluence Version | 6.13.13 or 7.0.5 |
 
 The Data Center App Performance Toolkit officially supports:
 
 - Confluence Platform release version: 7.0.5
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.3
+- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13
 
 **Cluster nodes**
 
@@ -114,7 +114,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region. Both zones must support EFS (see [Supported AWS regions](https://confluence.atlassian.com/enterprise/getting-started-with-jira-data-center-on-aws-969535550.html#GettingstartedwithJiraDataCenteronAWS-SupportedAWSregions) for details)._ |
+| Availability Zones | _Select two availability zones in your region_ |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Make instance internet facing | true |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
