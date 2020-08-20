@@ -81,7 +81,6 @@ modules:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
     percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
   jmeter:
-    download-link: https://dcapt-downloads.s3.us-east-2.amazonaws.com/apache-jmeter-5.2.1.zip
     version: ${JMETER_VERSION}
     detect-plugins: true
     memory-xmx: 8G  # allow JMeter to use up to 8G of memory
