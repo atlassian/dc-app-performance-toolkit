@@ -128,7 +128,7 @@ def send_analytics(collector: AnalyticsCollector):
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
     if r.status_code != 200:
-        print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
+        print(f'Warning: Analytics data was send unsuccessfully, status code {r.status_code}')
 
 
 def main():
