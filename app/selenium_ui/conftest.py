@@ -125,6 +125,8 @@ def webdriver(app_settings):
         chrome_options = Options()
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
+        if not app_settings.secure:
+            chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument("--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
