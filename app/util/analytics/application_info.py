@@ -70,6 +70,8 @@ class Bitbucket(BaseApplication):
     def nodes_count(self):
         cluster_page = self.client.get_bitbucket_cluster_page()
         nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
+        if nodes_count == 0:
+            nodes_count = "Server"
         return nodes_count
 
     @property
