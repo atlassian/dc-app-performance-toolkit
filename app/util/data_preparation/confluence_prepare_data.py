@@ -46,7 +46,7 @@ def __get_users(confluence_api, rpc_api, count):
     while len(cur_perf_users) < count:
         if errors_count >= ERROR_LIMIT:
             raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
-                            f'Please check the errors above')
+                            f'Please check the errors in bzt.log')
         username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
         try:
             user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
@@ -55,7 +55,7 @@ def __get_users(confluence_api, rpc_api, count):
             cur_perf_users.append(user)
         # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
         except Exception as error:
-            print(f"{error}. Error limits {errors_count}/{ERROR_LIMIT}")
+            print(f"Warning: Create confluence user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
             errors_count = errors_count + 1
     print('All performance test users were successfully created')
     return cur_perf_users

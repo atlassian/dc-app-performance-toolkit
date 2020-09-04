@@ -16,5 +16,4 @@ for file in FILES_TO_REMOVE:
             os.remove(file_path)
             print(f'The {file} was removed successfully')
         except OSError as e:
-            print(f'Deleting of the {file} failed!\n'
-                  f'Error: {file_path}: {e.strerror}')
+            print(f'Warning: Deleting of the {file} failed! Error message: {file_path}: {e.strerror}')
