@@ -26,6 +26,7 @@ class AppSettings:
         self.analytics_collector = env_settings['allow_analytics']
         self.load_executor = env_settings['load_executor']
         self.webdriver_visible = env_settings['WEBDRIVER_VISIBLE']
+        self.secure = env_settings['secure']
 
     @property
     def server_url(self):

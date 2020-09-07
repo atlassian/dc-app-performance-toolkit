@@ -47,10 +47,11 @@ jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 
 
-class ActionPercentage:
+class LocustConfig:
 
     def __init__(self, config_yml: AppSettingsExtLoadExecutor):
         self.env = config_yml.env
+        self.secure = config_yml.secure
 
     def percentage(self, action_name: str):
         if action_name in self.env:
