@@ -79,8 +79,11 @@ def __get_prs(bitbucket_api):
             for pr in prs['values']:
                 # filter PRs created by selenium and not merged
                 if 'Selenium' not in pr['title']:
-                    repos_prs.append([repo['slug'], repo['project']['key'], pr['id'],
-                                      pr['fromRef']['displayId'], pr['toRef']['displayId']])
+                    if pr['properties']['mergeResult']['outcome'] != 'CONFLICTED':
+                        repos_prs.append([repo['slug'], repo['project']['key'], pr['id'],
+                                          pr['fromRef']['displayId'], pr['toRef']['displayId']])
+                    else:
+                        print(f"Pull request {pr['links']['self'][0]['href']} has a conflict.")
     if len(repos_prs) < concurrency:
         repos_without_prs = [f'{repo["project"]["key"]}/{repo["slug"]}' for repo in repos]
         raise SystemExit(f'Repositories {repos_without_prs} do not contain at least {concurrency} pull requests')
