@@ -68,9 +68,7 @@ class Bitbucket(BaseApplication):
 
     @property
     def nodes_count(self):
-        cluster_page = self.client.get_bitbucket_cluster_page()
-        nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
-        return nodes_count
+        return self.client.get_bitbucket_nodes_count()
 
     @property
     def dataset_information(self):

@@ -138,6 +138,13 @@ class BitbucketRestClient(RestClient):
         cluster_html = r.content.decode("utf-8")
         return cluster_html
 
+    def get_bitbucket_nodes_count(self):
+        cluster_page = self.get_bitbucket_cluster_page()
+        nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
+        if nodes_count == 0:
+            nodes_count = "Server"
+        return nodes_count
+
     def get_bitbucket_system_page(self):
         session = self._session
         url = f"{self.host}/j_atl_security_check"
