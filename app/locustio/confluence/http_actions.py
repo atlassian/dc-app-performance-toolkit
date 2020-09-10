@@ -268,7 +268,6 @@ def open_editor_and_create_blog(locust):
                            TEXT_HEADERS, catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("930"),
                            TEXT_HEADERS, catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/_={timestamp_int()}', catch_response=True)
         locust.client.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}?_={timestamp_int()}',
                           catch_response=True)
 
@@ -421,7 +420,6 @@ def create_and_edit_page(locust):
                           catch_response=True)
         locust.client.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
         locust.client.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}', catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/?_={timestamp_int()}', catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("750"),
                            TEXT_HEADERS, catch_response=True)
 
@@ -572,7 +570,6 @@ def create_and_edit_page(locust):
                  '%2Cchildren.comment.version.by.status'
         locust.client.get(f'/rest/api/content/{edit_page_id}?expand={expand}&_={timestamp_int()}',
                           catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/_={timestamp_int()}', catch_response=True)
         locust.client.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                            TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/rest/ui/1.0/content/{edit_page_id}/labels?_={timestamp_int()}', catch_response=True)
