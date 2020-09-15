@@ -97,8 +97,10 @@ class Editor(BasePage):
     def write_content(self, text=None):
         self.wait_until_available_to_switch(EditorLocators.page_content_field)
         text = self.generate_random_string(30) if not text else text
-        tinymce_text_el = self.get_element(EditorLocators.tinymce_page_content_field)
-        tinymce_text_el.find_element_by_tag_name('p').send_keys(text)
+        self.execute_js(f"tinymce=document.getElementById('tinymce'); "
+                        f"tag_p = document.createElement('p'); "
+                        f"tag_p.textContent += '{text}'; "
+                        f"tinymce.appendChild(tag_p)")
         self.return_to_parent_frame()
 
     def click_submit(self):
