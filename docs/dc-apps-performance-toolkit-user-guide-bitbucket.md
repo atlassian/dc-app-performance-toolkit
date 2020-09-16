@@ -346,6 +346,14 @@ To check status of indexing:
 1. Open **LoadBalancerURL** in your browser.
 1. Login with admin user.
 1. Navigate to **LoadBalancerURL**/rest/indexing/latest/status page.
+    - The response should be like that 
+        ```
+        {"queues":{"delay":0,"event":0},"status":"IDLE"}
+        ```
+    - When the index is finished, you should see
+        ```
+        {"queues":{"delay":0,"event":500},"status":"INDEXING"}
+        ```
 
 {{% note %}}
 In case of any difficulties with Index generation, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
