@@ -8,11 +8,13 @@ from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, 
 def setup_run_data(datasets):
     user = random.choice(datasets["users"])
     page = random.choice(datasets["pages"])
+    custom_page = random.choice(datasets["custom_pages"])
     blog = random.choice(datasets["blogs"])
     datasets['username'] = user[0]
     datasets['password'] = user[1]
     datasets['page_id'] = page[0]
     datasets['blog_id'] = blog[0]
+    datasets['custom_page_id'] = custom_page[0]
 
 
 def login(webdriver, datasets):
