@@ -115,6 +115,9 @@ def view_page_and_tree(locust):
     @confluence_measure
     def view_page_tree():
         tree_request_id = locust.storage['tree_request_id'].replace('&amp;', '&')
+        # if postfix is set, need to trim it from the tree_request_id to avoid duplication
+        if tree_request_id.startswith(CONFLUENCE_SETTINGS.postfix):
+            tree_request_id = tree_request_id[len(CONFLUENCE_SETTINGS.postfix):]
         ancestors = locust.storage['ancestors']
         root_page_id = locust.storage['root_page_id']
         viewed_page_id = locust.storage['page_id']
@@ -268,7 +271,6 @@ def open_editor_and_create_blog(locust):
                            TEXT_HEADERS, catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("930"),
                            TEXT_HEADERS, catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/_={timestamp_int()}', catch_response=True)
         locust.client.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}?_={timestamp_int()}',
                           catch_response=True)
 
@@ -421,7 +423,6 @@ def create_and_edit_page(locust):
                           catch_response=True)
         locust.client.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
         locust.client.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}', catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/?_={timestamp_int()}', catch_response=True)
         locust.client.post('/rest/webResources/1.0/resources', params.resources_body.get("750"),
                            TEXT_HEADERS, catch_response=True)
 
@@ -572,7 +573,6 @@ def create_and_edit_page(locust):
                  '%2Cchildren.comment.version.by.status'
         locust.client.get(f'/rest/api/content/{edit_page_id}?expand={expand}&_={timestamp_int()}',
                           catch_response=True)
-        locust.client.get(f'/rest/emoticons/1.0/_={timestamp_int()}', catch_response=True)
         locust.client.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                            TEXT_HEADERS, catch_response=True)
         locust.client.get(f'/rest/ui/1.0/content/{edit_page_id}/labels?_={timestamp_int()}', catch_response=True)
