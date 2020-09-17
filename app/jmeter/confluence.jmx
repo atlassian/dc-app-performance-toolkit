@@ -1749,7 +1749,7 @@ if (totalAncestorID &gt; 0)
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}${tree_request}</stringProp>
+                  <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1758,6 +1758,7 @@ if (totalAncestorID &gt; 0)
                   <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                   <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                   <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
                 </HTTPSamplerProxy>
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -1828,7 +1829,7 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}${tree_request}</stringProp>
+                  <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1837,6 +1838,7 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
                   <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                   <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                   <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
                 </HTTPSamplerProxy>
                 <hashTree>
                   <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
