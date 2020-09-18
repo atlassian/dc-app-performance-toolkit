@@ -115,6 +115,9 @@ def view_page_and_tree(locust):
     @confluence_measure
     def view_page_tree():
         tree_request_id = locust.storage['tree_request_id'].replace('&amp;', '&')
+        # if postfix is set, need to trim it from the tree_request_id to avoid duplication
+        if tree_request_id.startswith(CONFLUENCE_SETTINGS.postfix):
+            tree_request_id = tree_request_id[len(CONFLUENCE_SETTINGS.postfix):]
         ancestors = locust.storage['ancestors']
         root_page_id = locust.storage['root_page_id']
         viewed_page_id = locust.storage['page_id']
