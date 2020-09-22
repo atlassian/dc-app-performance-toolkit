@@ -2,6 +2,7 @@ import os
 import re
 from datetime import datetime
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
+from util.analytics.analytics_utils import get_os
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
@@ -36,17 +37,14 @@ class BztFileReader(BaseFileReader):
 
     bzt_log_name = 'bzt.log'
     dt_regexp = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
-    jmeter_test_regexp = r'jmeter_\S*'
-    selenium_test_regexp = r'selenium_\S*'
-    locust_test_regexp = r'locust_\S*'
-    success_test_rate_regexp = r'(\d{1,3}.\d{1,2}%)'
 
     def __init__(self):
         self.bzt_log = self.get_bzt_log()
         self.bzt_log_results_part = self._get_results_bzt_log_part()
 
     def get_bzt_log(self):
-        bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
+        # bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
+        bzt_log_path = f'/home/mmizi/Projects/dc-app-toolkit/app/results/confluence/2020-09-18_16-37-08/bzt.log'
         self.validate_file_exists(bzt_log_path)
         with open(bzt_log_path) as log_file:
             log_file = log_file.readlines()
@@ -75,24 +73,6 @@ class BztFileReader(BaseFileReader):
                 break
         return test_duration
 
-    def _get_test_count_by_type(self, tests_type, log):
-        trigger = f' {tests_type}_'
-        test_search_regx = ""
-        if tests_type == 'jmeter':
-            test_search_regx = self.jmeter_test_regexp
-        elif tests_type == 'selenium':
-            test_search_regx = self.selenium_test_regexp
-        elif tests_type == 'locust':
-            test_search_regx = self.locust_test_regexp
-        tests = {}
-        for line in log:
-            if trigger in line and ('FAIL' in line or 'OK' in line):
-                test_name = re.findall(test_search_regx, line)[0]
-                test_rate = float(''.join(re.findall(self.success_test_rate_regexp, line))[:-1])
-                if test_name not in tests:
-                    tests[test_name] = test_rate
-        return tests
-
     def _get_results_bzt_log_part(self):
         test_result_string_trigger = 'Request label stats:'
         res_string_idx = [index for index, value in enumerate(self.bzt_log) if test_result_string_trigger in value]
@@ -102,22 +82,28 @@ class BztFileReader(BaseFileReader):
             results_bzt_run = self.bzt_log[res_string_idx:]
             return results_bzt_run
 
-    @property
-    def selenium_test_rates(self):
-        return self._get_test_count_by_type(tests_type='selenium', log=self.bzt_log_results_part)
+    @staticmethod
+    def _get_all_test_actions(os_type, log):
+        separator = '\x1b(0x\x1b(B' if os_type in ['Linux', 'macOS'] else '|'
+        test_actions = {}
 
-    @property
-    def jmeter_test_rates(self):
-        return self._get_test_count_by_type(tests_type='jmeter', log=self.bzt_log_results_part)
+        for line in log:
+            if 'FAIL' in line or 'OK' in line:
+                line_split = line.split(separator)
+                test_name = line_split[1].strip(',').strip()
+                test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
+                test_actions.setdefault(test_name, test_rate)
 
-    @property
-    def locust_test_rates(self):
-        return self._get_test_count_by_type(tests_type='locust', log=self.bzt_log_results_part)
+        return test_actions
 
     @property
     def actual_run_time(self):
         run_time_bzt = self._get_duration_by_test_duration()
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
+
+    @property
+    def all_test_actions(self):
+        return self._get_all_test_actions(os_type=get_os(), log=self._get_results_bzt_log_part())
 
 
 class ResultsFileReader(BaseFileReader):
@@ -127,7 +113,8 @@ class ResultsFileReader(BaseFileReader):
         self.results_log = self.get_results_log()
 
     def get_results_log(self):
-        results_log_path = f'{self.log_dir}/results.csv'
+        # results_log_path = f'{self.log_dir}/results.csv'
+        results_log_path = f'/home/mmizi/Projects/dc-app-toolkit/app/results/confluence/2020-09-18_16-37-08/results.csv'
         self.validate_file_exists(results_log_path)
         with open(results_log_path) as res_file:
             header = res_file.readline()
