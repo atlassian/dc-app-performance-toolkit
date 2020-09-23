@@ -7,6 +7,7 @@ from util.analytics.analytics_utils import get_os
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
+SEPARATOR = '\x1b(0x\x1b(B' if get_os() in ['Linux', 'macOS'] else '|'
 
 
 class BaseFileReader:
@@ -43,8 +44,7 @@ class BztFileReader(BaseFileReader):
         self.bzt_log_results_part = self._get_results_bzt_log_part()
 
     def get_bzt_log(self):
-        # bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
-        bzt_log_path = f'/home/mmizi/Projects/dc-app-toolkit/app/results/confluence/2020-09-18_16-37-08/bzt.log'
+        bzt_log_path = f'{self.log_dir}/{self.bzt_log_name}'
         self.validate_file_exists(bzt_log_path)
         with open(bzt_log_path) as log_file:
             log_file = log_file.readlines()
@@ -83,13 +83,12 @@ class BztFileReader(BaseFileReader):
             return results_bzt_run
 
     @staticmethod
-    def _get_all_test_actions(os_type, log):
-        separator = '\x1b(0x\x1b(B' if os_type in ['Linux', 'macOS'] else '|'
+    def _get_all_test_actions(log):
         test_actions = {}
 
         for line in log:
             if 'FAIL' in line or 'OK' in line:
-                line_split = line.split(separator)
+                line_split = line.split(SEPARATOR)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
                 test_actions.setdefault(test_name, test_rate)
@@ -103,7 +102,7 @@ class BztFileReader(BaseFileReader):
 
     @property
     def all_test_actions(self):
-        return self._get_all_test_actions(os_type=get_os(), log=self._get_results_bzt_log_part())
+        return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
 
 class ResultsFileReader(BaseFileReader):
@@ -113,8 +112,7 @@ class ResultsFileReader(BaseFileReader):
         self.results_log = self.get_results_log()
 
     def get_results_log(self):
-        # results_log_path = f'{self.log_dir}/results.csv'
-        results_log_path = f'/home/mmizi/Projects/dc-app-toolkit/app/results/confluence/2020-09-18_16-37-08/results.csv'
+        results_log_path = f'{self.log_dir}/results.csv'
         self.validate_file_exists(results_log_path)
         with open(results_log_path) as res_file:
             header = res_file.readline()

@@ -41,6 +41,72 @@ class Jira(BaseApplication):
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
 
+    @property
+    def jmeter_default_actions(self):
+        return ['jmeter_open_quick_create',
+                'jmeter_create_issue',
+                'jmeter_search_jql',
+                'jmeter_view_issue',
+                'jmeter_view_project_summary',
+                'jmeter_view_dashboard',
+                'jmeter_open_editor',
+                'jmeter_save_edit',
+                'jmeter_open_comment',
+                'jmeter_save_comment',
+                'jmeter_browse_projects',
+                'jmeter_view_kanban_board',
+                'jmeter_view_scrum_board',
+                'jmeter_view_backlog',
+                'jmeter_browse_boards',
+                'jmeter_login_and_view_dashboard',
+                ]
+
+    @property
+    def selenium_default_actions(self):
+        return ['selenium_a_login',
+                'selenium_browse_projects_list',
+                'selenium_browse_boards_list',
+                'selenium_create_issue',
+                'selenium_edit_issue',
+                'selenium_save_comment',
+                'selenium_search_jql',
+                'selenium_view_backlog_for_scrum_board',
+                'selenium_view_scrum_board',
+                'selenium_view_kanban_board',
+                'selenium_view_dashboard',
+                'selenium_view_issue',
+                'selenium_view_project_summary',
+                'selenium_z_log_out',
+                ]
+
+    @property
+    def locust_default_actions(self):
+        return ['locust_login_and_view_dashboard',
+                'locust_view_issue',
+                'locust_create_issue_open_quick_create',
+                'locust_create_issue_submit_form',
+                'locust_search_jql',
+                'locust_view_project_summary',
+                'locust_edit_issue_open_editor',
+                'locust_edit_issue_save_edit',
+                'locust_view_dashboard',
+                'locust_add_comment_open_comment',
+                'locust_add_comment_save_comment',
+                'locust_browse_projects',
+                'locust_view_kanban_board',
+                'locust_view_scrum_board',
+                'locust_view_backlog',
+                'locust_browse_boards',
+                ]
+
+    def get_default_actions_by_type(self, app_type):
+        if app_type == 'selenium':
+            return self.selenium_default_actions
+        if app_type == 'jmeter':
+            return self.jmeter_default_actions
+        if app_type == 'locust':
+            return self.locust_default_actions
+
 
 class Confluence(BaseApplication):
     type = CONFLUENCE
@@ -92,31 +158,31 @@ class Confluence(BaseApplication):
 
     @property
     def locust_default_actions(self):
-        return ['login_and_view_dashboard',
-                'view_page',
-                'view_page_tree',
-                'view_dashboard',
-                'view_blog',
-                'search_recently_viewed',
-                'search_cql',
-                'create_blog_editor',
-                'create_blog',
-                'create_page_editor',
-                'create_page',
-                'open_editor',
-                'edit_page',
-                'comment_page',
-                'view_attachments',
-                'upload_attachments',
-                'like_page',
+        return ['locust_login_and_view_dashboard',
+                'locust_view_page',
+                'locust_view_page_tree',
+                'locust_view_dashboard',
+                'locust_view_blog',
+                'locust_search_recently_viewed',
+                'locust_search_cql',
+                'locust_create_blog_editor',
+                'locust_create_blog',
+                'locust_create_page_editor',
+                'locust_create_page',
+                'locust_open_editor',
+                'locust_edit_page',
+                'locust_comment_page',
+                'locust_view_attachments',
+                'locust_upload_attachments',
+                'locust_like_page',
                 ]
 
-    def get_default_actions_by_type(self, type):
-        if type == 'selenium':
+    def get_default_actions_by_type(self, app_type):
+        if app_type == 'selenium':
             return self.selenium_default_actions
-        if type == 'jmeter':
+        if app_type == 'jmeter':
             return self.jmeter_default_actions
-        if type == 'locust':
+        if app_type == 'locust':
             return self.locust_default_actions
 
 
@@ -141,6 +207,44 @@ class Bitbucket(BaseApplication):
             return f'{repos_count} repositories'
         else:
             return 'Could not parse number of Bitbucket repositories'
+
+    @property
+    def jmeter_default_actions(self):
+        return ['jmeter_clone_repo_via_http',
+                'jmeter_clone_repo_via_ssh',
+                'jmeter_create_repo_shallow_copy',
+                'jmeter_git_add',
+                'jmeter_git_commit',
+                'jmeter_git_push_via_http',
+                'jmeter_git_push_via_ssh',
+                'jmeter_git_fetch_via_http',
+                'jmeter_git_fetch_via_ssh',
+                ]
+
+    @property
+    def selenium_default_actions(self):
+        return ['selenium_a_login',
+                'selenium_view_dashboard',
+                'selenium_create_pull_request',
+                'selenium_view_projects',
+                'selenium_view_project_repositories',
+                'selenium_view_repo',
+                'selenium_view_list_pull_requests',
+                'selenium_view_pull_request_overview',
+                'selenium_view_pull_request_diff',
+                'selenium_view_pull_request_commits',
+                'selenium_comment_pull_request_diff',
+                'selenium_comment_pull_request_overview',
+                'selenium_view_branches',
+                'selenium_view_commits',
+                'selenium_logout',
+                ]
+
+    def get_default_actions_by_type(self, app_type):
+        if app_type == 'selenium':
+            return self.selenium_default_actions
+        if app_type == 'jmeter':
+            return self.jmeter_default_actions
 
 
 class ApplicationSelector:

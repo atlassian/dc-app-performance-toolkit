@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 SUCCESS_TEST_RATE = 95.00
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
-APP_SPECIFIC_TAG = 'APP_SPECIFIC'
+APP_SPECIFIC_TAG = 'APP-SPECIFIC'
 
 
 def is_docker():
@@ -63,9 +63,11 @@ def generate_report_summary(collector):
 
     summary_report.append(f'Finished|{finished}')
     summary_report.append(f'Compliant|{compliant}')
-    summary_report.append(f'Success|{success}\n')
+    summary_report.append(f'Success|{success}')
+    if collector.app_specific_rates:
+        summary_report.append('Has app-specific actions|(True)')
 
-    summary_report.append(f'Action|Success Rate|Status')
+    summary_report.append(f'\nAction|Success Rate|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
@@ -74,7 +76,7 @@ def generate_report_summary(collector):
 
     for key, value in collector.app_specific_rates.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{status}   {APP_SPECIFIC_TAG}')
+        summary_report.append(f'{key}|{value}|{status}|{APP_SPECIFIC_TAG}')
 
     pretty_report = map(format_string_summary_report, summary_report)
     write_to_file(pretty_report, summary_report_file)
@@ -132,7 +134,6 @@ def get_timestamp():
 
 
 def form_actions(d_action, test_actions, test_type_actions, specific_actions):
-
     for t_action, t_value in test_actions.items():
         if d_action == t_action:
             test_type_actions.setdefault(t_action, t_value)
