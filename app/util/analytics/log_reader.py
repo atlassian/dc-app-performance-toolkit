@@ -88,6 +88,7 @@ class BztFileReader(BaseFileReader):
 
         for line in log:
             if 'FAIL' in line or 'OK' in line:
+                print('HERE ::: ::: ::: ', SEPARATOR)
                 line_split = line.split(SEPARATOR)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
