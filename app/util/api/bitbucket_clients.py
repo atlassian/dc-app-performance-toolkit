@@ -88,7 +88,7 @@ class BitbucketRestClient(RestClient):
 
     def get_pull_request(self, project_key, repo_key):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests'
-        response = self.get(api_url, f'Could not retrieve pull requests list')
+        response = self.get(api_url, 'Could not retrieve pull requests list')
         return response.json()
 
     def create_user(self, username, password=None, email=None):
