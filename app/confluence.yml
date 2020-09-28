@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname:    # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+    application_hostname:  test_confluence_instance.atlassian.com  # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 1990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using Self-Signed SSL certificate
@@ -33,7 +33,7 @@ settings:
     like_page: 3
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
-    custom_dataset_query: 'title ~ "enh*"'        # Write CQL query to add CQL output to the datasets/confluence/custom-pages.csv
+    custom_dataset_query: ''        # Write CQL query to add CQL output to the datasets/confluence/custom-pages.csv
 services:
   - module: shellexec
     prepare:
