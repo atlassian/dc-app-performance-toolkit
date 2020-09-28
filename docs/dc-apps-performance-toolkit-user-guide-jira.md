@@ -665,6 +665,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive scalability benchmark results for four-node Jira DC with app-specific actions:
 
 1. Scale your Jira Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
+
 {{% note %}}
 To avoid problems with Cluster Index Replication Health Check, please scale nodes one by one and after each scaling make sure that index is synchronized.
 {{% /note %}}
