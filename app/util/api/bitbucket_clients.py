@@ -91,6 +91,11 @@ class BitbucketRestClient(RestClient):
         response = self.get(api_url, f'Could not retrieve pull requests list')
         return response.json()
 
+    def check_pull_request_has_conflicts(self, project_key, repo_key, pr_id):
+        api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests/{pr_id}/merge'
+        response = self.get(api_url, f'Could not get pull request merge status')
+        return response.json()['conflicted']
+
     def create_user(self, username, password=None, email=None):
         start_time = time.time()
         params = {
