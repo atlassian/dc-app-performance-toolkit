@@ -10,18 +10,338 @@ date: "2019-09-12"
 
 This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-To use the Data Center App Performance Toolkit, you'll need to:
+To start using Data Center App Performance Toolkit and avoid high AWS infrastructure costs we recommend to start from **Developing environment**:
+1. [Set up Development environment Jira Data Center on AWS](#devinstancesetup).
+1. [Create dataset for development environment](#devdataset).
+1. [Run testing scenario in the toolkit on the development environment](#devtestscenario).
+1. [Develop and test app-specific action](#devappaction)
 
+{{% note %}}
+For testing and developing purposes we recommend to use AWS Development environment, it can help you to save money by using less expensive environment for simple tests. But it is not required for Marketplace approval process. You can use your own Jira Data Center, in this case you can skip step 1 (Set up Development environment Jira Data Center on AWS).
+{{% /note %}}
+
+For generating test results for Marketplace approval process use **Enterprise-scale environment**:
 1. [Set up Jira Data Center on AWS](#instancesetup).
 1. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
 1. [Set up an execution environment for the toolkit](#executionhost).
 1. [Run all the testing scenarios in the toolkit](#testscenario).
 
+
+## <a id="devinstancesetup"></a> Setting up Jira Data Center development environment
+There are two types of Jira Data Center environments we recommend to use to generate results for Marketplace approval process:
+- Development environment - Jira Data Center environment for test run of Data Center App Performance Toolkit and developing [app specific actions](#appspecificactions). It is recommended to use [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters for developing environment. Also for testing and developing purposes you can use your own Jira Data Center environment.
+- Enterprise-scale environment - Jira Data Center environment for final run and result generation for Marketplace approval process. It is recommended to use [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters for enterprise scale environment. This type of environment requires more powerful Jira Data Center AWS infrastructure and notably more expensive.
+
+We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Data Center testing environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+
+The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira into this new VPC. Deploying Jira with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
+
+#### Using the AWS Quick Start for Jira
+
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira into your existing ASI.
+
 {{% note %}}
-For simple spikes or tests, you can skip steps 1-2 and target any Jira test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
+You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
 {{% /note %}}
 
-## <a id="instancesetup"></a> Setting up Jira Data Center
+To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
+
+#### AWS cost estimation for Developing environment ###
+All AWS Jira Data Center development environment infrastructure costs ~ 10 - 15$ per working week.
+
+#### <a id="quick-start-parameters"></a> Quick Start parameters for Developing environment
+
+All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
+
+**Jira setup**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Jira Product | Software |
+| Jira Version | 8.0.3 or 7.13.15 or 8.5.6 |
+
+The Data Center App Performance Toolkit officially supports:
+
+- Jira Platform release version: 8.0.3
+- Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.15 and 8.5.6
+
+**Cluster nodes**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Cluster node instance type | [t3.medium](https://aws.amazon.com/ec2/instance-types/t3/) |
+| Maximum number of cluster nodes | 1 |
+| Minimum number of cluster nodes | 1 |
+| Cluster node instance volume size | 50 |
+
+We recommend [t3.medium](https://aws.amazon.com/ec2/instance-types/t3/) for Developing environment because this type of instance costs much lower than Enterprise-scale environment instance type and fully enough for testing purposes.
+
+**Database**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Database instance class | [db.t2.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| RDS Provisioned IOPS | 1000 |
+| Master (admin) password | Password1! |
+| Enable RDS Multi-AZ deployment | false |
+| Application user database password | Password1! |
+| Database storage | 200 |
+
+{{% note %}}
+The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).
+{{% /note %}}
+
+**Networking (for new ASI)**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Availability Zones | _Select two availability zones in your region_ |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Make instance internet facing | true |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+**Networking (for existing ASI)**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Make instance internet facing | true |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+### Running the setup wizard
+
+After successfully deploying Jira Data Center in AWS, you'll need to configure it:
+
+1. In the AWS console, go to **Services > CloudFormation > Stack > Stack details > Select your stack**.
+1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
+1. Open **LoadBalancerURL** in your browser. This will take you to the Jira setup wizard.
+1. On the **Set up application properties** page, populate the following fields:
+    - **Application Title**: any name for your Jira Data Center deployment
+    - **Mode**: Private
+    - **Base URL**: your stack's Elastic LoadBalancer URL
+    Click **Next**.
+1. On the next page, populate the **Your License Key** field by either:
+    - Using your existing license, or
+    - Generating a Jira trial license, or
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
+    Click **Next**.
+1. On the **Set up administrator account** page, populate the following fields:
+    - **Full name**: any full name of the admin user
+    - **Email Address**: email address of the admin user
+    - **Username**: admin _(recommended)_
+    - **Password**: admin _(recommended)_
+    - **Confirm Password**: admin _(recommended)_
+    Click **Next**.
+1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
+1. After going through the welcome setup, click **Create new project** to create a new project.
+
+## <a id="devdataset"></a> Generate dataset for development environment  
+After you create the Development environment Jira Data Center you should generate test dataset to run Data Center App Performance Toolkit:
+- 1 Scrum project with 1-5 issues
+- 1 Kanban project with 1-5 issues
+
+
+## <a id="devtestscenario"></a> Run testing scenario in the toolkit on the development environment
+
+1. On the computer where you cloned the Data Center App Performance Toolkit, navigate to `dc-app-performance-toolkit/app folder`.
+1. Open the `jira.yml` file and fill in the following variables:
+    - `application_hostname`: your_dc_jira_instance_hostname without protocol
+    - `application_protocol`: HTTP or HTTPS
+    - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
+    - `admin_login`: admin user username
+    - `admin_password`: admin user password
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
+    - `concurrency`: we recommend to use `1` value for testing with Developing environment.
+    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
+    - `ramp-up`: amount of time it will take JMeter or Locust to add all test users to test execution - we recommend you use `5s` for Development environment.
+1. Run bzt.
+
+
+    ``` bash
+    bzt jira.yml
+    ```
+
+1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+    - `results_summary.log`: detailed run summary
+    - `results.csv`: aggregated .csv file with all actions and timings
+    - `bzt.log`: logs of the Taurus tool execution
+    - `jmeter.*`: logs of the JMeter tool execution
+    - `locust.*`: logs of the Locust tool execution (in case you use Locust as load_executor in jira.yml)
+    - `pytest.*`: logs of Pytest-Selenium execution
+
+If you have all tests status `OK` in `bzt.log` or `results_summary.log` you can follow to the next step - [Develop and test app specific action](#devappaction) that you should use further during the Enterprise-scale test scenarios.
+
+{{% note %}}
+We strongly recommend you to develop your app specific actions on the Development environment to reduce AWS infrastructure costs.
+{{% /note %}}
+
+
+## <a id="devappaction"></a> Develop and test app-specific action
+Data Center App Performance Toolkit has own set of default test actions for Jira Data Center - JMeter/Locust and Selenium for load and UI test respectively.     
+**App-specific action** - action (test) you should develop by your own that fully cover functionality of your application.
+If your app works with some UI element of Jira Data Center then Selenium app-specific action has to be added as extension to base Selenium actions.
+In case your app works with API endpoints of Jira Data Center then JMeter or Locust app-specific action has to be added as extension to base JMeter/Locust base actions.  
+All templates of app-specific actions listed in `dc-app-performance-toolkit/app/extension/jira`.
+
+
+#### Custom dataset
+You can use your own issues for your app-specific actions.
+1. To do it create issues that have similar title (e.g. AppIssue1, AppIssue2, AppIssue3, etc). 
+1. Go to the search page of your Jira Data center - `JIRA_URL/issues/?jql=` and press `Advanced`
+1. Write [JQL](https://www.atlassian.com/blog/jira-software/jql-the-most-flexible-way-to-search-jira-14) that returns just your issues from step 1.
+1. Edit configuration file  `dc-app-performance-toolkit/app/jira.yml`:  
+    - `custom_dataset_query:` JQL from step 3. 
+    
+When you run Toolkit next time by executing `bzt jira.yml` command custom dataset issues will be pulled to the `dc-app-performance-toolkit/app/datasets/jira/custom-issues.csv` with columns: `issue_key`, `issue_id`, `project_key` in order.
+
+{{% note %}}
+**Example 1.**  
+You develop app that adds some additional fields to specific type of Jira issues. In this case you should develop Selenium app-specific action.
+- Create specific type Jira issues (e.g. Issue AppCustom1, Issue AppCustom2, etc) and writes JQL to pull issues to `jira.yml` configuration file.  
+`custom_dataset_query: summary  ~ 'AppCustom*'`
+- Extend Selenium base actions with your app-specific action `dc-app-performance-toolkit/app/extension/jira/extension_ui.py`:
+```python
+from selenium_ui.conftest import print_timing
+from selenium_ui.jira.pages.pages import Issue
+
+def app_specific_action(webdriver, datasets):
+    issue_page = Issue(webdriver, issue_key=datasets['custom_issue_key'])
+    @print_timing("selenium_custom_action_view_issue")
+    def measure():
+        issue_page.go_to()
+        issue_page.wait_for_page_loaded()
+    measure()
+```
+- In `dc-app-performance-toolkit/app/selenium_ui/jira_ui.py` review and uncomment code:
+``` python
+# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
+#     app_specific_action(webdriver, datasets)
+``` 
+
+{{% /note %}}
+
+#### Extending the base action
+
+Extension scripts, which extend the base JMeter (`jira.jmx`), Selenium (`jira-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions. As there are two options for load tests executor available for selection, you can modify either Locust or JMeter scripts.
+
+
+##### Modifying Locust
+
+The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`.
+To customize Locust with app-specific actions, edit the function `app_specific_action` in the `extension/jira/extension_locust.py` script. To enable `app_specific_action`, set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
+```yaml
+    # Action percentage for Jmeter and Locust load executors
+    create_issue: 4
+    search_jql: 13
+    view_issue: 43
+    view_project_summary: 4
+    view_dashboard: 12
+    edit_issue: 4
+    add_comment: 2
+    browse_projects: 4
+    view_scrum_board: 3
+    view_kanban_board: 3
+    view_backlog: 6
+    browse_boards: 2
+    standalone_extension: 0 # By default disabled
+```
+Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `app_specific_action` will be executed 50 times more than `browse_boards`. To run just your app-specific action, disable all other actions by setting their value to `0`.
+
+##### Modifying Selenium
+
+In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
+
+We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
+
+In the `jira-ui.py` script, view the following block of code:
+
+``` python
+# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
+#     app_specific_action(webdriver, datasets)
+```
+
+This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
+
+To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/jira/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
+
+To view more examples, see the `modules.py` file in the `selenium_ui/jira` directory.
+
+
+##### Modifying JMeter
+
+JMeter is written in XML and requires JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command.
+
+Make sure you run this command inside the `dc-app-performance-toolkit/app directory`. The main `jmeter/jira.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
+
+Here's a snippet of the base JMeter script (`jira.jmx`):
+
+![Base JMeter script](/platform/marketplace/images/jmeter-base.png)
+
+For every base action, there is an extension script executed after the base script. In most cases, you should modify only the `extension.jmx` file. For example, if there are additional REST APIs introduced as part of viewing an issue, you can include these calls in the `extension.jmx` file under the view issue transaction.
+
+Here's a snippet of the extension JMeter script (`extension.jmx`).
+
+![Extended JMeter script](/platform/marketplace/images/jmeter-extended.png)
+
+This ensures that these APIs are called as part of the view issue transaction with minimal intrusion (for example, no additional logins). For a fairer comparison, you have to keep the same number of base transactions before and after the plugin is installed.
+
+{{% note %}}
+The controllers in the extension script, which are executed along with the base action, are named after the corresponding base action (for example, `extend_search_jql`, `extend_view_issue`).
+{{% /note %}}
+
+When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `jira.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
+
+``` yml
+#      create_issue: 4
+#      search_jql: 16
+      view_issue: 100
+#      view_project_summary: 4
+#      view_dashboard: 8
+```
+
+{{% note %}}
+If multiple actions are affected, add transactions to multiple extension controllers.
+{{% /note %}}
+
+##### Extending a stand-alone transaction
+
+You can run your script independently of the base action under a specific workload if, for example, your plugin introduces a separate URL and has no correlation to the base transactions.
+
+In such a case, you extend the `extend_standalone_extension` controller, which is also located in the `extension.jmx` file. With this option, you can define the execution percentage by the `perc_standalone_extension` parameter in the `jira.yml` config file.
+
+The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
+
+``` yml
+      standalone_extension: 10
+```
+
+##### Using JMeter variables from the base script
+
+Use or access the following variables of the extension script from the base script. They can also be inherited.
+
+- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
+- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
+- `${project_key}` - project key being viewed or modified (e.g. ABC)
+- `${project_id}` - project id being viewed or modified (e.g. 3423)
+- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
+- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
+- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
+- `${username}` - the logged in username (e.g. admin)
+
+{{% note %}}
+If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
+{{% /note %}}
+
+
+#### Running tests with your modification
+
+To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
+
+
+## <a id="instancesetup"></a> Setting up Jira Data Center Enterprise-scale environment
 
 We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Data Center testing environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -43,13 +363,14 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 [AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
-*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
+*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)  
 
-| Stack | Estimated hourly cost ($) |
-| ----- | ------------------------- |
-| One Node Jira DC | 0.8 - 1.1 |
-| Two Nodes Jira DC | 1.2 - 1.7 |
-| Four Nodes Jira DC | 2.0 - 3.0 |
+
+| Stack | Dev environment estimated hourly cost ($) |Enterprise Scale environment estimated hourly cost ($) |
+| ----- | ------------------------- | -------------- |
+| One Node Jira DC | 0.08 - 0.1 | 0.8 - 1.1
+| Two Nodes Jira DC | - | 1.2 - 1.7
+| Four Nodes Jira DC | - | 2.0 - 3.0
 
 #### Stop Jira cluster nodes
 To reduce AWS infrastructure costs you could stop Jira nodes when the cluster is standing idle.  
@@ -483,119 +804,6 @@ The purpose of scalability testing is to reflect the impact on the customer expe
 
 For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Jira DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Jira DC app in a cluster.
 
-#### Extending the base action
-
-Extension scripts, which extend the base JMeter (`jira.jmx`), Selenium (`jira-ui.py`) and Locust (`locustfile.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions. As there are two options for load tests executor available for selection, you can modify either Locust or JMeter scripts.
-
-##### Modifying JMeter
-
-JMeter is written in XML and requires JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command.
-
-Make sure you run this command inside the `dc-app-performance-toolkit/app directory`. The main `jmeter/jira.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
-
-Here's a snippet of the base JMeter script (`jira.jmx`):
-
-![Base JMeter script](/platform/marketplace/images/jmeter-base.png)
-
-For every base action, there is an extension script executed after the base script. In most cases, you should modify only the `extension.jmx` file. For example, if there are additional REST APIs introduced as part of viewing an issue, you can include these calls in the `extension.jmx` file under the view issue transaction.
-
-Here's a snippet of the extension JMeter script (`extension.jmx`).
-
-![Extended JMeter script](/platform/marketplace/images/jmeter-extended.png)
-
-This ensures that these APIs are called as part of the view issue transaction with minimal intrusion (for example, no additional logins). For a fairer comparison, you have to keep the same number of base transactions before and after the plugin is installed.
-
-{{% note %}}
-The controllers in the extension script, which are executed along with the base action, are named after the corresponding base action (for example, `extend_search_jql`, `extend_view_issue`).
-{{% /note %}}
-
-When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `jira.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
-
-``` yml
-#      create_issue: 4
-#      search_jql: 16
-      view_issue: 100
-#      view_project_summary: 4
-#      view_dashboard: 8
-```
-
-{{% note %}}
-If multiple actions are affected, add transactions to multiple extension controllers.
-{{% /note %}}
-
-##### Extending a stand-alone transaction
-
-You can run your script independently of the base action under a specific workload if, for example, your plugin introduces a separate URL and has no correlation to the base transactions.
-
-In such a case, you extend the `extend_standalone_extension` controller, which is also located in the `extension.jmx` file. With this option, you can define the execution percentage by the `perc_standalone_extension` parameter in the `jira.yml` config file.
-
-The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
-
-``` yml
-      standalone_extension: 10
-```
-
-##### Using JMeter variables from the base script
-
-Use or access the following variables of the extension script from the base script. They can also be inherited.
-
-- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
-- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
-- `${project_key}` - project key being viewed or modified (e.g. ABC)
-- `${project_id}` - project id being viewed or modified (e.g. 3423)
-- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
-- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
-- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
-- `${username}` - the logged in username (e.g. admin)
-
-{{% note %}}
-If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
-{{% /note %}}
-
-##### Modifying Locust
-
-The main Locust script for Jira is `locustio/jira/locustfile.py` which executes `HTTP` actions from `locustio/jira/http_actions.py`.
-To customize Locust with app-specific actions, edit the function `app_specific_action` in the `extension/jira/extension_locust.py` script. To enable `app_specific_action`, set non-zero percentage value for `standalone_extension` in  `jira.yml` configuration file.
-```yaml
-    # Action percentage for Jmeter and Locust load executors
-    create_issue: 4
-    search_jql: 13
-    view_issue: 43
-    view_project_summary: 4
-    view_dashboard: 12
-    edit_issue: 4
-    add_comment: 2
-    browse_projects: 4
-    view_scrum_board: 3
-    view_kanban_board: 3
-    view_backlog: 6
-    browse_boards: 2
-    standalone_extension: 0 # By default disabled
-```
-Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute). For example, setting `standalone_extension` to `100` means that `app_specific_action` will be executed 50 times more than `browse_boards`. To run just your app-specific action, disable all other actions by setting their value to `0`.
-
-##### Modifying Selenium
-
-In addition to JMeter or Locust, you can extend Selenium scripts to measure end-to-end browser timings.
-
-We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
-
-In the `jira-ui.py` script, view the following block of code:
-
-``` python
-# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     app_specific_action(webdriver, datasets)
-```
-
-This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
-
-To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/jira/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
-
-To view more examples, see the `modules.py` file in the `selenium_ui/jira` directory.
-
-#### Running tests with your modification
-
-To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 To receive scalability benchmark results for one-node Jira DC with app-specific actions, run `bzt`:
