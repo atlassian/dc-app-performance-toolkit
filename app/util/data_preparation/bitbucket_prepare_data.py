@@ -78,6 +78,7 @@ def __get_prs(bitbucket_api):
             prs = bitbucket_api.get_pull_request(project_key=repo['project']['key'], repo_key=repo['slug'])
             for pr in prs['values']:
                 # filter PRs created by selenium and not merged
+                pr['with_conflict'] = False
                 if 'Selenium' not in pr['title']:
                     # Some PRs do not have 'mergeResult' in properties, force get merge result status otherwise.
                     if 'mergeResult' in pr['properties'] and pr['properties']['mergeResult']['outcome'] == 'CONFLICTED':
