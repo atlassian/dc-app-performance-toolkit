@@ -35,7 +35,7 @@ settings:
     browse_boards: 2
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
-    custom_dataset_query: ""        # Write JQL query to add JQL output to the datasets/jira/custom-issues.csv
+    custom_dataset_query: ''        # Write JQL query to add JQL output to the datasets/jira/custom-issues.csv
 services:
   - module: shellexec
     prepare:
