@@ -2,12 +2,10 @@ import os
 import re
 from datetime import datetime
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
-from util.analytics.analytics_utils import get_os
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
                   'jmeter_git_push_via_http', 'jmeter_git_fetch_via_http',
                   'jmeter_git_push_via_ssh', 'jmeter_git_fetch_via_ssh']
-SEPARATOR = '\x1b(0x\x1b(B' if get_os() in ['Linux', 'macOS'] else '|'
 
 
 class BaseFileReader:
@@ -87,12 +85,14 @@ class BztFileReader(BaseFileReader):
         test_actions = {}
 
         for line in log:
-            if 'FAIL' in line or 'OK' in line:
-                print('HERE ::: ::: ::: ', SEPARATOR)
-                line_split = line.split(SEPARATOR)
+            if ('FAIL' in line or 'OK' in line) and ('|' in line or '\x1b(0x\x1b(B' in line):
+                line_split = line.split('|' if '|' in line else '\x1b(0x\x1b(B')
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
                 test_actions.setdefault(test_name, test_rate)
+
+        if not test_actions:
+            raise SystemExit(f"There are no test actions where found in the {ENV_TAURUS_ARTIFACT_DIR}/bzt.log file")
 
         return test_actions
 

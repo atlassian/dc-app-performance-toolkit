@@ -99,14 +99,6 @@ class Jira(BaseApplication):
                 'locust_browse_boards',
                 ]
 
-    def get_default_actions_by_type(self, app_type):
-        if app_type == 'selenium':
-            return self.selenium_default_actions
-        if app_type == 'jmeter':
-            return self.jmeter_default_actions
-        if app_type == 'locust':
-            return self.locust_default_actions
-
 
 class Confluence(BaseApplication):
     type = CONFLUENCE
@@ -177,14 +169,6 @@ class Confluence(BaseApplication):
                 'locust_like_page',
                 ]
 
-    def get_default_actions_by_type(self, app_type):
-        if app_type == 'selenium':
-            return self.selenium_default_actions
-        if app_type == 'jmeter':
-            return self.jmeter_default_actions
-        if app_type == 'locust':
-            return self.locust_default_actions
-
 
 class Bitbucket(BaseApplication):
     type = BITBUCKET
@@ -239,12 +223,6 @@ class Bitbucket(BaseApplication):
                 'selenium_view_commits',
                 'selenium_logout',
                 ]
-
-    def get_default_actions_by_type(self, app_type):
-        if app_type == 'selenium':
-            return self.selenium_default_actions
-        if app_type == 'jmeter':
-            return self.jmeter_default_actions
 
 
 class ApplicationSelector:

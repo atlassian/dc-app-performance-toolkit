@@ -64,8 +64,7 @@ def generate_report_summary(collector):
     summary_report.append(f'Finished|{finished}')
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
-    if collector.app_specific_rates:
-        summary_report.append('Has app-specific actions|(True)')
+    summary_report.append(f'Has app-specific actions|({bool(collector.app_specific_rates)})')
 
     summary_report.append('\nAction|Success Rate|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
@@ -133,31 +132,18 @@ def get_timestamp():
     return time_stamp
 
 
-def form_actions(d_action, test_actions, test_type_actions, specific_actions):
-    for t_action, t_value in test_actions.items():
-        if d_action == t_action:
-            test_type_actions.setdefault(t_action, t_value)
-            specific_actions.pop(t_action)
-            break
-
-    return test_type_actions, specific_actions
-
-
 def generate_test_actions_by_type(test_actions, application):
-    test_types = ['jmeter', 'selenium', 'locust']
-    app_specific_actions = test_actions.copy()
-    selenium_actions, jmeter_actions, locust_actions = {}, {}, {}
-
-    for t_typ in test_types:
-        for d_action in application.get_default_actions_by_type(t_typ):
-            if t_typ == 'jmeter':
-                jmeter_actions, app_specific_actions = form_actions(d_action, test_actions, jmeter_actions,
-                                                                    app_specific_actions)
-            elif t_typ == 'selenium':
-                selenium_actions, app_specific_actions = form_actions(d_action, test_actions, selenium_actions,
-                                                                      app_specific_actions)
-            elif t_typ == 'locust':
-                locust_actions, app_specific_actions = form_actions(d_action, test_actions, locust_actions,
-                                                                    app_specific_actions)
-
+    selenium_actions = {}
+    jmeter_actions = {}
+    locust_actions = {}
+    app_specific_actions = {}
+    for test_action, value in test_actions.items():
+        if test_action in application.selenium_default_actions:
+            selenium_actions.setdefault(test_action, value)
+        elif test_action in application.locust_default_actions:
+            locust_actions.setdefault(test_action, value)
+        elif test_action in application.jmeter_default_actions:
+            jmeter_actions.setdefault(test_action, value)
+        else:
+            app_specific_actions.setdefault(test_action, value)
     return selenium_actions, jmeter_actions, locust_actions, app_specific_actions
