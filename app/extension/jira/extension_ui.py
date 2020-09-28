@@ -3,6 +3,8 @@ from selenium_ui.conftest import print_timing
 from util.conf import JIRA_SETTINGS
 
 from selenium_ui.base_page import BasePage
+from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
+    BoardsList, Board, Dashboard, Logout
 
 
 def app_specific_action(webdriver, datasets):
