@@ -83,10 +83,17 @@ class BztFileReader(BaseFileReader):
     @staticmethod
     def _get_all_test_actions(log):
         test_actions = {}
+        delimiters = ['|', '\x1b(0x\x1b(B']
+        delimiter = None
 
         for line in log:
-            if ('FAIL' in line or 'OK' in line) and ('|' in line or '\x1b(0x\x1b(B' in line):
-                line_split = line.split('|' if '|' in line else '\x1b(0x\x1b(B')
+            if ('FAIL' in line or 'OK' in line) and '%' in line:
+                if not delimiter:
+                    try:
+                        delimiter = [dlm for dlm in delimiters if dlm in line][0]
+                    except SystemExit:
+                        print(f"ERROR: Unknown delimiter in line: {line}. Known delimiters are {delimiters}")
+                line_split = line.split(delimiter)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
                 test_actions.setdefault(test_name, test_rate)
