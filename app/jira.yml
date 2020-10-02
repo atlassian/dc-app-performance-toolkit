@@ -14,7 +14,7 @@ settings:
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
     concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 3m                     # time to spin all concurrent users
+    ramp-up: 5m                     # time to spin all concurrent users
     total_actions_per_hour: 54500
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
@@ -35,7 +35,7 @@ settings:
     browse_boards: 2
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
-    custom_dataset_query: ''        # Write JQL query to add JQL output to the datasets/jira/custom-issues.csv
+    custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. summary ~ 'AppIssue*'
 services:
   - module: shellexec
     prepare:

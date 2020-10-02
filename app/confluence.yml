@@ -33,7 +33,7 @@ settings:
     like_page: 3
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
-    custom_dataset_query: ''        # Write CQL query to add CQL output to the app/datasets/confluence/custom-pages.csv
+    custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom-pages.csv, e.g. title ~ 'AppPage*'
 services:
   - module: shellexec
     prepare:
