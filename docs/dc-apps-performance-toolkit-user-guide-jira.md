@@ -21,7 +21,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 **[Enterprise-scale environment](#mainenvironmententerprise)**: Jira Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Jira Data Center
 
-5. [Set up Jira Data Center on AWS](#instancesetup).
+5. [Set up an enterprise-scale environment Jira Data Center on AWS](#instancesetup).
 6. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
 7. [Set up an execution environment for the toolkit](#executionhost).
 8. [Running the test scenarios from execution environment against enterprise-scale Jira Data Center](#testscenario).
@@ -301,7 +301,7 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 **JMeter app-specific action development example**
 
-1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder).
+1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/jira.jmx`.
 2. Open `Jira` thread group > `actions per login` and navigate to `standalone_extension`
 ![Jira JMeter standalone extension](/platform/marketplace/images/jira-standalone-extenstion.png)
 3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
@@ -345,7 +345,7 @@ App-specific actions are required. Do not proceed with the next step until you h
 
 After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
 
-### <a id="instancesetup"></a>5. Setting up Jira Data Center enterprise-scale environment
+### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Jira Data Center on AWS
 
 We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -818,7 +818,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### <a id="run4"></a> Run 4 (~50 min)
 
-To receive scalability benchmark results for two-node Jira DC with app-specific actions:
+To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
 1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
