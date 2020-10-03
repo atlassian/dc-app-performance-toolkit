@@ -3,25 +3,21 @@ from selenium_ui.conftest import print_timing
 from util.conf import CONFLUENCE_SETTINGS
 
 from selenium_ui.base_page import BasePage
-from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
-    Logout
 
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
+    app_specific_page = datasets['custom_pages']
+    app_specific_page_id = app_specific_page[0]
+
 
     @print_timing("selenium_app_custom_action")
     def measure():
 
-        @print_timing("selenium_app_custom_action:view_report")
+        @print_timing("selenium_app_custom_action:view_page")
         def sub_measure():
-            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/plugin/report")
-            page.wait_until_visible((By.ID, 'report_app_element_id'))
-        sub_measure()
-
-        @print_timing("selenium_app_custom_action:view_dashboard")
-        def sub_measure():
-            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/plugin/dashboard")
-            page.wait_until_visible((By.ID, 'dashboard_app_element_id'))
+            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_specific_page_id}")
+            page.wait_until_visible((By.ID, "title-text"))  # Wait for title field visible
+            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
         sub_measure()
     measure()
