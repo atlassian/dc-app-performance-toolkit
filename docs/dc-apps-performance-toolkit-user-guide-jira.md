@@ -13,7 +13,7 @@ This document walks you through the process of testing your app on Jira using th
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
 **[Development environment](#mainenvironmentdev)**: Jira Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
-
+d
 1. [Set up a development environment Jira Data Center on AWS](#devinstancesetup).
 2. [Create a dataset for the development environment](#devdataset).
 3. [Run toolkit on the development environment locally](#devtestscenario).
@@ -773,7 +773,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/docs/jira/README.md`
+1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
