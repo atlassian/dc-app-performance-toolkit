@@ -197,9 +197,9 @@ We strongly recommend to develop your app-specific actions on the development en
 
 
 #### Custom dataset
-You can filter your own app-specific issues for your app-specific actions.
+You can filter your own app-specific pages/blog posts for your app-specific actions.
 
-1. Create app-specific pages/blog posts that have specific anchor in title, e.g. *AppPage* anchor and issues summaries like *AppPage1*, *AppPage2*, *AppPage3*.
+1. Create app-specific pages/blog posts that have specific anchor in title, e.g. *AppPage* anchor and pages titles like *AppPage1*, *AppPage2*, *AppPage3*.
 1. Go to the search page of your Confluence Data Center - `CONFLUENCE_URL/dosearchsite.action?queryString=` (Confluence versions 6.X and below) or just click to search field in UI (Confluence versions 7.X and higher).
 1. Write [CQL](https://confluence.atlassian.com/doc/confluence-search-syntax-158720.html) that filter just your pages or blog posts from step 1, e.g. `title ~ 'AppPage*'`.
 1. Edit Confluence configuration file `dc-app-performance-toolkit/app/confluence.yml`:  
@@ -318,15 +318,15 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 ##### Using JMeter variables from the base script
 
-Use or access the following variables in your `standalone_extension` script if needed.
+Use or access the following variables of the extension script from the base script. They can also be inherited.
 
-- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
-- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
-- `${project_key}` - project key being viewed or modified (e.g. ABC)
-- `${project_id}` - project id being viewed or modified (e.g. 3423)
-- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
-- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
-- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
+- `${blog_id}` - blog post id being viewed or modified (e.g. 23766699)
+- `${blog_space_key}` - blog space key (e.g. PFSEK)
+- `${page_id}` - page if being viewed or modified (e.g. 360451)
+- `${space_key}` - page space key (e.g. TEST)
+- `${file_path}` - path of file to upload (e.g. datasets/confluence/static-content/upload/test5.jpg)
+- `${file_type}` - type of the file (e.g. image/jpeg)
+- `${file_name}` - name of the file (e.g. test5.jpg)
 - `${username}` - the logged in username (e.g. admin)
 
 {{% warning %}}
@@ -365,9 +365,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Confluence DC | 0.9 - 1.1 |
-| Two Nodes Confluence DC | 1.3 - 1.8 |
-| Four Nodes Confluence DC | 2.1 - 3.1 |
+| One Node Confluence DC | 1.2 - 1.7 |
+| Two Nodes Confluence DC | 2 - 3 |
+| Four Nodes Confluence DC | 3.6 - 5.6 |
 
 #### Stop Confluence cluster nodes
 To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
@@ -475,7 +475,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
 After [Preloading your Confluence deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 {{% /note %}}
 
-### <a id="preloading"></a>6. Preloading your Jira deployment with an enterprise-scale dataset
+### <a id="preloading"></a>6. Preloading your Confluence deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -676,7 +676,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ---
 
-### <a id="testscenario"></a>8. Running the test scenarios from execution environment against enterprise-scale Jira Data Center
+### <a id="testscenario"></a>8. Running the test scenarios from execution environment against enterprise-scale Confluence Data Center
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
