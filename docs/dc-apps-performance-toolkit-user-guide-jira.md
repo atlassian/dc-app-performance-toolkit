@@ -19,7 +19,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 3. [Run toolkit on the development environment locally](#devtestscenario).
 4. [Develop and test app-specific actions locally](#devappaction).
 
-**[Enterprise-scale environment](#mainenvironmententerprise)**: Jira Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Jira Data Center
+**[Enterprise-scale environment](#mainenvironmententerprise)**: Jira Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Jira Data Center.
 
 5. [Set up an enterprise-scale environment Jira Data Center on AWS](#instancesetup).
 6. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
