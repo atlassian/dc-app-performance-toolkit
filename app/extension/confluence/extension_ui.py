@@ -10,7 +10,6 @@ def app_specific_action(webdriver, datasets):
     app_specific_page = datasets['custom_pages']
     app_specific_page_id = app_specific_page[0]
 
-
     @print_timing("selenium_app_custom_action")
     def measure():
 
