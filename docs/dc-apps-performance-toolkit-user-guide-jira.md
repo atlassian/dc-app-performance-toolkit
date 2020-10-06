@@ -13,7 +13,7 @@ This document walks you through the process of testing your app on Jira using th
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
 **[Development environment](#mainenvironmentdev)**: Jira Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
-d
+
 1. [Set up a development environment Jira Data Center on AWS](#devinstancesetup).
 2. [Create a dataset for the development environment](#devdataset).
 3. [Run toolkit on the development environment locally](#devtestscenario).
@@ -30,7 +30,7 @@ d
 
 ## <a id="mainenvironmentdev"></a>Development environment
 
-Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing . Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
+Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing. Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
 
@@ -62,7 +62,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.8` |
+| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.6` |
 
 **Cluster nodes**
 
@@ -403,7 +403,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.8` |
+| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.6` |
 
 **Cluster nodes**
 

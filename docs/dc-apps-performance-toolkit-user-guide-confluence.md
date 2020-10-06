@@ -30,7 +30,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 ## <a id="mainenvironmentdev"></a>Development environment
 
-Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing . Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
+Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing. Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
 
 ### <a id="devinstancesetup"></a>1. Setting up Confluence Data Center development environment
 
