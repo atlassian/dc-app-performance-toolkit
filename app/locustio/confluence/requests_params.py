@@ -88,6 +88,7 @@ class CreateBlog(BaseResource):
 
 
 class CreateEditPage(BaseResource):
+    action_name = 'create_and_edit_page'
     content_id_re = 'meta name=\"ajs-content-id\" content=\"(.*?)\">'
     atl_token_re = 'meta name=\"ajs-atl-token\" content=\"(.*?)\">'
     space_key_re = 'createpage.action\?spaceKey=(.+?)\&'

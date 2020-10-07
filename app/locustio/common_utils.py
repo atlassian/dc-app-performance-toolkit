@@ -11,7 +11,7 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
-import inspect
+from locust import exception
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -19,13 +19,20 @@ TEXT_HEADERS = {
         'Accept-Encoding': 'gzip, deflate',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 }
+RESOURCE_HEADERS = {
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Accept-Encoding": "gzip, deflate",
+    "Content-Type": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
+}
 ADMIN_HEADERS = {
-        'Accept-Language': 'en-US,en;q=0.5',
-        'X-AUSERNAME': 'admin',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept': '*/*'
-                }
+    'Accept-Language': 'en-US,en;q=0.5',
+    'X-AUSERNAME': 'admin',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept': '*/*'
+}
 NO_TOKEN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
     "X-Requested-With": "XMLHttpRequest",
@@ -94,6 +101,7 @@ def confluence_measure(func):
     def wrapper(*args, **kwargs):
         start = time.time()
         result = global_measure(func, start, *args, **kwargs)
+
         total = (time.time() - start)
         if total < confluence_action_time:
             sleep = (confluence_action_time - total)
@@ -109,31 +117,12 @@ def global_measure(func, start_time, *args, **kwargs):
         result = func(*args, **kwargs)
     except Exception as e:
         total = int((time.time() - start_time) * 1000)
-
-        # Delete this workaround after fix from Taurus.
-        for handler in events.request_failure._handlers:
-            argspec = inspect.getfullargspec(handler)
-            if argspec.varkw is None and 'self' in argspec.args:
-                # Special case for incompatible Taurus handler
-                handler(request_type='Action',
-                        name=f"locust_{func.__name__}",
-                        response_time=total,
-                        exception=e)
-            else:
-                handler(
-                    request_type='Action',
-                    name=f"locust_{func.__name__}",
-                    response_time=total,
-                    exception=e,
-                    response_length=0,
-                )
-
-        # Uncomment with fix of __on_failure() function from Taurus. Expected Taurus version with the fix is 1.14.3
-        # events.request_failure.fire(request_type="Action",
-        #                             name=f"locust_{func.__name__}",
-        #                             response_time=total,
-        #                             response_length=0,
-        #                             exception=e)
+        print(e)
+        events.request_failure.fire(request_type="Action",
+                                    name=f"locust_{func.__name__}",
+                                    response_time=total,
+                                    response_length=0,
+                                    exception=e)
         logger.error(f'{func.__name__} action failed. Reason: {e}')
     else:
         total = int((time.time() - start_time) * 1000)
@@ -193,6 +182,11 @@ def get_first_index(from_list: list, err):
         return from_list[0]
     else:
         raise IndexError(err)
+
+
+def raise_if_login_failed(locust):
+    if locust.login_failed:
+        raise exception.StopUser('Action login_and_view_dashboard failed')
 
 
 logger = init_logger()
