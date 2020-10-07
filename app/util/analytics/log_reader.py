@@ -36,10 +36,6 @@ class BztFileReader(BaseFileReader):
 
     bzt_log_name = 'bzt.log'
     dt_regexp = r'(\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})'
-    jmeter_test_regexp = r'jmeter_\S*'
-    selenium_test_regexp = r'selenium_\S*'
-    locust_test_regexp = r'locust_\S*'
-    success_test_rate_regexp = r'(\d{1,3}.\d{1,2}%)'
 
     def __init__(self):
         self.bzt_log = self.get_bzt_log()
@@ -75,24 +71,6 @@ class BztFileReader(BaseFileReader):
                 break
         return test_duration
 
-    def _get_test_count_by_type(self, tests_type, log):
-        trigger = f' {tests_type}_'
-        test_search_regx = ""
-        if tests_type == 'jmeter':
-            test_search_regx = self.jmeter_test_regexp
-        elif tests_type == 'selenium':
-            test_search_regx = self.selenium_test_regexp
-        elif tests_type == 'locust':
-            test_search_regx = self.locust_test_regexp
-        tests = {}
-        for line in log:
-            if trigger in line and ('FAIL' in line or 'OK' in line):
-                test_name = re.findall(test_search_regx, line)[0]
-                test_rate = float(''.join(re.findall(self.success_test_rate_regexp, line))[:-1])
-                if test_name not in tests:
-                    tests[test_name] = test_rate
-        return tests
-
     def _get_results_bzt_log_part(self):
         test_result_string_trigger = 'Request label stats:'
         res_string_idx = [index for index, value in enumerate(self.bzt_log) if test_result_string_trigger in value]
@@ -102,22 +80,37 @@ class BztFileReader(BaseFileReader):
             results_bzt_run = self.bzt_log[res_string_idx:]
             return results_bzt_run
 
-    @property
-    def selenium_test_rates(self):
-        return self._get_test_count_by_type(tests_type='selenium', log=self.bzt_log_results_part)
+    @staticmethod
+    def _get_all_test_actions(log):
+        test_actions = {}
+        delimiters = ['|', '\x1b(0x\x1b(B']
+        delimiter = None
 
-    @property
-    def jmeter_test_rates(self):
-        return self._get_test_count_by_type(tests_type='jmeter', log=self.bzt_log_results_part)
+        for line in log:
+            if ('FAIL' in line or 'OK' in line) and '%' in line:
+                if not delimiter:
+                    try:
+                        delimiter = [dlm for dlm in delimiters if dlm in line][0]
+                    except SystemExit:
+                        print(f"ERROR: Unknown delimiter in line: {line}. Known delimiters are {delimiters}")
+                line_split = line.split(delimiter)
+                test_name = line_split[1].strip(',').strip()
+                test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
+                test_actions.setdefault(test_name, test_rate)
 
-    @property
-    def locust_test_rates(self):
-        return self._get_test_count_by_type(tests_type='locust', log=self.bzt_log_results_part)
+        if not test_actions:
+            raise SystemExit(f"There are no test actions where found in the {ENV_TAURUS_ARTIFACT_DIR}/bzt.log file")
+
+        return test_actions
 
     @property
     def actual_run_time(self):
         run_time_bzt = self._get_duration_by_test_duration()
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
+
+    @property
+    def all_test_actions(self):
+        return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
 
 class ResultsFileReader(BaseFileReader):
