@@ -1,15 +1,15 @@
-from locust import HttpLocust, TaskSet, task, between
+from locust import HttpUser, task, between
 from locustio.jira.http_actions import login_and_view_dashboard, create_issue, search_jql, view_issue, \
     view_project_summary, view_dashboard, edit_issue, add_comment, browse_boards, view_kanban_board, view_scrum_board, \
     view_backlog, browse_projects
-from locustio.common_utils import LocustConfig
+from locustio.common_utils import LocustConfig, MyBaseTaskSet
 from extension.jira.extension_locust import app_specific_action
 from util.conf import JIRA_SETTINGS
 
 config = LocustConfig(config_yml=JIRA_SETTINGS)
 
 
-class JiraBehavior(TaskSet):
+class JiraBehavior(MyBaseTaskSet):
 
     def on_start(self):
         self.client.verify = config.secure
@@ -68,7 +68,7 @@ class JiraBehavior(TaskSet):
         app_specific_action(self)
 
 
-class JiraUser(HttpLocust):
+class JiraUser(HttpUser):
     host = JIRA_SETTINGS.server_url
-    task_set = JiraBehavior
+    tasks = [JiraBehavior]
     wait_time = between(0, 0)
