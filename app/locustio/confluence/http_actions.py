@@ -1,7 +1,8 @@
 import random
 import re
 import uuid
-from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int,\
+
+from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int, \
     TEXT_HEADERS, NO_TOKEN_HEADERS, JSON_HEADERS, RESOURCE_HEADERS, generate_random_string, init_logger, \
     raise_if_login_failed
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \

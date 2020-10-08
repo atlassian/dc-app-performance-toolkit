@@ -12,6 +12,8 @@ from datetime import datetime
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, AppSettingsExtLoadExecutor
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 from locust import exception
+import inspect
+from locust import TaskSet
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -83,6 +85,33 @@ class Logger(logging.Logger):
             if self.isEnabledFor(logging.INFO):
                 self._log(logging.INFO, msg, args, **kwargs)
 
+
+class MyBaseTaskSet(TaskSet):
+
+    cross_action_storage = dict()  # Cross actions locust storage
+    login_failed = False
+
+    def failure_check(self, response, action_name):
+        if not response:
+            if 'login' in action_name:
+                self.login_failed = True
+            events.request_failure.fire(request_type="Action",
+                                        name=f"locust_{action_name}",
+                                        response_time=0,
+                                        response_length=0,
+                                        exception=str(response.raise_for_status()))
+
+    def get(self, *args, **kwargs):
+        r = self.client.get(*args, **kwargs)
+        action_name = inspect.stack()[1][3]
+        self.failure_check(response=r, action_name=action_name)
+        return r
+
+    def post(self, *args, **kwargs):
+        r = self.client.post(*args, **kwargs)
+        action_name = inspect.stack()[1][3]
+        self.failure_check(response=r, action_name=action_name)
+        return r
 
 def jira_measure(func):
     def wrapper(*args, **kwargs):
