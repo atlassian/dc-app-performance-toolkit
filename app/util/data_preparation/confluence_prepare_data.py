@@ -85,7 +85,7 @@ def __get_custom_pages(confluence_api, count, cql):
         pages = confluence_api.get_content_search(
             0, count, cql=cql)
         if not pages:
-            raise SystemExit(f"There are no Pages in Confluence could be find with CQL: {cql}")
+            raise SystemExit(f"ERROR: There are no pages in Confluence could be found with CQL: {cql}")
     return pages
 
 
