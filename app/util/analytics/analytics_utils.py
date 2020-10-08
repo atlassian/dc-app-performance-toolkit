@@ -7,13 +7,14 @@ from datetime import datetime, timezone
 
 SUCCESS_TEST_RATE = 95.00
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
+APP_SPECIFIC_TAG = 'APP-SPECIFIC'
 
 
 def is_docker():
     path = '/proc/self/cgroup'
     return (
-        os.path.exists('/.dockerenv') or
-        os.path.isfile(path) and any('docker' in line for line in open(path))
+            os.path.exists('/.dockerenv') or
+            os.path.isfile(path) and any('docker' in line for line in open(path))
     )
 
 
@@ -62,18 +63,19 @@ def generate_report_summary(collector):
 
     summary_report.append(f'Finished|{finished}')
     summary_report.append(f'Compliant|{compliant}')
-    summary_report.append(f'Success|{success}\n')
+    summary_report.append(f'Success|{success}')
+    summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    summary_report.append('Action|Success Rate|Status')
-    load_test_rates = {}
-    if collector.conf.load_executor == 'jmeter':
-        load_test_rates = collector.jmeter_test_rates
-    elif collector.conf.load_executor == 'locust':
-        load_test_rates = collector.locust_test_rates
+    summary_report.append('\nAction|Success Rate|Status')
+    load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
         summary_report.append(f'{key}|{value}|{status}')
+
+    for key, value in collector.app_specific_rates.items():
+        status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
+        summary_report.append(f'{key}|{value}|{status}|{APP_SPECIFIC_TAG}')
 
     pretty_report = map(format_string_summary_report, summary_report)
     write_to_file(pretty_report, summary_report_file)
@@ -128,3 +130,20 @@ def get_timestamp():
     utc_now = datetime.utcnow()
     time_stamp = int(round(utc_now.timestamp() * 1000))
     return time_stamp
+
+
+def generate_test_actions_by_type(test_actions, application):
+    selenium_actions = {}
+    jmeter_actions = {}
+    locust_actions = {}
+    app_specific_actions = {}
+    for test_action, value in test_actions.items():
+        if test_action in application.selenium_default_actions:
+            selenium_actions.setdefault(test_action, value)
+        elif test_action in application.locust_default_actions:
+            locust_actions.setdefault(test_action, value)
+        elif test_action in application.jmeter_default_actions:
+            jmeter_actions.setdefault(test_action, value)
+        else:
+            app_specific_actions.setdefault(test_action, value)
+    return selenium_actions, jmeter_actions, locust_actions, app_specific_actions
