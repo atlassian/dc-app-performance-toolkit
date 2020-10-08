@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-02-13"
+date: "2020-10-12"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -21,7 +21,9 @@ To use the Data Center App Performance Toolkit, you'll need to:
 For simple spikes or tests, you can skip steps 1-2 and target any Bitbucket test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
 {{% /note %}}
 
-## <a id="instancesetup"></a> Setting up Bitbucket Data Center
+---
+
+## <a id="instancesetup"></a>1. Setting up Bitbucket Data Center
 
 We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -73,12 +75,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | 6.10.5 or 7.0.5 |
+| Version | The Data Center App Performance Toolkit officially supports `6.10.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `7.0.5` |
 
-The Data Center App Performance Toolkit officially supports:
-
-- Bitbucket Platform release version: 7.0.5
-- Bitbucket [Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.5
 
 **Cluster nodes**
 
@@ -146,7 +144,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 After successfully deploying Bitbucket Data Center in AWS, you'll need to configure it:
 
-1. In the AWS console, go to **Services > CloudFormation > Stack > Stack details > Select your stack**.
+1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
 1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
 1. Open **LoadBalancerURL** in your browser. This will take you to the Bitbucket setup wizard.
 1. On the **Bitbucket setup** page, populate the following fields:
@@ -166,7 +164,9 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 {{% /note %}}
 
-## <a id="preloading"></a> Preloading your Bitbucket deployment with an enterprise-scale dataset
+---
+
+## <a id="preloading"></a>2. Preloading your Bitbucket deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -355,13 +355,11 @@ To check status of indexing:
 In case of any difficulties with Index generation, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
 {{% /note %}}
 
-## <a id="executionhost"></a> Setting up an execution environment
+---
 
-{{% note %}}
-For simple spikes or tests, you can set up an execution environment on your local machine. To do this, clone the [DC App Performance Toolkit repo](https://github.com/atlassian/dc-app-performance-toolkit) and follow the instructions on the `dc-app-performance-toolkit/README.md` file. Make sure your local machine has at least a 4-core CPU and 16GB of RAM.
-{{% /note %}}  
+## <a id="executionhost"></a>3. Setting up an execution environment
 
-If you're using the DC App Performance Toolkit to produce the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/), we recommend that you set up your execution environment on AWS:
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -372,20 +370,35 @@ If you're using the DC App Performance Toolkit to produce the required [performa
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `bitbucket.yml` configuration file and other files as needed.
+1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Jira Data Center parameters:  
+
+``` yaml
+    application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 7990 etc
+    secure: True                    # Set False to allow insecure connections, e.g. when using Self-Signed SSL certificate
+    application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
+    admin_login: admin
+    admin_password: admin
+    load_executor: jmeter           # only jmeter executor is supported
+    concurrency: 20                 # number of concurrent virtual users for jmeter scenario
+    test_duration: 50m
+    ramp-up: 10m                    # time to spin all concurrent users
+    total_actions_per_hour: 32700
+```  
+
 1. Push your changes to the forked repository.
 1. Connect to the AWS EC2 instance and clone forked repository.
 
-Once your environment is set up, you can run the DC App Performance Toolkit:
-
-``` bash
-cd dc-app-performance-toolkit
-docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
-```
+{{% note %}}
+At this stage app-specific actions are not needed yet. Use code from `master` branch with your `bitbucket.yml` changes.
+{{% /note %}}
 
 You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
 
-## <a id="testscenario"></a> Running the test scenarios on your execution environment
+---
+
+## <a id="testscenario"></a> 4. Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -400,33 +413,22 @@ This scenario helps to identify basic performance issues without a need to spin 
 
 #### <a id="regressionrun1"></a> Run 1 (~1 hour)
 
-To receive performance baseline results without an app installed:
+To receive performance baseline results **without** an app installed:
 
-1. On the computer where you cloned the Data Center App Performance Toolkit, navigate to `dc-app-performance-toolkit/app folder`.
-1. Open the `bitbucket.yml` file and fill in the following variables:
-    - `application_hostname`: your_dc_bitbucket_instance_hostname without protocol
-    - `application_protocol`: HTTP or HTTPS
-    - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
-    - `admin_login`: admin user username
-    - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
-    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
-    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
-1. Run bzt.
+1. Use SSH to connect to execution environment.
+1. Run toolkit with docker:
 
     ``` bash
-    bzt bitbucket.yml
+    cd dc-app-performance-toolkit
+    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
     ```
-1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
+
+1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
     - `pytest.*`: logs of Pytest-Selenium execution
-
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
-{{% /note %}}
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
@@ -440,23 +442,23 @@ To receive performance results with an app installed:
 1. Install the app you want to test.
 1. Run bzt.
 
-    ``` bash
-    bzt bitbucket.yml
-    ```
-
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
-{{% /note %}}
+   ``` bash
+    cd dc-app-performance-toolkit
+    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
 {{% /note %}}
 
 
+
 #### Generating a performance regression report
 
 To generate a performance regression report:  
 
+1. Use SSH to connect to execution environment.
+1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -466,7 +468,7 @@ To generate a performance regression report:
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
 
 #### Analyzing report
 
@@ -489,17 +491,41 @@ You can extend Selenium scripts to measure the end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
+#### Example of app-specific Selenium action development
+You develop an app that adds additional UI elements to a repository page, in this case you should edit `dc-app-performance-toolkit/extension/bitbucket/extension_ui.py`:
+
+``` python
+from selenium.webdriver.common.by import By
+from selenium_ui.conftest import print_timing
+from util.conf import BITBUCKET_SETTINGS
+
+from selenium_ui.base_page import BasePage
+
+
+def app_specific_action(webdriver, datasets):
+    page = BasePage(webdriver)
+    repo = datasets['repos']
+    repo_slug = repo[0]
+    project_key = repo[1]
+
+    @print_timing("selenium_app_custom_action")
+    def measure():
+
+        @print_timing("selenium_app_custom_action:view_repo_page")
+        def sub_measure():
+            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/projects/{project_key}/repos/{repo_slug}/browse")
+            page.wait_until_visible((By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')) # Wait for repo navigation panel is visible 
+            page.wait_until_visible((By.ID, 'ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT'))  # Wait for you app-specific UI element by ID selector
+        sub_measure()
+    measure()
+```
+
 In the `bitbucket-ui.py` script, view the following block of code:
 
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
 #     app_specific_action(webdriver, datasets)
 ```
-
-This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
-
-To implement the app_specific_action function, modify the `extension_ui.py` file in the `extension/bitbucket/` directory. The following is an example of the `app_specific_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible.
-
 To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
 
 #### Running tests with your modification
@@ -507,20 +533,23 @@ To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` 
 To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
-To receive scalability benchmark results for one-node Bitbucket DC with app-specific actions, run `bzt`:
 
-``` bash
-bzt bitbucket.yml
-```
+To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions, run `bzt`:
 
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed.
-Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
-{{% /note %}}
+1. Apply app-specific code changes to a new branch of forked repo.
+1. Use SSH to connect to execution environment.
+1. Pull cloned fork repo branch with app-specific actions.
+1. Run toolkit with docker:
+
+   ``` bash
+    cd dc-app-performance-toolkit
+    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
 {{% /note %}}
+
 
 
 ##### <a id="run4"></a> Run 4 (~1 hour)
@@ -531,15 +560,12 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run bzt.
+1. Run toolkit with docker:
 
-    ``` bash
-    bzt bitbucket.yml
-    ```    
-
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
-{{% /note %}}
+   ``` bash
+    cd dc-app-performance-toolkit
+    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
@@ -553,14 +579,10 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
 1. Run bzt.
 
-    ``` bash
-    bzt bitbucket.yml
-    ```    
-
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output.
-Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
-{{% /note %}}
+   ``` bash
+    cd dc-app-performance-toolkit
+    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   ```  
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
@@ -571,23 +593,25 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
+1. Use SSH to connect to execution environment.
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command:
+1. Run the following command from the `virtualenv`:
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
 1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
+
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Bitbucket Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
-
-After completing all your tests, delete your Bitbucket Data Center stacks.
+1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
+1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
+1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
 
 
 ## Support

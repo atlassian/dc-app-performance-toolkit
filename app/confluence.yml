@@ -20,7 +20,7 @@ settings:
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    # Action percentage for Jmeter and Locust load executors
+    # Action percentage for JMeter and Locust load executors
     view_page: 54
     view_dashboard: 6
     view_blog: 8
@@ -32,6 +32,8 @@ settings:
     upload_attachment: 5
     like_page: 3
     standalone_extension: 0 # By default disabled
+    # Custom dataset section.
+    custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
   - module: shellexec
     prepare:

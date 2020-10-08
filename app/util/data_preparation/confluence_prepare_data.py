@@ -5,12 +5,13 @@ import urllib3
 
 from util.conf import CONFLUENCE_SETTINGS
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
-from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS
+from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CUSTOM_PAGES
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 USERS = "users"
 PAGES = "pages"
+CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
@@ -31,9 +32,12 @@ def __create_data_set(rest_client, rpc_client):
     perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
     dataset[PAGES] = __get_pages(perf_user_api, 5000)
     dataset[BLOGS] = __get_blogs(perf_user_api, 5000)
+    dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
     print(f'Blogs count: {len(dataset[BLOGS])}')
+    print('------------------------')
+    print(f'Custom pages count: {len(dataset[CUSTOM_PAGES])}')
     return dataset
 
 
@@ -75,6 +79,16 @@ def __get_pages(confluence_api, count):
     return pages
 
 
+def __get_custom_pages(confluence_api, count, cql):
+    pages = []
+    if cql:
+        pages = confluence_api.get_content_search(
+            0, count, cql=cql)
+        if not pages:
+            raise SystemExit(f"ERROR: There are no pages in Confluence could be found with CQL: {cql}")
+    return pages
+
+
 def __get_blogs(confluence_api, count):
     blogs = confluence_api.get_content_search(
         0, count, cql='type=blogpost'
@@ -105,6 +119,9 @@ def write_test_data_to_files(dataset):
 
     users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(CONFLUENCE_USERS, users)
+
+    custom_pages = [f"{page['id']},{page['space']['key']}" for page in dataset[CUSTOM_PAGES]]
+    __write_to_file(CONFLUENCE_CUSTOM_PAGES, custom_pages)
 
 
 def __is_collaborative_editing_enabled(confluence_api):

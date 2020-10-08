@@ -61,6 +61,8 @@ JIRA_DATASET_KANBAN_BOARDS = __get_jira_dataset('kanban-boards.csv')
 JIRA_DATASET_USERS = __get_jira_dataset('users.csv')
 JIRA_DATASET_ISSUES = __get_jira_dataset('issues.csv')
 JIRA_DATASET_PROJECTS = __get_jira_dataset('projects.csv')
+JIRA_DATASET_CUSTOM_ISSUES = __get_jira_dataset('custom-issues.csv')
+
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()
@@ -68,6 +70,7 @@ CONFLUENCE_USERS = __get_confluence_dataset('users.csv')
 CONFLUENCE_PAGES = __get_confluence_dataset('pages.csv')
 CONFLUENCE_BLOGS = __get_confluence_dataset('blogs.csv')
 CONFLUENCE_STATIC_CONTENT = __get_confluence_dataset('static-content/files_upload.csv')
+CONFLUENCE_CUSTOM_PAGES = __get_confluence_dataset('custom_pages.csv')
 
 BITBUCKET_YML = __get_bitbucket_yml()
 BITBUCKET_DATASETS = __get_bitbucket_datasets()

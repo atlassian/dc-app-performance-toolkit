@@ -41,6 +41,7 @@ class AppSettingsExtLoadExecutor(AppSettings):
         self.env = obj['settings']['env']
         self.verbose = obj['settings']['verbose']
         self.total_actions_per_hour = self.env['total_actions_per_hour']
+        self.custom_dataset_query = self.env['custom_dataset_query']
 
 
 JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)
