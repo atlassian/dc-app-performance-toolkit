@@ -6,7 +6,7 @@ logger = init_logger(app_type='jira')
 
 @jira_measure
 def app_specific_action(locust):
-    r = locust.client.get('/app/get_endpoint')  # call app-specific GET endpoint
+    r = locust.get('/app/get_endpoint')  # call app-specific GET endpoint
     content = r.content.decode('utf-8')   # decode response content
 
     token_pattern_example = '"token":"(.+?)"'
@@ -21,7 +21,7 @@ def app_specific_action(locust):
 
     body = {"id": id, "token": token}  # include parsed variables to POST request body
     headers = {'content-type': 'application/json'}
-    r = locust.client.post('/app/post_endpoint', body, headers)  # call app-specific POST endpoint
+    r = locust.post('/app/post_endpoint', body, headers)  # call app-specific POST endpoint
     content = r.content.decode('utf-8')
     if 'assertion string after successful POST request' not in content:
         logger.error(f"'assertion string after successful POST request' was not found in {content}")
