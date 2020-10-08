@@ -55,7 +55,7 @@ def login_and_view_dashboard(locust):
     if not (f'title="loggedInUser" value="{user[0]}">' in content):
         logger.error(f'User {user[0]} authentication failed: {content}')
     assert f'title="loggedInUser" value="{user[0]}">' in content, 'User authentication failed'
-    
+
     locust.session_data_storage["username"] = user[0]
     locust.session_data_storage["token"] = token
     logger.locust_info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
@@ -331,10 +331,10 @@ def view_dashboard(locust):
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("620"),
                 headers=RESOURCE_HEADERS, catch_response=True)
     locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
-    locust.get(f'/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard&addDefault=true'
-               f'&enableSorting=true&paging=true&showActions=true'
-               f'&jql=assignee+%3D+currentUser()+AND+resolution+%3D+unresolved+ORDER+BY+priority+'
-               f'DESC%2C+created+ASC&sortBy=&startIndex=0&_=1588507042019', catch_response=True)
+    locust.get('/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard&addDefault=true'
+               '&enableSorting=true&paging=true&showActions=true'
+               '&jql=assignee+%3D+currentUser()+AND+resolution+%3D+unresolved+ORDER+BY+priority+'
+               'DESC%2C+created+ASC&sortBy=&startIndex=0&_=1588507042019', catch_response=True)
     locust.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}',
                catch_response=True)
 

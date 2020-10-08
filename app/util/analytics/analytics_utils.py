@@ -64,7 +64,7 @@ def generate_report_summary(collector):
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}\n')
 
-    summary_report.append(f'Action|Success Rate|Status')
+    summary_report.append('Action|Success Rate|Status')
     load_test_rates = {}
     if collector.conf.load_executor == 'jmeter':
         load_test_rates = collector.jmeter_test_rates

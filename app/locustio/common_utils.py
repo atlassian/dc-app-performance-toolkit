@@ -113,6 +113,7 @@ class MyBaseTaskSet(TaskSet):
         self.failure_check(response=r, action_name=action_name)
         return r
 
+
 def jira_measure(func):
     def wrapper(*args, **kwargs):
         start = time.time()
