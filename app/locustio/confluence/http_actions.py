@@ -1,6 +1,5 @@
 import random
 import re
-import uuid
 
 from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int, \
     TEXT_HEADERS, NO_TOKEN_HEADERS, JSON_HEADERS, RESOURCE_HEADERS, generate_random_string, init_logger, \
@@ -19,7 +18,7 @@ def login_and_view_dashboard(locust):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
-    
+
     params = Login()
     user = random.choice(confluence_dataset["users"])
     username = user[0]
