@@ -8,6 +8,7 @@ from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
     CreateBlog, CreateEditPage, UploadAttachments, LikePage
 from util.conf import CONFLUENCE_SETTINGS
+import uuid
 
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
@@ -15,6 +16,10 @@ confluence_dataset = confluence_datasets()
 
 @confluence_measure
 def login_and_view_dashboard(locust):
+    session_id = str(uuid.uuid4())
+    locust.cross_action_storage[session_id] = dict()
+    locust.session_data_storage = locust.cross_action_storage[session_id]
+    
     params = Login()
     user = random.choice(confluence_dataset["users"])
     username = user[0]
@@ -43,9 +48,9 @@ def login_and_view_dashboard(locust):
     locust.get('/rest/dashboardmacros/1.0/updates?maxResults=40&tab=all&showProfilePic=true&labels='
                '&spaces=&users=&types=&category=&spaceKey=', catch_response=True)
 
-    locust.cross_action_storage['build_number'] = build_number
-    locust.cross_action_storage['keyboard_hash'] = keyboard_hash
-    locust.cross_action_storage['username'] = username
+    locust.session_data_storage['build_number'] = build_number
+    locust.session_data_storage['keyboard_hash'] = keyboard_hash
+    locust.session_data_storage['username'] = username
 
 
 def view_page_and_tree(locust):
@@ -75,14 +80,14 @@ def view_page_and_tree(locust):
         for ancestor in ancestor_ids:
             ancestor_str = ancestor_str + str(ancestor) + '&'
 
-        locust.cross_action_storage['page_id'] = parsed_page_id
-        locust.cross_action_storage['has_no_root'] = has_no_root
-        locust.cross_action_storage['tree_request_id'] = tree_request_id
-        locust.cross_action_storage['root_page_id'] = root_page_id
-        locust.cross_action_storage['ancestors'] = ancestor_str
-        locust.cross_action_storage['space_key'] = space_key
-        locust.cross_action_storage['editable'] = editable
-        locust.cross_action_storage['atl_token_view_issue'] = atl_token_view_issue
+        locust.session_data_storage['page_id'] = parsed_page_id
+        locust.session_data_storage['has_no_root'] = has_no_root
+        locust.session_data_storage['tree_request_id'] = tree_request_id
+        locust.session_data_storage['root_page_id'] = root_page_id
+        locust.session_data_storage['ancestors'] = ancestor_str
+        locust.session_data_storage['space_key'] = space_key
+        locust.session_data_storage['editable'] = editable
+        locust.session_data_storage['atl_token_view_issue'] = atl_token_view_issue
 
         locust.get('/rest/helptips/1.0/tips', catch_response=True)
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("110"),
@@ -115,22 +120,22 @@ def view_page_and_tree(locust):
 
     @confluence_measure
     def view_page_tree():
-        tree_request_id = locust.cross_action_storage['tree_request_id'].replace('&amp;', '&')
+        tree_request_id = locust.session_data_storage['tree_request_id'].replace('&amp;', '&')
         # if postfix is set, need to trim it from the tree_request_id to avoid duplication
         if tree_request_id.startswith(CONFLUENCE_SETTINGS.postfix):
             tree_request_id = tree_request_id[len(CONFLUENCE_SETTINGS.postfix):]
-        ancestors = locust.cross_action_storage['ancestors']
-        root_page_id = locust.cross_action_storage['root_page_id']
-        viewed_page_id = locust.cross_action_storage['page_id']
-        space_key = locust.cross_action_storage['space_key']
+        ancestors = locust.session_data_storage['ancestors']
+        root_page_id = locust.session_data_storage['root_page_id']
+        viewed_page_id = locust.session_data_storage['page_id']
+        space_key = locust.session_data_storage['space_key']
         r = ''
         # Page has parent
-        if locust.cross_action_storage['has_no_root'] == 'false':
+        if locust.session_data_storage['has_no_root'] == 'false':
             request = f"{tree_request_id}&hasRoot=true&pageId={root_page_id}&treeId=0&startDepth=0&mobile=false" \
                       f"&{ancestors}treePageId={viewed_page_id}&_={timestamp_int()}"
             r = locust.get(f'{request}', catch_response=True)
         # Page does not have parent
-        elif locust.cross_action_storage['has_no_root'] == 'true':
+        elif locust.session_data_storage['has_no_root'] == 'true':
             request = f"{tree_request_id}&hasRoot=false&spaceKey={space_key}&treeId=0&startDepth=0&mobile=false" \
                       f"&{ancestors}treePageId={viewed_page_id}&_={timestamp_int()}"
             r = locust.get(f'{request}', catch_response=True)
@@ -252,8 +257,8 @@ def open_editor_and_create_blog(locust):
     params = CreateBlog()
     blog = random.choice(confluence_dataset["blogs"])
     blog_space_key = blog[1]
-    build_number = locust.cross_action_storage.get('build_number', '')
-    keyboard_hash = locust.cross_action_storage.get('keyboard_hash', '')
+    build_number = locust.session_data_storage.get('build_number', '')
+    keyboard_hash = locust.session_data_storage.get('keyboard_hash', '')
 
     @confluence_measure
     def create_blog_editor():
@@ -293,7 +298,7 @@ def open_editor_and_create_blog(locust):
         assert atl_token in content, 'Token not found in content.'
 
         contributor_hash = fetch_by_re(params.contribution_hash, content)
-        locust.cross_action_storage['contributor_hash'] = contributor_hash
+        locust.session_data_storage['contributor_hash'] = contributor_hash
 
         r = locust.get(f'/rest/ui/1.0/content/{content_id}/labels', catch_response=True)
         content = r.content.decode('utf-8')
@@ -302,10 +307,10 @@ def open_editor_and_create_blog(locust):
         assert '"success":true' in content, 'Could not get labels for content in blog editor.'
 
         draft_name = f"Performance Blog - {generate_random_string(10, only_letters=True)}"
-        locust.cross_action_storage['draft_name'] = draft_name
-        locust.cross_action_storage['parsed_space_key'] = parsed_space_key
-        locust.cross_action_storage['content_id'] = content_id
-        locust.cross_action_storage['atl_token'] = atl_token
+        locust.session_data_storage['draft_name'] = draft_name
+        locust.session_data_storage['parsed_space_key'] = parsed_space_key
+        locust.session_data_storage['content_id'] = content_id
+        locust.session_data_storage['atl_token'] = atl_token
 
         draft_body = {"draftId": content_id,
                       "pageId": "0",
@@ -325,10 +330,10 @@ def open_editor_and_create_blog(locust):
     @confluence_measure
     def create_blog():
         raise_if_login_failed(locust)
-        draft_name = locust.cross_action_storage['draft_name']
-        parsed_space_key = locust.cross_action_storage['parsed_space_key']
-        content_id = locust.cross_action_storage['content_id']
-        atl_token = locust.cross_action_storage['atl_token']
+        draft_name = locust.session_data_storage['draft_name']
+        parsed_space_key = locust.session_data_storage['parsed_space_key']
+        content_id = locust.session_data_storage['content_id']
+        atl_token = locust.session_data_storage['atl_token']
 
         draft_body = {"status": "current", "title": draft_name, "space": {"key": f"{parsed_space_key}"},
                       "body": {"editor": {"value": f"Test Performance Blog Page Content {draft_name}",
@@ -400,8 +405,8 @@ def create_and_edit_page(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
     space_key = page[1]
-    build_number = locust.cross_action_storage.get('build_number', '')
-    keyboard_hash = locust.cross_action_storage.get('keyboard_hash', '')
+    build_number = locust.session_data_storage.get('build_number', '')
+    keyboard_hash = locust.session_data_storage.get('keyboard_hash', '')
 
     @confluence_measure
     def create_page_editor():
@@ -416,8 +421,8 @@ def create_and_edit_page(locust):
         parsed_space_key = fetch_by_re(params.space_key_re, content)
         atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
-        locust.cross_action_storage['content_id'] = content_id
-        locust.cross_action_storage['atl_token'] = atl_token
+        locust.session_data_storage['content_id'] = content_id
+        locust.session_data_storage['atl_token'] = atl_token
 
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("705"),
                     headers=RESOURCE_HEADERS, catch_response=True)
@@ -450,8 +455,8 @@ def create_and_edit_page(locust):
     def create_page():
         raise_if_login_failed(locust)
         draft_name = f"{generate_random_string(10, only_letters=True)}"
-        content_id = locust.cross_action_storage['content_id']
-        atl_token = locust.cross_action_storage['atl_token']
+        content_id = locust.session_data_storage['content_id']
+        atl_token = locust.session_data_storage['atl_token']
         create_page_body = {
                             "status": "current",
                             "title": f"Test Performance JMeter {draft_name}",
@@ -496,8 +501,8 @@ def create_and_edit_page(locust):
 
         parent_page_id = fetch_by_re(params.parent_page_id, content)
         create_page_id = fetch_by_re(params.create_page_id, content)
-        locust.cross_action_storage['create_page_id'] = create_page_id
-        locust.cross_action_storage['parent_page_id'] = parent_page_id
+        locust.session_data_storage['create_page_id'] = create_page_id
+        locust.session_data_storage['parent_page_id'] = parent_page_id
 
         heartbeat_activity_body = {"dataType": "json",
                                    "contentId": content_id,
@@ -547,7 +552,7 @@ def create_and_edit_page(locust):
     @confluence_measure
     def open_editor():
         raise_if_login_failed(locust)
-        create_page_id = locust.cross_action_storage['create_page_id']
+        create_page_id = locust.session_data_storage['create_page_id']
 
         r = locust.get(f'/pages/editpage.action?pageId={create_page_id}', catch_response=True)
         content = r.content.decode('utf-8')
@@ -563,11 +568,11 @@ def create_and_edit_page(locust):
         edit_page_id = fetch_by_re(params.page_id_re, content)
         edit_parent_page_id = fetch_by_re(params.parent_page_id, content)
 
-        locust.cross_action_storage['edit_parent_page_id'] = edit_parent_page_id
-        locust.cross_action_storage['edit_page_version'] = edit_page_version
-        locust.cross_action_storage['edit_page_id'] = edit_page_id
-        locust.cross_action_storage['atl_token'] = edit_atl_token
-        locust.cross_action_storage['edit_content_id'] = edit_content_id
+        locust.session_data_storage['edit_parent_page_id'] = edit_parent_page_id
+        locust.session_data_storage['edit_page_version'] = edit_page_version
+        locust.session_data_storage['edit_page_id'] = edit_page_id
+        locust.session_data_storage['atl_token'] = edit_atl_token
+        locust.session_data_storage['edit_content_id'] = edit_content_id
 
         locust.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
         heartbeat_activity_body = {"dataType": "json",
@@ -592,24 +597,24 @@ def create_and_edit_page(locust):
     @confluence_measure
     def edit_page():
         raise_if_login_failed(locust)
-        locust.cross_action_storage['draft_name'] = f"{generate_random_string(10, only_letters=True)}"
-        edit_parent_page_id = locust.cross_action_storage['edit_parent_page_id']
-        edit_page_id = locust.cross_action_storage['edit_page_id']
-        content_id = locust.cross_action_storage['edit_content_id']
-        edit_page_version = int(locust.cross_action_storage['edit_page_version']) + 1
-        edit_atl_token = locust.cross_action_storage['atl_token']
+        locust.session_data_storage['draft_name'] = f"{generate_random_string(10, only_letters=True)}"
+        edit_parent_page_id = locust.session_data_storage['edit_parent_page_id']
+        edit_page_id = locust.session_data_storage['edit_page_id']
+        content_id = locust.session_data_storage['edit_content_id']
+        edit_page_version = int(locust.session_data_storage['edit_page_version']) + 1
+        edit_atl_token = locust.session_data_storage['atl_token']
         edit_page_body = dict()
 
         if edit_parent_page_id:
             edit_page_body = {
                   "status": "current",
-                  "title": f"Test Performance Edit with locust {locust.cross_action_storage['draft_name']}",
+                  "title": f"Test Performance Edit with locust {locust.session_data_storage['draft_name']}",
                   "space": {
                     "key": f"{space_key}"
                   },
                   "body": {
                     "storage": {
-                      "value": f"Page edit with locust {locust.cross_action_storage['draft_name']}",
+                      "value": f"Page edit with locust {locust.session_data_storage['draft_name']}",
                       "representation": "storage",
                       "content": {
                         "id": f"{content_id}"
@@ -632,13 +637,13 @@ def create_and_edit_page(locust):
         if not edit_parent_page_id:
             edit_page_body = {
                               "status": "current",
-                              "title": f"Test Performance Edit with locust {locust.cross_action_storage['draft_name']}",
+                              "title": f"Test Performance Edit with locust {locust.session_data_storage['draft_name']}",
                               "space": {
                                 "key": f"{space_key}"
                               },
                               "body": {
                                 "storage": {
-                                  "value": f"Page edit with locust {locust.cross_action_storage['draft_name']}",
+                                  "value": f"Page edit with locust {locust.session_data_storage['draft_name']}",
                                   "representation": "storage",
                                   "content": {
                                     "id": f"{content_id}"
@@ -660,7 +665,7 @@ def create_and_edit_page(locust):
         if 'history' not in content:
             logger.info(f'Could not edit page. Response content: {content}')
         if 'history' not in content:
-            logger.error(f'User {locust.cross_action_storage["username"]} could not edit page {content_id}, '
+            logger.error(f'User {locust.session_data_storage["username"]} could not edit page {content_id}, '
                          f'parent page id: {edit_parent_page_id}: {content}')
         assert 'history' in content, \
                'User could not edit page.'
