@@ -140,7 +140,7 @@ def generate_test_actions_by_type(test_actions, application):
     for test_action, value in test_actions.items():
         if test_action in application.selenium_default_actions:
             selenium_actions.setdefault(test_action, value)
-        elif test_action in application.locust_default_actions:
+        elif application.type != 'bitbucket' and test_action in application.locust_default_actions:
             locust_actions.setdefault(test_action, value)
         elif test_action in application.jmeter_default_actions:
             jmeter_actions.setdefault(test_action, value)
