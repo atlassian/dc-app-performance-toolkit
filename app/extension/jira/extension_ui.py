@@ -9,8 +9,9 @@ from util.conf import JIRA_SETTINGS
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    app_specific_issue = random.choice(datasets['custom_issues'])
-    issue_key = app_specific_issue[0]
+    if datasets['custom_issues']:
+        app_specific_issue = random.choice(datasets['custom_issues'])
+        issue_key = app_specific_issue[0]
 
     @print_timing("selenium_app_custom_action")
     def measure():
