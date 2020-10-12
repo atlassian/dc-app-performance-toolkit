@@ -477,7 +477,7 @@ def view_board(locust, board_id, view_backlog=False):
                    f'&selectedProjectKey={project_key}&_={timestamp_int()}', catch_response=True)
         if view_backlog:
             locust.get(f'/rest/inline-create/1.0/context/bootstrap?query='
-                       f'project%20%3D%20{project_key}%20ORDER%20BY%20Rank%20ASC&&_={timestamp_int()}',
+                       f'project%20%3D%20%22{project_key}%22%20ORDER%20BY%20Rank%20ASC&&_={timestamp_int()}',
                        catch_response=True)
     else:
         locust.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={board_id}'
