@@ -748,7 +748,7 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see a impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
