@@ -8763,7 +8763,7 @@ vars.put(&quot;extend_action&quot;, extend_action);
                       <elementProp name="query" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">true</boolProp>
                         <stringProp name="Argument.name">query</stringProp>
-                        <stringProp name="Argument.value">project = ${x_project_key} ORDER BY Rank ASC</stringProp>
+                        <stringProp name="Argument.value">project = &quot;${x_project_key}&quot; ORDER BY Rank ASC</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                       </elementProp>
