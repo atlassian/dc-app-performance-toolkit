@@ -7,8 +7,9 @@ from selenium_ui.base_page import BasePage
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    app_specific_page = datasets['custom_pages']
-    app_specific_page_id = app_specific_page[0]
+    if datasets['custom_pages']:
+        app_specific_page = datasets['custom_pages']
+        app_specific_page_id = app_specific_page[0]
 
     @print_timing("selenium_app_custom_action")
     def measure():

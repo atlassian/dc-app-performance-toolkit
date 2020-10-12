@@ -848,23 +848,6 @@
             <stringProp name="ThroughputController.percentThroughput">${perc_view_page}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;view_page&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_page" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1896,10 +1879,6 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
                 </hashTree>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view dashboard" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1908,23 +1887,6 @@ vars.put(&quot;tree_request&quot;, request)</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_view_dashboard}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;view_dashboard&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_dashboard" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -2390,10 +2352,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view blog" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -2402,23 +2360,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_view_blog}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;view_blog&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_blog" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -3254,10 +3195,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="search cql" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -3266,23 +3203,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_search_cql}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;search_cql&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_recently_viewed" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -3467,10 +3387,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create blog" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -3479,23 +3395,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_create_blog}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;create_blog&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_create_blog_editor" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -5058,10 +4957,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create and edit page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -5070,23 +4965,6 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
             <stringProp name="ThroughputController.percentThroughput">${perc_create_and_edit_page}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;create_and_edit_page&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_create_page_editor" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -8473,10 +8351,6 @@ if (totalAncestorID &gt; 0)
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="comment page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -8485,23 +8359,6 @@ if (totalAncestorID &gt; 0)
             <stringProp name="ThroughputController.percentThroughput">${perc_comment_page}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;comment_page&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -8602,10 +8459,6 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view attachments" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -8614,23 +8467,6 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_view_attachment}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;view_attachments&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_attachment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -8699,10 +8535,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="upload attachments" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -8711,23 +8543,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_upload_attachment}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;upload_attachments&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If uploadable" enabled="true">
               <stringProp name="TestPlan.comments">Page has to be viewed at least once to extract token
 </stringProp>
@@ -8855,10 +8670,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 </hashTree>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="like page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -8867,23 +8678,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_like_page}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;like_page&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_like_page" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -9061,10 +8855,6 @@ vars.put(&quot;extend_action&quot;, extend_action);
                 </hashTree>
               </hashTree>
             </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="standalone extension" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -9073,120 +8863,105 @@ vars.put(&quot;extend_action&quot;, extend_action);
             <stringProp name="ThroughputController.percentThroughput">${perc_standalone_extension}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="extend action" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_app_specific_action" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
             <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="extend base action" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">extend_action = &quot;standalone_extension&quot;
-vars.put(&quot;extend_action&quot;, extend_action);
-</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
-            </hashTree>
-            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="jmeter_extension" enabled="true">
-              <stringProp name="IncludeController.includepath">extension/confluence/extension.jmx</stringProp>
-            </IncludeController>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/app/get_endpoint</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_id" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                <stringProp name="RegexExtractor.refname">app_id</stringProp>
-                <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_token" enabled="true">
-                <stringProp name="TestPlan.comments">				</stringProp>
-                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                <stringProp name="RegexExtractor.refname">app_token</stringProp>
-                <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-787535121">assertion string</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoint" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="id" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${app_id}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">id</stringProp>
-                  </elementProp>
-                  <elementProp name="token" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${app_token}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">token</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path"></stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-787535121">assertion string</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/app/get_endpoint</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_id" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">app_id</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_token" enabled="true">
+                  <stringProp name="TestPlan.comments">				</stringProp>
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">app_token</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-787535121">assertion string</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoint" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="id" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${app_id}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">id</stringProp>
+                    </elementProp>
+                    <elementProp name="token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${app_token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">token</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/app/post_endpoint</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-787535121">assertion string</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
             </hashTree>
           </hashTree>
           <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
