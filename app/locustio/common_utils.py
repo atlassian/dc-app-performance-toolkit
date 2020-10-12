@@ -92,7 +92,7 @@ class MyBaseTaskSet(TaskSet):
     login_failed = False
 
     def failure_check(self, response, action_name):
-        if not response:
+        if hasattr(response, 'error') or not response:
             if 'login' in action_name:
                 self.login_failed = True
             events.request_failure.fire(request_type="Action",
