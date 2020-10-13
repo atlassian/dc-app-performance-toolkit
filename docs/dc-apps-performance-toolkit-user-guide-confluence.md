@@ -146,15 +146,19 @@ After creating the development environment Confluence Data Center, generate test
 1. Navigate to `dc-app-performance-toolkit/app` folder.
 1. Open the `confluence.yml` file and fill in the following variables:
     - `application_hostname`: your_dc_confluence_instance_hostname without protocol.
-    - `application_protocol`: HTTP or HTTPS.
-    - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
+    - `application_protocol`: http or https.
+    - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 1990 or your instance-specific port.
+    - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
+    - `application_postfix`: it is empty by default; e.g., /confluence for url like this http://localhost:1990/confluence.
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
     - `concurrency`: `2` - number of concurrent JMeter/Locust users.
     - `test_duration`: `5m` - duration of the performance run.
     - `ramp-up`: `5s` - amount of time it will take JMeter or Locust to add all test users to test execution.
-    - `total_actions_per_hour`: `2000` - number of total JMeter/Locust actions per hour
+    - `total_actions_per_hour`: `2000` - number of total JMeter/Locust actions per hour.
+    - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
+
 1. Run bzt.
 
     ``` bash
@@ -654,15 +658,15 @@ For generating performance results suitable for Marketplace approval process use
     application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using Self-Signed SSL certificate
+    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
     admin_login: admin
     admin_password: admin
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
     concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500
+    ramp-up: 5m                     # time to spin all concurrent users
+    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour.
 ```  
 
 1. Push your changes to the forked repository.

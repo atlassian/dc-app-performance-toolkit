@@ -12,16 +12,19 @@ in the official User Guide to set up Jira DC with the corresponding dataset.
 For spiking, testing, or developing, your local Jira instance would work well.
 
 ## Step 1: Update jira.yml
-* `application_hostname`: test jira hostname (without http)
-* `application_protocol`: http or https
-* `application_port`: 80 (for http) or 443 (for https), or custom
-* `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira
-* `admin_login`: jira admin user name (after restoring dataset from SQL dump, the admin user name is: admin)
-* `admin_password`: jira admin user password (after restoring dataset from SQL dump, the admin user password is: admin) 
-* `concurrency`: number of concurrent users for JMeter scenario
-* `test_duration`: duration of test execution (45m is by default)
-* `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default)
-* `load_executor`: `jmeter` or `locust` load executor. `jmeter` is using by default.
+* `application_hostname`: test jira hostname (without http).
+* `application_protocol`: http or https.
+* `application_port`: 80 (for http) or 443 (for https), 8080, 2990 or your instance-specific port.
+* `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
+* `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira.
+* `admin_login`: jira admin user name (after restoring dataset from SQL dump, the admin user name is: admin).
+* `admin_password`: jira admin user password (after restoring dataset from SQL dump, the admin user password is: admin) .
+* `load_executor`: `executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
+* `concurrency`: `200` - number of concurrent users for JMeter scenario.
+* `test_duration`: `45m` - duration of test execution.
+* `ramp-up`: `3m` - amount of time it will take JMeter or Locust to add all test users to test execution.
+* `total_actions_per_hour`: `54500` - number of total JMeter/Locust actions per hour.
+* `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
 
 ## Step 2: Run tests
 Run Taurus.
