@@ -19,7 +19,7 @@ For spiking, testing, or developing, your local Confluence instance would work w
 * `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:1990/confluence.
 * `admin_login`: jira admin user name (after restoring dataset from SQL dump, the admin user name is: admin).
 * `admin_password`: jira admin user password (after restoring dataset from SQL dump, the admin user password is: admin) .
-* `load_executor`: `executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
+* `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
 * `concurrency`: `200` - number of concurrent users for JMeter scenario.
 * `test_duration`: `45m` - duration of test execution.
 * `ramp-up`: `5m` - amount of time it will take JMeter or Locust to add all test users to test execution.
