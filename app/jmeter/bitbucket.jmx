@@ -641,6 +641,11 @@ vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + v
                   <stringProp name="Argument.value">${__P(GIT_SSH_COMMAND)}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
+                <elementProp name="GIT_SSL_NO_VERIFY" elementType="Argument">
+                  <stringProp name="Argument.name">GIT_SSL_NO_VERIFY</stringProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
               </collectionProp>
             </elementProp>
             <stringProp name="SystemSampler.directory">${__P(GIT_TMP_WORKSPACE)}</stringProp>
@@ -889,6 +894,11 @@ file.withWriterAppend(&apos;utf-8&apos;) { writer -&gt;
                     <stringProp name="Argument.value">${__P(GIT_SSH_COMMAND)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
+                  <elementProp name="GIT_SSL_NO_VERIFY" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSL_NO_VERIFY</stringProp>
+                    <stringProp name="Argument.value">1</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
                 </collectionProp>
               </elementProp>
               <stringProp name="SystemSampler.directory">${REPO_FOLDER}</stringProp>
@@ -940,6 +950,11 @@ if (responseCode != &quot;0&quot;) {
                   <elementProp name="GIT_SSH_COMMAND" elementType="Argument">
                     <stringProp name="Argument.name">GIT_SSH_COMMAND</stringProp>
                     <stringProp name="Argument.value">${__P(GIT_SSH_COMMAND)}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="GIT_SSL_NO_VERIFY" elementType="Argument">
+                    <stringProp name="Argument.name">GIT_SSL_NO_VERIFY</stringProp>
+                    <stringProp name="Argument.value">1</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
