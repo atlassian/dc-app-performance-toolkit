@@ -376,7 +376,7 @@ For generating performance results suitable for Marketplace approval process use
     application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 7990 etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using Self-Signed SSL certificate
+    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
     admin_login: admin
     admin_password: admin
@@ -384,7 +384,7 @@ For generating performance results suitable for Marketplace approval process use
     concurrency: 20                 # number of concurrent virtual users for jmeter scenario
     test_duration: 50m
     ramp-up: 10m                    # time to spin all concurrent users
-    total_actions_per_hour: 32700
+    total_actions_per_hour: 32700   # number of total JMeter actions per hour
 ```  
 
 1. Push your changes to the forked repository.

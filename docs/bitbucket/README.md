@@ -13,15 +13,18 @@ in the official User Guide to set up Bitbucket DC with the corresponding dataset
 For spiking, testing, or developing, your local Bitbucket instance would work well.
 
 ## Step 1: Update bitbucket.yml
-* `application_hostname`: test bitbucket hostname (without http)
-* `application_protocol`: http or https
-* `application_port`: 80 (for http) or 443 (for https), or custom
-* `application_postfix`: it is empty by default; e.g., /bitbucket for url like this http://localhost:7990/bitbucket
-* `admin_login`: bitbucket admin user name (after restoring dataset from SQL dump, the admin user name is: admin)
-* `admin_password`: bitbucket admin user password (after restoring dataset from SQL dump, the admin user password is: admin) 
-* `concurrency`: number of concurrent users for JMeter scenario
-* `test_duration`: duration of test execution (50m is by default)
-* `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default)
+* `application_hostname`: test bitbucket hostname (without http).
+* `application_protocol`: http or https.
+* `application_port`: 80 (for http) or 443 (for https), 8080, 7990 or your instance-specific port.
+* `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
+* `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:7990/bitbucket.
+* `admin_login`: jira admin user name (after restoring dataset from SQL dump, the admin user name is: admin).
+* `admin_password`: jira admin user password (after restoring dataset from SQL dump, the admin user password is: admin) .
+* `concurrency`: `20` - number of concurrent users for JMeter scenario.
+* `test_duration`: `50m` - duration of test execution.
+* `ramp-up`: `10m` - amount of time it will take JMeter to add all test users to test execution.
+* `total_actions_per_hour`: `32700` - number of total JMeter actions per hour.
+* `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
 
 ## Step 2: Run tests
 Run Taurus.
