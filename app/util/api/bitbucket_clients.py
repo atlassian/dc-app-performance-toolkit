@@ -88,8 +88,13 @@ class BitbucketRestClient(RestClient):
 
     def get_pull_request(self, project_key, repo_key):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests'
-        response = self.get(api_url, f'Could not retrieve pull requests list')
+        response = self.get(api_url, 'Could not retrieve pull requests list')
         return response.json()
+
+    def check_pull_request_has_conflicts(self, project_key, repo_key, pr_id):
+        api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests/{pr_id}/merge'
+        response = self.get(api_url, f'Could not get pull request merge status')
+        return response.json()['conflicted']
 
     def create_user(self, username, password=None, email=None):
         start_time = time.time()
@@ -137,6 +142,13 @@ class BitbucketRestClient(RestClient):
         r = session.post(url, data=body, headers=headers)
         cluster_html = r.content.decode("utf-8")
         return cluster_html
+
+    def get_bitbucket_nodes_count(self):
+        cluster_page = self.get_bitbucket_cluster_page()
+        nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
+        if nodes_count == 0:
+            nodes_count = "Server"
+        return nodes_count
 
     def get_bitbucket_system_page(self):
         session = self._session

@@ -1,73 +1,74 @@
-from locust import HttpLocust, TaskSet, task, between
+from locust import HttpUser, task, between
 from locustio.jira.http_actions import login_and_view_dashboard, create_issue, search_jql, view_issue, \
     view_project_summary, view_dashboard, edit_issue, add_comment, browse_boards, view_kanban_board, view_scrum_board, \
     view_backlog, browse_projects
-from locustio.common_utils import ActionPercentage
+from locustio.common_utils import LocustConfig, MyBaseTaskSet
 from extension.jira.extension_locust import app_specific_action
 from util.conf import JIRA_SETTINGS
 
-action = ActionPercentage(config_yml=JIRA_SETTINGS)
+config = LocustConfig(config_yml=JIRA_SETTINGS)
 
 
-class JiraBehavior(TaskSet):
+class JiraBehavior(MyBaseTaskSet):
 
     def on_start(self):
+        self.client.verify = config.secure
         login_and_view_dashboard(self)
 
-    @task(action.percentage('create_issue'))
+    @task(config.percentage('create_issue'))
     def create_issue_action(self):
         create_issue(self)
 
-    @task(action.percentage('search_jql'))
+    @task(config.percentage('search_jql'))
     def search_jql_action(self):
         search_jql(self)
 
-    @task(action.percentage('view_issue'))
+    @task(config.percentage('view_issue'))
     def view_issue_action(self):
         view_issue(self)
 
-    @task(action.percentage('view_project_summary'))
+    @task(config.percentage('view_project_summary'))
     def view_project_summary_action(self):
         view_project_summary(self)
 
-    @task(action.percentage('view_dashboard'))
+    @task(config.percentage('view_dashboard'))
     def view_dashboard_action(self):
         view_dashboard(self)
 
-    @task(action.percentage('edit_issue'))
+    @task(config.percentage('edit_issue'))
     def edit_issue_action(self):
         edit_issue(self)
 
-    @task(action.percentage('add_comment'))
+    @task(config.percentage('add_comment'))
     def add_comment_action(self):
         add_comment(self)
 
-    @task(action.percentage('browse_projects'))
+    @task(config.percentage('browse_projects'))
     def browse_projects_action(self):
         browse_projects(self)
 
-    @task(action.percentage('view_kanban_board'))
+    @task(config.percentage('view_kanban_board'))
     def view_kanban_board_action(self):
         view_kanban_board(self)
 
-    @task(action.percentage('view_scrum_board'))
+    @task(config.percentage('view_scrum_board'))
     def view_scrum_board_action(self):
         view_scrum_board(self)
 
-    @task(action.percentage('view_backlog'))
+    @task(config.percentage('view_backlog'))
     def view_backlog_action(self):
         view_backlog(self)
 
-    @task(action.percentage('browse_boards'))
+    @task(config.percentage('browse_boards'))
     def browse_boards_action(self):
         browse_boards(self)
 
-    @task(action.percentage('standalone_extension'))  # By default disabled
+    @task(config.percentage('standalone_extension'))  # By default disabled
     def custom_action(self):
         app_specific_action(self)
 
 
-class JiraUser(HttpLocust):
+class JiraUser(HttpUser):
     host = JIRA_SETTINGS.server_url
-    task_set = JiraBehavior
+    tasks = [JiraBehavior]
     wait_time = between(0, 0)

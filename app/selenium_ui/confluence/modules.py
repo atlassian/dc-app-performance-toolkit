@@ -4,11 +4,20 @@ from selenium_ui.conftest import print_timing
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
 
+USERS = "users"
+PAGES = "pages"
+CUSTOM_PAGES = "custom_pages"
+BLOGS = "blogs"
+
 
 def setup_run_data(datasets):
-    user = random.choice(datasets["users"])
-    page = random.choice(datasets["pages"])
-    blog = random.choice(datasets["blogs"])
+    user = random.choice(datasets[USERS])
+    page = random.choice(datasets[PAGES])
+    if CUSTOM_PAGES in datasets:
+        if len(datasets[CUSTOM_PAGES]) > 0:
+            custom_page = random.choice(datasets[CUSTOM_PAGES])
+            datasets['custom_page_id'] = custom_page[0]
+    blog = random.choice(datasets[BLOGS])
     datasets['username'] = user[0]
     datasets['password'] = user[1]
     datasets['page_id'] = page[0]

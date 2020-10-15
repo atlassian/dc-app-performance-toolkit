@@ -15,6 +15,7 @@ KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
 USERS = "users"
 ISSUES = "issues"
+CUSTOM_ISSUES = "custom_issues"
 JQLS = "jqls"
 PROJECTS = "projects"
 
@@ -24,6 +25,11 @@ def setup_run_data(datasets):
     projects_count = len(datasets[PROJECTS])
     user = random.choice(datasets[USERS])
     issue = random.choice(datasets[ISSUES])
+    if CUSTOM_ISSUES in datasets:
+        if len(datasets[CUSTOM_ISSUES]) > 0:
+            custom_issue = random.choice(datasets[CUSTOM_ISSUES])
+            datasets['custom_issue_key'] = custom_issue[0]
+            datasets['custom_issue_id'] = custom_issue[1]
     scrum_boards = random.choice(datasets[SCRUM_BOARDS])
     kanban_boards = random.choice(datasets[KANBAN_BOARDS])
     projects = random.choice(datasets[PROJECTS])

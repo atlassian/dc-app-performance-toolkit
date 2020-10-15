@@ -7,7 +7,7 @@ from util.analytics.application_info import ApplicationSelector, BaseApplication
 from util.analytics.log_reader import BztFileReader, ResultsFileReader
 from util.conf import TOOLKIT_VERSION
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
-    uniq_user_id, generate_report_summary, get_first_elem
+    uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -37,9 +37,9 @@ class AnalyticsCollector:
         self.duration = convert_to_sec(self.conf.duration)
         self.concurrency = self.conf.concurrency
         self.actual_duration = bzt_log.actual_run_time
-        self.selenium_test_rates = bzt_log.selenium_test_rates
-        self.jmeter_test_rates = bzt_log.jmeter_test_rates if self.conf.load_executor == 'jmeter' else dict()
-        self.locust_test_rates = bzt_log.locust_test_rates if self.conf.load_executor == 'locust' else dict()
+        self.all_test_actions = bzt_log.all_test_actions
+        self.selenium_test_rates, self.jmeter_test_rates, self.locust_test_rates, self.app_specific_rates = \
+            generate_test_actions_by_type(test_actions=self.all_test_actions, application=application)
         self.time_stamp = get_timestamp()
         self.date = get_date()
         self.application_version = application.version
@@ -128,7 +128,7 @@ def send_analytics(collector: AnalyticsCollector):
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
     if r.status_code != 200:
-        print(f'Analytics data was send unsuccessfully, status code {r.status_code}')
+        print(f'Warning: Analytics data was send unsuccessfully, status code {r.status_code}')
 
 
 def main():

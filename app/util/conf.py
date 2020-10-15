@@ -2,7 +2,7 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML
 
-TOOLKIT_VERSION = '3.1.0'
+TOOLKIT_VERSION = '3.2.0'
 
 
 def read_yml_file(file):
@@ -26,6 +26,7 @@ class AppSettings:
         self.analytics_collector = env_settings['allow_analytics']
         self.load_executor = env_settings['load_executor']
         self.webdriver_visible = env_settings['WEBDRIVER_VISIBLE']
+        self.secure = env_settings['secure']
 
     @property
     def server_url(self):
@@ -40,6 +41,7 @@ class AppSettingsExtLoadExecutor(AppSettings):
         self.env = obj['settings']['env']
         self.verbose = obj['settings']['verbose']
         self.total_actions_per_hour = self.env['total_actions_per_hour']
+        self.custom_dataset_query = self.env['custom_dataset_query']
 
 
 JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)

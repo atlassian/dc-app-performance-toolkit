@@ -6,22 +6,23 @@ logger = init_logger(app_type='jira')
 
 @jira_measure
 def app_specific_action(locust):
-    r = locust.client.get('/plugin/report')  # navigate to page
+    r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
+    content = r.content.decode('utf-8')   # decode response content
 
-    content = r.content.decode('utf-8')  # parse page content
     token_pattern_example = '"token":"(.+?)"'
     id_pattern_example = '"id":"(.+?)"'
-    token = re.findall(token_pattern_example, content)  # parse variables from response using regexp
-    id = re.findall(id_pattern_example, content)
-    logger.locust_info(f'token: {token}, id: {id}')  # logger for debug when verbose is true in jira.yml file
+    token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
+    id = re.findall(id_pattern_example, content)    # get ID from response using regexp
+
+    logger.locust_info(f'token: {token}, id: {id}')  # log information for debug when verbose is true in confluence.yml file
     if 'assertion string' not in content:
         logger.error(f"'assertion string' was not found in {content}")
-    assert 'assertion string' in content  # assertion after GET request
+    assert 'assertion string' in content  # assert specific string in response content
 
-    body = {"id": id, "token": token}  # include parsed variables to POST body
+    body = {"id": id, "token": token}  # include parsed variables to POST request body
     headers = {'content-type': 'application/json'}
-    r = locust.client.post('/plugin/post/endpoint', body, headers)  # send some POST request
+    r = locust.post('/app/post_endpoint', body, headers, catch_response=True)  # call app-specific POST endpoint
     content = r.content.decode('utf-8')
-    if 'assertion string after successful post request' not in content:
-        logger.error(f"'assertion string after successful post request' was not found in {content}")
-    assert 'assertion string after successful post request' in content  # assertion after POST request
+    if 'assertion string after successful POST request' not in content:
+        logger.error(f"'assertion string after successful POST request' was not found in {content}")
+    assert 'assertion string after successful POST request' in content  # assertion after POST request
