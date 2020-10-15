@@ -307,7 +307,7 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/jira.jmx`.
 2. Open `Jira` thread group > `actions per login` and navigate to `standalone_extension`
-![Jira JMeter standalone extension](/platform/marketplace/images/jira-standalone-extenstion.png)
+![Jira JMeter standalone extension](/platform/marketplace/images/jira-standalone-extension.png)
 3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
 ![Jira JMeter standalone GET](/platform/marketplace/images/jira-standalone-get-request.png)
 4. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
