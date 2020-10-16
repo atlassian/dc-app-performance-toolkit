@@ -13,7 +13,7 @@ RUN apt-get -y update \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1 \
   && python -m pip install --upgrade pip \
   && python -m pip install --upgrade setuptools \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get clean
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
