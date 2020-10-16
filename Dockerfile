@@ -13,10 +13,10 @@ RUN apt-get -y update \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1 \
   && python -m pip install --upgrade pip \
   && python -m pip install --upgrade setuptools \
-  && apt-get clean
+  && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 RUN rm -rf /root/.bzt/jmeter-taurus/
 
