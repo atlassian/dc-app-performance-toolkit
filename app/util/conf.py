@@ -1,6 +1,6 @@
 import yaml
 
-from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML
+from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSD_YML
 
 TOOLKIT_VERSION = '4.0.0'
 
@@ -47,3 +47,4 @@ class AppSettingsExtLoadExecutor(AppSettings):
 JIRA_SETTINGS = AppSettingsExtLoadExecutor(config_yml=JIRA_YML)
 CONFLUENCE_SETTINGS = AppSettingsExtLoadExecutor(config_yml=CONFLUENCE_YML)
 BITBUCKET_SETTINGS = AppSettings(config_yml=BITBUCKET_YML)
+JSD_SETTINGS = AppSettings(config_yml=JSD_YML)

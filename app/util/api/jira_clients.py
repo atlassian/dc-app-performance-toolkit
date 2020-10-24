@@ -1,4 +1,4 @@
-from util.api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
 from selenium.common.exceptions import WebDriverException
 
 BATCH_SIZE_BOARDS = 1000
@@ -123,7 +123,7 @@ class JiraRestClient(RestClient):
         response = self.post(api_url, "Could not retrieve issues", body=body)
         return response.json().get('total', 0)
 
-    def create_user(self, display_name=None, email=None, name='', password=''):
+    def create_user(self, display_name=None, email=None, name='', password='', application_keys=None):
         """
         Creates a user. This resource is retained for legacy compatibility.
         As soon as a more suitable alternative is available this resource will be deprecated.
@@ -131,6 +131,7 @@ class JiraRestClient(RestClient):
         :param password: A password for the user. If a password is not set, a random password is generated.
         :param email: tThe email address for the user. Required.
         :param display_name: The display name for the user. Required.
+        :param application_keys
         :return: Returns the created user.
         """
         api_url = self._host + "/rest/api/2/user"
@@ -140,6 +141,10 @@ class JiraRestClient(RestClient):
             "emailAddress": email or name + '@localdomain.com',
             "displayName": display_name or name
         }
+
+        if application_keys is not None:
+            payload["applicationKeys"] = application_keys
+
         response = self.post(api_url, "Could not create user", body=payload)
 
         return response.json()
@@ -184,7 +189,7 @@ class JiraRestClient(RestClient):
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        headers = self.LOGIN_POST_HEADERS
+        headers = LOGIN_POST_HEADERS
         headers['Origin'] = self.host
 
         session.post(url=login_url, data=login_body, headers=headers)

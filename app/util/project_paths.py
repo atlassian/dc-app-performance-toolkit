@@ -7,6 +7,10 @@ def __get_jira_yml():
     return Path(__file__).parents[1] / "jira.yml"
 
 
+def __get_jsd_yml():
+    return Path(__file__).parents[1] / "jsd.yml"
+
+
 def __get_datasets():
     return Path(__file__).parents[1] / "datasets"
 
@@ -15,8 +19,16 @@ def __get_jira_datasets():
     return __get_datasets() / "jira"
 
 
+def __get_jsd_datasets():
+    return __get_datasets() / "jsd"
+
+
 def __get_jira_dataset(file_name):
     return __get_jira_datasets() / file_name
+
+
+def __get_jsd_dataset(file_name):
+    return __get_jsd_datasets() / file_name
 
 
 def __get_confluence_yml():
@@ -63,6 +75,12 @@ JIRA_DATASET_ISSUES = __get_jira_dataset('issues.csv')
 JIRA_DATASET_PROJECTS = __get_jira_dataset('projects.csv')
 JIRA_DATASET_CUSTOM_ISSUES = __get_jira_dataset('custom-issues.csv')
 
+JSD_YML = __get_jsd_yml()
+JSD_DATASETS = __get_jsd_datasets()
+JSD_DATASET_AGENTS = __get_jsd_dataset('agents.csv')
+JSD_DATASET_CUSTOMERS = __get_jsd_dataset('customers.csv')
+JSD_DATASET_ISSUES = __get_jsd_dataset('issues.csv')
+JSD_DATASET_SERVICE_DESKS = __get_jsd_dataset('service_desks.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()
