@@ -1,11 +1,15 @@
+import functools
+import math
+import random
+import string
+from datetime import timedelta
+from timeit import default_timer as timer
+
+from util.api.abstract_clients import JSD_EXPERIMENTAL_HEADERS
+from util.api.jira_clients import JiraRestClient
+from util.api.jsd_clients import JsdRestClient
 from util.conf import JSD_SETTINGS
 from util.project_paths import JSD_DATASET_AGENTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_ISSUES, JSD_DATASET_SERVICE_DESKS
-from util.api.jsd_clients import JsdRestClient
-from util.api.jira_clients import JiraRestClient
-from util.api.abstract_clients import JSD_EXPERIMENTAL_HEADERS
-import math
-import string
-import random
 
 ERROR_LIMIT = 10
 DEFAULT_AGENT_PREFIX = 'performance_agent_'
@@ -26,6 +30,21 @@ TOTAL_ISSUES_TO_RETRIEVE = 100
 
 performance_agents_count = math.ceil(JSD_SETTINGS.concurrency * AGENT_PERCENTAGE / 100)
 performance_customers_count = JSD_SETTINGS.concurrency - performance_agents_count
+
+
+def print_timing(message):
+    assert message is not None, "Message is not passed to print_timing decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = timer()
+            result = func(*args, **kwargs)
+            end = timer()
+            print(f"{message} finished in {timedelta(seconds=end-start)} seconds")
+            return result
+        return wrapper
+    return deco_wrapper
 
 
 def __calculate_issues_per_project(projects_count):
@@ -103,10 +122,12 @@ def __get_jsd_users(jira_client, jsd_client=None, is_agent=False):
     return perf_users
 
 
+@print_timing('Retrieved agents')
 def __get_agents(api):
     return __get_jsd_users(api, is_agent=True)
 
 
+@print_timing('Retrieved customers')
 def __get_customers(jira_client, jsd_client):
     customers = __get_jsd_users(jira_client, jsd_client=jsd_client, is_agent=False)
 
@@ -139,6 +160,7 @@ def generate_users(api, num_to_create, application_keys, prefix_name):
     return created_agents
 
 
+@print_timing('Retrieved service desks')
 def __get_service_desks(jsd_api):
     service_desks = jsd_api.get_all_service_desks()
     if not service_desks:
@@ -150,6 +172,7 @@ def __get_service_desks(jsd_api):
     return service_desks_list
 
 
+@print_timing('Retrieved customers requests')
 def __get_requests(jsd_api, jira_api):
     service_desks_issues = []
     service_desks = jsd_api.get_all_service_desks()
@@ -236,26 +259,22 @@ def __create_data_set(jira_client, jsd_client):
 def write_test_data_to_files(datasets):
     agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
     __write_to_file(JSD_DATASET_AGENTS, agents)
-
     __write_to_file(JSD_DATASET_CUSTOMERS, datasets[CUSTOMERS])
     __write_to_file(JSD_DATASET_ISSUES, datasets[ISSUES])
     __write_to_file(JSD_DATASET_SERVICE_DESKS, datasets[SERVICE_DESKS])
 
 
+@print_timing('Full prepare data')
 def main():
     print("Started preparing data")
     url = JSD_SETTINGS.server_url
     print("Server url: ", url)
-
     jsd_client = JsdRestClient(url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password,
                                headers=JSD_EXPERIMENTAL_HEADERS)
     jira_client = JiraRestClient(url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password)
 
-    import time
-    time_now = time.time()
     dataset = __create_data_set(jira_client=jira_client, jsd_client=jsd_client)
     write_test_data_to_files(dataset)
-    print("--- %s seconds ---" % (time.time() - time_now))  # TODO delete it after fully developing prepare_data.py
 
 
 if __name__ == "__main__":
