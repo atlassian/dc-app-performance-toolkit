@@ -1,10 +1,35 @@
 #!/bin/bash
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --jsd) jsd=1 ;;
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+if [[ ! `systemctl status jira` ]]; then
+ echo "The Jira service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Jira."
+ exit 1
+fi
 
 ###################    Variables section         ###################
 # Jira version variables
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
+if [[ ${jsd} == 1 ]]; then
+  JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
+  SUPPORTED_JIRA_VERSIONS=(4.13.0)
+fi
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
         echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
@@ -14,19 +39,21 @@ fi
 echo "Jira Version: ${JIRA_VERSION}"
 
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+if [[ ${jsd} == 1 ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsd"
+fi
 ATTACHMENTS_TAR="attachments.tar.gz"
 ATTACHMENTS_DIR="attachments"
+AVATARS_DIR="avatars"
 DATASETS_SIZE="large"
+if [[ ${jsd} == 1 && ${small} == 1 ]]; then
+  # Only JSD supports "small" dataset
+  DATASETS_SIZE="small"
+fi
 ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
 TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
-
-if [[ ! `systemctl status jira` ]]; then
- echo "The Jira service was not found on this host." \
- "Please make sure you are running this script on a host that is running Jira."
- exit 1
-fi
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
@@ -36,10 +63,10 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "e.g. ./upload_attachments --force 8.0.3"
   echo "!!! Warning !!! This may broke your Jira instance."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${2} " ]]; then
-      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${version} " ]]; then
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
@@ -110,6 +137,12 @@ sudo su -c "rm -rf ${ATTACHMENTS_TAR}"
 echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
+
+if [[ ${jsd} == 1 ]]; then
+  echo "Step5: Copy avatars to EFS"
+  sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${AVATARS_DIR} ${EFS_DIR}"
+  sudo su -c "rm -rf ${AVATARS_DIR}"
+fi
 
 echo "Finished"
 echo  # move to a new line
