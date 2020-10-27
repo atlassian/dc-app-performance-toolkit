@@ -41,13 +41,19 @@ execution:
 #    concurrency: ${concurrency}
 #    hold-for: ${test_duration}
 #    ramp-up: ${ramp-up}
-#  - scenario: selenium
-#    executor: selenium
-#    runner: pytest
-#    hold-for: ${test_duration}
+  - scenario: selenium_customers
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+  - scenario: selenium_agents
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
 scenarios:
-  selenium:
-    script: selenium_ui/jsd_ui.py
+  selenium_customers:
+    script: selenium_ui/jsd_ui_customers.py
+  selenium_agents:
+    script: selenium_ui/jsd_ui_agents.py
   locust:
     script: locustio/jsd/locustfile.py
   jmeter:
