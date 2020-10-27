@@ -33,7 +33,6 @@ def setup_run_data(datasets):
     if customer_request:
         datasets['customer_service_desk_id'] = customer_request[0]
         datasets['customer_request_key'] = customer_request[1]
-    print('asd')
 
     # Define request dataset
     datasets['request_id'] = request[0]
