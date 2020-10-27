@@ -9,7 +9,7 @@ from util.api.abstract_clients import JSD_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsd_clients import JsdRestClient
 from util.conf import JSD_SETTINGS
-from util.project_paths import JSD_DATASET_AGENTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_ISSUES, JSD_DATASET_SERVICE_DESKS
+from util.project_paths import JSD_DATASET_AGENTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_REQUESTS, JSD_DATASET_SERVICE_DESKS
 
 ERROR_LIMIT = 10
 DEFAULT_AGENT_PREFIX = 'performance_agent_'
@@ -19,7 +19,7 @@ DEFAULT_PASSWORD = 'password'
 
 AGENTS = "agents"
 CUSTOMERS = "customers"
-ISSUES = "issues"
+REQUESTS = "requests"
 SERVICE_DESKS = "service_desks"
 AGENT_PERCENTAGE = 25.00
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
@@ -250,7 +250,7 @@ def __create_data_set(jira_client, jsd_client):
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsd_client)
-    dataset[ISSUES] = __get_requests(jira_api=jira_client, jsd_api=jsd_client)
+    dataset[REQUESTS] = __get_requests(jira_api=jira_client, jsd_api=jsd_client)
     dataset[SERVICE_DESKS] = __get_service_desks(jsd_api=jsd_client)
 
     return dataset
@@ -260,7 +260,7 @@ def write_test_data_to_files(datasets):
     agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
     __write_to_file(JSD_DATASET_AGENTS, agents)
     __write_to_file(JSD_DATASET_CUSTOMERS, datasets[CUSTOMERS])
-    __write_to_file(JSD_DATASET_ISSUES, datasets[ISSUES])
+    __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
     __write_to_file(JSD_DATASET_SERVICE_DESKS, datasets[SERVICE_DESKS])
 
 

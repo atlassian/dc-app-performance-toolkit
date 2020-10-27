@@ -79,7 +79,7 @@ JSD_YML = __get_jsd_yml()
 JSD_DATASETS = __get_jsd_datasets()
 JSD_DATASET_AGENTS = __get_jsd_dataset('agents.csv')
 JSD_DATASET_CUSTOMERS = __get_jsd_dataset('customers.csv')
-JSD_DATASET_ISSUES = __get_jsd_dataset('issues.csv')
+JSD_DATASET_REQUESTS = __get_jsd_dataset('requests.csv')
 JSD_DATASET_SERVICE_DESKS = __get_jsd_dataset('service_desks.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
