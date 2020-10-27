@@ -118,7 +118,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
