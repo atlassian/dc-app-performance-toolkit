@@ -6,7 +6,7 @@ pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. 
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
@@ -20,7 +20,7 @@ BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5 7.6.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
