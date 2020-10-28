@@ -81,7 +81,8 @@ class RepoNavigationPanel(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2)
+        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
+                                  PopupLocators.popup_3)
 
 
 class Repository(BasePage):
@@ -232,7 +233,8 @@ class PullRequest(BasePage):
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
-        self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).click()
+        del_source_branch_elem = self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox)
+        self.driver.execute_script("arguments[0].click();", del_source_branch_elem)
         self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
         self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
