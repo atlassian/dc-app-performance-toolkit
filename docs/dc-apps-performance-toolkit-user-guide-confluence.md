@@ -51,7 +51,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Confluence Data Center development environment infrastructure costs about 10 - 15$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Confluence Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -78,7 +78,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Database instance class | [db.t2.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | false |
@@ -118,7 +118,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
@@ -463,7 +463,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
