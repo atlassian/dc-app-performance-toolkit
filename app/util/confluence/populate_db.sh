@@ -3,7 +3,7 @@
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
