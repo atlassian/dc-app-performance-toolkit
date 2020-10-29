@@ -1,6 +1,6 @@
 from selenium_ui.conftest import print_timing
 from util.conf import JSD_SETTINGS
-from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout
+from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects
 import random
 
 REQUESTS = "requests"
@@ -56,4 +56,14 @@ def log_out(webdriver, datasets):
         logout_page.go_to()
         logout_page.click_logout()
         logout_page.wait_for_page_loaded()
+    measure()
+
+
+def browse_projects_list(webdriver, datasets):
+    browse_projects_page = BrowseProjects(webdriver)
+
+    @print_timing('selenium_browse_projects_list')
+    def measure():
+        browse_projects_page.go_to()
+        browse_projects_page.wait_for_page_loaded()
     measure()

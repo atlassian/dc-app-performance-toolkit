@@ -15,6 +15,7 @@ class UrlManager:
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
+        self.browse_all_projects = '/secure/BrowseProjects.jspa'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -24,6 +25,9 @@ class UrlManager:
 
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
+
+    def browse_all_projects_url(self):
+        return f'{self.host}{self.browse_all_projects}'
 
 
 class LoginPageLocators:
@@ -51,3 +55,9 @@ class LogoutLocators:
     logout_url = UrlManager().logout_url()
     logout_submit_button = (By.ID, "confirm-logout-submit")
     login_button_link = (By.CLASS_NAME, "login-link")
+
+
+class BrowseProjectsLocators:
+
+    brows_projects_url = UrlManager().browse_all_projects_url()
+    page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
