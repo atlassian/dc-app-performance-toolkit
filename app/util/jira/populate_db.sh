@@ -1,5 +1,27 @@
 #!/bin/bash
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --jsd) jsd=1 ;;
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+if [[ ! `systemctl status jira` ]]; then
+ echo "The Jira service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Jira."
+ exit 1
+fi
+
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
@@ -8,7 +30,7 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
-# Depending on Jira installation directory
+# Depending on Jira/JSD installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
 STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
@@ -24,9 +46,18 @@ JIRA_DB_PASS="Password1!"
 
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
+
+# JSD section
+if [[ ${jsd} == 1 ]]; then
+  JIRA_CURRENT_DIR="/opt/atlassian/jira-servicedesk/current"
+  JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
+  JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
+  SUPPORTED_JIRA_VERSIONS=(4.13.0)
+fi
+
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
-  echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
+  echo The ${JIRA_VERSION_FILE} file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
     has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
   exit 1
 fi
@@ -34,7 +65,14 @@ echo "Jira Version: ${JIRA_VERSION}"
 
 # Datasets AWS bucket and db dump name
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+if [[ ${jsd} == 1 ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsd"
+fi
 DATASETS_SIZE="large"
+if [[ ${jsd} == 1 && ${small} == 1 ]]; then
+  # Only JSD supports "small" dataset
+  DATASETS_SIZE="small"
+fi
 DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
@@ -48,10 +86,10 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "e.g. ./populate_db.sh --force 8.0.3"
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${2} " ]]; then
-      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${version} " ]]; then
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it
       DOWNGRADE_OPT="Djira.downgrade.allowed=true"
@@ -155,34 +193,38 @@ if [[ -s ${JIRA_LICENSE_FILE} ]]; then
 fi
 
 echo "Step5: Stop Jira"
-CATALINA_PID=$(pgrep -f "catalina")
-echo "CATALINA_PID=${CATALINA_PID}"
-if [[ -z ${CATALINA_PID} ]]; then
-  echo "Jira is not running"
-  sudo su -c "rm -rf ${CATALINA_PID_FILE}"
+if [[ ${jsd} == 1 ]]; then
+  sudo systemctl stop jira
 else
-  echo "Stopping Jira"
-  if [[ ! -f "${CATALINA_PID_FILE}" ]]; then
-    echo "File created: ${CATALINA_PID_FILE}"
-    sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
-  fi
-  sudo su -c "${SHUT_DOWN_TOMCAT}"
-  COUNTER=0
-  TIMEOUT=5
-  ATTEMPTS=30
-  while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
-    if [[ -z $(pgrep -f "catalina") ]]; then
-      echo Jira is stopped
-      break
+  CATALINA_PID=$(pgrep -f "catalina")
+  echo "CATALINA_PID=${CATALINA_PID}"
+  if [[ -z ${CATALINA_PID} ]]; then
+    echo "Jira is not running"
+    sudo su -c "rm -rf ${CATALINA_PID_FILE}"
+  else
+    echo "Stopping Jira"
+    if [[ ! -f "${CATALINA_PID_FILE}" ]]; then
+      echo "File created: ${CATALINA_PID_FILE}"
+      sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
     fi
-    echo "Waiting for Jira stop, attempt ${COUNTER}/${ATTEMPTS} at waiting ${TIMEOUT} seconds."
-    sleep ${TIMEOUT}
-    let COUNTER++
-  done
-  if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
-    echo "Jira stop was not finished in $ATTEMPTS attempts with $TIMEOUT sec timeout."
-    echo "Try to rerun script."
-    exit 1
+    sudo su -c "${SHUT_DOWN_TOMCAT}"
+    COUNTER=0
+    TIMEOUT=5
+    ATTEMPTS=30
+    while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
+      if [[ -z $(pgrep -f "catalina") ]]; then
+        echo Jira is stopped
+        break
+      fi
+      echo "Waiting for Jira stop, attempt ${COUNTER}/${ATTEMPTS} at waiting ${TIMEOUT} seconds."
+      sleep ${TIMEOUT}
+      let COUNTER++
+    done
+    if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
+      echo "Jira stop was not finished in $ATTEMPTS attempts with $TIMEOUT sec timeout."
+      echo "Try to rerun script."
+      exit 1
+    fi
   fi
 fi
 
@@ -271,7 +313,11 @@ else
 fi
 
 echo "Step10: Start Jira"
-sudo su jira -c "${START_JIRA}"
+if [[ ${jsd} == 1 ]]; then
+  sudo systemctl start jira
+else
+  sudo su jira -c "${START_JIRA}"
+fi
 rm -rf ${DB_DUMP_NAME}
 
 echo "Step11: Remove ${JIRA_BASE_URL_FILE} file"
