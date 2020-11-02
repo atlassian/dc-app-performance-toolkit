@@ -217,7 +217,7 @@ rm -rf ${DB_DUMP_NAME}
 echo "Step9: Remove ${CONFLUENCE_BASE_URL_FILE} file"
 sudo rm ${CONFLUENCE_BASE_URL_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"

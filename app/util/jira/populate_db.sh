@@ -280,7 +280,7 @@ sudo rm ${JIRA_BASE_URL_FILE}
 echo "Step12: Remove ${JIRA_LICENSE_FILE} file"
 sudo rm ${JIRA_LICENSE_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
