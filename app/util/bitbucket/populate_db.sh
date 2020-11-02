@@ -226,7 +226,7 @@ sudo rm ${BITBUCKET_BASE_URL_FILE}
 echo "Step10: Remove ${BITBUCKET_LICENSE_FILE} file"
 sudo rm ${BITBUCKET_LICENSE_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"

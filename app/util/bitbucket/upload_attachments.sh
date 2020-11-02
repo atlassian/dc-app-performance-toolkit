@@ -85,6 +85,6 @@ if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1
 fi
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo "Important: do not forget to start Bitbucket"
 echo  # move to a new line

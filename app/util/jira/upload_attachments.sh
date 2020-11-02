@@ -111,5 +111,5 @@ echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line
