@@ -117,9 +117,9 @@ class JiraRestClient(RestClient):
 
         return issues
 
-    def get_total_issues_count(self):
+    def get_total_issues_count(self, jql: str = ''):
         api_url = f'{self.host}/rest/api/2/search'
-        body = {"jql": "order by key"}
+        body = {"jql": jql if jql else "order by key"}
         response = self.post(api_url, "Could not retrieve issues", body=body)
         return response.json().get('total', 0)
 

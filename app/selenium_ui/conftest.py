@@ -15,7 +15,7 @@ from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATA
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS,\
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES,\
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSD_DATASET_REQUESTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_AGENTS, \
-    JSD_DATASET_SERVICE_DESKS
+    JSD_DATASET_SERVICE_DESKS_L
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -52,7 +52,7 @@ class Dataset:
             self.dataset["requests"] = self.__read_input_file(JSD_DATASET_REQUESTS)
             self.dataset["customers"] = self.__read_input_file(JSD_DATASET_CUSTOMERS)
             self.dataset["agents"] = self.__read_input_file(JSD_DATASET_AGENTS)
-            self.dataset["service_desks"] = self.__read_input_file(JSD_DATASET_SERVICE_DESKS)
+            self.dataset["service_desks"] = self.__read_input_file(JSD_DATASET_SERVICE_DESKS_L)
         return self.dataset
 
     def confluence_dataset(self):
