@@ -30,7 +30,7 @@ class UrlManager:
     def browse_all_projects_url(self):
         return f'{self.host}{self.browse_all_projects}'
 
-    def browse_customers_page(self):
+    def browse_project_customers_page(self):
         return f"{self.host}{self.project_customers}"
 
 
@@ -69,5 +69,4 @@ class BrowseProjectsLocators:
 
 class BrowseCustomersLocators:
 
-    browse_customers_url = UrlManager().browse_customers_page()
     page_title = (By.XPATH, "//h2[contains(text(),'Customers')]")

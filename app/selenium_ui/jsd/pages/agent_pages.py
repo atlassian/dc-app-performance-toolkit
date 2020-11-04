@@ -50,4 +50,5 @@ class BrowseProjects(BasePage):
 
 class BrowseCustomers(BasePage):
 
-    page_url = BrowseCustomersLocators.browse_customers_url
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(BrowseCustomersLocators.page_title)
