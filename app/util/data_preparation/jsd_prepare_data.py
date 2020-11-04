@@ -343,15 +343,6 @@ def __create_data_set(jira_client, jsd_client):
     dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
     dataset[REPORTS] = reports_pool.get()
 
-
-    # dataset[AGENTS] = __get_agents(jira_client)
-    # dataset[CUSTOMERS] = __get_customers(jira_client, jsd_client)
-    # dataset[REQUESTS] = __get_requests(jira_api=jira_client, jsd_api=jsd_client)
-    # dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_SMALL] = __get_service_desks(jsd_api=jsd_client,
-    #                                                                                  jira_api=jira_client,
-    #                                                                                  service_desks=service_desks)
-    # dataset[REPORTS] = __get_service_desks_reports(jsd_api=jsd_client, service_desks=service_desks)
-
     return dataset
 
 
