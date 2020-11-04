@@ -1,7 +1,7 @@
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
-    BrowseProjectsLocators
+    BrowseProjectsLocators, BrowseCustomersLocators
 
 
 class PopupManager(BasePage):
@@ -46,3 +46,8 @@ class BrowseProjects(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(BrowseProjectsLocators.page_title)
+
+
+class BrowseCustomers(BasePage):
+
+    page_url = BrowseCustomersLocators.browse_customers_url
