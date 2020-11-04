@@ -16,7 +16,7 @@ class UrlManager:
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
         self.browse_all_projects = '/secure/BrowseProjects.jspa'
-        self.project_customers = f'/projects/{project_key}/customers'
+        self.browse_project_customers = f'/projects/{project_key}/customers'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -30,8 +30,8 @@ class UrlManager:
     def browse_all_projects_url(self):
         return f'{self.host}{self.browse_all_projects}'
 
-    def browse_project_customers_page(self):
-        return f"{self.host}{self.project_customers}"
+    def browse_project_customers_page_url(self):
+        return f"{self.host}{self.browse_project_customers}"
 
 
 class LoginPageLocators:

@@ -1,6 +1,5 @@
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsd.pages.agent_selectors import UrlManager
-from util.conf import JSD_SETTINGS
 from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers
 import random
 
@@ -71,10 +70,10 @@ def browse_projects_list(webdriver, datasets):
 
 
 def browse_project_customers_page(webdriver, datasets):
-    browse_customers = BrowseCustomers(webdriver)
+    browse_customers_page = BrowseCustomers(webdriver, project_key=datasets['project_key'])
 
     @print_timing('selenium_browse_project_customers_page')
     def measure():
-        browse_customers.go_to_url(UrlManager(project_key=datasets['project_key']).browse_project_customers_page())
-        browse_customers.wait_for_page_loaded()
+        browse_customers_page.go_to()
+        browse_customers_page.wait_for_page_loaded()
     measure()

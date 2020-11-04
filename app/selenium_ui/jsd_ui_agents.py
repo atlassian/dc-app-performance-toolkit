@@ -4,7 +4,7 @@ from extension.jira import extension_ui  # TODO develop example of app-specific 
 
 # this action should be the first one
 def test_0_customer_selenium_a_login(jsd_webdriver, jsd_datasets, jsd_screen_shots):
-        modules_agents.login(jsd_webdriver, jsd_datasets)
+    modules_agents.login(jsd_webdriver, jsd_datasets)
 
 
 def test_1_selenium_browse_projects_list(jsd_webdriver, jsd_datasets, jsd_screen_shots):
