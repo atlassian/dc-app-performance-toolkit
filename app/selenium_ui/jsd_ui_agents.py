@@ -7,6 +7,9 @@ def test_0_customer_selenium_a_login(jsd_webdriver, jsd_datasets, jsd_screen_sho
     modules_agents.login(jsd_webdriver, jsd_datasets)
 
 
+def test_1_selenium_browse_projects_list(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_agents.browse_projects_list(jsd_webdriver, jsd_datasets)
+
 
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
