@@ -31,8 +31,8 @@ AGENT_PERCENTAGE = 25.00
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
-TOTAL_ISSUES_TO_RETRIEVE = 100
-LARGE_SERVICE_DESK_TRIGGER = 100000 # Count of requests per "large" service desk.
+TOTAL_ISSUES_TO_RETRIEVE = 8000
+LARGE_SERVICE_DESK_TRIGGER = 100000  # Count of requests per "large" service desk.
 
 performance_agents_count = math.ceil(JSD_SETTINGS.concurrency * AGENT_PERCENTAGE / 100)
 performance_customers_count = JSD_SETTINGS.concurrency - performance_agents_count
@@ -65,11 +65,11 @@ def __calculate_issues_per_project(projects_count):
         percent_for_other_projects = 0
 
     for key, value in PROJECTS_ISSUES_PERC.items():
-        calculated_issues_per_project_count[key] = math.ceil(value * TOTAL_ISSUES_TO_RETRIEVE / 100)
+        calculated_issues_per_project_count[key] = value * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1
     for project_index in range(1, projects_count + 1):
         if project_index not in calculated_issues_per_project_count.keys():
-            calculated_issues_per_project_count[project_index] = math.ceil(percent_for_other_projects *
-                                                                           TOTAL_ISSUES_TO_RETRIEVE / 100)
+            calculated_issues_per_project_count[project_index] = \
+                percent_for_other_projects * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1
 
     return calculated_issues_per_project_count
 
