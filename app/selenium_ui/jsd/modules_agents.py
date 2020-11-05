@@ -1,6 +1,8 @@
 from selenium_ui.conftest import print_timing
-from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects
+from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, ViewCustomerRequest
 import random
+
+from selenium_ui.jsd.pages.agent_selectors import UrlManager
 
 REQUESTS = "requests"
 AGENTS = "agents"
@@ -65,4 +67,14 @@ def browse_projects_list(webdriver, datasets):
     def measure():
         browse_projects_page.go_to()
         browse_projects_page.wait_for_page_loaded()
+    measure()
+
+
+def view_customer_request(webdriver, datasets):
+    customer_request_page = ViewCustomerRequest(webdriver, request_key=datasets['request_key'])
+
+    @print_timing('selenium_view_customer_request')
+    def measure():
+        customer_request_page.go_to()
+        customer_request_page.wait_for_page_loaded()
     measure()
