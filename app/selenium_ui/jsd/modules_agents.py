@@ -66,3 +66,7 @@ def browse_projects_list(webdriver, datasets):
         browse_projects_page.go_to()
         browse_projects_page.wait_for_page_loaded()
     measure()
+
+
+def view_reports(webdriver, datasets):
+

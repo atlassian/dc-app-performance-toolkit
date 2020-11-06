@@ -46,3 +46,6 @@ class BrowseProjects(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(BrowseProjectsLocators.page_title)
+
+
+class ViewReports(BasePage):

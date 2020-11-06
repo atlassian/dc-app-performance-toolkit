@@ -61,3 +61,12 @@ class BrowseProjectsLocators:
 
     brows_projects_url = UrlManager().browse_all_projects_url()
     page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
+
+
+class ViewReportsLocators:
+
+    workload = (By.XPATH, "//span[contains(text(),'Workload')]")
+    time_to_resolution = (By.XPATH, "//span[contains(text(),'Time to resolution')]")
+    created_vs_resolved = (By.XPATH, "//span[contains(text(),'Created vs Resolved')]")
+
+    report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
