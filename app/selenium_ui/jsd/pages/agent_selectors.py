@@ -10,12 +10,13 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, request_key=None):
+    def __init__(self, project_key=None, request_key=None):
         self.host = JSD_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
         self.browse_all_projects = '/secure/BrowseProjects.jspa'
+        self.browse_project_customers = f'/projects/{project_key}/customers'
         self.view_customer_request = f'/browse/{request_key}'
 
     def login_url(self):
@@ -29,6 +30,9 @@ class UrlManager:
 
     def browse_all_projects_url(self):
         return f'{self.host}{self.browse_all_projects}'
+
+    def browse_project_customers_page_url(self):
+        return f"{self.host}{self.browse_project_customers}"
 
     def view_customer_request_url(self):
         return f'{self.host}{self.view_customer_request}'
@@ -66,6 +70,11 @@ class BrowseProjectsLocators:
 
     brows_projects_url = UrlManager().browse_all_projects_url()
     page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
+
+
+class BrowseCustomersLocators:
+
+    page_title = (By.XPATH, "//h2[contains(text(),'Customers')]")
 
 
 class ViewCustomerRequestLocators:
