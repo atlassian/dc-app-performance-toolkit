@@ -11,6 +11,14 @@ def test_1_selenium_browse_projects_list(jsd_webdriver, jsd_datasets, jsd_screen
     modules_agents.browse_projects_list(jsd_webdriver, jsd_datasets)
 
 
+def test_1_selenium_browse_project_customers_page(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_agents.browse_project_customers_page(jsd_webdriver, jsd_datasets)
+
+
+def test_1_selenium_view_customer_request(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_agents.view_customer_request(jsd_webdriver, jsd_datasets)
+
+
 def test_1_selenium_view_reports(jsd_webdriver, jsd_datasets, jsd_screen_shots):
     modules_agents.view_reports(jsd_webdriver, jsd_datasets)
 

@@ -1,7 +1,7 @@
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
-    BrowseProjectsLocators
+    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators
 
 
 class PopupManager(BasePage):
@@ -48,4 +48,46 @@ class BrowseProjects(BasePage):
         self.wait_until_visible(BrowseProjectsLocators.page_title)
 
 
+class BrowseCustomers(BasePage):
+
+    def __init__(self, driver, project_key=None):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.browse_project_customers_page_url()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(BrowseCustomersLocators.page_title)
+
+
+class ViewCustomerRequest(BasePage):
+
+    def __init__(self, driver, request_key=None):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(request_key=request_key)
+        self.page_url = url_manager.view_customer_request_url()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(ViewCustomerRequestLocators.bread_crumbs)
+
+
 class ViewReports(BasePage):
+
+    def __init__(self, driver, project_key=None):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.browse_project_reports_url()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(ViewReportsLocators.reports_nav)
+
+    def view_time_to_resolution_report(self):
+        self.get_element(ViewReportsLocators.time_to_resolution).click()
+        self.wait_until_visible(ViewReportsLocators.custom_report_content)
+
+    def view_workload_report(self):
+        self.get_element(ViewReportsLocators.workload).click()
+        self.wait_until_visible(ViewReportsLocators.team_workload_agents_table)
+
+    def view_created_vs_resolved(self):
+        self.get_element(ViewReportsLocators.created_vs_resolved).click()
+        self.wait_until_visible(ViewReportsLocators.custom_report_content)

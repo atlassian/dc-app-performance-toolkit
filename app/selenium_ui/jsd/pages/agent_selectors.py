@@ -10,12 +10,15 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self):
+    def __init__(self, project_key=None, request_key=None):
         self.host = JSD_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
         self.browse_all_projects = '/secure/BrowseProjects.jspa'
+        self.browse_project_customers = f'/projects/{project_key}/customers'
+        self.view_customer_request = f'/browse/{request_key}'
+        self.browse_project_reports = f'/projects/{project_key}/reports'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -29,8 +32,18 @@ class UrlManager:
     def browse_all_projects_url(self):
         return f'{self.host}{self.browse_all_projects}'
 
+    def browse_project_customers_page_url(self):
+        return f"{self.host}{self.browse_project_customers}"
+
+    def view_customer_request_url(self):
+        return f'{self.host}{self.view_customer_request}'
+
+    def browse_project_reports_url(self):
+        return f'{self.host}{self.browse_project_reports}'
+
 
 class LoginPageLocators:
+
     login_url = UrlManager().login_url()
 
     # First time login setup page
@@ -63,10 +76,24 @@ class BrowseProjectsLocators:
     page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
 
 
+class BrowseCustomersLocators:
+
+    page_title = (By.XPATH, "//h2[contains(text(),'Customers')]")
+
+
+class ViewCustomerRequestLocators:
+
+    bread_crumbs = (By.CSS_SELECTOR, ".aui-nav.aui-nav-breadcrumbs")
+
+
 class ViewReportsLocators:
 
+    # locators to click
     workload = (By.XPATH, "//span[contains(text(),'Workload')]")
     time_to_resolution = (By.XPATH, "//span[contains(text(),'Time to resolution')]")
     created_vs_resolved = (By.XPATH, "//span[contains(text(),'Created vs Resolved')]")
 
-    report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
+    # wait until visible locators
+    reports_nav = (By.ID, "pinnednav-opts-sd-reports-nav")
+    custom_report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
+    team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")

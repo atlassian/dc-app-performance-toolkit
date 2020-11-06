@@ -1,5 +1,6 @@
 from selenium_ui.conftest import print_timing
-from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects
+from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
+    ViewCustomerRequest, ViewReports
 import random
 
 REQUESTS = "requests"
@@ -68,5 +69,45 @@ def browse_projects_list(webdriver, datasets):
     measure()
 
 
-def view_reports(webdriver, datasets):
+def browse_project_customers_page(webdriver, datasets):
+    browse_customers_page = BrowseCustomers(webdriver, project_key=datasets['project_key'])
 
+    @print_timing('selenium_browse_project_customers_page')
+    def measure():
+        browse_customers_page.go_to()
+        browse_customers_page.wait_for_page_loaded()
+
+
+def view_customer_request(webdriver, datasets):
+    customer_request_page = ViewCustomerRequest(webdriver, request_key=datasets['request_key'])
+
+    @print_timing('selenium_view_customer_request')
+    def measure():
+        customer_request_page.go_to()
+        customer_request_page.wait_for_page_loaded()
+    measure()
+
+
+def view_reports(webdriver, datasets):
+    browse_reports_page = ViewReports(webdriver, project_key=datasets['project_key'])
+
+    @print_timing('selenium_view_reports')
+    def measure():
+        browse_reports_page.go_to()
+        browse_reports_page.wait_for_page_loaded()
+
+        @print_timing('selenium_view_reports:view_time_to_resolution_report')
+        def sub_measure():
+            browse_reports_page.view_time_to_resolution_report()
+        sub_measure()
+
+        @print_timing('selenium_view_reports:view_workload_report')
+        def sub_measure():
+            browse_reports_page.view_workload_report()
+        sub_measure()
+
+        @print_timing('selenium_view_reports:view_created_vs_resolved')
+        def sub_measure():
+            browse_reports_page.view_created_vs_resolved()
+        sub_measure()
+    measure()
