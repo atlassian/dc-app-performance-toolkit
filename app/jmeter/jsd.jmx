@@ -117,7 +117,52 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </SetupThreadGroup>
-      <hashTree/>
+      <hashTree>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="prepare" enabled="true">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">0</stringProp>
+        </TestAction>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="prepare customer requests" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">import org.apache.commons.collections.iterators.ArrayIterator;
+import org.apache.commons.io.FileUtils;
+
+
+    Map portalRequestsPairByCustomerUsername = new HashMap();
+    // TODO Rework hard-codded path
+    List rowList = FileUtils.readLines(new File(&quot;datasets/jsd/customers.csv&quot;));
+    for (Object o: rowList) {
+        String line = (String) o;
+        String[] row = line.split(&quot;,&quot;);
+        int requestsStartOrderNum = 2;
+        if (row.length &lt;= requestsStartOrderNum) {
+            continue;
+        }
+
+        String[] portalRequestRawPairs = Arrays.copyOfRange(row, requestsStartOrderNum, row.length);
+
+        ArrayIterator iterator = new ArrayIterator(portalRequestRawPairs);
+        List pairs = new ArrayList();
+        while (iterator.hasNext()) {
+            List pair = new ArrayList();
+            pair.add(iterator.next());
+            pair.add(iterator.next());
+
+            pairs.add(pair);
+        }
+
+        portalRequestsPairByCustomerUsername.put(row[0], pairs);
+    }
+
+    props.put(&quot;PORTAL_REQUESTS_PAIRS_BY_USER&quot;, portalRequestsPairByCustomerUsername);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Agents" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -2506,6 +2551,30 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">// sampler to set up random variables, in the contained pre-processors
+SampleResult.setIgnore();</stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="set portal request pair" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">	def pairs = props[&apos;PORTAL_REQUESTS_PAIRS_BY_USER&apos;][&apos;${username}&apos;]
+	def pair = pairs[new Random().nextInt(pairs.size())]
+
+	vars.put(&quot;request_portal_id&quot;, pair[0])
+	vars.put(&quot;request_key&quot;, pair[1])
+
+</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+          </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_portal" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
@@ -2841,6 +2910,93 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="Accept" elementType="Header">
                     <stringProp name="Header.name">Accept</stringProp>
                     <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_request" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="350 /rest/servicedesk/1/customer/models" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;portal&quot;,&quot;reqDetails&quot;,&quot;portalWebFragments&quot;],&quot;options&quot;:{&quot;portalId&quot;:&quot;${request_portal_id}&quot;,&quot;portal&quot;:{&quot;id&quot;:&quot;${request_portal_id}&quot;},&quot;reqDetails&quot;:{&quot;key&quot;:&quot;${request_key}&quot;},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;VIEW_REQUEST&quot;}}}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">												</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="355 /rest/analytics/1.0/publish/bulk" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.issue.opened&quot;,&quot;properties&quot;:{&quot;isIncident&quot;:false,&quot;issueId&quot;:10200,&quot;archived&quot;:false,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1821},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.requestDetails&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1811},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;eff25cfb-167f-44d9-95b6-07adc3ac84cf&quot;,&quot;key&quot;:&quot;servicedesk.cv.request.details&quot;,&quot;readyForUser&quot;:&quot;220&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,d,59,58,h,d,,d,d,d\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-1802}]</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
                   </elementProp>
                   <elementProp name="Content-Type" elementType="Header">
                     <stringProp name="Header.name">Content-Type</stringProp>
