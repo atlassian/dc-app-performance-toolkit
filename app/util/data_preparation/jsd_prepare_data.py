@@ -59,8 +59,8 @@ def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}
     max_percentage_key = max(PROJECTS_ISSUES_PERC, key=int)
     if projects_count > max_percentage_key:
-        percent_for_other_projects = math.ceil((100 - sum(PROJECTS_ISSUES_PERC.values())) /
-                                               (projects_count - max(PROJECTS_ISSUES_PERC, key=int)))
+        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
+                                           (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
     else:
         percent_for_other_projects = 0
 
@@ -69,7 +69,7 @@ def __calculate_issues_per_project(projects_count):
     for project_index in range(1, projects_count + 1):
         if project_index not in calculated_issues_per_project_count.keys():
             calculated_issues_per_project_count[project_index] = \
-                percent_for_other_projects * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1
+                int(percent_for_other_projects * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1)
 
     return calculated_issues_per_project_count
 
@@ -77,7 +77,6 @@ def __calculate_issues_per_project(projects_count):
 def __filter_customer_with_requests(customer, jsd_client):
     customer_auth = (customer['name'], DEFAULT_PASSWORD)
     customer_requests = jsd_client.get_request(auth=customer_auth)['values']
-    #print(customer_auth)
     customer_dict = {'name': customer['name'], 'has_requests': False}
     if customer_requests:
         customer_dict['has_requests'] = True
@@ -97,8 +96,6 @@ def __get_customers_with_requests(jira_client, jsd_client, count):
     while len(customers_with_requests) < count:
         customers = jira_client.get_users(username=DEFAULT_CUSTOMER_PREFIX, max_results=max_count_iteration,
                                           start_at=start_at)
-        print(f'Customer iteration {start_at}')
-        print(f'With requests: {len(customers_with_requests)}')
         if not customers:
             break
         start_at = start_at + max_count_iteration
@@ -114,7 +111,6 @@ def __get_customers_with_requests(jira_client, jsd_client, count):
                     if len(customers_with_requests) >= count:
                         break
                     customers_with_requests.append(customer_data)
-                    print(len(customers_with_requests))
                 else:
                     customers_without_requests.append(customer_data)
 
@@ -191,7 +187,7 @@ def generate_users(api, num_to_create, application_keys, prefix_name):
 
 def __get_service_desk_info(jira_api, jsd_api, service_desk):
     # Run in parallel 'get_total_issues_count' and 'get_queue'.
-    pool = multiprocessing.pool.ThreadPool(processes=num_cores)
+    pool = multiprocessing.pool.ThreadPool(processes=2)
     p1 = pool.apply_async(jira_api.get_total_issues_count, kwds={'jql': f'project = {service_desk["projectKey"]}'})
     p2 = pool.apply_async(jsd_api.get_queue, kwds={'service_desk_id': service_desk['id']})
     service_desk_requests_count = str(p1.get())
@@ -210,9 +206,9 @@ def __get_service_desk_info(jira_api, jsd_api, service_desk):
 def __get_service_desks(jsd_api, jira_api, service_desks):
     now = datetime.datetime.now()
     print(f'Service desks start {now.strftime("%H:%M:%S")}')
-    service_desks_with_requests = Parallel(n_jobs=num_cores)(delayed(__get_service_desk_info)
-                                                             (jira_api, jsd_api, service_desk)
-                                                             for service_desk in service_desks)
+    pool = multiprocessing.pool.ThreadPool(processes=num_cores*2)
+    service_desks_with_requests = pool.starmap(__get_service_desk_info, [(jira_api, jsd_api, service_desk)
+                                               for service_desk in service_desks])
 
     print(f"Retrieved {len(service_desks)} Jira Service Desks")
     large_service_desks = []
@@ -235,6 +231,23 @@ def __get_service_desks(jsd_api, jira_api, service_desks):
     return service_desks_list_large, service_desks_list_small
 
 
+def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
+        issues = jira_api.issues_search_parallel(jql=f'project = {service_desk["projectKey"]}',
+                                                 max_results=issues_distribution_id[service_desk['projectKey']])
+        distribution_success = len(issues) >= issues_distribution_id[service_desk['projectKey']]
+        issues_per_project_list = [','.join((issue['id'],
+                                             issue['key'],
+                                             service_desk['serviceDeskId'],
+                                             service_desk['projectId'],
+                                             service_desk['projectKey'],
+                                             )) for issue in issues]
+        distribution = dict()
+        distribution['issues'] = issues_per_project_list
+        distribution['distribution_success'] = distribution_success
+        distribution['projectKey'] = service_desk['projectKey']
+        return distribution
+
+
 @print_timing('Retrieved customers requests')
 def __get_requests(jsd_api, jira_api, service_desks, requests_without_distribution):
     now = datetime.datetime.now()
@@ -247,36 +260,28 @@ def __get_requests(jsd_api, jira_api, service_desks, requests_without_distributi
         service_desk_dict['projectKey'] = service_desk['projectKey']
         service_desks_issues.append(service_desk_dict)
 
-    issues_disctribution_perc = __calculate_issues_per_project(len(service_desks))
-    issues_disctribution_id = {}
-    for key, value in issues_disctribution_perc.items():
-        issues_disctribution_id[service_desks_issues[key-1]['projectKey']] = value
+    issues_distribution_perc = __calculate_issues_per_project(len(service_desks))
+    issues_distribution_id = {}
+    for key, value in issues_distribution_perc.items():
+        issues_distribution_id[service_desks_issues[key-1]['projectKey']] = value
 
-    print(f'Start retrieving issues by distribution per project: {issues_disctribution_id}')
+    print(f'Start retrieving issues by distribution per project: {issues_distribution_id}')
     distribution_success = True
-    issues_list = []
-    for service_desk in service_desks_issues:
-        issues = jira_api.issues_search(jql=f'project = {service_desk["projectKey"]}',
-                                        max_results=issues_disctribution_id[service_desk['projectKey']])
-
-        issues_per_project_list = [','.join((issue['id'],
-                                             issue['key'],
-                                             service_desk['serviceDeskId'],
-                                             service_desk['projectId'],
-                                             service_desk['projectKey'])) for issue in issues]
-
-        issues_list.extend(issues_per_project_list)
-        if len(issues) < issues_disctribution_id[service_desk['projectKey']]:
-            print(f'Stop retrieving issues by distribution. Project {service_desk["projectKey"]} '
-                  f'has {len(issues)}/{issues_disctribution_id[service_desk["projectKey"]]} issues')
+    pool = multiprocessing.pool.ThreadPool(processes=num_cores)
+    issues_list = pool.starmap(__get_service_desk_requests, [(jira_api, issues_distribution_id, i)
+                                                             for i in service_desks_issues])
+    # Check if requests distribution per service desk is success
+    for service_desk in issues_list:
+        if not service_desk['distribution_success']:
             distribution_success = False
-            break
+            print(f'Project {service_desk["projectKey"]} does not have enough requests '
+                  f'{len(service_desk["issues"])}/{issues_distribution_id[service_desk["projectKey"]]}')
 
     if distribution_success:
         print(f'Issues retrieving by distribution per project finished successfully. '
               f'Retrieved {len(issues_list)} issues')
 
-        return issues_list
+        return [issue['issues'] for issue in issues_list]
 
     print(f'Force retrieving {TOTAL_ISSUES_TO_RETRIEVE} issues from Service Desk projects')
     issues_list = []
@@ -333,41 +338,40 @@ def __create_data_set(jira_client, jsd_client):
     if not service_desks:
         raise Exception('ERROR: There are no Jira Service Desks were found')
     projects_keys = ','.join([project['projectKey'] for project in service_desks])
-    requests = jira_client.issues_search(jql=f"project in ({projects_keys})", max_results=TOTAL_ISSUES_TO_RETRIEVE)
+    requests = jira_client.issues_search_parallel(jql=f"project in ({projects_keys})",
+                                                  max_results=TOTAL_ISSUES_TO_RETRIEVE)
     if len(requests) < TOTAL_ISSUES_TO_RETRIEVE:
         raise Exception(f"ERROR: Jira Service Desks does not have enough requests "
                         f"{len(requests)}/{TOTAL_ISSUES_TO_RETRIEVE}")
 
     pool = multiprocessing.pool.ThreadPool(processes=num_cores)
     agents_pool = pool.apply_async(__get_agents, kwds={'jira_client': jira_client})
-    #customers_pool = pool.apply_async(__get_customers, kwds={'jira_client': jira_client, 'jsd_client': jsd_client})
-    # requests_pool = pool.apply_async(__get_requests, kwds={'jira_api': jira_client,
-    #                                                        'jsd_api': jsd_client,
-    #                                                        'service_desks': service_desks,
-    #                                                        'requests_without_distribution': requests})
-    # service_desks_pool = pool.apply_async(__get_service_desks, kwds={'jsd_api': jsd_client,
-    #                                                                  'jira_api': jira_client,
-    #                                                                  'service_desks': service_desks})
-    # reports_pool = pool.apply_async(__get_service_desks_reports, kwds={'jsd_api': jsd_client,
-    #                                                                    'service_desks': service_desks})
+    customers_pool = pool.apply_async(__get_customers, kwds={'jira_client': jira_client, 'jsd_client': jsd_client})
+    requests_pool = pool.apply_async(__get_requests, kwds={'jira_api': jira_client,
+                                                           'jsd_api': jsd_client,
+                                                           'service_desks': service_desks,
+                                                           'requests_without_distribution': requests})
+    service_desks_pool = pool.apply_async(__get_service_desks, kwds={'jsd_api': jsd_client,
+                                                                     'jira_api': jira_client,
+                                                                     'service_desks': service_desks})
+    reports_pool = pool.apply_async(__get_service_desks_reports, kwds={'jsd_api': jsd_client,
+                                                                       'service_desks': service_desks})
     dataset[AGENTS] = agents_pool.get()
-    # dataset[CUSTOMERS] = customers_pool.get()
-    # dataset[REQUESTS] = requests_pool.get()
-    # dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
-    # dataset[REPORTS] = reports_pool.get()
-    dataset[CUSTOMERS] = __get_customers(jira_client, jsd_client)
+    dataset[CUSTOMERS] = customers_pool.get()
+    dataset[REQUESTS] = requests_pool.get()
+    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
+    dataset[REPORTS] = reports_pool.get()
     return dataset
 
 
 def write_test_data_to_files(datasets):
-    # agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
-    # __write_to_file(JSD_DATASET_AGENTS, agents)
-    # __write_to_file(JSD_DATASET_CUSTOMERS, datasets[CUSTOMERS])
-    # __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
-    # __write_to_file(JSD_DATASET_SERVICE_DESKS_L, datasets[SERVICE_DESKS_LARGE])
-    # __write_to_file(JSD_DATASET_SERVICE_DESKS_S, datasets[SERVICE_DESKS_SMALL])
-    # __write_to_file(JSD_REPORTS, datasets[REPORTS])
-    pass
+    agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
+    __write_to_file(JSD_DATASET_AGENTS, agents)
+    __write_to_file(JSD_DATASET_CUSTOMERS, datasets[CUSTOMERS])
+    __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
+    __write_to_file(JSD_DATASET_SERVICE_DESKS_L, datasets[SERVICE_DESKS_LARGE])
+    __write_to_file(JSD_DATASET_SERVICE_DESKS_S, datasets[SERVICE_DESKS_SMALL])
+    __write_to_file(JSD_REPORTS, datasets[REPORTS])
 
 
 @print_timing('Full prepare data')
