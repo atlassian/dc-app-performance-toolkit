@@ -3,6 +3,12 @@ from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, Brows
     ViewCustomerRequest
 import random
 
+from util.api.jira_clients import JiraRestClient
+from util.conf import JSD_SETTINGS
+
+client = JiraRestClient(JSD_SETTINGS.server_url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password)
+rte_status = client.check_rte_status()
+
 REQUESTS = "requests"
 AGENTS = "agents"
 SERVICE_DESKS = "service_desks"
@@ -85,4 +91,13 @@ def view_customer_request(webdriver, datasets):
     def measure():
         customer_request_page.go_to()
         customer_request_page.wait_for_page_loaded()
+    measure()
+
+
+def add_request_comment(webdriver, datasets):
+    customer_request_page = ViewCustomerRequest(webdriver)
+
+    @print_timing('selenium_add_request_comment')
+    def measure():
+        customer_request_page.add_request_comment(rte_status)
     measure()

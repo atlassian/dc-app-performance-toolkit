@@ -68,3 +68,17 @@ class ViewCustomerRequest(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(ViewCustomerRequestLocators.bread_crumbs)
+
+    def add_request_comment(self, rte_status):
+        comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
+        self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea).click()
+
+        if rte_status:
+            self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
+            self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
+            self.return_to_parent_frame()
+        else:
+            self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
+
+        self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
+        self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
