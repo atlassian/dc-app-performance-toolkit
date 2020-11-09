@@ -6,7 +6,6 @@ import string
 from datetime import timedelta
 from timeit import default_timer as timer
 import datetime
-from joblib import Parallel, delayed
 
 from util.api.abstract_clients import JSD_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
