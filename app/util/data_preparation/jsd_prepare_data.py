@@ -83,7 +83,7 @@ def __get_customers_with_requests(jira_client, jsd_client, count):
                 customer_dict = {'name': customer['name']}
                 requests = []
                 for request in customer_requests:
-                    requests.append((request['serviceDeskId'], request['issueKey']))
+                    requests.append((request['serviceDeskId'], request['issueId'], request['issueKey']))
                 customer_dict['requests'] = requests
                 customers_with_requests.append(customer_dict)
             else:
@@ -248,20 +248,20 @@ def __write_to_file(file_path, items):
 
 def __create_data_set(jira_client, jsd_client):
     dataset = dict()
-    dataset[AGENTS] = __get_agents(jira_client)
+    # dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsd_client)
-    dataset[REQUESTS] = __get_requests(jira_api=jira_client, jsd_api=jsd_client)
-    dataset[SERVICE_DESKS] = __get_service_desks(jsd_api=jsd_client)
+    # dataset[REQUESTS] = __get_requests(jira_api=jira_client, jsd_api=jsd_client)
+    # dataset[SERVICE_DESKS] = __get_service_desks(jsd_api=jsd_client)
 
     return dataset
 
 
 def write_test_data_to_files(datasets):
-    agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
-    __write_to_file(JSD_DATASET_AGENTS, agents)
+    # agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
+    # __write_to_file(JSD_DATASET_AGENTS, agents)
     __write_to_file(JSD_DATASET_CUSTOMERS, datasets[CUSTOMERS])
-    __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
-    __write_to_file(JSD_DATASET_SERVICE_DESKS, datasets[SERVICE_DESKS])
+    # __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
+    # __write_to_file(JSD_DATASET_SERVICE_DESKS, datasets[SERVICE_DESKS])
 
 
 @print_timing('Full prepare data')
