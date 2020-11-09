@@ -60,10 +60,12 @@ def __calculate_issues_per_project(projects_count):
     if projects_count > max_percentage_key:
         percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
                                            (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
+        calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
         percent_for_other_projects = 0
+        calculated_issues_percentage = dict(list(PROJECTS_ISSUES_PERC.items())[:3])
 
-    for key, value in PROJECTS_ISSUES_PERC.items():
+    for key, value in calculated_issues_percentage.items():
         calculated_issues_per_project_count[key] = value * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1
     for project_index in range(1, projects_count + 1):
         if project_index not in calculated_issues_per_project_count.keys():
@@ -339,9 +341,6 @@ def __create_data_set(jira_client, jsd_client):
     projects_keys = ','.join([project['projectKey'] for project in service_desks])
     requests = jira_client.issues_search_parallel(jql=f"project in ({projects_keys})",
                                                   max_results=TOTAL_ISSUES_TO_RETRIEVE)
-    if len(requests) < TOTAL_ISSUES_TO_RETRIEVE:
-        raise Exception(f"ERROR: Jira Service Desks does not have enough requests "
-                        f"{len(requests)}/{TOTAL_ISSUES_TO_RETRIEVE}")
 
     pool = multiprocessing.pool.ThreadPool(processes=num_cores)
     agents_pool = pool.apply_async(__get_agents, kwds={'jira_client': jira_client})
