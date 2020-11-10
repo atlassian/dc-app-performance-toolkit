@@ -88,6 +88,17 @@ class JsdRestClient(RestClient):
         response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
         return response.json()
 
+    def get_queue(self, service_desk_id: int, start: int = 0):
+        """
+        Returns the customer request for a given request Id/key.
+        :param service_desk_id:
+        :param start: the index of the first user to return (0-based).
+        :return:
+        """
+        api_url = self.host + f"/rest/servicedeskapi/servicedesk/{service_desk_id}/queue?start={start}"
+        response = self.get(api_url, f"Could not get queues for service desk {service_desk_id}")
+        return response.json()['values']
+
     def get_request_types(self, service_desk_id):
         """
         Returns all request types from a service desk, for a given service desk Id.
@@ -138,6 +149,21 @@ class JsdRestClient(RestClient):
         api_url = self.host + "/rest/servicedeskapi/info"
         response = self.get(api_url, f"Could not get request Service desk info.")
         return response
+
+    def get_service_desk_reports(self, project_key: str = ''):
+        api_url = self.host + f"/rest/servicedesk/1/{project_key}/webfragments/sections/sd-reports-nav-custom-section"
+        payload = {
+            "projectKey": project_key
+        }
+        response = self.post(api_url, f"Could not get Service Desk reports info", body=payload)
+        custom_reports_list = []
+        for report in response.json():
+            if 'label' in report.keys():
+                if report['label'] == 'Custom':
+                    custom_reports_list = report['items']
+        if not custom_reports_list:
+            raise Exception(f"Could not get Service Desk reports info for project {project_key}")
+        return custom_reports_list
 
     def attach_temp_files(self, service_desk_id, file_paths: dict, auth: tuple = None):
         """
