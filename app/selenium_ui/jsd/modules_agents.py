@@ -5,13 +5,16 @@ import random
 
 REQUESTS = "requests"
 AGENTS = "agents"
-SERVICE_DESKS = "service_desks"
+REPORTS = 'reports'
+SERVICE_DESKS_LARGE = "service_desks_large"
+SERVICE_DESKS_SMALL = "service_desks_small"
 
 
 def setup_run_data(datasets):
     agent = random.choice(datasets[AGENTS])
     request = random.choice(datasets[REQUESTS])
-    service_desk = random.choice(datasets[SERVICE_DESKS])
+    service_desk_large = random.choice(datasets[SERVICE_DESKS_LARGE])
+    service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
 
     # Define users dataset
     datasets['agent_username'] = agent[0]
@@ -20,9 +23,12 @@ def setup_run_data(datasets):
     # Define request dataset
     datasets['request_id'] = request[0]
     datasets['request_key'] = request[1]
-    datasets['service_desk_id'] = request[2]
-    datasets['project_id'] = request[3]
-    datasets['project_key'] = request[4]
+
+    datasets['large_project_id'] = service_desk_large[1]
+    datasets['large_project_key'] = request[2]
+
+    datasets['small_project_id'] = service_desk_small[1]
+    datasets['small_project_key'] = service_desk_small[2]
 
 
 def login(webdriver, datasets):
