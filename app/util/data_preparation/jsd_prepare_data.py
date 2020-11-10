@@ -83,7 +83,7 @@ def __filter_customer_with_requests(customer, jsd_client):
         customer_dict['has_requests'] = True
         requests = []
         for request in customer_requests:
-            requests.append((request['serviceDeskId'], request['issueKey']))
+            requests.append((request['serviceDeskId'], request['issueId'], request['issueKey']))
         customer_dict['requests'] = requests
     return customer_dict
 
@@ -115,13 +115,6 @@ def __get_customers_with_requests(jira_client, jsd_client, count):
                 else:
                     customers_without_requests.append(customer_data)
 
-    if len(customers_with_requests) < count:
-        customers_to_add = count - len(customers_with_requests)
-        if len(customers_without_requests) >= customers_to_add:
-            customers_with_requests.extend(customers_without_requests[:customers_to_add])
-        else:
-            customers_with_requests.extend(customers_without_requests)
-
     print(f'Retrieved customers with requests: {len(customers_with_requests)}')
 
     return customers_with_requests
@@ -131,17 +124,21 @@ def __get_jsd_users(jira_client, jsd_client=None, is_agent=False):
     if is_agent:
         prefix_name, application_keys, count = DEFAULT_AGENT_PREFIX, DEFAULT_AGENT_APP_KEYS, performance_agents_count
         perf_users = jira_client.get_users(username=prefix_name, max_results=count)
+        users_to_create = count - len(perf_users)
+        if users_to_create > 0:
+            add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
+                                       application_keys=application_keys)
+            if not add_users:
+                raise SystemExit(f"Jira Service Desk could not create agent"
+                                 f"There were {len(perf_users)}/{count} retrieved.")
+            perf_users.extend(add_users)
     else:
         prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
         perf_users = __get_customers_with_requests(jsd_client=jsd_client, jira_client=jira_client, count=count)
-    users_to_create = count - len(perf_users)
-    if users_to_create > 0:
-        add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
-                                   application_keys=application_keys)
-        if not add_users:
-            raise SystemExit(f"Jira Service Desk could not create users with prefix: {prefix_name}. "
-                             f"There were {len(perf_users)}/{count} retrieved.")
-        perf_users.extend(add_users)
+        if len(perf_users) < performance_customers_count:
+            raise Exception(f'Not enough customers with requests were found: '
+                            f'{len(perf_users)}/{performance_customers_count}. Please review the concurrency value '
+                            f'in jsd.yml file or add customers with requests to Jira Service Desk instance')
     return perf_users
 
 
