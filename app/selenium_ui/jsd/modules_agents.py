@@ -25,10 +25,38 @@ def setup_run_data(datasets):
     datasets['request_key'] = request[1]
 
     datasets['large_project_id'] = service_desk_large[1]
-    datasets['large_project_key'] = request[2]
+    datasets['large_project_key'] = service_desk_large[2]
 
     datasets['small_project_id'] = service_desk_small[1]
     datasets['small_project_key'] = service_desk_small[2]
+
+
+def view_report_form_diff_projects_size(browse_reports_page, project_size):
+
+    @print_timing(f'selenium_view_reports_{project_size}_project')
+    def measure():
+        browse_reports_page.go_to()
+        browse_reports_page.wait_for_page_loaded()
+
+        @print_timing(f'selenium_view_reports_{project_size}_project:view_time_to_resolution_report')
+        def sub_measure():
+            browse_reports_page.view_time_to_resolution_report()
+
+        sub_measure()
+
+        @print_timing(f'selenium_view_reports_{project_size}_project:view_workload_report')
+        def sub_measure():
+            browse_reports_page.view_workload_report()
+
+        sub_measure()
+
+        @print_timing(f'selenium_view_reports_{project_size}_project:view_created_vs_resolved')
+        def sub_measure():
+            browse_reports_page.view_created_vs_resolved()
+
+        sub_measure()
+
+    measure()
 
 
 def login(webdriver, datasets):
@@ -76,7 +104,8 @@ def browse_projects_list(webdriver, datasets):
 
 
 def browse_project_customers_page(webdriver, datasets):
-    browse_customers_page = BrowseCustomers(webdriver, project_key=datasets['project_key'])
+    browse_customers_page = BrowseCustomers(webdriver, project_key=random.choice((datasets['small_project_key'],
+                                                                                 datasets['large_project_key'])))
 
     @print_timing('selenium_browse_project_customers_page')
     def measure():
@@ -95,25 +124,7 @@ def view_customer_request(webdriver, datasets):
 
 
 def view_reports(webdriver, datasets):
-    browse_reports_page = ViewReports(webdriver, project_key=datasets['project_key'])
-
-    @print_timing('selenium_view_reports')
-    def measure():
-        browse_reports_page.go_to()
-        browse_reports_page.wait_for_page_loaded()
-
-        @print_timing('selenium_view_reports:view_time_to_resolution_report')
-        def sub_measure():
-            browse_reports_page.view_time_to_resolution_report()
-        sub_measure()
-
-        @print_timing('selenium_view_reports:view_workload_report')
-        def sub_measure():
-            browse_reports_page.view_workload_report()
-        sub_measure()
-
-        @print_timing('selenium_view_reports:view_created_vs_resolved')
-        def sub_measure():
-            browse_reports_page.view_created_vs_resolved()
-        sub_measure()
-    measure()
+    browse_reports_page = ViewReports(webdriver, project_key=datasets['small_project_key']  )
+    view_report_form_diff_projects_size(browse_reports_page, project_size='small')
+    browse_reports_page = ViewReports(webdriver, project_key=datasets['large_project_key'])
+    view_report_form_diff_projects_size(browse_reports_page, project_size='large')
