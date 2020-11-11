@@ -276,10 +276,11 @@ def __get_requests(jsd_api, jira_api, service_desks, requests_without_distributi
                   f'{len(service_desk["issues"])}/{issues_distribution_id[service_desk["projectKey"]]}')
 
     if distribution_success:
+        requests = [issue['issues'] for issue in issues_list]
         print(f'Issues retrieving by distribution per project finished successfully. '
-              f'Retrieved {len(issues_list)} issues')
+              f'Retrieved {len(requests)} issues')
 
-        return [issue['issues'] for issue in issues_list]
+        return requests
 
     print(f'Force retrieving {TOTAL_ISSUES_TO_RETRIEVE} issues from Service Desk projects')
     issues_list = []
