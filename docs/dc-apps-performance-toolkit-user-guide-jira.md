@@ -62,7 +62,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` and `8.5.9` or `8.13.0` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Jira Version | The Data Center App Performance Toolkit officially supports `7.13.15` or `8.5.9` or `8.13.0` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
 
 **Cluster nodes**
 
@@ -407,7 +407,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` and `8.5.9` or `8.13.0` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Jira Version | The Data Center App Performance Toolkit officially supports `7.13.15` or `8.5.9` or `8.13.0` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
 
 **Cluster nodes**
 
