@@ -1,6 +1,8 @@
 import random
-from selenium_ui.conftest import print_timing
 
+from selenium.webdriver.remote.webdriver import WebDriver
+
+from selenium_ui.conftest import print_timing
 from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted, Dashboard, Projects, Project, Repository, \
     RepoNavigationPanel, PopupManager, RepoPullRequests, PullRequest, RepositoryBranches, RepositoryCommits, LogoutPage
 
@@ -17,7 +19,7 @@ def setup_run_data(datasets):
     datasets['pull_request_id'] = project_with_repo_prs[2]
 
 
-def login(webdriver, datasets):
+def login(webdriver: WebDriver, datasets):
     setup_run_data(datasets)
     login_page = LoginPage(webdriver)
 

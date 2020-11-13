@@ -4,7 +4,7 @@ from util.conf import BITBUCKET_SETTINGS
 
 class UrlManager:
 
-    def __init__(self, user=None, project_key=None, repo_slug=None, pull_request_key=None):
+    def __init__(self, user: str = None, project_key: str = None, repo_slug: str = None, pull_request_key: str = None):
         self.host = BITBUCKET_SETTINGS.server_url
         self.user = user
         self.project_key = project_key

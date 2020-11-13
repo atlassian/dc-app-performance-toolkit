@@ -10,8 +10,9 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, issue_key=None, issue_id=None, project_key=None, jql=None, projects_list_page=None,
-                 board_id=None):
+    def __init__(self, issue_key: typing.Optional[str] = None, issue_id :typing.Optional[str] =None,
+                 project_key=typing.Optional[None], jql=typing.Optional[None],
+                 projects_list_page: typing.Optional[str]=None, board_id: typing.Optional[str]=None):
         self.host = JIRA_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -27,40 +28,40 @@ class UrlManager:
         self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
         self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
 
-    def login_url(self):
+    def login_url(self) -> str:
         return f"{self.host}{self.login_params}"
 
-    def dashboard_url(self):
+    def dashboard_url(self) -> str:
         return f"{self.host}{self.dashboard_params}"
 
-    def issue_url(self):
+    def issue_url(self) -> str:
         return f"{self.host}{self.issue_params}"
 
-    def project_summary_url(self):
+    def project_summary_url(self) -> str:
         return f"{self.host}{self.project_summary_params}"
 
-    def jql_search_url(self):
+    def jql_search_url(self) -> str:
         return f"{self.host}{self.jql_params}"
 
-    def edit_issue_url(self):
+    def edit_issue_url(self) -> str:
         return f"{self.host}{self.edit_issue_params}"
 
-    def edit_comments_url(self):
+    def edit_comments_url(self) -> str:
         return f"{self.host}{self.edit_comments_params}"
 
-    def projects_list_page_url(self):
+    def projects_list_page_url(self) -> str:
         return f"{self.host}{self.projects_list_params}"
 
-    def boards_list_page_url(self):
+    def boards_list_page_url(self) -> str:
         return f"{self.host}{self.boards_list_params}"
 
-    def scrum_board_backlog_url(self):
+    def scrum_board_backlog_url(self) -> str:
         return f"{self.host}{self.scrum_board_backlog_params}"
 
-    def scrum_board_url(self):
+    def scrum_board_url(self) -> str:
         return f"{self.host}{self.scrum_board_params}"
 
-    def logout_url(self):
+    def logout_url(self) -> str:
         return f"{self.host}{self.logout_params}"
 
 

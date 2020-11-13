@@ -1,10 +1,12 @@
 from selenium.webdriver.common.by import By
+import typing
+
 from util.conf import CONFLUENCE_SETTINGS
 
 
 class UrlManager:
 
-    def __init__(self, page_id=None):
+    def __init__(self, page_id: typing.Optional[str] = None):
         self.host = CONFLUENCE_SETTINGS.server_url
         self.login_params = '/login.action'
         self.page_params = f"/pages/viewpage.action?pageId={page_id}"
@@ -12,19 +14,19 @@ class UrlManager:
         self.edit_page_params = f'/pages/editpage.action?pageId={page_id}'
         self.logout_params = "/logout.action"
 
-    def login_url(self):
+    def login_url(self) -> str:
         return f"{self.host}{self.login_params}"
 
-    def dashboard_url(self):
+    def dashboard_url(self) -> str:
         return f"{self.host}{self.dashboard_params}"
 
-    def page_url(self):
+    def page_url(self) -> str:
         return f"{self.host}{self.page_params}"
 
-    def edit_page_url(self):
+    def edit_page_url(self) -> str:
         return f"{self.host}{self.edit_page_params}"
 
-    def logout_url(self):
+    def logout_url(self) -> str:
         return f"{self.host}{self.logout_params}"
 
 

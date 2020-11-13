@@ -3,18 +3,24 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 import random
 import string
+import typing
 
 TIMEOUT = 20
 
+Selector = typing.Tuple[str, str]
+SelectorName = typing.Union[typing.Dict[str, Selector], Selector]
+
 
 class BasePage:
-    page_url = ''
-    page_loaded_selector = {}
+    page_url: str = ''
+    page_loaded_selector: typing.Union[SelectorName, typing.List[SelectorName]] = {}
 
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self, driver: WebDriver):
+        self.driver: WebDriver = driver
 
     def go_to(self):
         self.driver.get(self.page_url)
@@ -29,41 +35,41 @@ class BasePage:
     def go_to_url(self, url):
         self.driver.get(url)
 
-    def get_element(self, selector):
+    def get_element(self, selector: Selector) -> typing.Optional[WebElement]:
         selector_name = self.get_selector(selector)
         by, locator = selector_name[0], selector_name[1]
         return self.driver.find_element(by, locator)
 
-    def get_elements(self, selector):
+    def get_elements(self, selector: Selector) -> typing.List[WebElement]:
         selector_name = self.get_selector(selector)
         by, locator = selector_name[0], selector_name[1]
         return self.driver.find_elements(by, locator)
 
-    def wait_until_invisible(self, selector_name):
+    def wait_until_invisible(self, selector_name: SelectorName) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector))
 
-    def wait_until_visible(self, selector_name):
+    def wait_until_visible(self, selector_name: SelectorName) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector))
 
-    def wait_until_available_to_switch(self, selector_name):
+    def wait_until_available_to_switch(self, selector_name: SelectorName) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector))
 
-    def wait_until_present(self, selector_name, time_out=TIMEOUT):
+    def wait_until_present(self, selector_name: SelectorName, time_out: int = TIMEOUT) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.presence_of_element_located(selector), time_out=time_out)
 
-    def wait_until_clickable(self, selector_name):
+    def wait_until_clickable(self, selector_name: SelectorName) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector))
 
-    def wait_until_any_element_visible(self, selector_name):
+    def wait_until_any_element_visible(self, selector_name: SelectorName) -> typing.Any:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector))
 
-    def wait_until_any_ec_presented(self, selector_names):
+    def wait_until_any_ec_presented(self, selector_names: typing.Iterable[SelectorName]) -> typing.Any:
         origin_selectors = []
         for selector in selector_names:
             origin_selectors.append(self.get_selector(selector))
@@ -71,7 +77,7 @@ class BasePage:
         any_ec.ecs = tuple(ec.presence_of_element_located(origin_selector) for origin_selector in origin_selectors)
         return self.__wait_until(expected_condition=any_ec)
 
-    def wait_until_any_ec_text_presented_in_el(self, selector_names):
+    def wait_until_any_ec_text_presented_in_el(self, selector_names: typing.Iterable[SelectorName]) -> typing.Any:
         origin_selectors = []
         for selector_text in selector_names:
             selector = self.get_selector(selector_text[0])
@@ -82,7 +88,7 @@ class BasePage:
                            origin_selector in origin_selectors)
         return self.__wait_until(expected_condition=any_ec)
 
-    def __wait_until(self, expected_condition, time_out=TIMEOUT):
+    def __wait_until(self, expected_condition, time_out: int = TIMEOUT) -> typing.Any:
         message = f"Error in wait_until: "
         ec_type = type(expected_condition)
         if ec_type == AnyEc:
@@ -116,27 +122,27 @@ class BasePage:
     def return_to_parent_frame(self):
         return self.driver.switch_to.parent_frame()
 
-    def get_selector(self, selector_name):
+    def get_selector(self, selector_name: SelectorName) -> Selector:
         selector = selector_name.get(self.app_version) if type(selector_name) == dict else selector_name
         if selector is None:
             raise Exception(f'Selector {selector_name} for version {self.app_version} is not found')
         return selector
 
-    def execute_js(self, js):
+    def execute_js(self, js: str):
         return self.driver.execute_script(js)
 
     @property
-    def app_version(self):
+    def app_version(self) -> str:
         return self.driver.app_version if 'app_version' in dir(self.driver) else None
 
     @staticmethod
-    def generate_random_string(length):
+    def generate_random_string(length: int) -> str:
         return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
 
-    def select(self, element):
+    def select(self, element: WebElement) -> Select:
         return Select(element)
 
-    def action_chains(self):
+    def action_chains(self) -> ActionChains:
         return ActionChains(self.driver)
 
 

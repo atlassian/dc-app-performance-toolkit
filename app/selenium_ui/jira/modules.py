@@ -1,6 +1,8 @@
 import random
 import urllib.parse
 
+from selenium.webdriver.remote.webdriver import WebDriver
+
 from selenium_ui.conftest import print_timing
 from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
     BoardsList, Board, Dashboard, Logout

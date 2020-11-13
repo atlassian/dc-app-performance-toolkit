@@ -1,6 +1,8 @@
 
-from selenium_ui.base_page import BasePage
+from selenium.webdriver.remote.webdriver import WebDriver
+import typing
 
+from selenium_ui.base_page import BasePage
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
     PageLocators, DashboardLocators, TopPanelLocators, EditorLocators
 
@@ -9,7 +11,7 @@ class Login(BasePage):
     page_url = LoginPageLocators.login_page_url
     page_loaded_selector = LoginPageLocators.login_button
 
-    def set_credentials(self, username, password):
+    def set_credentials(self, username: str, password: str):
         self.get_element(LoginPageLocators.login_username_field).send_keys(username)
         self.get_element(LoginPageLocators.login_password_field).send_keys(password)
 
@@ -17,7 +19,7 @@ class Login(BasePage):
         self.wait_until_visible(LoginPageLocators.login_button).click()
         self.wait_until_invisible(LoginPageLocators.login_button)
 
-    def is_first_login(self):
+    def is_first_login(self) -> bool:
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
         return True if elements else False
 
@@ -76,7 +78,7 @@ class TopNavPanel(BasePage):
 
 class Editor(BasePage):
 
-    def __init__(self, driver, page_id=None):
+    def __init__(self, driver: WebDriver, page_id: typing.Optional[str] = None):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(page_id=page_id)
         self.page_url = url_manager.edit_page_url()
@@ -94,7 +96,7 @@ class Editor(BasePage):
         title_field.clear()
         title_field.send_keys(title)
 
-    def write_content(self, text=None):
+    def write_content(self, text: typing.Optional[str] = None):
         self.wait_until_available_to_switch(EditorLocators.page_content_field)
         text = self.generate_random_string(30) if not text else text
         self.execute_js(f"tinymce=document.getElementById('tinymce'); "

@@ -1,4 +1,7 @@
+import typing
+
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webdriver import WebDriver
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedLocators, \
@@ -87,14 +90,14 @@ class PopupManager(BasePage):
 
 class Repository(BasePage):
 
-    def __init__(self, driver, project_key, repo_slug):
+    def __init__(self, driver: WebDriver, project_key: str, repo_slug: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
-        self.page_url = url_manager.repo_url()
-        self.repo_slug = repo_slug
-        self.project_key = project_key
+        self.page_url: str = url_manager.repo_url()
+        self.repo_slug: str = repo_slug
+        self.project_key: str = project_key
 
-    def set_enable_fork_sync(self, value):
+    def set_enable_fork_sync(self, value: bool):
         checkbox = self.wait_until_visible(RepoLocators.repo_fork_sync)
         current_state = checkbox.is_selected()
         if (value and not current_state) or (not value and current_state):
@@ -103,7 +106,7 @@ class Repository(BasePage):
     def submit_fork_repo(self):
         self.wait_until_visible(RepoLocators.fork_repo_submit_button).click()
 
-    def set_fork_repo_name(self):
+    def set_fork_repo_name(self) -> str:
         fork_name_field = self.get_element(RepoLocators.fork_name_field)
         fork_name_field.clear()
         fork_name = f"{self.repo_slug}-{self.generate_random_string(5)}"
@@ -114,17 +117,17 @@ class Repository(BasePage):
 class RepoPullRequests(BasePage):
     page_loaded_selector = RepoLocators.pull_requests_list
 
-    def __init__(self, driver, project_key, repo_slug):
+    def __init__(self, driver: WebDriver, project_key: str, repo_slug: str):
         BasePage.__init__(self, driver)
         self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = self.url_manager.repo_pull_requests()
 
-    def create_new_pull_request(self, from_branch, to_branch):
+    def create_new_pull_request(self, from_branch: str, to_branch: str):
         self.go_to_url(url=self.url_manager.create_pull_request_url(from_branch=from_branch,
                                                                     to_branch=to_branch))
         self.submit_pull_request()
 
-    def set_pull_request_source_branch(self, source_branch):
+    def set_pull_request_source_branch(self, source_branch: str):
         self.wait_until_visible(RepoLocators.pr_source_branch_field).click()
         self.wait_until_visible(RepoLocators.pr_branches_dropdown)
         source_branch_name_field = self.get_element(RepoLocators.pr_source_branch_name)
@@ -137,7 +140,7 @@ class RepoPullRequests(BasePage):
         self.wait_until_visible(RepoLocators.pr_destination_repo_field).click()
         self.wait_until_visible(RepoLocators.pr_destination_first_repo_dropdown).click()
 
-    def set_pull_request_destination_branch(self, destination_branch):
+    def set_pull_request_destination_branch(self, destination_branch: str):
         self.wait_until_visible(RepoLocators.pr_destination_branch_field)
         self.execute_js("document.querySelector('#targetBranch').click()")
         self.wait_until_visible(RepoLocators.pr_destination_branch_dropdown)
@@ -161,7 +164,13 @@ class RepoPullRequests(BasePage):
 
 class PullRequest(BasePage):
 
-    def __init__(self, driver, project_key=None, repo_slug=None, pull_request_key=None):
+    def __init__(
+        self,
+        driver: WebDriver,
+        project_key: typing.Optional[str] = None,
+        repo_slug: typing.Optional[str] = None,
+        pull_request_key: typing.Optional[str] = None
+    ):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug,
                                  pull_request_key=pull_request_key)
@@ -216,7 +225,7 @@ class PullRequest(BasePage):
         elif self.app_version == '7':
             self.add_code_comment_v7()
 
-    def click_save_comment_button(self):
+    def click_save_comment_button(self) -> typing.Any:
         return self.wait_until_visible(PullRequestLocator.comment_button).click()
 
     def add_overview_comment(self):
@@ -242,16 +251,16 @@ class PullRequest(BasePage):
 class RepositoryBranches(BasePage):
     page_loaded_selector = BranchesLocator.branches_name
 
-    def __init__(self, driver, project_key, repo_slug):
+    def __init__(self, driver: WebDriver, project_key: str, repo_slug: str):
         BasePage.__init__(self, driver)
         self.url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = self.url_manager.repo_branches()
 
-    def open_base_branch(self, base_branch_name):
+    def open_base_branch(self, base_branch_name: str):
         self.go_to_url(f"{self.url_manager.base_branch_url()}{base_branch_name}")
         self.wait_until_visible(BranchesLocator.branches_name)
 
-    def create_branch_fork_rnd_name(self, base_branch_name):
+    def create_branch_fork_rnd_name(self, base_branch_name: str):
         self.wait_until_visible(BranchesLocator.branches_action).click()
         self.get_element(BranchesLocator.branches_action_create_branch).click()
         self.wait_until_visible(BranchesLocator.new_branch_name_textfield)
@@ -273,16 +282,16 @@ class RepositorySettings(BasePage):
     def wait_repository_settings(self):
         self.wait_until_visible(RepositorySettingsLocator.repository_settings_menu)
 
-    def delete_repository(self, repo_slug):
+    def delete_repository(self, repo_slug: str):
         self.wait_repository_settings()
         self.wait_until_visible(RepositorySettingsLocator.delete_repository_button).click()
-        self.wait_until_visible(RepositorySettingsLocator.delete_repository_modal_text_field,).send_keys(repo_slug)
+        self.wait_until_visible(RepositorySettingsLocator.delete_repository_modal_text_field).send_keys(repo_slug)
         self.wait_until_clickable(RepositorySettingsLocator.delete_repository_modal_submit_button)
         self.wait_until_visible(RepositorySettingsLocator.delete_repository_modal_submit_button).click()
 
 
 class ForkRepositorySettings(RepositorySettings):
-    def __init__(self, driver, user, repo_slug):
+    def __init__(self, driver: WebDriver, user: str, repo_slug: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(user=user, repo_slug=repo_slug)
         self.page_url = url_manager.fork_repo_url()
@@ -290,7 +299,7 @@ class ForkRepositorySettings(RepositorySettings):
 
 class UserSettings(BasePage):
 
-    def __init__(self, driver, user):
+    def __init__(self, driver: WebDriver, user: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(user=user)
         self.page_url = url_manager.user_settings_url()
@@ -302,7 +311,7 @@ class UserSettings(BasePage):
 class RepositoryCommits(BasePage):
     page_loaded_selector = RepoCommitsLocator.repo_commits_graph
 
-    def __init__(self, driver, project_key, repo_slug):
+    def __init__(self, driver: WebDriver, project_key: str, repo_slug: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, repo_slug=repo_slug)
         self.page_url = url_manager.commits_url()

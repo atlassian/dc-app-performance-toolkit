@@ -1,7 +1,9 @@
-from selenium.webdriver.common.keys import Keys
 import time
 import random
 import json
+
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webdriver import WebDriver
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
@@ -55,7 +57,7 @@ class Dashboard(BasePage):
 class Issue(BasePage):
     page_loaded_selector = IssueLocators.issue_title
 
-    def __init__(self, driver, issue_key=None, issue_id=None):
+    def __init__(self, driver: WebDriver, issue_key: typing.Optional[str] = None, issue_id: typing.Optional[str]=None):
         BasePage.__init__(self, driver)
         url_manager_modal = UrlManager(issue_key=issue_key)
         url_manager_edit_page = UrlManager(issue_id=issue_id)
@@ -89,7 +91,7 @@ class Issue(BasePage):
     def edit_issue_submit(self):
         self.get_element(IssueLocators.edit_issue_submit).click()
 
-    def fill_description_edit(self, rte):
+    def fill_description_edit(self, rte: bool):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
         if rte:
             self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
@@ -100,7 +102,7 @@ class Issue(BasePage):
         self.wait_until_clickable(IssueLocators.create_issue_button).click()
         self.wait_until_visible(IssueLocators.issue_modal)
 
-    def fill_description_create(self, rte):
+    def fill_description_create(self, rte: bool):
         text_description = f'Description: {self.generate_random_string(100)}'
         if rte:
             self.__fill_rich_editor_textfield(text_description, selector=IssueLocators.issue_description_field_RTE)
@@ -152,7 +154,7 @@ class Issue(BasePage):
         self.wait_until_clickable(IssueLocators.issue_submit_button).click()
         self.wait_until_invisible(IssueLocators.issue_modal)
 
-    def fill_comment_edit(self, rte):
+    def fill_comment_edit(self, rte: bool):
         text = 'Comment from selenium'
         if rte:
             self.__fill_rich_editor_textfield(text, selector=IssueLocators.edit_comment_text_field_RTE)
@@ -167,7 +169,7 @@ class Issue(BasePage):
 class Project(BasePage):
     page_loaded_selector = ProjectLocators.project_summary_property_column
 
-    def __init__(self, driver, project_key):
+    def __init__(self, driver: WebDriver, project_key: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.project_summary_url()
@@ -175,7 +177,7 @@ class Project(BasePage):
 
 class ProjectsList(BasePage):
 
-    def __init__(self, driver, projects_list_pages):
+    def __init__(self, driver: WebDriver, projects_list_pages: int):
         BasePage.__init__(self, driver)
         self.projects_list_page = random.randint(1, projects_list_pages)
         url_manager = UrlManager(projects_list_page=self.projects_list_page)
@@ -193,7 +195,7 @@ class BoardsList(BasePage):
 
 class Search(BasePage):
 
-    def __init__(self, driver, jql):
+    def __init__(self, driver: WebDriver, jql: str):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(jql=jql)
         self.page_url = url_manager.jql_search_url()

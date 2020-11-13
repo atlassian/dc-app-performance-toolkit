@@ -1,6 +1,8 @@
 import random
-from selenium_ui.conftest import print_timing
 
+from selenium.webdriver.remote.webdriver import WebDriver
+
+from selenium_ui.conftest import print_timing
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
 
@@ -24,7 +26,7 @@ def setup_run_data(datasets):
     datasets['blog_id'] = blog[0]
 
 
-def login(webdriver, datasets):
+def login(webdriver: WebDriver, datasets):
     setup_run_data(datasets)
     login_page = Login(webdriver)
 
@@ -51,7 +53,7 @@ def login(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_page(webdriver, datasets):
+def view_page(webdriver: WebDriver, datasets):
     page = Page(webdriver, page_id=datasets['page_id'])
 
     @print_timing("selenium_view_page")
@@ -61,7 +63,7 @@ def view_page(webdriver, datasets):
     measure()
 
 
-def view_blog(webdriver, datasets):
+def view_blog(webdriver: WebDriver, datasets):
     blog = Page(webdriver, page_id=datasets['blog_id'])
 
     @print_timing("selenium_view_blog")
@@ -71,7 +73,7 @@ def view_blog(webdriver, datasets):
     measure()
 
 
-def view_dashboard(webdriver, datasets):
+def view_dashboard(webdriver: WebDriver, datasets):
     dashboard_page = Dashboard(webdriver)
 
     @print_timing("selenium_view_dashboard")
@@ -81,7 +83,7 @@ def view_dashboard(webdriver, datasets):
     measure()
 
 
-def create_confluence_page(webdriver, datasets):
+def create_confluence_page(webdriver: WebDriver, datasets):
     nav_panel = TopNavPanel(webdriver)
     create_page = Editor(webdriver)
 
@@ -109,7 +111,7 @@ def create_confluence_page(webdriver, datasets):
     measure()
 
 
-def edit_confluence_page(webdriver, datasets):
+def edit_confluence_page(webdriver: WebDriver, datasets):
     edit_page = Editor(webdriver, page_id=datasets['page_id'])
 
     @print_timing("selenium_edit_page")
@@ -130,7 +132,7 @@ def edit_confluence_page(webdriver, datasets):
     measure()
 
 
-def create_comment(webdriver, datasets):
+def create_comment(webdriver: WebDriver, datasets):
     page = Page(webdriver, page_id=datasets['page_id'])
 
     @print_timing("selenium_create_comment")
@@ -153,7 +155,7 @@ def create_comment(webdriver, datasets):
     measure()
 
 
-def log_out(webdriver, datasets):
+def log_out(webdriver: WebDriver, datasets):
 
     @print_timing("selenium_log_out")
     def measure():
