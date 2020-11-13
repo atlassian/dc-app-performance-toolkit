@@ -18,6 +18,7 @@ class UrlManager:
         self.browse_all_projects = '/secure/BrowseProjects.jspa'
         self.browse_project_customers = f'/projects/{project_key}/customers'
         self.view_customer_request = f'/browse/{request_key}'
+        self.browse_project_reports = f'/projects/{project_key}/reports'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -36,6 +37,9 @@ class UrlManager:
 
     def view_customer_request_url(self):
         return f'{self.host}{self.view_customer_request}'
+
+    def browse_project_reports_url(self):
+        return f'{self.host}{self.browse_project_reports}'
 
 
 class LoginPageLocators:
@@ -86,3 +90,16 @@ class ViewCustomerRequestLocators:
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
     comment_tinymce_field = (By.ID, "tinymce")
     comment_internally_btn = (By.XPATH, "//button[contains(text(),'Comment internally')]")
+
+
+class ViewReportsLocators:
+
+    # locators to click
+    workload = (By.XPATH, "//span[contains(text(),'Workload')]")
+    time_to_resolution = (By.XPATH, "//span[contains(text(),'Time to resolution')]")
+    created_vs_resolved = (By.XPATH, "//span[contains(text(),'Created vs Resolved')]")
+
+    # wait until visible locators
+    reports_nav = (By.ID, "pinnednav-opts-sd-reports-nav")
+    custom_report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
+    team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")
