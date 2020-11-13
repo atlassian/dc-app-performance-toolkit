@@ -31,31 +31,27 @@ def setup_run_data(datasets):
     datasets['small_project_key'] = service_desk_small[2]
 
 
-def view_report_form_diff_projects_size(browse_reports_page, project_size):
+def view_reports_form_diff_projects_size(browse_reports_page, project_size):
 
-    @print_timing(f'selenium_view_reports_{project_size}_project')
+    @print_timing(f'selenium_{project_size}_project_view_reports')
     def measure():
         browse_reports_page.go_to()
         browse_reports_page.wait_for_page_loaded()
 
-        @print_timing(f'selenium_view_reports_{project_size}_project:view_time_to_resolution_report')
+        @print_timing(f'selenium_{project_size}_project_view_reports:view_time_to_resolution_report')
         def sub_measure():
             browse_reports_page.view_time_to_resolution_report()
-
         sub_measure()
 
-        @print_timing(f'selenium_view_reports_{project_size}_project:view_workload_report')
-        def sub_measure():
-            browse_reports_page.view_workload_report()
+        # @print_timing(f'selenium_{project_size}_project_view_reports:view_workload_report')
+        # def sub_measure():
+        #     browse_reports_page.view_workload_report()
+        # sub_measure()
 
-        sub_measure()
-
-        @print_timing(f'selenium_view_reports_{project_size}_project:view_created_vs_resolved')
+        @print_timing(f'selenium_{project_size}_project_view_reports:view_created_vs_resolved')
         def sub_measure():
             browse_reports_page.view_created_vs_resolved()
-
         sub_measure()
-
     measure()
 
 
@@ -123,8 +119,11 @@ def view_customer_request(webdriver, datasets):
     measure()
 
 
-def view_reports(webdriver, datasets):
-    browse_reports_page = ViewReports(webdriver, project_key=datasets['small_project_key']  )
-    view_report_form_diff_projects_size(browse_reports_page, project_size='small')
+def small_project_view_reports(webdriver, datasets):
+    browse_reports_page = ViewReports(webdriver, project_key=datasets['small_project_key'])
+    view_reports_form_diff_projects_size(browse_reports_page, project_size='small')
+
+
+def large_project_view_reports(webdriver, datasets):
     browse_reports_page = ViewReports(webdriver, project_key=datasets['large_project_key'])
-    view_report_form_diff_projects_size(browse_reports_page, project_size='large')
+    view_reports_form_diff_projects_size(browse_reports_page, project_size='large')
