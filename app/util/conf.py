@@ -1,11 +1,12 @@
 import yaml
+import typing
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML
 
 TOOLKIT_VERSION = '4.0.0'
 
 
-def read_yml_file(file):
+def read_yml_file(file) -> typing.Dict[str, typing.Any]:
     with file.open(mode='r') as file:
         return yaml.load(file, Loader=yaml.FullLoader)
 
@@ -29,7 +30,7 @@ class AppSettings:
         self.secure = env_settings['secure']
 
     @property
-    def server_url(self):
+    def server_url(self) -> str:
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
 

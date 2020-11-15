@@ -3,47 +3,47 @@ import os
 from pathlib import Path
 
 
-def __get_jira_yml():
+def __get_jira_yml() -> Path:
     return Path(__file__).parents[1] / "jira.yml"
 
 
-def __get_datasets():
+def __get_datasets() -> Path:
     return Path(__file__).parents[1] / "datasets"
 
 
-def __get_jira_datasets():
+def __get_jira_datasets() -> Path:
     return __get_datasets() / "jira"
 
 
-def __get_jira_dataset(file_name):
+def __get_jira_dataset(file_name) -> Path:
     return __get_jira_datasets() / file_name
 
 
-def __get_confluence_yml():
+def __get_confluence_yml() -> Path:
     return Path(__file__).parents[1] / "confluence.yml"
 
 
-def __get_bitbucket_yml():
+def __get_bitbucket_yml() -> Path:
     return Path(__file__).parents[1] / "bitbucket.yml"
 
 
-def __get_bitbucket_datasets():
+def __get_bitbucket_datasets() -> Path:
     return __get_datasets() / "bitbucket"
 
 
-def __get_confluence_datasets():
+def __get_confluence_datasets() -> Path:
     return __get_datasets() / "confluence"
 
 
-def __get_confluence_dataset(file_name):
+def __get_confluence_dataset(file_name) -> Path:
     return __get_confluence_datasets() / file_name
 
 
-def __get_bitbucket_dataset(file_name):
+def __get_bitbucket_dataset(file_name) -> Path:
     return __get_bitbucket_datasets() / file_name
 
 
-def __get_taurus_artifacts_dir():
+def __get_taurus_artifacts_dir() -> Path:
     if 'TAURUS_ARTIFACTS_DIR' in os.environ:
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
