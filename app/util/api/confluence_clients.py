@@ -1,14 +1,16 @@
 import xmlrpc.client
 
-from util.api.abstract_clients import RestClient, Client
 from lxml import html
+import typing
+
+from util.api.abstract_clients import RestClient, Client
 
 BATCH_SIZE_SEARCH = 500
 
 
 class ConfluenceRestClient(RestClient):
 
-    def get_content(self, start=0, limit=100, type="page", expand="space"):
+    def get_content(self, start=0, limit=100, type="page", expand="space") -> list:
         """
         Returns all content. This only includes pages that the user has permission to view.
         :param start: The starting index of the returned boards. Base index: 0.
@@ -44,7 +46,7 @@ class ConfluenceRestClient(RestClient):
 
         return content
 
-    def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
+    def get_content_search(self, start=0, limit=100, cql: typing.Optional[str] = None, expand="space") -> list:
         """
         Fetch a list of content using the Confluence Query Language (CQL).
         :param start: The starting index of the returned boards. Base index: 0.
@@ -80,11 +82,11 @@ class ConfluenceRestClient(RestClient):
 
         return content
 
-    def get_users(self, prefix, count):
+    def get_users(self, prefix: str, count: int) -> list:
         users_list = self.search(f"user~{prefix}", limit=count)
         return users_list
 
-    def get_confluence_version(self):
+    def get_confluence_version(self) -> str:
         version = ''
         api_url = f'{self.host}/rest/applinks/1.0/manifest'
         response = self.get(api_url, 'Could not get Confluence manifest')
@@ -94,7 +96,9 @@ class ConfluenceRestClient(RestClient):
                 version = child.text
         return version
 
-    def search(self, cql, cqlcontext=None, expand=None, start=0, limit=500):
+    def search(
+        self, cql, cqlcontext: typing.Optional[str] = None, expand: typing.Optional[str] = None, start=0, limit=500
+    ) -> list:
         """
         Fetch a list of content using the Confluence Query Language (CQL).
         :param cql: a cql query string to use to locate content
@@ -122,31 +126,31 @@ class ConfluenceRestClient(RestClient):
 
         return search_results_list
 
-    def is_remote_api_enabled(self):
+    def is_remote_api_enabled(self) -> bool:
         api_url = f'{self.host}/rpc/xmlrpc'
         response = self.get(api_url, error_msg='Confluence Remote API (XML-RPC & SOAP) is disabled. '
                                                'For further processing enable Remote API via '
                                                'General Configuration - Further Configuration - Remote API')
         return response.status_code == 200
 
-    def get_confluence_nodes_count(self):
+    def get_confluence_nodes_count(self) -> typing.Union[str, int]:
         api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
         response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
                             expected_status_codes=[200, 500])
         return 'Server' if response.status_code == 500 and 'NonClusterMonitoring' in response.text\
             else len(response.json())
 
-    def get_total_pages_count(self):
+    def get_total_pages_count(self) -> int:
         api_url = f"{self.host}/rest/api/search?cql=type=page"
         response = self.get(api_url, 'Could not get issues count')
         return response.json().get('totalSize', 0)
 
-    def get_collaborative_editing_status(self):
+    def get_collaborative_editing_status(self) -> dict:
         api_url = f'{self.host}/rest/synchrony-interop/status'
         response = self.get(api_url, error_msg='Could not get collaborative editing status')
         return response.json()
 
-    def get_locale(self):
+    def get_locale(self) -> str:
         language = None
         page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.").content
         tree = html.fromstring(page)
@@ -156,7 +160,7 @@ class ConfluenceRestClient(RestClient):
             print(f"Warning: Could not get user locale: {error}")
         return language
 
-    def get_groups_membership(self, username):
+    def get_groups_membership(self, username: str) -> typing.List[str]:
         api_url = f'{self.host}/rest/api/user/memberof?username={username}'
         response = self.get(api_url, error_msg='Could not get group members')
         groups = [group['name'] for group in response.json()['results']]
@@ -165,7 +169,7 @@ class ConfluenceRestClient(RestClient):
 
 class ConfluenceRpcClient(Client):
 
-    def create_user(self, username=None, password=None):
+    def create_user(self, username: str = None, password: str = None) -> typing.Dict[str, typing.Dict[str, str]]:
         """
         Creates user. Uses XML-RPC protocol
         (https://developer.atlassian.com/server/confluence/confluence-xml-rpc-and-soap-apis/)

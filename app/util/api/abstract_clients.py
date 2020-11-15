@@ -1,26 +1,27 @@
 import json
 from abc import ABC
+import typing
 
 import requests
 from requests import Response
 
 
 class Client(ABC):
-    def __init__(self, host, user, password):
+    def __init__(self, host: str, user: str, password: str):
         self._host = host
         self._user = user
         self._password = password
 
     @property
-    def host(self):
+    def host(self) -> str:
         return self._host
 
     @property
-    def user(self):
+    def user(self) -> str:
         return self._user
 
     @property
-    def password(self):
+    def password(self) -> str:
         return self._password
 
 
@@ -39,31 +40,39 @@ class RestClient(Client):
     def to_json(obj: dict) -> str:
         return json.dumps(obj)
 
-    def __init__(self, host, user, password, session=None, timeout=30):
+    def __init__(
+        self, host: str, user: str, password: str, session: typing.Optional[requests.Session] = None, timeout: int = 30
+    ):
         super().__init__(host, user, password)
 
         self._requests_timeout = timeout
         self._session = session or requests.Session()
 
     @property
-    def requests_timeout(self):
+    def requests_timeout(self) -> int:
         return self._requests_timeout
 
     @property
-    def session(self):
+    def session(self) -> requests.Session:
         return self._session
 
     @property
-    def base_auth(self):
+    def base_auth(self) -> typing.Tuple[str, str]:
         return self.user, self.password
 
-    def get(self, url: str, error_msg: str, expected_status_codes: list = None, allow_redirect=False):
+    def get(
+        self, url: str, error_msg: str, expected_status_codes: typing.Optional[typing.List[int]] = None,
+        allow_redirect=False
+    ) -> Response:
         response = self.session.get(url, auth=self.base_auth, verify=False, timeout=self.requests_timeout,
                                     allow_redirects=allow_redirect)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
 
-    def post(self, url: str, error_msg: str, body: dict = None, params=None, allow_redirect=False):
+    def post(
+        self, url: str, error_msg: str, body: typing.Optional[dict] = None, params: typing.Optional[dict] = None,
+        allow_redirect=False
+    ) -> Response:
         body_data = self.to_json(body) if body else None
         response = self.session.post(url, body_data, params=params, auth=self.base_auth, headers=self.JSON_HEADERS,
                                      allow_redirects=allow_redirect)
@@ -71,7 +80,10 @@ class RestClient(Client):
         self.__verify_response(response, error_msg)
         return response
 
-    def put(self, url: str, error_msg: str, body: dict = None, params=None, allow_redirect=False):
+    def put(
+        self, url: str, error_msg: str, body: dict = None, params: typing.Optional[dict] = None,
+        allow_redirect=False
+    ) -> Response:
         body_data = self.to_json(body) if body else None
         response = self.session.put(url, body_data, params=params, auth=self.base_auth, headers=self.JSON_HEADERS,
                                     allow_redirects=allow_redirect)
@@ -79,11 +91,13 @@ class RestClient(Client):
         self.__verify_response(response, error_msg)
         return response
 
-    def __verify_response(self, response: Response, error_msg: str, expected_status_codes: list = None):
+    def __verify_response(
+        self, response: Response, error_msg: str, expected_status_codes: typing.Optional.typing.List[int] = None
+    ):
         if response.is_redirect:
-            raise Exception(f"Redirect detected.\n "
-                            f"Please check config.yml file (application_hostname, application_port, "
-                            f"application_protocol, application_postfix).")
+            raise Exception("Redirect detected.\n "
+                            "Please check config.yml file (application_hostname, application_port, "
+                            "application_protocol, application_postfix).")
         if response.ok or (expected_status_codes and response.status_code in expected_status_codes):
             return
 

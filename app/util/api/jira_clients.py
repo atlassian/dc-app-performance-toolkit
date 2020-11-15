@@ -1,5 +1,8 @@
-from util.api.abstract_clients import RestClient
+import typing
+
 from selenium.common.exceptions import WebDriverException
+
+from util.api.abstract_clients import RestClient
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -8,7 +11,10 @@ BATCH_SIZE_ISSUES = 1000
 
 class JiraRestClient(RestClient):
 
-    def get_boards(self, start_at=0, max_results=100, board_type=None, name=None, project_key_or_id=None):
+    def get_boards(
+        self, start_at=0, max_results=100, board_type: typing.Option[str] = None, name: typing.Optional[str] = None,
+        project_key_or_id: typing.Optional[str] = None
+    ) -> list:
         """
         Returns all boards. This only includes boards that the user has permission to view.
         :param start_at: The starting index of the returned boards. Base index: 0.
@@ -45,7 +51,9 @@ class JiraRestClient(RestClient):
 
         return boards_list
 
-    def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
+    def get_users(
+        self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False
+    ) -> list:
         """
         Returns a list of users that match the search string. This resource cannot be accessed anonymously.
         :param username: A query string used to search username, name or e-mail address. "." - search for all users.
@@ -77,7 +85,7 @@ class JiraRestClient(RestClient):
 
         return users_list
 
-    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
+    def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields: typing.List[str] = None) -> list:
         """
         Searches for issues using JQL.
         :param jql: a JQL query string
@@ -117,13 +125,15 @@ class JiraRestClient(RestClient):
 
         return issues
 
-    def get_total_issues_count(self):
+    def get_total_issues_count(self) -> int:
         api_url = f'{self.host}/rest/api/2/search'
         body = {"jql": "order by key"}
         response = self.post(api_url, "Could not retrieve issues", body=body)
         return response.json().get('total', 0)
 
-    def create_user(self, display_name=None, email=None, name='', password=''):
+    def create_user(
+        self, display_name: typing.Optional[str] = None, email: typing.Optional[str] = None, name='', password=''
+    ) -> dict:
         """
         Creates a user. This resource is retained for legacy compatibility.
         As soon as a more suitable alternative is available this resource will be deprecated.
@@ -144,7 +154,7 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_all_projects(self):
+    def get_all_projects(self) -> list:
         """
         :return: Returns the projects list of all project types - all categories
         """
@@ -153,13 +163,13 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_server_info(self):
+    def get_server_info(self) -> dict:
         api_url = f'{self.host}/rest/api/2/serverInfo'
         response = self.get(api_url, 'Could not get the server information')
 
         return response.json()
 
-    def get_nodes_count_via_rest(self):
+    def get_nodes_count_via_rest(self) -> int:
         # Works for Jira version >= 8.1.0
         api_url = f'{self.host}/rest/api/2/cluster/nodes'
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
@@ -168,7 +178,7 @@ class JiraRestClient(RestClient):
         nodes = [1 if node['state'] == "ACTIVE" else 0 for node in response.json()]
         return nodes.count(1)
 
-    def get_system_info_page(self):
+    def get_system_info_page(self) -> str:
         session = self._session
         login_url = f'{self.host}/login.jsp'
         auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
@@ -192,7 +202,7 @@ class JiraRestClient(RestClient):
         system_info_html = auth_request.content.decode("utf-8")
         return system_info_html
 
-    def get_cluster_nodes_count(self, jira_version):
+    def get_cluster_nodes_count(self, jira_version: str) -> typing.Union[str, int]:
         html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
         if jira_version >= '8.1.0':
             return self.get_nodes_count_via_rest()
@@ -203,17 +213,17 @@ class JiraRestClient(RestClient):
                 return 'Server'
             return nodes_count
 
-    def get_locale(self):
+    def get_locale(self) -> str:
         api_url = f'{self.host}/rest/api/2/myself'
         user_properties = self.get(api_url, "Could not retrieve user")
         return user_properties.json()['locale']
 
-    def get_applications_properties(self):
+    def get_applications_properties(self) -> dict:
         api_url = f'{self.host}/rest/api/2/application-properties'
         app_properties = self.get(api_url, "Could not retrieve application properties")
         return app_properties.json()
 
-    def check_rte_status(self):
+    def check_rte_status(self) -> bool:
         # Safe check for RTE status. Return RTE status or return default value (True).
         try:
             app_prop = self.get_applications_properties()
@@ -226,7 +236,7 @@ class JiraRestClient(RestClient):
             print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
             return True
 
-    def get_user_permissions(self):
+    def get_user_permissions(self) -> dict:
         api_url = f'{self.host}/rest/api/2/mypermissions'
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
