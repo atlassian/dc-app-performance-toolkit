@@ -89,7 +89,7 @@ class BasePage:
         return self.__wait_until(expected_condition=any_ec)
 
     def __wait_until(self, expected_condition, time_out: int = TIMEOUT) -> typing.Any:
-        message = f"Error in wait_until: "
+        message = "Error in wait_until: "
         ec_type = type(expected_condition)
         if ec_type == AnyEc:
             conditions_text = ""

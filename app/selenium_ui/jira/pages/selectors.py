@@ -1,4 +1,7 @@
+import typing
+
 from selenium.webdriver.common.by import By
+
 from util.conf import JIRA_SETTINGS
 
 
@@ -10,9 +13,9 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, issue_key: typing.Optional[str] = None, issue_id :typing.Optional[str] =None,
+    def __init__(self, issue_key: typing.Optional[str] = None, issue_id: typing.Optional[str] = None,
                  project_key=typing.Optional[None], jql=typing.Optional[None],
-                 projects_list_page: typing.Optional[str]=None, board_id: typing.Optional[str]=None):
+                 projects_list_page: typing.Optional[str] = None, board_id: typing.Optional[str] = None):
         self.host = JIRA_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'

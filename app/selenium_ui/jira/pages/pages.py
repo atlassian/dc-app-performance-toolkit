@@ -1,6 +1,7 @@
 import time
 import random
 import json
+import typing
 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -57,7 +58,9 @@ class Dashboard(BasePage):
 class Issue(BasePage):
     page_loaded_selector = IssueLocators.issue_title
 
-    def __init__(self, driver: WebDriver, issue_key: typing.Optional[str] = None, issue_id: typing.Optional[str]=None):
+    def __init__(
+        self, driver: WebDriver, issue_key: typing.Optional[str] = None, issue_id: typing.Optional[str] = None
+    ):
         BasePage.__init__(self, driver)
         url_manager_modal = UrlManager(issue_key=issue_key)
         url_manager_edit_page = UrlManager(issue_id=issue_id)
