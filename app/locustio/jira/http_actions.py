@@ -7,13 +7,14 @@ from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, gene
 
 from util.conf import JIRA_SETTINGS
 import uuid
+from locustio.common_utils import MyBaseTaskSet
 
 logger = init_logger(app_type='jira')
 jira_dataset = jira_datasets()
 
 
 @jira_measure
-def login_and_view_dashboard(locust):
+def login_and_view_dashboard(locust: MyBaseTaskSet):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
@@ -62,7 +63,7 @@ def login_and_view_dashboard(locust):
 
 
 @jira_measure
-def view_issue(locust):
+def view_issue(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = BrowseIssue()
     issue_key = random.choice(jira_dataset['issues'])[0]
@@ -88,7 +89,7 @@ def view_issue(locust):
                       catch_response=True)
 
 
-def create_issue(locust):
+def create_issue(locust: MyBaseTaskSet):
     params = CreateIssue()
     project = random.choice(jira_dataset['projects'])
     project_id = project[1]
@@ -141,7 +142,7 @@ def create_issue(locust):
 
 
 @jira_measure
-def search_jql(locust):
+def search_jql(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = SearchJql()
     jql = random.choice(jira_dataset['jqls'])[0]
@@ -195,7 +196,7 @@ def search_jql(locust):
 
 
 @jira_measure
-def view_project_summary(locust):
+def view_project_summary(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = ViewProjectSummary()
     project = random.choice(jira_dataset['projects'])
@@ -238,7 +239,7 @@ def view_project_summary(locust):
                catch_response=True)
 
 
-def edit_issue(locust):
+def edit_issue(locust: MyBaseTaskSet):
     params = EditIssue()
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
@@ -309,7 +310,7 @@ def edit_issue(locust):
 
 
 @jira_measure
-def view_dashboard(locust):
+def view_dashboard(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = ViewDashboard()
 
@@ -339,7 +340,7 @@ def view_dashboard(locust):
                catch_response=True)
 
 
-def add_comment(locust):
+def add_comment(locust: MyBaseTaskSet):
     params = AddComment()
     issue = random.choice(jira_dataset['issues'])
     issue_id = issue[1]
@@ -385,7 +386,7 @@ def add_comment(locust):
 
 
 @jira_measure
-def browse_projects(locust):
+def browse_projects(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = BrowseProjects()
 
@@ -405,28 +406,28 @@ def browse_projects(locust):
 
 
 @jira_measure
-def view_kanban_board(locust):
+def view_kanban_board(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     kanban_board_id = random.choice(jira_dataset["kanban_boards"])[0]
     view_board(locust, kanban_board_id)
 
 
 @jira_measure
-def view_scrum_board(locust):
+def view_scrum_board(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id)
 
 
 @jira_measure
-def view_backlog(locust):
+def view_backlog(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
     view_board(locust, scrum_board_id, view_backlog=True)
 
 
 @jira_measure
-def browse_boards(locust):
+def browse_boards(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = BrowseBoards()
     locust.get('/secure/ManageRapidViews.jspa', catch_response=True)
@@ -441,7 +442,7 @@ def browse_boards(locust):
     locust.get(f'/rest/greenhopper/1.0/rapidviews/viewsData?_{timestamp_int()}', catch_response=True)
 
 
-def view_board(locust, board_id, view_backlog=False):
+def view_board(locust: MyBaseTaskSet, board_id: str, view_backlog=False):
     params = ViewBoard()
     if view_backlog:
         url = f'/secure/RapidBoard.jspa?rapidView={board_id}&view=planning'

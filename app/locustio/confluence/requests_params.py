@@ -4,7 +4,7 @@ from util.project_paths import CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_US
 import json
 
 
-def confluence_datasets():
+def confluence_datasets() -> typing.Dict[str, typing.List[typing.Any]]:
     data_sets = dict()
     data_sets["pages"] = read_input_file(CONFLUENCE_PAGES)
     data_sets["blogs"] = read_input_file(CONFLUENCE_BLOGS)
@@ -23,11 +23,11 @@ class BaseResource:
         self.resources_json = self.read_json()
         self.resources_body = self.action_resources()
 
-    def read_json(self):
+    def read_json(self) -> dict:
         with open(self.resources_file) as f:
             return json.load(f)
 
-    def action_resources(self):
+    def action_resources(self) -> dict:
         return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
 
 

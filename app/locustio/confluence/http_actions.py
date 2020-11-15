@@ -6,15 +6,17 @@ from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int
     raise_if_login_failed
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
     CreateBlog, CreateEditPage, UploadAttachments, LikePage
-from util.conf import CONFLUENCE_SETTINGS
 import uuid
+
+from util.conf import CONFLUENCE_SETTINGS
+from locustio.common_utils import MyBaseTaskSet
 
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
 
 
 @confluence_measure
-def login_and_view_dashboard(locust):
+def login_and_view_dashboard(locust: MyBaseTaskSet):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
@@ -52,7 +54,7 @@ def login_and_view_dashboard(locust):
     locust.session_data_storage['username'] = username
 
 
-def view_page_and_tree(locust):
+def view_page_and_tree(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = ViewPage()
     page = random.choice(confluence_dataset["pages"])
@@ -149,7 +151,7 @@ def view_page_and_tree(locust):
 
 
 @confluence_measure
-def view_dashboard(locust):
+def view_dashboard(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = ViewDashboard()
 
@@ -176,7 +178,7 @@ def view_dashboard(locust):
 
 
 @confluence_measure
-def view_blog(locust):
+def view_blog(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = ViewBlog()
     blog = random.choice(confluence_dataset["blogs"])
@@ -229,7 +231,7 @@ def view_blog(locust):
                catch_response=True)
 
 
-def search_cql_and_view_results(locust):
+def search_cql_and_view_results(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
 
     @confluence_measure
@@ -252,7 +254,7 @@ def search_cql_and_view_results(locust):
     search_cql()
 
 
-def open_editor_and_create_blog(locust):
+def open_editor_and_create_blog(locust: MyBaseTaskSet):
     params = CreateBlog()
     blog = random.choice(confluence_dataset["blogs"])
     blog_space_key = blog[1]
@@ -399,7 +401,7 @@ def open_editor_and_create_blog(locust):
     create_blog()
 
 
-def create_and_edit_page(locust):
+def create_and_edit_page(locust: MyBaseTaskSet):
     params = CreateEditPage()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
@@ -718,7 +720,7 @@ def create_and_edit_page(locust):
 
 
 @confluence_measure
-def comment_page(locust):
+def comment_page(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
@@ -734,7 +736,7 @@ def comment_page(locust):
 
 
 @confluence_measure
-def view_attachments(locust):
+def view_attachments(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
@@ -747,7 +749,7 @@ def view_attachments(locust):
 
 
 @confluence_measure
-def upload_attachments(locust):
+def upload_attachments(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = UploadAttachments()
     page = random.choice(confluence_dataset["pages"])
@@ -779,7 +781,7 @@ def upload_attachments(locust):
 
 
 @confluence_measure
-def like_page(locust):
+def like_page(locust: MyBaseTaskSet):
     raise_if_login_failed(locust)
     params = LikePage()
     page = random.choice(confluence_dataset["pages"])

@@ -14,6 +14,10 @@ from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 from locust import exception
 import inspect
 from locust import TaskSet
+from requests import Response
+import typing
+
+T = typing.TypeVar("T")
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -62,7 +66,7 @@ class LocustConfig:
         self.env = config_yml.env
         self.secure = config_yml.secure
 
-    def percentage(self, action_name: str):
+    def percentage(self, action_name: str) -> int:
         if action_name in self.env:
             return int(self.env[action_name])
         else:
@@ -71,7 +75,7 @@ class LocustConfig:
 
 class Logger(logging.Logger):
 
-    def __init__(self, name, level, app_type):
+    def __init__(self, name: str, level: int, app_type: str):
         super().__init__(name=name, level=level)
         self.type = app_type
 
@@ -101,13 +105,13 @@ class MyBaseTaskSet(TaskSet):
                                         response_length=0,
                                         exception=str(response.raise_for_status()))
 
-    def get(self, *args, **kwargs):
+    def get(self, *args, **kwargs) -> Response:
         r = self.client.get(*args, **kwargs)
         action_name = inspect.stack()[1][3]
         self.failure_check(response=r, action_name=action_name)
         return r
 
-    def post(self, *args, **kwargs):
+    def post(self, *args, **kwargs) -> Response:
         r = self.client.post(*args, **kwargs)
         action_name = inspect.stack()[1][3]
         self.failure_check(response=r, action_name=action_name)
@@ -141,7 +145,7 @@ def confluence_measure(func):
     return wrapper
 
 
-def global_measure(func, start_time, *args, **kwargs):
+def global_measure(func, start_time: float, *args, **kwargs) -> typing.Any:
     result = None
     try:
         result = func(*args, **kwargs)
@@ -164,13 +168,15 @@ def global_measure(func, start_time, *args, **kwargs):
     return result
 
 
-def read_input_file(file_path):
+def read_input_file(file_path) -> list:
     with open(file_path, 'r') as fs:
         reader = csv.reader(fs)
         return list(reader)
 
 
-def fetch_by_re(pattern, text, group_no=1, default_value=None):
+def fetch_by_re(
+    pattern, text, group_no=1, default_value: typing.Optional[typing.Any] = None
+) -> typing.Optional[typing.Tuple[typing.AnyStr, ...]]:
     search = re.search(pattern, text)
     if search:
         return search.group(group_no)
@@ -178,12 +184,12 @@ def fetch_by_re(pattern, text, group_no=1, default_value=None):
         return default_value
 
 
-def read_json(file_json):
+def read_json(file_json) -> dict:
     with open(file_json) as f:
         return json.load(f)
 
 
-def init_logger(app_type=None):
+def init_logger(app_type=None) -> Logger:
     logfile_path = ENV_TAURUS_ARTIFACT_DIR / 'locust.log'
     root_logger = Logger(name='locust', level=logging.INFO, app_type=app_type)
     log_format = f"[%(asctime)s.%(msecs)03d] [%(levelname)s] {socket.gethostname()}/%(name)s : %(message)s"
@@ -195,26 +201,26 @@ def init_logger(app_type=None):
     return root_logger
 
 
-def timestamp_int():
+def timestamp_int() -> int:
     now = datetime.now()
     return int(datetime.timestamp(now))
 
 
-def generate_random_string(length, only_letters=False):
+def generate_random_string(length: int, only_letters=False) -> str:
     if not only_letters:
         return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
     else:
         return "".join([random.choice(string.ascii_lowercase + ' ') for _ in range(length)])
 
 
-def get_first_index(from_list: list, err):
+def get_first_index(from_list: typing.List[T], err) -> T:
     if len(from_list) > 0:
         return from_list[0]
     else:
         raise IndexError(err)
 
 
-def raise_if_login_failed(locust):
+def raise_if_login_failed(locust: MyBaseTaskSet):
     if locust.login_failed:
         raise exception.StopUser('Action login_and_view_dashboard failed')
 
