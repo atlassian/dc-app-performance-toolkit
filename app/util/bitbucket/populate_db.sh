@@ -20,7 +20,7 @@ BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(7.6.0 7.0.5 6.10.5)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5 7.6.0)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
