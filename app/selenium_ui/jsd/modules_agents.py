@@ -1,6 +1,6 @@
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewReports
+    ViewCustomerRequest, ViewReports, ViewQueue
 import random
 
 from util.api.jira_clients import JiraRestClient
@@ -32,9 +32,11 @@ def setup_run_data(datasets):
 
     datasets['large_project_id'] = service_desk_large[1]
     datasets['large_project_key'] = service_desk_large[2]
+    datasets['all_open_queue_id_large'] = service_desk_large[4]
 
     datasets['small_project_id'] = service_desk_small[1]
     datasets['small_project_key'] = service_desk_small[2]
+    datasets['all_open_queue_id_small'] = service_desk_small[4]
 
 
 def view_reports_form_diff_projects_size(browse_reports_page, project_size):
@@ -149,4 +151,35 @@ def add_request_comment(webdriver, datasets):
         sub_measure()
     measure()
 
-def view_queue(webdriver, datasets):
+
+def view_queue_all_open_large_project(webdriver, datasets):
+    browse_queue_all_open_page = ViewQueue(webdriver, project_key=datasets['large_project_key'],
+                                           queue_id=datasets['all_open_queue_id_large'])
+
+    @print_timing('selenium_view_queue_all_open_large_project')
+    def measure():
+        browse_queue_all_open_page.go_to()
+        browse_queue_all_open_page.wait_for_page_loaded()
+    measure()
+
+
+def view_queue_all_open_small_project(webdriver, datasets):
+    browse_queue_all_open_page = ViewQueue(webdriver, project_key=datasets['small_project_key'],
+                                           queue_id=datasets['all_open_queue_id_small'])
+
+    @print_timing('selenium_view_queue_all_open_small_project')
+    def measure():
+        browse_queue_all_open_page.go_to()
+        browse_queue_all_open_page.wait_for_page_loaded()
+    measure()
+
+
+def view_queue_random_small_project(webdriver, datasets):
+    browse_queue_random_page = ViewQueue(webdriver, project_key=datasets['small_project_key'],
+                                           queue_id=datasets['all_open_queue_id_small'])
+
+    @print_timing('selenium_view_queue_all_open_small_project')
+    def measure():
+        browse_queue_random_page.go_to()
+        browse_queue_random_page.wait_for_page_loaded()
+    measure()

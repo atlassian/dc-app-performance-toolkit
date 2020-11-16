@@ -110,7 +110,7 @@ class ViewReportsLocators:
     team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")
 
 
-class ViewQueue:
+class ViewQueueLocators:
 
     queues = (By.XPATH, "//div[@id='pinnednav-opts-sd-queues-nav']//ul[@class='aui-nav nav-group-items js-items-section"
                         " sortable-items js-sortable-items ui-sortable']")

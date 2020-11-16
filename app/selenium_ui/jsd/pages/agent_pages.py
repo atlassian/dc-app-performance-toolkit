@@ -1,7 +1,8 @@
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
-    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators
+    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
+    ViewQueueLocators
 
 
 class PopupManager(BasePage):
@@ -112,5 +113,9 @@ class ViewQueue(BasePage):
 
     def __init__(self, driver, project_key=None, queue_id=None):
         BasePage.__init__(self, driver)
-        url_manager
+        url_manager = UrlManager(project_key=project_key, queue_id=queue_id)
+        self.page_url = url_manager.view_queue_all_open()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(ViewQueueLocators.queue_issue_container_table)
 
