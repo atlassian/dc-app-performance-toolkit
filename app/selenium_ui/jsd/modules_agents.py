@@ -3,6 +3,12 @@ from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, Brows
     ViewCustomerRequest, ViewReports
 import random
 
+from util.api.jira_clients import JiraRestClient
+from util.conf import JSD_SETTINGS
+
+client = JiraRestClient(JSD_SETTINGS.server_url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password)
+rte_status = client.check_rte_status()
+
 REQUESTS = "requests"
 AGENTS = "agents"
 REPORTS = 'reports'
@@ -127,3 +133,18 @@ def small_project_view_reports(webdriver, datasets):
 def large_project_view_reports(webdriver, datasets):
     browse_reports_page = ViewReports(webdriver, project_key=datasets['large_project_key'])
     view_reports_form_diff_projects_size(browse_reports_page, project_size='large')
+
+
+def add_request_comment(webdriver, datasets):
+    customer_request_page = ViewCustomerRequest(webdriver, request_key=datasets['request_key'])
+
+    @print_timing('selenium_add_request_comment')
+    def measure():
+        customer_request_page.go_to()
+        customer_request_page.wait_for_page_loaded()
+
+        @print_timing('selenium_add_request_comment:add comment')
+        def sub_measure():
+            customer_request_page.add_request_comment(rte_status)
+        sub_measure()
+    measure()

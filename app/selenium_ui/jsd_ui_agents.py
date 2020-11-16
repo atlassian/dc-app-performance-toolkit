@@ -27,6 +27,10 @@ def test_1_selenium_small_project_view_reports(jsd_webdriver, jsd_datasets, jsd_
     modules_agents.small_project_view_reports(jsd_webdriver, jsd_datasets)
 
 
+def test_1_selenium_add_request_comment(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_agents.add_request_comment(jsd_webdriver, jsd_datasets)
+
+
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
 Write your custom selenium scripts in `app/extension/jsd/extension_ui.py`.
