@@ -59,10 +59,12 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
+| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.5|
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5`, `6.13.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+
 
 **Cluster nodes**
 
@@ -393,15 +395,11 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
+| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 7.4.5 or 7.0.5 or 6.13.13 |
-
-The Data Center App Performance Toolkit officially supports:
-
-- Confluence Platform release version: 7.0.5
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.4.5 and 6.13.13 
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5`, `6.13.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 **Cluster nodes**
 
