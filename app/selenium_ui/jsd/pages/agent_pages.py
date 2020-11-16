@@ -106,3 +106,11 @@ class ViewReports(BasePage):
     def view_created_vs_resolved(self):
         self.get_element(ViewReportsLocators.created_vs_resolved).click()
         self.wait_until_visible(ViewReportsLocators.custom_report_content)
+
+
+class ViewQueue(BasePage):
+
+    def __init__(self, driver, project_key=None, queue_id=None):
+        BasePage.__init__(self, driver)
+        url_manager
+

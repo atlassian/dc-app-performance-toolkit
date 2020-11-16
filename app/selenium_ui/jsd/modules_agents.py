@@ -148,3 +148,5 @@ def add_request_comment(webdriver, datasets):
             customer_request_page.add_request_comment(rte_status)
         sub_measure()
     measure()
+
+def view_queue(webdriver, datasets):

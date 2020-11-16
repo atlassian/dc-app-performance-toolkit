@@ -10,7 +10,7 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, project_key=None, request_key=None):
+    def __init__(self, project_key=None, request_key=None, queue_id=None):
         self.host = JSD_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -19,6 +19,8 @@ class UrlManager:
         self.browse_project_customers = f'/projects/{project_key}/customers'
         self.view_customer_request = f'/browse/{request_key}'
         self.browse_project_reports = f'/projects/{project_key}/reports'
+        self.view_queue = f'/projects/{project_key}/queues/custom'
+        self.queue_all_open = f'{self.view_queue}/{queue_id}'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -40,6 +42,9 @@ class UrlManager:
 
     def browse_project_reports_url(self):
         return f'{self.host}{self.browse_project_reports}'
+
+    def view_queue_all_open(self):
+        return f'{self.host}{self.queue_all_open}'
 
 
 class LoginPageLocators:
@@ -103,3 +108,11 @@ class ViewReportsLocators:
     reports_nav = (By.ID, "pinnednav-opts-sd-reports-nav")
     custom_report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
     team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")
+
+
+class ViewQueue:
+
+    queues = (By.XPATH, "//div[@id='pinnednav-opts-sd-queues-nav']//ul[@class='aui-nav nav-group-items js-items-section"
+                        " sortable-items js-sortable-items ui-sortable']")
+
+    queue_issue_container_table = (By.CSS_SELECTOR, ".queue-issues-container table")
