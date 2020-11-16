@@ -1,3 +1,5 @@
+import random
+
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
@@ -117,5 +119,13 @@ class ViewQueue(BasePage):
         self.page_url = url_manager.view_queue_all_open()
 
     def wait_for_page_loaded(self):
-        self.wait_until_visible(ViewQueueLocators.queue_issue_container_table)
+        self.wait_until_clickable(ViewQueueLocators.reporter)
+
+    def get_random_queue(self):
+        queues = self.get_elements(ViewQueueLocators.queues)
+        random_queue = random.choice([queue for queue in queues if queue.text.partition('\n')[0] != 'All open'
+                                      and queue.text.partition('\n')[2] != '0'])
+        random_queue.click()
+        self.wait_until_clickable(ViewQueueLocators.reporter)
+
 

@@ -112,7 +112,6 @@ class ViewReportsLocators:
 
 class ViewQueueLocators:
 
-    queues = (By.XPATH, "//div[@id='pinnednav-opts-sd-queues-nav']//ul[@class='aui-nav nav-group-items js-items-section"
-                        " sortable-items js-sortable-items ui-sortable']")
+    queues = (By.CSS_SELECTOR, "#pinnednav-opts-sd-queues-nav li")
+    reporter = (By.CSS_SELECTOR, ".tinylink a")
 
-    queue_issue_container_table = (By.CSS_SELECTOR, ".queue-issues-container table")
