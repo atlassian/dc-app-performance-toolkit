@@ -143,7 +143,7 @@ def add_request_comment(webdriver, datasets):
         customer_request_page.go_to()
         customer_request_page.wait_for_page_loaded()
 
-        @print_timing('selenium_add_request_comment:create comment')
+        @print_timing('selenium_add_request_comment:add comment')
         def sub_measure():
             customer_request_page.add_request_comment(rte_status)
         sub_measure()
