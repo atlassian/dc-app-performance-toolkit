@@ -133,7 +133,7 @@ class JsdRestClient(RestClient):
         results = []
         while not finished:
             api_url = self.host + f"/rest/servicedeskapi/servicedesk?start={start}&limit={limit}"
-            r = self.get(api_url, f"Could not get all service desks").json()
+            r = self.get(api_url, "Could not get all service desks").json()
             results.extend(r['values'])
             if r['isLastPage']:
                 finished = True
@@ -147,7 +147,7 @@ class JsdRestClient(RestClient):
         :return:
         """
         api_url = self.host + "/rest/servicedeskapi/info"
-        response = self.get(api_url, f"Could not get request Service desk info.")
+        response = self.get(api_url, "Could not get request Service desk info.")
         return response
 
     def get_service_desk_reports(self, project_key: str = ''):
@@ -155,7 +155,7 @@ class JsdRestClient(RestClient):
         payload = {
             "projectKey": project_key
         }
-        response = self.post(api_url, f"Could not get Service Desk reports info", body=payload)
+        response = self.post(api_url, "Could not get Service Desk reports info", body=payload)
         custom_reports_list = []
         for report in response.json():
             if 'label' in report.keys():

@@ -1,7 +1,10 @@
+import random
+
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
-    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators
+    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
+    ViewQueueLocators
 
 
 class PopupManager(BasePage):
@@ -106,3 +109,21 @@ class ViewReports(BasePage):
     def view_created_vs_resolved(self):
         self.get_element(ViewReportsLocators.created_vs_resolved).click()
         self.wait_until_visible(ViewReportsLocators.custom_report_content)
+
+
+class ViewQueue(BasePage):
+
+    def __init__(self, driver, project_key=None, queue_id=None):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key, queue_id=queue_id)
+        self.page_url = url_manager.view_queue_all_open()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_clickable(ViewQueueLocators.reporter)
+
+    def get_random_queue(self):
+        queues = self.get_elements(ViewQueueLocators.queues)
+        random_queue = random.choice([queue for queue in queues if queue.text.partition('\n')[0] != 'All open'
+                                      and queue.text.partition('\n')[2] != '0'])
+        random_queue.click()
+        self.wait_until_clickable(ViewQueueLocators.reporter)
