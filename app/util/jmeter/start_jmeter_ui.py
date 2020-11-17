@@ -1,7 +1,8 @@
 import argparse
-import yaml
 from pathlib import Path
 from subprocess import run
+
+import yaml
 
 JIRA = "jira"
 CONFLUENCE = "confluence"
