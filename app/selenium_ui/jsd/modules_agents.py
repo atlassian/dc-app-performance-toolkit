@@ -65,13 +65,13 @@ def view_reports_form_diff_projects_size(browse_reports_page, project_size):
 def view_queue_form_diff_projects_size(browse_queue_page, project_size):
     @print_timing(f'selenium_{project_size}_project_view_queue')
     def measure():
-        @print_timing(f'selenium_{project_size}_project_view_queue:all open')
+        @print_timing(f'selenium_{project_size}_project_view_queue:all_open')
         def sub_measure():
             browse_queue_page.go_to()
             browse_queue_page.wait_for_page_loaded()
         sub_measure()
 
-        @print_timing(f'selenium_{project_size}_project_view_queue:random choice queue')
+        @print_timing(f'selenium_{project_size}_project_view_queue:random_choice_queue')
         def sub_measure():
             browse_queue_page.get_random_queue()
         sub_measure()
@@ -177,4 +177,3 @@ def view_queue_small_project(webdriver, datasets):
     browse_queues_page = ViewQueue(webdriver, project_key=datasets['small_project_key'],
                                    queue_id=datasets['all_open_queue_id_small'])
     view_queue_form_diff_projects_size(browse_queues_page, project_size='small')
-

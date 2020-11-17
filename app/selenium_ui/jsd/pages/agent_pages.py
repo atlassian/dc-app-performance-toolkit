@@ -127,5 +127,3 @@ class ViewQueue(BasePage):
                                       and queue.text.partition('\n')[2] != '0'])
         random_queue.click()
         self.wait_until_clickable(ViewQueueLocators.reporter)
-
-

@@ -58,7 +58,7 @@ def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}
     max_percentage_key = max(PROJECTS_ISSUES_PERC, key=int)
     if projects_count > max_percentage_key:
-        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
+        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))
                                            (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
@@ -100,7 +100,8 @@ def __get_customers_with_requests(jira_client, jsd_client, count):
         if not customers:
             break
         start_at = start_at + max_count_iteration
-        customer_chunks = [customers[x:x + customers_chunk_size] for x in range(0, len(customers), customers_chunk_size)]
+        customer_chunks = [customers[x:x + customers_chunk_size]
+                           for x in range(0, len(customers), customers_chunk_size)]
         pool = multiprocessing.pool.ThreadPool(processes=num_cores)  # Can be increased to improve script speed
 
         for customer_chunk in customer_chunks:
@@ -230,20 +231,20 @@ def __get_service_desks(jsd_api, jira_api, service_desks):
 
 
 def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
-        issues = jira_api.issues_search_parallel(jql=f'project = {service_desk["projectKey"]}',
-                                                 max_results=issues_distribution_id[service_desk['projectKey']])
-        distribution_success = len(issues) >= issues_distribution_id[service_desk['projectKey']]
-        issues_per_project_list = [','.join((issue['id'],
-                                             issue['key'],
-                                             service_desk['serviceDeskId'],
-                                             service_desk['projectId'],
-                                             service_desk['projectKey'],
-                                             )) for issue in issues]
-        distribution = dict()
-        distribution['issues'] = issues_per_project_list
-        distribution['distribution_success'] = distribution_success
-        distribution['projectKey'] = service_desk['projectKey']
-        return distribution
+    issues = jira_api.issues_search_parallel(jql=f'project = {service_desk["projectKey"]}',
+                                             max_results=issues_distribution_id[service_desk['projectKey']])
+    distribution_success = len(issues) >= issues_distribution_id[service_desk['projectKey']]
+    issues_per_project_list = [','.join((issue['id'],
+                                         issue['key'],
+                                         service_desk['serviceDeskId'],
+                                         service_desk['projectId'],
+                                         service_desk['projectKey'],
+                                         )) for issue in issues]
+    distribution = dict()
+    distribution['issues'] = issues_per_project_list
+    distribution['distribution_success'] = distribution_success
+    distribution['projectKey'] = service_desk['projectKey']
+    return distribution
 
 
 @print_timing('Retrieved customers requests')
@@ -378,11 +379,9 @@ def main():
     jsd_client = JsdRestClient(url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password,
                                headers=JSD_EXPERIMENTAL_HEADERS)
     jira_client = JiraRestClient(url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password)
-
     dataset = __create_data_set(jira_client=jira_client, jsd_client=jsd_client)
     write_test_data_to_files(dataset)
 
 
 if __name__ == "__main__":
     main()
-
