@@ -298,27 +298,28 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 **JMeter app-specific action development example**
 
-1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/confluence.jmx`.
-2. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
+1. Check that `confluence.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_dashboard` and `standalone_extension` actions would be executed.
+1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+    
+    ```python util/jmeter/start_jmeter_ui.py --app confluence```
+    
+1. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
 ![Confluence JMeter standalone extension](/platform/marketplace/images/confluence-standalone-extenstion.png)
-3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
+1. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
 ![Confluence JMeter standalone GET](/platform/marketplace/images/confluence-standalone-get-request.png)
-4. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
+1. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
 ![Confluence JMeter standalone regexp](/platform/marketplace/images/confluence-standalone-regexp.png)
-5. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
+1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Confluence JMeter standalone assertions](/platform/marketplace/images/confluence-standalone-assertions.png)
-6. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-7. Navigate to `Global Variables` and modify default values of hostname, port, protocol and postfix variables.
-![Confluence JMeter standalone global vars](/platform/marketplace/images/confluence-jmeter-global-vars.png)
-8. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
-![Confluence JMeter standalone load profile](/platform/marketplace/images/confluence-jmeter-load-profile.png)
-9. Right-click on `View Results Tree` and enable this controller.
-10. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
-11. Right-click on `View Results Tree` and disable this controller.
-12. Click **Save** button.
-13. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluencec.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-14. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
-
+1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluence.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ##### Using JMeter variables from the base script
 

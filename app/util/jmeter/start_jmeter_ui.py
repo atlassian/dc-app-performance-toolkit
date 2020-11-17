@@ -68,8 +68,11 @@ class StartJMeter:
         self.jmeter_properties = obj['scenarios']['jmeter']['properties']
         settings = list()
         for setting, value in self.jmeter_properties.items():
-            key = self.trim_string(value)
-            v = self.env_settings[f'{key}']
+            if "$" in value:
+                key = self.trim_string(value)
+                v = self.env_settings[f'{key}']
+            else:
+                v = value
             if v is None:
                 settings.append(f"{setting}=\n")
             else:
