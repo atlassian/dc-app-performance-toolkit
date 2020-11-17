@@ -54,8 +54,8 @@ class StartJMeter:
 
     @staticmethod
     def update_properties_file(content):
-        with open(PROPERTIES, 'w') as f:
-            f.writelines(content)
+        with open(PROPERTIES, 'w') as file:
+            file.writelines(content)
 
     @staticmethod
     def trim_string(text):
