@@ -86,7 +86,6 @@ def create_request(webdriver, datasets):
         def sub_measure():
             customer_portal.create_and_submit_request()
         sub_measure()
-
     measure()
 
 
