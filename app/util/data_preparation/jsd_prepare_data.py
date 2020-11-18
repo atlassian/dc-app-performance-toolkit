@@ -58,7 +58,7 @@ def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}
     max_percentage_key = max(PROJECTS_ISSUES_PERC, key=int)
     if projects_count > max_percentage_key:
-        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))
+        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
                                            (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
