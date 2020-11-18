@@ -7,8 +7,28 @@ def test_0_customer_selenium_a_login(jsd_webdriver, jsd_datasets, jsd_screen_sho
     modules_customers.login(jsd_webdriver, jsd_datasets)
 
 
-def test_1_customer_selenium_view_portals(jsd_webdriver, jsd_datasets, jsd_screen_shots):
-    modules_customers.view_customer_portals(jsd_webdriver, jsd_datasets)
+def test_0_customer_selenium_create_request(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.create_request(jsd_webdriver, jsd_datasets)
+
+
+def test_0_customer_selenium_view_request(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.view_customer_request(jsd_webdriver, jsd_datasets)
+
+
+def test_0_customer_selenium_my_requests(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.view_my_requests(jsd_webdriver, jsd_datasets)
+
+
+def test_0_customer_selenium_all_requests(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.view_all_requests(jsd_webdriver, jsd_datasets)
+
+
+def test_0_customer_selenium_share_customer_request(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.share_customer_request(jsd_webdriver, jsd_datasets)
+
+
+def test_0_customer_selenium_comment_request(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_customers.comment_customer_request(jsd_webdriver, jsd_datasets)
 
 
 """
