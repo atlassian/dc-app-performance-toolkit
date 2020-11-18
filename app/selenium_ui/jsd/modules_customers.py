@@ -1,38 +1,35 @@
 from selenium_ui.conftest import print_timing
-from util.conf import JSD_SETTINGS
-from selenium_ui.jsd.pages.customer_pages import Login, CustomerPortals, TopPanel
+from selenium_ui.jsd.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
+    Requests
 import random
 
 REQUESTS = "requests"
 CUSTOMERS = "customers"
-SERVICE_DESKS = "service_desks"
+SERVICE_DESKS_LARGE = "service_desks_large"
+SERVICE_DESKS_SMALL = "service_desks_small"
 
 
 def __get_random_customer_request(customer):
-    if len(customer) > 2:  # [username, password]
-        customer_requests = customer[2:]
-        random_index = random.randrange(0, len(customer_requests))
-        if random_index % 2 == 0:
-            service_desk_id = customer_requests[random_index]
-            request_key = customer_requests[random_index + 1]
-        else:
-            request_key = customer_requests[random_index]
-            service_desk_id = customer_requests[random_index - 1]
-        return service_desk_id, request_key
+    customer_requests = customer[2:]
+    customer_requests_chunks = [customer_requests[x:x+3] for x in range(0, len(customer_requests), 3)]
+    customer_request = random.choice(customer_requests_chunks)
+    service_desk_id = customer_request[0]
+    request_id = customer_request[1]
+    request_key = customer_request[2]
+    return service_desk_id, request_id, request_key
 
 
 def setup_run_data(datasets):
     customer = random.choice(datasets[CUSTOMERS])
     request = random.choice(datasets[REQUESTS])
-    service_desk = random.choice(datasets[SERVICE_DESKS])
 
     # Define users dataset
     datasets['customer_username'] = customer[0]
     datasets['customer_password'] = customer[1]
     customer_request = __get_random_customer_request(customer)
-    if customer_request:
-        datasets['customer_service_desk_id'] = customer_request[0]
-        datasets['customer_request_key'] = customer_request[1]
+    datasets['customer_service_desk_id'] = customer_request[0]
+    datasets['customer_request_id'] = customer_request[1]
+    datasets['customer_request_key'] = customer_request[2]
 
     # Define request dataset
     datasets['request_id'] = request[0]
@@ -54,7 +51,7 @@ def login(webdriver, datasets):
             login_page.go_to()
         sub_measure()
 
-        @print_timing("selenium_customer_login:login_and_view_dashboard")
+        @print_timing("selenium_customer_login:login_and_view_portal")
         def sub_measure():
             login_page.set_credentials(username=datasets['customer_username'], password=datasets['customer_password'])
             login_page.wait_for_page_loaded()
@@ -62,14 +59,99 @@ def login(webdriver, datasets):
     measure()
 
 
-def view_customer_portals(webdriver, datasets):
+def create_request(webdriver, datasets):
     customer_portals = CustomerPortals(webdriver)
+    customer_portal = CustomerPortal(webdriver, portal_id=datasets['customer_service_desk_id'])
 
-    @print_timing("selenium_customer_login:open_login_page")
-    def sub_measure():
-        customer_portals.go_to()
-        customer_portals.wait_for_page_loaded()
-    sub_measure()
+    @print_timing("selenium_customer_create_request")
+    def measure():
+
+        @print_timing("selenium_customer_create_request:browse_all_portals")
+        def sub_measure():
+            customer_portals.browse_projects()
+        sub_measure()
+
+        @print_timing("selenium_customer_create_request:view_portal")
+        def sub_measure():
+            customer_portal.go_to()
+            customer_portal.wait_for_page_loaded()
+        sub_measure()
+
+        @print_timing("selenium_customer_create_request:choose_request_type")
+        def sub_measure():
+            customer_portal.chose_random_request_type()
+        sub_measure()
+
+        @print_timing("selenium_customer_create_request:create_and_submit_request")
+        def sub_measure():
+            customer_portal.create_and_submit_request()
+        sub_measure()
+
+    measure()
+
+
+def view_customer_request(webdriver, datasets):
+    customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
+                                       request_key=datasets['customer_request_key'])
+
+    @print_timing("selenium_customer_view_customer_request")
+    def measure():
+        customer_request.go_to()
+        customer_request.wait_for_page_loaded()
+    measure()
+
+
+def view_my_requests(webdriver, datasets):
+    my_requests = Requests(webdriver, all_requests=False)
+
+    @print_timing("selenium_customer_view_my_requests")
+    def measure():
+        my_requests.go_to()
+        my_requests.wait_for_page_loaded()
+    measure()
+
+
+def view_all_requests(webdriver, datasets):
+    my_requests = Requests(webdriver, all_requests=True)
+
+    @print_timing("selenium_customer_view_all_requests")
+    def measure():
+        my_requests.go_to()
+        my_requests.wait_for_page_loaded()
+    measure()
+
+
+def comment_customer_request(webdriver, datasets):
+    customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
+                                       request_key=datasets['customer_request_key'])
+
+    @print_timing("selenium_customer_comment_customer_request")
+    def measure():
+        customer_request.go_to()
+        customer_request.wait_for_page_loaded()
+        customer_request.comment_request()
+    measure()
+
+
+def share_customer_request(webdriver, datasets):
+    customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
+                                       request_key=datasets['customer_request_key'])
+    customer_request.go_to()
+    customer_request.wait_for_page_loaded()
+
+    @print_timing("selenium_customer_share_request")
+    def measure():
+
+        @print_timing("selenium_customer_share_request:search_for_customer_to_share_with")
+        def sub_measure():
+            customer_request.search_for_customer_to_share_with(customer_name='performance_customer')
+        sub_measure()
+
+        @print_timing("selenium_customer_share_request:share_request")
+        def sub_measure():
+            customer_request.share_request()
+        sub_measure()
+    measure()
 
 
 def log_out(webdriver, datasets):
