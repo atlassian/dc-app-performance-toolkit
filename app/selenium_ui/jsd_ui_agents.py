@@ -7,8 +7,8 @@ def test_0_customer_selenium_a_login(jsd_webdriver, jsd_datasets, jsd_screen_sho
     modules_agents.login(jsd_webdriver, jsd_datasets)
 
 
-def test_1_selenium_browse_projects_list(jsd_webdriver, jsd_datasets, jsd_screen_shots):
-    modules_agents.browse_projects_list(jsd_webdriver, jsd_datasets)
+def test_1_selenium_browse_service_desk_projects_list(jsd_webdriver, jsd_datasets, jsd_screen_shots):
+    modules_agents.browse_service_desk_projects_list(jsd_webdriver, jsd_datasets)
 
 
 def test_1_selenium_browse_project_customers_page(jsd_webdriver, jsd_datasets, jsd_screen_shots):

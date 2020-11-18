@@ -3,8 +3,8 @@ import random
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
-    BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
-    ViewQueueLocators
+    BrowseServiceDeskProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, \
+    ViewReportsLocators, ViewQueueLocators
 
 
 class PopupManager(BasePage):
@@ -44,11 +44,11 @@ class Logout(BasePage):
         self.wait_until_present(LogoutLocators.login_button_link)
 
 
-class BrowseProjects(BasePage):
-    page_url = BrowseProjectsLocators.brows_projects_url
+class BrowseServiceDeskProjects(BasePage):
+    page_url = BrowseServiceDeskProjectsLocators.brows_projects_url
 
     def wait_for_page_loaded(self):
-        self.wait_until_visible(BrowseProjectsLocators.page_title)
+        self.wait_until_visible(BrowseServiceDeskProjectsLocators.page_title)
 
 
 class BrowseCustomers(BasePage):

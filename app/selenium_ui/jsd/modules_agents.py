@@ -1,5 +1,5 @@
 from selenium_ui.conftest import print_timing
-from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
+from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseServiceDeskProjects, BrowseCustomers, \
     ViewCustomerRequest, ViewReports, ViewQueue
 import random
 
@@ -112,10 +112,10 @@ def log_out(webdriver, datasets):
     measure()
 
 
-def browse_projects_list(webdriver, datasets):
-    browse_projects_page = BrowseProjects(webdriver)
+def browse_service_desk_projects_list(webdriver, datasets):
+    browse_projects_page = BrowseServiceDeskProjects(webdriver)
 
-    @print_timing('selenium_browse_projects_list')
+    @print_timing('selenium_browse_service_desk_projects_list')
     def measure():
         browse_projects_page.go_to()
         browse_projects_page.wait_for_page_loaded()

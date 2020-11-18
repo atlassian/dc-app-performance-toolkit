@@ -15,7 +15,8 @@ class UrlManager:
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
-        self.browse_all_projects = '/secure/BrowseProjects.jspa'
+        self.browse_service_desk_projects = '/secure/BrowseProjects.jspa?' \
+                                            'selectedCategory=all&selectedProjectType=service_desk'
         self.browse_project_customers = f'/projects/{project_key}/customers'
         self.view_customer_request = f'/browse/{request_key}'
         self.browse_project_reports = f'/projects/{project_key}/reports'
@@ -31,8 +32,8 @@ class UrlManager:
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
 
-    def browse_all_projects_url(self):
-        return f'{self.host}{self.browse_all_projects}'
+    def browse_service_desk_projects_url(self):
+        return f'{self.host}{self.browse_service_desk_projects}'
 
     def browse_project_customers_page_url(self):
         return f"{self.host}{self.browse_project_customers}"
@@ -75,10 +76,10 @@ class LogoutLocators:
     login_button_link = (By.CLASS_NAME, "login-link")
 
 
-class BrowseProjectsLocators:
+class BrowseServiceDeskProjectsLocators:
 
-    brows_projects_url = UrlManager().browse_all_projects_url()
-    page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
+    brows_projects_url = UrlManager().browse_service_desk_projects_url()
+    page_title = (By.XPATH, "//h2[contains(text(),'Service Desk - All categories')]")
 
 
 class BrowseCustomersLocators:
