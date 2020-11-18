@@ -1,4 +1,10 @@
+import sys
+if sys.version_info < (3, 6):
+    raise SystemExit("ERROR: Script requires Python 3.6+. Current version: {}.\n"
+                     "Please make sure you use correct virtualenv.".format(sys.version_info[0:3]))
+
 import argparse
+from platform import system
 from pathlib import Path
 from subprocess import run
 
@@ -19,6 +25,11 @@ CONFLUENCE_JMX = APP_DIR / "jmeter" / "confluence.jmx"
 BITBUCKET_JMX = APP_DIR / "jmeter" / "bitbucket.jmx"
 JSM_JMX = APP_DIR / "jmeter" / "jsm.jmx"
 JMETER_HOME = Path().home() / '.bzt' / 'jmeter-taurus'
+WINDOWS = "Windows"
+DEFAULT_HOSTNAMES = ['test_jira_instance.atlassian.com',
+                     'test_confluence_instance.atlassian.com',
+                     'test_bitbucket_instance.atlassian.com',
+                     'test_jsm_instance.atlassian.com']
 
 
 class StartJMeter:
@@ -44,8 +55,8 @@ class StartJMeter:
             self.yml = JSM_YML
             self.jmx = JSM_JMX
         else:
-            raise SystemExit(f"Application type {self.args.app} is not supported. "
-                             f"Valid values: {JIRA} {CONFLUENCE} {BITBUCKET} {JSM}")
+            raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {}".
+                             format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM))
 
     @staticmethod
     def read_yml_file(file):
@@ -66,33 +77,40 @@ class StartJMeter:
     def get_settings(self):
         obj = self.read_yml_file(self.yml)
         self.env_settings = obj['settings']['env']
+        hostname = self.env_settings['application_hostname']
+        if hostname in DEFAULT_HOSTNAMES:
+            raise SystemExit("ERROR: Check 'application_hostname' correctness in {}.yml file.\nCurrent value: {}.".
+                             format(self.args.app, hostname))
         self.jmeter_properties = obj['scenarios']['jmeter']['properties']
         settings = list()
         for setting, value in self.jmeter_properties.items():
             # if value referenced as variable
             if "$" in value:
                 key = self.trim_string(value)
-                v = self.env_settings[f'{key}']
+                v = self.env_settings[key]
             # if value set directly
             else:
                 v = value
             if v is None:
-                settings.append(f"{setting}=\n")
+                settings.append("{}=\n".format(setting))
             else:
-                settings.append(f"{setting}={v}\n")
+                settings.append("{}={}\n".format(setting, v))
         return settings
 
     def print_settings(self, settings):
-        print(f"Get JMeter settings from {self.yml} file:")
+        print("Get JMeter settings from {} file:".format(self.yml))
         for setting in settings:
-            print(setting, end="")
+            print(setting.replace('\n', ''))
 
     def launch_jmeter_ui(self):
         jmeter_path = JMETER_HOME / self.env_settings['JMETER_VERSION'] / 'bin' / 'jmeter'
-        command = [f"{jmeter_path}", "-p", f"{PROPERTIES}", "-t", f"{self.jmx}"]
-        print(f"JMeter start command: {' '.join(command)}")
-        print(f"Working dir: {APP_DIR}")
-        run(command, check=True, cwd=APP_DIR)
+        command = [str(jmeter_path), "-p", str(PROPERTIES), "-t", str(self.jmx)]
+        print("JMeter start command: {}".format(' '.join(command)))
+        print("Working dir: {}".format(APP_DIR))
+        shell = False
+        if system() == WINDOWS:
+            shell = True
+        run(command, check=True, cwd=APP_DIR, shell=shell)
 
     def start(self):
         settings = self.get_settings()
