@@ -664,7 +664,7 @@ For generating performance results suitable for Marketplace approval process use
     concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 5m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour.
+    total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
 ```  
 
 1. Push your changes to the forked repository.
