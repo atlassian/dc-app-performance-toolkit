@@ -153,8 +153,8 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
-    __check_for_admin_permissions(rest_client)
     __is_remote_api_enabled(rest_client)
+    __check_for_admin_permissions(rest_client)
     __is_collaborative_editing_enabled(rest_client)
     __check_current_language(rest_client)
 
