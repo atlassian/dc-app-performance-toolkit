@@ -2656,12 +2656,12 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_request_comment" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_open_request_comment" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/browse/AFGRZZZODK-349334" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="300 /browse/${request_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2669,7 +2669,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">browse/AFGRZZZODK-349334</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/browse/${request_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2694,7 +2694,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="302 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2709,7 +2709,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/webResources/1.0/resources</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2738,7 +2738,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="304 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2749,11 +2749,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/webResources/1.0/resources</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2782,7 +2782,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/secure/AjaxIssueEditAction!default.jspa?decorator=none&amp;issueId=365894&amp;_=1605784213135" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="306 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="decorator" elementType="HTTPArgument">
@@ -2795,24 +2795,24 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="issueId" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueId</stringProp>
-                    <stringProp name="Argument.value">365894</stringProp>
+                    <stringProp name="Argument.value">${request_id}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213135</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">secure/AjaxIssueEditAction!default.jspa</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueEditAction!default.jspa</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2841,7 +2841,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="308 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2852,11 +2852,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/webResources/1.0/resources</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2885,22 +2885,22 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="310 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:365894,&quot;projectId&quot;:10188,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1132},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-809},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-501},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-496},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-490}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1132},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-809},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-501},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-496},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-490}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2929,7 +2929,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="312 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2940,11 +2940,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/webResources/1.0/resources</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2973,13 +2973,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/internal/2/user/mention/search?issueKey=AFGRZZZODK-349334&amp;maxResults=10&amp;_=1605784213136" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="314 /rest/internal/2/user/mention/search" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_key}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -2993,17 +2993,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213136</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/internal/2/user/mention/search</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/internal/2/user/mention/search</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3032,7 +3032,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="316 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3043,11 +3043,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3076,13 +3076,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/servicedesk/canned-responses/1/search/AFGRZZZODK?limit=5&amp;daysSince=30&amp;limitUsagesToUser=true&amp;substitute=true&amp;issueKey=AFGRZZZODK-349334&amp;_=1605784213137" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="318 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_key}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -3117,17 +3117,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213137</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/AFGRZZZODK</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3152,13 +3152,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/servicedesk/canned-responses/1/search/AFGRZZZODK?limit=5&amp;substitute=true&amp;issueKey=AFGRZZZODK-349334&amp;_=1605784213138" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="320 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_key}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -3179,17 +3179,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213138</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/AFGRZZZODK</stringProp>
+              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3214,7 +3214,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="322 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3225,11 +3225,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3258,7 +3258,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="324 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3269,11 +3269,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3302,7 +3302,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="326 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3313,11 +3313,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3346,7 +3346,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="328 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3357,11 +3357,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3390,22 +3390,28 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/api/2/issue/365894/comment" enabled="true">
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_add_request_comment" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="330 /rest/api/2/issue/365894/comment" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;body&quot;:&quot;Comment from JMeter - qwsdfghjnm&quot;,&quot;properties&quot;:[{&quot;key&quot;:&quot;sd.public.comment&quot;,&quot;value&quot;:{&quot;internal&quot;:true}}]}</stringProp>
+                    <stringProp name="Argument.value">{&quot;body&quot;:&quot;${g_comment}&quot;,&quot;properties&quot;:[{&quot;key&quot;:&quot;sd.public.comment&quot;,&quot;value&quot;:{&quot;internal&quot;:true}}]}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/api/2/issue/365894/comment</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/issue/${request_id}/comment</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3433,8 +3439,26 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="comment_generator" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">def generator = { String alphabet, int n -&gt;
+    new Random().with {
+        (1..n).collect { alphabet[nextInt(alphabet.length())] }.join()
+    }
+}
+
+def comment = &quot;JMeter comment - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 50);
+
+
+vars.put(&quot;g_comment&quot;, comment.toString())
+</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/secure/AjaxIssueAction!default.jspa" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="332 /secure/AjaxIssueAction!default.jspa" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="decorator" elementType="HTTPArgument">
@@ -3447,7 +3471,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_id}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -3467,11 +3491,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">secure/AjaxIssueAction!default.jspa</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueAction!default.jspa</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3503,8 +3527,18 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-907626771">${g_comment}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/secure/AjaxIssueEditAction!default.jspa?decorator=none&amp;issueId=365894&amp;_=1605784213139" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="334 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="decorator" elementType="HTTPArgument">
@@ -3517,24 +3551,24 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="issueId" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueId</stringProp>
-                    <stringProp name="Argument.value">365894</stringProp>
+                    <stringProp name="Argument.value">${request_id}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213139</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">secure/AjaxIssueEditAction!default.jspa</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueEditAction!default.jspa</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3563,7 +3597,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="336 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3574,11 +3608,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/webResources/1.0/resources</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3607,13 +3641,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/servicedesk/canned-responses/1/search/AFGRZZZODK?limit=5&amp;daysSince=30&amp;limitUsagesToUser=true&amp;substitute=true&amp;issueKey=AFGRZZZODK-349334&amp;_=1605784213140" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="338 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_key}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -3648,17 +3682,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213140</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/AFGRZZZODK</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3683,13 +3717,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/servicedesk/canned-responses/1/search/AFGRZZZODK?limit=5&amp;substitute=true&amp;issueKey=AFGRZZZODK-349334&amp;_=1605784213141" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">AFGRZZZODK-349334</stringProp>
+                    <stringProp name="Argument.value">${request_key}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -3710,17 +3744,17 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="_" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">1605784213141</stringProp>
+                    <stringProp name="Argument.value">${__time(,)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/AFGRZZZODK</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3745,22 +3779,22 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://jsd-b-loadb-1m7p9swcimbyo-991225843.us-east-2.elb.amazonaws.com/rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="342 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:9.970000000976142},&quot;timeDelta&quot;:-3577},{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:365894,&quot;projectId&quot;:10188,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-2248},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:29798.240000000078},&quot;timeDelta&quot;:-2068},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1848},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1847}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:9.970000000976142},&quot;timeDelta&quot;:-3577},{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-2248},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:29798.240000000078},&quot;timeDelta&quot;:-2068},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1848},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1847}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3792,7 +3826,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </hashTree>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customers" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customers" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -5179,7 +5213,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
