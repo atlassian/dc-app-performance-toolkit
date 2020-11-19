@@ -965,14 +965,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <stringProp name="filename">datasets/jsd/requests.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">request_id,request_key,request_service_desk_id,request_project_Id</stringProp>
+            <stringProp name="variableNames">request_id,request_key,request_service_desk_id,request_project_Id,request_project_key</stringProp>
             <boolProp name="randomOrder">true</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -2454,7 +2454,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_request" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_service_desk_request" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -2463,9 +2463,9 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${BASE_URL_1}</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/browse/${request_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2549,7 +2549,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="issueId" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">issueId</stringProp>
-                    <stringProp name="Argument.value">{request_key}</stringProp>
+                    <stringProp name="Argument.value">${request_id}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -2645,7 +2645,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:,&quot;projectId&quot;:	,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1138},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-871},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-595},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-581},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;},&quot;timeDelta&quot;:-567}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1138},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-871},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-595},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-581},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;},&quot;timeDelta&quot;:-567}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -2683,7 +2683,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="230 /rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="290 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2727,7 +2727,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="232 /rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="292 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2774,7 +2774,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </hashTree>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customers" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customers" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -4161,7 +4161,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -4196,8 +4196,6 @@ vars.put(&quot;p_comment&quot;, comment.toString())
         </objProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
-      <hashTree/>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
       <hashTree/>
     </hashTree>
   </hashTree>
