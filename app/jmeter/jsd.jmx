@@ -2656,7 +2656,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_open_request_comment" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_open_request_comment" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -2844,7 +2844,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_save_request_comment" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_save_request_comment" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
