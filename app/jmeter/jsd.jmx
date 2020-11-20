@@ -2661,422 +2661,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="300 /browse/${request_key}" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/browse/${request_key}</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
-                    <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
-                    <stringProp name="Header.value">1</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="302 /rest/webResources/1.0/resources" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;jira.webresources:mentions-feature&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;]}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="304 /rest/webResources/1.0/resources" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;browser-metrics-plugin.contrib&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;jira.global.look-and-feel&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;]}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="306 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="decorator" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">decorator</stringProp>
-                    <stringProp name="Argument.value">none</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                  <elementProp name="issueId" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">issueId</stringProp>
-                    <stringProp name="Argument.value">${request_id}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                  <elementProp name="_" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">${__time(,)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueEditAction!default.jspa</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">*/*</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="X-SITEMESH-OFF" elementType="Header">
-                    <stringProp name="Header.name">X-SITEMESH-OFF</stringProp>
-                    <stringProp name="Header.value">true</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="308 /rest/webResources/1.0/resources" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;r&quot;:[&quot;com.atlassian.jira.jira-header-plugin:newsletter-signup-tip&quot;],&quot;c&quot;:[&quot;jira.rich.editor.api&quot;,&quot;jira.rich.editor&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.project.sidebar.service_desk&quot;,&quot;comment_fields_jsd&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;jira.global.look-and-feel&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;sd.project.sidebar.content&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;]}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="310 /rest/analytics/1.0/publish/bulk" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1132},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-809},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-501},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-496},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-490}]</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="312 /rest/webResources/1.0/resources" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;sd.incident.management.counter&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;jira.global.look-and-feel&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.rich.editor.api&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.rich.editor&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;,&quot;com.atlassian.jira.jira-header-plugin:newsletter-signup-tip&quot;,&quot;com.atlassian.jira.plugins.jira-editor-plugin:tinymce&quot;,&quot;com.atlassian.plugin.jslibs:underscore-1.8.3&quot;]}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="314 /rest/internal/2/user/mention/search" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="issueKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">issueKey</stringProp>
-                    <stringProp name="Argument.value">${request_key}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                  <elementProp name="maxResults" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">maxResults</stringProp>
-                    <stringProp name="Argument.value">10</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                  <elementProp name="_" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.name">_</stringProp>
-                    <stringProp name="Argument.value">${__time(,)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/internal/2/user/mention/search</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="316 /rest/analytics/1.0/publish/bulk" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.centric.navigation.sidebar.load.project&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-4276},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;3601&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;9073c135-935f-4d53-a0f8-85a1376a51e8&quot;,&quot;key&quot;:&quot;jira.project.issue.view-issue&quot;,&quot;navigationType&quot;:&quot;1&quot;,&quot;readyForUser&quot;:&quot;4340&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;4314&quot;,&quot;resourceLoadedStart&quot;:264.6549999990384,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;182&quot;,&quot;unloadEventEnd&quot;:&quot;185&quot;,&quot;fetchStart&quot;:&quot;1&quot;,&quot;domainLookupStart&quot;:&quot;1&quot;,&quot;domainLookupEnd&quot;:&quot;1&quot;,&quot;connectStart&quot;:&quot;1&quot;,&quot;connectEnd&quot;:&quot;1&quot;,&quot;requestStart&quot;:&quot;8&quot;,&quot;responseStart&quot;:&quot;153&quot;,&quot;responseEnd&quot;:&quot;279&quot;,&quot;domLoading&quot;:&quot;214&quot;,&quot;domInteractive&quot;:&quot;4574&quot;,&quot;domContentLoadedEventStart&quot;:&quot;4574&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;4765&quot;,&quot;domComplete&quot;:&quot;6963&quot;,&quot;loadEventStart&quot;:&quot;6964&quot;,&quot;loadEventEnd&quot;:&quot;6975&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;592f8aeed5f1f4&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:100,&quot;serverDuration&quot;:&quot;109&quot;,&quot;dbReadsTimeInMs&quot;:&quot;13&quot;,&quot;dbConnsTimeInMs&quot;:&quot;39&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,7c,cd,c6,8b,7c,,7c,7c,7c\&quot;,\&quot;2,7d,r0,ca,8f,7d,,7d,7d,7d\&quot;,\&quot;2,7d,fz,ft,cb,ca,,8j,8j,8j\&quot;,\&quot;3,7e,2a7,fy,cb,ca,,8i,8i,8i\&quot;,\&quot;3,7e,2ha,fy,cb,ca,,8h,8h,8h\&quot;,\&quot;3,7f,gb,fy,cb,ca,,8i,8i,8i\&quot;,\&quot;3,7f,gb,fy,cd,7f,,7f,7f,7f\&quot;,\&quot;3,7g,op,oa,kq,7g,,7g,7g,7g\&quot;,\&quot;3,7g,oo,ob,ks,7g,,7g,7g,7g\&quot;,\&quot;3,dg,p7,om,ku,dg,,dg,dg,dg\&quot;,\&quot;3,dh,ss,sb,or,dh,,dh,dh,dh\&quot;,\&quot;2,dh,kn,js,fz,dh,,dh,dh,dh\&quot;,\&quot;3,di,st,sc,or,di,,di,di,di\&quot;,\&quot;2,di,kq,jw,gd,di,,di,di,di\&quot;,\&quot;2,dj,ks,jv,gd,dj,,dj,dj,dj\&quot;,\&quot;3,dj,1kz,sv,p9,dj,,dj,dj,dj\&quot;,\&quot;3,dj,1hw,yi,r2,dj,,dj,dj,dj\&quot;,\&quot;3,dn,2ef,2ec,2as,dn,,dn,dn,dn\&quot;,\&quot;2,dq,2l2,2ky,2hd,dq,,dq,dq,dq\&quot;,\&quot;3,dq,2w5,2lo,2i2,dq,,dq,dq,dq\&quot;,\&quot;3,dq,2qt,2qp,2n7,dq,,dq,dq,dq\&quot;,\&quot;5,2gx,2l7,2l5,2hd,2gx,,2gx,2gx,2gx\&quot;,\&quot;4,2oi,343,33y,30f,2oi,,2oi,2oi,2oi\&quot;,\&quot;5,2rs,2wb,2w6,2sf,2rs,,2rs,2rs,2rs\&quot;,\&quot;4,2sp,2wk,2wf,2sw,2sp,,2sp,2sp,2sp\&quot;,\&quot;3,37v,3bu,3bo,383,37v,,37v,37v,37v\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-4153},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1567},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-923},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-923},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-923}]</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="318 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="300 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
@@ -3137,22 +2722,8 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="320 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="302 /rest/servicedesk/canned-responses/1/search/AIUWJSOAQV" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
@@ -3189,7 +2760,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/canned-responses/1/search/${request_project_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3199,28 +2770,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="322 /rest/analytics/1.0/publish/bulk" enabled="true">
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="304 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:30.34999999908905},&quot;timeDelta&quot;:-5178},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1689.3399999989924},&quot;timeDelta&quot;:-5150},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:61.939999999594875},&quot;timeDelta&quot;:-5150},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1689.5150000000285},&quot;timeDelta&quot;:-5150},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.824999999982538},&quot;timeDelta&quot;:-5096},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:3.3500000008643838},&quot;timeDelta&quot;:-5079},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:6.9500000008702045},&quot;timeDelta&quot;:-4811},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:2.304999999978463},&quot;timeDelta&quot;:-4626},{&quot;name&quot;:&quot;editor.instance.perf.convert&quot;,&quot;properties&quot;:{&quot;nodesCount&quot;:1,&quot;time&quot;:12.290000000575674},&quot;timeDelta&quot;:-1040},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:3.1749999998282874},&quot;timeDelta&quot;:-1035},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.28499999907217},&quot;timeDelta&quot;:-964}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-782},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-696},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-696},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-696},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:6.680000005871989},&quot;timeDelta&quot;:-193},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.8149999959859997},&quot;timeDelta&quot;:-185},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.8100000015692785},&quot;timeDelta&quot;:-177},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:590.2600000117673},&quot;timeDelta&quot;:-166},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:36.36499999265652},&quot;timeDelta&quot;:-166},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:590.4350000055274},&quot;timeDelta&quot;:-166},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.0500000062165782},&quot;timeDelta&quot;:-153},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.0449999972479418},&quot;timeDelta&quot;:-149},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.0049999982584268},&quot;timeDelta&quot;:-25}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -3242,14 +2799,6 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
                 <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
                   <elementProp name="Content-Type" elementType="Header">
                     <stringProp name="Header.name">Content-Type</stringProp>
                     <stringProp name="Header.value">application/json</stringProp>
@@ -3258,13 +2807,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="324 /rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="306 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.convert&quot;,&quot;properties&quot;:{&quot;nodesCount&quot;:1,&quot;time&quot;:11.809999999968568},&quot;timeDelta&quot;:-3071}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.440000007278286},&quot;timeDelta&quot;:-5237}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -3286,102 +2835,6 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
                 <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="326 /rest/analytics/1.0/publish/bulk" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.convert&quot;,&quot;properties&quot;:{&quot;nodesCount&quot;:1,&quot;time&quot;:6.3200000004144385},&quot;timeDelta&quot;:-4143}]</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="328 /rest/analytics/1.0/publish/bulk" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.convert&quot;,&quot;properties&quot;:{&quot;nodesCount&quot;:1,&quot;time&quot;:3.815000000031432},&quot;timeDelta&quot;:-3807},{&quot;name&quot;:&quot;editor.instance.perf.convert&quot;,&quot;properties&quot;:{&quot;nodesCount&quot;:1,&quot;time&quot;:4.7350000004371395},&quot;timeDelta&quot;:-1302}]</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
                   <elementProp name="Content-Type" elementType="Header">
                     <stringProp name="Header.name">Content-Type</stringProp>
                     <stringProp name="Header.value">application/json</stringProp>
@@ -3391,12 +2844,12 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_add_request_comment" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="agent_save_request_comment" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="330 /rest/api/2/issue/365894/comment" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="308 /rest/api/2/issue/365894/comment" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3458,7 +2911,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="332 /secure/AjaxIssueAction!default.jspa" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="310 /secure/AjaxIssueAction!default.jspa" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="decorator" elementType="HTTPArgument">
@@ -3538,7 +2991,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="334 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="312 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="decorator" elementType="HTTPArgument">
@@ -3597,7 +3050,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="336 /rest/webResources/1.0/resources" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="314 /rest/webResources/1.0/resources" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3641,7 +3094,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="338 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="316 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
@@ -3717,7 +3170,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="318 /rest/servicedesk/canned-responses/1/search/${request_project_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="issueKey" elementType="HTTPArgument">
@@ -3779,7 +3232,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="342 /rest/analytics/1.0/publish/bulk" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="320 /rest/analytics/1.0/publish/bulk" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
