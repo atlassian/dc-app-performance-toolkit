@@ -12,6 +12,7 @@ TIMEOUT = 20
 class BasePage:
     page_url = ''
     page_loaded_selector = {}
+    timeout = TIMEOUT
 
     def __init__(self, driver):
         self.driver = driver
@@ -22,9 +23,9 @@ class BasePage:
     def wait_for_page_loaded(self):
         if type(self.page_loaded_selector) == list:
             for selector in self.page_loaded_selector:
-                self.wait_until_visible(selector)
+                self.wait_until_visible(selector, timeout=self.timeout)
         else:
-            self.wait_until_visible(self.page_loaded_selector)
+            self.wait_until_visible(self.page_loaded_selector, timeout=self.timeout)
 
     def go_to_url(self, url):
         self.driver.get(url)
@@ -43,9 +44,9 @@ class BasePage:
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector))
 
-    def wait_until_visible(self, selector_name):
+    def wait_until_visible(self, selector_name, timeout=TIMEOUT):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector))
+        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), time_out=timeout)
 
     def wait_until_available_to_switch(self, selector_name):
         selector = self.get_selector(selector_name)

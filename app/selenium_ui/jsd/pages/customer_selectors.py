@@ -61,6 +61,8 @@ class CustomerPortalSelectors:
     required_dropdown_list = (By.ID, 'select2-drop')
     required_dropdown_element = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
 
+    required_calendar_button = (By.CSS_SELECTOR, 'button#trigger-duedate')
+    required_calendar_input_field = (By.CSS_SELECTOR, 'input#duedate')
 
     comment_request_field = (By.CSS_SELECTOR, 'textarea#comment-on-request')
 
@@ -71,11 +73,14 @@ class RequestSelectors:
     comment_request_field = (By.CSS_SELECTOR, 'textarea#comment-on-request')
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
     share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
-    share_request_search_field = (By.ID, 's2id_participants')  #(By.CSS_SELECTOR, '#s2id_participants>ul>li.select2-search-field')
+    share_request_search_field = (By.ID, 's2id_participants')
     share_request_dropdown = (By.ID, 'select2-drop')
     share_request_dropdown_results = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
-    share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
+    share_request_dropdown_one_elem = (By.CSS_SELECTOR,
+                                       '#select2-drop>ul.select2-results>li>div>span.user-picker-display-name')
 
+
+    share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
 
 class RequestsSelectors:
     my_requests_url = UrlManager().my_requests_url()

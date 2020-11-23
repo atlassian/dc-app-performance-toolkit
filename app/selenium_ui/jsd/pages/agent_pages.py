@@ -88,27 +88,47 @@ class ViewCustomerRequest(BasePage):
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
 
 
-class ViewReports(BasePage):
+class Report:
+
+    @staticmethod
+    def view_workload_report(driver, project_key):
+        return WorkloadReport(driver, project_key)
+
+    @staticmethod
+    def view_time_to_resolution_report(driver, project_key, time_to_resolution_report_id):
+        return TimeToResolutionReport(driver, project_key, time_to_resolution_report_id)
+
+    @staticmethod
+    def view_created_vs_resolved_report(driver, project_key, created_vs_resolved_report_id):
+        return CreatedResolvedReport(driver, project_key, created_vs_resolved_report_id)
+
+
+class WorkloadReport(BasePage):
+    page_loaded_selector = ViewReportsLocators.team_workload_agents_table
+    timeout = 60
 
     def __init__(self, driver, project_key=None):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key)
-        self.page_url = url_manager.browse_project_reports_url()
+        self.page_url = url_manager.workload_report_url()
 
-    def wait_for_page_loaded(self):
-        self.wait_until_visible(ViewReportsLocators.reports_nav)
 
-    def view_time_to_resolution_report(self):
-        self.get_element(ViewReportsLocators.time_to_resolution).click()
-        self.wait_until_visible(ViewReportsLocators.custom_report_content)
+class TimeToResolutionReport(BasePage):
+    page_loaded_selector = ViewReportsLocators.custom_report_content
 
-    def view_workload_report(self):
-        self.get_element(ViewReportsLocators.workload).click()
-        self.wait_until_visible(ViewReportsLocators.team_workload_agents_table)
+    def __init__(self, driver, project_key, time_to_resolution_report_id):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key, custom_report_id=time_to_resolution_report_id)
+        self.page_url = url_manager.custom_report_url()
 
-    def view_created_vs_resolved(self):
-        self.get_element(ViewReportsLocators.created_vs_resolved).click()
-        self.wait_until_visible(ViewReportsLocators.custom_report_content)
+
+class CreatedResolvedReport(BasePage):
+    page_loaded_selector = ViewReportsLocators.custom_report_content
+
+    def __init__(self, driver, project_key, time_to_resolution_report_id):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key, custom_report_id=time_to_resolution_report_id)
+        self.page_url = url_manager.custom_report_url()
 
 
 class ViewQueue(BasePage):
