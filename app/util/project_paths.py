@@ -81,6 +81,7 @@ JSD_DATASET_AGENTS = __get_jsd_dataset('agents.csv')
 JSD_DATASET_CUSTOMERS = __get_jsd_dataset('customers.csv')
 JSD_DATASET_REQUESTS = __get_jsd_dataset('requests.csv')
 JSD_DATASET_SERVICE_DESKS_L = __get_jsd_dataset('service_desks_large.csv')
+JSD_DATASET_SERVICE_DESKS_M = __get_jsd_dataset('service_desks_medium.csv')
 JSD_DATASET_SERVICE_DESKS_S = __get_jsd_dataset('service_desks_small.csv')
 JSD_REPORTS = __get_jsd_dataset('reports.csv')
 

@@ -10,17 +10,18 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, project_key=None, request_key=None, queue_id=None):
+    def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None):
         self.host = JSD_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
-        self.browse_all_projects = '/secure/BrowseProjects.jspa'
+        self.browse_all_projects = '/secure/BrowseProjects.jspa?selectedProjectType=service_desk'
         self.browse_project_customers = f'/projects/{project_key}/customers'
         self.view_customer_request = f'/browse/{request_key}'
-        self.browse_project_reports = f'/projects/{project_key}/reports'
         self.view_queue = f'/projects/{project_key}/queues/custom'
         self.queue_all_open = f'{self.view_queue}/{queue_id}'
+        self.workload_report_params = f'/projects/{project_key}/reports/workload'
+        self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -40,8 +41,11 @@ class UrlManager:
     def view_customer_request_url(self):
         return f'{self.host}{self.view_customer_request}'
 
-    def browse_project_reports_url(self):
-        return f'{self.host}{self.browse_project_reports}'
+    def workload_report_url(self):
+        return f'{self.host}{self.workload_report_params}'
+
+    def custom_report_url(self):
+        return f'{self.host}{self.custom_report_params}'
 
     def view_queue_all_open(self):
         return f'{self.host}{self.queue_all_open}'

@@ -12,7 +12,7 @@ from util.api.jira_clients import JiraRestClient
 from util.api.jsd_clients import JsdRestClient
 from util.conf import JSD_SETTINGS
 from util.project_paths import JSD_DATASET_AGENTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_REQUESTS, \
-    JSD_DATASET_SERVICE_DESKS_L, JSD_DATASET_SERVICE_DESKS_S, JSD_REPORTS
+    JSD_DATASET_SERVICE_DESKS_L, JSD_DATASET_SERVICE_DESKS_M, JSD_DATASET_SERVICE_DESKS_S, JSD_REPORTS
 
 ERROR_LIMIT = 10
 DEFAULT_AGENT_PREFIX = 'performance_agent_'
@@ -24,6 +24,7 @@ AGENTS = "agents"
 CUSTOMERS = "customers"
 REQUESTS = "requests"
 SERVICE_DESKS_LARGE = "service_desks_large"
+SERVICE_DESKS_MEDIUM = "service_desks_medium"
 SERVICE_DESKS_SMALL = "service_desks_small"
 REPORTS = "reports"
 AGENT_PERCENTAGE = 25.00
@@ -32,6 +33,7 @@ AGENT_PERCENTAGE = 25.00
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
 TOTAL_ISSUES_TO_RETRIEVE = 8000
 LARGE_SERVICE_DESK_TRIGGER = 100000  # Count of requests per "large" service desk.
+MEDIUM_SERVICE_DESK_TRIGGER = 10000  # Count of requests per "medium" service desk.
 
 performance_agents_count = math.ceil(JSD_SETTINGS.concurrency * AGENT_PERCENTAGE / 100)
 performance_customers_count = JSD_SETTINGS.concurrency - performance_agents_count
@@ -211,10 +213,15 @@ def __get_service_desks(jsd_api, jira_api, service_desks):
 
     print(f"Retrieved {len(service_desks)} Jira Service Desks")
     large_service_desks = []
+    medium_service_desks = []
     small_service_desks = []
     for service_desk in service_desks_with_requests:
-        large_service_desks.append(service_desk) if int(service_desk['total_requests']) >= LARGE_SERVICE_DESK_TRIGGER \
-            else small_service_desks.append(service_desk)
+        if int(service_desk['total_requests']) >= LARGE_SERVICE_DESK_TRIGGER:
+            large_service_desks.append(service_desk)
+        elif MEDIUM_SERVICE_DESK_TRIGGER <= int(service_desk['total_requests']) < LARGE_SERVICE_DESK_TRIGGER:
+            medium_service_desks.append(service_desk)
+        elif int(service_desk['total_requests']) < MEDIUM_SERVICE_DESK_TRIGGER:
+            small_service_desks.append(service_desk)
 
     service_desks_list_large = [','.join((service_desk["id"],
                                           service_desk["projectId"],
@@ -222,12 +229,18 @@ def __get_service_desks(jsd_api, jira_api, service_desks):
                                           service_desk["total_requests"],
                                           service_desk["all_open_queue_id"])) for service_desk in large_service_desks]
 
+    service_desks_list_medium = [','.join((service_desk["id"],
+                                           service_desk["projectId"],
+                                           service_desk["projectKey"],
+                                           service_desk["total_requests"],
+                                           service_desk["all_open_queue_id"])) for service_desk in medium_service_desks]
+
     service_desks_list_small = [','.join((service_desk["id"],
                                           service_desk["projectId"],
                                           service_desk["projectKey"],
                                           service_desk["total_requests"],
                                           service_desk["all_open_queue_id"])) for service_desk in small_service_desks]
-    return service_desks_list_large, service_desks_list_small
+    return service_desks_list_large, service_desks_list_medium, service_desks_list_small
 
 
 def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
@@ -357,7 +370,7 @@ def __create_data_set(jira_client, jsd_client):
     dataset[AGENTS] = agents_pool.get()
     dataset[CUSTOMERS] = customers_pool.get()
     dataset[REQUESTS] = requests_pool.get()
-    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
+    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM],dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
     dataset[REPORTS] = reports_pool.get()
     return dataset
 
@@ -369,6 +382,7 @@ def write_test_data_to_files(datasets):
     __write_to_file(JSD_DATASET_REQUESTS, datasets[REQUESTS])
     __write_to_file(JSD_DATASET_SERVICE_DESKS_L, datasets[SERVICE_DESKS_LARGE])
     __write_to_file(JSD_DATASET_SERVICE_DESKS_S, datasets[SERVICE_DESKS_SMALL])
+    __write_to_file(JSD_DATASET_SERVICE_DESKS_M, datasets[SERVICE_DESKS_MEDIUM])
     __write_to_file(JSD_REPORTS, datasets[REPORTS])
 
 
