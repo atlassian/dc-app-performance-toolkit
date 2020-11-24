@@ -3556,7 +3556,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -3645,7 +3645,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/subnav/sd-reports-nav</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
