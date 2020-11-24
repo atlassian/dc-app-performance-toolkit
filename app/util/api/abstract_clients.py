@@ -14,7 +14,7 @@ LOGIN_POST_HEADERS = {
               'application/signed-exchange;v=b3;q=0.9'
 }
 
-JSD_EXPERIMENTAL_HEADERS = {
+JSM_EXPERIMENTAL_HEADERS = {
     "Content-Type": "application/json",
     "X-ExperimentalApi": "opt-in"
 }

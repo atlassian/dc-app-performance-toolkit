@@ -1,5 +1,5 @@
 from selenium_ui.conftest import print_timing
-from selenium_ui.jsd.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
+from selenium_ui.jsm.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
     Requests
 import random
 

@@ -1,12 +1,12 @@
 from selenium_ui.conftest import print_timing
-from selenium_ui.jsd.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
+from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
     ViewCustomerRequest, ViewQueue, Report
 import random
 
 from util.api.jira_clients import JiraRestClient
-from util.conf import JSD_SETTINGS
+from util.conf import JSM_SETTINGS
 
-client = JiraRestClient(JSD_SETTINGS.server_url, JSD_SETTINGS.admin_login, JSD_SETTINGS.admin_password)
+client = JiraRestClient(JSM_SETTINGS.server_url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password)
 rte_status = client.check_rte_status()
 
 REQUESTS = "requests"

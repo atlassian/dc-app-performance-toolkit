@@ -3,7 +3,7 @@ from datetime import datetime
 from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
-from selenium_ui.jsd.pages.customer_selectors import UrlManager, LoginPageLocators, TopPanelSelectors, \
+from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocators, TopPanelSelectors, \
     CustomerPortalsSelectors, CustomerPortalSelectors, RequestSelectors, RequestsSelectors
 
 

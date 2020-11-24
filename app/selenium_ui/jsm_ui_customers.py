@@ -1,4 +1,4 @@
-from selenium_ui.jsd import modules_customers
+from selenium_ui.jsm import modules_customers
 from extension.jira import extension_ui  # TODO develop example of app-specific action for JSD
 
 

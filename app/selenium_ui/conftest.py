@@ -10,12 +10,12 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSD_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS,\
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES,\
-    CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSD_DATASET_REQUESTS, JSD_DATASET_CUSTOMERS, JSD_DATASET_AGENTS, \
-    JSD_DATASET_SERVICE_DESKS_L, JSD_DATASET_SERVICE_DESKS_M, JSD_DATASET_SERVICE_DESKS_S, JSD_REPORTS
+    CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_REPORTS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -47,15 +47,15 @@ class Dataset:
             self.dataset["custom_issues"] = self.__read_input_file(JIRA_DATASET_CUSTOM_ISSUES)
         return self.dataset
 
-    def jsd_dataset(self):
+    def jsm_dataset(self):
         if not self.dataset:
-            self.dataset["requests"] = self.__read_input_file(JSD_DATASET_REQUESTS)
-            self.dataset["customers"] = self.__read_input_file(JSD_DATASET_CUSTOMERS)
-            self.dataset["agents"] = self.__read_input_file(JSD_DATASET_AGENTS)
-            self.dataset["service_desks_large"] = self.__read_input_file(JSD_DATASET_SERVICE_DESKS_L)
-            self.dataset["service_desks_small"] = self.__read_input_file(JSD_DATASET_SERVICE_DESKS_S)
-            self.dataset["service_desks_medium"] = self.__read_input_file(JSD_DATASET_SERVICE_DESKS_M)
-            self.dataset["reports"] = self.__read_input_file(JSD_REPORTS)
+            self.dataset["requests"] = self.__read_input_file(JSM_DATASET_REQUESTS)
+            self.dataset["customers"] = self.__read_input_file(JSM_DATASET_CUSTOMERS)
+            self.dataset["agents"] = self.__read_input_file(JSM_DATASET_AGENTS)
+            self.dataset["service_desks_large"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_L)
+            self.dataset["service_desks_small"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_S)
+            self.dataset["service_desks_medium"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_M)
+            self.dataset["reports"] = self.__read_input_file(JSM_REPORTS)
         return self.dataset
 
     def confluence_dataset(self):
@@ -179,8 +179,8 @@ def jira_webdriver():
 
 
 @pytest.fixture(scope="module")
-def jsd_webdriver():
-    return webdriver(app_settings=JSD_SETTINGS)
+def jsm_webdriver():
+    return webdriver(app_settings=JSM_SETTINGS)
 
 
 @pytest.fixture(scope="module")
@@ -209,7 +209,7 @@ def jira_screen_shots(request, jira_webdriver):
 
 
 @pytest.fixture
-def jsd_screen_shots(request, jsd_webdriver):
+def jsd_screen_shots(request, jsm_webdriver):
     yield
     get_screen_shots(request, jsd_webdriver)
 
@@ -256,7 +256,7 @@ def jira_datasets():
 
 @pytest.fixture(scope="module")
 def jsd_datasets():
-    return application_dataset.jsd_dataset()
+    return application_dataset.jsm_dataset()
 
 
 @pytest.fixture(scope="module")
