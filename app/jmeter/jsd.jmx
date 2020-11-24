@@ -4142,7 +4142,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${reports_project_key}/lastVisited</stringProp>
               <stringProp name="HTTPSampler.method">PUT</stringProp>
@@ -4231,7 +4231,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${reports_project_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
