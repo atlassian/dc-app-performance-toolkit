@@ -440,6 +440,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive performance results with an app installed:
 
 1. Install the app you want to test.
+1. Setup app license.
 1. Run bzt.
 
    ``` bash
