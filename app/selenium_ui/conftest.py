@@ -209,9 +209,9 @@ def jira_screen_shots(request, jira_webdriver):
 
 
 @pytest.fixture
-def jsd_screen_shots(request, jsm_webdriver):
+def jsm_screen_shots(request, jsm_webdriver):
     yield
-    get_screen_shots(request, jsd_webdriver)
+    get_screen_shots(request, jsm_webdriver)
 
 
 @pytest.fixture
@@ -255,7 +255,7 @@ def jira_datasets():
 
 
 @pytest.fixture(scope="module")
-def jsd_datasets():
+def jsm_datasets():
     return application_dataset.jsm_dataset()
 
 

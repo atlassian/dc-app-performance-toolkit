@@ -9,7 +9,7 @@ import datetime
 
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
-from util.api.jsd_clients import JsmRestClient
+from util.api.jsm_clients import JsmRestClient
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_REPORTS
