@@ -4440,7 +4440,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_created_vs_resolved_report" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_created_vs_resolved_report" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
