@@ -758,6 +758,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 **Benchmark your re-index time with your app installed:**
 
 1. Install the app you want to test.
+1. Setup app license.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
