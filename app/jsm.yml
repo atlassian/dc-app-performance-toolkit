@@ -1,10 +1,10 @@
 ---
 settings:
-  artifacts-dir: results/jsd/%Y-%m-%d_%H-%M-%S
+  artifacts-dir: results/jsm/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_jsd_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsd.atlassian.com or localhost
+    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -25,7 +25,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/data_preparation/jsd_prepare_data.py
+      - python util/data_preparation/jsm_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
@@ -48,11 +48,11 @@ execution:
     hold-for: ${test_duration}
 scenarios:
   selenium_customers:
-    script: selenium_ui/jsd_ui_customers.py
+    script: selenium_ui/jsm_ui_customers.py
   selenium_agents:
-    script: selenium_ui/jsd_ui_agents.py
+    script: selenium_ui/jsm_ui_agents.py
   locust:
-    script: locustio/jsd/locustfile.py
+    script: locustio/jsm/locustfile.py
   jmeter:
     script: jmeter/jsd.jmx
     properties:

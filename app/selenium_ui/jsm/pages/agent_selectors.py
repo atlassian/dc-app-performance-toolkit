@@ -1,4 +1,4 @@
-from util.conf import JSD_SETTINGS
+from util.conf import JSM_SETTINGS
 from selenium.webdriver.common.by import By
 
 
@@ -11,7 +11,7 @@ class PopupLocators:
 class UrlManager:
 
     def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None):
-        self.host = JSD_SETTINGS.server_url
+        self.host = JSM_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'

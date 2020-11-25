@@ -1,9 +1,9 @@
 from util.api.abstract_clients import RestClient
-from util.api.abstract_clients import JSD_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 BATCH_SIZE_USERS = 1000
 
 
-class JsdRestClient(RestClient):
+class JsmRestClient(RestClient):
 
     def get_agent(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
@@ -48,8 +48,8 @@ class JsdRestClient(RestClient):
             "email": email,
             "fullName": full_name
         }
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
-        response = self.post(api_url, "Could not create jsd customer", body=payload, headers=jsd_headers)
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+        response = self.post(api_url, "Could not create jsm customer", body=payload, headers=jsm_headers)
 
         return response.json()
 
@@ -72,8 +72,8 @@ class JsdRestClient(RestClient):
             "requestParticipants": request_participants,
             "raiseOnBehalfOf": raise_on_behalf_of
         }
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
-        response = self.post(api_url, "Could not create jsd request", body=payload, headers=jsd_headers)
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+        response = self.post(api_url, "Could not create jsm request", body=payload, headers=jsm_headers)
 
         return response.json()
 
@@ -198,9 +198,9 @@ class JsdRestClient(RestClient):
             "public": public,
             "additionalComment": {"body": additional_comment}
         }
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
         response = self.post(api_url, "Could not create attachment from temp attach ids: {temporary_attachment_ids}.",
-                             body=payload, headers=jsd_headers, auth=auth)
+                             body=payload, headers=jsm_headers, auth=auth)
         return response.json()
 
     def create_comment(self, issue_id_or_key: str, public: bool = True, text: str = "", auth: tuple = None):
@@ -217,9 +217,9 @@ class JsdRestClient(RestClient):
             "body": text,
             "public": public
         }
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
         response = self.post(api_url, "Could not create comment for issue id/key: {issue_id_or_key}.",
-                             body=payload, headers=jsd_headers, auth=auth)
+                             body=payload, headers=jsm_headers, auth=auth)
         return response.json()
 
     def get_request_transactions(self, issue_id_or_key: str, auth: tuple = None):
@@ -230,10 +230,10 @@ class JsdRestClient(RestClient):
         :return:
         """
         api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}/transition"
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
         response = self.get(api_url,
                             f"Could not get transactions for issue id/key: {issue_id_or_key}.",
-                            headers=jsd_headers, auth=auth)
+                            headers=jsm_headers, auth=auth)
         return response.json()
 
     def request_transition(self, issue_id_or_key: str, transition_id: str, additional_comment: str = None,
@@ -253,10 +253,10 @@ class JsdRestClient(RestClient):
         }
         if additional_comment:
             payload['additionalComment'] = {"body": additional_comment}
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
         response = self.post(
             api_url, f"Could not make transition for issue id/key: {issue_id_or_key} to transition_id: {transition_id}",
-            body=payload, headers=jsd_headers, auth=auth)
+            body=payload, headers=jsm_headers, auth=auth)
         return response
 
     def get_request_status(self, issue_id_or_key: str, auth: tuple = None):
@@ -267,8 +267,8 @@ class JsdRestClient(RestClient):
         :return:
         """
         api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}/status"
-        jsd_headers = JSD_EXPERIMENTAL_HEADERS
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
         response = self.get(api_url,
                             f"Could not get transactions for issue id/key: {issue_id_or_key}.",
-                            headers=jsd_headers, auth=auth)
+                            headers=jsm_headers, auth=auth)
         return response.json()

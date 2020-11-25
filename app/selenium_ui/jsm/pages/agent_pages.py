@@ -2,7 +2,7 @@ import random
 
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
-from selenium_ui.jsd.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
+from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
     BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
     ViewQueueLocators
 
