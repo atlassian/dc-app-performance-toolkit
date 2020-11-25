@@ -42,19 +42,25 @@ def setup_run_data(datasets):
                 datasets['m_report_created_vs_resolved_id'] = report[2]
                 datasets['m_report_time_to_resolution_id'] = report[3]
 
-    service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
-    datasets['small_project_id'] = service_desk_small[1]
-    datasets['small_project_key'] = service_desk_small[2]
-    datasets['all_open_queue_id_small'] = service_desk_small[4]
+    if datasets[SERVICE_DESKS_SMALL]:
+        service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
+        datasets['small_project_id'] = service_desk_small[1]
+        datasets['small_project_key'] = service_desk_small[2]
+        datasets['all_open_queue_id_small'] = service_desk_small[4]
+
+        # Small projects reports
+        service_desk_small_key = service_desk_small[2]
+        for report in datasets[REPORTS]:
+            if service_desk_small_key in report:
+                datasets['s_report_service_desk_id'] = report[0]
+                datasets['s_report_service_desk_key'] = report[1]
+                datasets['s_report_created_vs_resolved_id'] = report[2]
+                datasets['s_report_time_to_resolution_id'] = report[3]
 
     # Prepare random project key
-    if 'medium_project_key' and 'large_project_key' in datasets.keys():
-        datasets['random_project_key'] = random.choice(datasets['small_project_key'], datasets['medium_project_key'],
-                                                       datasets['large_project_key'])
-    elif 'medium_project_key' in datasets.keys():
-        datasets['random_project_key'] = random.choice(datasets['small_project_key'], datasets['medium_project_key'])
-    elif 'small_project_key' in datasets.keys():
-        datasets['random_project_key'] = datasets['small_project_key']
+    service_desk_random = random.choice(datasets[SERVICE_DESKS_SMALL] + datasets[SERVICE_DESKS_MEDIUM]
+                                        + datasets[SERVICE_DESKS_LARGE])
+    datasets['random_project_key'] = service_desk_random[2]
 
     # Define users dataset
     datasets['agent_username'] = agent[0]
@@ -63,15 +69,6 @@ def setup_run_data(datasets):
     # Define request dataset
     datasets['request_id'] = request[0]
     datasets['request_key'] = request[1]
-
-    # Small projects reports
-    service_desk_small_key = service_desk_small[2]
-    for report in datasets[REPORTS]:
-        if service_desk_small_key in report:
-            datasets['s_report_service_desk_id'] = report[0]
-            datasets['s_report_service_desk_key'] = report[1]
-            datasets['s_report_created_vs_resolved_id'] = report[2]
-            datasets['s_report_time_to_resolution_id'] = report[3]
 
 
 def login(webdriver, datasets):
