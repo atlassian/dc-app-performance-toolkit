@@ -20,9 +20,47 @@ SERVICE_DESKS_MEDIUM = "service_desks_medium"
 def setup_run_data(datasets):
     agent = random.choice(datasets[AGENTS])
     request = random.choice(datasets[REQUESTS])
-    service_desk_large = random.choice(datasets[SERVICE_DESKS_LARGE])
-    service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
-    service_desk_medium = random.choice(datasets[SERVICE_DESKS_MEDIUM])
+
+    if datasets[SERVICE_DESKS_LARGE]:
+        service_desk_large = random.choice(datasets[SERVICE_DESKS_LARGE])
+        datasets['large_project_id'] = service_desk_large[1]
+        datasets['large_project_key'] = service_desk_large[2]
+        datasets['all_open_queue_id_large'] = service_desk_large[4]
+
+    if datasets[SERVICE_DESKS_MEDIUM]:
+        service_desk_medium = random.choice(datasets[SERVICE_DESKS_MEDIUM])
+        datasets['medium_project_id'] = service_desk_medium[1]
+        datasets['medium_project_key'] = service_desk_medium[2]
+        datasets['all_open_queue_id_medium'] = service_desk_medium[4]
+
+        # Medium projects reports
+        service_desk_medium_key = service_desk_medium[2]
+        for report in datasets[REPORTS]:
+            if service_desk_medium_key in report:
+                datasets['m_report_service_desk_id'] = report[0]
+                datasets['m_report_service_desk_key'] = report[1]
+                datasets['m_report_created_vs_resolved_id'] = report[2]
+                datasets['m_report_time_to_resolution_id'] = report[3]
+
+    if datasets[SERVICE_DESKS_SMALL]:
+        service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
+        datasets['small_project_id'] = service_desk_small[1]
+        datasets['small_project_key'] = service_desk_small[2]
+        datasets['all_open_queue_id_small'] = service_desk_small[4]
+
+        # Small projects reports
+        service_desk_small_key = service_desk_small[2]
+        for report in datasets[REPORTS]:
+            if service_desk_small_key in report:
+                datasets['s_report_service_desk_id'] = report[0]
+                datasets['s_report_service_desk_key'] = report[1]
+                datasets['s_report_created_vs_resolved_id'] = report[2]
+                datasets['s_report_time_to_resolution_id'] = report[3]
+
+    # Prepare random project key
+    service_desk_random = random.choice(datasets[SERVICE_DESKS_SMALL] + datasets[SERVICE_DESKS_MEDIUM]
+                                        + datasets[SERVICE_DESKS_LARGE])
+    datasets['random_project_key'] = service_desk_random[2]
 
     # Define users dataset
     datasets['agent_username'] = agent[0]
@@ -31,36 +69,6 @@ def setup_run_data(datasets):
     # Define request dataset
     datasets['request_id'] = request[0]
     datasets['request_key'] = request[1]
-
-    datasets['large_project_id'] = service_desk_large[1]
-    datasets['large_project_key'] = service_desk_large[2]
-    datasets['all_open_queue_id_large'] = service_desk_large[4]
-
-    datasets['medium_project_id'] = service_desk_medium[1]
-    datasets['medium_project_key'] = service_desk_medium[2]
-    datasets['all_open_queue_id_medium'] = service_desk_medium[4]
-
-    datasets['small_project_id'] = service_desk_small[1]
-    datasets['small_project_key'] = service_desk_small[2]
-    datasets['all_open_queue_id_small'] = service_desk_small[4]
-
-    # Medium projects reports
-    service_desk_medium_key = service_desk_medium[2]
-    for report in datasets[REPORTS]:
-        if service_desk_medium_key in report:
-            datasets['m_report_service_desk_id'] = report[0]
-            datasets['m_report_service_desk_key'] = report[1]
-            datasets['m_report_created_vs_resolved_id'] = report[2]
-            datasets['m_report_time_to_resolution_id'] = report[3]
-
-    # Small projects reports
-    service_desk_small_key = service_desk_small[2]
-    for report in datasets[REPORTS]:
-        if service_desk_small_key in report:
-            datasets['s_report_service_desk_id'] = report[0]
-            datasets['s_report_service_desk_key'] = report[1]
-            datasets['s_report_created_vs_resolved_id'] = report[2]
-            datasets['s_report_time_to_resolution_id'] = report[3]
 
 
 def login(webdriver, datasets):
@@ -192,9 +200,7 @@ def browse_projects_list(webdriver, datasets):
 
 
 def browse_project_customers_page(webdriver, datasets):
-    browse_customers_page = BrowseCustomers(webdriver, project_key=random.choice((datasets['small_project_key'],
-                                                                                  datasets['medium_project_key'],
-                                                                                  datasets['large_project_key'])))
+    browse_customers_page = BrowseCustomers(webdriver, project_key=datasets['random_project_key'])
 
     @print_timing('selenium_agent_browse_project_customers_page')
     def measure():

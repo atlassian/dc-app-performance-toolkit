@@ -309,6 +309,8 @@ def __get_requests(jsm_api, jira_api, service_desks, requests_without_distributi
                             f'{service_desk["projectKey"]}'
 
                 issues_list.append(issue_str)
+    if not issues_list:
+        raise Exception("ERROR: Jira Service Management instance does not have any requests.")
     print(f"Force retrieved {len(issues_list)} issues.")
     return issues_list
 
