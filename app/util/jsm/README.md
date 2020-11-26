@@ -1,32 +1,32 @@
-# JSD "large" dataset
-Use following command to upload enterprise-scale "large" dataset to the Jira Service Desk Data Center. 
+# JSM "large" dataset
+Use following command to upload enterprise-scale "large" dataset to the Jira Service Management Data Center. 
 This dataset is suitable for DC apps approval process performance test results generation.
 
-#### JSD populate DB "large"
+#### JSM populate DB "large"
 Populate DB from a postgres db dump:
 
-`./app/util/jira/populate_db.sh --jsd`
+`./app/util/jira/populate_db.sh --jsm`
 
-#### JSD upload attachments "large"
+#### JSM upload attachments "large"
 Copy attachments:
 
-`./app/util/jira/upload_attahcments.sh --jsd`
+`./app/util/jira/upload_attahcments.sh --jsm`
 
-#### JSD index sync
+#### JSM index sync
 To check if index successfully replicated to a new node after scaling event execute command on a new node:
 
 `./app/util/jira/index-sync.sh`
 
-# JSD "small dataset
-There is also a `small` dataset available for JSD. This dataset is suitable for local 
+# JSM "small dataset
+There is also a `small` dataset available for JSM. This dataset is suitable for local 
 Data Center Apps Performance Toolkit setup, testing and app-specific actions development.
 
-#### JSD populate DB "small"
+#### JSM populate DB "small"
 Populate DB from a postgres db dump:
 
-`./app/util/jira/populate_db.sh --jsd --small`
+`./app/util/jira/populate_db.sh --jsm --small`
 
-#### JSD upload attachments "small"
+#### JSM upload attachments "small"
 Copy attachments:
 
-`./app/util/jira/upload_attahcments.sh --jsd --small`
+`./app/util/jira/upload_attahcments.sh --jsm --small`

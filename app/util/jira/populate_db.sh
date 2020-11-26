@@ -2,7 +2,7 @@
 
 # Read command line arguments
 while [[ "$#" -gt 0 ]]; do case $1 in
-  --jsd) jsd=1 ;;
+  --jsm) jsm=1 ;;
   --small) small=1 ;;
   --force)
    if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
@@ -30,7 +30,7 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
-# Depending on Jira/JSD installation directory
+# Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
 STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
@@ -47,8 +47,8 @@ JIRA_DB_PASS="Password1!"
 # Jira version variables
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
 
-# JSD section
-if [[ ${jsd} == 1 ]]; then
+# JSM section
+if [[ ${jsm} == 1 ]]; then
   JIRA_CURRENT_DIR="/opt/atlassian/jira-servicedesk/current"
   JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
@@ -57,20 +57,21 @@ fi
 
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
-  echo The ${JIRA_VERSION_FILE} file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
-    has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
+  echo "ERROR: Failed to get Jira version. If your application type is JSM use flag '--jsm'." \
+       "Otherwise check if JIRA_VERSION_FILE variable (${JIRA_VERSION_FILE})" \
+       "has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly."
   exit 1
 fi
 echo "Jira Version: ${JIRA_VERSION}"
 
 # Datasets AWS bucket and db dump name
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
-if [[ ${jsd} == 1 ]]; then
-  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsd"
+if [[ ${jsm} == 1 ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsm"
 fi
 DATASETS_SIZE="large"
-if [[ ${jsd} == 1 && ${small} == 1 ]]; then
-  # Only JSD supports "small" dataset
+if [[ ${jsm} == 1 && ${small} == 1 ]]; then
+  # Only JSM supports "small" dataset
   DATASETS_SIZE="small"
 fi
 DB_DUMP_NAME="db.dump"
@@ -193,7 +194,7 @@ if [[ -s ${JIRA_LICENSE_FILE} ]]; then
 fi
 
 echo "Step5: Stop Jira"
-if [[ ${jsd} == 1 ]]; then
+if [[ ${jsm} == 1 ]]; then
   sudo systemctl stop jira
 else
   CATALINA_PID=$(pgrep -f "catalina")
@@ -313,7 +314,7 @@ else
 fi
 
 echo "Step10: Start Jira"
-if [[ ${jsd} == 1 ]]; then
+if [[ ${jsm} == 1 ]]; then
   sudo systemctl start jira
 else
   sudo su jira -c "${START_JIRA}"

@@ -2,7 +2,7 @@
 
 # Read command line arguments
 while [[ "$#" -gt 0 ]]; do case $1 in
-  --jsd) jsd=1 ;;
+  --jsm) jsm=1 ;;
   --small) small=1 ;;
   --force)
    if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
@@ -26,28 +26,29 @@ fi
 # Jira version variables
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
-if [[ ${jsd} == 1 ]]; then
+if [[ ${jsm} == 1 ]]; then
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
   SUPPORTED_JIRA_VERSIONS=(4.13.0)
 fi
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
-        echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
-         has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
-        exit 1
+  echo "ERROR: Failed to get Jira version. If your application type is JSM use flag '--jsm'." \
+       "Otherwise check if JIRA_VERSION_FILE variable (${JIRA_VERSION_FILE})" \
+       "has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly."
+  exit 1
 fi
 echo "Jira Version: ${JIRA_VERSION}"
 
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
-if [[ ${jsd} == 1 ]]; then
-  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsd"
+if [[ ${jsm} == 1 ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsm"
 fi
 ATTACHMENTS_TAR="attachments.tar.gz"
 ATTACHMENTS_DIR="attachments"
 AVATARS_DIR="avatars"
 DATASETS_SIZE="large"
-if [[ ${jsd} == 1 && ${small} == 1 ]]; then
-  # Only JSD supports "small" dataset
+if [[ ${jsm} == 1 && ${small} == 1 ]]; then
+  # Only JSM supports "small" dataset
   DATASETS_SIZE="small"
 fi
 ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
@@ -138,7 +139,7 @@ echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
 
-if [[ ${jsd} == 1 ]]; then
+if [[ ${jsm} == 1 ]]; then
   echo "Step5: Copy avatars to EFS"
   sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${AVATARS_DIR} ${EFS_DIR}"
   sudo su -c "rm -rf ${AVATARS_DIR}"
