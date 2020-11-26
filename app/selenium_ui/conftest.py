@@ -95,7 +95,7 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
-def print_timing(interaction=None, project_key=None):
+def print_timing(interaction=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -118,16 +118,6 @@ def print_timing(interaction=None, project_key=None):
                 error_msg = f"Failed measure: {interaction} - {exc_type.__name__}"
             end = time.time()
             timing = str(int((end - start) * 1000))
-
-            if 'view_workload_report_medium' in interaction:
-                total = 0
-                if project_key == 'AHSNDOOWEY':
-                    total = 350
-                elif project_key == 'AIGHSZLMMT':
-                    total = 200
-                elif project_key == 'AILIVNPWCP':
-                    total = 150
-                print(f'WORKLOAD_LARGE {timing},{total}')
 
             with open(selenium_results_file, "a+") as jtl_file:
                 timestamp = round(time.time() * 1000)
