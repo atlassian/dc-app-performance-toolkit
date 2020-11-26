@@ -7,8 +7,8 @@ def __get_jira_yml():
     return Path(__file__).parents[1] / "jira.yml"
 
 
-def __get_jsd_yml():
-    return Path(__file__).parents[1] / "jsd.yml"
+def __get_jsm_yml():
+    return Path(__file__).parents[1] / "jsm.yml"
 
 
 def __get_datasets():
@@ -19,16 +19,16 @@ def __get_jira_datasets():
     return __get_datasets() / "jira"
 
 
-def __get_jsd_datasets():
-    return __get_datasets() / "jsd"
+def __get_jsm_datasets():
+    return __get_datasets() / "jsm"
 
 
 def __get_jira_dataset(file_name):
     return __get_jira_datasets() / file_name
 
 
-def __get_jsd_dataset(file_name):
-    return __get_jsd_datasets() / file_name
+def __get_jsm_dataset(file_name):
+    return __get_jsm_datasets() / file_name
 
 
 def __get_confluence_yml():
@@ -75,15 +75,15 @@ JIRA_DATASET_ISSUES = __get_jira_dataset('issues.csv')
 JIRA_DATASET_PROJECTS = __get_jira_dataset('projects.csv')
 JIRA_DATASET_CUSTOM_ISSUES = __get_jira_dataset('custom-issues.csv')
 
-JSD_YML = __get_jsd_yml()
-JSD_DATASETS = __get_jsd_datasets()
-JSD_DATASET_AGENTS = __get_jsd_dataset('agents.csv')
-JSD_DATASET_CUSTOMERS = __get_jsd_dataset('customers.csv')
-JSD_DATASET_REQUESTS = __get_jsd_dataset('requests.csv')
-JSD_DATASET_SERVICE_DESKS_L = __get_jsd_dataset('service_desks_large.csv')
-JSD_DATASET_SERVICE_DESKS_M = __get_jsd_dataset('service_desks_medium.csv')
-JSD_DATASET_SERVICE_DESKS_S = __get_jsd_dataset('service_desks_small.csv')
-JSD_REPORTS = __get_jsd_dataset('reports.csv')
+JSM_YML = __get_jsm_yml()
+JSM_DATASETS = __get_jsm_datasets()
+JSM_DATASET_AGENTS = __get_jsm_dataset('agents.csv')
+JSM_DATASET_CUSTOMERS = __get_jsm_dataset('customers.csv')
+JSM_DATASET_REQUESTS = __get_jsm_dataset('requests.csv')
+JSM_DATASET_SERVICE_DESKS_L = __get_jsm_dataset('service_desks_large.csv')
+JSM_DATASET_SERVICE_DESKS_M = __get_jsm_dataset('service_desks_medium.csv')
+JSM_DATASET_SERVICE_DESKS_S = __get_jsm_dataset('service_desks_small.csv')
+JSM_REPORTS = __get_jsm_dataset('reports.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()

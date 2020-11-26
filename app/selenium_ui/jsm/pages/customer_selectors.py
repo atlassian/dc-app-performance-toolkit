@@ -1,11 +1,11 @@
-from util.conf import JSD_SETTINGS
+from util.conf import JSM_SETTINGS
 from selenium.webdriver.common.by import By
 
 
 class UrlManager:
 
     def __init__(self, portal_id=None, request_key=None):
-        self.host = JSD_SETTINGS.server_url
+        self.host = JSM_SETTINGS.server_url
         self.login_params = '/servicedesk/customer/user/login'
         self.portal_params = f'/servicedesk/customer/portal/{portal_id}'
         self.request_params = f'/servicedesk/customer/portal/{portal_id}/{request_key}'
