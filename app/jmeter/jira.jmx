@@ -9289,70 +9289,15 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments"/>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/app/get_endpoint</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_id" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">app_id</stringProp>
-                  <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_token" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">app_token</stringProp>
-                  <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="261585815">asserttion string</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoing" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /rest/drawio/1.0/diagram/crud" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
-                    <elementProp name="id" elementType="HTTPArgument">
+                    <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">${app_id}</stringProp>
+                      <stringProp name="Argument.value">{&quot;filename&quot;:&quot;Untitled Diagram&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;localhost\&quot; modified=\&quot;2020-11-26T02:11:35.903Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36\&quot; etag=\&quot;foTdBhmrOaGIJaWoUrAC\&quot; version=\&quot;13.10.2\&quot; type=\&quot;atlas\&quot;&gt;&lt;mxAtlasLibraries&gt;&lt;mxLibrary id=\&quot;A1\&quot;/&gt;&lt;mxLibrary id=\&quot;A2\&quot;/&gt;&lt;/mxAtlasLibraries&gt;&lt;diagram id=\&quot;Eainrhi8_KEonnx-YxZZ\&quot; name=\&quot;Page-1\&quot;&gt;rZRNU4MwEIZ/DUdmgBSKV7F+HJw6gzOOx5QskDE0mKYC/fVuS1JA61THnkje3SS7z0vikKRq7xSty0fJQDiBx1qH3DhB4IdzHz97peuVOfF6oVCcmaRBSPkOjGjTtpzBZpKopRSa11Mxk+s1ZHqiUaVkM03LpZieWtPCnOgNQppRAd/SXjjTZa/G4Sj7HnhR2pN9z0QqapONsCkpk81IIguHJEpK3Y+qNgGxh2e59Otuf4geC1Ow1r9ZQN6X2zpZPNywrnUrl9brx51rdvmgYmsaNsXqzhLAXRA2Tq6bkmtIa5rtIw36jVqpK4EzH4c5FyKRQqrDOpLHGWQZ6hut5BuMIqs4nCFAcv29BVsPKA3tSDIt3YGsQKsOU0zU9a8M32awx7fMy5E1sdGo+SOK414DNBwYbn9gGJxniN7X+yG2SoUAIQtFKwRQg+JYBKivsachcB57C/binLIhz4PTNrBoFYXRZWywwLvp7T3nSXQBT152sceu0vR5tsQmE166r8Fv/mvrCaOaplqqw0PwT9gshJjNTsGOgxWJLgTbPfK1uGcneHuXuQM4Hd6oQ2z00pPFJw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;,&quot;imageXml&quot;:null,&quot;imageData&quot;:&quot;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&quot;,&quot;imageWidth&quot;:353,&quot;imageHeight&quot;:223,&quot;imageBackground&quot;:&quot;#ffffff&quot;}&#xd;
+</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">id</stringProp>
-                    </elementProp>
-                    <elementProp name="token" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">${app_token}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">token</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>
@@ -9360,7 +9305,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/app/post_endpoint</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/crud/Untitled%20Diagram/${issue_key}</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9369,19 +9314,411 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                 <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Create Diagram</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /rest/drawio/1.0/diagram/crud" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&quot;filename&quot;:&quot;Untitled Diagram&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;localhost\&quot; modified=\&quot;2020-11-26T02:11:35.903Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36\&quot; etag=\&quot;foTdBhmrOaGIJaWoUrAC\&quot; version=\&quot;13.10.2\&quot; type=\&quot;atlas\&quot;&gt;&lt;mxAtlasLibraries&gt;&lt;mxLibrary id=\&quot;A1\&quot;/&gt;&lt;mxLibrary id=\&quot;A2\&quot;/&gt;&lt;/mxAtlasLibraries&gt;&lt;diagram id=\&quot;Eainrhi8_KEonnx-YxZZ\&quot; name=\&quot;Page-1\&quot;&gt;rZRNU4MwEIZ/DUdmgBSKV7F+HJw6gzOOx5QskDE0mKYC/fVuS1JA61THnkje3SS7z0vikKRq7xSty0fJQDiBx1qH3DhB4IdzHz97peuVOfF6oVCcmaRBSPkOjGjTtpzBZpKopRSa11Mxk+s1ZHqiUaVkM03LpZieWtPCnOgNQppRAd/SXjjTZa/G4Sj7HnhR2pN9z0QqapONsCkpk81IIguHJEpK3Y+qNgGxh2e59Otuf4geC1Ow1r9ZQN6X2zpZPNywrnUrl9brx51rdvmgYmsaNsXqzhLAXRA2Tq6bkmtIa5rtIw36jVqpK4EzH4c5FyKRQqrDOpLHGWQZ6hut5BuMIqs4nCFAcv29BVsPKA3tSDIt3YGsQKsOU0zU9a8M32awx7fMy5E1sdGo+SOK414DNBwYbn9gGJxniN7X+yG2SoUAIQtFKwRQg+JYBKivsachcB57C/binLIhz4PTNrBoFYXRZWywwLvp7T3nSXQBT152sceu0vR5tsQmE166r8Fv/mvrCaOaplqqw0PwT9gshJjNTsGOgxWJLgTbPfK1uGcneHuXuQM4Hd6oQ2z00pPFJw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;,&quot;imageXml&quot;:null,&quot;imageData&quot;:&quot;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&quot;,&quot;imageWidth&quot;:353,&quot;imageHeight&quot;:223,&quot;imageBackground&quot;:&quot;#ffffff&quot;}&#xd;
+</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/crud/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">PUT</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Update Diagram</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/crud" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/crud/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Get Diagram</stringProp>
               </HTTPSamplerProxy>
               <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-787535121">assertion string</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="attachmentId" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">attachmentId</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;attachmentId&quot;:(\d+)</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                </RegexExtractor>
                 <hashTree/>
               </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/image/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/image/${attachmentId}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">GET Diagram Image</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/revisions/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/revisions/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">GET Diagram Revisions</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/revision/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/revision/Untitled%20Diagram/${issue_key}?revision=1</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">GET Diagram Revision</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /secure/editDrawioDiagram.jspa" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/editDrawioDiagram.jspa?diagramName=Untitled%20Diagram&amp;issueKey=${issue_key}&amp;ui=atlas</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">GET Diagram Editor</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /secure/removeDrawioDiagram.jspa" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/removeDrawioDiagram.jspa?diagramName=Untitled%20Diagram&amp;issueKey=${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Delete Diagram</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /rest/drawio/1.0/library/" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&quot;id&quot;:null,&quot;name&quot;:&quot;Untitled Library.xml&quot;,&quot;xml&quot;:&quot;&lt;mxlibrary&gt;[]&lt;/mxlibrary&gt;&quot;,&quot;anyoneCanEdit&quot;:true}&#xd;
+</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/library/</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Create Library</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="libraryId" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">libraryId</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;id&quot;:(\d+)</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                </RegexExtractor>
+                <hashTree/>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /rest/drawio/1.0/library/" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&quot;id&quot;:${libraryId},&quot;name&quot;:&quot;Untitled Library.xml&quot;,&quot;xml&quot;:&quot;&lt;mxlibrary&gt;[{\&quot;xml\&quot;:\&quot;jVFLDsIgED0Newob17balaueYCJjIaFC6Gipp5cWtHHRxAXJ+8wL84DJeohtAK8vTqFl8sRkHZyjjIZYo7VMcKOYbJgQPB0mzjtutbrcQ8A7/RMQOfAE+8CsZGGk2RZh1OAXqICgIxegT+w4aUPYebgu1pT2T5qmIRVoqgRvJqLqzAsLL9dgIIy7q65S2bNFNyCFOY1MRpEuEzzX4RpNr0vsUDQYM++/0a14AqX7h25vvHo/X/AG\&quot;,\&quot;w\&quot;:100,\&quot;h\&quot;:80},{\&quot;xml\&quot;:\&quot;jVFRTsMwDD1N/rtE9ADrYF9ISDtBaNwmwiGR69GO0+M1YQWkSXxEen7PduxnZbq4HMlm/5wcoDKPynSUEhcUlw4QlW6CU+agtG7kKf10R92tapMtwTv/p0CXgg+LZyhMISa+YCUmb/MVSlOLCJhGslGZfQYKERjor/ayCfvZB4ZTtv21wyxrCuc5yp6HncAhLOBO4RNuMWKXMNH6tRmGQfe98BNTeoMfimtf24dWlDo/EMNy14OVqgYcIclwdJGUOTj2NaP61HgIo69lbeXsVOLxVro5KqCa+h1ux1u1X7f9Ag==\&quot;,\&quot;w\&quot;:120,\&quot;h\&quot;:60},{\&quot;xml\&quot;:\&quot;jZFNDoIwEIVP031pJWEtKCtXnqDCQBuLJWUUuL0jraILEhdNZr43L/NTJvNuKr3q9cnVYJk8MJl75zBE3ZSDtUxwUzNZMCE4PSaOG2qyqLxXHm74j0EEw0PZOwQSwICzjYAMph8o2Y/aIJx7Vb2UkWYmprGjoYuEwsZYmzvr/OKTTVZBVREf0LsrfCmXLN2lnJTYHDzCtLnAguL0JbgO0M9UMpoadayIS3INptXRlkWmhpC3H+t6DgriRd7pevlF+/mYJw==\&quot;,\&quot;w\&quot;:120,\&quot;h\&quot;:80}]&lt;/mxlibrary&gt;&quot;,&quot;anyoneCanEdit&quot;:true}&#xd;
+</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/library/</stringProp>
+                <stringProp name="HTTPSampler.method">PUT</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Update Library</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/library/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/library/${libraryId}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Get Library</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/library/list" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/library/list</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">List Libraries</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /rest/drawio/1.0/library/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/library/${libraryId}</stringProp>
+                <stringProp name="HTTPSampler.method">DELETE</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">DELETE Library</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /rest/drawio/1.0/diagram/draft" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">&lt;mxfile host=&quot;localhost&quot; modified=&quot;2020-11-26T01:58:10.778Z&quot; agent=&quot;5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot; etag=&quot;v05yZJS1WBn5fah29ZDb&quot; version=&quot;13.10.2&quot; type=&quot;atlas&quot;&gt;&lt;mxAtlasLibraries&gt;&lt;mxLibrary id=&quot;A1&quot;/&gt;&lt;/mxAtlasLibraries&gt;&lt;diagram id=&quot;Eainrhi8_KEonnx-YxZZ&quot; name=&quot;Page-1&quot;&gt;rZRNU4MwEIZ/DUdmgBSKV7F+HJw6gzOOx5QskDE0mKYC/fVuS1JA61THnkje3SS7z0vikKRq7xSty0fJQDiBx1qH3DhB4IdzHz97peuVOfF6oVCcmaRBSPkOjGjTtpzBZpKopRSa11Mxk+s1ZHqiUaVkM03LpZieWtPCnOgNQppRAd/SXjjTZa/G4Sj7HnhR2pN9z0QqapONsCkpk81IIguHJEpK3Y+qNgGxh2e59Otuf4geC1Ow1r9ZQN6X2zpZPNywrnUrl9brx51rdvmgYmsaNsXqzhLAXRA2Tq6bkmtIa5rtIw36jVqpK4EzH4c5FyKRQqrDOpLHGWQZ6hut5BuMIqs4nCFAcv29BVsPKA3tSDIt3YGsQKsOU0zU9a8M32awx7fMy5E1sdGo+SOK414DNBwYbn9gGJxniN7X+yG2SoUAIQtFKwRQg+JYBKivsachcB57C/binLIhz4PTNrBoFYXRZWywwLvp7T3nSXQBT152sceu0vR5tsQmE166r8Fv/mvrCaOaplqqw0PwT9gshJjNTsGOgxWJLgTbPfK1uGcneHuXuQM4Hd6oQ2z00pPFJw==&lt;/diagram&gt;&lt;/mxfile&gt;</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/draft/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Create Draft</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/xml; charset=UTF-8</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/draft" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/draft/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">Get Draft</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/drawio/1.0/diagram/draft/hasDraft" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/draft/hasDraft/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">GET hasDraft</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /rest/drawio/1.0/draft/" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/drawio/1.0/diagram/draft/Untitled%20Diagram/${issue_key}</stringProp>
+                <stringProp name="HTTPSampler.method">DELETE</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">DELETE Draft</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
             </hashTree>
           </hashTree>
           <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="debug sampler" enabled="false">
