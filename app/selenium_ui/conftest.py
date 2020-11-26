@@ -15,7 +15,7 @@ from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATA
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS,\
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES,\
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
-    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_REPORTS
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -55,7 +55,6 @@ class Dataset:
             self.dataset["service_desks_large"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_L)
             self.dataset["service_desks_small"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_S)
             self.dataset["service_desks_medium"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_M)
-            self.dataset["reports"] = self.__read_input_file(JSM_REPORTS)
         return self.dataset
 
     def confluence_dataset(self):
@@ -96,7 +95,7 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
-def print_timing(interaction=None):
+def print_timing(interaction=None, project_key=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -119,6 +118,16 @@ def print_timing(interaction=None):
                 error_msg = f"Failed measure: {interaction} - {exc_type.__name__}"
             end = time.time()
             timing = str(int((end - start) * 1000))
+
+            if 'view_workload_report_medium' in interaction:
+                total = 0
+                if project_key == 'AHSNDOOWEY':
+                    total = 350
+                elif project_key == 'AIGHSZLMMT':
+                    total = 200
+                elif project_key == 'AILIVNPWCP':
+                    total = 150
+                print(f'WORKLOAD_LARGE {timing},{total}')
 
             with open(selenium_results_file, "a+") as jtl_file:
                 timestamp = round(time.time() * 1000)

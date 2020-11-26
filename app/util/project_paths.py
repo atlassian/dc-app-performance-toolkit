@@ -83,7 +83,6 @@ JSM_DATASET_REQUESTS = __get_jsm_dataset('requests.csv')
 JSM_DATASET_SERVICE_DESKS_L = __get_jsm_dataset('service_desks_large.csv')
 JSM_DATASET_SERVICE_DESKS_M = __get_jsm_dataset('service_desks_medium.csv')
 JSM_DATASET_SERVICE_DESKS_S = __get_jsm_dataset('service_desks_small.csv')
-JSM_REPORTS = __get_jsm_dataset('reports.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()
