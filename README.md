@@ -22,7 +22,6 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-<a name="dep"></a>
 * Python 3.6-3.8 and pip
 * JDK 8
 * Google Chrome web browser
