@@ -950,11 +950,11 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           <intProp name="LoopController.loops">-1</intProp>
         </LoopController>
         <hashTree>
-          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="projects" enabled="true">
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="s_projects" enabled="true">
             <stringProp name="filename">datasets/jsm/service_desks_small.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">portal_id,project_id,project_key,project_total_requests_count,project_all_open_queue_id</stringProp>
+            <stringProp name="variableNames">s_service_desk_id,s_prj_id,s_prj_key,s_prj_total_req,s_prj_all_open_queue_id</stringProp>
             <boolProp name="randomOrder">true</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
@@ -999,7 +999,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /projects/${project_key}/queues/custom/${project_all_open_queue_id}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /projects/${s_prj_key}/queues/custom/${s_prj_all_open_queue_id}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1007,7 +1007,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${project_key}/queues/custom/${project_all_open_queue_id}</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${s_prj_key}/queues/custom/${s_prj_all_open_queue_id}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1176,7 +1176,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${project_id}},&quot;timeDelta&quot;:-538},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-533},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-501},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;},&quot;timeDelta&quot;:-500}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${s_prj_id}},&quot;timeDelta&quot;:-538},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-533},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-501},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;},&quot;timeDelta&quot;:-500}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -1258,7 +1258,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="212 /rest/projects/1.0/project/${project_key}/lastVisited" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="212 /rest/projects/1.0/project/${s_prj_key}/lastVisited" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1273,7 +1273,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${s_prj_key}/lastVisited</stringProp>
               <stringProp name="HTTPSampler.method">PUT</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1347,13 +1347,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="216 /rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="216 /rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${project_key}&quot;}</stringProp>
+                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${s_prj_key}&quot;}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -1362,7 +1362,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1523,7 +1523,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="224 /rest/servicedesk/1/servicedesk/${project_key}/queues/page" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="224 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/page" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -1539,7 +1539,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/page</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/page</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1612,7 +1612,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="228 /rest/servicedesk/1/servicedesk/${project_key}/queues/queues-limit" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="228 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/queues-limit" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -1628,7 +1628,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/queues-limit</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/queues-limit</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1657,7 +1657,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="230 /rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="230 /rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1665,7 +1665,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1686,7 +1686,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="232 /rest/servicedesk/1/servicedesk/${project_key}/issuelist" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="232 /rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="asc" elementType="HTTPArgument">
@@ -1720,7 +1720,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="jql" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">jql</stringProp>
-                    <stringProp name="Argument.value">project = ${project_key} AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
+                    <stringProp name="Argument.value">project = ${s_prj_key} AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -1744,7 +1744,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/issuelist</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1809,7 +1809,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="236 /rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="236 /rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1817,7 +1817,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1838,7 +1838,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="238 /rest/servicedesk/1/servicedesk/${project_key}/queues/bulkActionParameters" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="238 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/bulkActionParameters" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1846,7 +1846,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/bulkActionParameters</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/bulkActionParameters</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1917,7 +1917,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.centric.navigation.sidebar.load.project&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-5065},{&quot;name&quot;:&quot;servicedesk.page.view.queue&quot;,&quot;properties&quot;:{&quot;queueId&quot;:1392,&quot;hasAgentSorting&quot;:false,&quot;isBulkActionFlagOn&quot;:true,&quot;isReactQueueTableFlagOn&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${project_id}},&quot;timeDelta&quot;:-4053},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;1457&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;1288b6b6-dc3c-495f-b444-f68ec3b32cb3&quot;,&quot;key&quot;:&quot;servicedesk.queues.custom.ENTITY_ID&quot;,&quot;navigationType&quot;:&quot;1&quot;,&quot;readyForUser&quot;:&quot;3368&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;1538&quot;,&quot;resourceLoadedStart&quot;:336.96499999496154,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;192&quot;,&quot;unloadEventEnd&quot;:&quot;192&quot;,&quot;fetchStart&quot;:&quot;1&quot;,&quot;domainLookupStart&quot;:&quot;1&quot;,&quot;domainLookupEnd&quot;:&quot;1&quot;,&quot;connectStart&quot;:&quot;1&quot;,&quot;connectEnd&quot;:&quot;1&quot;,&quot;requestStart&quot;:&quot;5&quot;,&quot;responseStart&quot;:&quot;188&quot;,&quot;responseEnd&quot;:&quot;340&quot;,&quot;domLoading&quot;:&quot;205&quot;,&quot;domInteractive&quot;:&quot;1588&quot;,&quot;domContentLoadedEventStart&quot;:&quot;1588&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;1641&quot;,&quot;domComplete&quot;:&quot;1904&quot;,&quot;loadEventStart&quot;:&quot;1904&quot;,&quot;loadEventEnd&quot;:&quot;1909&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;3088b98e087477&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;serverDuration&quot;:&quot;187&quot;,&quot;dbReadsTimeInMs&quot;:&quot;9&quot;,&quot;dbConnsTimeInMs&quot;:&quot;25&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,9c,hq,dp,9h,9c,,9c,9c,9c\&quot;,\&quot;2,9d,ps,dn,9i,9d,,9d,9d,9d\&quot;,\&quot;2,9e,dq,dn,9k,9e,,9e,9e,9e\&quot;,\&quot;3,9e,u7,dr,9l,9e,,9e,9e,9e\&quot;,\&quot;3,9f,yn,i7,e0,dz,,9l,9l,9l\&quot;,\&quot;3,9f,i6,i5,e3,e3,,9l,9l,9l\&quot;,\&quot;3,9f,lv,lu,hr,9f,,9f,9f,9f\&quot;,\&quot;3,9g,m7,m5,hz,9g,,9g,9g,9g\&quot;,\&quot;3,9g,m7,m6,i7,9g,,9g,9g,9g\&quot;,\&quot;3,9g,q1,pz,lv,9g,,9g,9g,9g\&quot;,\&quot;3,9h,q8,q7,m8,9h,,9h,9h,9h\&quot;,\&quot;2,9h,hz,hu,dr,9h,,9h,9h,9h\&quot;,\&quot;3,9h,qf,qc,m8,9h,,9h,9h,9h\&quot;,\&quot;3,9i,yq,yp,ul,9i,,9i,9i,9i\&quot;,\&quot;2,9l,132,131,yr,9l,,9l,9l,9l\&quot;,\&quot;3,9l,13t,13m,z7,9l,,9l,9l,9l\&quot;,\&quot;3,9l,16q,16p,12d,9l,,9l,9l,9l\&quot;,\&quot;5,y0,12a,12a,y2,y0,,y0,y0,y0\&quot;,\&quot;4,132,18k,18j,14g,132,,132,132,132\&quot;,\&quot;5,146,18h,18g,149,146,,146,146,146\&quot;,\&quot;3,19r,1dy,1dx,19t,19r,,19r,19r,19r\&quot;,\&quot;5,1e5,1ij,1ii,1e7,1e5,,1e5,1e5,1e5\&quot;,\&quot;2,1im,1mx,1mt,1ip,1im,,1im,1im,1im\&quot;,\&quot;2,1im,1mx,1mt,1iq,1im,,1im,1im,1im\&quot;,\&quot;2,1in,1n2,1my,1it,1in,,1in,1in,1in\&quot;,\&quot;3,1in,1qw,1my,1iu,1in,,1in,1in,1in\&quot;,\&quot;3,1iq,1rc,1n2,1iv,1iq,,1iq,1iq,1iq\&quot;,\&quot;3,1ir,1n3,1my,1iv,1ir,,1ir,1ir,1ir\&quot;,\&quot;3,1ir,1ra,1r7,1n0,1ir,,1ir,1ir,1ir\&quot;,\&quot;3,1is,1rc,1r7,1n0,1is,,1is,1is,1is\&quot;,\&quot;3,1it,1rg,1r8,1n5,1it,,1it,1it,1it\&quot;,\&quot;3,1it,1rj,1rh,1n5,1it,,1it,1it,1it\&quot;,\&quot;5,1nw,1ux,1ux,1qx,1nw,,1nw,1nw,1nw\&quot;,\&quot;5,1tb,1xs,1xq,1te,1tb,,1tb,1tb,1tb\&quot;,\&quot;5,1tk,1xy,1xy,1tp,1tk,,1tk,1tk,1tk\&quot;,\&quot;5,1tv,1y6,1y5,1tx,1tv,,1tv,1tv,1tv\&quot;,\&quot;5,1tw,1yz,1yx,1ty,1tw,,1tw,1tw,1tw\&quot;,\&quot;3,1xv,227,226,1xx,1xv,,1xv,1xv,1xv\&quot;,\&quot;3,1xv,223,221,1xz,1xv,,1xv,1xv,1xv\&quot;,\&quot;3,1xw,224,222,1y1,1xw,,1xw,1xw,1xw\&quot;,\&quot;3,1xx,228,227,1y4,1xx,,1xx,1xx,1xx\&quot;,\&quot;5,1z5,23g,23f,1z8,1z5,,1z5,1z5,1z5\&quot;,\&quot;5,22d,26o,26n,22g,22d,,22d,22d,22d\&quot;,\&quot;5,26r,2b5,2b4,26t,26r,,26r,26r,26r\&quot;,\&quot;2,2b7,2fm,2fd,2b8,2b7,,2b7,2b7,2b7\&quot;,\&quot;3,2b7,2fr,2fm,2b9,2b7,,2b7,2b7,2b7\&quot;,\&quot;5,2gk,2l6,2l5,2gt,2gk,,2gk,2gk,2gk\&quot;]}&quot;,&quot;mark.bigPipe.sidebar-id.start&quot;:&quot;[1568]&quot;,&quot;mark.bigPipe.sidebar-id.end&quot;:&quot;[1569]&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[1841]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[1849]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;bigPipe.sidebar-id.start\&quot;:[1568],\&quot;bigPipe.sidebar-id.end\&quot;:[1569],\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[1841],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[1849]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-4041}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.centric.navigation.sidebar.load.project&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-5065},{&quot;name&quot;:&quot;servicedesk.page.view.queue&quot;,&quot;properties&quot;:{&quot;queueId&quot;:1392,&quot;hasAgentSorting&quot;:false,&quot;isBulkActionFlagOn&quot;:true,&quot;isReactQueueTableFlagOn&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${s_prj_id}},&quot;timeDelta&quot;:-4053},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;1457&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;1288b6b6-dc3c-495f-b444-f68ec3b32cb3&quot;,&quot;key&quot;:&quot;servicedesk.queues.custom.ENTITY_ID&quot;,&quot;navigationType&quot;:&quot;1&quot;,&quot;readyForUser&quot;:&quot;3368&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;1538&quot;,&quot;resourceLoadedStart&quot;:336.96499999496154,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;192&quot;,&quot;unloadEventEnd&quot;:&quot;192&quot;,&quot;fetchStart&quot;:&quot;1&quot;,&quot;domainLookupStart&quot;:&quot;1&quot;,&quot;domainLookupEnd&quot;:&quot;1&quot;,&quot;connectStart&quot;:&quot;1&quot;,&quot;connectEnd&quot;:&quot;1&quot;,&quot;requestStart&quot;:&quot;5&quot;,&quot;responseStart&quot;:&quot;188&quot;,&quot;responseEnd&quot;:&quot;340&quot;,&quot;domLoading&quot;:&quot;205&quot;,&quot;domInteractive&quot;:&quot;1588&quot;,&quot;domContentLoadedEventStart&quot;:&quot;1588&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;1641&quot;,&quot;domComplete&quot;:&quot;1904&quot;,&quot;loadEventStart&quot;:&quot;1904&quot;,&quot;loadEventEnd&quot;:&quot;1909&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;3088b98e087477&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;serverDuration&quot;:&quot;187&quot;,&quot;dbReadsTimeInMs&quot;:&quot;9&quot;,&quot;dbConnsTimeInMs&quot;:&quot;25&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,9c,hq,dp,9h,9c,,9c,9c,9c\&quot;,\&quot;2,9d,ps,dn,9i,9d,,9d,9d,9d\&quot;,\&quot;2,9e,dq,dn,9k,9e,,9e,9e,9e\&quot;,\&quot;3,9e,u7,dr,9l,9e,,9e,9e,9e\&quot;,\&quot;3,9f,yn,i7,e0,dz,,9l,9l,9l\&quot;,\&quot;3,9f,i6,i5,e3,e3,,9l,9l,9l\&quot;,\&quot;3,9f,lv,lu,hr,9f,,9f,9f,9f\&quot;,\&quot;3,9g,m7,m5,hz,9g,,9g,9g,9g\&quot;,\&quot;3,9g,m7,m6,i7,9g,,9g,9g,9g\&quot;,\&quot;3,9g,q1,pz,lv,9g,,9g,9g,9g\&quot;,\&quot;3,9h,q8,q7,m8,9h,,9h,9h,9h\&quot;,\&quot;2,9h,hz,hu,dr,9h,,9h,9h,9h\&quot;,\&quot;3,9h,qf,qc,m8,9h,,9h,9h,9h\&quot;,\&quot;3,9i,yq,yp,ul,9i,,9i,9i,9i\&quot;,\&quot;2,9l,132,131,yr,9l,,9l,9l,9l\&quot;,\&quot;3,9l,13t,13m,z7,9l,,9l,9l,9l\&quot;,\&quot;3,9l,16q,16p,12d,9l,,9l,9l,9l\&quot;,\&quot;5,y0,12a,12a,y2,y0,,y0,y0,y0\&quot;,\&quot;4,132,18k,18j,14g,132,,132,132,132\&quot;,\&quot;5,146,18h,18g,149,146,,146,146,146\&quot;,\&quot;3,19r,1dy,1dx,19t,19r,,19r,19r,19r\&quot;,\&quot;5,1e5,1ij,1ii,1e7,1e5,,1e5,1e5,1e5\&quot;,\&quot;2,1im,1mx,1mt,1ip,1im,,1im,1im,1im\&quot;,\&quot;2,1im,1mx,1mt,1iq,1im,,1im,1im,1im\&quot;,\&quot;2,1in,1n2,1my,1it,1in,,1in,1in,1in\&quot;,\&quot;3,1in,1qw,1my,1iu,1in,,1in,1in,1in\&quot;,\&quot;3,1iq,1rc,1n2,1iv,1iq,,1iq,1iq,1iq\&quot;,\&quot;3,1ir,1n3,1my,1iv,1ir,,1ir,1ir,1ir\&quot;,\&quot;3,1ir,1ra,1r7,1n0,1ir,,1ir,1ir,1ir\&quot;,\&quot;3,1is,1rc,1r7,1n0,1is,,1is,1is,1is\&quot;,\&quot;3,1it,1rg,1r8,1n5,1it,,1it,1it,1it\&quot;,\&quot;3,1it,1rj,1rh,1n5,1it,,1it,1it,1it\&quot;,\&quot;5,1nw,1ux,1ux,1qx,1nw,,1nw,1nw,1nw\&quot;,\&quot;5,1tb,1xs,1xq,1te,1tb,,1tb,1tb,1tb\&quot;,\&quot;5,1tk,1xy,1xy,1tp,1tk,,1tk,1tk,1tk\&quot;,\&quot;5,1tv,1y6,1y5,1tx,1tv,,1tv,1tv,1tv\&quot;,\&quot;5,1tw,1yz,1yx,1ty,1tw,,1tw,1tw,1tw\&quot;,\&quot;3,1xv,227,226,1xx,1xv,,1xv,1xv,1xv\&quot;,\&quot;3,1xv,223,221,1xz,1xv,,1xv,1xv,1xv\&quot;,\&quot;3,1xw,224,222,1y1,1xw,,1xw,1xw,1xw\&quot;,\&quot;3,1xx,228,227,1y4,1xx,,1xx,1xx,1xx\&quot;,\&quot;5,1z5,23g,23f,1z8,1z5,,1z5,1z5,1z5\&quot;,\&quot;5,22d,26o,26n,22g,22d,,22d,22d,22d\&quot;,\&quot;5,26r,2b5,2b4,26t,26r,,26r,26r,26r\&quot;,\&quot;2,2b7,2fm,2fd,2b8,2b7,,2b7,2b7,2b7\&quot;,\&quot;3,2b7,2fr,2fm,2b9,2b7,,2b7,2b7,2b7\&quot;,\&quot;5,2gk,2l6,2l5,2gt,2gk,,2gk,2gk,2gk\&quot;]}&quot;,&quot;mark.bigPipe.sidebar-id.start&quot;:&quot;[1568]&quot;,&quot;mark.bigPipe.sidebar-id.end&quot;:&quot;[1569]&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[1841]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[1849]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;bigPipe.sidebar-id.start\&quot;:[1568],\&quot;bigPipe.sidebar-id.end\&quot;:[1569],\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[1841],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[1849]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-4041}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -1955,7 +1955,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="244 /rest/servicedesk/1/servicedesk/${project_key}/queues/poll" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="244 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="projectStateHash" elementType="HTTPArgument">
@@ -1978,7 +1978,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/poll</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2007,13 +2007,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="246 /rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="246 /rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${project_key}&quot;}</stringProp>
+                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${s_prj_key}&quot;}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -2022,7 +2022,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
+              <stringProp name="HTTPSampler.path">rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2051,7 +2051,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="248 /rest/servicedesk/1/servicedesk/${project_key}/issuelist/updated" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="248 /rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist/updated" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="asc" elementType="HTTPArgument">
@@ -2092,7 +2092,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="jql" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">jql</stringProp>
-                    <stringProp name="Argument.value">project = ${project_key} AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
+                    <stringProp name="Argument.value">project = ${s_prj_key} AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -2116,7 +2116,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/NECDRWQWYA/issuelist/updated</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist/updated</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3361,7 +3361,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="410 /projects/${project_key}/queues/custom/${random_queue_id}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="410 /projects/${s_prj_key}/queues/custom/${random_queue_id}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -3369,7 +3369,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${project_key}/queues/custom/${random_queue_id}</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${s_prj_key}/queues/custom/${random_queue_id}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3570,7 +3570,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="420 /rest/projects/1.0/project/${project_key}/lastVisited" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="420 /rest/projects/1.0/project/${s_prj_key}/lastVisited" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -3585,7 +3585,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${s_prj_key}/lastVisited</stringProp>
               <stringProp name="HTTPSampler.method">PUT</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3659,13 +3659,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="424 /rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="424 /rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${project_key}&quot;}</stringProp>
+                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${s_prj_key}&quot;}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -3674,7 +3674,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3828,7 +3828,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="432 /rest/servicedesk/1/servicedesk/${project_key}/queues/page" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="432 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/page" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -3844,7 +3844,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/page</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/page</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3917,7 +3917,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="436 /rest/servicedesk/1/servicedesk/${project_key}/queues/queues-limit" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="436 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/queues-limit" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -3933,7 +3933,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/queues-limit</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/queues-limit</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3962,7 +3962,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="438 /rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="438 /rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -3970,7 +3970,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3991,7 +3991,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="440 /rest/servicedesk/1/servicedesk/${project_key}/issuelist" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="440 /rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="asc" elementType="HTTPArgument">
@@ -4025,7 +4025,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="jql" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">jql</stringProp>
-                    <stringProp name="Argument.value">project = ${project_key} AND assignee = currentUser() AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
+                    <stringProp name="Argument.value">project = ${s_prj_key} AND assignee = currentUser() AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -4049,7 +4049,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/issuelist</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4114,7 +4114,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="444 /rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="444 /rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -4122,7 +4122,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${project_key}/configuration/status</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/incidentmanagement/1/project/${s_prj_key}/configuration/status</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4143,7 +4143,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="446 /rest/servicedesk/1/servicedesk/${project_key}/queues/bulkActionParameters" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="446 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/bulkActionParameters" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -4151,7 +4151,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/bulkActionParameters</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/bulkActionParameters</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4260,7 +4260,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="452 /rest/servicedesk/1/servicedesk/${project_key}/queues/poll" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="452 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="projectStateHash" elementType="HTTPArgument">
@@ -4283,7 +4283,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/poll</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4312,13 +4312,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="454 /rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="454 /rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${project_key}&quot;}</stringProp>
+                    <stringProp name="Argument.value">{&quot;projectKey&quot;:&quot;${s_prj_key}&quot;}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -4327,7 +4327,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.queues,servicedesk.agent.queues.ungrouped</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4356,7 +4356,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="456 rest/servicedesk/1/servicedesk/${project_key}/issuelist/updated" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="456 rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist/updated" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="asc" elementType="HTTPArgument">
@@ -4397,7 +4397,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <elementProp name="jql" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">jql</stringProp>
-                    <stringProp name="Argument.value">project = ${project_key} AND assignee = currentUser() AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
+                    <stringProp name="Argument.value">project = ${s_prj_key} AND assignee = currentUser() AND resolution = Unresolved ORDER BY &quot;Time to resolution&quot; ASC</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -4421,7 +4421,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/issuelist/updated</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/issuelist/updated</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4523,7 +4523,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="462 /rest/servicedesk/1/servicedesk/${project_key}/queues/poll" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="462 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="projectStateHash" elementType="HTTPArgument">
@@ -4546,7 +4546,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/poll</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4619,7 +4619,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="466 /rest/servicedesk/1/servicedesk/${project_key}/queues/poll" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="466 /rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="projectStateHash" elementType="HTTPArgument">
@@ -4642,7 +4642,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/queues/poll</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/queues/poll</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7212,7 +7212,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="322 /projects/${project_key}/reports/workload" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="322 /projects/${s_prj_key}/reports/workload" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -7220,7 +7220,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${project_key}/reports/workload</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${s_prj_key}/reports/workload</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7295,7 +7295,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="326 /rest/servicedesk/1/servicedesk/${project_key}/precondition" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="326 /rest/servicedesk/1/servicedesk/${s_prj_key}/precondition" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -7311,7 +7311,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/precondition</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/precondition</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7340,7 +7340,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="328 /rest/servicedesk/1/servicedesk/${project_key}/warnings" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="328 /rest/servicedesk/1/servicedesk/${s_prj_key}/warnings" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="_" elementType="HTTPArgument">
@@ -7356,7 +7356,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${project_key}/warnings</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/${s_prj_key}/warnings</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7435,7 +7435,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${project_id}},&quot;timeDelta&quot;:-660},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-656},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-506},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-504}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${s_prj_id}},&quot;timeDelta&quot;:-660},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-656},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-506},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-504}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -7517,7 +7517,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="336 /rest/projects/1.0/project/${project_key}/lastVisited" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="336 /rest/projects/1.0/project/${s_prj_key}/lastVisited" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -7532,7 +7532,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${s_prj_key}/lastVisited</stringProp>
               <stringProp name="HTTPSampler.method">PUT</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7606,7 +7606,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 /rest/servicedesk/1/${project_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 /rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -7621,7 +7621,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${project_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7731,7 +7731,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="346 /rest/servicedesk/1/pages/people/agents/${project_key}/search" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="346 /rest/servicedesk/1/pages/people/agents/${s_prj_key}/search" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="query" elementType="HTTPArgument">
@@ -7754,7 +7754,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/agents/${project_key}/search</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/agents/${s_prj_key}/search</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -7789,7 +7789,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.centric.navigation.sidebar.load.project&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-4821},{&quot;name&quot;:&quot;servicedesk.agent.reports.loaded.workload&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${project_id}},&quot;timeDelta&quot;:-4040},{&quot;name&quot;:&quot;servicedesk.page.view.servicedesk.reports&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${project_id}},&quot;timeDelta&quot;:-4007},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;1800&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;9073c135-935f-4d53-a0f8-85a1376a51e8&quot;,&quot;key&quot;:&quot;servicedesk.reports.workload&quot;,&quot;navigationType&quot;:&quot;1&quot;,&quot;readyForUser&quot;:&quot;4083&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;2068&quot;,&quot;resourceLoadedStart&quot;:381.39500000397675,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;348&quot;,&quot;unloadEventEnd&quot;:&quot;349&quot;,&quot;fetchStart&quot;:&quot;5&quot;,&quot;domainLookupStart&quot;:&quot;5&quot;,&quot;domainLookupEnd&quot;:&quot;5&quot;,&quot;connectStart&quot;:&quot;5&quot;,&quot;connectEnd&quot;:&quot;5&quot;,&quot;requestStart&quot;:&quot;21&quot;,&quot;responseStart&quot;:&quot;340&quot;,&quot;responseEnd&quot;:&quot;344&quot;,&quot;domLoading&quot;:&quot;359&quot;,&quot;domInteractive&quot;:&quot;2107&quot;,&quot;domContentLoadedEventStart&quot;:&quot;2107&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;2218&quot;,&quot;domComplete&quot;:&quot;2687&quot;,&quot;loadEventStart&quot;:&quot;2687&quot;,&quot;loadEventEnd&quot;:&quot;2700&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;b08df57669ced3&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:8.6,&quot;rtt&quot;:100,&quot;serverDuration&quot;:&quot;53&quot;,&quot;dbConnsTimeInMs&quot;:&quot;12&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,al,fn,f3,be,al,,al,al,al\&quot;,\&quot;2,al,jw,f4,bf,al,,al,al,al\&quot;,\&quot;2,am,f8,f0,bf,am,,am,am,am\&quot;,\&quot;3,am,sv,fn,bf,am,,am,am,am\&quot;,\&quot;3,an,op,fn,bf,an,,an,an,an\&quot;,\&quot;3,ao,jh,iw,f9,ao,,ao,ao,ao\&quot;,\&quot;3,ap,ka,ju,ft,ap,,ap,ap,ap\&quot;,\&quot;3,ap,oj,nv,ji,ap,,ap,ap,ap\&quot;,\&quot;3,ap,ok,nw,ji,ap,,ap,ap,ap\&quot;,\&quot;3,aq,oo,nz,jx,aq,,aq,aq,aq\&quot;,\&quot;2,aq,jg,iq,f0,f0,,be,be,be\&quot;,\&quot;3,aq,p0,oi,ka,aq,,aq,aq,aq\&quot;,\&quot;3,ar,t9,sz,pa,ar,,ar,ar,ar\&quot;,\&quot;2,ar,yl,ye,tk,ar,,ar,ar,ar\&quot;,\&quot;3,ar,1gh,1ck,16y,ar,,ar,ar,ar\&quot;,\&quot;3,ar,1d5,1ck,171,ar,,ar,ar,ar\&quot;,\&quot;5,121,17e,16z,127,121,,121,121,121\&quot;,\&quot;4,18z,1ij,1ie,1ds,18z,,18z,18z,18z\&quot;,\&quot;3,1h5,1lg,1l8,1hl,1h5,,1h5,1h5,1h5\&quot;,\&quot;5,1nm,1wt,1wn,1nx,1nm,,1nm,1nm,1nm\&quot;,\&quot;5,1nr,1ws,1wn,1nz,1nr,,1nr,1nr,1nr\&quot;,\&quot;5,1v1,1zl,1zh,1vi,1v1,,1v1,1v1,1v1\&quot;,\&quot;2,23q,29b,28g,24o,23q,,23q,23q,23q\&quot;,\&quot;2,23s,29c,28g,24s,23s,,23s,23s,23s\&quot;,\&quot;2,23v,29c,28g,24s,23v,,23v,23v,23v\&quot;,\&quot;3,23x,29k,28g,24t,23x,,23x,23x,23x\&quot;,\&quot;3,240,29k,28j,24y,240,,240,240,240\&quot;,\&quot;3,241,29t,28s,253,241,,241,241,241\&quot;,\&quot;3,244,2ed,2e5,2a7,244,,244,244,244\&quot;,\&quot;5,26k,2di,2d6,29e,26k,,26k,26k,26k\&quot;,\&quot;5,2i6,2m8,2m2,2ib,2i6,,2i6,2i6,2i6\&quot;,\&quot;5,2iz,2nr,2my,2j5,2iz,,2iz,2iz,2iz\&quot;,\&quot;5,2jl,2o1,2nl,2jz,2jl,,2jl,2jl,2jl\&quot;,\&quot;5,2jo,2o2,2ns,2jz,2jo,,2jo,2jo,2jo\&quot;,\&quot;3,2mg,2qx,2qo,2my,2mg,,2mg,2mg,2mg\&quot;,\&quot;3,2mk,2s9,2rp,2nt,2mk,,2mk,2mk,2mk\&quot;,\&quot;3,2mo,2rz,2ro,2nu,2mo,,2mo,2mo,2mo\&quot;,\&quot;3,2ms,2s0,2ro,2o2,2ms,,2ms,2ms,2ms\&quot;,\&quot;5,2ow,2ud,2td,2pe,2ow,,2ow,2ow,2ow\&quot;,\&quot;5,2td,2ym,2ye,2up,2td,,2td,2td,2td\&quot;,\&quot;2,2yu,33a,331,2zi,2yu,,2yu,2yu,2yu\&quot;,\&quot;3,2yz,33v,33m,2zu,2yz,,2yz,2yz,2yz\&quot;]}&quot;,&quot;mark.bigPipe.sidebar-id.start&quot;:&quot;[2042]&quot;,&quot;mark.bigPipe.sidebar-id.end&quot;:&quot;[2045]&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[2520]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[2540]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;bigPipe.sidebar-id.start\&quot;:[2042],\&quot;bigPipe.sidebar-id.end\&quot;:[2045],\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[2520],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[2540]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;dbReadsTimeInMs&quot;:&quot;&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:8.6,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-3978}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.centric.navigation.sidebar.load.project&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-4821},{&quot;name&quot;:&quot;servicedesk.agent.reports.loaded.workload&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${s_prj_id}},&quot;timeDelta&quot;:-4040},{&quot;name&quot;:&quot;servicedesk.page.view.servicedesk.reports&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${s_prj_id}},&quot;timeDelta&quot;:-4007},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;1800&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;9073c135-935f-4d53-a0f8-85a1376a51e8&quot;,&quot;key&quot;:&quot;servicedesk.reports.workload&quot;,&quot;navigationType&quot;:&quot;1&quot;,&quot;readyForUser&quot;:&quot;4083&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;2068&quot;,&quot;resourceLoadedStart&quot;:381.39500000397675,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;348&quot;,&quot;unloadEventEnd&quot;:&quot;349&quot;,&quot;fetchStart&quot;:&quot;5&quot;,&quot;domainLookupStart&quot;:&quot;5&quot;,&quot;domainLookupEnd&quot;:&quot;5&quot;,&quot;connectStart&quot;:&quot;5&quot;,&quot;connectEnd&quot;:&quot;5&quot;,&quot;requestStart&quot;:&quot;21&quot;,&quot;responseStart&quot;:&quot;340&quot;,&quot;responseEnd&quot;:&quot;344&quot;,&quot;domLoading&quot;:&quot;359&quot;,&quot;domInteractive&quot;:&quot;2107&quot;,&quot;domContentLoadedEventStart&quot;:&quot;2107&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;2218&quot;,&quot;domComplete&quot;:&quot;2687&quot;,&quot;loadEventStart&quot;:&quot;2687&quot;,&quot;loadEventEnd&quot;:&quot;2700&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;b08df57669ced3&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:8.6,&quot;rtt&quot;:100,&quot;serverDuration&quot;:&quot;53&quot;,&quot;dbConnsTimeInMs&quot;:&quot;12&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,al,fn,f3,be,al,,al,al,al\&quot;,\&quot;2,al,jw,f4,bf,al,,al,al,al\&quot;,\&quot;2,am,f8,f0,bf,am,,am,am,am\&quot;,\&quot;3,am,sv,fn,bf,am,,am,am,am\&quot;,\&quot;3,an,op,fn,bf,an,,an,an,an\&quot;,\&quot;3,ao,jh,iw,f9,ao,,ao,ao,ao\&quot;,\&quot;3,ap,ka,ju,ft,ap,,ap,ap,ap\&quot;,\&quot;3,ap,oj,nv,ji,ap,,ap,ap,ap\&quot;,\&quot;3,ap,ok,nw,ji,ap,,ap,ap,ap\&quot;,\&quot;3,aq,oo,nz,jx,aq,,aq,aq,aq\&quot;,\&quot;2,aq,jg,iq,f0,f0,,be,be,be\&quot;,\&quot;3,aq,p0,oi,ka,aq,,aq,aq,aq\&quot;,\&quot;3,ar,t9,sz,pa,ar,,ar,ar,ar\&quot;,\&quot;2,ar,yl,ye,tk,ar,,ar,ar,ar\&quot;,\&quot;3,ar,1gh,1ck,16y,ar,,ar,ar,ar\&quot;,\&quot;3,ar,1d5,1ck,171,ar,,ar,ar,ar\&quot;,\&quot;5,121,17e,16z,127,121,,121,121,121\&quot;,\&quot;4,18z,1ij,1ie,1ds,18z,,18z,18z,18z\&quot;,\&quot;3,1h5,1lg,1l8,1hl,1h5,,1h5,1h5,1h5\&quot;,\&quot;5,1nm,1wt,1wn,1nx,1nm,,1nm,1nm,1nm\&quot;,\&quot;5,1nr,1ws,1wn,1nz,1nr,,1nr,1nr,1nr\&quot;,\&quot;5,1v1,1zl,1zh,1vi,1v1,,1v1,1v1,1v1\&quot;,\&quot;2,23q,29b,28g,24o,23q,,23q,23q,23q\&quot;,\&quot;2,23s,29c,28g,24s,23s,,23s,23s,23s\&quot;,\&quot;2,23v,29c,28g,24s,23v,,23v,23v,23v\&quot;,\&quot;3,23x,29k,28g,24t,23x,,23x,23x,23x\&quot;,\&quot;3,240,29k,28j,24y,240,,240,240,240\&quot;,\&quot;3,241,29t,28s,253,241,,241,241,241\&quot;,\&quot;3,244,2ed,2e5,2a7,244,,244,244,244\&quot;,\&quot;5,26k,2di,2d6,29e,26k,,26k,26k,26k\&quot;,\&quot;5,2i6,2m8,2m2,2ib,2i6,,2i6,2i6,2i6\&quot;,\&quot;5,2iz,2nr,2my,2j5,2iz,,2iz,2iz,2iz\&quot;,\&quot;5,2jl,2o1,2nl,2jz,2jl,,2jl,2jl,2jl\&quot;,\&quot;5,2jo,2o2,2ns,2jz,2jo,,2jo,2jo,2jo\&quot;,\&quot;3,2mg,2qx,2qo,2my,2mg,,2mg,2mg,2mg\&quot;,\&quot;3,2mk,2s9,2rp,2nt,2mk,,2mk,2mk,2mk\&quot;,\&quot;3,2mo,2rz,2ro,2nu,2mo,,2mo,2mo,2mo\&quot;,\&quot;3,2ms,2s0,2ro,2o2,2ms,,2ms,2ms,2ms\&quot;,\&quot;5,2ow,2ud,2td,2pe,2ow,,2ow,2ow,2ow\&quot;,\&quot;5,2td,2ym,2ye,2up,2td,,2td,2td,2td\&quot;,\&quot;2,2yu,33a,331,2zi,2yu,,2yu,2yu,2yu\&quot;,\&quot;3,2yz,33v,33m,2zu,2yz,,2yz,2yz,2yz\&quot;]}&quot;,&quot;mark.bigPipe.sidebar-id.start&quot;:&quot;[2042]&quot;,&quot;mark.bigPipe.sidebar-id.end&quot;:&quot;[2045]&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[2520]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[2540]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;bigPipe.sidebar-id.start\&quot;:[2042],\&quot;bigPipe.sidebar-id.end\&quot;:[2045],\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[2520],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[2540]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;dbReadsTimeInMs&quot;:&quot;&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:8.6,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-3978}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -9510,7 +9510,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="470 /projects/${project_key}/customers" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="470 /projects/${s_prj_key}/customers" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -9518,7 +9518,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${project_key}/customers</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/projects/${s_prj_key}/customers</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9769,7 +9769,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="482 /rest/projects/1.0/project/${project_key}/lastVisited" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="482 /rest/projects/1.0/project/${s_prj_key}/lastVisited" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -9784,7 +9784,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${project_key}/lastVisited</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/projects/1.0/project/${s_prj_key}/lastVisited</stringProp>
               <stringProp name="HTTPSampler.method">PUT</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9813,7 +9813,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="484 /rest/servicedesk/1/pages/people/customers/pagination/${project_key}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="484 /rest/servicedesk/1/pages/people/customers/pagination/${s_prj_key}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -9821,7 +9821,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/customers/pagination/${project_key}</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/customers/pagination/${s_prj_key}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9850,7 +9850,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HeaderManager>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="486 /rest/servicedesk/1/pages/people/customers/pagination/${project_key}/search" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="486 /rest/servicedesk/1/pages/people/customers/pagination/${s_prj_key}/search" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="query" elementType="HTTPArgument">
@@ -9873,7 +9873,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/customers/pagination/${project_key}/search</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/pages/people/customers/pagination/${s_prj_key}/search</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10197,7 +10197,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
             <stringProp name="filename">datasets/jsd/service_desks_small.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">portal_id</stringProp>
+            <stringProp name="variableNames">s_service_desk_id</stringProp>
             <boolProp name="randomOrder">false</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
@@ -10248,7 +10248,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /servicedesk/customer/portal/${portal_id}" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /servicedesk/customer/portal/${s_service_desk_id}" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -10256,7 +10256,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/portal/${portal_id}</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/portal/${s_service_desk_id}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10427,7 +10427,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;announcement&quot;,&quot;allReqFilter&quot;,&quot;portalWebFragments&quot;,&quot;organisations&quot;],&quot;options&quot;:{&quot;portalId&quot;:${portal_id},&quot;allReqFilter&quot;:{&quot;reporter&quot;:&quot;&quot;,&quot;status&quot;:&quot;open&quot;,&quot;portalId&quot;:&quot;&quot;,&quot;requestTypeId&quot;:&quot;&quot;,&quot;filter&quot;:&quot;&quot;,&quot;selectedPage&quot;:1},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;MY_REQUESTS&quot;}}}</stringProp>
+                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;announcement&quot;,&quot;allReqFilter&quot;,&quot;portalWebFragments&quot;,&quot;organisations&quot;],&quot;options&quot;:{&quot;portalId&quot;:${s_service_desk_id},&quot;allReqFilter&quot;:{&quot;reporter&quot;:&quot;&quot;,&quot;status&quot;:&quot;open&quot;,&quot;portalId&quot;:&quot;&quot;,&quot;requestTypeId&quot;:&quot;&quot;,&quot;filter&quot;:&quot;&quot;,&quot;selectedPage&quot;:1},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;MY_REQUESTS&quot;}}}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -10553,7 +10553,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;announcement&quot;,&quot;allReqFilter&quot;,&quot;portalWebFragments&quot;,&quot;organisations&quot;],&quot;options&quot;:{&quot;portalId&quot;:${portal_id},&quot;allReqFilter&quot;:{&quot;reporter&quot;:&quot;all&quot;,&quot;status&quot;:&quot;open&quot;,&quot;portalId&quot;:&quot;&quot;,&quot;requestTypeId&quot;:&quot;&quot;,&quot;filter&quot;:&quot;&quot;,&quot;selectedPage&quot;:1},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;MY_REQUESTS&quot;}}}</stringProp>
+                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;announcement&quot;,&quot;allReqFilter&quot;,&quot;portalWebFragments&quot;,&quot;organisations&quot;],&quot;options&quot;:{&quot;portalId&quot;:${s_service_desk_id},&quot;allReqFilter&quot;:{&quot;reporter&quot;:&quot;all&quot;,&quot;status&quot;:&quot;open&quot;,&quot;portalId&quot;:&quot;&quot;,&quot;requestTypeId&quot;:&quot;&quot;,&quot;filter&quot;:&quot;&quot;,&quot;selectedPage&quot;:1},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;MY_REQUESTS&quot;}}}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
