@@ -134,7 +134,7 @@ import org.apache.commons.io.FileUtils;
 
     Map portalRequestsPairByCustomerUsername = new HashMap();
     // TODO Rework hard-codded path
-    List rowList = FileUtils.readLines(new File(&quot;datasets/jsd/customers.csv&quot;));
+    List rowList = FileUtils.readLines(new File(&quot;datasets/jsm/customers.csv&quot;));
     for (Object o: rowList) {
         String line = (String) o;
         String[] row = line.split(&quot;,&quot;);
@@ -179,7 +179,7 @@ import org.apache.commons.io.FileUtils;
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
-          <stringProp name="filename">datasets/jsd/agents.csv</stringProp>
+          <stringProp name="filename">datasets/jsm/agents.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">username,password</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -965,7 +965,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <stringProp name="filename">datasets/jsm/service_desks_medium.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">m_service_desk_id,m_prj_id,s_prj_key,m_prj_total_req,m_prj_all_open_queue_id,m_created_vs_resolved_id,m_time_to_resolution_id</stringProp>
+            <stringProp name="variableNames">m_service_desk_id,m_prj_id,m_prj_key,m_prj_total_req,m_prj_all_open_queue_id,m_created_vs_resolved_id,m_time_to_resolution_id</stringProp>
             <boolProp name="randomOrder">false</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
@@ -8045,7 +8045,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${medium_project_id}},&quot;timeDelta&quot;:-660},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-656},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-506},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-504}]</stringProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.agentview.ia&quot;,&quot;properties&quot;:{&quot;newIA&quot;:true,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:${m_prj_id}},&quot;timeDelta&quot;:-660},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-656},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-506},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;},&quot;timeDelta&quot;:-504}]</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -8762,7 +8762,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${s_prj_key}/rest/servicedesk/1/${reports_project_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/${s_prj_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9909,7 +9909,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="users" enabled="true">
-          <stringProp name="filename">datasets/jsd/customers.csv</stringProp>
+          <stringProp name="filename">datasets/jsm/customers.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">username,password</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -10183,7 +10183,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
         </LoopController>
         <hashTree>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="portals" enabled="true">
-            <stringProp name="filename">datasets/jsd/service_desks_small.csv</stringProp>
+            <stringProp name="filename">datasets/jsm/service_desks_small.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">s_service_desk_id</stringProp>
