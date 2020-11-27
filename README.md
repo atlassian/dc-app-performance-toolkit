@@ -22,7 +22,8 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.6+ and pip
+<a name="dep"></a>
+* Python 3.6-3.8 and pip
 * JDK 8
 * Google Chrome web browser
 * Git client (only for Bitbucket Server)
@@ -32,7 +33,7 @@ Please make sure you have a version of Chrome browser that is compatible with [C
 If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
 ### macOS/Linux
-Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure that you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
 python3 --version
 pip --version
@@ -64,7 +65,7 @@ pip install -r requirements.txt
 
 ### Windows
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
 python --version or python3 --version
 pip --version
