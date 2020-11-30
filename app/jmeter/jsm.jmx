@@ -11250,7 +11250,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="request_types" enabled="true">
-            <stringProp name="filename">datasets\jsm\request_types.csv</stringProp>
+            <stringProp name="filename">datasets/jsm/request_types.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">rt_project_id,rt_service_desk_id,rt_id</stringProp>
