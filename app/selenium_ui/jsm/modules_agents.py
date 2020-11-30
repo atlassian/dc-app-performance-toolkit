@@ -32,30 +32,18 @@ def setup_run_data(datasets):
         datasets['medium_project_id'] = service_desk_medium[1]
         datasets['medium_project_key'] = service_desk_medium[2]
         datasets['all_open_queue_id_medium'] = service_desk_medium[4]
-
         # Medium projects reports
-        service_desk_medium_key = service_desk_medium[2]
-        for report in datasets[REPORTS]:
-            if service_desk_medium_key in report:
-                datasets['m_report_service_desk_id'] = report[0]
-                datasets['m_report_service_desk_key'] = report[1]
-                datasets['m_report_created_vs_resolved_id'] = report[2]
-                datasets['m_report_time_to_resolution_id'] = report[3]
+        datasets['m_report_created_vs_resolved_id'] = service_desk_medium[5]
+        datasets['m_report_time_to_resolution_id'] = service_desk_medium[6]
 
     if datasets[SERVICE_DESKS_SMALL]:
         service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
         datasets['small_project_id'] = service_desk_small[1]
         datasets['small_project_key'] = service_desk_small[2]
         datasets['all_open_queue_id_small'] = service_desk_small[4]
-
         # Small projects reports
-        service_desk_small_key = service_desk_small[2]
-        for report in datasets[REPORTS]:
-            if service_desk_small_key in report:
-                datasets['s_report_service_desk_id'] = report[0]
-                datasets['s_report_service_desk_key'] = report[1]
-                datasets['s_report_created_vs_resolved_id'] = report[2]
-                datasets['s_report_time_to_resolution_id'] = report[3]
+        datasets['s_report_created_vs_resolved_id'] = service_desk_small[5]
+        datasets['s_report_time_to_resolution_id'] = service_desk_small[6]
 
     # Prepare random project key
     service_desk_random = random.choice(datasets[SERVICE_DESKS_SMALL] + datasets[SERVICE_DESKS_MEDIUM]
@@ -95,7 +83,7 @@ def login(webdriver, datasets):
 
 
 def view_workload_report_medium(webdriver, datasets):
-    workload_report = Report.view_workload_report(webdriver, project_key=datasets['m_report_service_desk_key'])
+    workload_report = Report.view_workload_report(webdriver, project_key=datasets['medium_project_key'])
 
     @print_timing('selenium_agent_view_workload_report_medium')
     def measure():
@@ -107,7 +95,7 @@ def view_workload_report_medium(webdriver, datasets):
 
 def view_time_to_resolution_report_medium(webdriver, datasets):
     time_to_resolution_report = Report.view_time_to_resolution_report(webdriver, project_key=
-                                                                      datasets['m_report_service_desk_key'],
+                                                                      datasets['medium_project_key'],
                                                                       time_to_resolution_report_id=
                                                                       datasets['m_report_time_to_resolution_id'])
 
@@ -121,7 +109,7 @@ def view_time_to_resolution_report_medium(webdriver, datasets):
 
 def view_created_vs_resolved_report_medium(webdriver, datasets):
     created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-                                                                 datasets['m_report_service_desk_key'],
+                                                                 datasets['medium_project_key'],
                                                                  created_vs_resolved_report_id=
                                                                  datasets['m_report_created_vs_resolved_id'])
 
@@ -134,7 +122,7 @@ def view_created_vs_resolved_report_medium(webdriver, datasets):
 
 
 def view_workload_report_small(webdriver, datasets):
-    workload_report = Report.view_workload_report(webdriver, project_key=datasets['s_report_service_desk_key'])
+    workload_report = Report.view_workload_report(webdriver, project_key=datasets['small_project_key'])
 
     @print_timing('selenium_agent_view_workload_report_small')
     def measure():
@@ -146,7 +134,7 @@ def view_workload_report_small(webdriver, datasets):
 
 def view_time_to_resolution_report_small(webdriver, datasets):
     time_to_resolution_report = Report.view_time_to_resolution_report(webdriver, project_key=
-                                                                      datasets['s_report_service_desk_key'],
+                                                                      datasets['small_project_key'],
                                                                       time_to_resolution_report_id=
                                                                       datasets['s_report_time_to_resolution_id'])
 
@@ -160,7 +148,7 @@ def view_time_to_resolution_report_small(webdriver, datasets):
 
 def view_created_vs_resolved_report_small(webdriver, datasets):
     created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-                                                                 datasets['s_report_service_desk_key'],
+                                                                 datasets['small_project_key'],
                                                                  created_vs_resolved_report_id=
                                                                  datasets['s_report_created_vs_resolved_id'])
 
