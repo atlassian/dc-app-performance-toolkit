@@ -51,7 +51,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Confluence Data Center development environment infrastructure costs about 10 - 15$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Confluence Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -59,10 +59,12 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
+| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.4|
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5`, `6.13.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+
 
 **Cluster nodes**
 
@@ -78,7 +80,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Database instance class | [db.t2.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | false |
@@ -118,7 +120,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
@@ -298,27 +300,28 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 **JMeter app-specific action development example**
 
-1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/confluence.jmx`.
-2. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
+1. Check that `confluence.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_dashboard` and `standalone_extension` actions would be executed.
+1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+    
+    ```python util/jmeter/start_jmeter_ui.py --app confluence```
+    
+1. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
 ![Confluence JMeter standalone extension](/platform/marketplace/images/confluence-standalone-extenstion.png)
-3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
+1. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
 ![Confluence JMeter standalone GET](/platform/marketplace/images/confluence-standalone-get-request.png)
-4. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
+1. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
 ![Confluence JMeter standalone regexp](/platform/marketplace/images/confluence-standalone-regexp.png)
-5. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
+1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Confluence JMeter standalone assertions](/platform/marketplace/images/confluence-standalone-assertions.png)
-6. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-7. Navigate to `Global Variables` and modify default values of hostname, port, protocol and postfix variables.
-![Confluence JMeter standalone global vars](/platform/marketplace/images/confluence-jmeter-global-vars.png)
-8. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
-![Confluence JMeter standalone load profile](/platform/marketplace/images/confluence-jmeter-load-profile.png)
-9. Right-click on `View Results Tree` and enable this controller.
-10. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
-11. Right-click on `View Results Tree` and disable this controller.
-12. Click **Save** button.
-13. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluencec.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-14. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
-
+1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluence.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ##### Using JMeter variables from the base script
 
@@ -393,15 +396,11 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
+| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.4|
-
-The Data Center App Performance Toolkit officially supports:
-
-- Confluence Platform release version: 7.0.5
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.4
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5`, `6.13.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 **Cluster nodes**
 
@@ -463,7 +462,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
@@ -643,7 +642,10 @@ For more information, go to [Administer your Data Center search index](https://c
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+* Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
@@ -666,7 +668,7 @@ For generating performance results suitable for Marketplace approval process use
     concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 5m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour.
+    total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
 ```  
 
 1. Push your changes to the forked repository.
@@ -721,6 +723,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive performance results with an app installed:
 
 1. Install the app you want to test.
+1. Setup app license.
 1. Run bzt.
 
    ``` bash

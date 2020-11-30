@@ -56,31 +56,15 @@ throughput defined in `total_actions_per_hr`. The default load simulates an ente
 To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
 
 ## JMeter
-### Opening JMeter scripts
-JMeter is written in XML and requires the JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-Be sure to run this command inside the `app` directory. The main [confluence.jmx](../../app/jmeter/confluence.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
-
 ### Debugging JMeter scripts
-1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-1. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/results/confluence/YY-MM-DD-hh-mm-ss` folder.
+1. Open JMeter UI as described in [README.md](../../app/util/jmeter/README.md).
+1. On the `View Results Tree` controller, click the `Browse` button and open `error.jtl` from `app/results/confluence/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
-In addition, you can run and monitor JMeter test real-time with GUI.
-1. Launch the test with GUI by running `bzt confluence.yml -gui`.
-1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-1. Click the start button to start running the test.
-
 ### Run one JMeter action
 ####Option 1: Run one JMeter action via GUI
-1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-1. Go to `File` > `Open`, and then open `jmeter/confluence.jmx`.
-1. In the `Global Variables` section, add correct confluence hostname, port, protocol, and postfix (if required).
-1. In `confluence` > `load profile`, set `perc_desired_action` to 100.
-1. Enable `View Results Tree` controller.
-1. Run JMeter.
-1. `View Results Tree` controller will have all details for every request and corresponding response.
+1. Follow steps described in [README.md](../../app/util/jmeter/README.md).
 
 ####Option 2: Run one JMeter action via bzt
 1. In [confluence.yml](../../app/confluence.yml), set `perc_desired_action` to 100 and all other perc_* to 0.

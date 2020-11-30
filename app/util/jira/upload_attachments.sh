@@ -25,7 +25,7 @@ fi
 ###################    Variables section         ###################
 # Jira version variables
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
-SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
+SUPPORTED_JIRA_VERSIONS=(7.13.15 8.0.3 8.5.9 8.13.0)
 if [[ ${jsm} == 1 ]]; then
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
   SUPPORTED_JIRA_VERSIONS=(4.13.0)
@@ -55,6 +55,12 @@ ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${A
 TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
+
+if [[ ! `systemctl status jira` ]]; then
+ echo "The Jira service was not found on this host." \
+ "Please make sure you are running this script on a host that is running Jira."
+ exit 1
+fi
 
 # Check if Jira version is supported
 if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
@@ -145,5 +151,5 @@ if [[ ${jsm} == 1 ]]; then
   sudo su -c "rm -rf ${AVATARS_DIR}"
 fi
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line

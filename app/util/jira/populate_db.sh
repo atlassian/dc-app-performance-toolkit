@@ -45,7 +45,7 @@ JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
 # Jira version variables
-SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
+SUPPORTED_JIRA_VERSIONS=(7.13.15 8.0.3 8.5.9 8.13.0)
 
 # JSM section
 if [[ ${jsm} == 1 ]]; then
@@ -327,7 +327,7 @@ sudo rm ${JIRA_BASE_URL_FILE}
 echo "Step12: Remove ${JIRA_LICENSE_FILE} file"
 sudo rm ${JIRA_LICENSE_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"

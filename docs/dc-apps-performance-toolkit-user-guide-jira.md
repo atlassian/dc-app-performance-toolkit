@@ -51,7 +51,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Jira Data Center development environment infrastructure costs about 10 - 15$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Jira Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -62,7 +62,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.6` |
+| Jira Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9`, `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
 
 **Cluster nodes**
 
@@ -78,7 +78,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Database instance class | [db.t2.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | false |
@@ -305,26 +305,30 @@ Set `standalone_extension` weight in accordance with the expected frequency of y
 
 **JMeter app-specific action development example**
 
-1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/jira.jmx`.
-2. Open `Jira` thread group > `actions per login` and navigate to `standalone_extension`
+1. Check that `jira.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_dashboard` and `standalone_extension` actions would be executed.
+1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+    
+    ```python util/jmeter/start_jmeter_ui.py --app jira```
+    
+1. Open `Jira` thread group > `actions per login` and navigate to `standalone_extension`
 ![Jira JMeter standalone extension](/platform/marketplace/images/jira-standalone-extension.png)
-3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
+1. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
 ![Jira JMeter standalone GET](/platform/marketplace/images/jira-standalone-get-request.png)
-4. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
+1. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
 ![Jira JMeter standalone regexp](/platform/marketplace/images/jira-standalone-regexp.png)
-5. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
+1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Jira JMeter standalone assertions](/platform/marketplace/images/jira-standalone-assertions.png)
-6. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-7. Navigate to `Global Variables` and modify default values of hostname, port, protocol and postfix variables.
-![Jira JMeter standalone global vars](/platform/marketplace/images/jira-jmeter-global-vars.png)
-8. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
+1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
+1. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
 ![Jira JMeter standalone load profile](/platform/marketplace/images/jira-jmeter-load-profile.png)
-9. Right-click on `View Results Tree` and enable this controller.
-10. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
-11. Right-click on `View Results Tree` and disable this controller.
-12. Click **Save** button.
-13. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-14. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 
 ##### Using JMeter variables from the base script
@@ -407,7 +411,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.0.3` or `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `8.5.6` |
+| Jira Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9`, `7.13.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
 
 **Cluster nodes**
 
@@ -666,7 +670,10 @@ Jira will be unavailable for some time during the re-indexing process. When fini
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+* Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
@@ -754,6 +761,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 **Benchmark your re-index time with your app installed:**
 
 1. Install the app you want to test.
+1. Setup app license.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
