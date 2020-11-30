@@ -11249,6 +11249,17 @@ vars.put(&quot;g_comment&quot;, comment.toString())
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="request_types" enabled="true">
+            <stringProp name="filename">datasets\jsm\request_types.csv</stringProp>
+            <stringProp name="fileEncoding">UTF-8</stringProp>
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="variableNames">rt_project_id,rt_service_desk_id,rt_id</stringProp>
+            <boolProp name="randomOrder">true</boolProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="rewindOnTheEndOfList">true</boolProp>
+            <boolProp name="independentListPerThread">false</boolProp>
+          </com.blazemeter.jmeter.RandomCSVDataSetConfig>
+          <hashTree/>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
@@ -12301,6 +12312,289 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;portal&quot;,&quot;reqDetails&quot;,&quot;portalWebFragments&quot;],&quot;options&quot;:{&quot;portalId&quot;:&quot;${request_portal_id}&quot;,&quot;portal&quot;:{&quot;id&quot;:&quot;${request_portal_id}&quot;},&quot;reqDetails&quot;:{&quot;key&quot;:&quot;${request_key}&quot;},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;VIEW_REQUEST&quot;}}}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_open_create_request_view" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="600 /rest/servicedesk/1/customer/models" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;portal&quot;,&quot;helpCenterBranding&quot;,&quot;reqCreate&quot;,&quot;portalWebFragments&quot;],&quot;options&quot;:{&quot;portalId&quot;:&quot;${rt_service_desk_id}&quot;,&quot;portal&quot;:{&quot;id&quot;:&quot;${rt_service_desk_id}&quot;},&quot;reqCreate&quot;:{&quot;id&quot;:&quot;${rt_id}&quot;},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;CREATE_REQUEST&quot;}}}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="602 /rest/analytics/1.0/publish/bulk" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.smartportal.browse.popular.portals.portal.clicked&quot;,&quot;properties&quot;:{&quot;index&quot;:0,&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-1193},{&quot;name&quot;:&quot;servicedesk.page.view.portal.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-930},{&quot;name&quot;:&quot;servicedesk.page.view.customerview&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10188},&quot;timeDelta&quot;:-922},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;297&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;1288b6b6-dc3c-495f-b444-f68ec3b32cb3&quot;,&quot;key&quot;:&quot;servicedesk.cv.portal.landing&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;5549014&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;275&quot;,&quot;resourceLoadedStart&quot;:223.40000001713634,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;207&quot;,&quot;unloadEventEnd&quot;:&quot;207&quot;,&quot;fetchStart&quot;:&quot;2&quot;,&quot;domainLookupStart&quot;:&quot;2&quot;,&quot;domainLookupEnd&quot;:&quot;2&quot;,&quot;connectStart&quot;:&quot;2&quot;,&quot;connectEnd&quot;:&quot;2&quot;,&quot;requestStart&quot;:&quot;5&quot;,&quot;responseStart&quot;:&quot;198&quot;,&quot;responseEnd&quot;:&quot;269&quot;,&quot;domLoading&quot;:&quot;208&quot;,&quot;domInteractive&quot;:&quot;276&quot;,&quot;domContentLoadedEventStart&quot;:&quot;276&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;277&quot;,&quot;domComplete&quot;:&quot;737&quot;,&quot;loadEventStart&quot;:&quot;737&quot;,&quot;loadEventEnd&quot;:&quot;739&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,67,67,,,67,,67,67,67\&quot;,\&quot;2,67,b0,ax,6r,67,,67,67,67\&quot;,\&quot;3,75,7n,76,76,75,,75,75,75\&quot;,\&quot;3,75,di,cz,7p,75,,75,75,75\&quot;,\&quot;4,7r,7r,,,7r,,7r,7r,7r\&quot;,\&quot;5,8w,e6,e5,8x,8w,,8w,8w,8w\&quot;,\&quot;3,ev,k6,k4,ex,ev,,ev,ev,ev\&quot;,\&quot;5,ke,pq,pp,ki,ke,,ke,ke,ke\&quot;,\&quot;5,ow,u7,u7,oy,ow,,ow,ow,ow\&quot;,\&quot;5,2k3,2pa,2p9,2k9,2k3,,2k3,2k3,2k3\&quot;,\&quot;2,2pd,2ug,2ue,2pe,2pd,,2pd,2pd,2pd\&quot;,\&quot;3,2pd,393,2uf,2pf,2pd,,2pd,2pd,2pd\&quot;,\&quot;5,3a1,3hj,3hi,3a3,3a1,,3a1,3a1,3a1\&quot;,\&quot;4,3hw,3hw,,,3hw,,3hw,3hw,3hw\&quot;,\&quot;5,4p7,4uh,4uh,4p8,4p7,,4p7,4p7,4p7\&quot;,\&quot;5,zbw,zzm,zzm,zc2,zbw,,zbw,zbw,zbw\&quot;,\&quot;5,zzt,105d,105c,100a,zzt,,zzt,zzt,zzt\&quot;,\&quot;5,zzu,10e4,10b1,105n,105m,,105m,105m,105m,105k,zzu\&quot;,\&quot;2,105g,10an,10al,105i,105g,,105g,105g,105g\&quot;,\&quot;3,105h,10e0,109v,105j,105h,,105h,105h,105h\&quot;,\&quot;5,10ee,10mk,10mj,10eh,10ee,,10ee,10ee,10ee\&quot;,\&quot;4,10nf,10nf,,,10nf,,10nf,10nf,10nf\&quot;,\&quot;4,10nh,10sn,10sl,10nj,10nh,,10nh,10nh,10nh\&quot;,\&quot;5,13m7,13rb,13ra,13ma,13m7,,13m7,13m7,13m7\&quot;,\&quot;5,25qf3,25r6m,25r6l,25qf8,25qf3,,25qf3,25qf3,25qf3\&quot;,\&quot;4,25r6y,25r6y,,,25r6y,,25r6y,25r6y,25r6y\&quot;,\&quot;5,25tpb,25ug7,25ug6,25tpj,25tpb,,25tpb,25tpb,25tpb\&quot;,\&quot;4,25ugi,25ugi,,,25ugi,,25ugi,25ugi,25ugi\&quot;,\&quot;5,25v1h,25v5n,25v5m,25v1j,25v1h,,25v1h,25v1h,25v1h\&quot;,\&quot;4,25vby,25vby,,,25vby,,25vby,25vby,25vby\&quot;,\&quot;5,260by,260zn,260zl,260c0,260by,,260by,260by,260by\&quot;,\&quot;5,260zy,2622p,2619f,2614m,2614m,,2614m,2614m,2614m,2614k,260zy\&quot;,\&quot;5,2610g,2618i,2618g,2610i,2610g,,2610g,2610g,2610g\&quot;,\&quot;4,2619k,2619k,,,2619k,,2619k,2619k,2619k\&quot;,\&quot;4,2619m,2619o,2619n,2619n,2619m,,2619m,2619m,2619m\&quot;,\&quot;5,262vu,2630x,2630x,262vw,262vu,,262vu,262vu,262vu\&quot;,\&quot;4,26t4u,26t4u,,,26t4u,,26t4u,26t4u,26t4u\&quot;,\&quot;5,2xuud,2xv69,2xv68,2xuzn,2xuzn,,2xuuk,2xuuk,2xuuk\&quot;,\&quot;-1,2xuul,2xv3s,2xv3q,2xuzq,2xuzq,,2xuuo,2xuuo,2xuuo\&quot;,\&quot;4,2xv6p,2xv6p,,,2xv6p,,2xv6p,2xv6p,2xv6p\&quot;,\&quot;5,2xx2e,2xx6j,2xx6j,2xx2f,2xx2e,,2xx2e,2xx2e,2xx2e\&quot;,\&quot;5,2yw6f,2ywgd,2ywgc,2yw92,2yw6f,,2yw6f,2yw6f,2yw6f\&quot;,\&quot;4,2ywgp,2ywgp,,,2ywgp,,2ywgp,2ywgp,2ywgp\&quot;,\&quot;5,2yzsl,2yzxl,2yzxl,2yzsm,2yzsl,,2yzsl,2yzsl,2yzsl\&quot;,\&quot;5,2z5gk,2z5uh,2z5ug,2z5gn,2z5gk,,2z5gk,2z5gk,2z5gk\&quot;,\&quot;5,2z5up,2z6b5,2z662,2z60i,2z60h,,2z60h,2z60h,2z60h,2z60f,2z5up\&quot;,\&quot;5,2z5uu,2z639,2z638,2z5vg,2z5uu,,2z5uu,2z5uu,2z5uu\&quot;,\&quot;4,2z640,2z640,,,2z640,,2z640,2z640,2z640\&quot;,\&quot;4,2z642,2z687,2z685,2z644,2z642,,2z642,2z642,2z642\&quot;,\&quot;5,2z7o0,2z7sa,2z7s9,2z7o1,2z7o0,,2z7o0,2z7o0,2z7o0\&quot;,\&quot;5,38l0q,38lbu,38lbt,38l5p,38l5p,,38l0u,38l0u,38l0u\&quot;,\&quot;4,38lc5,38lc5,,,38lc5,,38lc5,38lc5,38lc5\&quot;,\&quot;5,38m3t,38m7z,38m7y,38m3u,38m3t,,38m3t,38m3t,38m3t\&quot;,\&quot;5,38pd7,38pht,38phr,38pde,38pd7,,38pd7,38pd7,38pd7\&quot;,\&quot;2,38phw,38pm6,38pm4,38phy,38phw,,38phw,38phw,38phw\&quot;,\&quot;3,38phx,38q9u,38ppl,38phy,38phx,,38phx,38phx,38phx\&quot;,\&quot;5,38qa2,38qgx,38qgw,38qa4,38qa2,,38qa2,38qa2,38qa2\&quot;,\&quot;4,38qhc,38qhc,,,38qhc,,38qhc,38qhc,38qhc\&quot;,\&quot;5,38qhl,38qx8,38qx7,38qhn,38qhl,,38qhl,38qhl,38qhl\&quot;,\&quot;5,38s0z,38s7i,38s7h,38s14,38s0z,,38s0z,38s0z,38s0z\&quot;,\&quot;4,38s80,38s80,,,38s80,,38s80,38s80,38s80\&quot;,\&quot;5,38tvc,38u26,38u25,38tvp,38tvc,,38tvc,38tvc,38tvc\&quot;,\&quot;5,38txz,38u24,38u24,38ty0,38txz,,38txz,38txz,38txz\&quot;,\&quot;4,38u2i,38u2i,,,38u2i,,38u2i,38u2i,38u2i\&quot;,\&quot;5,38xrd,38xxu,38xxt,38xrq,38xrd,,38xrd,38xrd,38xrd\&quot;,\&quot;5,38xx6,38y1c,38y1b,38xx7,38xx6,,38xx6,38xx6,38xx6\&quot;,\&quot;4,38xy8,38xy8,,,38xy8,,38xy8,38xy8,38xy8\&quot;,\&quot;5,38yxg,38z49,38z48,38yxk,38yxg,,38yxg,38yxg,38yxg\&quot;,\&quot;5,38z52,38zjn,38zjm,38z54,38z52,,38z52,38z52,38z52\&quot;,\&quot;4,38z54,38z54,,,38z54,,38z54,38z54,38z54\&quot;,\&quot;5,391wg,3920m,3920m,391wi,391wg,,391wg,391wg,391wg\&quot;,\&quot;5,39fu5,39g0i,39g0h,39fuf,39fu5,,39fu5,39fu5,39fu5\&quot;,\&quot;4,39g12,39g12,,,39g12,,39g12,39g12,39g12\&quot;,\&quot;5,39hh7,39hld,39hld,39hha,39hh7,,39hh7,39hh7,39hh7\&quot;,\&quot;5,39k5e,39kc4,39kc3,39k5q,39k5e,,39k5e,39k5e,39k5e\&quot;,\&quot;4,39kcl,39kcl,,,39kcl,,39kcl,39kcl,39kcl\&quot;,\&quot;5,39lge,39lkl,39lkk,39lgh,39lge,,39lge,39lge,39lge\&quot;,\&quot;5,39rpb,39s1s,39s1r,39rpe,39rpb,,39rpb,39rpb,39rpb\&quot;,\&quot;5,39s20,39sdn,39sav,39s6f,39s6e,,39s6e,39s6e,39s6e,39s6c,39s20\&quot;,\&quot;5,39s27,39sac,39sab,39s2i,39s27,,39s27,39s27,39s27\&quot;,\&quot;4,39sb5,39sb5,,,39sb5,,39sb5,39sb5,39sb5\&quot;,\&quot;4,39sb7,39sfd,39sfc,39sb9,39sb7,,39sb7,39sb7,39sb7\&quot;,\&quot;5,39tai,39tep,39teo,39taj,39tai,,39tai,39tai,39tai\&quot;,\&quot;5,3ans0,3anz7,3anz5,3ans9,3ans0,,3ans0,3ans0,3ans0\&quot;,\&quot;4,3anzr,3anzr,,,3anzr,,3anzr,3anzr,3anzr\&quot;,\&quot;5,3ao01,3aoep,3aoeo,3ao02,3ao01,,3ao01,3ao01,3ao01\&quot;,\&quot;5,3aqi8,3aqmz,3aqmy,3aqia,3aqi8,,3aqi8,3aqi8,3aqi8\&quot;,\&quot;5,3axfz,3axmn,3axmm,3axgh,3axfz,,3axfz,3axfz,3axfz\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[501]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[504]&quot;,&quot;mark.@grammarly-extension:callExecuteContentScript&quot;:&quot;[6613]&quot;,&quot;mark.@grammarly-extension:initStart&quot;:&quot;[6908]&quot;,&quot;mark.@grammarly-extension:initEnd&quot;:&quot;[6930]&quot;,&quot;mark.@grammarly-extension:gButtonShow&quot;:&quot;[7224,3637084,4992992,5455880,5490557]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[501],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[504],\&quot;@grammarly-extension:callExecuteContentScript\&quot;:[6613],\&quot;@grammarly-extension:initStart\&quot;:[6908],\&quot;@grammarly-extension:initEnd\&quot;:[6930],\&quot;@grammarly-extension:gButtonShow\&quot;:[7224,3637084,4992992,5455880,5490557]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-913}]</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="610 /servicedesk/customer/portal/${rt_service_desk_id}/create/${rt_id}" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="sd-kb-article-viewed" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">sd-kb-article-viewed</stringProp>
+                    <stringProp name="Argument.value">false</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                  <elementProp name="summary" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">summary</stringProp>
+                    <stringProp name="Argument.value">${p_summary}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                  <elementProp name="description" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">description</stringProp>
+                    <stringProp name="Argument.value">${p_description}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                  <elementProp name="pid" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">pid</stringProp>
+                    <stringProp name="Argument.value">${rt_project_id}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                  <elementProp name="projectId" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">projectId</stringProp>
+                    <stringProp name="Argument.value">${rt_project_id}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">servicedesk/customer/portal/${rt_service_desk_id}/create/${rt_id}</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/x-www-form-urlencoded</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                    <stringProp name="Header.value">no-check</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="extract issue.key" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">issue_key</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">$.issue.key</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="p_description_text generator" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">def generator = { String alphabet, int n -&gt;
+    new Random().with {
+        (1..n).collect { alphabet[nextInt(alphabet.length())] }.join()
+    }
+}
+
+def comment = &quot;Description - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 50);
+
+// request
+vars.put(&quot;p_description&quot;, comment.toString())
+</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="p_summary_text generator" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">def generator = { String alphabet, int n -&gt;
+    new Random().with {
+        (1..n).collect { alphabet[nextInt(alphabet.length())] }.join()
+    }
+}
+
+def comment = &quot;Summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 10);
+
+// request
+vars.put(&quot;p_summary&quot;, comment.toString())
+</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="612 /rest/servicedesk/project-ui/noeyeball/1/welcome-guide/item-completer/completeItem/create-request" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">rest/servicedesk/project-ui/noeyeball/1/welcome-guide/item-completer/completeItem/create-request</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_request_after_creation" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="616 /rest/servicedesk/1/customer/models" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;portal&quot;,&quot;reqDetails&quot;,&quot;portalWebFragments&quot;],&quot;options&quot;:{&quot;portalId&quot;:&quot;${rt_service_desk_id}&quot;,&quot;portal&quot;:{&quot;id&quot;:&quot;${rt_service_desk_id}&quot;},&quot;reqDetails&quot;:{&quot;key&quot;:&quot;${issue_key}&quot;},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;VIEW_REQUEST&quot;}}}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
