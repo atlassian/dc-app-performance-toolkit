@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.4)
+SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.5)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -111,5 +111,5 @@ echo "Step4: Copy attachments to EFS"
 sudo su confluence -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line

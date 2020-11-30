@@ -5,16 +5,16 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.15 and 8.5.8
-    * Jira Platform release: 8.0.3
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.0`, `8.5.9`, `7.13.15`
+    * Jira Platform release: `8.0.3`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.4
-    * Confluence Platform release: 7.0.5
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.5`, `6.13.13`  
+    * Confluence Platform release: `7.0.5`
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.5
-    * Bitbucket Server Platform release: 7.0.5
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.0`, `6.10.5`  
+    * Bitbucket Server Platform release: `7.0.5`
 
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
@@ -22,7 +22,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.6+ and pip
+* Python 3.6-3.8 and pip
 * JDK 8
 * Google Chrome web browser
 * Git client (only for Bitbucket Server)
@@ -32,7 +32,7 @@ Please make sure you have a version of Chrome browser that is compatible with [C
 If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
 ### macOS/Linux
-Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure that you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
 python3 --version
 pip --version
@@ -64,7 +64,7 @@ pip install -r requirements.txt
 
 ### Windows
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
 python --version or python3 --version
 pip --version

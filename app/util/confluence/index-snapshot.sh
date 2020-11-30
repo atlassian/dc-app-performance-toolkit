@@ -59,3 +59,5 @@ if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
     echo "Try to create a new Confluence page in UI and run 'General configuration' > 'Scheduled Jobs' > 'Clean Journal Entries' job again."
     exit 1
 fi
+
+echo "DCAPT util script execution is finished successfully."

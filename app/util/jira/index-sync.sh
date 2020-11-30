@@ -38,3 +38,5 @@ find_word_in_log "indexes - 60%"
 find_word_in_log "indexes - 80%"
 find_word_in_log "indexes - 100%"
 find_word_in_log "Index restore complete"
+
+echo "DCAPT util script execution is finished successfully."
