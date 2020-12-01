@@ -1,5 +1,5 @@
 from selenium_ui.jsm import modules_customers
-from extension.jira import extension_ui  # TODO develop example of app-specific action for jsm
+from extension.jsm import extension_ui_customers
 
 
 # this action should be the first one
@@ -36,8 +36,8 @@ Add custom actions anywhere between login and log out action. Move this to a dif
 Write your custom selenium scripts in `app/extension/jsm/extension_ui.py`.
 Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
 """
-# def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
-#     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
+# def test_1_selenium_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     extension_ui_customers.app_specific_action(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one
