@@ -1,10 +1,11 @@
+import csv
 import os
 import sys
 import tempfile
 import time
 from pathlib import Path
 from typing import IO, List, Set
-import csv
+
 import pandas
 
 from util.jtl_convertor import jtl_validator
@@ -133,12 +134,15 @@ def convert_to_csv(input_jtl: Path, output_csv: Path):
                 del processed_sample[SUCCESS_JTL_TMP]
                 del processed_sample[ELAPSED_JTL_TMP]
 
-    headers = csv_list[0].keys()
-    with output_csv.open('w') as output_file:
-        dict_writer = csv.DictWriter(output_file, headers)
-        dict_writer.writeheader()
-        for row in csv_list:
-            dict_writer.writerow(row)
+    try:
+        headers = csv_list[0].keys()
+        with output_csv.open('w') as output_file:
+            dict_writer = csv.DictWriter(output_file, headers)
+            dict_writer.writeheader()
+            for row in csv_list:
+                dict_writer.writerow(row)
+    except Exception:
+        pass
 
 
 def main():

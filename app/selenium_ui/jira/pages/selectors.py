@@ -11,7 +11,7 @@ class PopupLocators:
 class UrlManager:
 
     def __init__(self, issue_key=None, issue_id=None, project_key=None, jql=None, projects_list_page=None,
-                 board_id=None):
+                 board_id=None, page_key=None):
         self.host = JIRA_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -26,6 +26,9 @@ class UrlManager:
         self.boards_list_params = '/secure/ManageRapidViews.jspa'
         self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
         self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
+        self.page_url = f"/wiki/p/{project_key}/view/{page_key}"
+        self.page_edit_url = f"/wiki/p/{project_key}/view/{page_key}/edit"
+        self.pages_list = f"/wiki/p/{project_key}/view"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -63,9 +66,17 @@ class UrlManager:
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
 
+    def create_sw_page_url(self):
+        return f"{self.host}{self.page_url}"
+
+    def create_sw_editor_page(self):
+        return f"{self.host}{self.page_edit_url}"
+
+    def create_sw_pages_list(self):
+        return f"{self.host}{self.pages_list}"
+
 
 class LoginPageLocators:
-
     login_url = UrlManager().login_url()
     login_params = UrlManager().login_params
 
@@ -80,21 +91,18 @@ class LoginPageLocators:
 
 
 class LogoutLocators:
-
     logout_url = UrlManager().logout_url()
     logout_submit_button = (By.ID, "confirm-logout-submit")
     login_button_link = (By.CLASS_NAME, "login-link")
 
 
 class DashboardLocators:
-
     dashboard_url = UrlManager().dashboard_url()
     dashboard_params = UrlManager().dashboard_params
     dashboard_window = (By.CLASS_NAME, "page-type-dashboard")
 
 
 class IssueLocators:
-
     issue_title = (By.ID, "summary-val")
 
     create_issue_button = (By.ID, "create_link")
@@ -124,7 +132,6 @@ class IssueLocators:
 
 
 class ProjectLocators:
-
     project_summary_property_column = (By.CLASS_NAME, 'project-meta-column')
 
     # projects list locators
@@ -133,7 +140,6 @@ class ProjectLocators:
 
 
 class SearchLocators:
-
     search_issue_table = (By.ID, "issuetable")
     search_issue_content = (By.ID, "issue-content")
     search_no_issue_found = (By.CLASS_NAME, "no-results-message")
@@ -150,3 +156,28 @@ class BoardLocators:
     # Scrum boards
     scrum_board_backlog_content = (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")
     board_columns = (By.CSS_SELECTOR, ".ghx-column")
+
+
+class SimpleWikiPageLocator:
+    sw_page = (By.XPATH, '//*[@id="content"]/div[1]/div/div[2]/div/div[1]')
+    sw_page_comment = (By.XPATH, '//input[@placeholder="What do you want to say?"]')
+    sw_page_comment_textfield = (By.CLASS_NAME, 'ProseMirror')
+    sw_comment_block = (By.XPATH, '//*[@data-test-id="page-comments"]')
+    sw_comment_save = (
+        By.XPATH, '//*[@data-test-id="page-comments"]/div[last()]/div[2]/div/div[2]/div[2]/div/div[1]/button')
+
+
+class SimpleWikiPageEditorLocator:
+    sw_page_editor = (By.XPATH, '//*[@id="content"]/div[1]/div/div[2]/div/div/form/div/div[2]')
+    sw_page_editor_textfield_location = (By.CLASS_NAME, "ProseMirror")
+    sw_page_editor_title_location = (By.NAME, "title")
+    sw_page_editor_save_button = (
+        By.XPATH, '//form/div/div[2]/div/div[2]/div/div[1]/button')
+
+
+class SimpleWikiPagesListLocator:
+    sw_add_page_dialog = (By.XPATH, '//*[@data-test-id="dialog-page-add"]')
+    sw_add_page = (By.XPATH, '//*[@data-test-id="page-header"]/div/div/div[2]/button')
+    sw_pages_table = (By.XPATH, '//*[@data-test-id="container-page-list"]/div[3]/div/table/tbody/tr')
+    sw_add_page_title = (By.XPATH, '//input[@name="title"]')
+    sw_create_page = (By.XPATH, '//div[@data-test-id="dialog-page-add"]/footer/div/div[1]/button')

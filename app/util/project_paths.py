@@ -80,3 +80,5 @@ BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()
+
+SW_PAGES = __get_jira_dataset('sw_pages.csv')
