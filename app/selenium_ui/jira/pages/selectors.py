@@ -178,6 +178,6 @@ class SimpleWikiPageEditorLocator:
 class SimpleWikiPagesListLocator:
     sw_add_page_dialog = (By.XPATH, '//*[@data-test-id="dialog-page-add"]')
     sw_add_page = (By.XPATH, '//*[@data-test-id="page-header"]/div/div/div[2]/button')
-    sw_pages_table = (By.XPATH, '//*[@data-test-id="container-page-list"]/div[3]/div/table/tbody/tr')
+    sw_pages_table = (By.XPATH, '//*[@data-test-id="container-page-list"]/div[3]/div/table')
     sw_add_page_title = (By.XPATH, '//input[@name="title"]')
     sw_create_page = (By.XPATH, '//div[@data-test-id="dialog-page-add"]/footer/div/div[1]/button')

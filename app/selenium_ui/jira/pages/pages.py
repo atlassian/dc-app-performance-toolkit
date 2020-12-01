@@ -278,7 +278,7 @@ class SimpleWikiPagesList(BasePage):
         BasePage.__init__(self, driver=driver)
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.create_sw_pages_list()
-        self.page_loaded_selector = SimpleWikiPagesListLocator.sw_pages_table
+        self.page_loaded_selector = [SimpleWikiPagesListLocator.sw_pages_table, SimpleWikiPagesListLocator.sw_add_page]
 
     def add_page(self):
         self.get_element(SimpleWikiPagesListLocator.sw_add_page).click()
