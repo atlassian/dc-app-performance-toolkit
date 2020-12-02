@@ -281,6 +281,7 @@ class SimpleWikiPagesList(BasePage):
         self.page_loaded_selector = [SimpleWikiPagesListLocator.sw_pages_table, SimpleWikiPagesListLocator.sw_add_page]
 
     def add_page(self):
+        self.wait_until_invisible(SimpleWikiPagesListLocator.sw_load_mask)
         self.get_element(SimpleWikiPagesListLocator.sw_add_page).click()
         self.wait_until_any_element_visible(selector_name=SimpleWikiPagesListLocator.sw_add_page_dialog)
 

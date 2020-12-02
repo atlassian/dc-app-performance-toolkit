@@ -30,7 +30,7 @@ def setup_run_data(datasets):
     if SW_PAGES in datasets:
         if len(datasets[SW_PAGES]) > 0:
             sw_page = random.choice(datasets[SW_PAGES])
-            datasets['project_key'] = sw_page[2]
+            datasets['sw_project_key'] = sw_page[2]
             datasets['sw_page_key'] = sw_page[1]
 
     if CUSTOM_ISSUES in datasets:

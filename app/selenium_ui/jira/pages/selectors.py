@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+
 from util.conf import JIRA_SETTINGS
 
 
@@ -181,3 +182,4 @@ class SimpleWikiPagesListLocator:
     sw_pages_table = (By.XPATH, '//*[@data-test-id="container-page-list"]/div[3]/div/table')
     sw_add_page_title = (By.XPATH, '//input[@name="title"]')
     sw_create_page = (By.XPATH, '//div[@data-test-id="dialog-page-add"]/footer/div/div[1]/button')
+    sw_load_mask = (By.XPATH, '//div[@data-test-id="load-mask"]')

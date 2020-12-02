@@ -4,7 +4,7 @@ from selenium_ui.jira.pages.pages import SimpleWikiPage, SimpleWikiPageEditor, S
 
 
 def sw_page_load(webdriver, datasets):
-    page = SimpleWikiPage(webdriver, project_key=datasets['project_key'], page_key=datasets['sw_page_key'])
+    page = SimpleWikiPage(webdriver, project_key=datasets['sw_project_key'], page_key=datasets['sw_page_key'])
 
     @print_timing("selenium_sw_page_load")
     def measure():
@@ -15,7 +15,7 @@ def sw_page_load(webdriver, datasets):
 
 
 def sw_page_edit(webdriver, datasets):
-    sw_page_editor = SimpleWikiPageEditor(webdriver, project_key=datasets['project_key'],
+    sw_page_editor = SimpleWikiPageEditor(webdriver, project_key=datasets['sw_project_key'],
                                           page_key=datasets['sw_page_key'])
 
     @print_timing("selenium_sw_page_edit")
@@ -40,7 +40,7 @@ def sw_page_edit(webdriver, datasets):
 
 
 def sw_page_create(webdriver, datasets):
-    sw_pages_list = SimpleWikiPagesList(webdriver, project_key=datasets['project_key'])
+    sw_pages_list = SimpleWikiPagesList(webdriver, project_key=datasets['sw_project_key'])
 
     @print_timing('selenium_sw_page_create')
     def measure():
@@ -68,7 +68,7 @@ def sw_page_create(webdriver, datasets):
 
 
 def sw_add_comment(webdriver, datasets):
-    sw_page = SimpleWikiPage(webdriver, project_key=datasets['project_key'], page_key=datasets['sw_page_key'])
+    sw_page = SimpleWikiPage(webdriver, project_key=datasets['sw_project_key'], page_key=datasets['sw_page_key'])
 
     @print_timing('selenium_sw_add_comment')
     def measure():
