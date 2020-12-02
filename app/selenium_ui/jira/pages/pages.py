@@ -250,16 +250,16 @@ class SimpleWikiPageEditor(BasePage):
         self.page_loaded_selector = SimpleWikiPageEditorLocator.sw_page_editor
 
     def write_description(self):
-        text_description = f"Description: {self.generate_random_string(50)}"
+        text_description = f"{self.generate_random_string(60)}"
         text_field = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
         self.__clear_content()
         self.action_chains().click(text_field).send_keys(text_description).perform()
 
     def change_title(self):
-        new_title = f"Title: {self.generate_random_string(10)}"
+        new_title = f"{self.generate_random_string(12)}"
         title = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
-        self.action_chains().click(title).send_keys(Keys.CONTROL + "a").send_keys(Keys.BACKSPACE).send_keys(
-            new_title).perform()
+        self.__clear_title()
+        title.send_keys(new_title)
 
     def save_page(self):
         button = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
@@ -270,6 +270,9 @@ class SimpleWikiPageEditor(BasePage):
     def __clear_content(self):
         self.execute_js("tinymce=document.getElementsByClassName('ProseMirror')[0]; "
                         "while(tinymce.firstChild){tinymce.removeChild(tinymce.lastChild);}")
+
+    def __clear_title(self):
+        self.execute_js("$('input[name=\"title\"]').attr(\'value\', \'\')")
 
 
 class SimpleWikiPagesList(BasePage):
