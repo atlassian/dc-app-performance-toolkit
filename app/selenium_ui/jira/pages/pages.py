@@ -266,7 +266,7 @@ class SimpleWikiPageEditor(BasePage):
     def save_page(self):
         button = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
         self.action_chains().click(button).perform()
-        self.wait_until_invisible(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
+        self.wait_until_invisible(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
         self.wait_until_visible(SimpleWikiPageLocator.sw_page)
 
     def __clear_content(self):
