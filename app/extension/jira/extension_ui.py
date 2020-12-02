@@ -1,6 +1,6 @@
 from selenium_ui.conftest import print_timing
 
-from selenium_ui.jira.pages.pages import SimpleWikiPage, SimpleWikiPageEditor, SimpleWikiPagesList
+from selenium_ui.jira.pages.pages import SimpleWikiPage, SimpleWikiPageEditor, SimpleWikiPagesList, PopupManager
 
 
 def sw_page_load(webdriver, datasets):
@@ -12,6 +12,7 @@ def sw_page_load(webdriver, datasets):
         page.wait_for_page_loaded()
 
     measure()
+    PopupManager(webdriver).dismiss_default_popup()
 
 
 def sw_page_edit(webdriver, datasets):

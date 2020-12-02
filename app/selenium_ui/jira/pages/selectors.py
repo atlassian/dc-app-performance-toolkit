@@ -169,9 +169,8 @@ class SimpleWikiPageLocator:
 
 
 class SimpleWikiPageEditorLocator:
-    sw_page_editor = (By.XPATH, '//*[@id="content"]/div[1]/div/div[2]/div/div/form/div/div[2]')
     sw_page_editor_textfield_location = (By.CLASS_NAME, "ProseMirror")
-    sw_page_editor_title_location = (By.NAME, "title")
+    sw_page_editor_title_location = (By.XPATH, "//input[@name='title']")
     sw_page_editor_save_button = (
         By.XPATH, '//form/div/div[2]/div/div[2]/div/div[1]/button')
 

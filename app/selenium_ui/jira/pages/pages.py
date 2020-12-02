@@ -247,32 +247,31 @@ class SimpleWikiPageEditor(BasePage):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key, page_key=page_key)
         self.page_url = url_manager.create_sw_editor_page()
-        self.page_loaded_selector = SimpleWikiPageEditorLocator.sw_page_editor
+        self.page_loaded_selector = [SimpleWikiPageEditorLocator.sw_page_editor_textfield_location,
+                                     SimpleWikiPageEditorLocator.sw_page_editor_title_location]
 
     def write_description(self):
         text_description = f"{self.generate_random_string(60)}"
-        text_field = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
+        text_field = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
         self.__clear_content()
         self.action_chains().click(text_field).send_keys(text_description).perform()
 
     def change_title(self):
+        title = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
         new_title = f"{self.generate_random_string(12)}"
-        title = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
-        self.__clear_title()
+        title.send_keys(Keys.CONTROL + 'a')
+        title.send_keys(Keys.DELETE)
         title.send_keys(new_title)
 
     def save_page(self):
-        button = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
+        button = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
         self.action_chains().click(button).perform()
-        self.wait_until_invisible(selector_name=SimpleWikiPageEditorLocator.sw_page_editor_save_button)
-        self.wait_until_visible(selector_name=SimpleWikiPageLocator.sw_page)
+        self.wait_until_invisible(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
+        self.wait_until_visible(SimpleWikiPageLocator.sw_page)
 
     def __clear_content(self):
         self.execute_js("tinymce=document.getElementsByClassName('ProseMirror')[0]; "
                         "while(tinymce.firstChild){tinymce.removeChild(tinymce.lastChild);}")
-
-    def __clear_title(self):
-        self.execute_js("$('input[name=\"title\"]').attr(\'value\', \'\')")
 
 
 class SimpleWikiPagesList(BasePage):
