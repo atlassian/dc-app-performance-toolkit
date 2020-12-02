@@ -27,8 +27,12 @@ def sw_page_edit(webdriver, datasets):
 
         sub_measure()
 
-        sw_page_editor.change_title()
-        sw_page_editor.write_description()
+        @print_timing("selenium_sw_page_edit:editing_page")
+        def sub_measure():
+            sw_page_editor.change_title()
+            sw_page_editor.write_description()
+
+        sub_measure()
 
         @print_timing("selenium_sw_page_edit:save_page")
         def sub_measure():

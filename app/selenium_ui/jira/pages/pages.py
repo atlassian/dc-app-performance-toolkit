@@ -250,17 +250,16 @@ class SimpleWikiPageEditor(BasePage):
         self.page_loaded_selector = SimpleWikiPageEditorLocator.sw_page_editor
 
     def write_description(self):
-        text_description = f'Description: {self.generate_random_string(50)}'
+        text_description = f"Description: {self.generate_random_string(50)}"
         text_field = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
         self.__clear_content()
         self.action_chains().click(text_field).send_keys(text_description).perform()
 
     def change_title(self):
-        title = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
         new_title = f"Title: {self.generate_random_string(10)}"
-        title.send_keys(Keys.CONTROL + "a")
-        title.send_keys(Keys.DELETE)
-        title.send_keys(new_title)
+        title = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
+        self.action_chains().click(title).send_keys(Keys.CONTROL + "a").send_keys(Keys.BACKSPACE).send_keys(
+            new_title).perform()
 
     def save_page(self):
         button = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
