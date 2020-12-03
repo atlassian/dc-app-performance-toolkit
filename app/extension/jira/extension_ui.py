@@ -56,8 +56,6 @@ def sw_page_create(webdriver, datasets):
 
         sub_measure()
 
-        PopupManager(webdriver).dismiss_default_popup()
-
         @print_timing('selenium_sw_page_create:adding_page')
         def sub_measure():
             sw_pages_list.add_page()
@@ -72,6 +70,7 @@ def sw_page_create(webdriver, datasets):
         sub_measure()
 
     measure()
+    PopupManager(webdriver).dismiss_default_popup()
 
 
 def sw_add_comment(webdriver, datasets):
