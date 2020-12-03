@@ -28,8 +28,6 @@ def sw_page_edit(webdriver, datasets):
 
         sub_measure()
 
-        PopupManager(webdriver).dismiss_default_popup()
-
         @print_timing("selenium_sw_page_edit:editing_page")
         def sub_measure():
             sw_page_editor.change_title()
@@ -57,6 +55,8 @@ def sw_page_create(webdriver, datasets):
             sw_pages_list.wait_for_page_loaded()
 
         sub_measure()
+
+        PopupManager(webdriver).dismiss_default_popup()
 
         @print_timing('selenium_sw_page_create:adding_page')
         def sub_measure():
