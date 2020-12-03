@@ -52,7 +52,7 @@ if [[ ${jsm} == 1 ]]; then
   JIRA_CURRENT_DIR="/opt/atlassian/jira-servicedesk/current"
   JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_JIRA_VERSIONS=(4.13.0)
+  SUPPORTED_JIRA_VERSIONS=(4.5.9 4.13.0)
 fi
 
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")

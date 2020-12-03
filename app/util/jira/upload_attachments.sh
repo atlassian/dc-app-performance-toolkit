@@ -28,7 +28,7 @@ JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SUPPORTED_JIRA_VERSIONS=(7.13.15 8.0.3 8.5.9 8.13.0)
 if [[ ${jsm} == 1 ]]; then
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_JIRA_VERSIONS=(4.13.0)
+  SUPPORTED_JIRA_VERSIONS=(4.5.9 4.13.0)
 fi
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
