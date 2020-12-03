@@ -28,6 +28,8 @@ def sw_page_edit(webdriver, datasets):
 
         sub_measure()
 
+        PopupManager(webdriver).dismiss_default_popup()
+
         @print_timing("selenium_sw_page_edit:editing_page")
         def sub_measure():
             sw_page_editor.change_title()
