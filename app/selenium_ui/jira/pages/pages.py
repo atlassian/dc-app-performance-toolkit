@@ -281,7 +281,8 @@ class SimpleWikiPagesList(BasePage):
 
     def add_page(self):
         self.wait_until_invisible(SimpleWikiPagesListLocator.sw_load_mask)
-        self.get_element(SimpleWikiPagesListLocator.sw_add_page).click()
+        PopupManager(self.driver).dismiss_default_popup()
+        self.wait_until_clickable(SimpleWikiPagesListLocator.sw_add_page).click()
         self.wait_until_any_element_visible(selector_name=SimpleWikiPagesListLocator.sw_add_page_dialog)
 
     def write_title(self):
