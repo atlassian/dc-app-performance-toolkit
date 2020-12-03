@@ -44,15 +44,17 @@ JIRA_DB_NAME="jira"
 JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
-# Jira version variables
+# Jira/JSM supported versions
 SUPPORTED_JIRA_VERSIONS=(7.13.15 8.0.3 8.5.9 8.13.0)
+SUPPORTED_JSM_VERSIONS=(4.5.9 4.13.0)
 
+SUPPORTED_VERSIONS=${SUPPORTED_JIRA_VERSIONS[*]}
 # JSM section
 if [[ ${jsm} == 1 ]]; then
   JIRA_CURRENT_DIR="/opt/atlassian/jira-servicedesk/current"
   JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_JIRA_VERSIONS=(4.5.9 4.13.0)
+  SUPPORTED_VERSIONS=${SUPPORTED_JSM_VERSIONS[*]}
 fi
 
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
@@ -80,16 +82,16 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 ###################    End of variables section  ###################
 
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
+  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 8.0.3"
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${version} " ]]; then
+    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it
@@ -99,7 +101,7 @@ if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
         echo "Flag -${DOWNGRADE_OPT} was set in ${JIRA_SETENV_FILE}"
       fi
     else
-      LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
+      LAST_DATASET_VERSION=${SUPPORTED_VERSIONS[${#SUPPORTED_VERSIONS[@]}-1]}
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
       echo "Dataset URL: ${DB_DUMP_URL}"
