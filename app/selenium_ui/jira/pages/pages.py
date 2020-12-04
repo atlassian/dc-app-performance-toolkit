@@ -291,5 +291,5 @@ class SimpleWikiPagesList(BasePage):
         self.get_element(SimpleWikiPagesListLocator.sw_add_page_title).send_keys(title)
 
     def click_create(self):
-        self.wait_until_clickable(SimpleWikiPagesListLocator.sw_create_page).click()
+        self.get_element(SimpleWikiPagesListLocator.sw_create_page).click()
         self.wait_until_invisible(SimpleWikiPagesListLocator.sw_add_page_title)
