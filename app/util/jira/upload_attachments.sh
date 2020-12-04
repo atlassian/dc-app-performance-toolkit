@@ -25,10 +25,15 @@ fi
 ###################    Variables section         ###################
 # Jira version variables
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
+
+# Jira/JSM supported versions
 SUPPORTED_JIRA_VERSIONS=(7.13.15 8.0.3 8.5.9 8.13.0)
+SUPPORTED_JSM_VERSIONS=(4.5.9 4.13.0)
+
+SUPPORTED_VERSIONS=${SUPPORTED_JIRA_VERSIONS[*]}
 if [[ ${jsm} == 1 ]]; then
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_JIRA_VERSIONS=(4.13.0)
+  SUPPORTED_VERSIONS=${SUPPORTED_JSM_VERSIONS[*]}
 fi
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
@@ -63,20 +68,20 @@ if [[ ! `systemctl status jira` ]]; then
 fi
 
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
+  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./upload_attachments --force 8.0.3"
   echo "!!! Warning !!! This may broke your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${version} " ]]; then
+    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
-      LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
+      LAST_DATASET_VERSION=${SUPPORTED_VERSIONS[${#SUPPORTED_VERSIONS[@]}-1]}
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
       echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
