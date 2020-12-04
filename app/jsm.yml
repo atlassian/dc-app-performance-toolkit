@@ -11,8 +11,10 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+    load_executor: jmeter
+    concurrency: 200 # TODO Remove it, depends on environment_checker.py
+    concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
+    concurrency_customers: 150       # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
@@ -49,14 +51,19 @@ services:
       - python util/data_preparation/jsm_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
 #    post-process:
 #      - python util/analytics/analytics.py jsm
 #      - python util/post_run/cleanup_results_dir.py
 execution:
-  - scenario: ${load_executor}
+  - scenario: ${load_executor}_agents
     executor: ${load_executor}
-    concurrency: ${concurrency}
+    concurrency: ${concurrency_agents}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
+  - scenario: ${load_executor}_customers
+    executor: ${load_executor}
+    concurrency: ${concurrency_customers}
     hold-for: ${test_duration}
     ramp-up: ${ramp-up}
   - scenario: selenium_customers
@@ -74,8 +81,8 @@ scenarios:
     script: selenium_ui/jsm_ui_agents.py
   locust:
     script: locustio/jsm/locustfile.py
-  jmeter:
-    script: jmeter/jsm.jmx
+  jmeter_agents:
+    script: jmeter/jsm_agents.jmx
     properties:
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
@@ -96,6 +103,14 @@ scenarios:
       perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
       perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
       perc_agent_view_customers: ${agent_view_customers}
+  jmeter_customers:
+    script: jmeter/jsm_customers.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
       perc_customer_view_portal: ${customer_view_portal}
       perc_customer_view_requests: ${customer_view_requests}
       perc_customer_view_request: ${customer_view_request}
