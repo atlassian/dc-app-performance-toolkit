@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.5)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.5)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -33,7 +33,7 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Peformance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your CONFLUENCE, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./upload_attachments --force 6.13.8"
+  echo "e.g. ./upload_attachments --force 7.4.5"
   echo "!!! Warning !!! This may broke your Confluence instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then

@@ -20,7 +20,7 @@ CONFLUENCE_DB_PASS="Password1!"
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.5)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.5)
 
 if [[ ! $(systemctl status confluence) ]]; then
   echo "The Confluence service was not found on this host." \
@@ -49,7 +49,7 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; the
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
   echo "If you want to force apply an existing datasets to your Confluence, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./populate_db.sh --force 6.13.8"
+  echo "e.g. ./populate_db.sh --force 7.4.5"
   echo "!!! Warning !!! This may break your Confluence instance. Also, note that downgrade is not supported by Confluence."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
