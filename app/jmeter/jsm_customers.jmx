@@ -190,6 +190,51 @@ import org.apache.commons.io.FileUtils;
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="load profile" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="total_actions_per_hour" elementType="Argument">
+              <stringProp name="Argument.name">total_actions_per_hour</stringProp>
+              <stringProp name="Argument.value">${__P(total_actions_per_hour, 54500)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_view_portal" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_view_portal</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_view_portal, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_view_requests" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_view_requests</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_view_requests, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_view_request" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_view_request</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_view_request, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_add_comment" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_add_comment</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_add_comment, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_share_request_with_customer" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_share_request_with_customer</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_share_request_with_customer, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_share_request_with_org" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_share_request_with_org</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_share_request_with_org, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_create_request" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_create_request</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_create_request, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_login_and_view_portals" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>

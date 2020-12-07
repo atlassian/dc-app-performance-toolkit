@@ -144,6 +144,86 @@
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="load profile" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="total_actions_per_hour" elementType="Argument">
+              <stringProp name="Argument.name">total_actions_per_hour</stringProp>
+              <stringProp name="Argument.value">${__P(total_actions_per_hour, 54500)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_browse_projects" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_browse_projects</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_browse_projects, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_request" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_request</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_request, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_add_comment" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_add_comment</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_add_comment, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_queue_all_open_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_queue_all_open_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_queue_all_open_small, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_queue_all_open_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_queue_all_open_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_queue_all_open_medium, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_random_queue_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_random_queue_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_random_queue_small, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_random_queue_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_random_queue_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_random_queue_medium, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_workload_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_workload_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_workload_small, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_workload_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_workload_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_workload_medium, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_time_to_resolution_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_time_to_resolution_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_time_to_resolution_small, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_time_to_resolution_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_time_to_resolution_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_time_to_resolution_medium, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_created_vs_resolved_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_created_vs_resolved_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_created_vs_resolved_small, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_report_created_vs_resolved_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_report_created_vs_resolved_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_report_created_vs_resolved_medium, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_agent_view_customers" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_customers</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_customers, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_login_and_view_dashboard" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
