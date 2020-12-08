@@ -5,7 +5,7 @@ https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit
 ## Pre-requisites
 * Working Confluence Software of supported version (see the [toolkit README](../../README.md) for a list of supported Confluence versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the [toolkit README](../../README.md) file for more details.
+* Virtual environment with Python and bzt installed. See the [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
 in the official User Guide to set up Confluence DC with the corresponding dataset.

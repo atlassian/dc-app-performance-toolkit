@@ -1,18 +1,18 @@
-# User Guide for Jira
-https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/
+# User Guide for Jira Service Management
+https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira-service-management/
 
 # Running tests
 ## Pre-requisites
-* Working Jira Software of supported version ([toolkit README](../../README.md) for a list of supported Jira versions) with users, issues, projects, and boards, etc.
+* Working Jira Service Management of supported version ([toolkit README](../../README.md) for a list of supported JSM versions) with agents, customers, service desks, requests, organizations, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
 * Virtual environment with Python and bzt installed. See the root [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
-in the official User Guide to set up Jira DC with the corresponding dataset.
-For spiking, testing, or developing, your local Jira instance would work well.
+in the official User Guide to set up Jira Service Management DC with the corresponding dataset.
+For spiking, testing, or developing, your local Jira Service Management instance would work well.
 
-## Step 1: Update jira.yml
-* `application_hostname`: test jira hostname (without http).
+## Step 1: Update jsm.yml
+* `application_hostname`: test jsm hostname (without http).
 * `application_protocol`: http or https.
 * `application_port`: 80 (for http) or 443 (for https), 8080, 2990 or your instance-specific port.
 * `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
@@ -20,7 +20,8 @@ For spiking, testing, or developing, your local Jira instance would work well.
 * `admin_login`: jira admin user name (after restoring dataset from SQL dump, the admin user name is: admin).
 * `admin_password`: jira admin user password (after restoring dataset from SQL dump, the admin user password is: admin) .
 * `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
-* `concurrency`: `200` - number of concurrent users for JMeter scenario.
+* `concurrency_agents`: `50` - number of concurrent agents for JMeter agents scenario.
+* `concurrency_customers`: `150` - number of concurrent customers for JMeter customers scenario.
 * `test_duration`: `45m` - duration of test execution.
 * `ramp-up`: `3m` - amount of time it will take JMeter or Locust to add all test users to test execution.
 * `total_actions_per_hour`: `54500` - number of total JMeter/Locust actions per hour.
@@ -29,11 +30,11 @@ For spiking, testing, or developing, your local Jira instance would work well.
 ## Step 2: Run tests
 Run Taurus.
 ```
-bzt jira.yml
+bzt jsm.yml
 ```
 
 ## Results
-Results are located in the `resutls/jira/YY-MM-DD-hh-mm-ss` directory:
+Results are located in the `resutls/jsm/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
 * `error_artifacts` - folder with screenshots and HTMLs of Selenium fails
 * `jmeter.err` - JMeter errors log
