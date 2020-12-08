@@ -1,0 +1,106 @@
+Create AWS Jira DC stack and delete the PostgreSQL database
+(Note: On deleting the Stack, the PostgreSQL database will cause errors. So, delete its sub-task first)
+===============================
+Test instance storage at least 15GB
+
+#install oracle 19 Oracle Standard Edition Two lowest settings (Oracle 18.0.0.0.ru-2019-07.rur-2019-07.r1 IOP 1000, 500 GB scale to 1000)
+https://confluence.atlassian.com/adminjiraserver/supported-platforms-938846830.html
+#download orcle jdbc (login and download locally then copy the url and wget in the server)
+#stop jira
+sudo systemctl stop jira
+#Download sql plus and tools from https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads.html and copy all lib files to /usr/lib64
+# conntect using this command https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.Oracle.html
+# PROMPT>sqlplus 'mydbusr@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=endpoint)(PORT=1521))(CONNECT_DATA=(SID=ORCL)))'
+#Then do steps in https://confluence.atlassian.com/adminjiraserver/connecting-jira-applications-to-oracle-938846856.html
+
+CREATE TABLESPACE jiratablespace;
+create user jiradbuser identified by password default tablespace jiratablespace quota unlimited on jiratablespace;
+grant connect to jiradbuser;
+grant create table to jiradbuser;
+grant create sequence to  jiradbuser;
+grant create trigger to jiradbuser;
+
+================================================================
+#copy jdbc jar to lib dir
+sudo cp ojdbc8.jar /opt/atlassian/jira-software/8.5.8/lib
+#delete config file
+sudo systemctl stop jira
+sudo rm /var/atlassian/application-data/jira/dbconfig.xml
+sudo systemctl start jira
+#in the browser follow set up (manual)
+================================================================
+Restore database using XML method
+Restore attachments
+
+===============================
+
+MySQL database 5.6
+
+same to remove config file
+Download jar from https://confluence.atlassian.com/adminjiraserver085/supported-platforms-981154553.html
+sudo cp mysql-connector-java-5.1.49-bin.jar /opt/atlassian/jira-software/8.5.8/lib/
+stop and start jira
+
+Remember to add port 3306 to inbound roles of the DB security group
+Install mysql client https://gist.github.com/sshymko/63ee4e9bc685c59a6ff548f1573b9c74
+configure mysql
+https://confluence.atlassian.com/adminjiraserver085/connecting-jira-applications-to-mysql-981154580.html
+
+mysql -u admin -h database-2.c5r6ybxl3qhg.us-east-1.rds.amazonaws.com -pPassword1!
+
+
+CREATE USER 'jira_user'@'%' IDENTIFIED BY 'password';
+CREATE DATABASE jiradb CHARACTER SET utf8 COLLATE utf8_bin;
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX on jiradb.* TO 'jira_user'@'%';
+flush privileges;
+
+NOTE: parameter parts is done on aws via parameter group https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithParamGroups.html
+
+
+NOTE: Jira didn't like MySQL5.7+ and worked with MySQL5.6!
+
+
+
+To generate reports:
+sudo apt-get install python3-dev
+
+===============================
+SQL Server 2016 -> Needs large space (1000 GB very important to have this size)
+
+install sqlcmd (RED HAT option)
+https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15
+
+ sqlcmd -Sdatabase-sqlserver.c5r6ybxl3qhg.us-east-1.rds.amazonaws.com -Uadmin -PPassword1!
+
+
+use it to create DB and user
+https://confluence.atlassian.com/adminjiraserver085/connecting-jira-applications-to-sql-server-2016-981154591.html
+
+1> CREATE DATABASE jiradb COLLATE SQL_Latin1_General_CP437_CI_AI;
+2> go
+
+CREATE LOGIN jiradbuser WITH PASSWORD = 'password';
+GO
+
+Use jiradb;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'jiradbuser')
+BEGIN
+    CREATE USER [jiradbuser] FOR LOGIN [jiradbuser]
+    EXEC sp_addrolemember N'db_owner', N'jiradbuser'
+END;
+GO
+
+1> create schema jiraschema
+2> go
+
+1> ALTER DATABASE jiradb SET READ_COMMITTED_SNAPSHOT ON
+2> go
+
+===============================
+For reporting python3 need to install dev first 
+sudo apt-get install python3-dev
+
+Show Jira logs:
+tail -f /var/atlassian/application-data/jira/log/atlassian-jira.log
