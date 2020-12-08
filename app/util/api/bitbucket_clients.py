@@ -164,7 +164,7 @@ class BitbucketRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(f'{self.host}/dashboard', "Could not get page content.").content
+        page = self.get(f'{self.host}/dashboard', "Could not get page content.", headers=LOGIN_POST_HEADERS).content
         tree = html.fromstring(page)
         try:
             language = tree.xpath('//html/@lang')[0]
