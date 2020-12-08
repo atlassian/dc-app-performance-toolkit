@@ -878,7 +878,7 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
 1. Scale your Jira Data Center deployment to 3 nodes as described in [Run 4](#run4).
 1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
 1. Scale your Jira Data Center deployment to 4 nodes as described in [Run 4](#run4).
-1. Check Index is synchronized to new node #4 the same way as in [Run 4](#run4).
+1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
 1. Run toolkit with docker:
 
    ``` bash
