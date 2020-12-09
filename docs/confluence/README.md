@@ -51,9 +51,9 @@ next steps.
 ## Changing performance workload for JMeter and Locust
 The [confluence.yml](../../app/confluence.yml) has `action_name` field in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
-throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 20000 user transactions per hour at 200 concurrency.
-
-To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
+throughput defined in `total_actions_per_hour`.
+For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
+For app-specific actions development and testing it's ok to reduce workload and test duration.
 
 ## JMeter
 ### Debugging JMeter scripts

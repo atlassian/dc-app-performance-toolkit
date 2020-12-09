@@ -51,9 +51,9 @@ next steps.
 ## Changing performance workload for JMeter and Locust
 The [jira.yml](../../app/jira.yml) has a `action_name` fields in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
-throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 54500 user transactions per hour at 200 concurrency.
-
-To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
+throughput defined in `total_actions_per_hour`. 
+For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
+For app-specific actions development and testing it's ok to reduce workload and test duration.
 
 ## JMeter
 ### Debugging JMeter scripts
@@ -107,10 +107,10 @@ In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
 1. In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-1. Run all Selenium PyTest tests with the `pytest jira-ui.py` command.
+1. Run all Selenium PyTest tests with the `pytest jira_ui.py` command.
 1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
 
-`pytest jira-ui.py::test_0_selenium_a_login jira-ui.py::test_1_selenium_view_issue`.
+`pytest jira_ui.py::test_0_selenium_a_login jira_ui.py::test_1_selenium_view_issue`.
 
 
 ### Comparing different runs

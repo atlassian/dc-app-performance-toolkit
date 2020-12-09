@@ -45,21 +45,21 @@ Results are located in the `resutls/jsm/YY-MM-DD-hh-mm-ss` directory:
 * `results.csv` - consolidated results of execution
 * `resutls_summary.log` - detailed summary of the run. Make sure that overall run status is `OK` before moving to the 
 next steps.
-
+Note: There are separate agents and customers scenarios for JMeter/Locust/Selenium scripts. So there are two sets of above logs files. 
 
 # Useful information
 
 ## Changing performance workload for JMeter and Locust
-The [jira.yml](../../app/jira.yml) has a `action_name` fields in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
+The [jsm.yml](../../app/jsm.yml) has a `action_name` fields in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
-throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 54500 user transactions per hour at 200 concurrency.
-
-To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
+throughput defined in `total_actions_per_hr`. 
+For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
+For app-specific actions development and testing it's ok to reduce workload and test duration.
 
 ## JMeter
 ### Debugging JMeter scripts
 1. Open JMeter UI as described in [README.md](../../app/util/jmeter/README.md).
-1. On the `View Results Tree` controller, click the `Browse` button and open `error.jtl` from `app/results/jira/YY-MM-DD-hh-mm-ss` folder.
+1. On the `View Results Tree` controller, click the `Browse` button and open `error.jtl` from `app/results/jsm/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
@@ -68,18 +68,18 @@ From this view, you can click on any failed action and see the request and respo
 1. Follow steps described in [README.md](../../app/util/jmeter/README.md).
 
 #### Option 2: Run one JMeter action via bzt
-1. In [jira.yml](../../app/jira.yml), set percentage `desired_action` to 100 and all other percentages to 0.
-1. Run `bzt jira.yml`.
+1. In [jsm.yml](../../app/jsm.yml), set percentage `desired_action` to 100 and all other percentages to 0.
+1. Run `bzt jsm.yml`.
 
 ## Locust
 ### Debugging Locust scripts
-Detailed log of Locust executor is located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.log` file. Locust errors and stacktrace are located in the `results/jira/YY-MM-DD-hh-mm-ss/locust.err` file.
+Detailed log of Locust executor is located in the `results/jsm/YY-MM-DD-hh-mm-ss/locust.log` file. Locust errors and stacktrace are located in the `results/jsm/YY-MM-DD-hh-mm-ss/locust*.err` file.
 
-Additional debug information could be enabled by setting `verbose` flag to `true` in `jira.yml` configuration file. To add log message use `logger.locust_info('your INFO message')` string in the code.
+Additional debug information could be enabled by setting `verbose` flag to `true` in `jsm.yml` configuration file. To add log message use `logger.locust_info('your INFO message')` string in the code.
 ### Running Locust tests locally without the Performance Toolkit
 #### Start locust UI mode
 1. Activate virualenv for the Performance Toolkit.
-1. Navigate to `app` directory and execute command `locust --locustfile locustio/jira/locustfile.py`. 
+1. Navigate to `app` directory and execute command `locust --locustfile locustio/jsm/locustfile.py`. 
 1. Open your browser, navigate to `localhost:8089`.  
 1. Enter `Number of total users to simulate` (`1` is recommended value for debug purpose)  
 1. Enter `Hatch rate (users spawned/secods)` 
@@ -89,29 +89,29 @@ Additional debug information could be enabled by setting `verbose` flag to `true
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to `app` and execute command `locust --no-web --locustfile locustio/jira/locustfile.py --clients N --hatch-rate R`, where `N` is the number of total users to simulate and `R` is the hatch rate.  
 
-Full logs of local run you can find in the `results/jira/YY-MM-DD-hh-mm-ss_local/` directory.
+Full logs of local run you can find in the `results/jsm/YY-MM-DD-hh-mm-ss_local/` directory.
 
-To execute one locust action, navigate to `jira.yml` and set percentage value `100` to the action you would like to run separately, set percentage value `0` to all other actions.
+To execute one locust action, navigate to `jsm.yml` and set percentage value `100` to the action you would like to run separately, set percentage value `0` to all other actions.
 
 
 ## Selenium
 ### Debugging Selenium scripts
-Detailed log and stacktrace of Selenium PyTest fails are located in the `results/jira/YY-MM-DD-hh-mm-ss/pytest.out` file. 
+Detailed log and stacktrace of Selenium PyTest fails are located in the `results/jsm/YY-MM-DD-hh-mm-ss/pytest.out` file. 
 
-Also, screenshots and HTMLs of Selenium fails are stared in the `results/jira/YY-MM-DD-hh-mm-ss/error_artifacts` folder. 
+Also, screenshots and HTMLs of Selenium fails are stared in the `results/jsm/YY-MM-DD-hh-mm-ss/error_artifacts` folder. 
 
 ### Running Selenium tests with Browser GUI
-In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
+In [jsm.yml](../../app/jsm.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 
 
 ### Running Selenium tests locally without the Performance Toolkit
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
-1. In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-1. Run all Selenium PyTest tests with the `pytest jira-ui.py` command.
-1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
+1. In [jsm.yml](../../app/jsm.yml) file, set the `WEBDRIVER_VISIBLE: True`.
+1. Run all Selenium PyTest tests with the `pytest jsm_ui_agents.py` or `pytest jsm_ui_customers.py` command.
+1. To run one Selenium PyTest test (e.g., `test_1_selenium_agent_browse_service_desk_projects_list`), execute the first login test and the required one with this command:
 
-`pytest jira-ui.py::test_0_selenium_a_login jira-ui.py::test_1_selenium_view_issue`.
+`pytest jsm_ui_agents.py::test_0_selenium_agent_a_login jsm_ui_agents.py::test_1_selenium_agent_browse_service_desk_projects_list`.
 
 
 ### Comparing different runs

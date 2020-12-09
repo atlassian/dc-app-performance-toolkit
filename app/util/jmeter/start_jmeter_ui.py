@@ -39,6 +39,7 @@ class StartJMeter:
         self.jmeter_properties = dict()
         parser = argparse.ArgumentParser(description='Edit yml config')
         parser.add_argument('--app', type=str, help='e.g. --app jira/confluence/bitbucket/jsm')
+        parser.add_argument('--user', type=str, help='jsm specific flag e.g. --user agent/customer')
         self.args = parser.parse_args()
         if not self.args.app:
             raise SystemExit('Application type is not specified. e.g. --app jira/confluence/bitbucket/jsm')
@@ -52,6 +53,8 @@ class StartJMeter:
             self.yml = BITBUCKET_YML
             self.jmx = BITBUCKET_JMX
         elif self.args.app == JSM:
+            if not self.args.user:
+                pass
             self.yml = JSM_YML
             self.jmx = JSM_JMX
         else:
@@ -81,6 +84,8 @@ class StartJMeter:
         if hostname in DEFAULT_HOSTNAMES:
             raise SystemExit("ERROR: Check 'application_hostname' correctness in {}.yml file.\nCurrent value: {}.".
                              format(self.args.app, hostname))
+
+
         self.jmeter_properties = obj['scenarios']['jmeter']['properties']
         settings = list()
         for setting, value in self.jmeter_properties.items():
