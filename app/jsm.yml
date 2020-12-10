@@ -26,8 +26,8 @@ settings:
     agent_browse_projects: 3
     agent_view_request: 10
     agent_add_comment: 10
-    agent_view_queues_small: 5
-    agent_view_queues_medium: 5
+    agent_view_queues_small: 10
+    agent_view_queues_medium: 10
     agent_view_report_workload_small: 2
     agent_view_report_workload_medium: 2
     agent_view_report_time_to_resolution_small: 4
