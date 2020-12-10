@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+    application_hostname: confl-loadb-1lcplyxj2t4or-1524197257.us-west-2.elb.amazonaws.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 1990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -21,7 +21,7 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
-    view_page: 54
+    view_page: 51
     view_dashboard: 6
     view_blog: 8
     search_cql: 7
@@ -31,7 +31,7 @@ settings:
     view_attachment: 3
     upload_attachment: 5
     like_page: 3
-    standalone_extension: 0 # By default disabled
+    standalone_extension: 3 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
