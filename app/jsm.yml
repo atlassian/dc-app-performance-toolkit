@@ -26,8 +26,8 @@ settings:
     agent_browse_projects: 3
     agent_view_request: 10
     agent_add_comment: 10
-    agent_view_queue_all_open_and_rundom_small: 5
-    agent_view_queue_all_open_and_rundom_medium: 5
+    agent_view_queues_small: 5
+    agent_view_queues_medium: 5
     agent_view_report_workload_small: 2
     agent_view_report_workload_medium: 2
     agent_view_report_time_to_resolution_small: 4
@@ -90,8 +90,8 @@ scenarios:
       perc_agent_browse_projects: ${agent_browse_projects}
       perc_agent_view_request: ${agent_view_request}
       perc_agent_add_comment: ${agent_add_comment}
-      perc_agent_view_queue_all_open_and_rundom_small: ${agent_view_queue_all_open_and_rundom_small}
-      perc_agent_view_queue_all_open_and_rundom_medium: ${agent_view_queue_all_open_and_rundom_medium}
+      perc_agent_view_queues_small: ${agent_view_queues_small}
+      perc_agent_view_queues_medium: ${agent_view_queues_medium}
       perc_agent_view_report_workload_small: ${agent_view_report_workload_small}
       perc_agent_view_report_workload_medium: ${agent_view_report_workload_medium}
       perc_agent_view_report_time_to_resolution_small: ${agent_view_report_time_to_resolution_small}

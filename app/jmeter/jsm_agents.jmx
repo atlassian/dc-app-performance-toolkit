@@ -166,14 +166,14 @@
               <stringProp name="Argument.value">${__P(perc_agent_add_comment, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_agent_view_queue_all_open_and_rundom_small" elementType="Argument">
-              <stringProp name="Argument.name">perc_agent_view_queue_all_open_and_rundom_small</stringProp>
-              <stringProp name="Argument.value">${__P(perc_agent_view_queue_all_open_and_rundom_small, 0)}</stringProp>
+            <elementProp name="perc_agent_view_queues_small" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_queues_small</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_queues_small, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_agent_view_queue_all_open_and_rundom_medium" elementType="Argument">
-              <stringProp name="Argument.name">perc_agent_view_queue_all_open_and_rundom_medium</stringProp>
-              <stringProp name="Argument.value">${__P(perc_agent_view_queue_all_open_and_rundom_medium, 0)}</stringProp>
+            <elementProp name="perc_agent_view_queues_medium" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_view_queues_medium</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_view_queues_medium, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_agent_view_report_workload_small" elementType="Argument">
@@ -1013,7 +1013,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
-              <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queue_all_open_and_rundom_small}</stringProp>
+              <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_small}</stringProp>
             </ThroughputController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_small_view_queue_all_open" enabled="true">
@@ -5266,7 +5266,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
-              <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queue_all_open_and_rundom_medium}</stringProp>
+              <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_medium}</stringProp>
             </ThroughputController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_queue_all_open" enabled="true">
