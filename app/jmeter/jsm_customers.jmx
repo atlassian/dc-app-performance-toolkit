@@ -194,7 +194,7 @@ import org.apache.commons.io.FileUtils;
           <collectionProp name="Arguments.arguments">
             <elementProp name="total_actions_per_hour_customers" elementType="Argument">
               <stringProp name="Argument.name">total_actions_per_hour_customers</stringProp>
-              <stringProp name="Argument.value">${__P(total_actions_per_hour_customers, 54500)}</stringProp>
+              <stringProp name="Argument.value">${__P(total_actions_per_hour_customers, 40500)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_customer_view_portal" elementType="Argument">

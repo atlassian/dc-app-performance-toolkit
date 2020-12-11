@@ -148,7 +148,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="total_actions_per_hour_agents" elementType="Argument">
               <stringProp name="Argument.name">total_actions_per_hour_agents</stringProp>
-              <stringProp name="Argument.value">${__P(total_actions_per_hour_agents, 54500)}</stringProp>
+              <stringProp name="Argument.value">${__P(total_actions_per_hour_agents, 13500)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="perc_agent_browse_projects" elementType="Argument">
