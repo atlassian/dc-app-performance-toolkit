@@ -23,14 +23,16 @@ JSM_YML = APP_DIR / "jsm.yml"
 JIRA_JMX = APP_DIR / "jmeter" / "jira.jmx"
 CONFLUENCE_JMX = APP_DIR / "jmeter" / "confluence.jmx"
 BITBUCKET_JMX = APP_DIR / "jmeter" / "bitbucket.jmx"
-JSM_JMX = APP_DIR / "jmeter" / "jsm.jmx"
+JSM_JMX_AGENTS = APP_DIR / "jmeter" / "jsm_agents.jmx"
+JSM_JMX_CUSTOMERS = APP_DIR / "jmeter" / "jsm_customers.jmx"
 JMETER_HOME = Path().home() / '.bzt' / 'jmeter-taurus'
 WINDOWS = "Windows"
 DEFAULT_HOSTNAMES = ['test_jira_instance.atlassian.com',
                      'test_confluence_instance.atlassian.com',
                      'test_bitbucket_instance.atlassian.com',
                      'test_jsm_instance.atlassian.com']
-
+AGENTS = "agents"
+CUSTOMERS = "customers"
 
 class StartJMeter:
 
@@ -39,7 +41,7 @@ class StartJMeter:
         self.jmeter_properties = dict()
         parser = argparse.ArgumentParser(description='Edit yml config')
         parser.add_argument('--app', type=str, help='e.g. --app jira/confluence/bitbucket/jsm')
-        parser.add_argument('--user', type=str, help='jsm specific flag e.g. --user agent/customer')
+        parser.add_argument('--type', type=str, help='jsm specific flag e.g. --type agents/customers')
         self.args = parser.parse_args()
         if not self.args.app:
             raise SystemExit('Application type is not specified. e.g. --app jira/confluence/bitbucket/jsm')
@@ -53,10 +55,16 @@ class StartJMeter:
             self.yml = BITBUCKET_YML
             self.jmx = BITBUCKET_JMX
         elif self.args.app == JSM:
-            if not self.args.user:
-                pass
+            if not self.args.type:
+                raise SystemExit('JSM user type is not specified. e.g. --type agents/customers')
+
             self.yml = JSM_YML
-            self.jmx = JSM_JMX
+            if self.args.type == AGENTS:
+                self.jmx = JSM_JMX_AGENTS
+            elif self.args.type == CUSTOMERS:
+                self.jmx = JSM_JMX_CUSTOMERS
+            else:
+                raise SystemExit(f'JSM unsupported type: {self.args.type}. Valid types: {AGENTS}, {CUSTOMERS}')
         else:
             raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {}".
                              format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM))
@@ -84,9 +92,10 @@ class StartJMeter:
         if hostname in DEFAULT_HOSTNAMES:
             raise SystemExit("ERROR: Check 'application_hostname' correctness in {}.yml file.\nCurrent value: {}.".
                              format(self.args.app, hostname))
-
-
-        self.jmeter_properties = obj['scenarios']['jmeter']['properties']
+        if self.args.app == JSM:
+            self.jmeter_properties = obj['scenarios'][f'jmeter_{self.args.type}']['properties']
+        else:
+            self.jmeter_properties = obj['scenarios']['jmeter']['properties']
         settings = list()
         for setting, value in self.jmeter_properties.items():
             # if value referenced as variable
