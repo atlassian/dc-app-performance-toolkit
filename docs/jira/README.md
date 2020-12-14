@@ -53,7 +53,7 @@ The [jira.yml](../../app/jira.yml) has a `action_name` fields in `env` section w
 The percentages must add up to 100, if you want to ensure the performance script maintains 
 throughput defined in `total_actions_per_hour`. 
 For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
-For app-specific actions development and testing it's ok to reduce workload and test duration.
+For app-specific actions development and testing it's ok to reduce concurrency, test_duration, total_actions_per_hour and ramp-up.
 
 ## JMeter
 ### Debugging JMeter scripts
