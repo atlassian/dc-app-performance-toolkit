@@ -172,7 +172,7 @@ After creating the development environment Jira Data Center, generate test datas
     ```
 
 1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% Success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+In case some actions does not have 100% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -182,7 +182,7 @@ In case some actions does not have 100% Success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% Success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 100% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
@@ -743,7 +743,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
@@ -776,7 +776,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -785,7 +785,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -824,7 +824,7 @@ To receive scalability benchmark results for one-node Jira DC **with** app-speci
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -867,7 +867,7 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -887,7 +887,7 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -901,7 +901,7 @@ To generate a scalability report:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
+1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml
