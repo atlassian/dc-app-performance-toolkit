@@ -17,31 +17,33 @@ settings:
     concurrency_customers: 150       # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
+    total_actions_per_hour_agents: 13500
+    total_actions_per_hour_customers: 40500
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
-    agent_browse_projects: 3
-    agent_view_request: 10
-    agent_add_comment: 10
-    agent_view_queues_small: 10
-    agent_view_queues_medium: 10
-    agent_view_report_workload_small: 2
-    agent_view_report_workload_medium: 2
-    agent_view_report_time_to_resolution_small: 4
-    agent_view_report_time_to_resolution_medium: 4
-    agent_view_report_created_vs_resolved_small: 4
-    agent_view_report_created_vs_resolved_medium: 4
-    agent_view_customers: 1
-    customer_view_portal: 4
-    customer_view_requests: 10
-    customer_view_request: 5
-    customer_add_comment: 10
-    customer_share_request_with_customer: 1
-    customer_share_request_with_org: 1
-    customer_create_request: 5
+    agent_browse_projects: 5
+    agent_view_request: 15
+    agent_add_comment: 15
+    agent_view_queues_small: 15
+    agent_view_queues_medium: 15
+    agent_view_report_workload_small: 4
+    agent_view_report_workload_medium: 4
+    agent_view_report_time_to_resolution_small: 6
+    agent_view_report_time_to_resolution_medium: 6
+    agent_view_report_created_vs_resolved_small: 6
+    agent_view_report_created_vs_resolved_medium: 6
+    agent_view_customers: 3
+
+    customer_view_portal: 10
+    customer_view_requests: 28
+    customer_view_request: 14
+    customer_add_comment: 28
+    customer_share_request_with_customer: 3
+    customer_share_request_with_org: 3
+    customer_create_request: 14
 services:
   - module: shellexec
     prepare:
@@ -87,6 +89,7 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       # Workload model
+      total_actions_per_hour_agents: ${total_actions_per_hour_agents}
       perc_agent_browse_projects: ${agent_browse_projects}
       perc_agent_view_request: ${agent_view_request}
       perc_agent_add_comment: ${agent_add_comment}
@@ -107,6 +110,7 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       # Workload model
+      total_actions_per_hour_customers: ${total_actions_per_hour_customers}
       perc_customer_view_portal: ${customer_view_portal}
       perc_customer_view_requests: ${customer_view_requests}
       perc_customer_view_request: ${customer_view_request}
