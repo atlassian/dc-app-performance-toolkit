@@ -15,7 +15,9 @@ Similarly, set any desired action percentage to 100 and others to 0, if you want
     # or
     python util/jmeter/start_jmeter_ui.py --app bitbucket
     # or
-    python util/jmeter/start_jmeter_ui.py --app jsm
+    python util/jmeter/start_jmeter_ui.py --app jsm --type agents
+    # or
+    python util/jmeter/start_jmeter_ui.py --app jsm --type customers
     ```
 1. Right-click on `View Results Tree` controller and select `Enable` option.
 1. Click `Start` button.
