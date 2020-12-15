@@ -3,7 +3,7 @@ import random
 import json
 from locustio.common_utils import init_logger, jsm_agent_measure, TEXT_HEADERS, RESOURCE_HEADERS, timestamp_int, \
     fetch_by_re, generate_random_string
-from locustio.jsm.agents.agents_requests_params import jsm_agent_datasets, Login, AllOpenQueue, BrowseProjects, ViewRequest, AddComment, \
+from locustio.jsm.agents.agents_requests_params import Login, AllOpenQueue, BrowseProjects, ViewRequest, AddComment, \
     ViewWorkloadReport, ViewTimeToResolutionReport, ViewReportCreatedVsResolved, ViewCustomers
 
 logger = init_logger(app_type='jsm')
@@ -188,9 +188,10 @@ def agent_add_comment(locust):
 
         TEXT_HEADERS['X-SITEMESH-OFF'] = 'true'
         locust.post('/secure/AjaxIssueAction!default.jspa', params={"decorator": None,
-                                                                        "issueKey": locust.session_data_storage["request_id"],
-                                                                        "prefetch": False,
-                                                                        "shouldUpdateCurrentProject": True},
+                                                                    "issueKey":
+                                                                    locust.session_data_storage["request_id"],
+                                                                    "prefetch": False,
+                                                                    "shouldUpdateCurrentProject": True},
                         headers=TEXT_HEADERS, catch_response=True)
 
         locust.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&'

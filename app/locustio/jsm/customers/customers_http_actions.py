@@ -6,7 +6,6 @@ from locustio.common_utils import init_logger, jsm_customer_measure, TEXT_HEADER
 from locustio.jsm.customers.customers_requests_params import Login, ViewPortal, ViewRequests, ViewRequest, \
     AddComment, ShareRequest, ShareRequestOrg, CreateRequest, jsm_customer_datasets
 
-
 logger = init_logger(app_type='jsm')
 jsm_customer_dataset = jsm_customer_datasets()
 
@@ -22,7 +21,7 @@ def customer_login_and_view_portals(locust):
     user = random.choice(jsm_customer_dataset["customers"])
 
     customer_requests = user[2:]
-    customer_requests_chunks = [customer_requests[x:x+3] for x in range(0, len(customer_requests), 3)]
+    customer_requests_chunks = [customer_requests[x:x + 3] for x in range(0, len(customer_requests), 3)]
     customer_request = random.choice(customer_requests_chunks)
 
     locust.session_data_storage['request_portal_id'] = customer_request[0]
@@ -81,7 +80,7 @@ def view_requests(locust):
                                    {"reporter": "", "status": "open", "portalId": "", "requestTypeId": "", "filter": "",
                                     "selectedPage": 1},
                                 "portalWebFragments": {"portalPage": "MY_REQUESTS"}}}
-        locust.post(f'/rest/servicedesk/1/customer/models', json=customer_models, headers=RESOURCE_HEADERS,
+        locust.post('/rest/servicedesk/1/customer/models', json=customer_models, headers=RESOURCE_HEADERS,
                     catch_response=True)
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("260"),
                     headers=RESOURCE_HEADERS, catch_response=True)
@@ -109,7 +108,7 @@ def view_requests(locust):
                            "options": {"allReqFilter": {"reporter": "all", "status": "open", "portalId": "",
                                                         "requestTypeId": "", "filter": f"{portal_request_filter}",
                                                         "selectedPage": 1}, "portalWebFragments":
-                                           {"portalPage": "MY_REQUESTS"}}}
+                                                                            {"portalPage": "MY_REQUESTS"}}}
         locust.post(f'/rest/servicedesk/1/customer/models', json=customer_models, headers=RESOURCE_HEADERS,
                     catch_response=True)
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("325"),
@@ -151,7 +150,7 @@ def customer_add_comment(locust):
 
 
 def share_customer_request(locust):
-    params= ShareRequest()
+    params = ShareRequest()
     request_key = locust.session_data_storage['request_key']
 
     @jsm_customer_measure
@@ -181,7 +180,7 @@ def share_customer_request(locust):
     def customer_remove_customer(locust):
         if locust.session_data_storage['customer_id_share_with']:
             locust.post(f'/rest/servicedesk/1/servicedesk/customer/participant/removeParticipant/{request_key}',
-                        json={"userKey":f"{locust.session_data_storage['customer_key_share_with']}"},
+                        json={"userKey": f"{locust.session_data_storage['customer_key_share_with']}"},
                         headers=RESOURCE_HEADERS, catch_response=True)
         customer_models = params.resources_body.get('460')
         customer_models['options']['portalId'] = locust.session_data_storage['request_portal_id']
@@ -209,13 +208,13 @@ def share_request_with_org(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("510"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-
     @jsm_customer_measure
     def customer_add_org(locust):
         if 'org_id_share_with' in locust.session_data_storage:
             locust.client.put(f'/rest/servicedesk/1/customer/participants/{request_key}/share',
                               json={"usernames": [], "organisationIds":
-                                  [f"{locust.session_data_storage['org_id_share_with']}"], "emails": []},
+                                                     [f"{locust.session_data_storage['org_id_share_with']}"],
+                                    "emails": []},
                               catch_response=True)
 
     @jsm_customer_measure
@@ -228,8 +227,8 @@ def share_request_with_org(locust):
                                      "reqDetails", "portalWebFragments"], "options":
                               {"portalId": f"{locust.session_data_storage['request_portal_id']}",
                                "portal": {"id": f"{locust.session_data_storage['request_portal_id']}"},
-                               "reqDetails": {"key": f"{request_key}"}, "portalWebFragments": {"portalPage":
-                                                                                               "VIEW_REQUEST"}}}
+                               "reqDetails": {"key": f"{request_key}"}, "portalWebFragments":
+                                                                        {"portalPage": "VIEW_REQUEST"}}}
         locust.post('/rest/servicedesk/1/customer/models', json=customer_model,
                     headers=RESOURCE_HEADERS, catch_response=True)
 
@@ -247,12 +246,11 @@ def create_request(locust):
     @jsm_customer_measure
     def customer_open_create_request_view(locust):
         customer_model = {"models":
-                              ["user", "organisations", "sharedPortal", "portal", "helpCenterBranding", "reqCreate",
-                               "portalWebFragments"], "options": {"portalId": f"{rt_service_desk_id}",
-                                                                  "portal": {"id": f"{rt_service_desk_id}"},
-                                                                  "reqCreate": {"id": f"{rt_id}"},
-                                                                  "portalWebFragments": {"portalPage":
-                                                                                         "CREATE_REQUEST"}}}
+                          ["user", "organisations", "sharedPortal", "portal", "helpCenterBranding", "reqCreate",
+                           "portalWebFragments"], "options": {"portalId": f"{rt_service_desk_id}",
+                                                              "portal": {"id": f"{rt_service_desk_id}"},
+                                                              "reqCreate": {"id": f"{rt_id}"},
+                                                              "portalWebFragments": {"portalPage": "CREATE_REQUEST"}}}
         locust.post('/rest/servicedesk/1/customer/models', json=customer_model,
                     headers={"Accept": "*/*", "Content-Type": "application/json"}, catch_response=True)
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("602"),
@@ -275,12 +273,10 @@ def create_request(locust):
                     f'create-request',
                     headers={"Accept": "*/*"}, catch_response=True)
 
-
     @jsm_customer_measure
     def customer_view_request_after_creation(locust):
-        customer_models = {"models":
-                               ["user", "organisations", "sharedPortal", "helpCenterBranding", "portal", "reqDetails",
-                                "portalWebFragments"],
+        customer_models = {"models": ["user", "organisations", "sharedPortal", "helpCenterBranding", "portal",
+                                      "reqDetails", "portalWebFragments"],
                            "options": {"portalId": f"{rt_service_desk_id}",
                                        "portal": {"id": f"{rt_service_desk_id}"},
                                        "reqDetails": {"key": f"{locust.session_data_storage['create_issue_key']}"},

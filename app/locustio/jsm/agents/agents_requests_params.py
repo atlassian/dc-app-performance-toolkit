@@ -1,4 +1,4 @@
-from locustio.common_utils import generate_random_string, read_input_file
+from locustio.common_utils import read_input_file
 import json
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_REQUESTS, JSM_DATASET_SERVICE_DESKS_L, \
     JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S
@@ -79,5 +79,3 @@ class ViewReportCreatedVsResolved(BaseResource):
 class ViewCustomers(BaseResource):
     action_name = 'view_customers'
     last_visited_body = {"id":"com.atlassian.servicedesk.project-ui:sd-project-sidebar-customers"}
-
-

@@ -40,7 +40,7 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
 
 performance_agents_count = JSM_SETTINGS.agents_concurrency
 performance_customers_count = JSM_SETTINGS.customers_concurrency
-num_cores = 8 #multiprocessing.cpu_count()
+num_cores = multiprocessing.cpu_count()
 
 
 def print_timing(message):
@@ -63,7 +63,7 @@ def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}
     max_percentage_key = max(PROJECTS_ISSUES_PERC, key=int)
     if projects_count > max_percentage_key:
-        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
+        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values())) /
                                            (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
@@ -400,9 +400,9 @@ def __create_data_set(jira_client, jsm_client):
     dataset[AGENTS] = agents_pool.get()
     dataset[CUSTOMERS] = customers_pool.get()
     dataset[REQUESTS] = requests_pool.get()
-    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM],dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
+    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
     requests_types = pool.apply_async(__get_request_types, kwds={'jsm_api': jsm_client,
-                                                                  'service_desks': service_desks})
+                                                                 'service_desks': service_desks})
     dataset[REQUEST_TYPES] = requests_types.get()
 
     return dataset
