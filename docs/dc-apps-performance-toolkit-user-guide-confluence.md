@@ -167,7 +167,7 @@ After creating the development environment Confluence Data Center, generate test
     ```
 
 1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% Success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
+In case some actions does not have 100% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -177,7 +177,7 @@ In case some actions does not have 100% Success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% Success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 100% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
@@ -602,6 +602,11 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
+{{% note %}}
+For Confluence 7, `populate_db.sh` script triggers index process automatically. So no need to start index manually once again, just wait until current index process is finished.
+{{% /note %}}
+
+For Confluence 6:
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
 1. Click **Rebuild** and wait until re-indexing is completed.
@@ -713,7 +718,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2 (~50 min)
@@ -730,7 +735,7 @@ To receive performance results with an app installed:
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -739,7 +744,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -778,7 +783,7 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -820,7 +825,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -829,9 +834,9 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive scalability benchmark results for four-node Confluence DC with app-specific actions:
 
 1. Scale your Confluence Data Center deployment to 3 nodes as described in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
-1. Scale your Confluence Data Center deployment to 4 nodes as described  in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
+1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
+1. Scale your Confluence Data Center deployment to 4 nodes as described in [Run 4](#run4).
+1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
 1. Run toolkit with docker:
 
    ``` bash
@@ -840,7 +845,7 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For enterprise-scale environment run results acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -854,7 +859,7 @@ To generate a scalability report:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
+1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml

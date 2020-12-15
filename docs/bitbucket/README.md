@@ -5,7 +5,7 @@ https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit
 ## Pre-requisites
 * Working Bitbucket Server of supported version ([toolkit README](../../README.md) for a list of supported Bitbucket versions) with repos,  etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the root [toolkit README](../../README.md) file for more details.
+* Virtual environment with Python and bzt installed. See the root [toolkit README](../../README.md) file for more details.
 * [Git client](https://git-scm.com/downloads)  
 
 If you need performance testing results at a production level, follow instructions described 
