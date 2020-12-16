@@ -1032,7 +1032,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_small}</stringProp>
             </ThroughputController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small:all_open_queue" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small__all_open_queue" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -2126,7 +2126,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small:random_queue" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small__random_queue" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -5117,7 +5117,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_medium}</stringProp>
               </ThroughputController>
               <hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium:all_open_queue" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium__all_open_queue" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -6211,7 +6211,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium:random_queue" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium__random_queue" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -9721,7 +9721,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <stringProp name="ThroughputController.percentThroughput">${perc_agent_add_comment}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment:open_request_comment" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment__open_request_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9909,7 +9909,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment:save_request_comment" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment__save_request_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
