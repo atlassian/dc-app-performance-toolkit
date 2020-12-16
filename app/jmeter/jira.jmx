@@ -10544,8 +10544,8 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API Request" enabled="true">
                 <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
                   <collectionProp name="HTTPFileArgs.files">
-                    <elementProp name="datasets/xray/junit_report.xml" elementType="HTTPFileArg">
-                      <stringProp name="File.path">datasets/xray/junit_report.xml</stringProp>
+                    <elementProp name="xray/junit_report.xml" elementType="HTTPFileArg">
+                      <stringProp name="File.path">xray/junit_report.xml</stringProp>
                       <stringProp name="File.paramname">file</stringProp>
                       <stringProp name="File.mimetype">text/xml</stringProp>
                     </elementProp>
@@ -10578,8 +10578,8 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API Request" enabled="true">
                 <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
                   <collectionProp name="HTTPFileArgs.files">
-                    <elementProp name="datasets/xray/cucumber_scenarios.feature" elementType="HTTPFileArg">
-                      <stringProp name="File.path">datasets/xray/cucumber_scenarios.feature</stringProp>
+                    <elementProp name="xray/cucumber_scenarios.feature" elementType="HTTPFileArg">
+                      <stringProp name="File.path">xray/cucumber_scenarios.feature</stringProp>
                       <stringProp name="File.paramname">file</stringProp>
                       <stringProp name="File.mimetype">text/xml</stringProp>
                     </elementProp>
