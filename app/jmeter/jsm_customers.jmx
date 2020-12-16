@@ -1134,7 +1134,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;fileIds&quot;:[],&quot;comment&quot;:&quot;${p_comment}&quot;,&quot;issueId&quot;:&quot;${request_id}}&quot;</stringProp>
+                      <stringProp name="Argument.value">{&quot;fileIds&quot;:[],&quot;comment&quot;:&quot;${p_comment}&quot;,&quot;issueId&quot;:&quot;${request_id}&quot;}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -1246,7 +1246,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                     <elementProp name="q" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">q</stringProp>
-                      <stringProp name="Argument.value">${performance_c}</stringProp>
+                      <stringProp name="Argument.value">performance_c</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
