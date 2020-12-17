@@ -16,17 +16,17 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, jira-perf1.xpand-it.com)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, localhost)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
             <stringProp name="Argument.name">application.port</stringProp>
-            <stringProp name="Argument.value">${__P(application_port, 443)}</stringProp>
+            <stringProp name="Argument.value">${__P(application_port, 8080)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.protocol" elementType="Argument">
             <stringProp name="Argument.name">application.protocol</stringProp>
-            <stringProp name="Argument.value">${__P(application_protocol, https)}</stringProp>
+            <stringProp name="Argument.value">${__P(application_protocol, http)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.postfix" elementType="Argument">
@@ -9395,7 +9395,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-1</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1147</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9431,7 +9431,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-2</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1148</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9467,7 +9467,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-3</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1165</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9503,7 +9503,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-4</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1161</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9539,7 +9539,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-5</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1164</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9575,7 +9575,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY-6</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/browse/XRAY0-1142</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9598,7 +9598,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_historical_requirement_report" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_historical_requirement_report" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9611,7 +9611,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-historical-requirement-coverage-chart</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedReportKey=xray-report-historical-requirement-coverage-chart&amp;selectedProjectKey=XRAY0&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;fromDate=2020-12-08&amp;toDate=2020-12-17&amp;flattenRequirements=false</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9639,7 +9639,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="browse" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Internal API request" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -9647,8 +9647,8 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-overall-requirement-coverage-chart</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/overall?projectId=10001&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=false&amp;withDetails=true</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -9657,25 +9657,14 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
               </HTTPSamplerProxy>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response 200" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="49586">200</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
+              <hashTree/>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_testexecution_report" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="browse" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="internal API request" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -9683,7 +9672,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-testexecution</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testexecutionreport/testexecutions/?start=0&amp;pageSize=20&amp;projectId=10001&amp;filterscope=filter</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9706,7 +9695,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_testplan_report" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_testplan_report" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9719,7 +9708,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-testplan</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedReportKey=xray-report-testplan&amp;selectedProjectKey=XRAY0</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9755,7 +9744,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-testruns</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testrunsreport/testruns/?start=0&amp;pageSize=20&amp;projectId=10001&amp;showCustomFields=false&amp;filterScope=filter</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9783,7 +9772,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="browse" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="internal API request" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -9791,8 +9780,8 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayReport!default.jspa?selectedProjectId=11503&amp;reportKey=xray-report-traceability-matrix</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10001&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=false</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -9827,7 +9816,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayTestRepositoryAction!default.jspa?projectKey=ST</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayTestRepositoryAction!default.jspa?entityKey=XRAY0</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9863,7 +9852,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayTestPlanRepositoryAction!default.jspa?projectKey=ST</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/XrayTestPlanRepositoryAction!default.jspa?entityKey=XRAY0-1161</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9899,7 +9888,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test?filter=12000</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test?filter=10001</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9924,7 +9913,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/testruns</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/testruns</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9949,7 +9938,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/preconditions</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/preconditions</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9974,7 +9963,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/testsets</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/testsets</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9999,7 +9988,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/testexecutions</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/testexecutions</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10024,7 +10013,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/testplans</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/testplans</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10049,7 +10038,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/step</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/step</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10074,7 +10063,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/step/32</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/step/2</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10099,7 +10088,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY-1/step/32/attachment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/step/4879/attachment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10124,7 +10113,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/precondition/XRAY-10/test</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/precondition/XRAY0-1152/test</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10149,7 +10138,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testset/XRAY-48/test</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testset/XRAY0-1165/test</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10174,7 +10163,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testplan/XRAY-5/test</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testplan/XRAY0-1161/test</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10199,7 +10188,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testplan/XRAY-5/testexecution</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testplan/XRAY0-1161/testexecution</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10224,7 +10213,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testexec/XRAY-8/test</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testexec/XRAY0-1166/test</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10249,7 +10238,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10274,7 +10263,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/status</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/status</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10299,7 +10288,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/defect</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/defect</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10324,7 +10313,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/attachment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/attachment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10349,7 +10338,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/comment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/comment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10374,7 +10363,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/step</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/step</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10399,7 +10388,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/step/35/</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1501/step/2/</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10424,7 +10413,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/step/35/status</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1323/step/2/status</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10449,7 +10438,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/7468/step/35/attachment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrun/1323/step/2/attachment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10474,7 +10463,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY/folders</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY0/folders</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10499,7 +10488,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY/folders/12/tests</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY0/folders/1/tests</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10524,7 +10513,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY/folders/12</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/testrepository/XRAY0/folders/1</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10558,7 +10547,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/import/execution/junit?projectKey=XRAY</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/import/execution/junit?projectKey=XRAY0</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10592,7 +10581,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/import/feature?projectKey=CALC</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/import/feature?projectKey=XRAY0</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
