@@ -9284,12 +9284,73 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_standalone_extension}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_app_specific_action" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_atf_get_filters" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get /rest/agileboardfilter/1.0/userfilter/list/1/100" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/agileboardfilter/1.0/userfilter/list/1/100</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments"> </stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">filter_length</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.length()</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_atf_get_board_properties" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /rest/agileboardfilter/1.0/board/1/properties" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/agileboardfilter/1.0/board/1/properties</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON abfcsspatch extractor" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">abfcsspatch</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.abfCssPatch</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="false">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -9337,7 +9398,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoing" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoing" enabled="false">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="id" elementType="HTTPArgument">
