@@ -1,30 +1,30 @@
 ---
-title: "Data Center App Performance Toolkit User Guide For Jira"
+title: "Data Center App Performance Toolkit User Guide For Jira Service Management"
 platform: platform
 product: marketplace
 category: devguide
 subcategory: build
 date: "2021-01-12"
 ---
-# Data Center App Performance Toolkit User Guide For Jira
+# Data Center App Performance Toolkit User Guide For Jira Service Management
 
-This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
-**[Development environment](#mainenvironmentdev)**: Jira Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
+**[Development environment](#mainenvironmentdev)**: Jira Service Management Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
 
-1. [Set up a development environment Jira Data Center on AWS](#devinstancesetup).
+1. [Set up a development environment Jira Service Management Data Center on AWS](#devinstancesetup).
 2. [Create a dataset for the development environment](#devdataset).
 3. [Run toolkit on the development environment locally](#devtestscenario).
 4. [Develop and test app-specific actions locally](#devappaction).
 
 **[Enterprise-scale environment](#mainenvironmententerprise)**: Jira Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Jira Data Center.
 
-5. [Set up an enterprise-scale environment Jira Data Center on AWS](#instancesetup).
-6. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
+5. [Set up an enterprise-scale environment Jira Service Management Data Center on AWS](#instancesetup).
+6. [Load an enterprise-scale dataset on your Jira Service Management Data Center deployment](#preloading).
 7. [Set up an execution environment for the toolkit](#executionhost).
-8. [Running the test scenarios from execution environment against enterprise-scale Jira Data Center](#testscenario).
+8. [Running the test scenarios from execution environment against enterprise-scale Jira Service Management Data Center](#testscenario).
 
 ---
 
@@ -32,16 +32,16 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing. Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
 
-### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
+### <a id="devinstancesetup"></a>1. Setting up Jira Service Management Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/). All the instructions on this page are optimized for AWS. If you already have an existing Jira Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
+We recommend that you set up a this development using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/). All the instructions on this page are optimized for AWS. 
 
 
-#### Using the AWS Quick Start for Jira
+#### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira into your existing ASI.
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira Service Management into your existing ASI.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -51,7 +51,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Jira Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Jira Service Management Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -61,8 +61,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
+| Jira Product | ServiceDesk |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.0`, `4.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -106,7 +106,7 @@ All important parameters are listed and described in this section. For all other
 
 #### Running the setup wizard
 
-After successfully deploying the Jira Data Center on AWS, configure it as follows:
+After successfully deploying the Jira Service Management Data Center on AWS, configure it as follows:
 
 1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
 1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
@@ -119,7 +119,7 @@ After successfully deploying the Jira Data Center on AWS, configure it as follow
     Then select **Next**.
 1. On the next page, fill in the **Your License Key** field in one of the following ways:
     - Using your existing license
-    - Generating a Jira trial license
+    - Generating a Jira Service Management trial license
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your DCHELP ticket.
 
     Then select **Next**.
@@ -137,11 +137,146 @@ After successfully deploying the Jira Data Center on AWS, configure it as follow
 
 ---
 
-### <a id="devdataset"></a>2. Generate dataset for development environment  
+### <a id="devdataset"></a>2. Upload "small" dataset for development environment  
 
-After creating the development environment Jira Data Center, generate test dataset to run Data Center App Performance Toolkit:
-- 1 Scrum software development project with 1-5 issues
-- 1 Kanban software development project with 1-5 issues
+You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script), or import it via XML.  
+
+##### Option 1 (recommended): Loading the "small" dataset via populate_db.sh script
+
+
+To populate the database with SQL:
+
+1. In the AWS console, go to **Services** > **EC2** > **Instances**.
+1. On the **Description** tab, do the following:
+    - Copy the _Public IP_ of the Bastion instance.
+    - Copy the _Private IP_ of the Jira Service Management node instance.
+1. Using SSH, connect to the Jira Service Management node via the Bastion instance:
+  
+    For Linux or MacOS run following commands in terminal (for Windows, use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script and make it executable:
+
+    ``` bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/populate_db.sh && chmod +x populate_db.sh
+    ```
+1. Review the following `Variables section` of the script:
+
+    ``` bash
+    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+    DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
+    JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
+    CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
+    JIRA_DB_NAME="jira"
+    JIRA_DB_USER="postgres"
+    JIRA_DB_PASS="Password1!"
+    JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
+    JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
+    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+    ```
+1. Run the script:
+
+    ``` bash
+    ./populate_db.sh | tee -a populate_db.log
+    ```
+
+{{% note %}}
+Do not close or interrupt the session. It will take about an hour to restore SQL database. When SQL restoring is finished, an admin user will have `admin`/`admin` credentials.
+
+In case of a failure, check the `Variables` section and run the script one more time.
+{{% /note %}}
+
+##### Option 2: Loading the dataset through XML import (~4 hours)
+
+We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script.
+
+1. In the AWS console, go to **Services** > **EC2** > **Instances**.
+1. On the **Description** tab, do the following:
+    - Copy the _Public IP_ of the Bastion instance.
+    - Copy the _Private IP_ of the Jira node instance.
+1. Using SSH, connect to the Jira node via the Bastion instance:
+
+    For Windows, use Putty to connect to the Jira node over SSH.
+    For Linux or MacOS:
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the xml_backup.zip file corresponding to your Jira version.
+
+    ``` bash
+    JIRA_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-software.version")
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JIRA_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
+    ```
+1. From a different computer, log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
+1. Populate the **File name** field with `xml_backup.zip`.
+1. Click **Restore** and wait until the import is completed.
+
+#### <a id="copyingattachments"></a> Restoring attachments (~2 hours)
+
+After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
+
+1. Using SSH, connect to the Jira node via the Bastion instance:
+
+    For Windows, use Putty to connect to the Jira node over SSH.
+    For Linux or MacOS:
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script and make it executable:
+
+    ``` bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/upload_attachments.sh && chmod +x upload_attachments.sh
+    ```    
+1. Review the following `Variables section` of the script:
+
+    ``` bash
+    DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+    ATTACHMENTS_TAR="attachments.tar.gz"
+    ATTACHMENTS_DIR="attachments"
+    TMP_DIR="/tmp"
+    EFS_DIR="/media/atl/jira/shared/data"
+    ```
+1. Run the script:
+
+    ``` bash
+    ./upload_attachments.sh | tee -a upload_attachments.log
+    ```
+
+{{% note %}}
+Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
+{{% /note %}}
+
+#### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 min)
+
+For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
+
+1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Select the **Full re-index** option.
+1. Click **Re-Index** and wait until re-indexing is completed.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DCHELP ticket.
+
+Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
+
 
 ---
 
@@ -411,7 +546,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
+| Jira Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
 
 **Cluster nodes**
 
