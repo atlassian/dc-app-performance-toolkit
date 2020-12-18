@@ -299,7 +299,7 @@ def app_specific_action(locust):
 ```
 
 2. In `dc-app-performance-toolkit/app/jira.yml` set `load_executor: locust` to make `locust` as load executor.
-3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `view_issue: 43` and `standalone_extensions: 86` that means thats `standalone_extension` will be called twice more.  
+3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
 4. Run toolkit with `bzt jira.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
@@ -321,8 +321,6 @@ For example, for app-specific action development you could set percentage of `st
 1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Jira JMeter standalone assertions](/platform/marketplace/images/jira-standalone-assertions.png)
 1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-1. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
-![Jira JMeter standalone load profile](/platform/marketplace/images/jira-jmeter-load-profile.png)
 1. Right-click on `View Results Tree` and enable this controller.
 1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
@@ -397,7 +395,7 @@ To stop one node within the Jira cluster, follow the instructions below:
 
 To return Jira node into a working state follow the instructions:  
 
-1. Go to `Instances` and start Jira node, wait a few minutes for Jira node to become responsible.
+1. Go to `Instances` and start Jira node, wait a few minutes for Jira node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -539,8 +537,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -590,8 +588,8 @@ We recommend that you only use this method if you are having problems with the [
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -617,8 +615,8 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -732,7 +730,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -771,8 +769,8 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 **Performance results generation with the app installed:**
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -819,8 +817,8 @@ To receive scalability benchmark results for one-node Jira DC **with** app-speci
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -862,8 +860,8 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -882,8 +880,8 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```  
 
 {{% note %}}

@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -36,6 +36,7 @@ settings:
     agent_view_report_created_vs_resolved_small: 6
     agent_view_report_created_vs_resolved_medium: 6
     agent_view_customers: 3
+    agent_standalone_extension: 0
 
     customer_view_portal: 10
     customer_view_requests: 28
@@ -44,6 +45,7 @@ settings:
     customer_share_request_with_customer: 3
     customer_share_request_with_org: 3
     customer_create_request: 14
+    customer_standalone_extension: 0
 services:
   - module: shellexec
     prepare:

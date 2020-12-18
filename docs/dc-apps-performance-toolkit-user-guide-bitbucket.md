@@ -63,7 +63,7 @@ To stop one node within the Bitbucket cluster follow the instructions:
 1. Go to `Instances` and stop Bitbucket node.
 
 To return Bitbucket node into a working state follow the instructions:  
-1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become responsible.
+1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -209,8 +209,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Bitbucket NFS Server instance.
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -226,8 +226,8 @@ To populate the database with SQL:
     ```
 1. In a new terminal session connect to the Bitbucket NFS Server over SSH:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -279,8 +279,8 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 
 1. Using SSH, connect to the Bitbucket NFS Server via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+   
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -318,8 +318,8 @@ Do not close or interrupt the session. It will take about two hours to upload at
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -423,7 +423,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -447,8 +447,8 @@ To receive performance results with an app installed:
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -546,8 +546,8 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -567,8 +567,8 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -584,8 +584,8 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```  
 
 {{% note %}}
