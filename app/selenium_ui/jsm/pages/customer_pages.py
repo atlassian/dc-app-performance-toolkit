@@ -9,9 +9,10 @@ from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocato
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
-    page_loaded_selector = LoginPageLocators.search_input_field
+    page_loaded_selector = LoginPageLocators.welcome_logged_in_page
 
     def set_credentials(self, username, password):
+        self.wait_until_visible(LoginPageLocators.login_field)
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
@@ -95,7 +96,7 @@ class CustomerRequest(BasePage):
         url_manager = UrlManager(portal_id=portal_id, request_key=request_key)
         self.page_url = url_manager.request_url()
 
-    page_loaded_selector = RequestSelectors.request_status_label
+    page_loaded_selector = RequestSelectors.request_option
 
     def comment_request(self):
         self.wait_until_visible(RequestSelectors.comment_request_field)
