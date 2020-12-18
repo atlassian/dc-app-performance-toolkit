@@ -16,12 +16,12 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, localhost)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, jira-loadb-gtdp8ijeb1ue-652611555.eu-west-2.elb.amazonaws.com/)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
             <stringProp name="Argument.name">application.port</stringProp>
-            <stringProp name="Argument.value">${__P(application_port, 8080)}</stringProp>
+            <stringProp name="Argument.value">${__P(application_port, 80)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.protocol" elementType="Argument">
@@ -9537,9 +9537,26 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="browse" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="internal API request" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments"/>
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="filtersValue" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.value">{&quot;activeTab&quot;:&quot;basic&quot;,&quot;basic&quot;:{&quot;fixfor&quot;:{&quot;elementName&quot;:&quot;fixfor&quot;,&quot;id&quot;:&quot;fixfor&quot;,&quot;name&quot;:&quot;Fix Version&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;customfield_10105&quot;:{&quot;elementName&quot;:&quot;customfield_10105&quot;,&quot;id&quot;:&quot;customfield_10105&quot;,&quot;name&quot;:&quot;Sprint&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;component&quot;:{&quot;elementName&quot;:&quot;component&quot;,&quot;id&quot;:&quot;component&quot;,&quot;name&quot;:&quot;Component&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;status&quot;:{&quot;elementName&quot;:&quot;status&quot;,&quot;id&quot;:&quot;status&quot;,&quot;name&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;resolution&quot;:{&quot;elementName&quot;:&quot;resolution&quot;,&quot;id&quot;:&quot;resolution&quot;,&quot;name&quot;:&quot;Resolution&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;text&quot;:{&quot;elementName&quot;:&quot;text&quot;,&quot;id&quot;:&quot;text&quot;,&quot;name&quot;:&quot;Contains text&quot;,&quot;type&quot;:&quot;text_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:&quot;&quot;},&quot;savedfilter&quot;:{&quot;elementName&quot;:&quot;savedfilter&quot;,&quot;id&quot;:&quot;savedfilter&quot;,&quot;name&quot;:&quot;Saved Filters&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:[&quot;10101&quot;],&quot;valuesName&quot;:[&quot;10101&quot;]}},&quot;advanced&quot;:{&quot;jql&quot;:&quot;&quot;}}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">filtersValue</stringProp>
+                      <stringProp name="HTTPArgument.content_type">application/x-www-form-urlencoded</stringProp>
+                    </elementProp>
+                    <elementProp name="basicTabJql" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.value">savedfilter = 10101</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">basicTabJql</stringProp>
+                      <stringProp name="HTTPArgument.content_type">application/x-www-form-urlencoded</stringProp>
+                    </elementProp>
+                  </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
@@ -9567,18 +9584,18 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="filtersValue" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                      <stringProp name="Argument.value">{&quot;activeTab&quot;:&quot;basic&quot;,&quot;basic&quot;:{&quot;fixfor&quot;:{&quot;elementName&quot;:&quot;fixfor&quot;,&quot;id&quot;:&quot;fixfor&quot;,&quot;name&quot;:&quot;Fix Version&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:[&quot;v0&quot;],&quot;valuesName&quot;:[&quot;v0&quot;]},&quot;customfield_10105&quot;:{&quot;elementName&quot;:&quot;customfield_10105&quot;,&quot;id&quot;:&quot;customfield_10105&quot;,&quot;name&quot;:&quot;Sprint&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;component&quot;:{&quot;elementName&quot;:&quot;component&quot;,&quot;id&quot;:&quot;component&quot;,&quot;name&quot;:&quot;Component&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;status&quot;:{&quot;elementName&quot;:&quot;status&quot;,&quot;id&quot;:&quot;status&quot;,&quot;name&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;resolution&quot;:{&quot;elementName&quot;:&quot;resolution&quot;,&quot;id&quot;:&quot;resolution&quot;,&quot;name&quot;:&quot;Resolution&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;text&quot;:{&quot;elementName&quot;:&quot;text&quot;,&quot;id&quot;:&quot;text&quot;,&quot;name&quot;:&quot;Contains text&quot;,&quot;type&quot;:&quot;text_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:&quot;&quot;}},&quot;advanced&quot;:{&quot;jql&quot;:&quot;&quot;}}</stringProp>
+                      <stringProp name="Argument.value">{&quot;activeTab&quot;:&quot;basic&quot;,&quot;basic&quot;:{&quot;fixfor&quot;:{&quot;elementName&quot;:&quot;fixfor&quot;,&quot;id&quot;:&quot;fixfor&quot;,&quot;name&quot;:&quot;Fix Version&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;customfield_10105&quot;:{&quot;elementName&quot;:&quot;customfield_10105&quot;,&quot;id&quot;:&quot;customfield_10105&quot;,&quot;name&quot;:&quot;Sprint&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;component&quot;:{&quot;elementName&quot;:&quot;component&quot;,&quot;id&quot;:&quot;component&quot;,&quot;name&quot;:&quot;Component&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;status&quot;:{&quot;elementName&quot;:&quot;status&quot;,&quot;id&quot;:&quot;status&quot;,&quot;name&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;resolution&quot;:{&quot;elementName&quot;:&quot;resolution&quot;,&quot;id&quot;:&quot;resolution&quot;,&quot;name&quot;:&quot;Resolution&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:[]},&quot;text&quot;:{&quot;elementName&quot;:&quot;text&quot;,&quot;id&quot;:&quot;text&quot;,&quot;name&quot;:&quot;Contains text&quot;,&quot;type&quot;:&quot;text_type&quot;,&quot;value&quot;:null,&quot;valuesName&quot;:&quot;&quot;},&quot;savedfilter&quot;:{&quot;elementName&quot;:&quot;savedfilter&quot;,&quot;id&quot;:&quot;savedfilter&quot;,&quot;name&quot;:&quot;Saved Filters&quot;,&quot;type&quot;:&quot;select_type&quot;,&quot;value&quot;:[&quot;10101&quot;],&quot;valuesName&quot;:[&quot;requirements_filter&quot;]}},&quot;advanced&quot;:{&quot;jql&quot;:&quot;&quot;}}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                       <stringProp name="Argument.name">filtersValue</stringProp>
                       <stringProp name="HTTPArgument.content_type">application/x-www-form-urlencoded</stringProp>
                     </elementProp>
-                    <elementProp name="basicTabJq" elementType="HTTPArgument">
+                    <elementProp name="basicTabJql" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                      <stringProp name="Argument.value">fixVersion = v0</stringProp>
+                      <stringProp name="Argument.value">savedfilter = 10101</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">basicTabJq</stringProp>
+                      <stringProp name="Argument.name">basicTabJql</stringProp>
                       <stringProp name="HTTPArgument.content_type">application/x-www-form-urlencoded</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -9875,7 +9892,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-1125/testsets</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/XRAY0-90162/testsets</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
