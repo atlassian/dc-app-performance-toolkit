@@ -1,11 +1,13 @@
-from selenium.webdriver.common.keys import Keys
-import time
-import random
 import json
+import random
+import time
+
+from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
-    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
+    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators, \
+    SimpleWikiPageEditorLocator, SimpleWikiPageLocator, SimpleWikiPagesListLocator
 
 
 class PopupManager(BasePage):
@@ -126,6 +128,7 @@ class Issue(BasePage):
     def set_issue_type(self):
         def __filer_epic(element):
             return "epic" not in element.get_attribute("class").lower()
+
         issue_types = {}
         data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
                                       .get_attribute('data-suggestions'))
@@ -218,3 +221,75 @@ class Board(BasePage):
 
     def wait_for_scrum_board_backlog(self):
         self.wait_until_present(BoardLocators.scrum_board_backlog_content)
+
+
+class SimpleWikiPage(BasePage):
+    def __init__(self, driver, project_key: str, page_key: str):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key, page_key=page_key)
+        self.page_url = url_manager.create_sw_page_url()
+        self.page_loaded_selector = [SimpleWikiPageLocator.sw_page, SimpleWikiPageLocator.sw_comment_block]
+
+    def add_comment(self):
+        comment_text = self.generate_random_string(30)
+        comment_input = self.wait_until_clickable(selector_name=SimpleWikiPageLocator.sw_page_comment)
+        comment_input.click()
+        self.wait_until_invisible(comment_input)
+        self.get_element(SimpleWikiPageLocator.sw_page_comment_textfield).send_keys(comment_text)
+
+    def click_save(self):
+        self.wait_until_clickable(SimpleWikiPageLocator.sw_comment_save).click()
+        self.wait_until_invisible(SimpleWikiPageLocator.sw_comment_save)
+
+
+class SimpleWikiPageEditor(BasePage):
+    def __init__(self, driver, project_key: str, page_key: str):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key, page_key=page_key)
+        self.page_url = url_manager.create_sw_editor_page()
+        self.page_loaded_selector = [SimpleWikiPageEditorLocator.sw_page_editor_textfield_location,
+                                     SimpleWikiPageEditorLocator.sw_page_editor_title_location]
+
+    def write_description(self):
+        text_description = f"{self.generate_random_string(60)}"
+        text_field = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_textfield_location)
+        self.__clear_content()
+        self.action_chains().click(text_field).send_keys(text_description).perform()
+
+    def change_title(self):
+        title = self.wait_until_visible(SimpleWikiPageEditorLocator.sw_page_editor_title_location)
+        new_title = f"{self.generate_random_string(12)}"
+        title.send_keys(Keys.CONTROL + 'a')
+        title.send_keys(Keys.DELETE)
+        title.send_keys(new_title)
+
+    def save_page(self):
+        button = self.wait_until_clickable(SimpleWikiPageEditorLocator.sw_page_editor_save_button)
+        self.action_chains().click(button).perform()
+
+    def __clear_content(self):
+        self.execute_js("tinymce=document.getElementsByClassName('ProseMirror')[0]; "
+                        "while(tinymce.firstChild){tinymce.removeChild(tinymce.lastChild);}")
+
+
+class SimpleWikiPagesList(BasePage):
+    def __init__(self, driver, project_key: str):
+        BasePage.__init__(self, driver=driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.create_sw_pages_list()
+        self.page_loaded_selector = [SimpleWikiPagesListLocator.sw_pages_table, SimpleWikiPagesListLocator.sw_add_page]
+
+    def add_page(self):
+        self.wait_until_invisible(SimpleWikiPagesListLocator.sw_load_mask)
+        PopupManager(self.driver).dismiss_default_popup()
+        self.wait_until_clickable(SimpleWikiPagesListLocator.sw_add_page).click()
+        self.wait_until_any_element_visible(selector_name=SimpleWikiPagesListLocator.sw_add_page_dialog)
+
+    def write_title(self):
+        title = self.generate_random_string(10).replace(" ", "").lower()
+        self.wait_until_visible(SimpleWikiPagesListLocator.sw_add_page_title)
+        self.get_element(SimpleWikiPagesListLocator.sw_add_page_title).send_keys(title)
+
+    def click_create(self):
+        self.get_element(SimpleWikiPagesListLocator.sw_create_page).click()
+        self.wait_until_invisible(SimpleWikiPagesListLocator.sw_add_page_title)
