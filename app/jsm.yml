@@ -36,7 +36,6 @@ settings:
     agent_view_report_created_vs_resolved_small: 6
     agent_view_report_created_vs_resolved_medium: 6
     agent_view_customers: 3
-
     customer_view_portal: 10
     customer_view_requests: 28
     customer_view_request: 14
@@ -44,6 +43,8 @@ settings:
     customer_share_request_with_customer: 3
     customer_share_request_with_org: 3
     customer_create_request: 14
+    standalone_extension: 0
+    custom_dataset_query: ""
 services:
   - module: shellexec
     prepare:

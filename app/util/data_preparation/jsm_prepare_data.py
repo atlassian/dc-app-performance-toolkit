@@ -1,5 +1,4 @@
 import functools
-import math
 import multiprocessing
 import random
 import string
@@ -27,7 +26,6 @@ SERVICE_DESKS_LARGE = "service_desks_large"
 SERVICE_DESKS_MEDIUM = "service_desks_medium"
 SERVICE_DESKS_SMALL = "service_desks_small"
 REQUEST_TYPES = "request_types"
-AGENT_PERCENTAGE = 25.00
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -40,8 +38,8 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
                        'Get a guest wifi account', 'Set up a phone line redirect', 'Suggest improvement',
                        'Get IT help', 'Other questions']
 
-performance_agents_count = math.ceil(JSM_SETTINGS.concurrency * AGENT_PERCENTAGE / 100)
-performance_customers_count = JSM_SETTINGS.concurrency - performance_agents_count
+performance_agents_count = JSM_SETTINGS.agents_concurrency
+performance_customers_count = JSM_SETTINGS.customers_concurrency
 num_cores = multiprocessing.cpu_count()
 
 
@@ -65,7 +63,7 @@ def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}
     max_percentage_key = max(PROJECTS_ISSUES_PERC, key=int)
     if projects_count > max_percentage_key:
-        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values()))/
+        percent_for_other_projects = round((100 - sum(PROJECTS_ISSUES_PERC.values())) /
                                            (projects_count - max(PROJECTS_ISSUES_PERC, key=int)), 3)
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
@@ -402,9 +400,9 @@ def __create_data_set(jira_client, jsm_client):
     dataset[AGENTS] = agents_pool.get()
     dataset[CUSTOMERS] = customers_pool.get()
     dataset[REQUESTS] = requests_pool.get()
-    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM],dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
+    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
     requests_types = pool.apply_async(__get_request_types, kwds={'jsm_api': jsm_client,
-                                                                  'service_desks': service_desks})
+                                                                 'service_desks': service_desks})
     dataset[REQUEST_TYPES] = requests_types.get()
 
     return dataset
