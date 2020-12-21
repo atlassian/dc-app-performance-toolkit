@@ -4,7 +4,7 @@ from util.conf import JIRA_SETTINGS
 
 
 class PopupLocators:
-    default_popup = '.aui-message .icon-close'
+    default_popup = '.aui-message .aui-close-button'
     popup_1 = 'form.tip-footer>.helptip-close'
     popup_2 = '.aui-inline-dialog-contents .cancel'
 

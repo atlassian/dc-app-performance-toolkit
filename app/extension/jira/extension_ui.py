@@ -45,7 +45,7 @@ def sw_page_edit(webdriver, datasets):
 
 
 def sw_page_create(webdriver, datasets):
-    sw_pages_list = SimpleWikiPagesList(webdriver, project_key=datasets['sw_project_key'])
+    sw_pages_list = SimpleWikiPagesList(webdriver, project_key=datasets['project_key'])
 
     @print_timing('selenium_sw_page_create')
     def measure():
