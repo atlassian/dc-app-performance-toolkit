@@ -2027,7 +2027,7 @@ if ( sleep_time &gt; 0 ) {
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Atlassian\Centaurus\GIT\dc-app-performance-toolkit\app\results\jsm\2020-12-02_13-50-03\kpi.jtl</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>

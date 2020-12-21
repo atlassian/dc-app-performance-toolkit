@@ -32,6 +32,7 @@ class LoginPageLocators:
     login_url = UrlManager().login_url()
 
     search_input_field = (By.ID, 'sd-customer-portal-smart-search-input')
+    welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
     login_field = (By.ID, 'os_username')
     password_field = (By.ID, 'os_password')
     login_submit_button = (By.ID, 'js-login-submit')
@@ -39,7 +40,7 @@ class LoginPageLocators:
 
 class TopPanelSelectors:
 
-    profile_icon = (By.CLASS_NAME, 'cp-avatar-image')
+    profile_icon = (By.XPATH, '//a[@href="#dropdown2-header"]')
     profile_button = (By.CSS_SELECTOR, 'a.js-profile')
     logout_button = (By.CSS_SELECTOR, 'a.js-logout')
 
@@ -69,7 +70,7 @@ class CustomerPortalSelectors:
 
 class RequestSelectors:
     request_url = UrlManager().request_url()
-    request_status_label = (By.CSS_SELECTOR, 'div.cv-request-options>.request-status-lozenge')
+    request_option = (By.CLASS_NAME, 'cv-request-options')
     comment_request_field = (By.CSS_SELECTOR, 'textarea#comment-on-request')
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
     share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
@@ -78,7 +79,6 @@ class RequestSelectors:
     share_request_dropdown_results = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
     share_request_dropdown_one_elem = (By.CSS_SELECTOR,
                                        '#select2-drop>ul.select2-results>li>div>span.user-picker-display-name')
-
 
     share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
 
