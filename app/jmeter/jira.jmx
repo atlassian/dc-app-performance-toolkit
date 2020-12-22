@@ -7935,7 +7935,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="standalone_extension" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view_backlog" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
