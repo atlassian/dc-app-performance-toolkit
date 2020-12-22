@@ -706,6 +706,10 @@ We recommend that you only use this method if you are having problems with the [
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Jira Service Management node via the Bastion instance:
 
     For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
