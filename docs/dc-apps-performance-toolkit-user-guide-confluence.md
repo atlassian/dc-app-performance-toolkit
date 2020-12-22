@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-01-12"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -293,7 +293,7 @@ def app_specific_action(locust):
 ```
 
 2. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
-3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `view_page: 54` and `standalone_extensions: 108` that means thats `standalone_extension` will be called twice more.  
+3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
 4. Run toolkit with `bzt confluence.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
@@ -385,7 +385,7 @@ To stop one node within the Confluence cluster follow the instructions:
 1. Go to `Instances` and stop Confluence node.
 
 To return Confluence node into a working state follow the instructions:  
-1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become responsible.
+1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -519,8 +519,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -562,10 +562,14 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -707,7 +711,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
@@ -730,8 +734,8 @@ To receive performance results with an app installed:
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -778,8 +782,8 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -820,8 +824,8 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -840,8 +844,8 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```  
 
 {{% note %}}
