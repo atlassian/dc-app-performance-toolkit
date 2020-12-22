@@ -722,7 +722,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_view_requests}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests__my" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests:my_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -848,7 +848,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests__all" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests:all_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -934,7 +934,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests__with_filter" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests:with_filter_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1235,7 +1235,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_share_request_with_customer}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer__search" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer:search_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1319,7 +1319,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer__add" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer:add_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1365,7 +1365,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer__remove" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer:remove_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1459,7 +1459,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_share_request_with_org}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org__search" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org:search_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1536,7 +1536,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org__add" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org:add_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1582,7 +1582,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org__remove" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org:remove_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1676,7 +1676,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_create_request}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request__open" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request:open_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -1913,7 +1913,7 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request__view" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request:view_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
