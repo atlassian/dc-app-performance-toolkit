@@ -1025,14 +1025,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="small project actions" enabled="true"/>
           <hashTree>
-            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_queue_small" enabled="true">
+            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_queues_small" enabled="true">
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
               <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_small}</stringProp>
             </ThroughputController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_small_view_queue_all_open" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small:all_open_queue" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -2126,7 +2126,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_small_view_queue_random" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small:random_queue" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -3400,14 +3400,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </hashTree>
               </hashTree>
             </hashTree>
-            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report workload small" enabled="true">
+            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_workload_small" enabled="true">
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
               <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_report_workload_small}</stringProp>
             </ThroughputController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_small_view_workload_report" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_report_workload_small" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -4029,14 +4029,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </hashTree>
               </hashTree>
             </hashTree>
-            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report time to resolution small" enabled="true">
+            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_time_to_resolution_small" enabled="true">
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
               <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_report_time_to_resolution_small}</stringProp>
             </ThroughputController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_small_view_time_to_resulution_report" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_report_time_to_resolution_small" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -4568,7 +4568,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </hashTree>
               </hashTree>
             </hashTree>
-            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report created vs resolved small" enabled="true">
+            <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_created_vs_resolved_small" enabled="true">
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
@@ -5110,14 +5110,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
-              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_queue_medium  " enabled="true">
+              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_queues_medium" enabled="true">
                 <intProp name="ThroughputController.style">1</intProp>
                 <boolProp name="ThroughputController.perThread">false</boolProp>
                 <intProp name="ThroughputController.maxThroughput">1</intProp>
                 <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_medium}</stringProp>
               </ThroughputController>
               <hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_queue_all_open" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium:all_open_queue" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -6211,7 +6211,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_queue_random" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium:random_queue" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -7485,14 +7485,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </hashTree>
                 </hashTree>
               </hashTree>
-              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report created vs resolved medium" enabled="true">
+              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_created_vs_resolved_medium" enabled="true">
                 <intProp name="ThroughputController.style">1</intProp>
                 <boolProp name="ThroughputController.perThread">false</boolProp>
                 <intProp name="ThroughputController.maxThroughput">1</intProp>
                 <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_report_created_vs_resolved_medium}</stringProp>
               </ThroughputController>
               <hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_created_vs_resolved_report" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_report_created_vs_resolved_medium" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -8018,14 +8018,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </hashTree>
                 </hashTree>
               </hashTree>
-              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report time to resolution medium" enabled="true">
+              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_time_to_resolution_medium" enabled="true">
                 <intProp name="ThroughputController.style">1</intProp>
                 <boolProp name="ThroughputController.perThread">false</boolProp>
                 <intProp name="ThroughputController.maxThroughput">1</intProp>
                 <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_report_time_to_resolution_medium}</stringProp>
               </ThroughputController>
               <hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_time_to_resulution_report" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_report_time_to_resolution_medium" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -8557,14 +8557,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                   </hashTree>
                 </hashTree>
               </hashTree>
-              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view report workload medium" enabled="true">
+              <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_report_workload_medium" enabled="true">
                 <intProp name="ThroughputController.style">1</intProp>
                 <boolProp name="ThroughputController.perThread">false</boolProp>
                 <intProp name="ThroughputController.maxThroughput">1</intProp>
                 <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_report_workload_medium}</stringProp>
               </ThroughputController>
               <hashTree>
-                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_medium_view_workload_report" enabled="true">
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_report_workload_medium" enabled="true">
                   <boolProp name="TransactionController.includeTimers">false</boolProp>
                   <boolProp name="TransactionController.parent">true</boolProp>
                 </TransactionController>
@@ -9188,14 +9188,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </hashTree>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="browse projects list" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_browse_projects" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_agent_browse_projects}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_browse_jsm_projects" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_browse_projects" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9388,14 +9388,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </hashTree>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view service desk request" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_request" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_request}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_service_desk_request" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_request" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9714,14 +9714,14 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               </hashTree>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="add comment" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_add_comment" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_agent_add_comment}</stringProp>
           </ThroughputController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_open_request_comment" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment:open_request_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -9909,7 +9909,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_save_request_comment" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_add_comment:save_request_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -10343,7 +10343,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </hashTree>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="view customers" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_view_customers" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
