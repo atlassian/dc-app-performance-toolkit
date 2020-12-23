@@ -167,8 +167,8 @@ class Confluence(BaseApplication):
                 'locust_create_and_edit_page:open_editor',
                 'locust_create_and_edit_page:edit_page',
                 'locust_comment_page',
-                'locust_view_attachments',
-                'locust_upload_attachments',
+                'locust_view_attachment',
+                'locust_upload_attachment',
                 'locust_like_page',
                 ]
 
