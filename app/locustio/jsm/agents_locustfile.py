@@ -16,12 +16,12 @@ class JsmAgentBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         agents_http_actions.agent_login_and_view_dashboard(self, jsm_agent_dataset)
 
-    @task(config.percentage('agent_view_queues_small'))
+    @task(config.percentage('agent_view_queues_small')/2)
     def agent_small_view_queue_all_open(self):
         agents_http_actions.agent_small_view_queue_all_open(self)
         agents_http_actions.agent_small_view_queue_random(self)
 
-    @task(config.percentage('agent_view_queues_medium'))
+    @task(config.percentage('agent_view_queues_medium')/2)
     def agent_medium_view_queue_all_open(self):
         if jsm_agent_dataset['m_project']:
             agents_http_actions.agent_medium_view_queue_all_open(self)
