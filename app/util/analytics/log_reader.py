@@ -96,7 +96,8 @@ class BztFileReader(BaseFileReader):
                 line_split = line.split(delimiter)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
-                test_actions.setdefault(test_name, test_rate)
+                avg_rt = float(line_split[4].strip())
+                test_actions.setdefault(test_name, [test_rate, avg_rt])
 
         if not test_actions:
             raise SystemExit(f"There are no test actions where found in the {ENV_TAURUS_ARTIFACT_DIR}/bzt.log file")
