@@ -116,6 +116,7 @@ class WorkloadReport(BasePage):
 
 class TimeToResolutionReport(BasePage):
     page_loaded_selector = ViewReportsLocators.custom_report_content
+    timeout = 60
 
     def __init__(self, driver, project_key, time_to_resolution_report_id):
         BasePage.__init__(self, driver)
@@ -125,6 +126,7 @@ class TimeToResolutionReport(BasePage):
 
 class CreatedResolvedReport(BasePage):
     page_loaded_selector = ViewReportsLocators.custom_report_content
+    timeout = 60
 
     def __init__(self, driver, project_key, time_to_resolution_report_id):
         BasePage.__init__(self, driver)
@@ -133,6 +135,7 @@ class CreatedResolvedReport(BasePage):
 
 
 class ViewQueue(BasePage):
+    timeout = 60
 
     def __init__(self, driver, project_key=None, queue_id=None):
         BasePage.__init__(self, driver)

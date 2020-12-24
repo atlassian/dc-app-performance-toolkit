@@ -50,7 +50,8 @@ class BasePage:
 
     def wait_until_available_to_switch(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector))
+        return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
+                                 time_out=self.timeout)
 
     def wait_until_present(self, selector_name, time_out=TIMEOUT):
         selector = self.get_selector(selector_name)
@@ -58,11 +59,12 @@ class BasePage:
 
     def wait_until_clickable(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector))
+        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), time_out=self.timeout)
 
     def wait_until_any_element_visible(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector))
+        return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector),
+                                 time_out=self.timeout)
 
     def wait_until_any_ec_presented(self, selector_names):
         origin_selectors = []

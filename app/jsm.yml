@@ -83,8 +83,10 @@ scenarios:
     script: selenium_ui/jsm_ui_customers.py
   selenium_agents:
     script: selenium_ui/jsm_ui_agents.py
-  locust:
-    script: locustio/jsm/locustfile.py
+  locust_customers:
+    script: locustio/jsm/customers_locustfile.py
+  locust_agents:
+    script: locustio/jsm/agents_locustfile.py
   jmeter_agents:
     script: jmeter/jsm_agents.jmx
     properties:
