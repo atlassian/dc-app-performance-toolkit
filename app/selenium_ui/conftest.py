@@ -241,7 +241,9 @@ def get_screen_shots(request, webdriver):
             timestamp = round(time.time() * 1000)
             dt = datetime.datetime.now()
             utc_time = dt.replace(tzinfo=timezone.utc)
-            err_file.write(f"Timestamp: {timestamp}, UTC: {utc_time}, Action: {action_name}, Error: {error_text}\n")
+            str_time = utc_time.strftime("%m-%d-%Y, %H:%M:%S")
+            str_time_stamp = f'{str_time}, {timestamp}'
+            err_file.write(f"{str_time_stamp}, Action: {action_name}, Error: {error_text}\n")
         print(f"Action: {action_name}, Error: {error_text}\n")
         errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
         errors_artifacts.mkdir(parents=True, exist_ok=True)
