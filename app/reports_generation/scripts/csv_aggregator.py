@@ -1,10 +1,18 @@
 import csv
+import sys
+sys.path.append("..")
+
 from pathlib import Path
 from typing import List
-
 from scripts.utils import validate_str_is_not_blank, validate_file_exists, resolve_path
 
+from util.analytics.application_info import ApplicationSelector
+from util.analytics.analytics_utils import generate_test_actions_by_type
+
 RESULTS_CSV_FILE_NAME = "results.csv"
+APP_SPECIFIC_PREFIX = 'app_specific_'
+APP_NAME = 2
+APP_SPECIFIC_ACTIONS = 3
 
 
 class ResultsCSV:
@@ -74,9 +82,16 @@ def __get_output_file_path(config, results_dir) -> Path:
 
 
 def aggregate(config: dict, results_dir: Path) -> Path:
+    application_name = sys.argv[APP_NAME]
+    application = ApplicationSelector(application_name).application
     __validate_config(config)
     tests_results = __get_tests_results(config)
     __validate_count_of_actions(tests_results)
+    app_specific_actions = generate_test_actions_by_type(test_actions=tests_results[0].actions,
+                                                         application=application)[APP_SPECIFIC_ACTIONS]
+    for key, val in app_specific_actions.items():
+        for count in range(len(tests_results)):
+            tests_results[count].actions[APP_SPECIFIC_PREFIX+key] = tests_results[count].actions.pop(key)
     output_file_path = __get_output_file_path(config, results_dir)
     header = __create_header(config)
     __write_list_to_csv(header, tests_results, output_file_path)
