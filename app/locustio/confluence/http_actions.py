@@ -13,7 +13,7 @@ logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
 
 
-@confluence_measure
+@confluence_measure('locust_login_and_view_dashboard')
 def login_and_view_dashboard(locust):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
@@ -58,7 +58,7 @@ def view_page_and_tree(locust):
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
 
-    @confluence_measure
+    @confluence_measure('locust_view_page:open_page')
     def view_page():
         r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
         content = r.content.decode('utf-8')
@@ -117,7 +117,7 @@ def view_page_and_tree(locust):
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("160"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @confluence_measure
+    @confluence_measure('locust_view_page:view_page_tree')
     def view_page_tree():
         tree_request_id = locust.session_data_storage['tree_request_id'].replace('&amp;', '&')
         # if postfix is set, need to trim it from the tree_request_id to avoid duplication
@@ -148,7 +148,7 @@ def view_page_and_tree(locust):
     view_page_tree()
 
 
-@confluence_measure
+@confluence_measure('locust_view_dashboard')
 def view_dashboard(locust):
     raise_if_login_failed(locust)
     params = ViewDashboard()
@@ -175,7 +175,7 @@ def view_dashboard(locust):
     assert 'changeSets' in content, 'Could not view dashboard macros.'
 
 
-@confluence_measure
+@confluence_measure('locust_view_blog')
 def view_blog(locust):
     raise_if_login_failed(locust)
     params = ViewBlog()
@@ -232,11 +232,11 @@ def view_blog(locust):
 def search_cql_and_view_results(locust):
     raise_if_login_failed(locust)
 
-    @confluence_measure
+    @confluence_measure('locust_search_cql:recently_viewed')
     def search_recently_viewed():
         locust.get('/rest/recentlyviewed/1.0/recent?limit=8', catch_response=True)
 
-    @confluence_measure
+    @confluence_measure('locust_search_cql:search_results')
     def search_cql():
         r = locust.get(f"/rest/api/search?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
                        f"&start=0&limit=20", catch_response=True)
@@ -259,7 +259,7 @@ def open_editor_and_create_blog(locust):
     build_number = locust.session_data_storage.get('build_number', '')
     keyboard_hash = locust.session_data_storage.get('keyboard_hash', '')
 
-    @confluence_measure
+    @confluence_measure('locust_create_blog:blog_editor')
     def create_blog_editor():
         raise_if_login_failed(locust)
         r = locust.get(f'/pages/createblogpost.action?spaceKey={blog_space_key}', catch_response=True)
@@ -326,7 +326,7 @@ def open_editor_and_create_blog(locust):
             logger.error(f'Could not create blog post draft in space {parsed_space_key}: {content}')
         assert 'draftId' in content, 'Could not create blog post draft.'
 
-    @confluence_measure
+    @confluence_measure('locust_create_blog:feel_and_publish')
     def create_blog():
         raise_if_login_failed(locust)
         draft_name = locust.session_data_storage['draft_name']
@@ -407,7 +407,7 @@ def create_and_edit_page(locust):
     build_number = locust.session_data_storage.get('build_number', '')
     keyboard_hash = locust.session_data_storage.get('keyboard_hash', '')
 
-    @confluence_measure
+    @confluence_measure('locust_create_and_edit_page:create_page_editor')
     def create_page_editor():
         raise_if_login_failed(locust)
         r = locust.get(f'/pages/createpage.action?spaceKey={space_key}&fromPageId={page_id}&src=quick-create',
@@ -450,7 +450,7 @@ def create_and_edit_page(locust):
             logger.error(f'Token {atl_token} not found in content: {content}')
         assert atl_token in content, 'Token not found in content.'
 
-    @confluence_measure
+    @confluence_measure('locust_create_and_edit_page:create_page')
     def create_page():
         raise_if_login_failed(locust)
         draft_name = f"{generate_random_string(10, only_letters=True)}"
@@ -548,7 +548,7 @@ def create_and_edit_page(locust):
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("855"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @confluence_measure
+    @confluence_measure('locust_create_and_edit_page:open_editor')
     def open_editor():
         raise_if_login_failed(locust)
         create_page_id = locust.session_data_storage['create_page_id']
@@ -593,7 +593,7 @@ def create_and_edit_page(locust):
         locust.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
                     TEXT_HEADERS, catch_response=True)
 
-    @confluence_measure
+    @confluence_measure('locust_create_and_edit_page:edit_page')
     def edit_page():
         raise_if_login_failed(locust)
         locust.session_data_storage['draft_name'] = f"{generate_random_string(10, only_letters=True)}"
@@ -717,7 +717,7 @@ def create_and_edit_page(locust):
     edit_page()
 
 
-@confluence_measure
+@confluence_measure('locust_comment_page')
 def comment_page(locust):
     raise_if_login_failed(locust)
     page = random.choice(confluence_dataset["pages"])
@@ -733,7 +733,7 @@ def comment_page(locust):
     assert 'reply-comment' in content and 'edit-comment' in content, 'Could not add comment.'
 
 
-@confluence_measure
+@confluence_measure('locust_view_attachment')
 def view_attachments(locust):
     raise_if_login_failed(locust)
     page = random.choice(confluence_dataset["pages"])
@@ -746,7 +746,7 @@ def view_attachments(locust):
            or 'currently no attachments' in content, 'View attachments failed.'
 
 
-@confluence_measure
+@confluence_measure('locust_upload_attachment')
 def upload_attachments(locust):
     raise_if_login_failed(locust)
     params = UploadAttachments()
@@ -778,7 +778,7 @@ def upload_attachments(locust):
     assert 'Upload file' in content and 'Attach more files' in content, 'Could not upload attachments.'
 
 
-@confluence_measure
+@confluence_measure('locust_like_page')
 def like_page(locust):
     raise_if_login_failed(locust)
     params = LikePage()

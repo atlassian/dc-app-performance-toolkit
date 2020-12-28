@@ -166,18 +166,22 @@ def jsm_customer_measure(func):
     return wrapper
 
 
-def confluence_measure(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = global_measure(func, start, *args, **kwargs)
+def confluence_measure(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to the confluence_measure decorator"
 
-        total = (time.time() - start)
-        if total < confluence_action_time:
-            sleep = (confluence_action_time - total)
-            logger.info(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-            time.sleep(sleep)
-        return result
-    return wrapper
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = global_measure(func, start, interaction, *args, **kwargs)
+            total = (time.time() - start)
+            if total < confluence_action_time:
+                sleep = (confluence_action_time - total)
+                logger.info(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
+                time.sleep(sleep)
+            return result
+        return wrapper
+    return deco_wrapper
 
 
 def global_measure(func, start_time, interaction, *args, **kwargs):
