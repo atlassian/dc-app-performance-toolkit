@@ -48,7 +48,7 @@ def setup_run_data(datasets):
 def login(webdriver, datasets):
     setup_run_data(datasets)
 
-    @print_timing("selenium_login")
+    @print_timing("selenium_a_login")
     def measure():
         login_page = Login(webdriver)
 
@@ -81,7 +81,7 @@ def view_issue(webdriver, datasets):
 def view_project_summary(webdriver, datasets):
     project_page = Project(webdriver, project_key=datasets['project_key'])
 
-    @print_timing("selenium_project_summary")
+    @print_timing("selenium_view_project_summary")
     def measure():
         project_page.go_to()
         project_page.wait_for_page_loaded()
@@ -187,7 +187,7 @@ def browse_boards_list(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_backlog_for_scrum_board(webdriver, datasets):
+def view_scrum_board_backlog(webdriver, datasets):
     scrum_board_page = Board(webdriver, board_id=datasets['scrum_board_id'])
 
     @print_timing("selenium_view_scrum_board_backlog")
@@ -230,7 +230,7 @@ def view_dashboard(webdriver, datasets):
 def log_out(webdriver, datasets):
     logout_page = Logout(webdriver)
 
-    @print_timing("selenium_log_out")
+    @print_timing("selenium_z_log_out")
     def measure():
         logout_page.go_to()
         logout_page.click_logout()

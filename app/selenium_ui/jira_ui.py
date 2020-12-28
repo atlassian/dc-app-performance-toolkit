@@ -31,8 +31,8 @@ def test_1_selenium_search_jql(jira_webdriver, jira_datasets, jira_screen_shots)
     modules.search_jql(jira_webdriver, jira_datasets)
 
 
-def test_1_selenium_view_backlog_for_scrum_board(jira_webdriver, jira_datasets, jira_screen_shots):
-    modules.view_backlog_for_scrum_board(jira_webdriver, jira_datasets)
+def test_1_selenium_view_scrum_board_backlog(jira_webdriver, jira_datasets, jira_screen_shots):
+    modules.view_scrum_board_backlog(jira_webdriver, jira_datasets)
 
 
 def test_1_selenium_view_scrum_board(jira_webdriver, jira_datasets, jira_screen_shots):
@@ -60,8 +60,8 @@ Add custom actions anywhere between login and log out action. Move this to a dif
 Write your custom selenium scripts in `app/extension/jira/extension_ui.py`.
 Refer to `app/selenium_ui/jira/modules.py` for examples.
 """
-# def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
-#     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
+def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
+    extension_ui.app_specific_action(jira_webdriver, jira_datasets)
 
 
 # this action should be the last one
