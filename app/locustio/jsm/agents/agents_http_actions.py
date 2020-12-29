@@ -312,10 +312,11 @@ def view_project_queue(locust, project_key, project_id, queue_id):
     for item in items:
         if item:
             for queue in item:
-                if queue['label'] != 'All open' and queue['params']['count'] != '0':
+                if queue['label'] not in ['All open', 'Recently resolved', 'Resolved past 7 days']\
+                        and queue['params']['count'] != '0':
                     queues_ids.append(queue['key'])
 
-    # Set small project random queue id for action 'view_queue_random'
+    # Set small project random queue id for action 'view_queuerandom_'
     locust.session_data_storage[f'{project_key}_random_queue_id'] = random.choice(queues_ids)
 
     locust.client.put('/rest/projects/1.0/subnav/sd-queues-nav/pin', headers=RESOURCE_HEADERS, catch_response=True)

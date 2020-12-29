@@ -70,8 +70,8 @@ def test_1_selenium_agent_view_queue_all_open_small_project(jsm_webdriver, jsm_d
 
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/jsm/extension_ui.py`.
-Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
+Write your custom selenium scripts in `app/extension/jsm/extension_ui_agents.py`.
+Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
 """
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
 #     extension_ui_agents.app_specific_action(jsm_webdriver, jsm_datasets)
