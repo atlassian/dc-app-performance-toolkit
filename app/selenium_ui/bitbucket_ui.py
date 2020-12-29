@@ -68,5 +68,5 @@ Refer to `app/selenium_ui/bitbucket/modules.py` for examples.
 #     extension_ui.app_specific_action(bitbucket_webdriver, bitbucket_datasets)
 
 
-def test_2_selenium_logout(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+def test_2_selenium_z_logout(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.logout(bitbucket_webdriver, bitbucket_datasets)

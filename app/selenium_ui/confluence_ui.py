@@ -41,5 +41,5 @@ Refer to `app/selenium_ui/confluence/modules.py` for examples.
 
 
 # this action should be the last one
-def test_2_selenium_z_log_out(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.log_out(confluence_webdriver, confluence_datasets)
+def test_2_selenium_z_logout(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+    modules.logout(confluence_webdriver, confluence_datasets)

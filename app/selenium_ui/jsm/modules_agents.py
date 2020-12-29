@@ -239,11 +239,11 @@ def view_queue_small_project(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def log_out(webdriver, datasets):
+def logout(webdriver, datasets):
     logout_page = Logout(webdriver)
     PopupManager(webdriver).dismiss_default_popup()
 
-    @print_timing("selenium_agent_log_out")
+    @print_timing("selenium_agent_logout")
     def measure():
         logout_page.go_to()
         PopupManager(webdriver).dismiss_default_popup()

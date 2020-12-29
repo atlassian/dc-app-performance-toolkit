@@ -65,5 +65,5 @@ Refer to `app/selenium_ui/jira/modules.py` for examples.
 
 
 # this action should be the last one
-def test_2_selenium_z_log_out(jira_webdriver, jira_datasets, jira_screen_shots):
-    modules.log_out(jira_webdriver, jira_datasets)
+def test_2_selenium_z_logout(jira_webdriver, jira_datasets, jira_screen_shots):
+    modules.logout(jira_webdriver, jira_datasets)

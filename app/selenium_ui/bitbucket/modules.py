@@ -240,7 +240,7 @@ def view_commits(webdriver, datasets):
 
 def logout(webdriver, datasets):
 
-    @print_timing("selenium_log_out")
+    @print_timing("selenium_logout")
     def measure():
         logout_page_page = LogoutPage(webdriver)
         logout_page_page.go_to()

@@ -86,8 +86,8 @@ class Jira(BaseApplication):
                 'selenium_view_dashboard',
                 'selenium_view_issue',
                 'selenium_view_project_summary',
-                'selenium_z_log_out',
-                'selenium_log_out',
+                'selenium_z_logout',
+                'selenium_logout',
                 ]
 
     @property
@@ -160,8 +160,8 @@ class Confluence(BaseApplication):
                 'selenium_view_blog',
                 'selenium_view_dashboard',
                 'selenium_view_page',
-                'selenium_z_log_out',
-                'selenium_log_out',
+                'selenium_z_logout',
+                'selenium_logout',
                 'selenium_login:open_login_page',
                 'selenium_login:login_and_view_dashboard',
                 'selenium_create_page:open_create_page_editor',
@@ -246,6 +246,14 @@ class Bitbucket(BaseApplication):
                 'selenium_view_branches',
                 'selenium_view_commits',
                 'selenium_logout',
+                'selenium_login',
+                'selenium_login:open_login_page',
+                'selenium_login:login_get_started',
+                'selenium_create_pull_request:create_pull_request',
+                'selenium_create_pull_request:merge_pull_request',
+                'selenium_view_repository',
+                'selenium_comment_pull_request_file',
+                'selenium_z_logout',
                 ]
 
 

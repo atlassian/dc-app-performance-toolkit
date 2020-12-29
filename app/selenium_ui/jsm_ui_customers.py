@@ -41,5 +41,5 @@ Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
 
 
 # this action should be the last one
-def test_2_selenium_customer_z_log_out(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.log_out(jsm_webdriver, jsm_datasets)
+def test_2_selenium_customer_z_logout(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_customers.logout(jsm_webdriver, jsm_datasets)

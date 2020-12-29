@@ -153,9 +153,9 @@ def create_comment(webdriver, datasets):
     measure()
 
 
-def log_out(webdriver, datasets):
+def logout(webdriver, datasets):
 
-    @print_timing("selenium_log_out")
+    @print_timing("selenium_logout")
     def measure():
         logout_page = Logout(webdriver)
         logout_page.go_to()

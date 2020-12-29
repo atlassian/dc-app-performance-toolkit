@@ -78,5 +78,5 @@ Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
 
 
 # this action should be the last one
-def test_2_selenium_agent_z_log_out(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.log_out(jsm_webdriver, jsm_datasets)
+def test_2_selenium_agent_z_logout(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.logout(jsm_webdriver, jsm_datasets)

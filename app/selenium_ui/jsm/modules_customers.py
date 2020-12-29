@@ -153,10 +153,10 @@ def share_customer_request(webdriver, datasets):
     measure()
 
 
-def log_out(webdriver, datasets):
+def logout(webdriver, datasets):
     top_panel = TopPanel(webdriver)
 
-    @print_timing("selenium_customer_log_out")
+    @print_timing("selenium_customer_logout")
     def measure():
         top_panel.open_profile_menu()
         top_panel.logout()
