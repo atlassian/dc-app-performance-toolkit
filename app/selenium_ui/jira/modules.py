@@ -48,7 +48,7 @@ def setup_run_data(datasets):
 def login(webdriver, datasets):
     setup_run_data(datasets)
 
-    @print_timing("selenium_a_login")
+    @print_timing("selenium_login")
     def measure():
         login_page = Login(webdriver)
 
@@ -230,7 +230,7 @@ def view_dashboard(webdriver, datasets):
 def log_out(webdriver, datasets):
     logout_page = Logout(webdriver)
 
-    @print_timing("selenium_z_log_out")
+    @print_timing("selenium_log_out")
     def measure():
         logout_page.go_to()
         logout_page.click_logout()

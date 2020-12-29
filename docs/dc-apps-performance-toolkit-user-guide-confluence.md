@@ -756,7 +756,7 @@ To generate a performance regression report:
 1. Run the following command:
 
     ``` bash
-    python csv_chart_generator.py performance_profile.yml
+    python csv_chart_generator.py performance_profile.yml confluence
     ```
 1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
 
@@ -866,7 +866,7 @@ To generate a scalability report:
 1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
-    python csv_chart_generator.py scale_profile.yml
+    python csv_chart_generator.py scale_profile.yml confluence
     ```
 1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 

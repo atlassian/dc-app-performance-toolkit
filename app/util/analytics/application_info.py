@@ -66,6 +66,7 @@ class Jira(BaseApplication):
         return ['selenium_login:open_login_page',
                 'selenium_login:login_and_view_dashboard',
                 'selenium_a_login',
+                'selenium_login',
                 'selenium_browse_projects_list',
                 'selenium_browse_boards_list',
                 'selenium_create_issue:open_quick_create',
@@ -86,6 +87,7 @@ class Jira(BaseApplication):
                 'selenium_view_issue',
                 'selenium_view_project_summary',
                 'selenium_z_log_out',
+                'selenium_log_out',
                 ]
 
     @property
@@ -151,6 +153,7 @@ class Confluence(BaseApplication):
     @property
     def selenium_default_actions(self):
         return ['selenium_a_login',
+                'selenium_login',
                 'selenium_create_comment',
                 'selenium_create_page',
                 'selenium_edit_page',
@@ -158,6 +161,15 @@ class Confluence(BaseApplication):
                 'selenium_view_dashboard',
                 'selenium_view_page',
                 'selenium_z_log_out',
+                'selenium_log_out',
+                'selenium_login:open_login_page',
+                'selenium_login:login_and_view_dashboard',
+                'selenium_create_page:open_create_page_editor',
+                'selenium_create_page:save_created_page',
+                'selenium_edit_page:open_create_page_editor',
+                'selenium_edit_page:save_edited_page',
+                'selenium_create_comment:write_comment',
+                'selenium_create_comment:save_comment',
                 ]
 
     @property

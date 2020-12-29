@@ -4,7 +4,7 @@ from locustio.common_utils import init_logger, jsm_customer_measure
 logger = init_logger(app_type='jsm')
 
 
-@jsm_customer_measure
+@jsm_customer_measure('locust_custom_action')
 def app_specific_action(locust):
     r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
     content = r.content.decode('utf-8')   # decode response content
