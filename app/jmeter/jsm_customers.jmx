@@ -1143,7 +1143,7 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/servicedesk/customer/comment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/customer/comment</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1201,7 +1201,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1256,7 +1256,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/participants/${request_key}/search</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/participants/${request_key}/search</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1297,7 +1297,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1480,7 +1480,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/participants/${request_key}/search</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/participants/${request_key}/search</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1514,7 +1514,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1696,7 +1696,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1736,7 +1736,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/analytics/1.0/publish/bulk</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1956,6 +1956,113 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_standalone_extension" enabled="true">
+            <intProp name="ThroughputController.style">1</intProp>
+            <boolProp name="ThroughputController.perThread">false</boolProp>
+            <intProp name="ThroughputController.maxThroughput">1</intProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_customer_standalone_extension}</stringProp>
+          </ThroughputController>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_app_specific_action" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/app/get_endpoint</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_id" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">app_id</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_token" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">app_token</stringProp>
+                  <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="261585815">asserttion string</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoing" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="id" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${app_id}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">id</stringProp>
+                    </elementProp>
+                    <elementProp name="token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${app_token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">token</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/app/post_endpoint</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-787535121">assertion string</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
               </hashTree>
             </hashTree>

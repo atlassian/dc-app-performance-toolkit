@@ -11,7 +11,8 @@ from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
-    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
+    JSM_DATASET_CUSTOM_ISSUES
 
 ERROR_LIMIT = 10
 DEFAULT_AGENT_PREFIX = 'performance_agent_'
@@ -26,6 +27,7 @@ SERVICE_DESKS_LARGE = "service_desks_large"
 SERVICE_DESKS_MEDIUM = "service_desks_medium"
 SERVICE_DESKS_SMALL = "service_desks_small"
 REQUEST_TYPES = "request_types"
+CUSTOM_ISSUES = "custom_issues"
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -377,6 +379,17 @@ def __get_request_types(jsm_api, service_desks):
     return [','.join(i) for i in request_types_list]
 
 
+def __get_custom_issues(jira_api, custom_jql):
+    issues = []
+    if custom_jql:
+        issues = jira_api.issues_search(
+            jql=custom_jql, max_results=8000
+        )
+        if not issues:
+            print(f"There are no issues found using JQL {custom_jql}")
+    return issues
+
+
 def __create_data_set(jira_client, jsm_client):
     dataset = dict()
     service_desks = jsm_client.get_all_service_desks()
@@ -404,6 +417,7 @@ def __create_data_set(jira_client, jsm_client):
     requests_types = pool.apply_async(__get_request_types, kwds={'jsm_api': jsm_client,
                                                                  'service_desks': service_desks})
     dataset[REQUEST_TYPES] = requests_types.get()
+    dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, JSM_SETTINGS.custom_dataset_query)
 
     return dataset
 
@@ -417,6 +431,8 @@ def write_test_data_to_files(datasets):
     __write_to_file(JSM_DATASET_SERVICE_DESKS_S, datasets[SERVICE_DESKS_SMALL])
     __write_to_file(JSM_DATASET_SERVICE_DESKS_M, datasets[SERVICE_DESKS_MEDIUM])
     __write_to_file(JSM_DATASET_REQUEST_TYPES, datasets[REQUEST_TYPES])
+    issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets[CUSTOM_ISSUES]]
+    __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
 
 
 @print_timing('Full prepare data')

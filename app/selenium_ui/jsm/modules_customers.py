@@ -7,6 +7,7 @@ REQUESTS = "requests"
 CUSTOMERS = "customers"
 SERVICE_DESKS_LARGE = "service_desks_large"
 SERVICE_DESKS_SMALL = "service_desks_small"
+CUSTOM_ISSUES = "custom_issues"
 
 
 def __get_random_customer_request(customer):
@@ -37,6 +38,12 @@ def setup_run_data(datasets):
     datasets['service_desk_id'] = request[2]
     datasets['project_id'] = request[3]
     datasets['project_key'] = request[4]
+
+    if CUSTOM_ISSUES in datasets:
+        if len(datasets[CUSTOM_ISSUES]) > 0:
+            custom_issue = random.choice(datasets[CUSTOM_ISSUES])
+            datasets['custom_issue_key'] = custom_issue[0]
+            datasets['custom_issue_id'] = custom_issue[1]
 
 
 def login(webdriver, datasets):
