@@ -145,7 +145,9 @@ class ViewQueue(BasePage):
 
     def get_random_queue(self):
         queues = self.get_elements(ViewQueueLocators.queues)
-        random_queue = random.choice([queue for queue in queues if queue.text.partition('\n')[0] != 'All open'
+        random_queue = random.choice([queue for queue in queues
+                                      if queue.text.partition('\n')[0] not in
+                                      ['All open', 'Recently resolved', 'Resolved past 7 days']
                                       and queue.text.partition('\n')[2] != '0'])
         random_queue.click()
         self.wait_until_clickable(ViewQueueLocators.reporter)
