@@ -316,7 +316,7 @@ def view_project_queue(locust, project_key, project_id, queue_id):
                         and queue['params']['count'] != '0':
                     queues_ids.append(queue['key'])
 
-    # Set small project random queue id for action 'view_queuerandom_'
+    # Set small project random queue id for action 'view_queue_random'
     locust.session_data_storage[f'{project_key}_random_queue_id'] = random.choice(queues_ids)
 
     locust.client.put('/rest/projects/1.0/subnav/sd-queues-nav/pin', headers=RESOURCE_HEADERS, catch_response=True)
