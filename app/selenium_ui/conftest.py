@@ -1,10 +1,12 @@
 import atexit
 import csv
 import datetime
+import functools
 import sys
 import time
-import functools
+from datetime import timezone
 
+import filelock
 import pytest
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
@@ -12,8 +14,8 @@ from selenium.webdriver.chrome.options import Options
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS,\
-    BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES,\
+    JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
+    BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S
 
@@ -119,9 +121,12 @@ def print_timing(interaction=None):
             end = time.time()
             timing = str(int((end - start) * 1000))
 
-            with open(selenium_results_file, "a+") as jtl_file:
-                timestamp = round(time.time() * 1000)
-                jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+            lockfile = f'{selenium_results_file}.lock'
+
+            with filelock.SoftFileLock(lockfile):
+                with open(selenium_results_file, "a+") as jtl_file:
+                    timestamp = round(time.time() * 1000)
+                    jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
@@ -233,7 +238,12 @@ def get_screen_shots(request, webdriver):
         action_name = request.node.rep_call.head_line
         error_text = request.node.rep_call.longreprtext
         with open(selenium_error_file, mode) as err_file:
-            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
+            timestamp = round(time.time() * 1000)
+            dt = datetime.datetime.now()
+            utc_time = dt.replace(tzinfo=timezone.utc)
+            str_time = utc_time.strftime("%m-%d-%Y, %H:%M:%S")
+            str_time_stamp = f'{str_time}, {timestamp}'
+            err_file.write(f"{str_time_stamp}, Action: {action_name}, Error: {error_text}\n")
         print(f"Action: {action_name}, Error: {error_text}\n")
         errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
         errors_artifacts.mkdir(parents=True, exist_ok=True)

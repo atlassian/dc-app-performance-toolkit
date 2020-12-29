@@ -83,8 +83,6 @@ class ViewCustomerRequest(BasePage):
         else:
             self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
 
-        self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_internally_btn))\
-            .click().perform()
         self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
 
