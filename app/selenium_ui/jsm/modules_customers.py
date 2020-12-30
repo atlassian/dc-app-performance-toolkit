@@ -96,11 +96,11 @@ def create_request(webdriver, datasets):
     measure()
 
 
-def view_customer_request(webdriver, datasets):
+def view_request(webdriver, datasets):
     customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
                                        request_key=datasets['customer_request_key'])
 
-    @print_timing("selenium_customer_view_customer_request")
+    @print_timing("selenium_customer_view_request")
     def measure():
         customer_request.go_to()
         customer_request.wait_for_page_loaded()
@@ -127,11 +127,11 @@ def view_all_requests(webdriver, datasets):
     measure()
 
 
-def comment_customer_request(webdriver, datasets):
+def comment_request(webdriver, datasets):
     customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
                                        request_key=datasets['customer_request_key'])
 
-    @print_timing("selenium_customer_comment_customer_request")
+    @print_timing("selenium_customer_comment_request")
     def measure():
         customer_request.go_to()
         customer_request.wait_for_page_loaded()
@@ -139,7 +139,7 @@ def comment_customer_request(webdriver, datasets):
     measure()
 
 
-def share_customer_request(webdriver, datasets):
+def share_request(webdriver, datasets):
     customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
                                        request_key=datasets['customer_request_key'])
     customer_request.go_to()
@@ -153,7 +153,7 @@ def share_customer_request(webdriver, datasets):
             customer_request.search_for_customer_to_share_with(customer_name='performance_customer')
         sub_measure()
 
-        @print_timing("selenium_customer_share_request:share_request")
+        @print_timing("selenium_customer_share_request:share_request_with_customer")
         def sub_measure():
             customer_request.share_request()
         sub_measure()

@@ -12,23 +12,23 @@ def test_1_selenium_customer_create_request(jsm_webdriver, jsm_datasets, jsm_scr
 
 
 def test_1_selenium_customer_view_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.view_customer_request(jsm_webdriver, jsm_datasets)
+    modules_customers.view_request(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_customer_my_requests(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+def test_1_selenium_customer_view_my_requests(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     modules_customers.view_my_requests(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_customer_all_requests(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+def test_1_selenium_customer_view_all_requests(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     modules_customers.view_all_requests(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_customer_share_customer_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.share_customer_request(jsm_webdriver, jsm_datasets)
+def test_1_selenium_customer_share_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_customers.share_request(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_customer_comment_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.comment_customer_request(jsm_webdriver, jsm_datasets)
+    modules_customers.comment_request(jsm_webdriver, jsm_datasets)
 
 
 """
