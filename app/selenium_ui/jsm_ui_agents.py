@@ -58,14 +58,14 @@ def test_1_selenium_agent_add_request_comment(jsm_webdriver, jsm_datasets, jsm_s
     modules_agents.add_request_comment(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_agent_view_queues_medium_project(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+def test_1_selenium_agent_view_queues_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     if is_dataset_small(jsm_datasets):
         pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
-    modules_agents.view_queues_medium_project(jsm_webdriver, jsm_datasets)
+    modules_agents.view_queues_medium(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_agent_view_queues_small_project(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.view_queues_small_project(jsm_webdriver, jsm_datasets)
+def test_1_selenium_agent_view_queues_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.view_queues_small(jsm_webdriver, jsm_datasets)
 
 
 """

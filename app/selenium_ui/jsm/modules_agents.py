@@ -232,14 +232,14 @@ def add_request_comment(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_queues_medium_project(webdriver, datasets):
+def view_queues_medium(webdriver, datasets):
     browse_queues_page = ViewQueue(webdriver, project_key=datasets['medium_project_key'],
                                    queue_id=datasets['all_open_queue_id_medium'])
     view_queues_form_diff_projects_size(browse_queues_page, project_size='large')
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_queues_small_project(webdriver, datasets):
+def view_queues_small(webdriver, datasets):
     browse_queues_page = ViewQueue(webdriver, project_key=datasets['small_project_key'],
                                    queue_id=datasets['all_open_queue_id_small'])
     view_queues_form_diff_projects_size(browse_queues_page, project_size='small')
