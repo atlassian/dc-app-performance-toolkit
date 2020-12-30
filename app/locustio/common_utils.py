@@ -140,30 +140,40 @@ def jira_measure(interaction=None):
     return deco_wrapper
 
 
-def jsm_agent_measure(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = global_measure(func, start, *args, **kwargs)
-        total = (time.time() - start)
-        if total < jsm_agent_action_time:
-            sleep = (jsm_agent_action_time - total)
-            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-            time.sleep(sleep)
-        return result
-    return wrapper
+def jsm_agent_measure(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to the jsm_agent_measure decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = global_measure(func, start, interaction, *args, **kwargs)
+            total = (time.time() - start)
+            if total < jsm_agent_action_time:
+                sleep = (jsm_agent_action_time - total)
+                print(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
+                time.sleep(sleep)
+            return result
+        return wrapper
+    return deco_wrapper
 
 
-def jsm_customer_measure(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = global_measure(func, start, *args, **kwargs)
-        total = (time.time() - start)
-        if total < jsm_customer_action_time:
-            sleep = (jsm_customer_action_time - total)
-            print(f'action: {func.__name__}, action_execution_time: {total}, sleep {sleep}')
-            time.sleep(sleep)
-        return result
-    return wrapper
+def jsm_customer_measure(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to the jsm_customer_measure decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = global_measure(func, start, interaction, *args, **kwargs)
+            total = (time.time() - start)
+            if total < jsm_customer_action_time:
+                sleep = (jsm_customer_action_time - total)
+                print(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
+                time.sleep(sleep)
+            return result
+        return wrapper
+    return deco_wrapper
 
 
 def confluence_measure(interaction=None):
