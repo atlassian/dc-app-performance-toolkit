@@ -13,7 +13,7 @@ def test_0_selenium_agent_a_login(jsm_webdriver, jsm_datasets, jsm_screen_shots)
 
 
 def test_1_selenium_agent_browse_service_desk_projects_list(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.browse_projects_list(jsm_webdriver, jsm_datasets)
+    modules_agents.browse_service_desk_projects_list(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_agent_browse_project_customers_page(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -61,11 +61,11 @@ def test_1_selenium_agent_add_request_comment(jsm_webdriver, jsm_datasets, jsm_s
 def test_1_selenium_agent_view_queue_all_open_medium_project(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     if is_dataset_small(jsm_datasets):
         pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
-    modules_agents.view_queue_medium_project(jsm_webdriver, jsm_datasets)
+    modules_agents.view_queue_all_open_medium_project(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_agent_view_queue_all_open_small_project(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.view_queue_small_project(jsm_webdriver, jsm_datasets)
+    modules_agents.view_queue_all_open_small_project(jsm_webdriver, jsm_datasets)
 
 
 """
@@ -78,5 +78,5 @@ Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
 
 
 # this action should be the last one
-def test_2_selenium_agent_z_log_out(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.log_out(jsm_webdriver, jsm_datasets)
+def test_2_selenium_agent_z_logout(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.logout(jsm_webdriver, jsm_datasets)
