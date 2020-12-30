@@ -167,16 +167,16 @@ def view_created_vs_resolved_report_small(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_queue_form_diff_projects_size(browse_queue_page, project_size):
-    @print_timing(f'selenium_agent_view_queue_{project_size}_project')
+def view_queues_form_diff_projects_size(browse_queue_page, project_size):
+    @print_timing(f'selenium_agent_view_queues_{project_size}_project')
     def measure():
-        @print_timing(f'selenium_agent_view_queue_{project_size}_project_:all_open')
+        @print_timing(f'selenium_agent_view_queues_{project_size}_project_:all_open_queue')
         def sub_measure():
             browse_queue_page.go_to()
             browse_queue_page.wait_for_page_loaded()
         sub_measure()
 
-        @print_timing(f'selenium_agent_view_queue_{project_size}_project:random_choice_queue')
+        @print_timing(f'selenium_agent_view_queues_{project_size}_project:random_choice_queue')
         def sub_measure():
             browse_queue_page.get_random_queue()
         sub_measure()
@@ -232,17 +232,17 @@ def add_request_comment(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_queue_all_open_medium_project(webdriver, datasets):
+def view_queues_medium(webdriver, datasets):
     browse_queues_page = ViewQueue(webdriver, project_key=datasets['medium_project_key'],
                                    queue_id=datasets['all_open_queue_id_medium'])
-    view_queue_form_diff_projects_size(browse_queues_page, project_size='large')
+    view_queues_form_diff_projects_size(browse_queues_page, project_size='large')
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def view_queue_all_open_small_project(webdriver, datasets):
+def view_queues_small(webdriver, datasets):
     browse_queues_page = ViewQueue(webdriver, project_key=datasets['small_project_key'],
                                    queue_id=datasets['all_open_queue_id_small'])
-    view_queue_form_diff_projects_size(browse_queues_page, project_size='small')
+    view_queues_form_diff_projects_size(browse_queues_page, project_size='small')
     PopupManager(webdriver).dismiss_default_popup()
 
 
