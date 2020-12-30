@@ -13,10 +13,10 @@ def app_specific_action(webdriver, datasets):
         app_specific_issue = random.choice(datasets['custom_issues'])
         issue_key = app_specific_issue[0]
 
-    @print_timing("selenium_agent_app_custom_action")
+    @print_timing("selenium_agent_app_specific_action")
     def measure():
 
-        @print_timing("selenium_agent_app_custom_action:view_request")
+        @print_timing("selenium_agent_app_specific_action:view_request")
         def sub_measure():
             page.go_to_url(f"{JSM_SETTINGS.server_url}/browse/{issue_key}")
             page.wait_until_visible((By.ID, "summary-val"))  # Wait for summary field visible
