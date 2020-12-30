@@ -1029,7 +1029,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <intProp name="ThroughputController.style">1</intProp>
               <boolProp name="ThroughputController.perThread">false</boolProp>
               <intProp name="ThroughputController.maxThroughput">1</intProp>
-              <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_small}</stringProp>
+              <stringProp name="ThroughputController.percentThroughput">${__jexl2(${perc_agent_view_queues_small} / 2)}</stringProp>
             </ThroughputController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_small:all_open_queue" enabled="true">
@@ -5114,7 +5114,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <intProp name="ThroughputController.style">1</intProp>
                 <boolProp name="ThroughputController.perThread">false</boolProp>
                 <intProp name="ThroughputController.maxThroughput">1</intProp>
-                <stringProp name="ThroughputController.percentThroughput">${perc_agent_view_queues_medium}</stringProp>
+                <stringProp name="ThroughputController.percentThroughput">${__jexl2(${perc_agent_view_queues_medium} / 2)}</stringProp>
               </ThroughputController>
               <hashTree>
                 <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_view_queues_medium:all_open_queue" enabled="true">
