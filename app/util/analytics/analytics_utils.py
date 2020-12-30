@@ -11,6 +11,8 @@ OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 APP_SPECIFIC_TAG = 'APP-SPECIFIC'
 TEST_RATE = 0
 AVG_RT = 1
+
+# Add an exception to these actions because of long time execution
 EXCEPTIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh', 'selenium_create_pull_request']
 
 
