@@ -8863,22 +8863,22 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
             <stringProp name="ThroughputController.percentThroughput">${perc_standalone_extension}</stringProp>
           </ThroughputController>
           <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate diagram name" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">
+vars.put(&quot;p_diagram_name&quot;, (new Random().with {(1..20).collect {((&apos;a&apos;..&apos;z&apos;)).
+				join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString());
+</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_app_specific_action" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate diagram name" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">
-vars.put(&quot;p_diagram_name&quot;, (new Random().with {(1..20).collect {((&apos;a&apos;..&apos;z&apos;)).
-				join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString());
-</stringProp>
-              </JSR223PreProcessor>
-              <hashTree/>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /rest/drawio/1.0/diagram/crud" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
