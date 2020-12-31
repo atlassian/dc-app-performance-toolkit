@@ -8874,8 +8874,8 @@ vars.put(&quot;p_uuid&quot;, UUID.randomUUID().toString());</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
                 <stringProp name="script">
-vars.put(&quot;p_diagram_name&quot;, &quot;&lt;p&gt;Comment page by JMeter: &quot; + (new Random().with {(1..20).collect {((&apos;a&apos;..&apos;z&apos;)).
-				join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString() + &quot;&lt;p&gt;&quot;);
+vars.put(&quot;p_diagram_name&quot;, (new Random().with {(1..20).collect {((&apos;a&apos;..&apos;z&apos;)).
+				join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString());
 </stringProp>
               </JSR223PreProcessor>
               <hashTree/>
