@@ -211,6 +211,11 @@
               <stringProp name="Argument.value">${__P(perc_agent_view_customers, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="perc_agent_standalone_extension" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_standalone_extension</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_standalone_extension, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>

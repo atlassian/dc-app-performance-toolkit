@@ -232,6 +232,11 @@ import org.apache.commons.io.FileUtils;
               <stringProp name="Argument.value">${__P(perc_customer_create_request, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="perc_customer_standalone_extension" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_standalone_extension</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_standalone_extension, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>
