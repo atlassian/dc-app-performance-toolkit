@@ -17,15 +17,15 @@ class JsmAgentBehavior(MyBaseTaskSet):
         agents_http_actions.agent_login_and_view_dashboard(self, jsm_agent_dataset)
 
     @task(config.percentage('agent_view_queues_small')//2)
-    def agent_small_view_queue_all_open(self):
-        agents_http_actions.agent_small_view_queue_all_open(self)
-        agents_http_actions.agent_small_view_queue_random(self)
+    def agent_view_queues_small(self):
+        agents_http_actions.agent_view_queue_all_open_small(self)
+        agents_http_actions.agent_view_queue_random_small(self)
 
     @task(config.percentage('agent_view_queues_medium')//2)
-    def agent_medium_view_queue_all_open(self):
+    def agent_view_queues_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_medium_view_queue_all_open(self)
-            agents_http_actions.agent_medium_view_queue_random(self)
+            agents_http_actions.agent_view_queue_all_open_medium(self)
+            agents_http_actions.agent_view_queue_random_medium(self)
 
     @task(config.percentage('agent_browse_projects'))
     def agent_browse_projects(self):
@@ -50,12 +50,12 @@ class JsmAgentBehavior(MyBaseTaskSet):
 
     @task(config.percentage('agent_view_report_time_to_resolution_small'))
     def agent_view_time_to_resolution_report_small(self):
-        agents_http_actions.agent_small_view_time_to_resolution_report(self)
+        agents_http_actions.agent_view_time_to_resolution_report_small(self)
 
     @task(config.percentage('agent_view_report_time_to_resolution_medium'))
     def agent_view_time_to_resolution_report_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_medium_view_time_to_resolution_report(self)
+            agents_http_actions.agent_view_time_to_resolution_report_medium(self)
 
     @task(config.percentage('agent_view_report_created_vs_resolved_small'))
     def agent_view_created_vs_resolved_report_small(self):
@@ -64,13 +64,13 @@ class JsmAgentBehavior(MyBaseTaskSet):
     @task(config.percentage('agent_view_report_created_vs_resolved_medium'))
     def agent_view_created_vs_resolved_report_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_medium_view_created_vs_resolved_report(self)
+            agents_http_actions.agent_view_created_vs_resolved_report_medium(self)
 
     @task(config.percentage('agent_view_customers'))
     def agent_view_customers(self):
         agents_http_actions.agent_view_customers(self)
 
-    @task(config.percentage('standalone_extension'))  # By default disabled
+    @task(config.percentage('agent_standalone_extension'))  # By default disabled
     def custom_action(self):
         app_specific_action(self)
 
