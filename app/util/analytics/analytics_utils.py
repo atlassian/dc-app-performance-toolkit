@@ -26,7 +26,10 @@ def is_docker():
 
 def format_string_summary_report(string_to_format, offset=50):
     # format string with delimiter "|"
-    return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
+    second_offset = 20
+    enum_string_to_format = enumerate(string_to_format.split("|"))
+    return ''.join([f'{item}{" " * (offset - len(str(item)))}' if i < 1 else
+                    f'{item}{" " * (second_offset - len(str(item)))}' for i, item in enum_string_to_format]) + "\n"
 
 
 def write_to_file(content, file):
