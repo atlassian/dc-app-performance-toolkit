@@ -29,42 +29,42 @@ class JsmAgentBehavior(MyBaseTaskSet):
 
     @task(config.percentage('agent_browse_projects'))
     def agent_browse_projects(self):
-        agents_http_actions.agent_browse_jsm_projects(self)
+        agents_http_actions.agent_browse_projects(self)
 
     @task(config.percentage('agent_view_request'))
-    def agent_view_service_desk_request(self):
-        agents_http_actions.agent_view_service_desk_request(self)
+    def agent_view_request(self):
+        agents_http_actions.agent_view_request(self)
 
     @task(config.percentage('agent_add_comment'))
     def agent_add_comment(self):
         agents_http_actions.agent_add_comment(self)
 
     @task(config.percentage('agent_view_report_workload_small'))
-    def agent_view_workload_report_small(self):
-        agents_http_actions.agent_small_view_workload_report(self)
+    def agent_view_report_workload_small(self):
+        agents_http_actions.agent_view_report_workload_small(self)
 
     @task(config.percentage('agent_view_report_workload_medium'))
-    def agent_view_workload_report_medium(self):
+    def agent_view_report_workload_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_medium_view_workload_report(self)
+            agents_http_actions.agent_view_report_workload_medium(self)
 
     @task(config.percentage('agent_view_report_time_to_resolution_small'))
-    def agent_view_time_to_resolution_report_small(self):
-        agents_http_actions.agent_view_time_to_resolution_report_small(self)
+    def agent_view_report_time_to_resolution_small(self):
+        agents_http_actions.agent_view_report_time_to_resolution_small(self)
 
     @task(config.percentage('agent_view_report_time_to_resolution_medium'))
-    def agent_view_time_to_resolution_report_medium(self):
+    def agent_view_report_time_to_resolution_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_view_time_to_resolution_report_medium(self)
+            agents_http_actions.agent_view_report_time_to_resolution_medium(self)
 
     @task(config.percentage('agent_view_report_created_vs_resolved_small'))
-    def agent_view_created_vs_resolved_report_small(self):
-        agents_http_actions.agent_small_view_created_vs_resolved_report(self)
+    def agent_view_report_created_vs_resolved_small(self):
+        agents_http_actions.agent_view_report_created_vs_resolved_small(self)
 
     @task(config.percentage('agent_view_report_created_vs_resolved_medium'))
-    def agent_view_created_vs_resolved_report_medium(self):
+    def agent_view_report_created_vs_resolved_medium(self):
         if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_view_created_vs_resolved_report_medium(self)
+            agents_http_actions.agent_view_report_created_vs_resolved_medium(self)
 
     @task(config.percentage('agent_view_customers'))
     def agent_view_customers(self):
