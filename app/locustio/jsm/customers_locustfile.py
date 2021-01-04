@@ -31,10 +31,10 @@ class JsmCustomerBehavior(MyBaseTaskSet):
 
     @task(config.percentage('customer_share_request_with_customer'))
     def customer_share_request_with_customer(self):
-        customers_http_actions.customer_share_request(self)
+        customers_http_actions.customer_share_request_with_customer(self)
 
-    @task(config.percentage('customer_share_request_with_customer'))
-    def customer_share_request_with_organization(self):
+    @task(config.percentage('customer_share_request_with_org'))
+    def customer_share_request_with_org(self):
         customers_http_actions.customer_share_request_with_org(self)
 
     @task(config.percentage('customer_create_request'))
