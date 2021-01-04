@@ -1,4 +1,4 @@
-from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
+from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
 from selenium.common.exceptions import WebDriverException
 
 BATCH_SIZE_BOARDS = 1000
@@ -273,3 +273,8 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/api/2/mypermissions'
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
+
+    def get_service_desk_info(self):
+        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
+        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
+        return service_desk_info.json()

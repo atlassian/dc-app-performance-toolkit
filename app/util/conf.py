@@ -75,6 +75,7 @@ class JsmSettings(BaseAppSettings):
         self.agents_total_actions_per_hr = self.get_property('total_actions_per_hour_agents')
         self.customers_total_actions_per_hr = self.get_property('total_actions_per_hour_customers')
         self.customers_concurrency = self.env_settings['concurrency_customers']
+        self.concurrency = self.agents_concurrency + self.customers_concurrency
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
 

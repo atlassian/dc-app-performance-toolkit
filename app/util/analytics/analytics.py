@@ -12,10 +12,12 @@ from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
+JSM = 'jsm'
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
-                BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400}
+                BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
+                JSM: {'test_duration': 2700, 'customer_concurrency': 1, 'agent_concurrency': 1}
                 }
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
@@ -38,6 +40,9 @@ class AnalyticsCollector:
         self.concurrency = self.conf.concurrency
         self.actual_duration = bzt_log.actual_run_time
         self.all_test_actions = bzt_log.all_test_actions
+
+
+
         self.selenium_test_rates, self.jmeter_test_rates, self.locust_test_rates, self.app_specific_rates = \
             generate_test_actions_by_type(test_actions=self.all_test_actions, application=application)
         self.time_stamp = get_timestamp()
@@ -136,8 +141,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    if collector.is_analytics_enabled():
-        send_analytics(collector)
+    # if collector.is_analytics_enabled():
+    #     send_analytics(collector)
 
 
 if __name__ == '__main__':
