@@ -30,10 +30,10 @@ def test_1_selenium_agent_view_report_workload_medium(jsm_webdriver, jsm_dataset
     modules_agents.view_report_workload_medium(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_agent_view_report_time_to_resolution_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    if is_dataset_small(jsm_datasets):
-        pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
-    modules_agents.view_report_time_to_resolution_medium(jsm_webdriver, jsm_datasets)
+# def test_1_selenium_agent_view_report_time_to_resolution_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     if is_dataset_small(jsm_datasets):
+#         pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
+#     modules_agents.view_report_time_to_resolution_medium(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_agent_view_report_created_vs_resolved_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -46,8 +46,8 @@ def test_1_selenium_agent_view_report_workload_small(jsm_webdriver, jsm_datasets
     modules_agents.view_report_workload_small(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_agent_view_report_time_to_resolution_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_agents.view_report_time_to_resolution_small(jsm_webdriver, jsm_datasets)
+# def test_1_selenium_agent_view_report_time_to_resolution_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     modules_agents.view_report_time_to_resolution_small(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_agent_view_report_created_vs_resolved_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):

@@ -19,7 +19,7 @@ class JsmCustomerBehavior(MyBaseTaskSet):
 
     @task(config.percentage('customer_view_requests'))
     def customer_view_requests(self):
-        customers_http_actions.view_requests(self)
+        customers_http_actions.customer_view_requests(self)
 
     @task(config.percentage('customer_view_request'))
     def customer_view_request(self):
@@ -31,17 +31,17 @@ class JsmCustomerBehavior(MyBaseTaskSet):
 
     @task(config.percentage('customer_share_request_with_customer'))
     def customer_share_request_with_customer(self):
-        customers_http_actions.share_customer_request(self)
+        customers_http_actions.customer_share_request_with_customer(self)
 
-    @task(config.percentage('customer_share_request_with_customer'))
-    def customer_share_request_with_organization(self):
-        customers_http_actions.share_request_with_org(self)
+    @task(config.percentage('customer_share_request_with_org'))
+    def customer_share_request_with_org(self):
+        customers_http_actions.customer_share_request_with_org(self)
 
     @task(config.percentage('customer_create_request'))
     def customer_create_request(self):
-        customers_http_actions.create_request(self)
+        customers_http_actions.customer_create_request(self)
 
-    @task(config.percentage('standalone_extension'))  # By default disabled
+    @task(config.percentage('customer_standalone_extension'))  # By default disabled
     def custom_action(self):
         app_specific_action(self)
 

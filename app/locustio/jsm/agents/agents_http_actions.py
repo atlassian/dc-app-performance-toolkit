@@ -9,7 +9,7 @@ from locustio.jsm.agents.agents_requests_params import Login, AllOpenQueue, Brow
 logger = init_logger(app_type='jsm')
 
 
-@jsm_agent_measure
+@jsm_agent_measure('locust_agent_login_and_view_dashboard')
 def agent_login_and_view_dashboard(locust, jsm_agent_dataset):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
@@ -85,15 +85,15 @@ def agent_login_and_view_dashboard(locust, jsm_agent_dataset):
     logger.locust_info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
 
 
-@jsm_agent_measure
-def agent_small_view_queue_all_open(locust):
+@jsm_agent_measure('locust_agent_view_queues_small:all_open_queue')
+def agent_view_queue_all_open_small(locust):
     view_project_queue(locust=locust, project_key=locust.session_data_storage['s_project_key'],
                        project_id=locust.session_data_storage['s_project_id'],
                        queue_id=locust.session_data_storage['s_project_all_open_queue_id'])
 
 
-@jsm_agent_measure
-def agent_small_view_queue_random(locust):
+@jsm_agent_measure('locust_agent_view_queues_small:random_queue')
+def agent_view_queue_random_small(locust):
     small_project_key = locust.session_data_storage['s_project_key']
     small_project_id = locust.session_data_storage['s_project_id']
     random_queue_id = locust.session_data_storage[f'{small_project_key}_random_queue_id']
@@ -101,15 +101,15 @@ def agent_small_view_queue_random(locust):
                        project_id=small_project_id, queue_id=random_queue_id)
 
 
-@jsm_agent_measure
-def agent_medium_view_queue_all_open(locust):
+@jsm_agent_measure('locust_agent_view_queues_medium:all_open_queue')
+def agent_view_queue_all_open_medium(locust):
     view_project_queue(locust=locust, project_key=locust.session_data_storage['m_project_key'],
                        project_id=locust.session_data_storage['m_project_id'],
                        queue_id=locust.session_data_storage['m_project_all_open_queue_id'])
 
 
-@jsm_agent_measure
-def agent_medium_view_queue_random(locust):
+@jsm_agent_measure('locust_agent_view_queues_medium:random_queue')
+def agent_view_queue_random_medium(locust):
     medium_project_key = locust.session_data_storage['m_project_key']
     medium_project_id = locust.session_data_storage['m_project_id']
     random_queue_id = locust.session_data_storage[f'{medium_project_key}_random_queue_id']
@@ -117,8 +117,8 @@ def agent_medium_view_queue_random(locust):
                        project_id=medium_project_id, queue_id=random_queue_id)
 
 
-@jsm_agent_measure
-def agent_browse_jsm_projects(locust):
+@jsm_agent_measure('locust_agent_browse_projects')
+def agent_browse_projects(locust):
     params = BrowseProjects()
     locust.get('/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=service_desk', catch_response=True)
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("272"),
@@ -129,8 +129,8 @@ def agent_browse_jsm_projects(locust):
                 headers=RESOURCE_HEADERS, catch_response=True)
 
 
-@jsm_agent_measure
-def agent_view_service_desk_request(locust):
+@jsm_agent_measure('locust_agent_view_request')
+def agent_view_request(locust):
     params = ViewRequest()
     locust.get(f'/browse/{locust.session_data_storage["request_key"]}', catch_response=True)
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("282"),
@@ -160,7 +160,7 @@ def agent_add_comment(locust):
 
     params = AddComment()
 
-    @jsm_agent_measure
+    @jsm_agent_measure('locust_agent_add_comment:open_request_comment')
     def agent_open_request_comment(locust):
         locust.get(f'/rest/servicedesk/canned-responses/1/search/{locust.session_data_storage["request_project_key"]}?'
                    f'issueKey={locust.session_data_storage["request_key"]}&'
@@ -179,7 +179,7 @@ def agent_add_comment(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("306"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_agent_measure
+    @jsm_agent_measure('locust_agent_add_comment:save_request_comment')
     def agent_save_request_comment(locust):
         comment = f'Locust comment {generate_random_string(10)}'
         body = {"body": f"{comment}", "properties": [{"key": "sd.public.comment", "value": {"internal": True}}]}
@@ -218,53 +218,53 @@ def agent_add_comment(locust):
     agent_save_request_comment(locust)
 
 
-@jsm_agent_measure
-def agent_small_view_workload_report(locust):
+@jsm_agent_measure('locust_agent_view_report_workload_small')
+def agent_view_report_workload_small(locust):
     small_project_id = locust.session_data_storage['s_project_id']
     small_project_key = locust.session_data_storage['s_project_key']
     view_workload_report(locust=locust, project_id=small_project_id, project_key=small_project_key)
 
 
-@jsm_agent_measure
-def agent_medium_view_workload_report(locust):
+@jsm_agent_measure('locust_agent_view_report_workload_medium')
+def agent_view_report_workload_medium(locust):
     medium_project_id = locust.session_data_storage['m_project_id']
     medium_project_key = locust.session_data_storage['m_project_key']
     view_workload_report(locust=locust, project_id=medium_project_id, project_key=medium_project_key)
 
 
-@jsm_agent_measure
-def agent_small_view_time_to_resolution_report(locust):
+@jsm_agent_measure('locust_agent_view_report_time_to_resolution_small')
+def agent_view_report_time_to_resolution_small(locust):
     time_to_resolution_report_id = locust.session_data_storage['s_time_to_resolution_id']
     small_project_key = locust.session_data_storage['s_project_key']
     view_time_to_resolution_report(locust=locust, project_key=small_project_key,
                                    time_to_resolution_id=time_to_resolution_report_id)
 
 
-@jsm_agent_measure
-def agent_medium_view_time_to_resolution_report(locust):
+@jsm_agent_measure('locust_agent_view_report_time_to_resolution_medium')
+def agent_view_report_time_to_resolution_medium(locust):
     time_to_resolution_report_id = locust.session_data_storage['m_time_to_resolution_id']
     medium_project_key = locust.session_data_storage['m_project_key']
     view_time_to_resolution_report(locust=locust, project_key=medium_project_key,
                                    time_to_resolution_id=time_to_resolution_report_id)
 
 
-@jsm_agent_measure
-def agent_small_view_created_vs_resolved_report(locust):
+@jsm_agent_measure('locust_agent_view_report_created_vs_resolved_small')
+def agent_view_report_created_vs_resolved_small(locust):
     created_vs_resolved_id = locust.session_data_storage['s_created_vs_resolved_queue_id']
     small_project_key = locust.session_data_storage['s_project_key']
     view_created_vs_resolved_report(locust=locust, project_key=small_project_key,
                                     created_vs_resolved_id=created_vs_resolved_id)
 
 
-@jsm_agent_measure
-def agent_medium_view_created_vs_resolved_report(locust):
+@jsm_agent_measure('locust_agent_view_report_created_vs_resolved_medium')
+def agent_view_report_created_vs_resolved_medium(locust):
     created_vs_resolved_id = locust.session_data_storage['m_created_vs_resolved_queue_id']
     medium_project_key = locust.session_data_storage['m_project_key']
     view_created_vs_resolved_report(locust=locust, project_key=medium_project_key,
                                     created_vs_resolved_id=created_vs_resolved_id)
 
 
-@jsm_agent_measure
+@jsm_agent_measure('locust_agent_view_customers')
 def agent_view_customers(locust):
     params = ViewCustomers()
     small_project_key = locust.session_data_storage['s_project_key']

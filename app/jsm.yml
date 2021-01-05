@@ -17,34 +17,34 @@ settings:
     concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour_agents: 13500
-    total_actions_per_hour_customers: 40500
+    total_actions_per_hour_agents: 5000
+    total_actions_per_hour_customers: 15000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No             # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
-    agent_browse_projects: 5
-    agent_view_request: 15
-    agent_add_comment: 15
-    agent_view_queues_small: 15
-    agent_view_queues_medium: 15
+    agent_browse_projects: 10
+    agent_view_request: 25
+    agent_add_comment: 25
+    agent_view_queues_small: 10
+    agent_view_queues_medium: 10
     agent_view_report_workload_small: 4
     agent_view_report_workload_medium: 4
-    agent_view_report_time_to_resolution_small: 6
-    agent_view_report_time_to_resolution_medium: 6
-    agent_view_report_created_vs_resolved_small: 6
-    agent_view_report_created_vs_resolved_medium: 6
-    agent_view_customers: 3
+    agent_view_report_time_to_resolution_small: 0
+    agent_view_report_time_to_resolution_medium: 0
+    agent_view_report_created_vs_resolved_small: 4
+    agent_view_report_created_vs_resolved_medium: 4
+    agent_view_customers: 4
     agent_standalone_extension: 0
 
     customer_view_portal: 10
-    customer_view_requests: 28
-    customer_view_request: 14
-    customer_add_comment: 28
-    customer_share_request_with_customer: 3
-    customer_share_request_with_org: 3
-    customer_create_request: 14
+    customer_view_requests: 25
+    customer_view_request: 15
+    customer_add_comment: 25
+    customer_share_request_with_customer: 5
+    customer_share_request_with_org: 5
+    customer_create_request: 15
     customer_standalone_extension: 0
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
