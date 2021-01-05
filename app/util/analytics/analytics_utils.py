@@ -6,8 +6,14 @@ import socket
 from datetime import datetime, timezone
 
 SUCCESS_TEST_RATE = 95.00
+SUCCESS_AVG_RT = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 APP_SPECIFIC_TAG = 'APP-SPECIFIC'
+TEST_RATE = 0
+AVG_RT = 1
+
+# Add an exception to these actions because of long time execution
+EXCEPTIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh', 'selenium_create_pull_request']
 
 
 def is_docker():
@@ -20,7 +26,10 @@ def is_docker():
 
 def format_string_summary_report(string_to_format, offset=50):
     # format string with delimiter "|"
-    return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
+    second_offset = 20
+    enum_string_to_format = enumerate(string_to_format.split("|"))
+    return ''.join([f'{item}{" " * (offset - len(str(item)))}' if i < 1 else
+                    f'{item}{" " * (second_offset - len(str(item)))}' for i, item in enum_string_to_format]) + "\n"
 
 
 def write_to_file(content, file):
@@ -66,16 +75,19 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    summary_report.append('\nAction|Success Rate|Status')
+    summary_report.append('\nAction|Success Rate|Avg time|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
-        status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{status}')
+        status = 'OK' if value[TEST_RATE] >= SUCCESS_TEST_RATE else 'Fail'
+        avg_rt_status = None
+        if status != 'Fail' and key not in EXCEPTIONS and value[AVG_RT] >= SUCCESS_AVG_RT:
+            avg_rt_status = f'WARNING - action timing >= {SUCCESS_AVG_RT} sec. Check your configuration.'
+        summary_report.append(f'{key}|{value[TEST_RATE]}|{value[AVG_RT]}|{avg_rt_status or status}')
 
     for key, value in collector.app_specific_rates.items():
-        status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{status}|{APP_SPECIFIC_TAG}')
+        status = 'OK' if value[TEST_RATE] >= SUCCESS_TEST_RATE else 'Fail'
+        summary_report.append(f'{key}|{value[TEST_RATE]}|{value[AVG_RT]}|{status}|{APP_SPECIFIC_TAG}')
 
     pretty_report = map(format_string_summary_report, summary_report)
     write_to_file(pretty_report, summary_report_file)
@@ -108,8 +120,8 @@ def convert_to_sec(duration):
 
 
 def is_all_tests_successful(tests: dict):
-    for success_rate in tests.values():
-        if success_rate < SUCCESS_TEST_RATE:
+    for test_stats in tests.values():
+        if test_stats[TEST_RATE] < SUCCESS_TEST_RATE:
             return False
     return True
 

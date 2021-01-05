@@ -10,7 +10,7 @@ logger = init_logger(app_type='jsm')
 jsm_customer_dataset = jsm_customer_datasets()
 
 
-@jsm_customer_measure
+@jsm_customer_measure('locust_customer_login_and_view_portals')
 def customer_login_and_view_portals(locust):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
@@ -53,7 +53,7 @@ def customer_login_and_view_portals(locust):
     assert '"loginSucceeded":true' in r.content.decode('utf-8'), 'Customer login is failed'
 
 
-@jsm_customer_measure
+@jsm_customer_measure('locust_customer_view_portal')
 def customer_view_portal(locust):
     params = ViewPortal()
 
@@ -65,11 +65,11 @@ def customer_view_portal(locust):
                 headers=RESOURCE_HEADERS, catch_response=True)
 
 
-def view_requests(locust):
+def customer_view_requests(locust):
     params = ViewRequests()
     s_service_desk_id = locust.session_data_storage['s_service_desk_id']
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_view_requests:my_requests')
     def customer_view_my_requests(locust):
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("250"),
                     headers=RESOURCE_HEADERS, catch_response=True)
@@ -85,7 +85,7 @@ def view_requests(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("260"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_view_requests:all_requests')
     def customer_view_all_requests(locust):
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("300"),
                     headers=RESOURCE_HEADERS, catch_response=True)
@@ -99,7 +99,7 @@ def view_requests(locust):
         locust.post(f'/rest/servicedesk/1/customer/models', json=customer_models, headers=RESOURCE_HEADERS,
                     catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_view_requests:with_filter_requests')
     def customer_view_all_requests_with_filter(locust):
         portal_request_filter = f'*{generate_random_string(1, only_letters=True)}' \
                                 f'*{generate_random_string(1, only_letters=True)}*'
@@ -119,7 +119,7 @@ def view_requests(locust):
     customer_view_all_requests_with_filter(locust)
 
 
-@jsm_customer_measure
+@jsm_customer_measure('locust_customer_view_request')
 def customer_view_request(locust):
     params = ViewRequest()
     request_portal_id = locust.session_data_storage['request_portal_id']
@@ -137,7 +137,7 @@ def customer_view_request(locust):
                 headers=RESOURCE_HEADERS, catch_response=True)
 
 
-@jsm_customer_measure
+@jsm_customer_measure('locust_customer_add_comment')
 def customer_add_comment(locust):
     params = AddComment()
     p_comment = f'Locust comment {generate_random_string(10)}'
@@ -149,11 +149,11 @@ def customer_add_comment(locust):
                 headers=RESOURCE_HEADERS, catch_response=True)
 
 
-def share_customer_request(locust):
+def customer_share_request_with_customer(locust):
     params = ShareRequest()
     request_key = locust.session_data_storage['request_key']
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_customer:search_customer_for_share_with')
     def customer_search_customer_for_share_with(locust):
         r = locust.get(f'/rest/servicedesk/1/customer/participants/{request_key}/search?q=performance_c',
                        catch_response=True)
@@ -168,7 +168,7 @@ def share_customer_request(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("410"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_customer:add_customer')
     def customer_add_customer(locust):
         if locust.session_data_storage['customer_id_share_with']:
             locust.client.put(f'/rest/servicedesk/1/customer/participants/{request_key}/share',
@@ -176,7 +176,7 @@ def share_customer_request(locust):
                                     "organisationIds": [], "emails": []},
                               headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_customer:remove_customer')
     def customer_remove_customer(locust):
         if locust.session_data_storage['customer_id_share_with']:
             locust.post(f'/rest/servicedesk/1/servicedesk/customer/participant/removeParticipant/{request_key}',
@@ -194,11 +194,11 @@ def share_customer_request(locust):
     customer_remove_customer(locust)
 
 
-def share_request_with_org(locust):
+def customer_share_request_with_org(locust):
     params = ShareRequestOrg()
     request_key = locust.session_data_storage['request_key']
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_org:search_org_for_share_with')
     def customer_search_org_for_share_with(locust):
         r = locust.get(f'/rest/servicedesk/1/customer/participants/{request_key}/search?q=perf_org',
                        catch_response=True)
@@ -208,7 +208,7 @@ def share_request_with_org(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("510"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_org:add_org')
     def customer_add_org(locust):
         if 'org_id_share_with' in locust.session_data_storage:
             locust.client.put(f'/rest/servicedesk/1/customer/participants/{request_key}/share',
@@ -217,7 +217,7 @@ def share_request_with_org(locust):
                                     "emails": []},
                               catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_share_request_with_org:remove_org')
     def customer_remove_org(locust):
         if 'org_id_share_with' in locust.session_data_storage:
             locust.client.put(f'/rest/servicedesk/1/customer/participants/{request_key}/removeOrganisation',
@@ -237,13 +237,13 @@ def share_request_with_org(locust):
     customer_remove_org(locust)
 
 
-def create_request(locust):
+def customer_create_request(locust):
     params = CreateRequest()
     rt_service_desk_id = locust.session_data_storage['rt_service_desk_id']
     rt_id = locust.session_data_storage['rt_id']
     rt_project_id = locust.session_data_storage['rt_project_id']
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_create_request:open_create_request_view')
     def customer_open_create_request_view(locust):
         customer_model = {"models":
                           ["user", "organisations", "sharedPortal", "portal", "helpCenterBranding", "reqCreate",
@@ -256,7 +256,7 @@ def create_request(locust):
         locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("602"),
                     headers=RESOURCE_HEADERS, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_customer_create_request:create_request')
     def customer_create_request(locust):
         p_summary = f'Locust summary {generate_random_string(10, only_letters=True)}'
         p_description = f'Locust description {generate_random_string(10)}'
@@ -273,7 +273,7 @@ def create_request(locust):
                     f'create-request',
                     headers={"Accept": "*/*"}, catch_response=True)
 
-    @jsm_customer_measure
+    @jsm_customer_measure('locust_locust_customer_create_request:view_request_after_creation')
     def customer_view_request_after_creation(locust):
         customer_models = {"models": ["user", "organisations", "sharedPortal", "helpCenterBranding", "portal",
                                       "reqDetails", "portalWebFragments"],
