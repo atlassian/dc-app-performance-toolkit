@@ -12,7 +12,7 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.0`, `4.5.9`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.5`  
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.6`  
     * Confluence Platform release: `7.0.5`
 
 * Supported Bitbucket Server versions:
