@@ -153,7 +153,7 @@ def customer_share_request_with_customer(locust):
     params = ShareRequest()
     request_key = locust.session_data_storage['request_key']
 
-    @jsm_customer_measure('locust_customer_share_request_with_customer:search_customer_for_share_with')
+    @jsm_customer_measure('locust_customer_share_request_with_customer:search_customer')
     def customer_search_customer_for_share_with(locust):
         r = locust.get(f'/rest/servicedesk/1/customer/participants/{request_key}/search?q=performance_c',
                        catch_response=True)
@@ -198,7 +198,7 @@ def customer_share_request_with_org(locust):
     params = ShareRequestOrg()
     request_key = locust.session_data_storage['request_key']
 
-    @jsm_customer_measure('locust_customer_share_request_with_org:search_org_for_share_with')
+    @jsm_customer_measure('locust_customer_share_request_with_org:search_org')
     def customer_search_org_for_share_with(locust):
         r = locust.get(f'/rest/servicedesk/1/customer/participants/{request_key}/search?q=perf_org',
                        catch_response=True)
@@ -273,7 +273,7 @@ def customer_create_request(locust):
                     f'create-request',
                     headers={"Accept": "*/*"}, catch_response=True)
 
-    @jsm_customer_measure('locust_locust_customer_create_request:view_request_after_creation')
+    @jsm_customer_measure('locust_customer_create_request:view_request_after_creation')
     def customer_view_request_after_creation(locust):
         customer_models = {"models": ["user", "organisations", "sharedPortal", "helpCenterBranding", "portal",
                                       "reqDetails", "portalWebFragments"],
