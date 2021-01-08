@@ -190,7 +190,7 @@ def customer_share_request_with_customer(locust):
                     catch_response=True)
 
     customer_search_customer_for_share_with(locust)
-    customer_add_comment(locust)
+    customer_add_customer(locust)
     customer_remove_customer(locust)
 
 
