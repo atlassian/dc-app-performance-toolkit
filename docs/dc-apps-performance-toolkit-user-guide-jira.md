@@ -855,11 +855,11 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
-    IndexCopyService] Index restore started. Total 0 issues on instance before loading Snapshot file: IndexSnapshot_10203.tar.sz
-    Recovering search indexes - 60% complete... Recovered added and updated issues
-    Recovering search indexes - 80% complete... Cleaned removed issues
-    Recovering search indexes - 100% complete... Recovered all indexes
-    IndexCopyService] Index restore complete. Total N issues on instance
+    Index restore started
+    indexes - 60%
+    indexes - 80%
+    indexes - 100%
+    Index restore complete
     ```
 1. Run toolkit with docker:
 
