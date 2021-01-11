@@ -233,8 +233,7 @@ class PullRequest(BasePage):
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
-        del_source_branch_elem = self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox)
-        self.driver.execute_script("arguments[0].click();", del_source_branch_elem)
+        self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
         self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
         self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
