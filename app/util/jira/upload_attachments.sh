@@ -5,7 +5,7 @@ while [[ "$#" -gt 0 ]]; do case $1 in
   --jsm) jsm=1 ;;
   --small) small=1 ;;
   --force)
-   if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
      version=${2}
      shift
@@ -16,7 +16,7 @@ while [[ "$#" -gt 0 ]]; do case $1 in
   *) echo "Unknown parameter passed: $1"; exit 1;;
 esac; shift; done
 
-if [[ ! `systemctl status jira` ]]; then
+if [[ ! $(systemctl status jira) ]]; then
  echo "The Jira service was not found on this host." \
  "Please make sure you are running this script on a host that is running Jira."
  exit 1
@@ -30,10 +30,10 @@ JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 SUPPORTED_JIRA_VERSIONS=(8.0.3 8.5.10 8.13.2)
 SUPPORTED_JSM_VERSIONS=(4.5.9 4.13.0)
 
-SUPPORTED_VERSIONS=${SUPPORTED_JIRA_VERSIONS[*]}
+SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 if [[ ${jsm} == 1 ]]; then
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_VERSIONS=${SUPPORTED_JSM_VERSIONS[*]}
+  SUPPORTED_VERSIONS=("${SUPPORTED_JSM_VERSIONS[@]}")
 fi
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
 if [[ -z "$JIRA_VERSION" ]]; then
@@ -61,23 +61,17 @@ TMP_DIR="/tmp"
 EFS_DIR="/media/atl/jira/shared/data"
 ###################    End of variables section  ###################
 
-if [[ ! `systemctl status jira` ]]; then
- echo "The Jira service was not found on this host." \
- "Please make sure you are running this script on a host that is running Jira."
- exit 1
-fi
-
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[@]}"
+  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./upload_attachments --force 8.0.3"
   echo "!!! Warning !!! This may broke your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
+    if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else

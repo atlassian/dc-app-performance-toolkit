@@ -5,7 +5,7 @@ while [[ "$#" -gt 0 ]]; do case $1 in
   --jsm) jsm=1 ;;
   --small) small=1 ;;
   --force)
-   if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
      version=${2}
      shift
@@ -16,7 +16,7 @@ while [[ "$#" -gt 0 ]]; do case $1 in
   *) echo "Unknown parameter passed: $1"; exit 1;;
 esac; shift; done
 
-if [[ ! `systemctl status jira` ]]; then
+if [[ ! $(systemctl status jira) ]]; then
  echo "The Jira service was not found on this host." \
  "Please make sure you are running this script on a host that is running Jira."
  exit 1
@@ -32,7 +32,6 @@ DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
 # Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
 START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
 CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
 JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
@@ -48,13 +47,13 @@ JIRA_DB_PASS="Password1!"
 SUPPORTED_JIRA_VERSIONS=(8.0.3 8.5.10 8.13.2)
 SUPPORTED_JSM_VERSIONS=(4.5.9 4.13.0)
 
-SUPPORTED_VERSIONS=${SUPPORTED_JIRA_VERSIONS[*]}
+SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
 if [[ ${jsm} == 1 ]]; then
   JIRA_CURRENT_DIR="/opt/atlassian/jira-servicedesk/current"
   JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
   JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
-  SUPPORTED_VERSIONS=${SUPPORTED_JSM_VERSIONS[*]}
+  SUPPORTED_VERSIONS=("${SUPPORTED_JSM_VERSIONS[@]}")
 fi
 
 JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
@@ -82,16 +81,16 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 ###################    End of variables section  ###################
 
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[@]}"
+  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 8.0.3"
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
+    if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it
@@ -245,7 +244,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
   exit 1
 fi
 # use computer style progress bar
-time wget --progress=dot:giga ${DB_DUMP_URL}
+time wget --progress=dot:giga "${DB_DUMP_URL}"
 if [[ $? -ne 0 ]]; then
   echo "Database dump download failed! Pls check available disk space."
   exit 1
