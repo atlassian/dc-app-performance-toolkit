@@ -1,4 +1,4 @@
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.api.jira_clients import JiraRestClient
 from util.api.confluence_clients import ConfluenceRestClient
 from util.api.bitbucket_clients import BitbucketRestClient
@@ -7,6 +7,7 @@ from lxml import etree
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
+JSM = 'jsm'
 
 
 class BaseApplication:
@@ -228,15 +229,126 @@ class Bitbucket(BaseApplication):
                 ]
 
 
+class Jsm(BaseApplication):
+    type = JSM
+
+    @property
+    def version(self):
+        jsm_server_info = self.client.get_service_desk_info()
+        return jsm_server_info.get('version', '')
+
+    @property
+    def nodes_count(self):
+        jira_server_info = self.client.get_server_info()
+        jira_server_version = jira_server_info.get('version', '')
+        return self.client.get_cluster_nodes_count(jira_version=jira_server_version)
+
+    def __issues_count(self):
+        return self.client.get_total_issues_count()
+
+    @property
+    def dataset_information(self):
+        return f"{self.__issues_count()} issues"
+
+    @property
+    def jmeter_default_actions(self):
+        return ['jmeter_agent_add_comment:open_request_comment',
+                'jmeter_agent_add_comment:save_request_comment',
+                'jmeter_agent_browse_projects',
+                'jmeter_agent_login_and_view_dashboard',
+                'jmeter_agent_view_customers',
+                'jmeter_agent_view_queues_medium:all_open_queue',
+                'jmeter_agent_view_queues_medium:random_queue',
+                'jmeter_agent_view_queues_small:all_open_queue',
+                'jmeter_agent_view_queues_small:random_queue',
+                'jmeter_agent_view_report_created_vs_resolved_medium',
+                'jmeter_agent_view_report_created_vs_resolved_small',
+                'jmeter_agent_view_report_workload_medium',
+                'jmeter_agent_view_report_workload_small',
+                'jmeter_agent_view_request',
+                'jmeter_customer_add_comment',
+                'jmeter_customer_create_request:create_request',
+                'jmeter_customer_create_request:open_create_request_view',
+                'jmeter_customer_create_request:view_request_after_creation',
+                'jmeter_customer_login_and_view_portals',
+                'jmeter_customer_share_request_with_customer:add_customer',
+                'jmeter_customer_share_request_with_customer:remove_customer',
+                'jmeter_customer_share_request_with_customer:search_customer',
+                'jmeter_customer_share_request_with_org:add_org',
+                'jmeter_customer_share_request_with_org:remove_org',
+                'jmeter_customer_share_request_with_org:search_org',
+                'jmeter_customer_view_portal',
+                'jmeter_customer_view_request',
+                'jmeter_customer_view_requests:all_requests',
+                'jmeter_customer_view_requests:my_requests',
+                'jmeter_customer_view_requests:with_filter_requests']
+
+    @property
+    def selenium_default_actions(self):
+        return ['selenium_agent_a_login',
+                'selenium_agent_add_comment',
+                'selenium_agent_browse_projects',
+                'selenium_agent_view_customers',
+                'selenium_agent_view_queues_medium',
+                'selenium_agent_view_queues_small',
+                'selenium_agent_view_report_created_vs_resolved_medium',
+                'selenium_agent_view_report_created_vs_resolved_small',
+                'selenium_agent_view_report_workload_medium',
+                'selenium_agent_view_report_workload_small',
+                'selenium_agent_view_request',
+                'selenium_agent_z_logout',
+                'selenium_customer_a_login',
+                'selenium_customer_add_comment',
+                'selenium_customer_create_request',
+                'selenium_customer_share_request_with_customer',
+                'selenium_customer_view_all_requests',
+                'selenium_customer_view_request',
+                'selenium_customer_view_requests',
+                'selenium_customer_z_log_out']
+
+    @property
+    def locust_default_actions(self):
+        return ['locust_agent_add_comment:open_request_comment',
+                'locust_agent_add_comment:save_request_comment',
+                'locust_agent_browse_projects',
+                'locust_agent_login_and_view_dashboard',
+                'locust_agent_view_customers',
+                'locust_agent_view_queues_medium:all_open_queue',
+                'locust_agent_view_queues_medium:random_queue',
+                'locust_agent_view_queues_small:all_open_queue',
+                'locust_agent_view_queues_small:random_queue',
+                'locust_agent_view_report_created_vs_resolved_medium',
+                'locust_agent_view_report_created_vs_resolved_small',
+                'locust_agent_view_report_workload_medium',
+                'locust_agent_view_report_workload_small',
+                'locust_agent_view_request',
+                'locust_customer_add_comment',
+                'locust_customer_create_request:create_request',
+                'locust_customer_create_request:open_create_request_view',
+                'locust_customer_create_request:view_request_after_creation',
+                'locust_customer_login_and_view_portals',
+                'locust_customer_share_request_with_customer:add_customer',
+                'locust_customer_share_request_with_customer:remove_customer',
+                'locust_customer_share_request_with_customer:search_customer',
+                'locust_customer_share_request_with_org:add_org',
+                'locust_customer_share_request_with_org:remove_org',
+                'locust_customer_share_request_with_org:search_org',
+                'locust_customer_view_portal',
+                'locust_customer_view_request',
+                'locust_customer_view_requests:all_requests',
+                'locust_customer_view_requests:my_requests',
+                'locust_customer_view_requests:with_filter_requests']
+
+
 class ApplicationSelector:
     APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
-                    'E.g. python util/analytics.py jira')
+                    'E.g. python util/analytics.py jira/confluence/bitbucket/jsm')
 
     def __init__(self, app_name):
         self.application_type = self.__get_application_type(app_name)
 
     def __get_application_type(self, app_name):
-        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET]:
+        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET, JSM]:
             raise SystemExit(self.APP_TYPE_MSG)
         return app_name.lower()
 
@@ -248,3 +360,5 @@ class ApplicationSelector:
             return Confluence(api_client=ConfluenceRestClient, config_yml=CONFLUENCE_SETTINGS)
         if self.application_type == BITBUCKET:
             return Bitbucket(api_client=BitbucketRestClient, config_yml=BITBUCKET_SETTINGS)
+        if self.application_type == JSM:
+            return Jsm(api_client=JiraRestClient, config_yml=JSM_SETTINGS)
