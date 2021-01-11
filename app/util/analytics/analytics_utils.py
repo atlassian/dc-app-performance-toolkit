@@ -95,9 +95,8 @@ def generate_report_summary(collector):
 
     max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
     offset_1st = max_summary_report_str_len + 5
-    offset = int(offset_1st // 3)
 
-    pretty_report = map(lambda x: format_string_summary_report(x, offset_1st, offset), summary_report)
+    pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)
     write_to_file(pretty_report, summary_report_file)
 
 
