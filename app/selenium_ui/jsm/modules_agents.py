@@ -1,8 +1,8 @@
+import random
+
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
     ViewCustomerRequest, ViewQueue, Report
-import random
-
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -103,10 +103,11 @@ def view_report_workload_medium(webdriver, datasets):
 
 
 def view_report_created_vs_resolved_medium(webdriver, datasets):
-    created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-    datasets['medium_project_key'],
-                                                                 created_vs_resolved_report_id=
-                                                                 datasets['m_report_created_vs_resolved_id'])
+    created_vs_resolved = Report.view_created_vs_resolved_report(
+        webdriver,
+        project_key=datasets['medium_project_key'],
+        created_vs_resolved_report_id=datasets['m_report_created_vs_resolved_id']
+    )
 
     @print_timing('selenium_agent_view_report_created_vs_resolved_medium')
     def measure():
@@ -130,10 +131,10 @@ def view_report_workload_small(webdriver, datasets):
 
 
 def view_report_created_vs_resolved_small(webdriver, datasets):
-    created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-    datasets['small_project_key'],
-                                                                 created_vs_resolved_report_id=
-                                                                 datasets['s_report_created_vs_resolved_id'])
+    created_vs_resolved = Report.view_created_vs_resolved_report(
+        webdriver, project_key=datasets['small_project_key'],
+        created_vs_resolved_report_id=datasets['s_report_created_vs_resolved_id']
+    )
 
     @print_timing('selenium_agent_view_report_created_vs_resolved_small')
     def measure():
