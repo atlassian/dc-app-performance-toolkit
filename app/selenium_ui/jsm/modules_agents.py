@@ -1,8 +1,8 @@
+import random
+
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
     ViewCustomerRequest, ViewQueue, Report
-import random
-
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -35,7 +35,6 @@ def setup_run_data(datasets):
         datasets['all_open_queue_id_medium'] = service_desk_medium[4]
         # Medium projects reports
         datasets['m_report_created_vs_resolved_id'] = service_desk_medium[5]
-        datasets['m_report_time_to_resolution_id'] = service_desk_medium[6]
 
     if datasets[SERVICE_DESKS_SMALL]:
         service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])
@@ -44,7 +43,6 @@ def setup_run_data(datasets):
         datasets['all_open_queue_id_small'] = service_desk_small[4]
         # Small projects reports
         datasets['s_report_created_vs_resolved_id'] = service_desk_small[5]
-        datasets['s_report_time_to_resolution_id'] = service_desk_small[6]
 
     # Prepare random project key
     service_desk_random = random.choice(datasets[SERVICE_DESKS_SMALL] + datasets[SERVICE_DESKS_MEDIUM]
@@ -76,6 +74,7 @@ def login(webdriver, datasets):
         @print_timing("selenium_agent_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+
         sub_measure()
 
         @print_timing("selenium_agent_login:login_and_view_dashboard")
@@ -84,7 +83,9 @@ def login(webdriver, datasets):
             if login_page.is_first_login():
                 login_page.first_login_setup()
             login_page.wait_for_page_loaded()
+
         sub_measure()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -96,34 +97,23 @@ def view_report_workload_medium(webdriver, datasets):
     def measure():
         workload_report.go_to()
         workload_report.wait_for_page_loaded()
-    measure()
-    PopupManager(webdriver).dismiss_default_popup()
 
-
-def view_report_time_to_resolution_medium(webdriver, datasets):
-    time_to_resolution_report = Report.view_time_to_resolution_report(webdriver, project_key=
-                                                                      datasets['medium_project_key'],
-                                                                      time_to_resolution_report_id=
-                                                                      datasets['m_report_time_to_resolution_id'])
-
-    @print_timing('selenium_agent_view_report_time_to_resolution_medium')
-    def measure():
-        time_to_resolution_report.go_to()
-        time_to_resolution_report.wait_for_page_loaded()
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_report_created_vs_resolved_medium(webdriver, datasets):
-    created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-                                                                 datasets['medium_project_key'],
-                                                                 created_vs_resolved_report_id=
-                                                                 datasets['m_report_created_vs_resolved_id'])
+    created_vs_resolved = Report.view_created_vs_resolved_report(
+        webdriver,
+        project_key=datasets['medium_project_key'],
+        created_vs_resolved_report_id=datasets['m_report_created_vs_resolved_id']
+    )
 
     @print_timing('selenium_agent_view_report_created_vs_resolved_medium')
     def measure():
         created_vs_resolved.go_to()
         created_vs_resolved.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -135,34 +125,22 @@ def view_report_workload_small(webdriver, datasets):
     def measure():
         workload_report.go_to()
         workload_report.wait_for_page_loaded()
-    measure()
-    PopupManager(webdriver).dismiss_default_popup()
 
-
-def view_report_time_to_resolution_small(webdriver, datasets):
-    time_to_resolution_report = Report.view_time_to_resolution_report(webdriver, project_key=
-                                                                      datasets['small_project_key'],
-                                                                      time_to_resolution_report_id=
-                                                                      datasets['s_report_time_to_resolution_id'])
-
-    @print_timing('selenium_agent_view_report_time_to_resolution_small')
-    def measure():
-        time_to_resolution_report.go_to()
-        time_to_resolution_report.wait_for_page_loaded()
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_report_created_vs_resolved_small(webdriver, datasets):
-    created_vs_resolved = Report.view_created_vs_resolved_report(webdriver, project_key=
-                                                                 datasets['small_project_key'],
-                                                                 created_vs_resolved_report_id=
-                                                                 datasets['s_report_created_vs_resolved_id'])
+    created_vs_resolved = Report.view_created_vs_resolved_report(
+        webdriver, project_key=datasets['small_project_key'],
+        created_vs_resolved_report_id=datasets['s_report_created_vs_resolved_id']
+    )
 
     @print_timing('selenium_agent_view_report_created_vs_resolved_small')
     def measure():
         created_vs_resolved.go_to()
         created_vs_resolved.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -174,12 +152,15 @@ def view_queues_form_diff_projects_size(browse_queue_page, project_size):
         def sub_measure():
             browse_queue_page.go_to()
             browse_queue_page.wait_for_page_loaded()
+
         sub_measure()
 
         @print_timing(f'selenium_agent_view_queues_{project_size}_project:random_choice_queue')
         def sub_measure():
             browse_queue_page.get_random_queue()
+
         sub_measure()
+
     measure()
 
 
@@ -190,6 +171,7 @@ def agent_browse_projects(webdriver, datasets):
     def measure():
         browse_projects_page.go_to()
         browse_projects_page.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -201,6 +183,7 @@ def view_customers(webdriver, datasets):
     def measure():
         browse_customers_page.go_to()
         browse_customers_page.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -212,6 +195,7 @@ def view_request(webdriver, datasets):
     def measure():
         customer_request_page.go_to()
         customer_request_page.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -227,7 +211,9 @@ def add_comment(webdriver, datasets):
         @print_timing('selenium_agent_add_comment:add comment')
         def sub_measure():
             customer_request_page.add_request_comment(rte_status)
+
         sub_measure()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -256,4 +242,5 @@ def logout(webdriver, datasets):
         PopupManager(webdriver).dismiss_default_popup()
         logout_page.click_logout()
         logout_page.wait_for_page_loaded()
+
     measure()

@@ -1344,7 +1344,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/participants/${request_key}/share</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/participants/${request_key}/share</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1390,7 +1390,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/servicedesk/customer/participant/removeParticipant/${request_key}</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/servicedesk/customer/participant/removeParticipant/${request_key}</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1430,7 +1430,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1561,7 +1561,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/participants/${request_key}/share</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/participants/${request_key}/share</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1607,7 +1607,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/participants/${request_key}/removeOrganisation</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/participants/${request_key}/removeOrganisation</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1647,7 +1647,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1816,7 +1816,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">servicedesk/customer/portal/${rt_service_desk_id}/create/${rt_id}</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/portal/${rt_service_desk_id}/create/${rt_id}</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1896,7 +1896,7 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/project-ui/noeyeball/1/welcome-guide/item-completer/completeItem/create-request</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/project-ui/noeyeball/1/welcome-guide/item-completer/completeItem/create-request</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1938,7 +1938,7 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">rest/servicedesk/1/customer/models</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
