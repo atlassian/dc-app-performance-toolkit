@@ -5,7 +5,6 @@ from locustio.jsm.agents.agents_requests_params import jsm_agent_datasets
 from extension.jsm.extension_locust_agents import app_specific_action
 from util.conf import JSM_SETTINGS
 
-
 config = LocustConfig(config_yml=JSM_SETTINGS)
 jsm_agent_dataset = jsm_agent_datasets()
 
@@ -16,12 +15,12 @@ class JsmAgentBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         agents_http_actions.agent_login_and_view_dashboard(self, jsm_agent_dataset)
 
-    @task(config.percentage('agent_view_queues_small')//2)
+    @task(config.percentage('agent_view_queues_small') // 2)
     def agent_view_queues_small(self):
         agents_http_actions.agent_view_queue_all_open_small(self)
         agents_http_actions.agent_view_queue_random_small(self)
 
-    @task(config.percentage('agent_view_queues_medium')//2)
+    @task(config.percentage('agent_view_queues_medium') // 2)
     def agent_view_queues_medium(self):
         if jsm_agent_dataset['m_project']:
             agents_http_actions.agent_view_queue_all_open_medium(self)
@@ -47,15 +46,6 @@ class JsmAgentBehavior(MyBaseTaskSet):
     def agent_view_report_workload_medium(self):
         if jsm_agent_dataset['m_project']:
             agents_http_actions.agent_view_report_workload_medium(self)
-
-    @task(config.percentage('agent_view_report_time_to_resolution_small'))
-    def agent_view_report_time_to_resolution_small(self):
-        agents_http_actions.agent_view_report_time_to_resolution_small(self)
-
-    @task(config.percentage('agent_view_report_time_to_resolution_medium'))
-    def agent_view_report_time_to_resolution_medium(self):
-        if jsm_agent_dataset['m_project']:
-            agents_http_actions.agent_view_report_time_to_resolution_medium(self)
 
     @task(config.percentage('agent_view_report_created_vs_resolved_small'))
     def agent_view_report_created_vs_resolved_small(self):

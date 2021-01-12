@@ -157,7 +157,6 @@ def agent_view_request(locust):
 
 
 def agent_add_comment(locust):
-
     params = AddComment()
 
     @jsm_agent_measure('locust_agent_add_comment:open_request_comment')
@@ -189,10 +188,10 @@ def agent_add_comment(locust):
         TEXT_HEADERS['X-SITEMESH-OFF'] = 'true'
         locust.post('/secure/AjaxIssueAction!default.jspa', params={"decorator": None,
                                                                     "issueKey":
-                                                                    locust.session_data_storage["request_id"],
+                                                                        locust.session_data_storage["request_id"],
                                                                     "prefetch": False,
                                                                     "shouldUpdateCurrentProject": True},
-                        headers=TEXT_HEADERS, catch_response=True)
+                    headers=TEXT_HEADERS, catch_response=True)
 
         locust.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&'
                    f'issueId={locust.session_data_storage["request_id"]}&'
@@ -230,22 +229,6 @@ def agent_view_report_workload_medium(locust):
     medium_project_id = locust.session_data_storage['m_project_id']
     medium_project_key = locust.session_data_storage['m_project_key']
     view_workload_report(locust=locust, project_id=medium_project_id, project_key=medium_project_key)
-
-
-@jsm_agent_measure('locust_agent_view_report_time_to_resolution_small')
-def agent_view_report_time_to_resolution_small(locust):
-    time_to_resolution_report_id = locust.session_data_storage['s_time_to_resolution_id']
-    small_project_key = locust.session_data_storage['s_project_key']
-    view_time_to_resolution_report(locust=locust, project_key=small_project_key,
-                                   time_to_resolution_id=time_to_resolution_report_id)
-
-
-@jsm_agent_measure('locust_agent_view_report_time_to_resolution_medium')
-def agent_view_report_time_to_resolution_medium(locust):
-    time_to_resolution_report_id = locust.session_data_storage['m_time_to_resolution_id']
-    medium_project_key = locust.session_data_storage['m_project_key']
-    view_time_to_resolution_report(locust=locust, project_key=medium_project_key,
-                                   time_to_resolution_id=time_to_resolution_report_id)
 
 
 @jsm_agent_measure('locust_agent_view_report_created_vs_resolved_small')
@@ -303,7 +286,7 @@ def view_project_queue(locust, project_key, project_id, queue_id):
 
     r = locust.post(f'/rest/servicedesk/1/{project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.'
                     f'queues,servicedesk.agent.queues.ungrouped', headers=RESOURCE_HEADERS,
-                    json={"projectKey":f"{project_key}"}, catch_response=True)
+                    json={"projectKey": f"{project_key}"}, catch_response=True)
 
     queues_info = json.loads(r.content)
     queues_ids = []
@@ -312,7 +295,7 @@ def view_project_queue(locust, project_key, project_id, queue_id):
     for item in items:
         if item:
             for queue in item:
-                if queue['label'] not in ['All open', 'Recently resolved', 'Resolved past 7 days']\
+                if queue['label'] not in ['All open', 'Recently resolved', 'Resolved past 7 days'] \
                         and queue['params']['count'] != '0':
                     queues_ids.append(queue['key'])
 
@@ -346,7 +329,7 @@ def view_project_queue(locust, project_key, project_id, queue_id):
                f'={timestamp_int()}', catch_response=True)
 
     locust.post(f'/rest/servicedesk/1/{project_key}/webfragments/sections/sd-queues-nav,servicedesk.agent.'
-                 f'queues,servicedesk.agent.queues.ungrouped', headers=RESOURCE_HEADERS,
+                f'queues,servicedesk.agent.queues.ungrouped', headers=RESOURCE_HEADERS,
                 json={"projectKey": f"{project_key}"}, catch_response=True)
     locust.get(f"/rest/servicedesk/1/servicedesk/{project_key}/issuelist/updated?asc=false"
                f"&excludeLinkedToMajorIncidents=false&currentIssueHash=f28505024e00a8d3cc3a408bffacba4d44803233"
@@ -404,7 +387,7 @@ def view_time_to_resolution_report(locust, project_key, time_to_resolution_id):
                catch_response=True)
 
     locust.post(f'/rest/servicedesk/1/{project_key}/webfragments/sections/sd-reports-nav,servicedesk.agent.reports,'
-                f'servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section', json={"projectKey":project_key},
+                f'servicedesk.agent.reports.ungrouped,sd-reports-nav-custom-section', json={"projectKey": project_key},
                 catch_response=True)
     locust.client.put('/rest/projects/1.0/subnav/sd-queues-nav/pin', headers=RESOURCE_HEADERS, catch_response=True)
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("368"),
