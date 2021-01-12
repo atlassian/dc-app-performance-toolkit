@@ -12,7 +12,6 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
-    concurrency: 200 # TODO Remove it, depends on environment_checker.py
     concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
     concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 45m
@@ -31,8 +30,6 @@ settings:
     agent_view_queues_medium: 10
     agent_view_report_workload_small: 4
     agent_view_report_workload_medium: 4
-    agent_view_report_time_to_resolution_small: 0
-    agent_view_report_time_to_resolution_medium: 0
     agent_view_report_created_vs_resolved_small: 4
     agent_view_report_created_vs_resolved_medium: 4
     agent_view_customers: 4
@@ -56,9 +53,9 @@ services:
     shutdown:
       - python util/post_run/jmeter_post_check.py
       - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
-#    post-process:
-#      - python util/analytics/analytics.py jsm
-#      - python util/post_run/cleanup_results_dir.py
+    post-process:
+      - python util/analytics/analytics.py jsm
+      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
