@@ -63,6 +63,7 @@ class BrowseCustomers(BasePage):
 
 
 class ViewCustomerRequest(BasePage):
+    timeout = 30
 
     def __init__(self, driver, request_key=None):
         BasePage.__init__(self, driver)

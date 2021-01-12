@@ -47,6 +47,7 @@ class CustomerPortals(BasePage):
 
 class CustomerPortal(BasePage):
     page_loaded_selector = CustomerPortalSelectors.portal_title
+    timeout = 30
 
     def __init__(self, driver, portal_id):
         BasePage.__init__(self, driver)
@@ -108,16 +109,19 @@ class CustomerRequest(BasePage):
         self.wait_until_invisible(RequestSelectors.add_comment_button)
 
     def search_for_customer_to_share_with(self, customer_name):
-        self.wait_until_visible(RequestSelectors.share_request_button).click()
+        if not self.element_exists(RequestSelectors.share_request_button):
+            print(f'Request {self.page_url} does not have Share button')
+            return
 
-        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field)).click()
+        self.wait_until_visible(RequestSelectors.share_request_button).click()
+        self.wait_until_visible(RequestSelectors.share_request_search_field).click()
 
         self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field)).\
             send_keys(customer_name).perform()
         self.wait_until_visible(RequestSelectors.share_request_dropdown)
 
         # Chose random customer to share with
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem)
+        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem, timeout=30)
 
         random_customer_name = random.choice([i.text for i in
                                               self.get_elements(RequestSelectors.share_request_dropdown_one_elem)])

@@ -135,8 +135,6 @@ def agent_view_request(locust):
     locust.get(f'/browse/{locust.session_data_storage["request_key"]}', catch_response=True)
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("282"),
                 headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId='
-               f'{locust.session_data_storage["request_id"]}&_={timestamp_int()}', catch_response=True)
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("286"),
                 headers=RESOURCE_HEADERS, catch_response=True)
 
@@ -192,11 +190,7 @@ def agent_add_comment(locust):
                                                                     locust.session_data_storage["request_id"],
                                                                     "prefetch": False,
                                                                     "shouldUpdateCurrentProject": True},
-                        headers=TEXT_HEADERS, catch_response=True)
-
-        locust.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&'
-                   f'issueId={locust.session_data_storage["request_id"]}&'
-                   f'_={timestamp_int()}', catch_response=True)
+                    headers=TEXT_HEADERS, catch_response=True)
 
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("314"),
                     headers=RESOURCE_HEADERS, catch_response=True)
