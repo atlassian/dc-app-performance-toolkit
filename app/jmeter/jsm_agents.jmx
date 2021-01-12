@@ -8317,7 +8317,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="280 /browse/" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="280 /browse/${request_key}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -8351,6 +8351,50 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <hashTree/>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="282 /rest/webResources/1.0/resources" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;jira.webresources:mentions-feature&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;]}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="Accept" elementType="Header">
+                      <stringProp name="Header.name">Accept</stringProp>
+                      <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                    </elementProp>
+                    <elementProp name="X-Requested-With" elementType="Header">
+                      <stringProp name="Header.name">X-Requested-With</stringProp>
+                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                    </elementProp>
+                    <elementProp name="Content-Type" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="286 /rest/webResources/1.0/resources" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
@@ -8394,72 +8438,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="284 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="decorator" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">decorator</stringProp>
-                      <stringProp name="Argument.value">none</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="issueId" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">issueId</stringProp>
-                      <stringProp name="Argument.value">${request_id}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="_" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">_</stringProp>
-                      <stringProp name="Argument.value">${__time(,)}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueEditAction!default.jspa</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">*/*</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="X-SITEMESH-OFF" elementType="Header">
-                      <stringProp name="Header.name">X-SITEMESH-OFF</stringProp>
-                      <stringProp name="Header.value">true</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="286 /rest/webResources/1.0/resources" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="288 /rest/webResources/1.0/resources" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;r&quot;:[&quot;com.atlassian.jira.jira-header-plugin:newsletter-signup-tip&quot;],&quot;c&quot;:[&quot;jira.webresources:mentions-feature&quot;,&quot;jira.rich.editor.api&quot;,&quot;jira.rich.editor&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.project.sidebar.service_desk&quot;,&quot;comment_fields_jsd&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.global.look-and-feel&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;jira.rich.editor.api&quot;,&quot;jira.rich.editor&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.project.sidebar.service_desk&quot;,&quot;comment_fields_jsd&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.global.look-and-feel&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -8497,13 +8482,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="288 /rest/analytics/1.0/publish/bulk" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="290 /rest/analytics/1.0/publish/bulk" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1138},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-871},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-595},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-581},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;},&quot;timeDelta&quot;:-567}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:359692,&quot;projectId&quot;:10085,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1480},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1033},{&quot;name&quot;:&quot;tzdetect.banner.shown&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-951},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-690},{&quot;name&quot;:&quot;atst.healthcheck.sensors.page-protocols&quot;,&quot;properties&quot;:{&quot;resourceProtocols&quot;:&quot;http/1.1&quot;,&quot;navigationProtocol&quot;:&quot;http/1.1&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36&quot;},&quot;timeDelta&quot;:-686}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -8541,13 +8526,13 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="290 /rest/webResources/1.0/resources" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="292 /rest/webResources/1.0/resources" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;sd.incident.management.counter&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.global.look-and-feel&quot;,&quot;jira.rich.editor.api&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.rich.editor&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;,&quot;com.atlassian.jira.jira-header-plugin:newsletter-signup-tip&quot;,&quot;com.atlassian.jira.plugins.jira-editor-plugin:tinymce&quot;,&quot;com.atlassian.plugin.jslibs:underscore-1.8.3&quot;]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;sd.incident.management.counter&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.global.look-and-feel&quot;,&quot;jira.rich.editor.api&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.rich.editor&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;,&quot;com.atlassian.jira.plugins.jira-editor-plugin:tinymce&quot;]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -8557,50 +8542,6 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="292 /rest/analytics/1.0/publish/bulk" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:558748,&quot;projectId&quot;:10154,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-1263},{&quot;name&quot;:&quot;quicksearch.enabled&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-982},{&quot;name&quot;:&quot;tzdetect.banner.shown&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-893},{&quot;name&quot;:&quot;bigpipe.sidebar.render.success&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-595},{&quot;name&quot;:&quot;issue.dnd.attachment.attachmentsdropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-586},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;2328&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;9ed6aa46-413a-43fb-820a-75dfcc2ed337&quot;,&quot;key&quot;:&quot;jira.project.issue.view-issue&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;2894&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;2924&quot;,&quot;resourceLoadedStart&quot;:305.69500000274274,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;231&quot;,&quot;unloadEventEnd&quot;:&quot;232&quot;,&quot;fetchStart&quot;:&quot;3&quot;,&quot;domainLookupStart&quot;:&quot;25&quot;,&quot;domainLookupEnd&quot;:&quot;25&quot;,&quot;connectStart&quot;:&quot;25&quot;,&quot;connectEnd&quot;:&quot;29&quot;,&quot;requestStart&quot;:&quot;29&quot;,&quot;responseStart&quot;:&quot;180&quot;,&quot;responseEnd&quot;:&quot;308&quot;,&quot;domLoading&quot;:&quot;262&quot;,&quot;domInteractive&quot;:&quot;3074&quot;,&quot;domContentLoadedEventStart&quot;:&quot;3074&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;3356&quot;,&quot;domComplete&quot;:&quot;4061&quot;,&quot;loadEventStart&quot;:&quot;4061&quot;,&quot;loadEventEnd&quot;:&quot;4068&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36&quot;,&quot;correlationId&quot;:&quot;a7fcffd1228f0c&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:100,&quot;serverDuration&quot;:&quot;140&quot;,&quot;dbReadsTimeInMs&quot;:&quot;18&quot;,&quot;dbConnsTimeInMs&quot;:&quot;55&quot;,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;☠\&quot;:[\&quot;2,8h,8h,,,8h,,8h,8h,8h\&quot;,\&quot;2,8h,16i,12h,90,8h,,8h,8h,8h\&quot;,\&quot;2,8i,96,91,91,8i,,8i,8i,8i\&quot;,\&quot;3,8i,8i,,,8i,,8i,8i,8i\&quot;,\&quot;3,8i,1d8,v7,92,8i,,8i,8i,8i\&quot;,\&quot;3,8j,8j,,,8j,,8j,8j,8j\&quot;,\&quot;3,8j,8j,,,8j,,8j,8j,8j\&quot;,\&quot;3,8j,8j,,,8j,,8j,8j,8j\&quot;,\&quot;3,8k,8k,,,8k,,8k,8k,8k\&quot;,\&quot;3,gg,gg,,,gg,,gg,gg,gg\&quot;,\&quot;3,gg,gg,,,gg,,gg,gg,gg\&quot;,\&quot;2,gg,gg,,,gg,,gg,gg,gg\&quot;,\&quot;3,gg,o9,o1,ke,ke,,gx,gx,gx\&quot;,\&quot;2,gh,oa,o1,kb,kb,,gv,gv,gv\&quot;,\&quot;2,gh,u9,u0,ke,ke,,gx,gx,gx\&quot;,\&quot;3,gi,uf,qr,kf,ke,,gv,gv,gv\&quot;,\&quot;3,gi,ss,s9,ob,gi,,gi,gi,gi\&quot;,\&quot;3,go,go,,,go,,go,go,go\&quot;,\&quot;2,gt,1ao,1am,16z,gt,,gt,gt,gt\&quot;,\&quot;3,gt,1m0,1lm,1c5,gt,,gt,gt,gt\&quot;,\&quot;3,gt,gt,,,gt,,gt,gt,gt\&quot;,\&quot;5,1c0,1g7,1g1,1c6,1c0,,1c0,1c0,1c0\&quot;,\&quot;4,1p3,1p3,,,1p3,,1p3,1p3,1p3\&quot;,\&quot;5,1ru,1w9,1w3,1s6,1ru,,1ru,1ru,1ru\&quot;,\&quot;4,1yc,1yh,1yf,1ye,1yc,,1yc,1yc,1yc\&quot;,\&quot;4,1yg,27e,276,23n,1yg,,1yg,1yg,1yg\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;serverHeadDuration&quot;:&quot;undefined&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-59}]</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -8906,7 +8847,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                     <elementProp name="issueKey" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">issueKey</stringProp>
-                      <stringProp name="Argument.value">${request_id}</stringProp>
+                      <stringProp name="Argument.value">${request_key}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -8917,10 +8858,38 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="issue" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.name">issue</stringProp>
+                      <stringProp name="Argument.value">summary:2af6db370a27a7174ec5cc130b175675</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="panels" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.name">panels</stringProp>
+                      <stringProp name="Argument.value">com.atlassian.jira.jira-view-issue-plugin:details-module:f1c1c1a9537dd1b7ff56d49e86b12fcf,com.atlassian.jira.jira-view-issue-plugin:descriptionmodule:3b53cb5e6c64ff432caea6cc4c1eec9c,com.atlassian.jira.plugins.jira-dnd-attachment-plugin:dnd-metadata:4c75a4fa7c03a8a472bdbf16701325da,com.atlassian.jira.jira-view-issue-plugin:attachmentmodule:413cb3dde9c12bf621fa91dc18217a83,com.atlassian.jira.jira-view-issue-plugin:activitymodule:143883405dd1aedf4b588595a4818653,com.atlassian.jira.plugin.system.comment-panel:addcommentmodule:d054e04d4e1dd579b99c3b77578dbbb2,com.atlassian.servicedesk.frontend-webpack-plugin:sla-web-panel:fed80d3c79d9c6aa1c10e5cafb881e09,com.atlassian.jira.jira-view-issue-plugin:peoplemodule:82ea29fd747a593088f1cee985b707b0,com.atlassian.servicedesk.frontend-webpack-plugin:customer-request-details-web-panel:5a7b1c9303fac1355a8086e425ccfbec,com.atlassian.jira.jira-view-issue-plugin:datesmodule:2a6758eb0663dfbc2e6c2dcafa84d975</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="lastReadTime" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.name">lastReadTime</stringProp>
+                      <stringProp name="Argument.value">1610383830502</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
                     <elementProp name="prefetch" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">prefetch</stringProp>
                       <stringProp name="Argument.value">false</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="links" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                      <stringProp name="Argument.name">links</stringProp>
+                      <stringProp name="Argument.value">comment-issue:ab8f97979b557fb0365b58b1cb37a93c,view-voters:ccc9788623b3ea836e9a3d596e8831a3,toggle-unwatch-issue:bc3f9c03fef7163cede5b25c666884a1,manage-watchers:c23ae6252e1cac145bdf3ba78023656c,issue-to-subtask:342cb7fc1bbf007c99e13506b7bc8577,create-linked-issue:318ddb47cb4348d9b51f53166482340a,move-issue:e5bd6c0a6968cc7f88cebb8dacec959a,link-issue:cd537ade9a8594fbe0c18b1c24000e30,clone-issue:1e3903f4c14fc737c5419a43dc7ca7a0,delete-issue:35e6a42c31aad6b3b11a0b0dbf4eb7e9,jira-share-trigger:0c5d26a364e768fa1ec9608107213ffd,jira.issueviews:issue-xml:5375421ab68ea4125eee01ffc61adf61,jira.issueviews:issue-word:ded7d768c301e2c9d9b0f6476983bc09,jira.issueviews:issue-html:24b86be7f795ad8c0938cc20c29d1b4b</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -8930,7 +8899,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueAction!default.jspa</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}secure/AjaxIssueAction!default.jspa</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -8946,10 +8915,6 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
                     </elementProp>
                     <elementProp name="X-SITEMESH-OFF" elementType="Header">
                       <stringProp name="Header.name">X-SITEMESH-OFF</stringProp>
@@ -8958,119 +8923,6 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                     <elementProp name="Content-Type" elementType="Header">
                       <stringProp name="Header.name">Content-Type</stringProp>
                       <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-907626771">${g_comment}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="312 /secure/AjaxIssueEditAction!default.jspa" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="decorator" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">decorator</stringProp>
-                      <stringProp name="Argument.value">none</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="issueId" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">issueId</stringProp>
-                      <stringProp name="Argument.value">${request_id}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="_" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">_</stringProp>
-                      <stringProp name="Argument.value">${__time(,)}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueEditAction!default.jspa</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">*/*</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="X-SITEMESH-OFF" elementType="Header">
-                      <stringProp name="Header.name">X-SITEMESH-OFF</stringProp>
-                      <stringProp name="Header.value">true</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="314 /rest/webResources/1.0/resources" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;],&quot;xc&quot;:[&quot;_super&quot;,&quot;project.issue.navigator&quot;,&quot;jira.global&quot;,&quot;atl.general&quot;,&quot;jira.view.issue&quot;,&quot;atl.global&quot;,&quot;comment_fields_jsd&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-sla-web-panel&quot;,&quot;custom_field_jsd-request-participants&quot;,&quot;custom_field_jsd-organizations-field&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:entrypoint-customer-request-details-web-panel&quot;,&quot;com.atlassian.jira.projects.sidebar.init&quot;,&quot;jira.global.look-and-feel&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;sd.project.sidebar.content&quot;,&quot;jira.rich.editor.api&quot;,&quot;jira.project.sidebar&quot;,&quot;jira.rich.editor&quot;],&quot;xr&quot;:[&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component&quot;,&quot;com.atlassian.plugins.atlassian-chaperone:hotspot-tour&quot;,&quot;com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib&quot;,&quot;jira.webresources:calendar-en&quot;,&quot;jira.webresources:calendar-localisation-moment&quot;,&quot;jira.webresources:bigpipe-js&quot;,&quot;jira.webresources:bigpipe-init&quot;,&quot;com.atlassian.jira.jira-header-plugin:newsletter-signup-tip&quot;,&quot;com.atlassian.jira.plugins.jira-editor-plugin:tinymce&quot;,&quot;com.atlassian.plugin.jslibs:underscore-1.8.3&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:split_vendors~linked-incidents-panel~sd.confluence.cloud.config~sd.incident.management.counter~sd.itsm.ops~25d1be88&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:split_linked-incidents-panel~sd.confluence.cloud.config~sd.incident.management.counter~sd.itsm.opsgenie.co~a9eeae7c&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:split_linked-incidents-panel~sd.incident.management.counter~sd.itsm.opsgenie.config&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:split_sd.incident.management.counter&quot;]}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
@@ -9220,14 +9072,14 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:9.970000000976142},&quot;timeDelta&quot;:-3577},{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:${request_id},&quot;projectId&quot;:${request_project_Id},&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-2248},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:29798.240000000078},&quot;timeDelta&quot;:-2068},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1848},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1847}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:5.600000004051253},&quot;timeDelta&quot;:-1564},{&quot;name&quot;:&quot;jira.project.sidebar.issue.view.issue&quot;,&quot;properties&quot;:{&quot;issueId&quot;:359692,&quot;projectId&quot;:10085,&quot;projectType&quot;:&quot;service_desk&quot;,&quot;issueMatchesProjectContext&quot;:true},&quot;timeDelta&quot;:-391},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:28848.145000003628},&quot;timeDelta&quot;:-164},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-8},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-8}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.protocol">http</stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -9245,10 +9097,6 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                     <elementProp name="Accept" elementType="Header">
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
                     </elementProp>
                     <elementProp name="Content-Type" elementType="Header">
                       <stringProp name="Header.name">Content-Type</stringProp>
@@ -9807,7 +9655,7 @@ if ( sleep_time &gt; 0 ) {
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
