@@ -73,6 +73,7 @@ python --version or python3 --version
 pip --version
 java -version
 Microsoft Visual C++ 14
+Windows 10 SDK
 ```
 For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
 ```
@@ -87,8 +88,9 @@ Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualst
 4. Select the **MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.22)** check box (clear all the others).
 5. Click **Install**.
 
-We recommend using virtualenv for Taurus.
+Setup [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
 
+We recommend using virtualenv for Taurus.
 1. Install virtualenv with pip:
 ```
 pip install virtualenv
