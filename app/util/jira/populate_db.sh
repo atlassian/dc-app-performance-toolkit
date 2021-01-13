@@ -44,7 +44,7 @@ JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
-SUPPORTED_JIRA_VERSIONS=(8.0.3 8.5.10 8.13.2)
+SUPPORTED_JIRA_VERSIONS=(8.5.10 8.13.2)
 SUPPORTED_JSM_VERSIONS=(4.5.9 4.13.0)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
@@ -85,7 +85,7 @@ if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./populate_db.sh --force 8.0.3"
+  echo "e.g. ./populate_db.sh --force 8.5.0"
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
