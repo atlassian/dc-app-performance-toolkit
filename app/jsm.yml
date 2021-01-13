@@ -44,7 +44,7 @@ settings:
     customer_create_request: 15
     customer_standalone_extension: 0
 
-    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
+    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
 services:
   - module: shellexec
     prepare:
