@@ -121,7 +121,7 @@ class CustomerRequest(BasePage):
         self.wait_until_visible(RequestSelectors.share_request_dropdown)
 
         # Chose random customer to share with
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem, timeout=30)
+        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem)
 
         random_customer_name = random.choice([i.text for i in
                                               self.get_elements(RequestSelectors.share_request_dropdown_one_elem)])
