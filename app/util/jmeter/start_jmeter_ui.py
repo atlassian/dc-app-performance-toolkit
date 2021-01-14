@@ -34,6 +34,7 @@ DEFAULT_HOSTNAMES = ['test_jira_instance.atlassian.com',
 AGENTS = "agents"
 CUSTOMERS = "customers"
 
+
 class StartJMeter:
 
     def __init__(self):

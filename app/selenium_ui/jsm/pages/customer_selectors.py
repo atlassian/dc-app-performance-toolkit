@@ -82,6 +82,7 @@ class RequestSelectors:
 
     share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
 
+
 class RequestsSelectors:
     my_requests_url = UrlManager().my_requests_url()
     requests_label = (By.XPATH, "//h2[contains(text(),'Requests')]")

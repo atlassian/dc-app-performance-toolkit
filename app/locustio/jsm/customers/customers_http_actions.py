@@ -1,6 +1,8 @@
 import json
 import uuid
+
 import random
+
 from locustio.common_utils import init_logger, jsm_customer_measure, TEXT_HEADERS, RESOURCE_HEADERS, \
     generate_random_string
 from locustio.jsm.customers.customers_requests_params import Login, ViewPortal, ViewRequests, ViewRequest, \
@@ -95,7 +97,7 @@ def customer_view_requests(locust):
                                        "allReqFilter": {"reporter": "all", "status": "open", "portalId": "",
                                                         "requestTypeId": "",
                                                         "filter": "", "selectedPage": 1}, "portalWebFragments":
-                                           {"portalPage": "MY_REQUESTS"}}}
+                                       {"portalPage": "MY_REQUESTS"}}}
         locust.post(f'/rest/servicedesk/1/customer/models', json=customer_models, headers=RESOURCE_HEADERS,
                     catch_response=True)
 
@@ -224,11 +226,12 @@ def customer_share_request_with_org(locust):
                               json={"organisationId": locust.session_data_storage['org_id_share_with']},
                               catch_response=True)
         customer_model = {"models": ["user", "organisations", "sharedPortal", "helpCenterBranding", "portal",
-                                     "reqDetails", "portalWebFragments"], "options":
-                              {"portalId": f"{locust.session_data_storage['request_portal_id']}",
-                               "portal": {"id": f"{locust.session_data_storage['request_portal_id']}"},
-                               "reqDetails": {"key": f"{request_key}"}, "portalWebFragments":
-                                                                        {"portalPage": "VIEW_REQUEST"}}}
+                                     "reqDetails", "portalWebFragments"],
+                          "options":
+                          {"portalId": f"{locust.session_data_storage['request_portal_id']}",
+                           "portal": {"id": f"{locust.session_data_storage['request_portal_id']}"},
+                           "reqDetails": {"key": f"{request_key}"}, "portalWebFragments":
+                                                                    {"portalPage": "VIEW_REQUEST"}}}
         locust.post('/rest/servicedesk/1/customer/models', json=customer_model,
                     headers=RESOURCE_HEADERS, catch_response=True)
 

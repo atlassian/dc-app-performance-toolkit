@@ -1,5 +1,6 @@
-from locustio.common_utils import read_input_file
 import json
+
+from locustio.common_utils import read_input_file
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_REQUESTS, JSM_DATASET_SERVICE_DESKS_L, \
     JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S
 
@@ -46,7 +47,7 @@ class Login(BaseResource):
 
 class AllOpenQueue(BaseResource):
     action_name = 'view_all_open_queue'
-    last_visited_project_body = {"id":"com.atlassian.servicedesk.project-ui:sd-project-sidebar-queues"}
+    last_visited_project_body = {"id": "com.atlassian.servicedesk.project-ui:sd-project-sidebar-queues"}
 
 
 class BrowseProjects(BaseResource):
@@ -68,14 +69,14 @@ class ViewWorkloadReport(BaseResource):
 
 class ViewTimeToResolutionReport(BaseResource):
     action_name = 'view_time_to_resolution'
-    last_visited_body = {"id":"com.atlassian.servicedesk.project-ui:sd-project-sidebar-reports"}
+    last_visited_body = {"id": "com.atlassian.servicedesk.project-ui:sd-project-sidebar-reports"}
 
 
 class ViewReportCreatedVsResolved(BaseResource):
     action_name = 'view_created_vs_resolved'
-    last_visited_body = {"id":"com.atlassian.servicedesk.project-ui:sd-project-sidebar-reports"}
+    last_visited_body = {"id": "com.atlassian.servicedesk.project-ui:sd-project-sidebar-reports"}
 
 
 class ViewCustomers(BaseResource):
     action_name = 'view_customers'
-    last_visited_body = {"id":"com.atlassian.servicedesk.project-ui:sd-project-sidebar-customers"}
+    last_visited_body = {"id": "com.atlassian.servicedesk.project-ui:sd-project-sidebar-customers"}

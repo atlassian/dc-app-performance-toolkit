@@ -34,6 +34,7 @@ PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2,
 TOTAL_ISSUES_TO_RETRIEVE = 8000
 LARGE_SERVICE_DESK_TRIGGER = 100000  # Count of requests per "large" service desk.
 MEDIUM_SERVICE_DESK_TRIGGER = 10000  # Count of requests per "medium" service desk.
+NUMBER_OF_REQUESTS_PER_CUSTOMER = 50
 REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', 'Onboard new employees',
                        'Travel request', 'Product trial questions', 'Set up VPN to the office', 'Suggest a new feature',
                        'Fix an account problem', 'Request admin access', 'Purchase over $100',
@@ -84,12 +85,13 @@ def __calculate_issues_per_project(projects_count):
 
 def __filter_customer_with_requests(customer, jsm_client):
     customer_auth = (customer['name'], DEFAULT_PASSWORD)
-    customer_requests = jsm_client.get_request(auth=customer_auth)['values']
+    customer_requests = jsm_client.get_request(auth=customer_auth)
+    non_closed_requests = [request for request in customer_requests if request['currentStatus']['status'] != 'Closed']
     customer_dict = {'name': customer['name'], 'has_requests': False}
-    if customer_requests:
+    if non_closed_requests:
         customer_dict['has_requests'] = True
         requests = []
-        for request in customer_requests:
+        for request in non_closed_requests[:NUMBER_OF_REQUESTS_PER_CUSTOMER]:
             requests.append((request['serviceDeskId'], request['issueId'], request['issueKey']))
         customer_dict['requests'] = requests
     return customer_dict
@@ -280,7 +282,7 @@ def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
 
 
 @print_timing('Retrieved customers requests')
-def __get_requests(jsm_api, jira_api, service_desks, requests_without_distribution):
+def __get_requests(jira_api, service_desks, requests_without_distribution):
     now = datetime.datetime.now()
     print(f'Requests start {now.strftime("%H:%M:%S")}')
     service_desks_issues = []
@@ -403,7 +405,6 @@ def __create_data_set(jira_client, jsm_client):
     agents_pool = pool.apply_async(__get_agents, kwds={'jira_client': jira_client})
     customers_pool = pool.apply_async(__get_customers, kwds={'jira_client': jira_client, 'jsm_client': jsm_client})
     requests_pool = pool.apply_async(__get_requests, kwds={'jira_api': jira_client,
-                                                           'jsm_api': jsm_client,
                                                            'service_desks': service_desks,
                                                            'requests_without_distribution': requests})
     service_desks_pool = pool.apply_async(__get_service_desks, kwds={'jsm_api': jsm_client,

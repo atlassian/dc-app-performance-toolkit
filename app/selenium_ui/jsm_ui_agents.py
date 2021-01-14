@@ -1,6 +1,6 @@
 from selenium_ui.jsm import modules_agents
 import pytest
-from extension.jsm import extension_ui_agents
+from extension.jsm import extension_ui_agents  # noqa F401
 
 
 def is_dataset_small(jsm_datasets):

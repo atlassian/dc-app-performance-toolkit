@@ -1,5 +1,5 @@
 from selenium_ui.jsm import modules_customers
-from extension.jsm import extension_ui_customers
+from extension.jsm import extension_ui_customers  # noqa F401
 
 
 # this action should be the first one

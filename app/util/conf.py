@@ -31,7 +31,7 @@ class BaseAppSettings:
     @property
     def server_url(self):
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
-    
+
     def get_property(self, property_name):
         if property_name not in self.env_settings:
             raise Exception(f'Application property {property_name} was not found in .yml configuration file')
@@ -39,7 +39,7 @@ class BaseAppSettings:
 
 
 class JiraSettings(BaseAppSettings):
-    
+
     def __init__(self, config_yml):
         super().__init__(config_yml)
         self.concurrency = self.get_property('concurrency')
