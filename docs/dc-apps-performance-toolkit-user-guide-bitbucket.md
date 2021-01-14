@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-01-12"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -63,7 +63,7 @@ To stop one node within the Bitbucket cluster follow the instructions:
 1. Go to `Instances` and stop Bitbucket node.
 
 To return Bitbucket node into a working state follow the instructions:  
-1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become responsible.
+1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -75,7 +75,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.0`, `6.10.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.2`, `6.10.7` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 
 **Cluster nodes**
@@ -209,8 +209,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Bitbucket NFS Server instance.
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -226,8 +226,8 @@ To populate the database with SQL:
     ```
 1. In a new terminal session connect to the Bitbucket NFS Server over SSH:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -277,10 +277,14 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Bitbucket NFS Server via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+   
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -318,8 +322,8 @@ Do not close or interrupt the session. It will take about two hours to upload at
 ### Start Bitbucket Server
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -423,7 +427,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -434,7 +438,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -447,12 +451,12 @@ To receive performance results with an app installed:
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -462,7 +466,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -546,17 +550,22 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 
 ##### <a id="run4"></a> Run 4 (~1 hour)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
@@ -567,16 +576,21 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~1 hour)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
@@ -584,12 +598,12 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -603,7 +617,7 @@ To generate a scalability report:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
+1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml

@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-01-12"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -61,9 +61,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 
 **Cluster nodes**
@@ -168,7 +167,7 @@ After creating the development environment Confluence Data Center, generate test
     ```
 
 1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% Success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
+In case some actions does not have 100% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -178,7 +177,7 @@ In case some actions does not have 100% Success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% Success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 100% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
@@ -294,7 +293,7 @@ def app_specific_action(locust):
 ```
 
 2. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
-3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `view_page: 54` and `standalone_extensions: 108` that means thats `standalone_extension` will be called twice more.  
+3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
 4. Run toolkit with `bzt confluence.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
@@ -386,7 +385,7 @@ To stop one node within the Confluence cluster follow the instructions:
 1. Go to `Instances` and stop Confluence node.
 
 To return Confluence node into a working state follow the instructions:  
-1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become responsible.
+1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -398,9 +397,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Confluence Product | Software |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.5` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 **Cluster nodes**
 
@@ -521,8 +519,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -564,10 +562,14 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -604,6 +606,11 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
+{{% note %}}
+For Confluence 7, `populate_db.sh` script triggers index process automatically. So no need to start index manually once again, just wait until current index process is finished.
+{{% /note %}}
+
+For Confluence 6:
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
 1. Click **Rebuild** and wait until re-indexing is completed.
@@ -704,7 +711,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
@@ -715,7 +722,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2 (~50 min)
@@ -727,12 +734,12 @@ To receive performance results with an app installed:
 1. Run bzt.
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -741,7 +748,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -775,16 +782,21 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run4"></a> Run 4 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for two-node Confluence DC **with** app-specific actions:
 
@@ -817,16 +829,21 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Confluence DC with app-specific actions:
 
@@ -837,12 +854,12 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -856,7 +873,7 @@ To generate a scalability report:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
+1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml

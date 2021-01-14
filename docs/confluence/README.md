@@ -5,7 +5,7 @@ https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit
 ## Pre-requisites
 * Working Confluence Software of supported version (see the [toolkit README](../../README.md) for a list of supported Confluence versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the [toolkit README](../../README.md) file for more details.
+* Virtual environment with Python and bzt installed. See the [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
 in the official User Guide to set up Confluence DC with the corresponding dataset.
@@ -51,9 +51,9 @@ next steps.
 ## Changing performance workload for JMeter and Locust
 The [confluence.yml](../../app/confluence.yml) has `action_name` field in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
-throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 20000 user transactions per hour at 200 concurrency.
-
-To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
+throughput defined in `total_actions_per_hour`.
+For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
+For app-specific actions development and testing it's ok to reduce concurrency, test_duration, total_actions_per_hour and ramp-up.
 
 ## JMeter
 ### Debugging JMeter scripts
@@ -86,7 +86,7 @@ Additional debug information could be enabled by setting `verbose` flag to `true
 
 #### Start Locust console mode
 1. Activate virualenv for the Performance Toolkit.
-1. Navigate to `app` and execute command `locust --no-web --locustfile locustio/confluence/locustfile.py --clients N --hatch-rate R`, where `N` is the number of total users to simulate and `R` is the hatch rate.  
+1. Navigate to `app` and execute command `locust --headless --locustfile locustio/confluence/locustfile.py --users N --spawn-rate R`, where `N` is the number of total users to simulate and `R` is the spawn rate.  
 
 Full logs of local run you can find in the `results/confluence/YY-MM-DD-hh-mm-ss_local/` directory.
 

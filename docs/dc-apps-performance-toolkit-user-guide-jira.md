@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-01-12"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -62,7 +62,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.2`, `8.5.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -172,7 +172,7 @@ After creating the development environment Jira Data Center, generate test datas
     ```
 
 1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% Success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+In case some actions does not have 100% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -182,7 +182,7 @@ In case some actions does not have 100% Success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% Success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 100% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
@@ -299,7 +299,7 @@ def app_specific_action(locust):
 ```
 
 2. In `dc-app-performance-toolkit/app/jira.yml` set `load_executor: locust` to make `locust` as load executor.
-3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `view_issue: 43` and `standalone_extensions: 86` that means thats `standalone_extension` will be called twice more.  
+3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
 4. Run toolkit with `bzt jira.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
@@ -321,8 +321,6 @@ For example, for app-specific action development you could set percentage of `st
 1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Jira JMeter standalone assertions](/platform/marketplace/images/jira-standalone-assertions.png)
 1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-1. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
-![Jira JMeter standalone load profile](/platform/marketplace/images/jira-jmeter-load-profile.png)
 1. Right-click on `View Results Tree` and enable this controller.
 1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
@@ -397,7 +395,7 @@ To stop one node within the Jira cluster, follow the instructions below:
 
 To return Jira node into a working state follow the instructions:  
 
-1. Go to `Instances` and start Jira node, wait a few minutes for Jira node to become responsible.
+1. Go to `Instances` and start Jira node, wait a few minutes for Jira node to become available.
 1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
 1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
@@ -411,7 +409,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | The Data Center App Performance Toolkit officially supports `8.13.0`, `8.5.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.3` Platform Release |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.2`, `8.5.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -539,8 +537,8 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -590,8 +588,8 @@ We recommend that you only use this method if you are having problems with the [
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -615,10 +613,14 @@ We recommend that you only use this method if you are having problems with the [
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -732,7 +734,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -743,7 +745,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
@@ -771,12 +773,12 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 **Performance results generation with the app installed:**
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -785,7 +787,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
@@ -819,16 +821,21 @@ To receive scalability benchmark results for one-node Jira DC **with** app-speci
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run4"></a> Run 4 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
@@ -853,25 +860,30 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
-    IndexCopyService] Index restore started. Total 0 issues on instance before loading Snapshot file: IndexSnapshot_10203.tar.sz
-    Recovering search indexes - 60% complete... Recovered added and updated issues
-    Recovering search indexes - 80% complete... Cleaned removed issues
-    Recovering search indexes - 100% complete... Recovered all indexes
-    IndexCopyService] Index restore complete. Total N issues on instance
+    Index restore started
+    indexes - 60%
+    indexes - 80%
+    indexes - 100%
+    Index restore complete
     ```
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Jira DC with app-specific actions:
 
@@ -882,12 +894,12 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
 1. Run toolkit with docker:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   cd dc-app-performance-toolkit
+   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -901,7 +913,7 @@ To generate a scalability report:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
+1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
 
     ``` bash
     python csv_chart_generator.py scale_profile.yml

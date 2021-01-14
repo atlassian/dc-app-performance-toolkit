@@ -1,19 +1,21 @@
 # Data Center App Performance Toolkit 
 The Data Center App Performance Toolkit extends [Taurus](https://gettaurus.org/) which is an open source performance framework that executes JMeter and Selenium.
 
-This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Confluence, and Bitbucket.
+This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Jira Service Management, Confluence, and Bitbucket.
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.0`, `8.5.9`
-    * Jira Platform release: `8.0.3`
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.2`, `8.5.10`
+
+* Supported Jira Service Management versions: 
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.0`, `4.5.9`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.5`  
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.6`  
     * Confluence Platform release: `7.0.5`
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.0`, `6.10.5`  
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.2`, `6.10.7`  
     * Bitbucket Server Platform release: `7.0.5`
 
 ## Support
@@ -70,6 +72,7 @@ python --version or python3 --version
 pip --version
 java -version
 Microsoft Visual C++ 14
+Windows 10 SDK
 ```
 For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
 ```
@@ -84,8 +87,9 @@ Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualst
 4. Select the **MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.22)** check box (clear all the others).
 5. Click **Install**.
 
-We recommend using virtualenv for Taurus.
+Setup [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
 
+We recommend using virtualenv for Taurus.
 1. Install virtualenv with pip:
 ```
 pip install virtualenv
