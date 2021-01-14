@@ -734,7 +734,8 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -774,7 +775,8 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -822,7 +824,8 @@ To receive scalability benchmark results for one-node Jira DC **with** app-speci
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -870,7 +873,8 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
 {{% note %}}
@@ -895,7 +899,8 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```  
 
 {{% note %}}
