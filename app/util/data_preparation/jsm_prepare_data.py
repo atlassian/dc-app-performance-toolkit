@@ -91,7 +91,9 @@ def __filter_customer_with_requests(customer, jsm_client):
     if non_closed_requests:
         customer_dict['has_requests'] = True
         requests = []
-        for request in non_closed_requests[:NUMBER_OF_REQUESTS_PER_CUSTOMER]:
+        random_non_closed_requests = random.sample(non_closed_requests, NUMBER_OF_REQUESTS_PER_CUSTOMER) \
+            if len(non_closed_requests) > NUMBER_OF_REQUESTS_PER_CUSTOMER else non_closed_requests
+        for request in random_non_closed_requests:
             requests.append((request['serviceDeskId'], request['issueId'], request['issueKey']))
         customer_dict['requests'] = requests
     return customer_dict
