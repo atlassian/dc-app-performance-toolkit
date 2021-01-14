@@ -77,16 +77,38 @@ class JsmRestClient(RestClient):
 
         return response.json()
 
-    def get_request(self, auth: tuple = None, issue_id_or_key: str = ''):
+    def get_request(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, issue_id_or_key: str = ''):
         """
         Returns the customer request for a given request Id/key.
         :param issue_id_or_key:
         :param auth:
+        :param start_at:
+        :param max_results:
         :return:
         """
-        api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}"
-        response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
-        return response.json()
+        BATCH_REQUEST_SIZE = 100
+        loop_count = max_results // BATCH_REQUEST_SIZE + 1
+        last_loop_remainder = max_results % BATCH_REQUEST_SIZE
+
+        max_results = BATCH_REQUEST_SIZE if max_results > BATCH_REQUEST_SIZE else max_results
+        requests = []
+
+        while loop_count > 0:
+
+            api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}&start={start_at}" \
+                                  f"&limit={max_results}" if issue_id_or_key else \
+                self.host + f"/rest/servicedeskapi/request?start={start_at}&limit={max_results}"
+
+            response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+            requests.extend(response.json()['values'])
+            if response.json()['isLastPage']:
+                break
+
+            loop_count -= 1
+            start_at += len(response.json()['values'])
+            if loop_count == 1:
+                max_results = last_loop_remainder
+        return requests
 
     def get_queue(self, service_desk_id: int, start: int = 0):
         """

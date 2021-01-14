@@ -168,4 +168,3 @@ def log_out(webdriver, datasets):
         top_panel.open_profile_menu()
         top_panel.logout()
     measure()
-
