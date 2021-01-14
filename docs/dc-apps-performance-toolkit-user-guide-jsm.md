@@ -867,7 +867,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 
    ``` bash
    cd dc-app-performance-toolkit
-docker pull atlassian/dcapt
+   docker pull atlassian/dcapt
    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
