@@ -51,7 +51,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Jira Service Management Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Jira Service Management Data Center development environment infrastructure costs about 25 - 50$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -68,7 +68,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Cluster node instance type | [t3.medium](https://aws.amazon.com/ec2/instance-types/t3/) (we recommend this instance type for its good balance between price and performance in testing environments) |
+| Cluster node instance type | [t3.large](https://aws.amazon.com/ec2/instance-types/t3/) (we recommend this instance type for its good balance between price and performance in testing environments) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 50 |
