@@ -427,7 +427,8 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
@@ -452,7 +453,8 @@ To receive performance results with an app installed:
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -551,7 +553,8 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -577,7 +580,8 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
@@ -599,7 +603,8 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```  
 
 {{% note %}}

@@ -711,7 +711,8 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
@@ -735,7 +736,8 @@ To receive performance results with an app installed:
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -783,7 +785,8 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -830,7 +833,8 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
@@ -855,7 +859,8 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --shm-size=4g --pull="always" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```  
 
 {{% note %}}
