@@ -106,10 +106,9 @@ class JsmRestClient(RestClient):
             else:
                 values = response.json()
                 requests.append(values)
+                break
 
             if 'isLastPage' in response.json() and response.json()['isLastPage']:
-                break
-            elif 'isLastPage' not in response.json():
                 break
 
             loop_count -= 1
