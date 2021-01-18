@@ -370,9 +370,9 @@ You develop an app that introduces new GET and POST endpoints in Jira Service Ma
 
 **Locust app-specific action development example**
 
-1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_agents.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
-[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
-1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_agents.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
+1. Extend example of app-specific action for agent in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_agents.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_agents.py)
+1. Extend example of app-specific action for customers in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_customers.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
 1. In `dc-app-performance-toolkit/app/jsm.yml` set `load_executor: locust` to make `locust` as load executor.
 1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
