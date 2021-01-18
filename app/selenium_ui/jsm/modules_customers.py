@@ -44,7 +44,7 @@ def setup_run_data(datasets):
             custom_issue = random.choice(datasets[CUSTOM_ISSUES])
             datasets['custom_issue_key'] = custom_issue[0]
             datasets['custom_issue_id'] = custom_issue[1]
-            datasets['custom_service_desk_id'] = custom_issue[2]
+            datasets['custom_service_desk_id'] = custom_issue[3]
 
 
 def login(webdriver, datasets):

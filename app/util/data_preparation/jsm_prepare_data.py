@@ -383,14 +383,17 @@ def __get_request_types(jsm_api, service_desks):
     return [','.join(i) for i in request_types_list]
 
 
-def __get_custom_issues(jira_api, custom_jql):
+def __get_custom_issues(jira_api, jsm_api, custom_jql):
     issues = []
     if custom_jql:
         issues = jira_api.issues_search(
             jql=custom_jql, max_results=8000
         )
-        if not issues:
-            print(f"There are no issues found using JQL {custom_jql}")
+    for issue in issues:
+        expanded_issue = jsm_api.get_request(issue_id_or_key=issue['key'])
+        issue['service_desk_id'] = expanded_issue[0]['serviceDeskId']
+    if not issues:
+        print(f"There are no issues found using JQL {custom_jql}")
     return issues
 
 
@@ -420,7 +423,7 @@ def __create_data_set(jira_client, jsm_client):
     requests_types = pool.apply_async(__get_request_types, kwds={'jsm_api': jsm_client,
                                                                  'service_desks': service_desks})
     dataset[REQUEST_TYPES] = requests_types.get()
-    dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, JSM_SETTINGS.custom_dataset_query)
+    dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
 
     return dataset
 
@@ -434,7 +437,8 @@ def write_test_data_to_files(datasets):
     __write_to_file(JSM_DATASET_SERVICE_DESKS_S, datasets[SERVICE_DESKS_SMALL])
     __write_to_file(JSM_DATASET_SERVICE_DESKS_M, datasets[SERVICE_DESKS_MEDIUM])
     __write_to_file(JSM_DATASET_REQUEST_TYPES, datasets[REQUEST_TYPES])
-    issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]}" for issue in datasets[CUSTOM_ISSUES]]
+    issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
+              in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
 
 

@@ -95,17 +95,25 @@ class JsmRestClient(RestClient):
 
         while loop_count > 0:
 
-            api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}&start={start_at}" \
+            api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}?start={start_at}" \
                                   f"&limit={max_results}" if issue_id_or_key else \
                 self.host + f"/rest/servicedeskapi/request?start={start_at}&limit={max_results}"
 
             response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
-            requests.extend(response.json()['values'])
-            if response.json()['isLastPage']:
+            if 'values' in response.json():
+                values = response.json()['values']
+                requests.extend(values)
+            else:
+                values = response.json()
+                requests.append(values)
+
+            if 'isLastPage' in response.json() and response.json()['isLastPage']:
+                break
+            elif 'isLastPage' not in response.json():
                 break
 
             loop_count -= 1
-            start_at += len(response.json()['values'])
+            start_at += len(values)
             if loop_count == 1:
                 max_results = last_loop_remainder
         return requests
