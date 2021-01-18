@@ -79,7 +79,7 @@ Additional debug information could be enabled by setting `verbose` flag to `true
 ### Running Locust tests locally without the Performance Toolkit
 #### Start locust UI mode
 1. Activate virualenv for the Performance Toolkit.
-1. Navigate to `app` directory and execute command `locust --locustfile locustio/jsm/locustfile.py`. 
+1. Navigate to `app` directory and execute command `locust --locustfile locustio/jsm/agents_locustfile.py`. 
 1. Open your browser, navigate to `localhost:8089`.  
 1. Enter `Number of total users to simulate` (`1` is recommended value for debug purpose)  
 1. Enter `Hatch rate (users spawned/secods)` 
@@ -87,7 +87,7 @@ Additional debug information could be enabled by setting `verbose` flag to `true
 
 #### Start Locust console mode
 1. Activate virualenv for the Performance Toolkit.
-1. Navigate to `app` and execute command `locust --headless --locustfile locustio/jira/locustfile.py --users N --spawn-rate R`, where `N` is the number of total users to simulate and `R` is the spawn rate.  
+1. Navigate to `app` and execute command `locust --headless --locustfile locustio/jsm/agents_locustfile.py --users N --spawn-rate R`, where `N` is the number of total users to simulate and `R` is the spawn rate.  
 
 Full logs of local run you can find in the `results/jsm/YY-MM-DD-hh-mm-ss_local/` directory.
 
