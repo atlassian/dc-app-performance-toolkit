@@ -345,11 +345,11 @@ You develop an app that adds some additional fields to specific types of Jira Se
 1. Go to the search page of your Jira Service Management Data Center - `JSM_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppRequest*'`.
 1. Edit `dc-app-performance-toolkit/app/jsm.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppRequest*'`.
 1. Extend example of app-specific action for agent in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_agents.py`.  
-[Code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py)
-So, our test have to open app-specific requests in agent view and measure time to load of this app-specific request.
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py)
+So, our test has to open app-specific requests in agent view and measure time to load of this app-specific request.
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
-[Code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
-So, our test have to open app-specific requests in portal view and measure time to load of this app-specific request.
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
+So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -371,9 +371,9 @@ You develop an app that introduces new GET and POST endpoints in Jira Service Ma
 **Locust app-specific action development example**
 
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_agents.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
-[Code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jsm/extension_locust_agents.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
-[Code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_locust_customers.py)
 1. In `dc-app-performance-toolkit/app/jsm.yml` set `load_executor: locust` to make `locust` as load executor.
 1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `agent_standalone_extension`/`customer_standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
@@ -392,7 +392,6 @@ For example, for app-specific action development you could set percentage of `ag
     python util/jmeter/start_jmeter_ui.py --app jsm --type customers  
     ```
 
-# TODO add correct images and review links     
 1. Open `Agents`/`Customers` thread group > `actions per login` and navigate to `agent_standalone_extension`/`customer_standalone_extension`
 ![Jira Service Management JMeter standalone extension](/platform/marketplace/images/jsm-standalone-extension.png)
 1. Add GET `HTTP Request`: right-click to `agent_standalone_extension`/`customer_standalone_extension`` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
@@ -475,30 +474,45 @@ Monthly charges will be based on your actual usage of AWS services and may vary 
 
 *The prices below are approximate and may vary depending on such factors like region, instance type, deployment type of DB, and other.  
 
-# TODO review estimates
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
 | One Node Jira Service Management DC | 0.8 - 1.1
 | Two Nodes Jira Service Management DC | 1.2 - 1.7
 | Four Nodes Jira Service Management DC | 2.0 - 3.0
 
-#### Stop Jira Service Management cluster nodes
+#### Stop cluster nodes
 
-To reduce AWS infrastructure costs you could stop Jira Service Management nodes when the cluster is standing idle.  
-Jira Service Management node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
 
-To stop one node within the Jira Service Management cluster, follow the instructions below:
+To stop one node within the cluster, follow the instructions below:
 
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to `Instances` and stop Jira Service Management node.
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
 
-To return Jira Service Management node into a working state follow the instructions:  
+To return node into a working state follow the instructions:  
 
-1. Go to `Instances` and start Jira Service Management node, wait a few minutes for Jira Service Management node to become available.
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters
 

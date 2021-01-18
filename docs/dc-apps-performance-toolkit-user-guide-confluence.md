@@ -219,32 +219,8 @@ You develop an app that adds additional UI elements to Confluence pages or blog 
 2. Go to the search page of your Confluence Data Center - `CONFLUENCE_URL/dosearchsite.action?queryString=` (Confluence versions 6.X and below) or just click to search field in UI (Confluence versions 7.X and higher) and check if CQL is correct: `title ~ 'AppPage*'`.
 3. Edit `dc-app-performance-toolkit/app/confluence.yml` configuration file and set `custom_dataset_query: "title ~ 'AppPage*'"`.
 4. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/confluence/extension_ui.py`.  
-So, our test have to open page or blog post with app-specific UI element and measure time to load of this app-specific page or blog post.
-``` python
-from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import CONFLUENCE_SETTINGS
-
-from selenium_ui.base_page import BasePage
-
-
-def app_specific_action(webdriver, datasets):
-    page = BasePage(webdriver)
-    app_specific_page = datasets['custom_pages']
-    app_specific_page_id = app_specific_page[0]
-
-
-    @print_timing("selenium_app_custom_action")
-    def measure():
-
-        @print_timing("selenium_app_custom_action:view_page")
-        def sub_measure():
-            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_specific_page_id}")
-            page.wait_until_visible((By.ID, "title-text"))  # Wait for title field visible
-            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
-        sub_measure()
-    measure()
-```
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_ui.py)
+So, our test has to open page or blog post with app-specific UI element and measure time to load of this app-specific page or blog post.
 5. In `dc-app-performance-toolkit/app/selenium_ui/confluence_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_custom_action(confluence_webdriver, confluence_datasets, confluence_screen_shots):
@@ -260,38 +236,7 @@ You develop an app that introduces new GET and POST endpoints in Confluence Data
 **Locust app-specific action development example**
 
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/confluence/extension_locust.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
-
-``` python
-import re
-from locustio.common_utils import init_logger, confluence_measure
-
-logger = init_logger(app_type='confluence')
-
-
-@confluence_measure
-def app_specific_action(locust):
-    r = locust.get('/app/get_endpoint')  # call app-specific GET endpoint
-    content = r.content.decode('utf-8')   # decode response content
-
-    token_pattern_example = '"token":"(.+?)"'
-    id_pattern_example = '"id":"(.+?)"'
-    token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
-    id = re.findall(id_pattern_example, content)    # get ID from response using regexp
-
-    logger.locust_info(f'token: {token}, id: {id}')  # log information for debug when verbose is true in jira.yml file
-    if 'assertion string' not in content:
-        logger.error(f"'assertion string' was not found in {content}")
-    assert 'assertion string' in content  # assert specific string in response content
-
-    body = {"id": id, "token": token}  # include parsed variables to POST request body
-    headers = {'content-type': 'application/json'}
-    r = locust.post('/app/post_endpoint', body, headers)  # call app-specific POST endpoint
-    content = r.content.decode('utf-8')
-    if 'assertion string after successful POST request' not in content:
-        logger.error(f"'assertion string after successful POST request' was not found in {content}")
-    assert 'assertion string after successful POST request' in content  # assertion after POST request
-```
-
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_locust.py)
 2. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
 3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
@@ -375,19 +320,39 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Confluence DC | 2 - 3 |
 | Four Nodes Confluence DC | 3.6 - 5.6 |
 
-#### Stop Confluence cluster nodes
-To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
-Confluence node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+#### Stop cluster nodes
 
-To stop one node within the Confluence cluster follow the instructions:
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to `Instances` and stop Confluence node.
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
 
-To return Confluence node into a working state follow the instructions:  
-1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become available.
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+To stop one node within the cluster, follow the instructions below:
+
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
+
+To return node into a working state follow the instructions:  
+
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### Quick Start parameters
 

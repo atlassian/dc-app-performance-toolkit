@@ -53,19 +53,39 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Bitbucket DC | 1.7 - 2.5 |
 | Four Nodes Bitbucket DC | 2.4 - 3.6 |
 
-#### Stop Bitbucket cluster nodes
-To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  
-Bitbucket node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+#### Stop cluster nodes
 
-To stop one node within the Bitbucket cluster follow the instructions:
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to `Instances` and stop Bitbucket node.
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
 
-To return Bitbucket node into a working state follow the instructions:  
-1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become available.
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+To stop one node within the cluster, follow the instructions below:
+
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
+
+To return node into a working state follow the instructions:  
+
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### <a id="quick-start-parameters"></a>  Quick Start parameters
 
@@ -503,32 +523,7 @@ We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script
 
 #### Example of app-specific Selenium action development
 You develop an app that adds additional UI elements to a repository page, in this case you should edit `dc-app-performance-toolkit/extension/bitbucket/extension_ui.py`:
-
-``` python
-from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import BITBUCKET_SETTINGS
-
-from selenium_ui.base_page import BasePage
-
-
-def app_specific_action(webdriver, datasets):
-    page = BasePage(webdriver)
-    repo = datasets['repos']
-    repo_slug = repo[0]
-    project_key = repo[1]
-
-    @print_timing("selenium_app_custom_action")
-    def measure():
-
-        @print_timing("selenium_app_custom_action:view_repo_page")
-        def sub_measure():
-            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/projects/{project_key}/repos/{repo_slug}/browse")
-            page.wait_until_visible((By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')) # Wait for repo navigation panel is visible 
-            page.wait_until_visible((By.ID, 'ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT'))  # Wait for you app-specific UI element by ID selector
-        sub_measure()
-    measure()
-```
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
 
 In the `bitbucket-ui.py` script, view the following block of code:
 
