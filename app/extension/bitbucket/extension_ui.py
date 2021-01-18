@@ -9,10 +9,10 @@ from util.conf import BITBUCKET_SETTINGS
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    rnd_project = random.choice(datasets["repos"])
+    rnd_repo = random.choice(datasets["repos"])
 
-    project_key = rnd_project[1]
-    repo_slug = rnd_project[0]
+    project_key = rnd_repo[1]
+    repo_slug = rnd_repo[0]
 
     @print_timing("selenium_app_custom_action")
     def measure():
