@@ -10,8 +10,7 @@ from util.conf import CONFLUENCE_SETTINGS
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
     if datasets['custom_pages']:
-        app_specific_page = random.choice(datasets['custom_pages'])
-        app_specific_page_id = app_specific_page[0]
+        app_specific_page_id = datasets['custom_page_id']
 
     @print_timing("selenium_app_custom_action")
     def measure():
