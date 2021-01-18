@@ -4,7 +4,7 @@ from locustio.common_utils import init_logger, confluence_measure
 logger = init_logger(app_type='confluence')
 
 
-@confluence_measure
+@confluence_measure("locust_app_specific_action")
 def app_specific_action(locust):
     r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
     content = r.content.decode('utf-8')   # decode response content
@@ -14,7 +14,7 @@ def app_specific_action(locust):
     token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
     id = re.findall(id_pattern_example, content)    # get ID from response using regexp
 
-    logger.locust_info(f'token: {token}, id: {id}')  # log information for debug when verbose is true in jira.yml file
+    logger.locust_info(f'token: {token}, id: {id}')  # log info for debug when verbose is true in confluence.yml file
     if 'assertion string' not in content:
         logger.error(f"'assertion string' was not found in {content}")
     assert 'assertion string' in content  # assert specific string in response content
