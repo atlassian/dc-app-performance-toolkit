@@ -1,15 +1,18 @@
+import random
+
 from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import BITBUCKET_SETTINGS
 
 from selenium_ui.base_page import BasePage
+from selenium_ui.conftest import print_timing
+from util.conf import BITBUCKET_SETTINGS
 
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    repo = datasets['repos']
-    repo_slug = repo[0]
-    project_key = repo[1]
+    rnd_repo = random.choice(datasets["repos"])
+
+    project_key = rnd_repo[1]
+    repo_slug = rnd_repo[0]
 
     @print_timing("selenium_app_custom_action")
     def measure():

@@ -7,8 +7,9 @@ from util.conf import JSM_SETTINGS
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    customer_request_key = datasets['customer_request_key']
-    customer_portal_id = datasets['customer_service_desk_id']
+    if datasets['custom_issues']:
+        custom_request_key = datasets['custom_issue_key']
+        custom_service_desk_id = datasets['custom_service_desk_id']
 
     @print_timing("selenium_customer_app_custom_action")
     def measure():
@@ -16,7 +17,7 @@ def app_specific_action(webdriver, datasets):
         @print_timing("selenium_customer_app_custom_action:view_request")
         def sub_measure():
             page.go_to_url(f"{JSM_SETTINGS.server_url}/servicedesk/customer/portal/"
-                           f"{customer_portal_id}/{customer_request_key}")
+                           f"{custom_service_desk_id}/{custom_request_key}")
             page.wait_until_visible((By.ID, "summary-val"))  # Wait for summary field visible
             # Wait for you app-specific UI element by ID selector
             page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))
