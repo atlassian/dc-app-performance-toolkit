@@ -25,7 +25,7 @@ class BaseResource:
         self.resources_body = self.action_resources()
 
     def read_json(self):
-        with open(self.resources_file) as f:
+        with open(self.resources_file, encoding='UTF-8') as f:
             return json.load(f)
 
     def action_resources(self):
