@@ -100,8 +100,6 @@ scenarios:
       perc_agent_view_queues_medium: ${agent_view_queues_medium}
       perc_agent_view_report_workload_small: ${agent_view_report_workload_small}
       perc_agent_view_report_workload_medium: ${agent_view_report_workload_medium}
-      perc_agent_view_report_time_to_resolution_small: ${agent_view_report_time_to_resolution_small}
-      perc_agent_view_report_time_to_resolution_medium: ${agent_view_report_time_to_resolution_medium}
       perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
       perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
       perc_agent_view_customers: ${agent_view_customers}

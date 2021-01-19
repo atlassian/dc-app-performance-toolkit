@@ -8899,7 +8899,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}secure/AjaxIssueAction!default.jspa</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/secure/AjaxIssueAction!default.jspa</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
