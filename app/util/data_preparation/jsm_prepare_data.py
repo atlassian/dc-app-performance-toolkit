@@ -159,7 +159,8 @@ def __get_jsm_users(jira_client, jsm_client=None, is_agent=False):
         perf_users_with_requests = __get_customers_with_requests(
             jsm_client=jsm_client, jira_client=jira_client, count=count)
         if len(perf_users_with_requests) < performance_customers_count:
-            raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" with requests were found: '
+            raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" '
+                            f'with requests were found: '
                             f'{len(perf_users_with_requests)}/{performance_customers_count}. '
                             f'Please review the "concurrency_customers" value in jsm.yml file and/or '
                             f'create requests on behalf of customers with prefix "{DEFAULT_CUSTOMER_PREFIX}".')

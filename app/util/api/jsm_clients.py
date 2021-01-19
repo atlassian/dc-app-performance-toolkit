@@ -317,7 +317,7 @@ class JsmRestClient(RestClient):
         results = []
         while not finished:
             api_url = self.host + f"/rest/servicedeskapi/organization?start={start}&limit={limit}"
-            r = self.get(api_url, f"Could not get all organisations", headers=jsm_headers, auth=auth).json()
+            r = self.get(api_url, "Could not get all organisations", headers=jsm_headers, auth=auth).json()
             results.extend(r['values'])
             if r['isLastPage']:
                 finished = True
