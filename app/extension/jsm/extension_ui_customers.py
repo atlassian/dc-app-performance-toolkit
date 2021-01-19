@@ -18,7 +18,8 @@ def app_specific_action(webdriver, datasets):
         def sub_measure():
             page.go_to_url(f"{JSM_SETTINGS.server_url}/servicedesk/customer/portal/"
                            f"{custom_service_desk_id}/{custom_request_key}")
-            page.wait_until_visible((By.ID, "summary-val"))  # Wait for summary field visible
+            # Wait for options element visible
+            page.wait_until_visible((By.CLASS_NAME, 'cv-request-options'))
             # Wait for you app-specific UI element by ID selector
             page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))
         sub_measure()
