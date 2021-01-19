@@ -301,3 +301,29 @@ class JsmRestClient(RestClient):
                             f"Could not get transactions for issue id/key: {issue_id_or_key}.",
                             headers=jsm_headers, auth=auth)
         return response.json()
+
+    def get_all_organizations(self, max_count: int = None, auth: tuple = None):
+        """
+        Get all organizations
+        :param max_count:
+        :param auth:
+        :return:
+        """
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+
+        start = 0
+        limit = 50
+        finished = False
+        results = []
+        while not finished:
+            api_url = self.host + f"/rest/servicedeskapi/organization?start={start}&limit={limit}"
+            r = self.get(api_url, f"Could not get all organisations", headers=jsm_headers, auth=auth).json()
+            results.extend(r['values'])
+            if r['isLastPage']:
+                finished = True
+            else:
+                start = start + limit
+
+        if max_count:
+            return results[:max_count]
+        return results

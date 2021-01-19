@@ -19,6 +19,7 @@ DEFAULT_AGENT_PREFIX = 'performance_agent_'
 DEFAULT_AGENT_APP_KEYS = ["jira-servicedesk"]
 DEFAULT_CUSTOMER_PREFIX = 'performance_customer_'
 DEFAULT_PASSWORD = 'password'
+DEFAULT_ORGANIZATION = 'perf_organization'
 
 AGENTS = "agents"
 CUSTOMERS = "customers"
@@ -71,7 +72,7 @@ def __calculate_issues_per_project(projects_count):
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
         percent_for_other_projects = 0
-        calculated_issues_percentage = dict(list(PROJECTS_ISSUES_PERC.items())[:3])
+        calculated_issues_percentage = dict(list(PROJECTS_ISSUES_PERC.items())[:projects_count])
 
     for key, value in calculated_issues_percentage.items():
         calculated_issues_per_project_count[key] = value * TOTAL_ISSUES_TO_RETRIEVE // 100 or 1
@@ -141,17 +142,28 @@ def __get_jsm_users(jira_client, jsm_client=None, is_agent=False):
             add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
                                        application_keys=application_keys)
             if not add_users:
-                raise SystemExit(f"Jira Service Desk could not create agent"
-                                 f"There were {len(perf_users)}/{count} retrieved.")
+                raise Exception(f"ERROR: Jira Service Management could not create agent"
+                                f"There were {len(perf_users)}/{count} retrieved.")
             perf_users.extend(add_users)
+        return perf_users
     else:
         prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
-        perf_users = __get_customers_with_requests(jsm_client=jsm_client, jira_client=jira_client, count=count)
-        if len(perf_users) < performance_customers_count:
-            raise Exception(f'Not enough customers with requests were found: '
-                            f'{len(perf_users)}/{performance_customers_count}. Please review the concurrency value '
-                            f'in jsm.yml file or add customers with requests to Jira Service Desk instance')
-    return perf_users
+        perf_users = jira_client.get_users(username=prefix_name, max_results=count)
+        users_to_create = count - len(perf_users)
+        if users_to_create > 0:
+            add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
+                                       application_keys=[])
+            if not add_users:
+                raise Exception(f"ERROR: Jira Service Management could not create customers"
+                                f"There were {len(perf_users)}/{count} retrieved.")
+        perf_users_with_requests = __get_customers_with_requests(
+            jsm_client=jsm_client, jira_client=jira_client, count=count)
+        if len(perf_users_with_requests) < performance_customers_count:
+            raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" with requests were found: '
+                            f'{len(perf_users_with_requests)}/{performance_customers_count}. '
+                            f'Please review the "concurrency_customers" value in jsm.yml file and/or '
+                            f'create requests on behalf of customers with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
+        return perf_users_with_requests
 
 
 @print_timing('Retrieved agents')
@@ -190,7 +202,7 @@ def generate_users(api, num_to_create, application_keys, prefix_name):
                                     application_keys=application_keys)
             created_agents.append(agent)
         except Exception as error:
-            print(f"Warning: Create Jira user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
+            print(f"WARNING: Create Jira user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
             errors_count = errors_count + 1
     return created_agents
 
@@ -401,7 +413,17 @@ def __create_data_set(jira_client, jsm_client):
     dataset = dict()
     service_desks = jsm_client.get_all_service_desks()
     if not service_desks:
-        raise Exception('ERROR: There are no Jira Service Desks were found')
+        raise Exception('ERROR: There were no Jira Service Desks found')
+    if len(service_desks) < 2:
+        raise Exception('ERROR: At least 2 service desks are needed')
+    # TODO improve organizations check to actually verify if service desk projects have orgs with performance_customers
+    organizations = jsm_client.get_all_organizations()
+    perf_organizations = [org for org in organizations if DEFAULT_ORGANIZATION in org['name']]
+    if not perf_organizations:
+        raise Exception(f'ERROR: There were no organizations found with prefix "{DEFAULT_ORGANIZATION}". '
+                        f'Make sure JSM projects has organizations with prefix "{DEFAULT_ORGANIZATION}". '
+                        f'Organizations "{DEFAULT_ORGANIZATION}" should have customers'
+                        f' with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
     projects_keys = ','.join([project['projectKey'] for project in service_desks])
     requests = jira_client.issues_search_parallel(jql=f"project in ({projects_keys})",
                                                   max_results=TOTAL_ISSUES_TO_RETRIEVE)
