@@ -171,8 +171,8 @@ After creating the development environment Jira Data Center, generate test datas
     bzt jira.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
+In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -182,7 +182,7 @@ In case some actions does not have 100% success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 95+% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
