@@ -150,7 +150,8 @@ def main():
     url = CONFLUENCE_SETTINGS.server_url
     print("Server url: ", url)
 
-    rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
+    rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password,
+                                       verify=CONFLUENCE_SETTINGS.secure)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
 
     __is_remote_api_enabled(rest_client)

@@ -5,6 +5,7 @@ import string
 from datetime import timedelta
 from timeit import default_timer as timer
 import datetime
+import urllib3
 
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
@@ -44,6 +45,8 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
 performance_agents_count = JSM_SETTINGS.agents_concurrency
 performance_customers_count = JSM_SETTINGS.customers_concurrency
 num_cores = multiprocessing.cpu_count()
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def print_timing(message):
@@ -447,9 +450,9 @@ def main():
     print("Started preparing data")
     url = JSM_SETTINGS.server_url
     print("Server url: ", url)
-    jsm_client = JsmRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password,
+    jsm_client = JsmRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password, verify=JSM_SETTINGS.secure,
                                headers=JSM_EXPERIMENTAL_HEADERS)
-    jira_client = JiraRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password)
+    jira_client = JiraRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password, JSM_SETTINGS.secure)
     dataset = __create_data_set(jira_client=jira_client, jsm_client=jsm_client)
     write_test_data_to_files(dataset)
 

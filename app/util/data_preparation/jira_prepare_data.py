@@ -9,7 +9,7 @@ from util.api.jira_clients import JiraRestClient
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS, JIRA_DATASET_CUSTOM_ISSUES
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+#urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
@@ -187,7 +187,7 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password, verify=JIRA_SETTINGS.secure)
 
     __check_for_admin_permissions(client)
     __check_current_language(client)

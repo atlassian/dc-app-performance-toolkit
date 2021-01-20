@@ -45,12 +45,13 @@ class RestClient(Client):
     def to_json(obj: dict) -> str:
         return json.dumps(obj)
 
-    def __init__(self, host, user, password, headers=None, session=None, timeout=30):
+    def __init__(self, host, user, password, verify=False, headers=None, session=None, timeout=30):
         super().__init__(host, user, password)
 
         self._requests_timeout = timeout
         self._session = session or requests.Session()
         self.headers = headers if headers else JSON_HEADERS
+        self.verify = verify
 
     @property
     def requests_timeout(self):
@@ -70,14 +71,14 @@ class RestClient(Client):
             allow_redirect: bool = False,
             headers: dict = None,
             auth: tuple = None):
-        response = self.session.get(url, verify=False, timeout=self.requests_timeout,
+        response = self.session.get(url, verify=self.verify, timeout=self.requests_timeout,
                                     allow_redirects=allow_redirect, headers=headers if headers else self.headers,
                                     auth=auth if auth else self.base_auth)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
 
     def delete(self, url: str, error_msg: str, expected_status_codes: list = None, allow_redirect=False):
-        response = self.session.delete(url, auth=self.base_auth, verify=False, timeout=self.requests_timeout,
+        response = self.session.delete(url, auth=self.base_auth, verify=self.verify, timeout=self.requests_timeout,
                                        allow_redirects=allow_redirect)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
@@ -94,7 +95,7 @@ class RestClient(Client):
         response = self.session.post(url, body_data, params=params, files=files,
                                      auth=auth if auth else self.base_auth,
                                      headers=headers if headers else self.headers,
-                                     allow_redirects=allow_redirect)
+                                     allow_redirects=allow_redirect, verify=self.verify)
 
         self.__verify_response(response, error_msg)
         return response
@@ -102,7 +103,7 @@ class RestClient(Client):
     def put(self, url: str, error_msg: str, body: dict = None, params=None, allow_redirect=False):
         body_data = self.to_json(body) if body else None
         response = self.session.put(url, body_data, params=params, auth=self.base_auth, headers=self.headers,
-                                    allow_redirects=allow_redirect)
+                                    allow_redirects=allow_redirect, verify=self.verify)
 
         self.__verify_response(response, error_msg)
         return response
