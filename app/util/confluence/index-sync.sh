@@ -37,3 +37,5 @@ function find_word_in_log() {
 
 find_word_in_log "Index recovery is required for main index, starting now"
 find_word_in_log "main index recovered from shared home directory"
+
+echo "DCAPT util script execution is finished successfully."

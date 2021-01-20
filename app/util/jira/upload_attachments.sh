@@ -1,48 +1,81 @@
 #!/bin/bash
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --jsm) jsm=1 ;;
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
 
-###################    Variables section         ###################
-# Jira version variables
-JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
-SUPPORTED_JIRA_VERSIONS=(8.0.3 7.13.15 8.5.8)
-JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
-if [[ -z "$JIRA_VERSION" ]]; then
-        echo The $JIRA_VERSION_FILE file does not exists or emtpy. Please check if JIRA_VERSION_FILE variable \
-         has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly.
-        exit 1
-fi
-echo "Jira Version: ${JIRA_VERSION}"
-
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
-ATTACHMENTS_TAR="attachments.tar.gz"
-ATTACHMENTS_DIR="attachments"
-DATASETS_SIZE="large"
-ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
-TMP_DIR="/tmp"
-EFS_DIR="/media/atl/jira/shared/data"
-###################    End of variables section  ###################
-
-if [[ ! `systemctl status jira` ]]; then
+if [[ ! $(systemctl status jira) ]]; then
  echo "The Jira service was not found on this host." \
  "Please make sure you are running this script on a host that is running Jira."
  exit 1
 fi
 
+###################    Variables section         ###################
+# Jira version variables
+JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
+
+# Jira/JSM supported versions
+SUPPORTED_JIRA_VERSIONS=(8.5.11 8.13.3)
+SUPPORTED_JSM_VERSIONS=(4.5.10 4.13.2)
+
+SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
+if [[ ${jsm} == 1 ]]; then
+  JIRA_VERSION_FILE="/media/atl/jira/shared/jira-servicedesk.version"
+  SUPPORTED_VERSIONS=("${SUPPORTED_JSM_VERSIONS[@]}")
+fi
+JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}")
+if [[ -z "$JIRA_VERSION" ]]; then
+  echo "ERROR: Failed to get Jira version. If your application type is JSM use flag '--jsm'." \
+       "Otherwise check if JIRA_VERSION_FILE variable (${JIRA_VERSION_FILE})" \
+       "has a valid file path of the Jira version file or set your Cluster JIRA_VERSION explicitly."
+  exit 1
+fi
+echo "Jira Version: ${JIRA_VERSION}"
+
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jira"
+if [[ ${jsm} == 1 ]]; then
+  DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/jsm"
+fi
+ATTACHMENTS_TAR="attachments.tar.gz"
+ATTACHMENTS_DIR="attachments"
+AVATARS_DIR="avatars"
+DATASETS_SIZE="large"
+if [[ ${jsm} == 1 && ${small} == 1 ]]; then
+  # Only JSM supports "small" dataset
+  DATASETS_SIZE="small"
+fi
+ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+TMP_DIR="/tmp"
+EFS_DIR="/media/atl/jira/shared/data"
+###################    End of variables section  ###################
+
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_JIRA_VERSIONS[@]}" =~ "${JIRA_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Jira Versions: ${SUPPORTED_JIRA_VERSIONS[@]}"
+  echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./upload_attachments --force 8.0.3"
+  echo "e.g. ./upload_attachments --force 8.5.0"
   echo "!!! Warning !!! This may broke your Jira instance."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if passed Jira version is in list of supported
-    if [[ " ${SUPPORTED_JIRA_VERSIONS[@]} " =~ " ${2} " ]]; then
-      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+    if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
-      LAST_DATASET_VERSION=${SUPPORTED_JIRA_VERSIONS[${#SUPPORTED_JIRA_VERSIONS[@]}-1]}
+      LAST_DATASET_VERSION=${SUPPORTED_VERSIONS[${#SUPPORTED_VERSIONS[@]}-1]}
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
       echo "Dataset URL: ${ATTACHMENTS_TAR_URL}"
@@ -111,5 +144,11 @@ echo "Step4: Copy attachments to EFS"
 sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
 
-echo "Finished"
+if [[ ${jsm} == 1 ]]; then
+  echo "Step5: Copy avatars to EFS"
+  sudo su jira -c "time ./msrsync -P -p 100 -f 3000 ${AVATARS_DIR} ${EFS_DIR}"
+  sudo su -c "rm -rf ${AVATARS_DIR}"
+fi
+
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line

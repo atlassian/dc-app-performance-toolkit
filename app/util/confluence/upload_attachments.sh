@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.4)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.6)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -22,23 +22,23 @@ TMP_DIR="/tmp"
 EFS_DIR="/media/atl/confluence/shared-home"
 ###################    End of variables section  ###################
 
-if [[ ! `systemctl status confluence` ]]; then
+if [[ ! $(systemctl status confluence) ]]; then
  echo "The Confluence service was not found on this host." \
  "Please make sure you are running this script on a host that is running Confluence."
  exit 1
 fi
 
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Peformance Toolkit."
-  echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
+  echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your CONFLUENCE, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./upload_attachments --force 6.13.8"
+  echo "e.g. ./upload_attachments --force 7.4.5"
   echo "!!! Warning !!! This may broke your Confluence instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Confluence version is in list of supported
-    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
+    if [[ "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${2} ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
@@ -73,7 +73,7 @@ fi
 
 echo "Step1: Download msrcync"
 # https://github.com/jbd/msrsync
-cd ${TMP_DIR}
+cd ${TMP_DIR} || exit
 if [[ -s msrsync ]]; then
   echo "msrsync already downloaded"
 else
@@ -111,5 +111,5 @@ echo "Step4: Copy attachments to EFS"
 sudo su confluence -c "time ./msrsync -P -p 100 -f 3000 ${ATTACHMENTS_DIR} ${EFS_DIR}"
 sudo su -c "rm -rf ${ATTACHMENTS_DIR}"
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line

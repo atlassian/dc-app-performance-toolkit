@@ -12,10 +12,12 @@ from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
+JSM = 'jsm'
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
-                BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400}
+                BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
+                JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
                 }
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
@@ -37,9 +39,10 @@ class AnalyticsCollector:
         self.duration = convert_to_sec(self.conf.duration)
         self.concurrency = self.conf.concurrency
         self.actual_duration = bzt_log.actual_run_time
-        self.all_test_actions = bzt_log.all_test_actions
+        self.test_actions_success_rate, self.test_actions_avg_rate = bzt_log.all_test_actions
+
         self.selenium_test_rates, self.jmeter_test_rates, self.locust_test_rates, self.app_specific_rates = \
-            generate_test_actions_by_type(test_actions=self.all_test_actions, application=application)
+            generate_test_actions_by_type(test_actions=self.test_actions_success_rate, application=application)
         self.time_stamp = get_timestamp()
         self.date = get_date()
         self.application_version = application.version
@@ -84,16 +87,31 @@ class AnalyticsCollector:
 
     def is_compliant(self):
         message = 'OK'
-        compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
-                     self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
+
+        if self.app_type == JSM:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency >= MIN_DEFAULTS[self.app_type]['customer_concurrency']
+                         + MIN_DEFAULTS[self.app_type]['agent_concurrency'])
+        else:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
+
         if not compliant:
             err_msg = []
             if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
                 err_msg.append(f"Test run duration {self.actual_duration} sec < than minimum test "
                                f"duration {MIN_DEFAULTS[self.app_type]['test_duration']} sec.")
-            if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
-                err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
-                               f"concurrency {MIN_DEFAULTS[self.app_type]['concurrency']}.")
+                if self.app_type == JSM:
+                    min_default_concurrency = MIN_DEFAULTS[JSM]['customer_concurrency'] + \
+                                              MIN_DEFAULTS[JSM]['agent_concurrency']
+                    if self.concurrency < min_default_concurrency:
+                        err_msg.append(f"Total test run concurrency {self.concurrency} < than minimum required test "
+                                       f"concurrency: agent_concurrency={MIN_DEFAULTS[JSM]['agent_concurrency']} and "
+                                       f"customer_concurrency={MIN_DEFAULTS[JSM]['customer_concurrency']}")
+                else:
+                    if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
+                        err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
+                                       f"concurrency {MIN_DEFAULTS[self.app_type]['concurrency']}.")
             message = ' '.join(err_msg)
         return compliant, message
 

@@ -1,0 +1,156 @@
+---
+settings:
+  artifacts-dir: results/jsm/%Y-%m-%d_%H-%M-%S
+  aggregator: consolidator
+  verbose: false
+  env:
+    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 2990, etc
+    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+    admin_login: admin
+    admin_password: admin
+    load_executor: jmeter
+    concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
+    concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
+    test_duration: 45m
+    ramp-up: 3m                     # time to spin all concurrent users
+    total_actions_per_hour_agents: 5000
+    total_actions_per_hour_customers: 15000
+    WEBDRIVER_VISIBLE: False
+    JMETER_VERSION: 5.2.1
+    LANGUAGE: en_US.utf8
+    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    # Action percentage for Jmeter and Locust load executors
+    agent_browse_projects: 10
+    agent_view_request: 25
+    agent_add_comment: 25
+    agent_view_queues_small: 10
+    agent_view_queues_medium: 10
+    agent_view_report_workload_small: 4
+    agent_view_report_workload_medium: 4
+    agent_view_report_created_vs_resolved_small: 4
+    agent_view_report_created_vs_resolved_medium: 4
+    agent_view_customers: 4
+    agent_standalone_extension: 0
+
+    customer_view_portal: 10
+    customer_view_requests: 25
+    customer_view_request: 15
+    customer_add_comment: 25
+    customer_share_request_with_customer: 5
+    customer_share_request_with_org: 5
+    customer_create_request: 15
+    customer_standalone_extension: 0
+
+    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
+services:
+  - module: shellexec
+    prepare:
+      - python util/pre_run/environment_checker.py
+      - python util/data_preparation/jsm_prepare_data.py
+    shutdown:
+      - python util/post_run/jmeter_post_check.py
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
+    post-process:
+      - python util/analytics/analytics.py jsm
+      - python util/post_run/cleanup_results_dir.py
+execution:
+  - scenario: ${load_executor}_agents
+    executor: ${load_executor}
+    concurrency: ${concurrency_agents}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
+  - scenario: ${load_executor}_customers
+    executor: ${load_executor}
+    concurrency: ${concurrency_customers}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
+  - scenario: selenium_customers
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+  - scenario: selenium_agents
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+scenarios:
+  selenium_customers:
+    script: selenium_ui/jsm_ui_customers.py
+  selenium_agents:
+    script: selenium_ui/jsm_ui_agents.py
+  locust_customers:
+    script: locustio/jsm/customers_locustfile.py
+  locust_agents:
+    script: locustio/jsm/agents_locustfile.py
+  jmeter_agents:
+    script: jmeter/jsm_agents.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hour_agents: ${total_actions_per_hour_agents}
+      perc_agent_browse_projects: ${agent_browse_projects}
+      perc_agent_view_request: ${agent_view_request}
+      perc_agent_add_comment: ${agent_add_comment}
+      perc_agent_view_queues_small: ${agent_view_queues_small}
+      perc_agent_view_queues_medium: ${agent_view_queues_medium}
+      perc_agent_view_report_workload_small: ${agent_view_report_workload_small}
+      perc_agent_view_report_workload_medium: ${agent_view_report_workload_medium}
+      perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
+      perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
+      perc_agent_view_customers: ${agent_view_customers}
+      perc_agent_standalone_extension: ${agent_standalone_extension}
+  jmeter_customers:
+    script: jmeter/jsm_customers.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hour_customers: ${total_actions_per_hour_customers}
+      perc_customer_view_portal: ${customer_view_portal}
+      perc_customer_view_requests: ${customer_view_requests}
+      perc_customer_view_request: ${customer_view_request}
+      perc_customer_add_comment: ${customer_add_comment}
+      perc_customer_share_request_with_customer: ${customer_share_request_with_customer}
+      perc_customer_share_request_with_org: ${customer_share_request_with_org}
+      perc_customer_create_request: ${customer_create_request}
+      perc_customer_standalone_extension: ${customer_standalone_extension}
+modules:
+  consolidator:
+    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
+    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+  jmeter:
+    version: ${JMETER_VERSION}
+    detect-plugins: true
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    plugins:
+      - bzm-parallel=0.4
+      - bzm-random-csv=0.6
+      - jpgc-casutg=2.5
+      - jpgc-dummy=0.2
+      - jpgc-ffw=2.0
+      - jpgc-fifo=0.2
+      - jpgc-functions=2.1
+      - jpgc-json=2.6
+      - jpgc-perfmon=2.1
+      - jpgc-prmctl=0.4
+      - jpgc-tst=2.4
+      - jpgc-wsc=0.3
+      - tilln-sshmon=1.0
+      - jpgc-synthesis=2.2
+    system-properties:
+      server.rmi.ssl.disable: true
+      java.rmi.server.hostname: localhost
+      httpsampler.ignore_failed_embedded_resources: "true"
+  selenium:
+    chromedriver:
+      version: "88.0.4324.27" # Supports Chrome version 88. You can refer to http://chromedriver.chromium.org/downloads
+reporting:
+  - data-source: sample-labels
+    module: junit-xml

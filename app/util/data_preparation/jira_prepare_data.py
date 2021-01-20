@@ -187,7 +187,7 @@ def main():
     url = JIRA_SETTINGS.server_url
     print("Server url: ", url)
 
-    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+    client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password, verify=JIRA_SETTINGS.secure)
 
     __check_for_admin_permissions(client)
     __check_current_language(client)

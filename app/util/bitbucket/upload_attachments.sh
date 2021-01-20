@@ -6,7 +6,7 @@ pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. 
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.7 7.0.5 7.6.2)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
         echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -24,16 +24,16 @@ ATTACHMENT_DIR_DATA="data"
 ###################    End of variables section  ###################
 
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Peformance Toolkit."
-  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
+  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your BITBUCKET, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./upload_attachments --force 6.10.0"
   echo "!!! Warning !!! This may broke your Bitbucket instance."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Bitbucket version is in list of supported
-    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
+    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${2} ]]; then
       ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
@@ -85,6 +85,6 @@ if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1
 fi
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo "Important: do not forget to start Bitbucket"
 echo  # move to a new line

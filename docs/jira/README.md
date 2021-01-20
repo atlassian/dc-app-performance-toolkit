@@ -5,7 +5,7 @@ https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit
 ## Pre-requisites
 * Working Jira Software of supported version ([toolkit README](../../README.md) for a list of supported Jira versions) with users, issues, projects, and boards, etc.
 * Client machine with 4 CPUs and 16 GBs of RAM to run the Toolkit.
-* Virtual environment with Python3.6+ and bzt installed. See the root [toolkit README](../../README.md) file for more details.
+* Virtual environment with Python and bzt installed. See the root [toolkit README](../../README.md) file for more details.
 
 If you need performance testing results at a production level, follow instructions described 
 in the official User Guide to set up Jira DC with the corresponding dataset.
@@ -51,41 +51,24 @@ next steps.
 ## Changing performance workload for JMeter and Locust
 The [jira.yml](../../app/jira.yml) has a `action_name` fields in `env` section with percentage for each action. You can change values from 0 to 100 to increase/decrease execution frequency of certain actions. 
 The percentages must add up to 100, if you want to ensure the performance script maintains 
-throughput defined in `total_actions_per_hr`. The default load simulates an enterprise scale load of 54500 user transactions per hour at 200 concurrency.
-
-To simulate a load of medium-sized customers, `total_actions_per_hr` and `concurrency` can be reduced to 14000 transactions and 70 users. This can be further halved for a small customer.
+throughput defined in `total_actions_per_hour`. 
+For full-scale results generation use defaults values for concurrency, test_duration, total_actions_per_hour and ramp-up.
+For app-specific actions development and testing it's ok to reduce concurrency, test_duration, total_actions_per_hour and ramp-up.
 
 ## JMeter
-### Opening JMeter scripts
-JMeter is written in XML and requires the JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-Be sure to run this command inside the `app` directory. The main [jira.jmx](../../app/jmeter/jira.jmx) file contains the relative path to other scripts and will throw errors if run elsewhere. 
-
 ### Debugging JMeter scripts
-1. Open JMeter GUI from `jira` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-1. On the `View Results Tree` page, click the `Browse` button and open `error.jtl` from `app/results/jira/YY-MM-DD-hh-mm-ss` folder.
+1. Open JMeter UI as described in [README.md](../../app/util/jmeter/README.md).
+1. On the `View Results Tree` controller, click the `Browse` button and open `error.jtl` from `app/results/jira/YY-MM-DD-hh-mm-ss` folder.
 
 From this view, you can click on any failed action and see the request and response data in appropriate tabs.
 
-In addition, you can run and monitor JMeter test real-time with GUI.
-1. Launch the test with GUI by running `bzt jira.yml -gui`.
-1. Right-click `Test Plan` > `Add` > `Listener` > `View Results Tree`. 
-1. Click the start button to start running the test.
-
 ### Run one JMeter action
 #### Option 1: Run one JMeter action via GUI
-1. Open JMeter GUI from `app` directory by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command. 
-1. Go to `File` > `Open`, and then open `jmeter/jira.jmx`.
-1. In the `Global Variables` section, add correct Jira hostname, port, protocol, and postfix (if required).
-1. In `Jira` > `load profile`, set `perc_desired_action` to 100.
-1. Enable `View Results Tree` controller.
-1. Run JMeter.
-1. `View Results Tree` controller will have all details for every request and corresponding response..
+1. Follow steps described in [README.md](../../app/util/jmeter/README.md).
 
 #### Option 2: Run one JMeter action via bzt
-1. In [jira.yml](../../app/jira.yml), set `perc_desired_action` to 100 and all other perc_* to 0.
+1. In [jira.yml](../../app/jira.yml), set percentage `desired_action` to 100 and all other percentages to 0.
 1. Run `bzt jira.yml`.
-
 
 ## Locust
 ### Debugging Locust scripts
@@ -103,7 +86,7 @@ Additional debug information could be enabled by setting `verbose` flag to `true
 
 #### Start Locust console mode
 1. Activate virualenv for the Performance Toolkit.
-1. Navigate to `app` and execute command `locust --no-web --locustfile locustio/jira/locustfile.py --clients N --hatch-rate R`, where `N` is the number of total users to simulate and `R` is the hatch rate.  
+1. Navigate to `app` and execute command `locust --headless --locustfile locustio/jira/locustfile.py --users N --spawn-rate R`, where `N` is the number of total users to simulate and `R` is the spawn rate.  
 
 Full logs of local run you can find in the `results/jira/YY-MM-DD-hh-mm-ss_local/` directory.
 
@@ -124,10 +107,10 @@ In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
 1. In [jira.yml](../../app/jira.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-1. Run all Selenium PyTest tests with the `pytest jira-ui.py` command.
+1. Run all Selenium PyTest tests with the `pytest jira_ui.py` command.
 1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_issue`), execute the first login test and the required one with this command:
 
-`pytest jira-ui.py::test_0_selenium_a_login jira-ui.py::test_1_selenium_view_issue`.
+`pytest jira_ui.py::test_0_selenium_a_login jira_ui.py::test_1_selenium_view_issue`.
 
 
 ### Comparing different runs

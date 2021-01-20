@@ -1,14 +1,13 @@
 from sys import version_info
 
-MIN_SUPPORTED_PYTHON_VERSION = (3, 6, 0)
+SUPPORTED_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
 
-python_version = version_info[0:3]
-print("Python version: {}".format(python_version))
-if python_version < MIN_SUPPORTED_PYTHON_VERSION:
-    raise Exception(
-        "Python version {} is not supported. "
-        "Please use Python version {} or higher.".format(python_version, MIN_SUPPORTED_PYTHON_VERSION))
-
+python_full_version = '.'.join(map(str, version_info[0:3]))
+python_short_version = '.'.join(map(str, version_info[0:2]))
+print("Python version: {}".format(python_full_version))
+if python_short_version not in SUPPORTED_PYTHON_VERSIONS:
+    raise SystemExit("Python version {} is not supported. "
+                     "Supported versions: {}.".format(python_full_version, SUPPORTED_PYTHON_VERSIONS))
 
 # Print toolkit version after Python check
 from util.conf import TOOLKIT_VERSION  # noqa E402

@@ -82,7 +82,9 @@ class BztFileReader(BaseFileReader):
 
     @staticmethod
     def _get_all_test_actions(log):
-        test_actions = {}
+        test_actions_success_rate = {}
+        test_actions_avg_rate = {}
+
         delimiters = ['|', '\x1b(0x\x1b(B']
         delimiter = None
 
@@ -96,12 +98,15 @@ class BztFileReader(BaseFileReader):
                 line_split = line.split(delimiter)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
-                test_actions.setdefault(test_name, test_rate)
+                avg_rt = float(line_split[4].strip())
 
-        if not test_actions:
+                test_actions_success_rate[test_name] = test_rate
+                test_actions_avg_rate[test_name] = avg_rt
+
+        if not test_actions_success_rate:
             raise SystemExit(f"There are no test actions where found in the {ENV_TAURUS_ARTIFACT_DIR}/bzt.log file")
 
-        return test_actions
+        return test_actions_success_rate, test_actions_avg_rate
 
     @property
     def actual_run_time(self):

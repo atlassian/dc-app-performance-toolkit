@@ -12,6 +12,7 @@ TIMEOUT = 20
 class BasePage:
     page_url = ''
     page_loaded_selector = {}
+    timeout = TIMEOUT
 
     def __init__(self, driver):
         self.driver = driver
@@ -22,9 +23,9 @@ class BasePage:
     def wait_for_page_loaded(self):
         if type(self.page_loaded_selector) == list:
             for selector in self.page_loaded_selector:
-                self.wait_until_visible(selector)
+                self.wait_until_visible(selector, timeout=self.timeout)
         else:
-            self.wait_until_visible(self.page_loaded_selector)
+            self.wait_until_visible(self.page_loaded_selector, timeout=self.timeout)
 
     def go_to_url(self, url):
         self.driver.get(url)
@@ -39,17 +40,23 @@ class BasePage:
         by, locator = selector_name[0], selector_name[1]
         return self.driver.find_elements(by, locator)
 
+    def element_exists(self, selector):
+        selector_name = self.get_selector(selector)
+        by, locator = selector_name[0], selector_name[1]
+        return self.driver.find_elements(by, locator) is not None
+
     def wait_until_invisible(self, selector_name):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector))
 
-    def wait_until_visible(self, selector_name):
+    def wait_until_visible(self, selector_name, timeout=TIMEOUT):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector))
+        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), time_out=timeout)
 
     def wait_until_available_to_switch(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector))
+        return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
+                                 time_out=self.timeout)
 
     def wait_until_present(self, selector_name, time_out=TIMEOUT):
         selector = self.get_selector(selector_name)
@@ -57,11 +64,12 @@ class BasePage:
 
     def wait_until_clickable(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector))
+        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), time_out=self.timeout)
 
     def wait_until_any_element_visible(self, selector_name):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector))
+        return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector),
+                                 time_out=self.timeout)
 
     def wait_until_any_ec_presented(self, selector_names):
         origin_selectors = []
