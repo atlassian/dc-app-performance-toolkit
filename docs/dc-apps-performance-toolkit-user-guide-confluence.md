@@ -166,7 +166,7 @@ After creating the development environment Confluence Data Center, generate test
     bzt confluence.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% Success rate.  
+1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
 In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
