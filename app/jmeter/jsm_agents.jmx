@@ -9079,7 +9079,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol">http</stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
