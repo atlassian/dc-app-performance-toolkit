@@ -5605,6 +5605,18 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random File Name" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
+
+vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
+
+//log.info(&quot;Random String: &quot; + new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()});</stringProp>
+                </JSR223PreProcessor>
+                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_new_title_page" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">x_new_title_page</stringProp>
