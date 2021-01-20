@@ -149,7 +149,8 @@ def main():
     url = BITBUCKET_SETTINGS.server_url
     print("Server url: ", url)
 
-    client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password)
+    client = BitbucketRestClient(url, BITBUCKET_SETTINGS.admin_login, BITBUCKET_SETTINGS.admin_password,
+                                 verify=BITBUCKET_SETTINGS.secure)
 
     __check_current_language(client)
     __check_for_admin_permissions(client)
