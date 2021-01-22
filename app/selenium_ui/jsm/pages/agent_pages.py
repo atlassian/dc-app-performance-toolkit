@@ -87,9 +87,9 @@ class ViewCustomerRequest(BasePage):
             self.return_to_parent_frame()
         else:
             if self.driver.app_settings.secure:
-                self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
+                self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
             else:
-                self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
+                self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_text_field)
                                                      ).send_keys(comment_text).perform()
 
         self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
