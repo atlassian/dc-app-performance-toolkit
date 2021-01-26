@@ -2015,7 +2015,7 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="261585815">asserttion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2060,7 +2060,7 @@ vars.put(&quot;p_summary&quot;, comment.toString())
               </HTTPSamplerProxy>
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-787535121">assertion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
