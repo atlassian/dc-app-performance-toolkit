@@ -137,7 +137,7 @@ def get_first_elem(elems: list):
     try:
         return elems[1]
     except IndexError:
-        raise Exception('analytics.py expects application name as argument')
+        raise SystemExit('ERROR: analytics.py expects application name as argument')
 
 
 def get_date():

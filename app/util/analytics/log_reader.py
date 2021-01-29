@@ -13,7 +13,7 @@ class BaseFileReader:
     @staticmethod
     def validate_file_exists(path):
         if not os.path.exists(path):
-            raise Exception(f'{path} does not exist')
+            raise SystemExit(f'{path} does not exist')
 
     @staticmethod
     def validate_file_not_empty(file):
