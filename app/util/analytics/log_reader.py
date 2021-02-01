@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime
+import csv
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
@@ -114,7 +115,7 @@ class BztFileReader(BaseFileReader):
         return run_time_bzt if run_time_bzt else self._get_duration_by_start_finish_strings()
 
     @property
-    def all_test_actions(self):
+    def all_test_actions_bzt_log(self):
         return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
 
@@ -122,23 +123,34 @@ class ResultsFileReader(BaseFileReader):
     header_validation = {0: 'Label', 1: '# Samples'}
 
     def __init__(self):
+        self.results_log_path = f'{self.log_dir}/results.csv'
         self.results_log = self.get_results_log()
 
     def get_results_log(self):
-        results_log_path = f'{self.log_dir}/results.csv'
-        self.validate_file_exists(results_log_path)
-        with open(results_log_path) as res_file:
-            header = res_file.readline()
-            results = res_file.readlines()
-        self.validate_file_not_empty(results)
-        headers_list = header.split(',')
+        lines = []
+        with open(self.results_log_path, 'r') as res_file:
+            for line in csv.DictReader(res_file):
+                lines.append(line)
+        headers_list = list(lines[0].keys())
         self.validate_headers(headers_list, self.header_validation)
-        return results
+        self.validate_file_not_empty(lines)
+        return lines
+
+    @property
+    def all_tests_actions(self):
+        actions_success_rate = {}
+        actions_avg_time = {}
+        for action in self.results_log:
+            if action['Label'] not in actions_avg_time:
+                actions_avg_time[action['Label']] = round(int(action['Average']) / 1000, 2)
+            if action['Label'] not in actions_success_rate:
+                actions_success_rate[action['Label']] = 100 - float(action['Error %'])
+        return actions_success_rate, actions_avg_time
 
     @property
     def actual_git_operations_count(self):
         count = 0
         for line in self.results_log:
-            if any(s in line for s in GIT_OPERATIONS):
-                count = count + int(line.split(',')[1])
+            if any(s in line.keys() for s in GIT_OPERATIONS):
+                count = count + int(line['# Samples'])
         return count
