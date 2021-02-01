@@ -39,7 +39,7 @@ class AnalyticsCollector:
         self.duration = convert_to_sec(self.conf.duration)
         self.concurrency = self.conf.concurrency
         self.actual_duration = bzt_log.actual_run_time
-        self.test_actions_success_rate, self.test_actions_avg_rate = bzt_log.all_test_actions
+        self.test_actions_success_rate, self.test_actions_avg_rate = self.results_log.all_tests_actions
 
         self.selenium_test_rates, self.jmeter_test_rates, self.locust_test_rates, self.app_specific_rates = \
             generate_test_actions_by_type(test_actions=self.test_actions_success_rate, application=application)
