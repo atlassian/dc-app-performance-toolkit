@@ -3,11 +3,19 @@ from util.api.jira_clients import JiraRestClient
 from util.api.confluence_clients import ConfluenceRestClient
 from util.api.bitbucket_clients import BitbucketRestClient
 from lxml import etree
+import json
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 JSM = 'jsm'
+DEFAULT_ACTIONS = 'util/default_test_actions.json'
+
+
+def read_json_file(file_path):
+    with open(file_path) as json_file:
+        data = json.load(json_file)
+        return data
 
 
 class BaseApplication:
@@ -20,6 +28,22 @@ class BaseApplication:
         self.client = api_client(host=config_yml.server_url,
                                  user=config_yml.admin_login, password=config_yml.admin_password)
         self.config = config_yml
+
+    def get_default_actions(self):
+        actions_json = read_json_file(DEFAULT_ACTIONS)
+        return actions_json[self.type]
+
+    @property
+    def jmeter_default_actions(self):
+        return self.get_default_actions()['jmeter']
+
+    @property
+    def selenium_default_actions(self):
+        return self.get_default_actions()['selenium']
+
+    @property
+    def locust_default_actions(self):
+        return self.get_default_actions()['locust']
 
 
 class Jira(BaseApplication):
@@ -42,64 +66,6 @@ class Jira(BaseApplication):
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
 
-    @property
-    def jmeter_default_actions(self):
-        return ['jmeter_create_issue:open_quick_create',
-                'jmeter_create_issue:fill_and_submit_issue_form',
-                'jmeter_search_jql',
-                'jmeter_view_issue',
-                'jmeter_view_project_summary',
-                'jmeter_view_dashboard',
-                'jmeter_edit_issue:open_editor',
-                'jmeter_edit_issue:save_edit',
-                'jmeter_add_comment:open_comment',
-                'jmeter_add_comment:save_comment',
-                'jmeter_browse_projects',
-                'jmeter_view_kanban_board',
-                'jmeter_view_scrum_board',
-                'jmeter_view_backlog',
-                'jmeter_browse_boards',
-                'jmeter_login_and_view_dashboard',
-                ]
-
-    @property
-    def selenium_default_actions(self):
-        return ['selenium_a_login',
-                'selenium_browse_projects_list',
-                'selenium_browse_boards_list',
-                'selenium_create_issue',
-                'selenium_edit_issue',
-                'selenium_save_comment',
-                'selenium_search_jql',
-                'selenium_view_backlog_for_scrum_board',
-                'selenium_view_scrum_board',
-                'selenium_view_kanban_board',
-                'selenium_view_dashboard',
-                'selenium_view_issue',
-                'selenium_view_project_summary',
-                'selenium_z_log_out',
-                ]
-
-    @property
-    def locust_default_actions(self):
-        return ['locust_login_and_view_dashboard',
-                'locust_view_issue',
-                'locust_create_issue:open_quick_create',
-                'locust_create_issue:fill_and_submit_issue_form',
-                'locust_search_jql',
-                'locust_view_project_summary',
-                'locust_edit_issue:open_editor',
-                'locust_edit_issue:save_edit',
-                'locust_view_dashboard',
-                'locust_add_comment:open_comment',
-                'locust_add_comment:save_comment',
-                'locust_browse_projects',
-                'locust_view_kanban_board',
-                'locust_view_scrum_board',
-                'locust_view_backlog',
-                'locust_browse_boards',
-                ]
-
 
 class Confluence(BaseApplication):
     type = CONFLUENCE
@@ -115,63 +81,6 @@ class Confluence(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.client.get_total_pages_count()} pages"
-
-    @property
-    def jmeter_default_actions(self):
-        return ['jmeter_login_and_view_dashboard',
-                'jmeter_view_page:open_page',
-                'jmeter_view_page:view_page_tree',
-                'jmeter_view_dashboard',
-                'jmeter_view_blog',
-                'jmeter_search_cql:recently_viewed',
-                'jmeter_search_cql:search_results',
-                'jmeter_view_blog',
-                'jmeter_search_cql:recently_viewed',
-                'jmeter_search_cql:search_results',
-                'jmeter_create_blog:blog_editor',
-                'jmeter_create_blog:feel_and_publish',
-                'jmeter_create_and_edit_page:create_page_editor',
-                'jmeter_create_and_edit_page:create_page',
-                'jmeter_create_and_edit_page:open_editor',
-                'jmeter_create_and_edit_page:edit_page',
-                'jmeter_comment_page',
-                'jmeter_view_attachment',
-                'jmeter_upload_attachment',
-                'jmeter_like_page'
-                ]
-
-    @property
-    def selenium_default_actions(self):
-        return ['selenium_a_login',
-                'selenium_create_comment',
-                'selenium_create_page',
-                'selenium_edit_page',
-                'selenium_view_blog',
-                'selenium_view_dashboard',
-                'selenium_view_page',
-                'selenium_z_log_out',
-                ]
-
-    @property
-    def locust_default_actions(self):
-        return ['locust_login_and_view_dashboard',
-                'locust_view_page:open_page',
-                'locust_view_page:view_page_tree',
-                'locust_view_dashboard',
-                'locust_view_blog',
-                'locust_search_cql:recently_viewed',
-                'locust_search_cql:search_results',
-                'locust_create_blog:blog_editor',
-                'locust_create_blog:feel_and_publish',
-                'locust_create_and_edit_page:create_page_editor',
-                'locust_create_and_edit_page:create_page',
-                'locust_create_and_edit_page:open_editor',
-                'locust_create_and_edit_page:edit_page',
-                'locust_comment_page',
-                'locust_view_attachment',
-                'locust_upload_attachment',
-                'locust_like_page',
-                ]
 
 
 class Bitbucket(BaseApplication):
@@ -196,38 +105,6 @@ class Bitbucket(BaseApplication):
         else:
             return 'Could not parse number of Bitbucket repositories'
 
-    @property
-    def jmeter_default_actions(self):
-        return ['jmeter_clone_repo_via_http',
-                'jmeter_clone_repo_via_ssh',
-                'jmeter_create_repo_shallow_copy',
-                'jmeter_git_add',
-                'jmeter_git_commit',
-                'jmeter_git_push_via_http',
-                'jmeter_git_push_via_ssh',
-                'jmeter_git_fetch_via_http',
-                'jmeter_git_fetch_via_ssh',
-                ]
-
-    @property
-    def selenium_default_actions(self):
-        return ['selenium_a_login',
-                'selenium_view_dashboard',
-                'selenium_create_pull_request',
-                'selenium_view_projects',
-                'selenium_view_project_repositories',
-                'selenium_view_repo',
-                'selenium_view_list_pull_requests',
-                'selenium_view_pull_request_overview',
-                'selenium_view_pull_request_diff',
-                'selenium_view_pull_request_commits',
-                'selenium_comment_pull_request_diff',
-                'selenium_comment_pull_request_overview',
-                'selenium_view_branches',
-                'selenium_view_commits',
-                'selenium_logout',
-                ]
-
 
 class Jsm(BaseApplication):
     type = JSM
@@ -249,95 +126,6 @@ class Jsm(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
-
-    @property
-    def jmeter_default_actions(self):
-        return ['jmeter_agent_add_comment:open_request_comment',
-                'jmeter_agent_add_comment:save_request_comment',
-                'jmeter_agent_browse_projects',
-                'jmeter_agent_login_and_view_dashboard',
-                'jmeter_agent_view_customers',
-                'jmeter_agent_view_queues_medium:all_open_queue',
-                'jmeter_agent_view_queues_medium:random_queue',
-                'jmeter_agent_view_queues_small:all_open_queue',
-                'jmeter_agent_view_queues_small:random_queue',
-                'jmeter_agent_view_report_created_vs_resolved_medium',
-                'jmeter_agent_view_report_created_vs_resolved_small',
-                'jmeter_agent_view_report_workload_medium',
-                'jmeter_agent_view_report_workload_small',
-                'jmeter_agent_view_request',
-                'jmeter_customer_add_comment',
-                'jmeter_customer_create_request:create_request',
-                'jmeter_customer_create_request:open_create_request_view',
-                'jmeter_customer_create_request:view_request_after_creation',
-                'jmeter_customer_login_and_view_portals',
-                'jmeter_customer_share_request_with_customer:add_customer',
-                'jmeter_customer_share_request_with_customer:remove_customer',
-                'jmeter_customer_share_request_with_customer:search_customer',
-                'jmeter_customer_share_request_with_org:add_org',
-                'jmeter_customer_share_request_with_org:remove_org',
-                'jmeter_customer_share_request_with_org:search_org',
-                'jmeter_customer_view_portal',
-                'jmeter_customer_view_request',
-                'jmeter_customer_view_requests:all_requests',
-                'jmeter_customer_view_requests:my_requests',
-                'jmeter_customer_view_requests:with_filter_requests']
-
-    @property
-    def selenium_default_actions(self):
-        return ['selenium_agent_a_login',
-                'selenium_agent_add_comment',
-                'selenium_agent_browse_projects',
-                'selenium_agent_view_customers',
-                'selenium_agent_view_queues_medium',
-                'selenium_agent_view_queues_small',
-                'selenium_agent_view_report_created_vs_resolved_medium',
-                'selenium_agent_view_report_created_vs_resolved_small',
-                'selenium_agent_view_report_workload_medium',
-                'selenium_agent_view_report_workload_small',
-                'selenium_agent_view_request',
-                'selenium_agent_z_logout',
-                'selenium_customer_a_login',
-                'selenium_customer_add_comment',
-                'selenium_customer_create_request',
-                'selenium_customer_share_request_with_customer',
-                'selenium_customer_view_all_requests',
-                'selenium_customer_view_request',
-                'selenium_customer_view_requests',
-                'selenium_customer_z_log_out']
-
-    @property
-    def locust_default_actions(self):
-        return ['locust_agent_add_comment:open_request_comment',
-                'locust_agent_add_comment:save_request_comment',
-                'locust_agent_browse_projects',
-                'locust_agent_login_and_view_dashboard',
-                'locust_agent_view_customers',
-                'locust_agent_view_queues_medium:all_open_queue',
-                'locust_agent_view_queues_medium:random_queue',
-                'locust_agent_view_queues_small:all_open_queue',
-                'locust_agent_view_queues_small:random_queue',
-                'locust_agent_view_report_created_vs_resolved_medium',
-                'locust_agent_view_report_created_vs_resolved_small',
-                'locust_agent_view_report_workload_medium',
-                'locust_agent_view_report_workload_small',
-                'locust_agent_view_request',
-                'locust_customer_add_comment',
-                'locust_customer_create_request:create_request',
-                'locust_customer_create_request:open_create_request_view',
-                'locust_customer_create_request:view_request_after_creation',
-                'locust_customer_login_and_view_portals',
-                'locust_customer_share_request_with_customer:add_customer',
-                'locust_customer_share_request_with_customer:remove_customer',
-                'locust_customer_share_request_with_customer:search_customer',
-                'locust_customer_share_request_with_org:add_org',
-                'locust_customer_share_request_with_org:remove_org',
-                'locust_customer_share_request_with_org:search_org',
-                'locust_customer_view_portal',
-                'locust_customer_view_request',
-                'locust_customer_view_requests:all_requests',
-                'locust_customer_view_requests:my_requests',
-                'locust_customer_view_requests:with_filter_requests']
 
 
 class ApplicationSelector:
