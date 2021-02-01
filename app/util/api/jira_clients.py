@@ -1,5 +1,6 @@
-from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
 from selenium.common.exceptions import WebDriverException
+
+from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -117,47 +118,13 @@ class JiraRestClient(RestClient):
 
         return issues
 
-    def issues_search_parallel(self, jql='order by key', max_results=1000, fields=None):
-        """
-        Parallel version
-        """
-        from multiprocessing import cpu_count
-        from multiprocessing.pool import ThreadPool
-
-        api_url = f'{self.host}/rest/api/2/search'
-
-        if max_results % BATCH_SIZE_ISSUES == 0:
-            loop_count = max_results // BATCH_SIZE_ISSUES
-            last_batch_size = BATCH_SIZE_ISSUES
-        else:
-            loop_count = max_results // BATCH_SIZE_ISSUES + 1
-            last_batch_size = max_results % BATCH_SIZE_ISSUES
-
-        def search_issues(i):
-            nonlocal loop_count, last_batch_size, max_results
-            if i == loop_count - 1:
-                max_results = last_batch_size
-
-            body = {
-                "jql": jql,
-                "startAt": BATCH_SIZE_ISSUES * i,
-                "maxResults": max_results,
-                "fields": ['id'] if fields is None else fields
-            }
-
-            response = self.post(api_url, "Could not retrieve issues", body=body)
-            loop_issues = response.json()['issues']
-            return loop_issues
-
-        num_cores = cpu_count()
-        pool = ThreadPool(processes=num_cores)
-        loop_issues_list = pool.map(search_issues, [i for i in range(loop_count)])
-        issues = [issue for loop_issues in loop_issues_list for issue in loop_issues]
-        return issues
-
     def get_total_issues_count(self, jql: str = ''):
         api_url = f'{self.host}/rest/api/2/search'
-        body = {"jql": jql if jql else "order by key"}
+        body = {"jql": jql if jql else "order by key",
+                "startAt": 0,
+                "maxResults": 0,
+                "fields": ["summary"]
+                }
         response = self.post(api_url, "Could not retrieve issues", body=body)
         return response.json().get('total', 0)
 
