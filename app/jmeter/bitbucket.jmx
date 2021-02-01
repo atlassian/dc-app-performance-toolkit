@@ -346,7 +346,7 @@ else{
           </HTTPSamplerProxy>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
+              <collectionProp name="Assertion.test_strings">
                 <stringProp name="49586">200</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -461,7 +461,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
               </HeaderManager>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
+                <collectionProp name="Assertion.test_strings">
                   <stringProp name="49587">201</stringProp>
                   <stringProp name="51517">409</stringProp>
                   <stringProp name="0"></stringProp>
