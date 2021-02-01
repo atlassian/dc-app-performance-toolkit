@@ -98,7 +98,7 @@ def __calculate_issues_per_project(projects_count):
 
 def __filter_customer_with_requests(customer, jsm_client):
     customer_auth = (customer['name'], DEFAULT_PASSWORD)
-    customer_requests = jsm_client.get_request(auth=customer_auth)
+    customer_requests = jsm_client.get_requests(auth=customer_auth, status="OPEN_REQUESTS")
     non_closed_requests = [request for request in customer_requests if request['currentStatus']['status'] != 'Closed']
     customer_dict = {'name': customer['name'], 'has_requests': False}
     if non_closed_requests:
