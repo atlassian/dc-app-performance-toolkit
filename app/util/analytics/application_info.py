@@ -9,7 +9,7 @@ JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 JSM = 'jsm'
-DEFAULT_ACTIONS = '../default_test_actions.json'
+DEFAULT_ACTIONS = 'util/default_test_actions.json'
 
 
 def read_json_file(file_path):
