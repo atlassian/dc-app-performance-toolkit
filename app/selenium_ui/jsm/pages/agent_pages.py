@@ -83,14 +83,16 @@ class ViewCustomerRequest(BasePage):
                 self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
             else:
                 self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
-                                                     ).send_keys(comment_text).perform()
+                                                     ).perform()
+                self.action_chains().send_keys(comment_text).perform()
             self.return_to_parent_frame()
         else:
             if self.driver.app_settings.secure:
                 self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
             else:
                 self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_text_field)
-                                                     ).send_keys(comment_text).perform()
+                                                     ).perform()
+                self.action_chains().send_keys(comment_text).perform()
 
         self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
@@ -150,7 +152,7 @@ class ViewQueue(BasePage):
         self.page_url = url_manager.view_queue_all_open()
 
     def wait_for_page_loaded(self):
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        self.wait_until_visible(ViewQueueLocators.queues_status)
 
     def get_random_queue(self):
         queues = self.get_elements(ViewQueueLocators.queues)
@@ -159,4 +161,4 @@ class ViewQueue(BasePage):
                                       ['All open', 'Recently resolved', 'Resolved past 7 days']
                                       and queue.text.partition('\n')[2] != '0'])
         random_queue.click()
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        self.wait_until_visible(ViewQueueLocators.queues_status, timeout=self.timeout)
