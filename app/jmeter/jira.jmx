@@ -417,7 +417,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             </JSR223PostProcessor>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
+              <collectionProp name="Assertion.test_strings">
                 <stringProp name="-1948182085">title=&quot;loggedInUser&quot; value=&quot;${username}&quot;</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -548,7 +548,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             </HeaderManager>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings"/>
+              <collectionProp name="Assertion.test_strings"/>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
               <boolProp name="Assertion.assume_success">true</boolProp>
@@ -1202,7 +1202,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -1389,7 +1389,7 @@ vars.put(&quot;p_request_body&quot;, request_body.toString())
                 </JSR223PreProcessor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2347,7 +2347,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-1530831458">&lt;meta name=&quot;ajs-issue-key&quot; content=&quot;${issue_key}&quot;&gt;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2856,7 +2856,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="1182867844">[&quot;project-key&quot;]=&quot;\&quot;${project_key}\&quot;&quot;;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -3632,7 +3632,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </HeaderManager>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-1948182085">title=&quot;loggedInUser&quot; value=&quot;${username}&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -3937,7 +3937,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </HeaderManager>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
+                  <collectionProp name="Assertion.test_strings"/>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
@@ -4553,7 +4553,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="952779966"> Edit Issue:  [${issue_key}]</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -4969,7 +4969,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 </HeaderManager>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-250224249">[${issue_key}]</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -5498,7 +5498,7 @@ vars.put(&quot;random_string_long&quot;, random_string_long)
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="879966593">Add Comment: ${issue_key}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -5858,7 +5858,7 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 </JSR223PreProcessor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-1530831458">&lt;meta name=&quot;ajs-issue-key&quot; content=&quot;${issue_key}&quot;&gt;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -5957,7 +5957,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </HeaderManager>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="1350597856">WRM._unparsedData[&quot;com.atlassian.jira.project.browse:projects&quot;]=&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -6213,7 +6213,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-659010545">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${kanban_board_id},\&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -7100,7 +7100,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="1102120432">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${scrum_board_id},\&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -7994,7 +7994,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="1102120432">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${scrum_board_id},\&quot;</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -9291,7 +9291,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="261585815">asserttion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -9336,7 +9336,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
               </HTTPSamplerProxy>
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
+                  <collectionProp name="Assertion.test_strings">
                     <stringProp name="-787535121">assertion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
