@@ -1,6 +1,9 @@
 import numbers
 from pathlib import Path
-import json
+from distutils import util
+import distutils
+import csv
+
 
 def resolve_path(str_path: str) -> Path:
     return Path(str_path).resolve().expanduser()
@@ -27,7 +30,18 @@ def validate_file_exists(file: Path, msg: str):
         raise SystemExit(msg)
 
 
-def read_json_file(file_path):
-    with open(file_path) as json_file:
-        data = json.load(json_file)
-        return data
+def read_csv_by_line(file: Path) -> list:
+    lines = []
+    with open(file, 'r') as data:
+        for line in csv.DictReader(data):
+            lines.append(line)
+    return lines
+
+
+def get_app_specific_actions(file: Path) -> list:
+    app_specific_list = []
+    actions = read_csv_by_line(file)
+    for action in actions:
+        if bool(distutils.util.strtobool(action['App-specific'])):
+            app_specific_list.append(action['Action'])
+    return app_specific_list

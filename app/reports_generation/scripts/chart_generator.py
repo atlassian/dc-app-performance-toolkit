@@ -1,19 +1,11 @@
-# -*- encoding: utf-8 -*-
-
 import re
 from pathlib import Path
-import csv
-import tempfile
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import DataFrame
 
-from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number, read_json_file
-
-APPS = ['jira', 'confluence', 'bitbucket', 'jsm']
-TEST_TYPES = ['selenium', 'jmeter', 'locust']
-DEFAULT_ACTIONS_PATH = '../util/default_test_actions.json'
+from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number, get_app_specific_actions
 
 
 def __normalize_file_name(s) -> str:
@@ -30,46 +22,10 @@ def __resolve_and_expand_user_path(path: Path) -> Path:
     return path.resolve().expanduser()
 
 
-def __get_all_default_actions():
-    full_actions_list = []
-    actions_data = read_json_file(DEFAULT_ACTIONS_PATH)
-    for app in APPS:
-        for test_type in TEST_TYPES:
-            for action in actions_data[app][test_type]:
-                full_actions_list.append(action)
-    return full_actions_list
-
-
-def __mark_as_app_specific(action_name: str):
-    if action_name not in __get_all_default_actions():
-        return f'\u2714{action_name}'
-    else:
-        return action_name
-
-
 def __read_file_as_data_frame(file_path: Path, index_col: str) -> DataFrame:
     if not file_path.exists():
         raise SystemExit(f"File {file_path} does not exist")
-
-    lines = []
-    with open(file_path, 'r') as res_file:
-        for line in csv.DictReader(res_file):
-            lines.append(line)
-
-    # Mark as app-specific if exists
-    for line in lines:
-        line['Action'] = __mark_as_app_specific(line['Action'])
-
-    fields = list(lines[0].keys())
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        tmp_csv = Path(tmp_dir) / Path(f'tmp_scale_profile.csv')
-        with open(tmp_csv, 'w') as tmp_file:
-            w = csv.writer(tmp_file)
-            w.writerow(fields)
-            for line in lines:
-                w.writerow(line[field] for field in fields)
-        with open(tmp_csv, 'r') as f:
-            return pd.read_csv(f, index_col=index_col)
+    return pd.read_csv(file_path, index_col=index_col)
 
 
 def __generate_image_name(title: str) -> Path:
@@ -98,9 +54,13 @@ def make_chart(config: dict, results_dir: Path) -> Path:
     data_frame = __read_file_as_data_frame(file_path, index_col)
     print(f"Input data file {file_path} successfully read")
 
+    # Set app-specific mark
+    app_specific_actions_list = get_app_specific_actions(file_path)
+    for action in app_specific_actions_list:
+        data_frame = data_frame.rename(index={action: f"\u2714{action}"})
+
     data_frame = data_frame.sort_index()
     data_frame.plot.barh(figsize=(image_width, image_height))
-
     plt.xlabel('Time, ms')
     plt.title(title)
     plt.tight_layout()
