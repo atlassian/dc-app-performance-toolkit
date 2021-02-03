@@ -120,10 +120,6 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
     jtl_list = [row for row in reader]
     csv_list = []
 
-
-    jtl_list.append({'timeStamp': '1610100366528', 'elapsed': '2583', 'label': 'jmeter_custom_test', 'responseCode': '200', 'responseMessage': 'Number of samples in transaction : 10, number of failing samples : 0', 'threadName': 'Agents 1-1', 'success': 'true', 'bytes': '56510', 'grpThreads': '2', 'allThreads': '2', 'Latency': '0', 'Hostname': 'macbook718', 'Connect': '0'})
-    jtl_list.append({'timeStamp': '1610100366528', 'elapsed': '2700', 'label': 'jmeter_custom_test', 'responseCode': '200', 'responseMessage': 'Number of samples in transaction : 10, number of failing samples : 0', 'threadName': 'Agents 1-1', 'success': 'true', 'bytes': '56510', 'grpThreads': '2', 'allThreads': '2', 'Latency': '0', 'Hostname': 'macbook718', 'Connect': '0'})
-
     for jtl_sample in jtl_list:
         sample = {}
         if jtl_sample[LABEL_JTL] not in [processed_sample[LABEL] for processed_sample in csv_list]:
