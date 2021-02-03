@@ -9,7 +9,7 @@ RESULTS_CSV_FILE_NAME = "results.csv"
 
 class ResultsCSV:
 
-    def __init__(self, absolute_file_path, actions: list):
+    def __init__(self, absolute_file_path, actions: dict):
         self.absolute_file_path = absolute_file_path
         self.actions = actions
 
