@@ -83,22 +83,11 @@ class ViewCustomerRequest(BasePage):
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
             tinymce_field = self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
             self.action_chains().send_keys_to_element(tinymce_field, comment_text).perform()
-            # if self.driver.app_settings.secure:
-            #     self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
-            # else:
-            #     self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
-            #                                          ).perform()
-            #     self.action_chains().send_keys(comment_text).perform()
             self.return_to_parent_frame()
         else:
             comment_text_field = self.get_element(ViewCustomerRequestLocators.comment_text_field)
-            self.action_chains().send_keys_to_element(comment_text_field, comment_text).perform()
-            # if self.driver.app_settings.secure:
-            #     self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
-            # else:
-            #     self.action_chains().move_to_element(self.get_element(ViewCustomerRequestLocators.comment_text_field)
-            #                                          ).perform()
-            #     self.action_chains().send_keys(comment_text).perform()
+            self.action_chains().move_to_element(comment_text_field).click()\
+                .send_keys_to_element(comment_text_field, comment_text).perform()
 
         self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
