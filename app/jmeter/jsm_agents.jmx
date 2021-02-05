@@ -384,7 +384,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             </JSR223PostProcessor>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Assertion.test_strings">
+              <collectionProp name="Asserion.test_strings">
                 <stringProp name="-1948182085">title=&quot;loggedInUser&quot; value=&quot;${username}&quot;</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -515,7 +515,7 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             </HeaderManager>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Assertion.test_strings"/>
+              <collectionProp name="Asserion.test_strings"/>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
               <boolProp name="Assertion.assume_success">true</boolProp>
@@ -9564,7 +9564,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
                 </RegexExtractor>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                  <collectionProp name="Assertion.test_strings">
+                  <collectionProp name="Asserion.test_strings">
                     <stringProp name="261585815">asserttion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -9609,7 +9609,7 @@ vars.put(&quot;g_comment&quot;, comment.toString())
               </HTTPSamplerProxy>
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
-                  <collectionProp name="Assertion.test_strings">
+                  <collectionProp name="Asserion.test_strings">
                     <stringProp name="-787535121">assertion string</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
