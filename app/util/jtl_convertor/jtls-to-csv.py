@@ -29,7 +29,8 @@ SUCCESS_JTL_TMP = 'success_tmp'
 FALSE_JTL = 'false'
 APP_SPECIFIC = 'App specific'
 
-CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE},{APP_SPECIFIC}\n'
+CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE},' \
+             f'{APP_SPECIFIC}\n'
 RESULTS_CSV_NAME = 'results.csv'
 APPS = ['jira', 'confluence', 'bitbucket', 'jsm']
 TEST_TYPES = ['selenium', 'jmeter', 'locust']

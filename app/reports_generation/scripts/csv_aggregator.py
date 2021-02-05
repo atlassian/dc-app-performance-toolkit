@@ -55,7 +55,7 @@ def __get_tests_results(config: dict) -> List[ResultsCSV]:
         absolute_file_path = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
         with absolute_file_path.open(mode='r') as fs:
             for row in csv.DictReader(fs):
-                value_by_action[row['Label']] = {column_name:row[column_name], 'App-specific': row['App specific']}
+                value_by_action[row['Label']] = {column_name: row[column_name], 'App-specific': row['App specific']}
             results_files_list.append(ResultsCSV(absolute_file_path=absolute_file_path, actions=value_by_action))
 
     return results_files_list
