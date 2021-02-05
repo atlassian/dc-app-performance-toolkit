@@ -54,7 +54,7 @@ For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
 git --version
 ```
 
-We recommend using virtualenv for Taurus.
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
 
 1. Install virtualenv with pip:
 ```
@@ -138,7 +138,7 @@ Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualst
 
 Setup [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
 
-We recommend using virtualenv for Taurus.
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
 1. Install virtualenv with pip:
 ```
 pip install virtualenv
