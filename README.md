@@ -27,20 +27,29 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 * Python 3.6-3.8 and pip
 * JDK 8
 * Google Chrome web browser
-* Git client (only for Bitbucket Server)
+* Git client (only for Bitbucket DC)
 
 Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product.yml file (modules->selenium->chromedriver->version).
 
 If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
-### macOS/Linux
-Make sure that you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+### macOS setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* XCode Command Line Tools
+* Google Chrome web browser
 ```
 python3 --version
 pip --version
 java -version
+# command to check if XCode Command Line Tools installed
+xcode-select --print-path
+# or command to install if XCode Command Line Tools
+xcode-select --install
 ```
-For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
 ```
 git --version
 ```
@@ -64,7 +73,63 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Windows
+### Linux setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* Python developer package
+* Google Chrome web browser
+```
+python3 --version
+pip --version
+java -version
+```
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
+```
+
+We recommend using virtualenv for Taurus.
+
+1. Install virtualenv with pip:
+```
+pip install virtualenv
+```
+2. Create new virtual env with python3:
+```
+virtualenv venv -p python3
+```
+3. Activate virtual env:
+```
+source venv/bin/activate
+```
+4. Install dependencies:
+```
+pip install -r requirements.txt
+```
+
+## Example setup for clean Ubuntu 18.04
+JDK setup (if missing):
+```
+sudo apt-get install -y openjdk-8-jre-headless
+```
+Chrome setup (if missing):
+```
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+```
+Python and virtualenv setup:
+```
+sudo apt-get update
+sudo apt-get -y install python3.8-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+virtualenv venv -p python
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Windows setup
 #### Installing Taurus manually
 Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
