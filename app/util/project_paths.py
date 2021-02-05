@@ -65,6 +65,10 @@ def __get_taurus_artifacts_dir():
         return local_run_results
 
 
+def __get_default_test_actions():
+    return Path(__file__).parents[0] / "default_test_actions.json"
+
+
 JIRA_YML = __get_jira_yml()
 JIRA_DATASETS = __get_jira_datasets()
 JIRA_DATASET_JQLS = __get_jira_dataset('jqls.csv')
@@ -101,4 +105,5 @@ BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 
+DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()
