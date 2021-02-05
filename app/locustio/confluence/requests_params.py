@@ -1,5 +1,5 @@
 # flake8: noqa
-from locustio.common_utils import generate_random_string, read_input_file
+from locustio.common_utils import generate_random_string, read_input_file, BaseResource
 from util.project_paths import CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_USERS, CONFLUENCE_STATIC_CONTENT
 import json
 
@@ -14,24 +14,13 @@ def confluence_datasets():
     return data_sets
 
 
-class BaseResource:
-    resources_file = 'locustio/confluence/resources.json'
-    action_name = ''
-    storage = dict()
+class ConfluenceResource(BaseResource):
 
-    def __init__(self):
-        self.resources_json = self.read_json()
-        self.resources_body = self.action_resources()
-
-    def read_json(self):
-        with open(self.resources_file) as f:
-            return json.load(f)
-
-    def action_resources(self):
-        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
-
-
-class Login(BaseResource):
+    def __init__(self, resource_file='locustio/confluence/resources.json'):
+        super().__init__(resource_file)
+        
+        
+class Login(ConfluenceResource):
     action_name = 'login_and_view_dashboard'
     login_body = {
         'os_username': '',
@@ -46,7 +35,7 @@ class Login(BaseResource):
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
 
 
-class ViewPage(BaseResource):
+class ViewPage(ConfluenceResource):
     action_name = 'view_page'
     parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
     page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
@@ -60,7 +49,7 @@ class ViewPage(BaseResource):
     inline_comment_re = '\"id\":(.+?)\,\"'
 
 
-class ViewDashboard(BaseResource):
+class ViewDashboard(ConfluenceResource):
     action_name = 'view_dashboard'
     keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
     static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
@@ -68,7 +57,7 @@ class ViewDashboard(BaseResource):
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
 
 
-class ViewBlog(BaseResource):
+class ViewBlog(ConfluenceResource):
     action_name = 'view_blog'
     parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
     page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
@@ -77,7 +66,7 @@ class ViewBlog(BaseResource):
     inline_comment_re = '\"id\":(.+?)\,\"'
 
 
-class CreateBlog(BaseResource):
+class CreateBlog(ConfluenceResource):
     action_name = 'create_blog'
     atl_token_re = 'name=\"ajs-atl-token\" content=\"(.*?)\">'
     content_id_re = 'name=\"ajs-content-id\" content=\"(.*?)\">'
@@ -87,7 +76,7 @@ class CreateBlog(BaseResource):
     created_blog_title_re = 'anonymous_export_view.*?\"webui\":\"(.*?)\"'
 
 
-class CreateEditPage(BaseResource):
+class CreateEditPage(ConfluenceResource):
     action_name = 'create_and_edit_page'
     content_id_re = 'meta name=\"ajs-content-id\" content=\"(.*?)\">'
     atl_token_re = 'meta name=\"ajs-atl-token\" content=\"(.*?)\">'
@@ -103,15 +92,15 @@ class CreateEditPage(BaseResource):
                               "hidden tinymce-editor\">([\w\W]*?)</textarea>'
 
 
-class CommentPage(BaseResource):
+class CommentPage(ConfluenceResource):
     action_name = 'comment_page'
 
 
-class UploadAttachments(BaseResource):
+class UploadAttachments(ConfluenceResource):
     action_name = 'upload_attachments'
     atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
 
 
-class LikePage(BaseResource):
+class LikePage(ConfluenceResource):
     action_name = 'like_page'
     like_re = '\{\"likes\":\[\{"user":\{"name\"\:\"(.+?)",'
