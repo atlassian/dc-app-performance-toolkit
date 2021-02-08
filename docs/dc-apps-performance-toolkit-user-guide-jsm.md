@@ -282,8 +282,8 @@ When finished, the **Acknowledge** button will be available on the re-indexing p
     - `concurrency_customers`: `1` - number of concurrent JMeter/Locust customers.
     - `test_duration`: `5m` - duration of the performance run.
     - `ramp-up`: `3s` - amount of time it will take JMeter or Locust to add all test users to test execution.
-    - `total_actions_per_hour_agents`: `1350` - number of total JMeter/Locust actions per hour for agents scenario.
-    - `total_actions_per_hour_customers`: `4050` - number of total JMeter/Locust actions per hour customers scenario.
+    - `total_actions_per_hour_agents`: `500` - number of total JMeter/Locust actions per hour for agents scenario.
+    - `total_actions_per_hour_customers`: `1500` - number of total JMeter/Locust actions per hour customers scenario.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
     
 1. Run bzt.
@@ -803,8 +803,8 @@ For generating performance results suitable for Marketplace approval process use
     concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 3m                               # time to spin all concurrent users
-    total_actions_per_hour_agents: 13500      # number of total JMeter/Locust actions per hour
-    total_actions_per_hour_customers: 40500   # number of total JMeter/Locust actions per hour
+    total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
+    total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
 ```  
 
 1. Push your changes to the forked repository.
