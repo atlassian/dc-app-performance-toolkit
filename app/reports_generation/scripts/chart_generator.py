@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import DataFrame
 
-from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number
+from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number, get_app_specific_actions
 
 
 def __normalize_file_name(s) -> str:
@@ -53,6 +53,11 @@ def make_chart(config: dict, results_dir: Path) -> Path:
     file_path = __resolve_and_expand_user_path(Path(csv_path_str))
     data_frame = __read_file_as_data_frame(file_path, index_col)
     print(f"Input data file {file_path} successfully read")
+
+    # Set app-specific mark
+    app_specific_actions_list = get_app_specific_actions(file_path)
+    for action in app_specific_actions_list:
+        data_frame = data_frame.rename(index={action: f"\u2714{action}"})
 
     data_frame = data_frame.sort_index()
     data_frame.plot.barh(figsize=(image_width, image_height))

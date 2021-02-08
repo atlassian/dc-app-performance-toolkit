@@ -122,6 +122,22 @@ class MyBaseTaskSet(TaskSet):
         return r
 
 
+class BaseResource:
+    action_name = ''
+
+    def __init__(self, resource_file):
+        self.resources_file = resource_file
+        self.resources_json = self.read_json()
+        self.resources_body = self.action_resources()
+
+    def read_json(self):
+        with open(self.resources_file, encoding='UTF-8') as f:
+            return json.load(f)
+
+    def action_resources(self):
+        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
+
+
 def jira_measure(interaction=None):
     assert interaction is not None, "Interaction name is not passed to the jira_measure decorator"
 

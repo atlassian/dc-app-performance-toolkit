@@ -922,7 +922,7 @@ if (totalAncestorID &gt; 0)
 		tempQueryStr = tempQueryStr + &quot;ancestors=&quot; + vars.get(&quot;x_ancestor_ids_&quot; + tempCounter + &quot;_g1&quot;) + &quot;&amp;&quot;;
 		tempCounter = tempCounter + 1;
 	}
-	
+
 	vars.put(&quot;p_natChild1_queryStr&quot;, (tempQueryStr.substring(0,tempQueryStr.length() - 1)).toString());
 }
 
@@ -1675,68 +1675,73 @@ if (totalAncestorID &gt; 0)
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="jmeter_view_page:view_page_tree" enabled="true">
+            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if page has tree" enabled="true">
+              <stringProp name="TestPlan.comments">Throws a warning if &quot;x_has_no_root&quot; is not defined, in which case, request to view tree is not made.</stringProp>
               <stringProp name="IfController.condition">${__groovy(${x_has_no_root} == false || ${x_has_no_root} == true )}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <boolProp name="IfController.useExpression">true</boolProp>
-              <stringProp name="TestPlan.comments">Throws a warning if &quot;x_has_no_root&quot; is not defined, in which case, request to view tree is not made.</stringProp>
             </IfController>
             <hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has parent" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(${x_has_no_root} == false)}</stringProp>
-                <boolProp name="IfController.evaluateAll">false</boolProp>
-                <boolProp name="IfController.useExpression">true</boolProp>
-              </IfController>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_page:view_page_tree" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="jmeter_view_page:view_page_tree" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments"/>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                  <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
-                </HTTPSamplerProxy>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has parent" enabled="true">
+                  <stringProp name="IfController.condition">${__groovy(${x_has_no_root} == false)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
-                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="jmeter_view_page_tree1 pre-processor" enabled="true">
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                    <stringProp name="parameters"></stringProp>
-                    <stringProp name="filename"></stringProp>
-                    <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">// variables extracted from viewpage.action required to construct url for the page tree
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="jmeter_view_page:view_page_tree" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments"/>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                    <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
+                    <stringProp name="HTTPSampler.method">GET</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                    <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                    <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="jmeter_view_page_tree1 pre-processor" enabled="true">
+                      <stringProp name="scriptLanguage">groovy</stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="cacheKey">true</stringProp>
+                      <stringProp name="script">// variables extracted from viewpage.action required to construct url for the page tree
 
-def request = vars.get(&quot;x_tree_request_id&quot;).toString() 
+def request = vars.get(&quot;x_tree_request_id&quot;).toString()
 def rootPageId = vars.get(&quot;x_root_page_id&quot;).toString()
 def pageId = vars.get(&quot;x_page_id&quot;).toString()
 def ancestors = vars.get(&quot;p_natChild1_queryStr&quot;).toString()
@@ -1746,77 +1751,77 @@ request = request.replace(&quot;&amp;amp;&quot;, &quot;&amp;&quot;) + &quot;&amp
 //vars.put(&quot;tree_request&quot;, request)
 
 vars.put(&quot;tree_request&quot;, request)</stringProp>
-                  </JSR223PreProcessor>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="655775236">plugin_pagetree_children_span</stringProp>
-                      <stringProp name="655560536">plugin_pagetree_children_list</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">48</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
+                    </JSR223PreProcessor>
+                    <hashTree/>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="655775236">plugin_pagetree_children_span</stringProp>
+                        <stringProp name="655560536">plugin_pagetree_children_list</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">48</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
-              </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has no parent" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(${x_has_no_root} == true)}</stringProp>
-                <boolProp name="IfController.evaluateAll">false</boolProp>
-                <boolProp name="IfController.useExpression">true</boolProp>
-                <stringProp name="TestPlan.comments">Thro</stringProp>
-              </IfController>
-              <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="jmeter_view_page:view_page_tree" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments"/>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                  <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
-                </HTTPSamplerProxy>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If page has no parent" enabled="true">
+                  <stringProp name="IfController.condition">${__groovy(${x_has_no_root} == true)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                  <stringProp name="TestPlan.comments">Thro</stringProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
-                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="jmeter_view_page_tree2 pre-processor" enabled="true">
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                    <stringProp name="parameters"></stringProp>
-                    <stringProp name="filename"></stringProp>
-                    <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">// variables extracted from viewpage.action required to construct url for the page tree
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="jmeter_view_page:view_page_tree" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments"/>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                    <stringProp name="HTTPSampler.path">${tree_request}</stringProp>
+                    <stringProp name="HTTPSampler.method">GET</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                    <stringProp name="TestPlan.comments">${application.postfix} is not needed as ${tree_request} already has a postfix value.</stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">text/plain, */*; q=0.01</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                    <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="jmeter_view_page_tree2 pre-processor" enabled="true">
+                      <stringProp name="scriptLanguage">groovy</stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="cacheKey">true</stringProp>
+                      <stringProp name="script">// variables extracted from viewpage.action required to construct url for the page tree
 
-def request = vars.get(&quot;x_tree_request_id&quot;).toString() 
+def request = vars.get(&quot;x_tree_request_id&quot;).toString()
 def rootPageId = vars.get(&quot;x_root_page_id&quot;).toString()
 def pageId = vars.get(&quot;x_page_id&quot;).toString()
 def spaceKey = vars.get(&quot;x_space_key&quot;).toString()
@@ -1827,19 +1832,20 @@ request = request.replace(&quot;&amp;amp;&quot;, &quot;&amp;&quot;) + &quot;&amp
 //vars.put(&quot;tree_request&quot;, request)
 
 vars.put(&quot;tree_request&quot;, request)</stringProp>
-                  </JSR223PreProcessor>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="655775236">plugin_pagetree_children_span</stringProp>
-                      <stringProp name="655560536">plugin_pagetree_children_list</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">48</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
+                    </JSR223PreProcessor>
+                    <hashTree/>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="655775236">plugin_pagetree_children_span</stringProp>
+                        <stringProp name="655560536">plugin_pagetree_children_list</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">48</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
               </hashTree>
             </hashTree>
@@ -7469,7 +7475,7 @@ if (totalAncestorID &gt; 0)
 		tempQueryStr = tempQueryStr + &quot;ancestors=&quot; + vars.get(&quot;c_newAncestorID_All_&quot; + tempCounter + &quot;_g1&quot;) + &quot;&amp;&quot;;
 		tempCounter = tempCounter + 1;
 	}
-	
+
 	vars.put(&quot;p_natChild_queryStr&quot;, (tempQueryStr.substring(0,tempQueryStr.length() - 1)).toString());
 }
 
@@ -8962,9 +8968,9 @@ def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - sta
 
 log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
 
-if ( sleep_time &gt; 0 ) { 
+if ( sleep_time &gt; 0 ) {
     return sleep_time
-} else { 
+} else {
     return 0
 }
 </stringProp>
