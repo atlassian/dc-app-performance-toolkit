@@ -19,6 +19,9 @@ BITBUCKET_DB_NAME="bitbucket"
 BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
+# Bitbucket DC has auto PRs decline feature enabled by default from 7.7.X version
+BITBUCKET_AUTO_DECLINE_VERSION="7.7.0"
+
 # BITBUCKET version variables
 SUPPORTED_BITBUCKET_VERSIONS=(6.10.7 7.0.5 7.6.2)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
@@ -231,3 +234,8 @@ echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
+
+if [ "$(printf '%s\n' "$BITBUCKET_AUTO_DECLINE_VERSION" "$BITBUCKET_VERSION" | sort -V | head -n1)" = "$BITBUCKET_AUTO_DECLINE_VERSION" ]; then
+       echo "${BITBUCKET_VERSION} version has auto PRs decline feature enabled and it will be disabled in bitbucket.properties file."
+       echo "feature.pull.request.auto.decline=false111" | sudo tee -a ${DB_CONFIG}
+fi
