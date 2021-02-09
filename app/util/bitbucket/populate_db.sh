@@ -236,6 +236,6 @@ echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
 
 if [ "$(printf '%s\n' "$BITBUCKET_AUTO_DECLINE_VERSION" "$BITBUCKET_VERSION" | sort -V | head -n1)" = "$BITBUCKET_AUTO_DECLINE_VERSION" ]; then
-       echo "${BITBUCKET_VERSION} version has auto PRs decline feature enabled and it will be disabled in bitbucket.properties file."
+       echo "Bitbucket ${BITBUCKET_VERSION} version has auto PRs decline feature enabled and it will be disabled in bitbucket.properties file."
        echo "feature.pull.request.auto.decline=false111" | sudo tee -a ${DB_CONFIG}
 fi
