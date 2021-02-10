@@ -288,4 +288,35 @@ def raise_if_login_failed(locust):
         raise exception.StopUser('Action login_and_view_dashboard failed')
 
 
+def run_as_specific_user(username=None, password=None):
+    if not (username and password):
+        raise SystemExit(f'The credentials are not valid: {{admin: {username}, password: {password}}}.')
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            api_url = '/rest/api/2/serverInfo'
+            locust_object = [obj for obj in locals()['kwargs'].values() if isinstance(obj, TaskSet)] or \
+                            [obj for obj in locals()['args'] if isinstance(obj, TaskSet)]
+
+            if locust_object:
+                locust = locust_object[0]
+                session_user_name = locust.session_data_storage["username"]
+                session_user_password = locust.session_data_storage["password"]
+
+                locust.get(api_url, auth=(username, password),
+                           catch_response=True)  # switch to the specific user to perform requests
+
+                result = func(*args, **kwargs)
+
+                locust.get(api_url, auth=(session_user_name, session_user_password),
+                           catch_response=True)  # switch back to the session user to perform requests
+
+                return result
+            else:
+                raise SystemExit(f"You probably have not passed 'locust' object to the '{func.__name__}' function.")
+        return wrapper
+    return deco_wrapper
+
+
 logger = init_logger()
