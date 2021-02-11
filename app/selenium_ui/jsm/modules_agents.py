@@ -82,6 +82,8 @@ def login(webdriver, datasets):
             login_page.set_credentials(username=datasets['agent_username'], password=datasets['agent_password'])
             if login_page.is_first_login():
                 login_page.first_login_setup()
+            if login_page.is_first_login_second_page():
+                login_page.first_login_second_page_setup()
             login_page.wait_for_page_loaded()
 
         sub_measure()
