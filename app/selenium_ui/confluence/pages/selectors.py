@@ -84,5 +84,5 @@ class EditorLocators:
     save_spinner = (By.ID, "rte-spinner")
 
 
-class LogoutLocator:
+class LogoutLocators:
     logout_msg = (By.ID, "logout-message")

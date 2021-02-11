@@ -2,7 +2,7 @@
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
-    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocator
+    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators
 
 
 class Login(BasePage):
@@ -42,7 +42,7 @@ class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
     def wait_for_logout(self):
-        self.wait_until_visible(LogoutLocator.logout_msg)
+        self.wait_until_visible(LogoutLocators.logout_msg)
 
 
 class AllUpdates(BasePage):
