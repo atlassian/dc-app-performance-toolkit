@@ -50,6 +50,9 @@ class LoginPageLocators:
     skip_find_content = (By.CSS_SELECTOR, ".intro-find-spaces-space>.space-checkbox")
     finish_setup = (By.CSS_SELECTOR, ".intro-find-spaces-button-continue")
 
+    # logout
+    logout = (By.XPATH, "//a[@href='logout.action']")
+
 
 class AllUpdatesLocators:
     updates_content = (By.CLASS_NAME, "list-container-all-updates")
@@ -79,3 +82,7 @@ class EditorLocators:
 
     status_indicator = (By.CLASS_NAME, "status-indicator-message")
     save_spinner = (By.ID, "rte-spinner")
+
+
+class LogoutLocator:
+    logout_msg = (By.ID, "logout-message")

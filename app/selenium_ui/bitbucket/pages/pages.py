@@ -27,6 +27,10 @@ class LoginPage(BasePage):
         el = self.get_element(LoginPageLocators.application_version)
         return ''.join([i for i in el.text.split('.')[0] if i.isdigit()])
 
+    def is_logged_in(self):
+        elements = self.get_elements(GetStartedLocators.bitbucket_is_ready_widget)
+        return True if elements else False
+
 
 class LogoutPage(BasePage):
 
