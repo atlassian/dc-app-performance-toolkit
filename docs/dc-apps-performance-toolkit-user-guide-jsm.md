@@ -776,38 +776,38 @@ Jira Service Management will be unavailable for some time during the re-indexing
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
+
+   ``` yaml
+       application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+       application_protocol: http                # http or https
+       application_port: 80                      # 80, 443, 8080, 2990, etc
+       secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
+       concurrency_agents: 50                    # number of concurrent virtual agents for jmeter or locust scenario
+       concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
+       test_duration: 45m
+       ramp-up: 3m                               # time to spin all concurrent users
+       total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
+       total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
+   ```  
+
+1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-* Storage size: `30` GiB
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
     ```
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
-1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:  
-
-``` yaml
-    application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
-    application_protocol: http                # http or https
-    application_port: 80                      # 80, 443, 8080, 2990, etc
-    secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
-    concurrency_agents: 50                    # number of concurrent virtual agents for jmeter or locust scenario
-    concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 3m                               # time to spin all concurrent users
-    total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
-    total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
-```  
-
-1. Push your changes to the forked repository.
 1. Connect to the AWS EC2 instance and clone forked repository.
 
 {{% note %}}
