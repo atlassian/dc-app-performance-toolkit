@@ -296,11 +296,12 @@ def run_as_specific_user(username=None, password=None):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             api_url = '/rest/api/2/serverInfo'
-            locust_object = [obj for obj in locals()['kwargs'].values() if isinstance(obj, TaskSet)] or \
-                            [obj for obj in locals()['args'] if isinstance(obj, TaskSet)]
+            locust = None
+            for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
+                if isinstance(obj, TaskSet):
+                    locust = obj
 
-            if locust_object:
-                locust = locust_object[0]
+            if locust:
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
 
@@ -314,7 +315,7 @@ def run_as_specific_user(username=None, password=None):
 
                 return result
             else:
-                raise SystemExit(f"You probably have not passed 'locust' object to the '{func.__name__}' function.")
+                raise SystemExit(f"There is no 'locust' object in the '{func.__name__}' function.")
         return wrapper
     return deco_wrapper
 
