@@ -17,6 +17,7 @@ def login_and_view_dashboard(locust):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
+    locust.session_data_storage['app'] = 'jira'
 
     params = Login()
 
@@ -56,7 +57,8 @@ def login_and_view_dashboard(locust):
         logger.error(f'User {user[0]} authentication failed: {content}')
     assert f'title="loggedInUser" value="{user[0]}">' in content, 'User authentication failed'
 
-    locust.session_data_storage["username"] = user[0]
+    locust.session_data_storage['username'] = user[0]
+    locust.session_data_storage['password'] = user[1]
     locust.session_data_storage["token"] = token
     logger.locust_info(f"{params.action_name}: User {user[0]} logged in with atl_token: {token}")
 

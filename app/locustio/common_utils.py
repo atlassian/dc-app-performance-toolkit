@@ -295,7 +295,10 @@ def run_as_specific_user(username=None, password=None):
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            api_url = '/rest/api/2/serverInfo'
+            api_url = {
+                'jira': '/rest/api/2/serverInfo',
+                'confluence': '/rest/applinks/1.0/manifest',
+                'bitbucket': ''}
             locust = None
             for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
                 if isinstance(obj, TaskSet):
@@ -304,13 +307,14 @@ def run_as_specific_user(username=None, password=None):
             if locust:
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
+                url = api_url[locust.session_data_storage['app']]
 
-                locust.get(api_url, auth=(username, password),
+                locust.get(url, auth=(username, password),
                            catch_response=True)  # switch to the specific user to perform requests
 
                 result = func(*args, **kwargs)
 
-                locust.get(api_url, auth=(session_user_name, session_user_password),
+                locust.get(url, auth=(session_user_name, session_user_password),
                            catch_response=True)  # switch back to the session user to perform requests
 
                 return result
