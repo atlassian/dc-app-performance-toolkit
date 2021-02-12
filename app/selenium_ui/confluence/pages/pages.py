@@ -25,9 +25,6 @@ class Login(BasePage):
         elements = self.get_elements(LoginPageLocators.logout)
         return True if elements else False
 
-    def logout(self):
-        self.wait_until_clickable(LoginPageLocators.logout).click()
-
     def first_user_setup(self):
         if self.get_element(LoginPageLocators.current_step_sel).text == 'Welcome':
             self.wait_until_clickable(LoginPageLocators.skip_welcome_button).click()

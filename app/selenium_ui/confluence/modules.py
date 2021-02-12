@@ -35,7 +35,8 @@ def login(webdriver, datasets):
         def sub_measure():
             login_page.go_to()
             if login_page.is_logged_in():
-                login_page.logout()
+                login_page.delete_all_cookies()
+                login_page.go_to()
             login_page.wait_for_page_loaded()
         sub_measure()
 

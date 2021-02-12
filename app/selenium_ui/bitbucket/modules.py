@@ -29,8 +29,7 @@ def login(webdriver, datasets):
             login_page.go_to()
             webdriver.app_version = login_page.get_app_version()
             if login_page.is_logged_in():
-                logout_page_page = LogoutPage(webdriver)
-                logout_page_page.go_to()
+                login_page.delete_all_cookies()
                 login_page.go_to()
         sub_measure()
 
