@@ -79,7 +79,7 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    summary_report.append('\nAction|Success Rate|90th percentile|Status')
+    summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
