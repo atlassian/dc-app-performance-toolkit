@@ -297,8 +297,9 @@ def run_as_specific_user(username=None, password=None):
         def wrapper(*args, **kwargs):
             api_url = {
                 'jira': '/rest/api/2/serverInfo',
-                'confluence': '/rest/applinks/1.0/manifest',
+                'confluence': '/rest/api/user/anonymous',
                 'bitbucket': ''}
+
             locust = None
             for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
                 if isinstance(obj, TaskSet):
@@ -309,13 +310,13 @@ def run_as_specific_user(username=None, password=None):
                 session_user_password = locust.session_data_storage["password"]
                 url = api_url[locust.session_data_storage['app']]
 
-                locust.get(url, auth=(username, password),
-                           catch_response=True)  # switch to the specific user to perform requests
+                locust.client.cookies.clear()
+                locust.get(url, auth=(username, password), catch_response=True)  # send requests by the specific user
 
                 result = func(*args, **kwargs)
 
-                locust.get(url, auth=(session_user_name, session_user_password),
-                           catch_response=True)  # switch back to the session user to perform requests
+                locust.client.cookies.clear()
+                locust.get(url, auth=(session_user_name, session_user_password), catch_response=True)  # send requests by the session user
 
                 return result
             else:
