@@ -539,7 +539,7 @@ To ensure that the test runs without errors in parallel, run your extension scri
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
 
-To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
@@ -594,7 +594,7 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Run bzt.
+1. Run toolkit with docker:
 
    ``` bash
    cd dc-app-performance-toolkit

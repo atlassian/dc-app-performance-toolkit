@@ -775,7 +775,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 ###### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Jira DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Jira DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.

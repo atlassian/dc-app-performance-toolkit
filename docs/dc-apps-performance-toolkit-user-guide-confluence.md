@@ -697,7 +697,7 @@ To receive performance results with an app installed:
 
 1. Install the app you want to test.
 1. Setup app license.
-1. Run bzt.
+1. Run toolkit with docker:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -741,7 +741,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
