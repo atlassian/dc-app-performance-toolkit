@@ -297,8 +297,7 @@ def run_as_specific_user(username=None, password=None):
         def wrapper(*args, **kwargs):
             api_url = {
                 'jira': '/rest/api/2/serverInfo',
-                'confluence': '/rest/api/user/anonymous',
-                'bitbucket': ''}
+                'confluence': '/rest/api/user/anonymous'}
 
             locust = None
             for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
