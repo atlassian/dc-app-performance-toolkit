@@ -34,6 +34,9 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            if login_page.is_logged_in():
+                login_page.delete_all_cookies()
+                login_page.go_to()
             login_page.wait_for_page_loaded()
         sub_measure()
 
@@ -159,4 +162,6 @@ def log_out(webdriver, datasets):
     def measure():
         logout_page = Logout(webdriver)
         logout_page.go_to()
+        logout_page.wait_for_logout()
+
     measure()

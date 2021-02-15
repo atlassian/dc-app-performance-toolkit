@@ -43,7 +43,7 @@ class BasePage:
     def element_exists(self, selector):
         selector_name = self.get_selector(selector)
         by, locator = selector_name[0], selector_name[1]
-        return self.driver.find_elements(by, locator) is not None
+        return True if self.driver.find_elements(by, locator) else False
 
     def wait_until_invisible(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
@@ -146,6 +146,9 @@ class BasePage:
 
     def action_chains(self):
         return ActionChains(self.driver)
+
+    def delete_all_cookies(self):
+        self.driver.delete_all_cookies()
 
 
 class AnyEc:
