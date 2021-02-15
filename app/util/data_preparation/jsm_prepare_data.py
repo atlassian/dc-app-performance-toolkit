@@ -414,6 +414,7 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
 def __get_all_service_desks_and_validate(jsm_client):
     service_desks = jsm_client.get_all_service_desks()
     if not service_desks:
+
         raise Exception('ERROR: There were no Jira Service Desks found')
     if len(service_desks) < 2:
         raise Exception('ERROR: At least 2 service desks are needed')
@@ -423,10 +424,17 @@ def __get_all_service_desks_and_validate(jsm_client):
 
 @print_timing("Searching issues by project keys")
 def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
-    # TODO improve organizations check to actually verify if service desk projects have orgs with performance_customers
     organizations = jsm_client.get_all_organizations()
     perf_organizations = [org for org in organizations if DEFAULT_ORGANIZATION in org['name']]
-    if not perf_organizations:
+    perf_organizations_with_users = []
+    for org in perf_organizations:
+        users_in_org = jsm_client.get_all_users_in_organization(org['id'])
+        for user in users_in_org:
+            if DEFAULT_CUSTOMER_PREFIX in user['name']:
+                perf_organizations_with_users.append(org)
+                break
+
+    if not perf_organizations_with_users:
         raise Exception(f'ERROR: There were no organizations found with prefix "{DEFAULT_ORGANIZATION}". '
                         f'Make sure JSM projects has organizations with prefix "{DEFAULT_ORGANIZATION}". '
                         f'Organizations "{DEFAULT_ORGANIZATION}" should have customers'
@@ -437,12 +445,11 @@ def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
 
 def __create_data_set(jira_client, jsm_client):
     service_desks = __get_all_service_desks_and_validate(jsm_client)
-    issues = __get_issues_by_project_keys(jira_client, jsm_client,
-                                          [project['projectKey'] for project in service_desks])
-
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
+    issues = __get_issues_by_project_keys(jira_client, jsm_client,
+                                          [project['projectKey'] for project in service_desks])
     dataset[REQUESTS] = __get_requests(jira_client, service_desks, issues)
     dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM], dataset[SERVICE_DESKS_SMALL] = __get_service_desks(
         jsm_client, jira_client, service_desks)
