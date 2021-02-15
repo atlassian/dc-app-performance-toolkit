@@ -339,7 +339,7 @@ Do not close or interrupt the session. It will take about two hours to upload at
 {{% /note %}}
 
 
-### Start Bitbucket Server
+### Start Bitbucket DC
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
     For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
@@ -352,12 +352,12 @@ Do not close or interrupt the session. It will take about two hours to upload at
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Start Bitbucket Server:
+1. Start Bitbucket DC:
 
     ``` bash
     sudo systemctl start bitbucket
     ```
-1. Wait 10-15 minutes until Bitbucket Server is started.
+1. Wait 10-15 minutes until Bitbucket DC is started.
 
 ### Elasticsearch Index
 If your app does not use Bitbucket search functionality just **skip** this section.
@@ -433,6 +433,10 @@ Using the Data Center App Performance Toolkit for [Performance and scale testing
 - [Scalability testing](#testscenario2)
 
 Each scenario will involve multiple test runs. The following subsections explain both in greater detail.
+
+{{% warning %}}
+Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings &gt; Language** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
 
 ### <a id="testscenario1"></a> Scenario 1: Performance regression
 

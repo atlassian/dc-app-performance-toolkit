@@ -133,6 +133,7 @@ After successfully deploying the Jira Data Center on AWS, configure it as follow
     Then select **Next**.
 
 1. On the **Set up email notifications** page, configure your email notifications, and then select **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, select **Create new project** to create a new project.
 
 ---
@@ -146,6 +147,10 @@ After creating the development environment Jira Data Center, generate test datas
 ---
 
 ### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
+
+{{% warning %}}
+Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
@@ -438,6 +443,7 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
     - **Confirm Password**: admin _(recommended)_
     Click **Next**.
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, click **Create new project** to create a new project.
 
 {{% note %}}
