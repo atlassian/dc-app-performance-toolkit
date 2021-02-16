@@ -1,5 +1,5 @@
 import re
-from locustio.common_utils import init_logger, jsm_agent_measure, run_as_specific_user
+from locustio.common_utils import init_logger, jsm_agent_measure, run_as_specific_user  # noqa F401
 
 logger = init_logger(app_type='jsm')
 

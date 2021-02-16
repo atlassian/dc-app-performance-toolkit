@@ -382,7 +382,7 @@ You develop an app that introduces new GET and POST endpoints in Jira Service Ma
 1. In `dc-app-performance-toolkit/app/jsm.yml` set `load_executor: locust` to make `locust` as load executor.
 1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `agent_standalone_extension`/`customer_standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
-1. You can use a specific user to run your tests, just use our `@run_as_specific_user(username='admin', password='admin')` decorator for that.
+1. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
 1. Run toolkit with `bzt jsm.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
 **JMeter app-specific action development example**

@@ -55,6 +55,9 @@ JSON_HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01"
 }
 
+JIRA_API_URL = '/rest/api/2/serverInfo'
+CONFLUENCE_API_URL = '/rest/api/user/anonymous'
+
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 jsm_agent_action_time = 3600 / int((JSM_SETTINGS.agents_total_actions_per_hr) / int(JSM_SETTINGS.agents_concurrency))
@@ -290,34 +293,32 @@ def raise_if_login_failed(locust):
 
 def run_as_specific_user(username=None, password=None):
     if not (username and password):
-        raise SystemExit(f'The credentials are not valid: {{admin: {username}, password: {password}}}.')
+        raise SystemExit(f'The credentials are not valid: {{username: {username}, password: {password}}}.')
 
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            api_url = {
-                'jira': '/rest/api/2/serverInfo',
-                'confluence': '/rest/api/user/anonymous'}
 
             locust = None
             for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
-                if isinstance(obj, TaskSet):
+                if isinstance(obj, MyBaseTaskSet):
                     locust = obj
+                    break
 
             if locust:
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
-                url = api_url[locust.session_data_storage['app']]
+                url = JIRA_API_URL if locust.session_data_storage['app'] == 'jira' or 'jsm' else CONFLUENCE_API_URL
 
                 locust.client.cookies.clear()
                 locust.get(url, auth=(username, password), catch_response=True)  # send requests by the specific user
 
-                result = func(*args, **kwargs)
+                func(*args, **kwargs)
 
                 locust.client.cookies.clear()
-                locust.get(url, auth=(session_user_name, session_user_password), catch_response=True)  # send requests by the session user
+                locust.get(url, auth=(session_user_name, session_user_password),
+                           catch_response=True)  # send requests by the session user
 
-                return result
             else:
                 raise SystemExit(f"There is no 'locust' object in the '{func.__name__}' function.")
         return wrapper
