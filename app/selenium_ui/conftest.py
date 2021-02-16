@@ -2,6 +2,7 @@ import atexit
 import csv
 import datetime
 import functools
+import os
 import sys
 import time
 from datetime import timezone
@@ -98,6 +99,14 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
+def is_docker():
+    path = '/proc/self/cgroup'
+    return (
+            os.path.exists('/.dockerenv') or
+            os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def print_timing(interaction=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
@@ -143,6 +152,8 @@ def print_timing(interaction=None):
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
+        if app_settings.webdriver_visible and is_docker():
+            raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         if not app_settings.secure:

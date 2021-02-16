@@ -142,6 +142,10 @@ After creating the development environment Confluence Data Center, generate test
 
 ### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
 
+{{% warning %}}
+Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Languages** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
 1. Navigate to `dc-app-performance-toolkit/app` folder.
@@ -615,37 +619,37 @@ For more information, go to [Administer your Data Center search index](https://c
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:
+
+   ``` yaml
+       application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+       application_protocol: http      # http or https
+       application_port: 80            # 80, 443, 8080, 2990, etc
+       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
+       concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+       test_duration: 45m
+       ramp-up: 5m                     # time to spin all concurrent users
+       total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
+   ```  
+
+1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-* Storage size: `30` GiB
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
     ```
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
-1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:  
-
-``` yaml
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 2990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 5m                     # time to spin all concurrent users
-    total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
-```  
-
-1. Push your changes to the forked repository.
-1. Connect to the AWS EC2 instance and clone forked repository.
+1. Clone forked repository.
 
 {{% note %}}
 At this stage app-specific actions are not needed yet. Use code from `master` branch with your `confluence.yml` changes.
@@ -698,7 +702,7 @@ To receive performance results with an app installed:
 
 1. Install the app you want to test.
 1. Setup app license.
-1. Run bzt.
+1. Run toolkit with docker:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -742,7 +746,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.

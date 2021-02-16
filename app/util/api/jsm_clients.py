@@ -329,3 +329,30 @@ class JsmRestClient(RestClient):
         if max_count:
             return results[:max_count]
         return results
+
+    def get_all_users_in_organization(self, org_id: int, max_count: int = None):
+        """
+        Get all user in organization
+        :param org_id:
+        :param max_count:
+        :param auth:
+        :return:
+        """
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+
+        start = 0
+        limit = 50
+        finished = False
+        results = []
+        while not finished:
+            api_url = self.host + f"/rest/servicedeskapi/organization/{org_id}/user?start={start}&limit={limit}"
+            r = self.get(api_url, "Could not get all organisations", headers=jsm_headers).json()
+            results.extend(r['values'])
+            if r['isLastPage']:
+                finished = True
+            else:
+                start = start + limit
+
+        if max_count:
+            return results[:max_count]
+        return results

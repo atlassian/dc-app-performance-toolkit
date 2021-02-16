@@ -339,7 +339,7 @@ Do not close or interrupt the session. It will take about two hours to upload at
 {{% /note %}}
 
 
-### Start Bitbucket Server
+### Start Bitbucket DC
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
     For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
@@ -352,12 +352,12 @@ Do not close or interrupt the session. It will take about two hours to upload at
     ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Start Bitbucket Server:
+1. Start Bitbucket DC:
 
     ``` bash
     sudo systemctl start bitbucket
     ```
-1. Wait 10-15 minutes until Bitbucket Server is started.
+1. Wait 10-15 minutes until Bitbucket DC is started.
 
 ### Elasticsearch Index
 If your app does not use Bitbucket search functionality just **skip** this section.
@@ -385,36 +385,36 @@ In case of any difficulties with Index generation, contact us for support in the
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Jira Data Center parameters:
+
+   ``` yaml
+       application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
+       application_protocol: http      # http or https
+       application_port: 80            # 80, 443, 8080, 7990 etc
+       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter           # only jmeter executor is supported
+       concurrency: 20                 # number of concurrent virtual users for jmeter scenario
+       test_duration: 50m
+       ramp-up: 10m                    # time to spin all concurrent users
+       total_actions_per_hour: 32700   # number of total JMeter actions per hour
+   ```  
+
+1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-* Storage size: `30` GiB
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
     ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
     ```
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
-1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Jira Data Center parameters:  
-
-``` yaml
-    application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 7990 etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter           # only jmeter executor is supported
-    concurrency: 20                 # number of concurrent virtual users for jmeter scenario
-    test_duration: 50m
-    ramp-up: 10m                    # time to spin all concurrent users
-    total_actions_per_hour: 32700   # number of total JMeter actions per hour
-```  
-
-1. Push your changes to the forked repository.
 1. Connect to the AWS EC2 instance and clone forked repository.
 
 {{% note %}}
@@ -433,6 +433,10 @@ Using the Data Center App Performance Toolkit for [Performance and scale testing
 - [Scalability testing](#testscenario2)
 
 Each scenario will involve multiple test runs. The following subsections explain both in greater detail.
+
+{{% warning %}}
+Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings &gt; Language** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
 
 ### <a id="testscenario1"></a> Scenario 1: Performance regression
 
@@ -539,7 +543,7 @@ To ensure that the test runs without errors in parallel, run your extension scri
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
 
-To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
@@ -594,7 +598,7 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Run bzt.
+1. Run toolkit with docker:
 
    ``` bash
    cd dc-app-performance-toolkit

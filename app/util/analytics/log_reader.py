@@ -84,7 +84,7 @@ class BztFileReader(BaseFileReader):
     @staticmethod
     def _get_all_test_actions(log):
         test_actions_success_rate = {}
-        test_actions_avg_rate = {}
+        test_actions_timing = {}
 
         delimiters = ['|', '\x1b(0x\x1b(B']
         delimiter = None
@@ -99,15 +99,15 @@ class BztFileReader(BaseFileReader):
                 line_split = line.split(delimiter)
                 test_name = line_split[1].strip(',').strip()
                 test_rate = float(line_split[3].strip(',').strip().rstrip('%'))
-                avg_rt = float(line_split[4].strip())
+                test_timing = float(line_split[4].strip())
 
                 test_actions_success_rate[test_name] = test_rate
-                test_actions_avg_rate[test_name] = avg_rt
+                test_actions_timing[test_name] = test_timing
 
         if not test_actions_success_rate:
             raise SystemExit(f"There are no test actions where found in the {ENV_TAURUS_ARTIFACT_DIR}/bzt.log file")
 
-        return test_actions_success_rate, test_actions_avg_rate
+        return test_actions_success_rate, test_actions_timing
 
     @property
     def actual_run_time(self):
@@ -139,13 +139,13 @@ class ResultsFileReader(BaseFileReader):
     @property
     def all_tests_actions(self):
         actions_success_rate = {}
-        actions_avg_time = {}
+        actions_timing = {}
         for action in self.results_log:
-            if action['Label'] not in actions_avg_time:
-                actions_avg_time[action['Label']] = round(int(action['Average']) / 1000, 2)
+            if action['Label'] not in actions_timing:
+                actions_timing[action['Label']] = round(int(action['90% Line']) / 1000, 2)
             if action['Label'] not in actions_success_rate:
                 actions_success_rate[action['Label']] = 100 - float(action['Error %'])
-        return actions_success_rate, actions_avg_time
+        return actions_success_rate, actions_timing
 
     @property
     def actual_git_operations_count(self):

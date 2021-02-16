@@ -21,9 +21,15 @@ class Login(BasePage):
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
 
+    def is_first_login_second_page(self):
+        return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
+
     def first_login_setup(self):
         self.wait_until_visible(LoginPageLocators.continue_button).send_keys(Keys.ESCAPE)
         self.get_element(LoginPageLocators.continue_button).click()
+        self.first_login_second_page_setup()
+
+    def first_login_second_page_setup(self):
         self.wait_until_visible(LoginPageLocators.avatar_page_next_button).click()
         self.wait_until_visible(LoginPageLocators.explore_current_projects).click()
         self.go_to_url(DashboardLocators.dashboard_url)
