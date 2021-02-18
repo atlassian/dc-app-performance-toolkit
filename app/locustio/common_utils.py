@@ -100,6 +100,7 @@ class Logger(logging.Logger):
 class MyBaseTaskSet(TaskSet):
 
     cross_action_storage = dict()  # Cross actions locust storage
+    session_data_storage = dict()
     login_failed = False
 
     def failure_check(self, response, action_name):
