@@ -3,11 +3,11 @@ column_name: "90% Line"
 runs:
   # fullPath should contain a full path to the directory with run results. E.g. /home/$USER/dc-app-performance-toolkit/jira/results/2019-08-06_18-41-08
   - runName: "Node 1"
-    fullPath: ""
+    fullPath: "/Users/ometel/Projects/repo/dc-app-performance-toolkit/app/results/jira/2021-02-11_13-44-19"
   - runName: "Node 2"
-    fullPath: ""
+    fullPath: "/Users/ometel/Projects/repo/dc-app-performance-toolkit/app/results/jira/2021-02-11_13-56-15"
   - runName: "Node 4"
-    fullPath: ""
+    fullPath: "/Users/ometel/Projects/repo/dc-app-performance-toolkit/app/results/jira/2021-02-11_15-23-39"
 
 # Chart generation configs
 index_col: "Action"
