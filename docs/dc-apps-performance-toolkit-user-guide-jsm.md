@@ -15,7 +15,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 **[Development environment](#mainenvironmentdev)**: Jira Service Management Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
 
 1. [Set up a development environment Jira Service Management Data Center on AWS](#devinstancesetup).
-2. [Create a dataset for the development environment](#devdataset).
+2. [Load a "small" dataset for the development environment](#devdataset).
 3. [Run toolkit on the development environment locally](#devtestscenario).
 4. [Develop and test app-specific actions locally](#devappaction).
 
@@ -535,7 +535,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Cluster node instance type | [m5.4xlarge](https://aws.amazon.com/ec2/instance-types/m5/) (This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Service Management Data Center customers. The Data Center App Performance Toolkit framework is set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.)|
+| Cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) (This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Service Management Data Center customers. The Data Center App Performance Toolkit framework is set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.)|
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 100 |
@@ -1046,10 +1046,14 @@ Once completed, you will be able to review action timings on Jira Service Manage
 After completing all your tests, delete your Jira Service Management Data Center stacks.
 
 #### Attaching testing results to DCHELP ticket
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
-1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
-1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
+1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results/reports` folder to your local machine.
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

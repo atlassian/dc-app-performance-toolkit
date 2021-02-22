@@ -45,3 +45,24 @@ def get_app_specific_actions(file: Path) -> list:
         if bool(distutils.util.strtobool(action['App-specific'])):
             app_specific_list.append(action['Action'])
     return app_specific_list
+
+
+def validate_config(config: dict):
+    validate_str_is_not_blank(config, 'column_name')
+    validate_str_is_not_blank(config, 'profile')
+
+    runs = config.get('runs')
+    if not isinstance(runs, list):
+        raise SystemExit(f'Config key "runs" should be a list')
+
+    for run in runs:
+        if not isinstance(run, dict):
+            raise SystemExit(f'Config key "run" should be a dictionary')
+
+        validate_str_is_not_blank(run, 'runName')
+        validate_str_is_not_blank(run, 'fullPath')
+
+
+def clean_str(string: str):
+    # Return alphanumeric characters from a string
+    return ''.join(e for e in string if e.isalnum())
