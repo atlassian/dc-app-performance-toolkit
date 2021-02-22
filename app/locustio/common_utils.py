@@ -58,6 +58,10 @@ JSON_HEADERS = {
 JIRA_API_URL = '/rest/api/2/serverInfo'
 CONFLUENCE_API_URL = '/rest/api/user/anonymous'
 
+JIRA = 'jira'
+JSM = 'jsm'
+CONFLUENCE = 'confluence'
+
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 jsm_agent_action_time = 3600 / int((JSM_SETTINGS.agents_total_actions_per_hr) / int(JSM_SETTINGS.agents_concurrency))
@@ -311,9 +315,9 @@ def run_as_specific_user(username=None, password=None):
                 session_user_password = locust.session_data_storage["password"]
                 app = locust.session_data_storage['app']
 
-                if app == 'jira' or app == 'jsm':
+                if app == JIRA or app == JSM:
                     url = JIRA_API_URL
-                elif app == 'confluence':
+                elif app == CONFLUENCE:
                     url = CONFLUENCE_API_URL
                 else:
                     raise Exception(f'The "{app}" application type is not known.')
