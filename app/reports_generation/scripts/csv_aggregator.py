@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 from typing import List
 
-from scripts.utils import validate_str_is_not_blank, validate_file_exists, resolve_path
+from scripts.utils import validate_file_exists, resolve_path, validate_config
 
 RESULTS_CSV_FILE_NAME = "results.csv"
 
@@ -12,22 +12,6 @@ class ResultsCSV:
     def __init__(self, absolute_file_path, actions: dict):
         self.absolute_file_path = absolute_file_path
         self.actions = actions
-
-
-def __validate_config(config: dict):
-    validate_str_is_not_blank(config, 'column_name')
-    validate_str_is_not_blank(config, 'profile')
-
-    runs = config.get('runs')
-    if not isinstance(runs, list):
-        raise SystemExit(f'Config key "runs" should be a list')
-
-    for run in runs:
-        if not isinstance(run, dict):
-            raise SystemExit(f'Config key "run" should be a dictionary')
-
-        validate_str_is_not_blank(run, 'runName')
-        validate_str_is_not_blank(run, 'fullPath')
 
 
 def __create_header(config) -> List[str]:
@@ -80,7 +64,7 @@ def __get_output_file_path(config, results_dir) -> Path:
 
 
 def aggregate(config: dict, results_dir: Path) -> Path:
-    __validate_config(config)
+    validate_config(config)
     tests_results = __get_tests_results(config)
     __validate_count_of_actions(tests_results)
     output_file_path = __get_output_file_path(config, results_dir)

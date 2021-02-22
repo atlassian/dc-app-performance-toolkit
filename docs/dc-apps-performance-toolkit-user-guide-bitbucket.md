@@ -629,11 +629,15 @@ To generate a scalability report:
 1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
 
-#### Analyzing report
+#### Attaching testing results to DCHELP ticket
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
-1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
-1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
+1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results/reports` folder to your local machine.
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
 
 
 ## Support
