@@ -309,7 +309,14 @@ def run_as_specific_user(username=None, password=None):
             if locust:
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
-                url = JIRA_API_URL if locust.session_data_storage['app'] == 'jira' or 'jsm' else CONFLUENCE_API_URL
+                app = locust.session_data_storage['app']
+
+                if app == 'jira' or app == 'jsm':
+                    url = JIRA_API_URL
+                elif app == 'confluence':
+                    url = CONFLUENCE_API_URL
+                else:
+                    raise Exception(f'The "{app}" application type is not known.')
 
                 locust.client.cookies.clear()
                 locust.get(url, auth=(username, password), catch_response=True)  # send requests by the specific user
