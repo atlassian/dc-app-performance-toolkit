@@ -643,9 +643,9 @@ For generating performance results suitable for Marketplace approval process use
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
-    ```bash
+   ```bash
    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
-    ```
+   ```
 
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Clone forked repository.
@@ -720,12 +720,15 @@ To generate a performance regression report:
 
 1. Use SSH to connect to execution environment.
 1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
 1. Run the following command:
-
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
@@ -733,8 +736,14 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local machine terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
@@ -842,13 +851,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a scalability report:
 
 1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
 1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
-
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
@@ -857,16 +869,25 @@ To generate a scalability report:
 
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+
+{{% warning %}}
 After completing all your tests, delete your Confluence Data Center stacks.
+{{% /warning %}}
 
 #### Attaching testing results to DCHELP ticket
+
 {{% warning %}}
 Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results/reports` folder to your local machine.
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
 1. Attach two reports folders to your DCHELP ticket.
