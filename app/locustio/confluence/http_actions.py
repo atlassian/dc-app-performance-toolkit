@@ -18,6 +18,7 @@ def login_and_view_dashboard(locust):
     session_id = str(uuid.uuid4())
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
+    locust.session_data_storage['app'] = 'confluence'
 
     params = Login()
     user = random.choice(confluence_dataset["users"])
@@ -49,7 +50,8 @@ def login_and_view_dashboard(locust):
 
     locust.session_data_storage['build_number'] = build_number
     locust.session_data_storage['keyboard_hash'] = keyboard_hash
-    locust.session_data_storage['username'] = username
+    locust.session_data_storage['username'] = user[0]
+    locust.session_data_storage['password'] = user[1]
 
 
 def view_page_and_tree(locust):
