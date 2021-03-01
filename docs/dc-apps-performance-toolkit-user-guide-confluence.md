@@ -415,6 +415,12 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
+**Application tuning**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Catalina options | -Dreindex.thread.count=8 -Dreindex.attachments.thread.count=8 -Dconfluence.reindex.documents.to.pop=600 |
+
 ### Running the setup wizard
 
 After successfully deploying Confluence Data Center in AWS, you'll need to configure it:
