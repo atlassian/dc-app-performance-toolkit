@@ -49,9 +49,9 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Bitbucket DC | 1.8 - 2.6 |
-| Two Nodes Bitbucket DC | 2.4 - 3.6 |
-| Four Nodes Bitbucket DC | 3.8 - 5.7 |
+| One Node Bitbucket DC | 1.4 - 2.0 |
+| Two Nodes Bitbucket DC | 1.7 - 2.5 |
+| Four Nodes Bitbucket DC | 2.4 - 3.6 |
 
 #### Stop cluster nodes
 
@@ -102,12 +102,12 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Bitbucket cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
+| Bitbucket cluster node instance type | [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 50 |
 
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html).
+We recommend [c5.2xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-bitbucket-instances-on-aws-970602035.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
