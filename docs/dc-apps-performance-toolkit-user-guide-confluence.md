@@ -39,11 +39,11 @@ We recommend that you set up development environment using the [AWS Quick Start 
 
 #### Using the AWS Quick Start for Confluence
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI:
+If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI:
 
 Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira into your existing ASI:
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Confluence into your existing ASI:
 
 Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
