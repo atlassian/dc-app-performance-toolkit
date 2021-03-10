@@ -34,14 +34,18 @@ Running the tests in a development environment helps familiarize you with the to
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Service Management Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/). All the instructions on this page are optimized for AWS. 
+We recommend that you set up development environment using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. 
 
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -458,15 +462,19 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Jira Service Management Data Center on AWS
 
-We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab)  to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira Service Management into this new VPC. Deploying Jira Service Management with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
