@@ -534,7 +534,6 @@ You can extend Selenium scripts to measure the end-to-end browser timings.
 
 We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
 
-
 #### Example of app-specific Selenium action development
 You develop an app that adds additional UI elements to a repository page, in this case you should edit `dc-app-performance-toolkit/extension/bitbucket/extension_ui.py`:
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
