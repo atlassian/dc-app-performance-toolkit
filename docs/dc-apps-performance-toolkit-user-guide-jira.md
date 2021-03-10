@@ -536,7 +536,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh | tee -a populate_db.log
+    ./populate_db.sh 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -613,7 +613,7 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh | tee -a upload_attachments.log
+    ./upload_attachments.sh 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
@@ -637,7 +637,7 @@ Jira will be unavailable for some time during the re-indexing process. When fini
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `jira.yml` configuration file. Set enterprise-scale Jira Data Center parameters:
@@ -836,7 +836,7 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
