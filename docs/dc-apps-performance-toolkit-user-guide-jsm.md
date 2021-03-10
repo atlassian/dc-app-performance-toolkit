@@ -355,6 +355,7 @@ So, our test has to open app-specific requests in agent view and measure time to
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
 So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
+1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
