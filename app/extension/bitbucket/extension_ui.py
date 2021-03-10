@@ -17,7 +17,7 @@ def app_specific_action(webdriver, datasets):
 
     # To run action as specific user uncomment code bellow.
     # NOTE: If app_specific_action is running as specific user, make sure that app_specific_action is running
-    # just before test_2_selenium_z_log_out action
+    # just before test_2_selenium_logout action
 
     # @print_timing("app_specific_user_login")
     # def measure():
