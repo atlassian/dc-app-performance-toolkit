@@ -34,14 +34,18 @@ Running the tests in a development environment helps familiarize you with the to
 
 ### <a id="devinstancesetup"></a>1. Setting up Confluence Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/). All the instructions on this page are optimized for AWS. If you already have an existing Confluence Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
+We recommend that you set up development environment using the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. If you already have an existing Confluence Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
 
 
 #### Using the AWS Quick Start for Confluence
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Confluence into your existing ASI.
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Confluence into your existing ASI:
+
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -298,15 +302,19 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>5. Setting up Confluence Data Center enterprise-scale environment
 
-We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) (**How to deploy** tab) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Confluence into this new VPC. Deploying Confluence with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 ### Using the AWS Quick Start for Confluence
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Confluence into your existing ASI.
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Confluence into your existing ASI:
+
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -526,7 +534,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh | tee -a populate_db.log
+    ./populate_db.sh 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -572,7 +580,7 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh | tee -a upload_attachments.log
+    ./upload_attachments.sh 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
@@ -615,7 +623,7 @@ For more information, go to [Administer your Data Center search index](https://c
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh && chmod +x index-snapshot.sh
-    ./index-snapshot.sh | tee -a index-snapshot.log
+    ./index-snapshot.sh 2>&1 | tee -a index-snapshot.log
     ```
     Index snapshot creation time is about 20-30 minutes. When index snapshot is successfully created, the following will be displayed in console output:
     ```bash
@@ -624,7 +632,7 @@ For more information, go to [Administer your Data Center search index](https://c
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:
@@ -806,7 +814,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 10-30 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
