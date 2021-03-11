@@ -6,7 +6,7 @@ pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. 
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
@@ -97,6 +97,7 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
 echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
@@ -186,7 +187,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
+sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore --schema=public -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
