@@ -179,7 +179,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
+time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore --schema=public -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
