@@ -266,13 +266,6 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 sleep 5
-#echo "Drop schema"
-#PGPASSWORD=${JIRA_DB_PASS} psql -h ${DB_HOST} -d ${JIRA_DB_NAME} -U ${JIRA_DB_USER} -c "drop schema if exists public;"
-#if [[ $? -ne 0 ]]; then
-#  echo "Drop schema failed."
-#  exit 1
-#fi
-#sleep 5
 echo "PG Restore"
 time PGPASSWORD=${JIRA_DB_PASS} pg_restore --schema=public -v -U ${JIRA_DB_USER} -h ${DB_HOST} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
