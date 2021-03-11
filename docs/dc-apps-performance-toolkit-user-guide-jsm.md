@@ -34,14 +34,18 @@ Running the tests in a development environment helps familiarize you with the to
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Service Management Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/). All the instructions on this page are optimized for AWS. 
+We recommend that you set up development environment using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. 
 
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -183,7 +187,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh --jsm --small | tee -a populate_db.log
+    ./populate_db.sh --jsm --small 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -249,7 +253,7 @@ We recommend that you only use this method if you are having problems with the [
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh --jsm --small | tee -a upload_attachments.log
+    ./upload_attachments.sh --jsm --small 2>&1 | tee -a upload_attachments.log
     ```
 
 #### Re-indexing development environment Jira Service Management Data Center
@@ -355,6 +359,7 @@ So, our test has to open app-specific requests in agent view and measure time to
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
 So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
+1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -458,15 +463,19 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Jira Service Management Data Center on AWS
 
-We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab)  to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira Service Management into this new VPC. Deploying Jira Service Management with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -683,7 +692,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh --jsm | tee -a populate_db.log
+    ./populate_db.sh --jsm 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -757,7 +766,7 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh --jsm | tee -a upload_attachments.log
+    ./upload_attachments.sh --jsm 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
@@ -781,7 +790,7 @@ Jira Service Management will be unavailable for some time during the re-indexing
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
@@ -982,7 +991,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
