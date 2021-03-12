@@ -12,6 +12,7 @@ import pytest
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from time import sleep
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -288,3 +289,31 @@ def confluence_datasets():
 @pytest.fixture(scope="module")
 def bitbucket_datasets():
     return application_dataset.bitbucket_dataset()
+
+
+def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
+    """
+    Retry "tries" times, with initial "delay", increasing delay "delay*backoff" each time.
+    """
+    assert tries > 0, "tries must be 1 or greater"
+    if not retry_exception:
+        retry_exception = Exception
+
+    def deco_retry(f):
+        @functools.wraps(f)
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+
+            while mtries > 0:
+                sleep(mdelay)
+                mdelay *= backoff
+                try:
+                    return f(*args, **kwargs)
+                except retry_exception as e:
+                    print(repr(e))
+                mtries -= 1
+                if mtries == 0:
+                    return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
+
+        return f_retry
+    return deco_retry
