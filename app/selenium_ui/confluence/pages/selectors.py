@@ -33,6 +33,7 @@ class PopupLocators:
     skip_onbording_1 = '.aui-button aui-button-link .skip-onboarding'
     skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
     time_saving_template = '#closeDisDialog'
+    welcome_to_confluence = '.aui-button.aui-button-primary.show-onboarding'
 
 
 class LoginPageLocators:
