@@ -311,6 +311,7 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
                     return f(*args, **kwargs)
                 except retry_exception as e:
                     print(repr(e))
+                print(f'Retrying: {mtries}')
                 mtries -= 1
                 if mtries == 0:
                     return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
