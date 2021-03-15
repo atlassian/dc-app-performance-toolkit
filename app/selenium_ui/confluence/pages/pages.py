@@ -73,7 +73,7 @@ class Page(BasePage):
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
-    page_loaded_selector = DashboardLocators.updated_items
+    page_loaded_selector = DashboardLocators.all_updates
 
 
 class TopNavPanel(BasePage):
