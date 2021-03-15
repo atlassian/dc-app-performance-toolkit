@@ -66,7 +66,7 @@ class PageLocators:
 
 class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
-    updated_items = (By.CLASS_NAME, "update-items")
+    all_updates = (By.CLASS_NAME, "content-header-all-updates")
 
 
 class TopPanelLocators:
