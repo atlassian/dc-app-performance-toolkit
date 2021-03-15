@@ -522,7 +522,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
     CONFLUENCE_CURRENT_DIR="/opt/atlassian/confluence/current"
     CONFLUENCE_DB_NAME="confluence"
