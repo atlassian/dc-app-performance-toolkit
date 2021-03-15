@@ -531,7 +531,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
     JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
     CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
