@@ -16,7 +16,7 @@ def app_specific_action(webdriver, datasets):
     # NOTE: If app_specific_action is running as specific user, make sure that app_specific_action is running
     # just before test_2_selenium_z_log_out action
 
-    # @print_timing("app_specific_user_login")
+    # @print_timing("selenium_app_specific_user_login")
     # def measure():
     #     def app_specific_user_login(username='admin', password='admin'):
     #         login_page = Login(webdriver)
