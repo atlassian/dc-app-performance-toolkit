@@ -20,7 +20,7 @@ CONFLUENCE_DB_PASS="Password1!"
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.6)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.8)
 
 if [[ ! $(systemctl status confluence) ]]; then
   echo "The Confluence service was not found on this host." \
@@ -101,6 +101,7 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
 echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
@@ -178,7 +179,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
+time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore --schema=public -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1

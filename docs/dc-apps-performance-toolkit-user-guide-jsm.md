@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-01-12"
+date: "2021-03-17"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
@@ -15,7 +15,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 **[Development environment](#mainenvironmentdev)**: Jira Service Management Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
 
 1. [Set up a development environment Jira Service Management Data Center on AWS](#devinstancesetup).
-2. [Create a dataset for the development environment](#devdataset).
+2. [Load a "small" dataset for the development environment](#devdataset).
 3. [Run toolkit on the development environment locally](#devtestscenario).
 4. [Develop and test app-specific actions locally](#devappaction).
 
@@ -34,14 +34,18 @@ Running the tests in a development environment helps familiarize you with the to
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Service Management Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/). All the instructions on this page are optimized for AWS. 
+We recommend that you set up development environment using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. 
 
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -62,7 +66,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.2`, `4.5.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.4`, `4.5.12` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -78,6 +82,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
 | Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
@@ -133,6 +139,7 @@ After successfully deploying the Jira Service Management Data Center on AWS, con
     Then select **Next**.
 
 1. On the **Set up email notifications** page, configure your email notifications, and then select **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, select **Create new project** to create a new project.
 
 ---
@@ -169,7 +176,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
     JIRA_DB_NAME="jira"
     JIRA_DB_USER="postgres"
@@ -182,7 +188,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh --jsm --small | tee -a populate_db.log
+    ./populate_db.sh --jsm --small 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -248,7 +254,7 @@ We recommend that you only use this method if you are having problems with the [
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh --jsm --small | tee -a upload_attachments.log
+    ./upload_attachments.sh --jsm --small 2>&1 | tee -a upload_attachments.log
     ```
 
 #### Re-indexing development environment Jira Service Management Data Center
@@ -266,6 +272,10 @@ When finished, the **Acknowledge** button will be available on the re-indexing p
 
 ### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
 
+{{% warning %}}
+Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
 1. Navigate to `dc-app-performance-toolkit/app` folder.
@@ -282,8 +292,8 @@ When finished, the **Acknowledge** button will be available on the re-indexing p
     - `concurrency_customers`: `1` - number of concurrent JMeter/Locust customers.
     - `test_duration`: `5m` - duration of the performance run.
     - `ramp-up`: `3s` - amount of time it will take JMeter or Locust to add all test users to test execution.
-    - `total_actions_per_hour_agents`: `1350` - number of total JMeter/Locust actions per hour for agents scenario.
-    - `total_actions_per_hour_customers`: `4050` - number of total JMeter/Locust actions per hour customers scenario.
+    - `total_actions_per_hour_agents`: `500` - number of total JMeter/Locust actions per hour for agents scenario.
+    - `total_actions_per_hour_customers`: `1500` - number of total JMeter/Locust actions per hour customers scenario.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
     
 1. Run bzt.
@@ -350,6 +360,7 @@ So, our test has to open app-specific requests in agent view and measure time to
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
 So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
+1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -377,6 +388,7 @@ You develop an app that introduces new GET and POST endpoints in Jira Service Ma
 1. In `dc-app-performance-toolkit/app/jsm.yml` set `load_executor: locust` to make `locust` as load executor.
 1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `agent_standalone_extension`/`customer_standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
+1. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
 1. Run toolkit with `bzt jsm.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
 **JMeter app-specific action development example**
@@ -452,15 +464,19 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Jira Service Management Data Center on AWS
 
-We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab)  to deploy a Jira Service Management Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Service Management Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira Service Management into this new VPC. Deploying Jira Service Management with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 #### Using the AWS Quick Start for Jira Service Management
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira Service Management into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment), deploy Jira Service Management into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira Service Management into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -523,13 +539,13 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.2`, `4.5.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.4`, `4.5.12` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Cluster node instance type | [m5.4xlarge](https://aws.amazon.com/ec2/instance-types/m5/) (This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Service Management Data Center customers. The Data Center App Performance Toolkit framework is set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.)|
+| Cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) (This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Service Management Data Center customers. The Data Center App Performance Toolkit framework is set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.)|
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 100 |
@@ -538,6 +554,8 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
 | Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
@@ -592,6 +610,7 @@ After successfully deploying Jira Service Management Data Center in AWS, you'll 
     - **Confirm Password**: admin _(recommended)_
     Click **Next**.
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, click **Create new project** to create a new project.
 
 {{% note %}}
@@ -663,7 +682,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
     JIRA_DB_NAME="jira"
     JIRA_DB_USER="postgres"
@@ -676,7 +694,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh --jsm | tee -a populate_db.log
+    ./populate_db.sh --jsm 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -750,7 +768,7 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh --jsm | tee -a upload_attachments.log
+    ./upload_attachments.sh --jsm 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
@@ -774,40 +792,40 @@ Jira Service Management will be unavailable for some time during the re-indexing
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-* OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-* Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-* Storage size: `30` GiB
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
-    ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
-    ```
-
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:  
+1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
 
-``` yaml
-    application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
-    application_protocol: http                # http or https
-    application_port: 80                      # 80, 443, 8080, 2990, etc
-    secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
-    concurrency_agents: 50                    # number of concurrent virtual agents for jmeter or locust scenario
-    concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 3m                               # time to spin all concurrent users
-    total_actions_per_hour_agents: 13500      # number of total JMeter/Locust actions per hour
-    total_actions_per_hour_customers: 40500   # number of total JMeter/Locust actions per hour
-```  
+   ``` yaml
+       application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+       application_protocol: http                # http or https
+       application_port: 80                      # 80, 443, 8080, 2990, etc
+       secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
+       concurrency_agents: 50                    # number of concurrent virtual agents for jmeter or locust scenario
+       concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
+       test_duration: 45m
+       ramp-up: 3m                               # time to spin all concurrent users
+       total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
+       total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
+   ```  
 
 1. Push your changes to the forked repository.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+   ```bash
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Connect to the AWS EC2 instance and clone forked repository.
 
 {{% note %}}
@@ -895,6 +913,10 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
@@ -909,8 +931,14 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local machine terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
@@ -921,7 +949,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 ###### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Jira Service Management DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Jira Service Management DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
@@ -965,15 +993,15 @@ To receive scalability benchmark results for two-node Jira Service Management DC
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
-    IndexCopyService] Index restore started. Total 0 issues on instance before loading Snapshot file: IndexSnapshot_10203.tar.sz
-    Recovering search indexes - 60% complete... Recovered added and updated issues
-    Recovering search indexes - 80% complete... Cleaned removed issues
-    Recovering search indexes - 100% complete... Recovered all indexes
-    IndexCopyService] Index restore complete. Total N issues on instance
+    Index restore started
+    indexes - 60%
+    indexes - 80%
+    indexes - 100%
+    Index restore complete
     ```
 1. Run toolkit with docker:
 
@@ -1019,13 +1047,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a scalability report:
 
 1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
 1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
-
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
@@ -1034,15 +1065,28 @@ To generate a scalability report:
 
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Jira Service Management Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder, you will be able to review action timings on Jira Service Management Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+
+{{% warning %}}
 After completing all your tests, delete your Jira Service Management Data Center stacks.
+{{% /warning %}}
 
 #### Attaching testing results to DCHELP ticket
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
-1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
-1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
+
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

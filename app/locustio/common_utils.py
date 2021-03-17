@@ -55,6 +55,13 @@ JSON_HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01"
 }
 
+JIRA_API_URL = '/rest/api/2/serverInfo'
+CONFLUENCE_API_URL = '/rest/api/user/anonymous'
+
+JIRA = 'jira'
+JSM = 'jsm'
+CONFLUENCE = 'confluence'
+
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 jsm_agent_action_time = 3600 / int((JSM_SETTINGS.agents_total_actions_per_hr) / int(JSM_SETTINGS.agents_concurrency))
@@ -97,6 +104,7 @@ class Logger(logging.Logger):
 class MyBaseTaskSet(TaskSet):
 
     cross_action_storage = dict()  # Cross actions locust storage
+    session_data_storage = dict()
     login_failed = False
 
     def failure_check(self, response, action_name):
@@ -120,6 +128,22 @@ class MyBaseTaskSet(TaskSet):
         action_name = inspect.stack()[1][3]
         self.failure_check(response=r, action_name=action_name)
         return r
+
+
+class BaseResource:
+    action_name = ''
+
+    def __init__(self, resource_file):
+        self.resources_file = resource_file
+        self.resources_json = self.read_json()
+        self.resources_body = self.action_resources()
+
+    def read_json(self):
+        with open(self.resources_file, encoding='UTF-8') as f:
+            return json.load(f)
+
+    def action_resources(self):
+        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
 
 
 def jira_measure(interaction=None):
@@ -270,6 +294,47 @@ def get_first_index(from_list: list, err):
 def raise_if_login_failed(locust):
     if locust.login_failed:
         raise exception.StopUser('Action login_and_view_dashboard failed')
+
+
+def run_as_specific_user(username=None, password=None):
+    if not (username and password):
+        raise SystemExit(f'The credentials are not valid: {{username: {username}, password: {password}}}.')
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+
+            locust = None
+            for obj in list(locals()['kwargs'].values()) + list(locals()['args']):
+                if isinstance(obj, MyBaseTaskSet):
+                    locust = obj
+                    break
+
+            if locust:
+                session_user_name = locust.session_data_storage["username"]
+                session_user_password = locust.session_data_storage["password"]
+                app = locust.session_data_storage['app']
+
+                if app == JIRA or app == JSM:
+                    url = JIRA_API_URL
+                elif app == CONFLUENCE:
+                    url = CONFLUENCE_API_URL
+                else:
+                    raise Exception(f'The "{app}" application type is not known.')
+
+                locust.client.cookies.clear()
+                locust.get(url, auth=(username, password), catch_response=True)  # send requests by the specific user
+
+                func(*args, **kwargs)
+
+                locust.client.cookies.clear()
+                locust.get(url, auth=(session_user_name, session_user_password),
+                           catch_response=True)  # send requests by the session user
+
+            else:
+                raise SystemExit(f"There is no 'locust' object in the '{func.__name__}' function.")
+        return wrapper
+    return deco_wrapper
 
 
 logger = init_logger()

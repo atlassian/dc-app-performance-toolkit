@@ -43,13 +43,13 @@ class BasePage:
     def element_exists(self, selector):
         selector_name = self.get_selector(selector)
         by, locator = selector_name[0], selector_name[1]
-        return self.driver.find_elements(by, locator) is not None
+        return True if self.driver.find_elements(by, locator) else False
 
-    def wait_until_invisible(self, selector_name):
+    def wait_until_invisible(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector))
+        return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector), time_out=timeout)
 
-    def wait_until_visible(self, selector_name, timeout=TIMEOUT):
+    def wait_until_visible(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), time_out=timeout)
 
@@ -58,28 +58,28 @@ class BasePage:
         return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
                                  time_out=self.timeout)
 
-    def wait_until_present(self, selector_name, time_out=TIMEOUT):
+    def wait_until_present(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.presence_of_element_located(selector), time_out=time_out)
+        return self.__wait_until(expected_condition=ec.presence_of_element_located(selector), time_out=timeout)
 
-    def wait_until_clickable(self, selector_name):
+    def wait_until_clickable(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
-        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), time_out=self.timeout)
+        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), time_out=timeout)
 
-    def wait_until_any_element_visible(self, selector_name):
+    def wait_until_any_element_visible(self, selector_name, timeout=timeout):
         selector = self.get_selector(selector_name)
         return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector),
-                                 time_out=self.timeout)
+                                 time_out=timeout)
 
-    def wait_until_any_ec_presented(self, selector_names):
+    def wait_until_any_ec_presented(self, selector_names, timeout=timeout):
         origin_selectors = []
         for selector in selector_names:
             origin_selectors.append(self.get_selector(selector))
         any_ec = AnyEc()
         any_ec.ecs = tuple(ec.presence_of_element_located(origin_selector) for origin_selector in origin_selectors)
-        return self.__wait_until(expected_condition=any_ec)
+        return self.__wait_until(expected_condition=any_ec, time_out=timeout)
 
-    def wait_until_any_ec_text_presented_in_el(self, selector_names):
+    def wait_until_any_ec_text_presented_in_el(self, selector_names, timeout=timeout):
         origin_selectors = []
         for selector_text in selector_names:
             selector = self.get_selector(selector_text[0])
@@ -88,9 +88,9 @@ class BasePage:
         any_ec = AnyEc()
         any_ec.ecs = tuple(ec.text_to_be_present_in_element(locator=origin_selector[0], text_=origin_selector[1]) for
                            origin_selector in origin_selectors)
-        return self.__wait_until(expected_condition=any_ec)
+        return self.__wait_until(expected_condition=any_ec, time_out=timeout)
 
-    def __wait_until(self, expected_condition, time_out=TIMEOUT):
+    def __wait_until(self, expected_condition, time_out=timeout):
         message = f"Error in wait_until: "
         ec_type = type(expected_condition)
         if ec_type == AnyEc:
@@ -146,6 +146,9 @@ class BasePage:
 
     def action_chains(self):
         return ActionChains(self.driver)
+
+    def delete_all_cookies(self):
+        self.driver.delete_all_cookies()
 
 
 class AnyEc:

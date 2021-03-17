@@ -1,5 +1,6 @@
-from util.api.abstract_clients import RestClient
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import RestClient
+
 BATCH_SIZE_USERS = 1000
 
 
@@ -77,13 +78,18 @@ class JsmRestClient(RestClient):
 
         return response.json()
 
-    def get_request(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, issue_id_or_key: str = ''):
+    def get_request(self, issue_id_or_key: str, auth: tuple = None):
+        api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}"
+        return self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+
+    def get_requests(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, status: str = None):
         """
         Returns the customer request for a given request Id/key.
         :param issue_id_or_key:
         :param auth:
         :param start_at:
         :param max_results:
+        :param status:
         :return:
         """
         BATCH_REQUEST_SIZE = 100
@@ -93,20 +99,16 @@ class JsmRestClient(RestClient):
         max_results = BATCH_REQUEST_SIZE if max_results > BATCH_REQUEST_SIZE else max_results
         requests = []
 
+        init_url = self.host + "/rest/servicedeskapi/request"
         while loop_count > 0:
 
-            api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}?start={start_at}" \
-                                  f"&limit={max_results}" if issue_id_or_key else \
-                self.host + f"/rest/servicedeskapi/request?start={start_at}&limit={max_results}"
+            api_url = init_url + f"?start={start_at}&limit={max_results}"
+            if status:
+                api_url += f"&requestStatus={status}"
 
-            response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
-            if 'values' in response.json():
-                values = response.json()['values']
-                requests.extend(values)
-            else:
-                values = response.json()
-                requests.append(values)
-                break
+            response = self.get(api_url, f"Could not get customer requests ", auth=auth)
+            values = response.json()['values']
+            requests.extend(values)
 
             if 'isLastPage' in response.json() and response.json()['isLastPage']:
                 break
@@ -318,6 +320,33 @@ class JsmRestClient(RestClient):
         while not finished:
             api_url = self.host + f"/rest/servicedeskapi/organization?start={start}&limit={limit}"
             r = self.get(api_url, "Could not get all organisations", headers=jsm_headers, auth=auth).json()
+            results.extend(r['values'])
+            if r['isLastPage']:
+                finished = True
+            else:
+                start = start + limit
+
+        if max_count:
+            return results[:max_count]
+        return results
+
+    def get_all_users_in_organization(self, org_id: int, max_count: int = None):
+        """
+        Get all user in organization
+        :param org_id:
+        :param max_count:
+        :param auth:
+        :return:
+        """
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+
+        start = 0
+        limit = 50
+        finished = False
+        results = []
+        while not finished:
+            api_url = self.host + f"/rest/servicedeskapi/organization/{org_id}/user?start={start}&limit={limit}"
+            r = self.get(api_url, "Could not get all organisations", headers=jsm_headers).json()
             results.extend(r['values'])
             if r['isLastPage']:
                 finished = True

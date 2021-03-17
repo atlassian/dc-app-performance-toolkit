@@ -2,7 +2,7 @@
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
-    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators
+    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators
 
 
 class Login(BasePage):
@@ -21,6 +21,10 @@ class Login(BasePage):
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
         return True if elements else False
 
+    def is_logged_in(self):
+        elements = self.get_elements(LoginPageLocators.logout)
+        return True if elements else False
+
     def first_user_setup(self):
         if self.get_element(LoginPageLocators.current_step_sel).text == 'Welcome':
             self.wait_until_clickable(LoginPageLocators.skip_welcome_button).click()
@@ -34,6 +38,9 @@ class Login(BasePage):
 class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
+    def wait_for_logout(self):
+        self.wait_until_visible(LogoutLocators.logout_msg)
+
 
 class AllUpdates(BasePage):
     page_loaded_selector = AllUpdatesLocators.updates_content
@@ -44,7 +51,8 @@ class PopupManager(BasePage):
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
                                   PopupLocators.skip_onboarding_2,
-                                  PopupLocators.time_saving_template)
+                                  PopupLocators.time_saving_template,
+                                  PopupLocators.welcome_to_confluence)
 
 
 class Page(BasePage):
@@ -65,7 +73,7 @@ class Page(BasePage):
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
-    page_loaded_selector = DashboardLocators.updated_items
+    page_loaded_selector = DashboardLocators.all_updates
 
 
 class TopNavPanel(BasePage):

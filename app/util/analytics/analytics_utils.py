@@ -6,7 +6,7 @@ import socket
 from datetime import datetime, timezone
 
 SUCCESS_TEST_RATE = 95.00
-SUCCESS_AVG_RT = 20
+SUCCESS_RT_THRESHOLD = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 APP_SPECIFIC_TAG = 'APP-SPECIFIC'
 
@@ -79,19 +79,19 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    summary_report.append('\nAction|Success Rate|Avg time|Status')
+    summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        avg_rt_status = None
-        if status != 'Fail' and key not in EXCEPTIONS and collector.test_actions_avg_rate[key] >= SUCCESS_AVG_RT:
-            avg_rt_status = f'WARNING - action timing >= {SUCCESS_AVG_RT} sec. Check your configuration.'
-        summary_report.append(f'{key}|{value}|{collector.test_actions_avg_rate[key]}|{avg_rt_status or status}')
+        rt_status = None
+        if status != 'Fail' and key not in EXCEPTIONS and collector.test_actions_timing[key] >= SUCCESS_RT_THRESHOLD:
+            rt_status = f'WARNING - action timing >= {SUCCESS_RT_THRESHOLD} sec. Check your configuration.'
+        summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{rt_status or status}')
 
     for key, value in collector.app_specific_rates.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{collector.test_actions_avg_rate[key]}|{status}|{APP_SPECIFIC_TAG}')
+        summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
     max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
     offset_1st = max_summary_report_str_len + 5
@@ -137,7 +137,7 @@ def get_first_elem(elems: list):
     try:
         return elems[1]
     except IndexError:
-        raise Exception('analytics.py expects application name as argument')
+        raise SystemExit('ERROR: analytics.py expects application name as argument')
 
 
 def get_date():

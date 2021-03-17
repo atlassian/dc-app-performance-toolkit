@@ -2,6 +2,7 @@ import atexit
 import csv
 import datetime
 import functools
+import os
 import sys
 import time
 from datetime import timezone
@@ -11,6 +12,7 @@ import pytest
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from time import sleep
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -98,6 +100,14 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
+def is_docker():
+    path = '/proc/self/cgroup'
+    return (
+            os.path.exists('/.dockerenv') or
+            os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def print_timing(interaction=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
@@ -143,6 +153,8 @@ def print_timing(interaction=None):
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
+        if app_settings.webdriver_visible and is_docker():
+            raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         if not app_settings.secure:
@@ -277,3 +289,32 @@ def confluence_datasets():
 @pytest.fixture(scope="module")
 def bitbucket_datasets():
     return application_dataset.bitbucket_dataset()
+
+
+def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
+    """
+    Retry "tries" times, with initial "delay", increasing delay "delay*backoff" each time.
+    """
+    assert tries > 0, "tries must be 1 or greater"
+    if not retry_exception:
+        retry_exception = Exception
+
+    def deco_retry(f):
+        @functools.wraps(f)
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+
+            while mtries > 0:
+                sleep(mdelay)
+                mdelay *= backoff
+                try:
+                    return f(*args, **kwargs)
+                except retry_exception as e:
+                    print(repr(e))
+                print(f'Retrying: {mtries}')
+                mtries -= 1
+                if mtries == 0:
+                    return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
+
+        return f_retry
+    return deco_retry

@@ -27,6 +27,10 @@ class LoginPage(BasePage):
         el = self.get_element(LoginPageLocators.application_version)
         return ''.join([i for i in el.text.split('.')[0] if i.isdigit()])
 
+    def is_logged_in(self):
+        elements = self.get_elements(GetStartedLocators.user_profile_icon)
+        return True if elements else False
+
 
 class LogoutPage(BasePage):
 
@@ -35,7 +39,7 @@ class LogoutPage(BasePage):
 
 class GetStarted(BasePage):
     page_url = GetStartedLocators.get_started_url
-    page_loaded_selector = GetStartedLocators.bitbucket_is_ready_widget
+    page_loaded_selector = GetStartedLocators.user_profile_icon
 
 
 class Dashboard(BasePage):

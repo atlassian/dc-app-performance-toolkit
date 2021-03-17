@@ -20,9 +20,15 @@ class Login(BasePage):
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
 
+    def is_first_login_second_page(self):
+        return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
+
     def first_login_setup(self):
         self.wait_until_visible(LoginPageLocators.continue_button).send_keys(Keys.ESCAPE)
         self.get_element(LoginPageLocators.continue_button).click()
+        self.first_login_second_page_setup()
+
+    def first_login_second_page_setup(self):
         self.wait_until_visible(LoginPageLocators.avatar_page_next_button).click()
         self.wait_until_visible(LoginPageLocators.explore_current_projects).click()
         self.go_to_url(DashboardLocators.dashboard_url)
@@ -75,14 +81,19 @@ class ViewCustomerRequest(BasePage):
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
-        self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea).click()
+        textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
+        textarea.click()
 
         if rte_status:
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
-            self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
+            tinymce_field = self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
+            self.action_chains().send_keys_to_element(tinymce_field, comment_text).perform()
             self.return_to_parent_frame()
         else:
-            self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
+            comment_text_field = self.get_element(ViewCustomerRequestLocators.comment_text_field)
+            self.action_chains().move_to_element(comment_text_field).click()\
+                .send_keys_to_element(comment_text_field, comment_text).perform()
 
         self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
@@ -142,7 +153,7 @@ class ViewQueue(BasePage):
         self.page_url = url_manager.view_queue_all_open()
 
     def wait_for_page_loaded(self):
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        self.wait_until_visible(ViewQueueLocators.queues_status)
 
     def get_random_queue(self):
         queues = self.get_elements(ViewQueueLocators.queues)
@@ -151,4 +162,4 @@ class ViewQueue(BasePage):
                                       ['All open', 'Recently resolved', 'Resolved past 7 days']
                                       and queue.text.partition('\n')[2] != '0'])
         random_queue.click()
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        self.wait_until_visible(ViewQueueLocators.queues_status, timeout=self.timeout)

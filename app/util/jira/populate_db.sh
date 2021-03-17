@@ -25,7 +25,7 @@ fi
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
@@ -44,8 +44,8 @@ JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
-SUPPORTED_JIRA_VERSIONS=(8.5.11 8.13.3)
-SUPPORTED_JSM_VERSIONS=(4.5.10 4.13.2)
+SUPPORTED_JIRA_VERSIONS=(8.5.12 8.13.4)
+SUPPORTED_JSM_VERSIONS=(4.5.12 4.13.4)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -144,6 +144,7 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
 echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
@@ -266,7 +267,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${JIRA_DB_PASS} pg_restore -v -U ${JIRA_DB_USER} -h ${DB_HOST} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
+time PGPASSWORD=${JIRA_DB_PASS} pg_restore --schema=public -v -U ${JIRA_DB_USER} -h ${DB_HOST} -d ${JIRA_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1

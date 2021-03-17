@@ -1,10 +1,12 @@
+import datetime
 import functools
-import multiprocessing
 import random
 import string
+from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
+from itertools import repeat
 from timeit import default_timer as timer
-import datetime
+
 import urllib3
 
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
@@ -14,6 +16,8 @@ from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
     JSM_DATASET_CUSTOM_ISSUES
+
+MAX_WORKERS = None
 
 ERROR_LIMIT = 10
 DEFAULT_AGENT_PREFIX = 'performance_agent_'
@@ -45,24 +49,28 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
 
 performance_agents_count = JSM_SETTINGS.agents_concurrency
 performance_customers_count = JSM_SETTINGS.customers_concurrency
-num_cores = multiprocessing.cpu_count()
 
+# TODO write here why do we need this.
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def print_timing(message):
+def print_timing(message, sep='-'):
     assert message is not None, "Message is not passed to print_timing decorator"
 
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             start = timer()
+            print(sep * 20)
+            print(f'{message} started {datetime.datetime.now().strftime("%H:%M:%S")}')
             result = func(*args, **kwargs)
             end = timer()
-            print(f"{message} finished in {timedelta(seconds=end-start)} seconds")
-            print('------------------------------------------------------')
+            print(f"{message} finished in {timedelta(seconds=end - start)}")
+            print(sep * 20)
             return result
+
         return wrapper
+
     return deco_wrapper
 
 
@@ -75,6 +83,7 @@ def __calculate_issues_per_project(projects_count):
         calculated_issues_percentage = PROJECTS_ISSUES_PERC
     else:
         percent_for_other_projects = 0
+        # TODO resolve Unexpected types warning from pycharm
         calculated_issues_percentage = dict(list(PROJECTS_ISSUES_PERC.items())[:projects_count])
 
     for key, value in calculated_issues_percentage.items():
@@ -89,7 +98,7 @@ def __calculate_issues_per_project(projects_count):
 
 def __filter_customer_with_requests(customer, jsm_client):
     customer_auth = (customer['name'], DEFAULT_PASSWORD)
-    customer_requests = jsm_client.get_request(auth=customer_auth)
+    customer_requests = jsm_client.get_requests(auth=customer_auth, status="OPEN_REQUESTS")
     non_closed_requests = [request for request in customer_requests if request['currentStatus']['status'] != 'Closed']
     customer_dict = {'name': customer['name'], 'has_requests': False}
     if non_closed_requests:
@@ -117,12 +126,15 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
         start_at = start_at + max_count_iteration
         customer_chunks = [customers[x:x + customers_chunk_size]
                            for x in range(0, len(customers), customers_chunk_size)]
-        pool = multiprocessing.pool.ThreadPool(processes=num_cores)  # Can be increased to improve script speed
 
         for customer_chunk in customer_chunks:
             if len(customers_with_requests) >= count:
                 break
-            customers_datas = pool.starmap(__filter_customer_with_requests, [(i, jsm_client) for i in customer_chunk])
+
+            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                customers_datas = list(executor.map(__filter_customer_with_requests, [i for i in customer_chunk],
+                                                    repeat(jsm_client)))
+
             for customer_data in customers_datas:
                 if customer_data['has_requests']:
                     if len(customers_with_requests) >= count:
@@ -136,54 +148,43 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
     return customers_with_requests
 
 
-def __get_jsm_users(jira_client, jsm_client=None, is_agent=False):
-    if is_agent:
-        prefix_name, application_keys, count = DEFAULT_AGENT_PREFIX, DEFAULT_AGENT_APP_KEYS, performance_agents_count
-        perf_users = jira_client.get_users(username=prefix_name, max_results=count)
-        users_to_create = count - len(perf_users)
-        if users_to_create > 0:
-            add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
-                                       application_keys=application_keys)
-            if not add_users:
-                raise Exception(f"ERROR: Jira Service Management could not create agent"
-                                f"There were {len(perf_users)}/{count} retrieved.")
-            perf_users.extend(add_users)
-        return perf_users
-    else:
-        prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
-        perf_users = jira_client.get_users(username=prefix_name, max_results=count)
-        users_to_create = count - len(perf_users)
-        if users_to_create > 0:
-            add_users = generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
-                                       application_keys=[])
-            if not add_users:
-                raise Exception(f"ERROR: Jira Service Management could not create customers"
-                                f"There were {len(perf_users)}/{count} retrieved.")
-        perf_users_with_requests = __get_customers_with_requests(
-            jsm_client=jsm_client, jira_client=jira_client, count=count)
-        if len(perf_users_with_requests) < performance_customers_count:
-            raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" '
-                            f'with requests were found: '
-                            f'{len(perf_users_with_requests)}/{performance_customers_count}. '
-                            f'Please review the "concurrency_customers" value in jsm.yml file and/or '
-                            f'create requests on behalf of customers with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
-        return perf_users_with_requests
-
-
-@print_timing('Retrieved agents')
+@print_timing('Retrieving agents')
 def __get_agents(jira_client):
-    now = datetime.datetime.now()
-    print(f'Agents start {now.strftime("%H:%M:%S")}')
-    return __get_jsm_users(jira_client, is_agent=True)
+    prefix_name, application_keys, count = DEFAULT_AGENT_PREFIX, DEFAULT_AGENT_APP_KEYS, performance_agents_count
+    perf_users = jira_client.get_users(username=prefix_name, max_results=count)
+    users_to_create = count - len(perf_users)
+    if users_to_create > 0:
+        add_users = __generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
+                                     application_keys=application_keys)
+        if not add_users:
+            raise Exception(f"ERROR: Jira Service Management could not create agent"
+                            f"There were {len(perf_users)}/{count} retrieved.")
+        perf_users.extend(add_users)
+    return perf_users
 
 
-@print_timing('Retrieved customers')
+@print_timing('Retrieving customers')
 def __get_customers(jira_client, jsm_client):
-    now = datetime.datetime.now()
-    print(f'Customers start {now.strftime("%H:%M:%S")}')
-    customers = __get_jsm_users(jira_client, jsm_client=jsm_client, is_agent=False)
+    prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
+    perf_users = jira_client.get_users(username=prefix_name, max_results=count)
+    users_to_create = count - len(perf_users)
+    if users_to_create > 0:
+        created_agents = __generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
+                                          application_keys=[])
+        if not created_agents:
+            raise Exception(f"ERROR: Jira Service Management could not create customers"
+                            f"There were {len(perf_users)}/{count} retrieved.")
+    perf_users_with_requests = __get_customers_with_requests(jsm_client=jsm_client, jira_client=jira_client,
+                                                             count=count)
+    if len(perf_users_with_requests) < performance_customers_count:
+        raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" '
+                        f'with requests were found: '
+                        f'{len(perf_users_with_requests)}/{performance_customers_count}. '
+                        f'Please review the "concurrency_customers" value in jsm.yml file and/or '
+                        f'create requests on behalf of customers with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
+
     customers_list = []
-    for customer in customers:
+    for customer in perf_users_with_requests:
         default_customer = f'{customer["name"]},{DEFAULT_PASSWORD}'
         if 'requests' in customer.keys():
             default_customer = f"{default_customer},{','.join([','.join(i) for i in customer['requests']])}"
@@ -193,14 +194,14 @@ def __get_customers(jira_client, jsm_client):
     return customers_list
 
 
-def generate_users(api, num_to_create, application_keys, prefix_name):
+def __generate_users(api, num_to_create, application_keys, prefix_name):
     errors_count = 0
     created_agents = []
     while len(created_agents) < num_to_create:
         if errors_count >= ERROR_LIMIT:
             raise Exception(f'ERROR: Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
                             f'Please check the errors in bzt.log')
-        username = f"{prefix_name}{generate_random_string(10)}"
+        username = f"{prefix_name}{__generate_random_string(10)}"
         try:
             agent = api.create_user(name=username, password=DEFAULT_PASSWORD,
                                     application_keys=application_keys)
@@ -212,15 +213,9 @@ def generate_users(api, num_to_create, application_keys, prefix_name):
 
 
 def __get_service_desk_info(jira_api, jsm_api, service_desk):
-    # Run in parallel 'get_total_issues_count', 'get_queue' and '__get_service_desk_reports'.
-    pool = multiprocessing.pool.ThreadPool(processes=3)
-    p1 = pool.apply_async(jira_api.get_total_issues_count, kwds={'jql': f'project = {service_desk["projectKey"]}'})
-    p2 = pool.apply_async(jsm_api.get_queue, kwds={'service_desk_id': service_desk['id']})
-    p3 = pool.apply_async(__get_service_desk_reports, kwds={'service_desk': service_desk, 'jsm_api': jsm_api})
-
-    service_desk_requests_count = str(p1.get())
-    service_desk_queues = p2.get()
-    service_desk_reports = p3.get()
+    service_desk_requests_count = str(jira_api.get_total_issues_count(f'project = {service_desk["projectKey"]}'))
+    service_desk_queues = jsm_api.get_queue(service_desk_id=service_desk['id'])
+    service_desk_reports = __get_service_desk_reports(jsm_api, service_desk)
 
     all_open_queue_id = [queue['id'] for queue in service_desk_queues if queue['name'] == 'All open']
     if not all_open_queue_id:
@@ -233,13 +228,11 @@ def __get_service_desk_info(jira_api, jsm_api, service_desk):
     return service_desk
 
 
-@print_timing('Retrieved service desks')
+@print_timing('Preparing service desks')
 def __get_service_desks(jsm_api, jira_api, service_desks):
-    now = datetime.datetime.now()
-    print(f'Service desks start {now.strftime("%H:%M:%S")}')
-    pool = multiprocessing.pool.ThreadPool(processes=num_cores*2)
-    service_desks_with_requests = pool.starmap(__get_service_desk_info, [(jira_api, jsm_api, service_desk)
-                                               for service_desk in service_desks])
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        service_desks_with_requests = list(executor.map(__get_service_desk_info, repeat(jira_api), repeat(jsm_api),
+                                                        [service_desk for service_desk in service_desks]))
 
     print(f"Retrieved {len(service_desks)} Jira Service Desks")
     large_service_desks = []
@@ -283,8 +276,8 @@ def __get_service_desks(jsm_api, jira_api, service_desks):
 
 
 def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
-    issues = jira_api.issues_search_parallel(jql=f'project = {service_desk["projectKey"]}',
-                                             max_results=issues_distribution_id[service_desk['projectKey']])
+    issues = jira_api.issues_search(jql=f'project = {service_desk["projectKey"]}',
+                                    max_results=issues_distribution_id[service_desk['projectKey']])
     distribution_success = len(issues) >= issues_distribution_id[service_desk['projectKey']]
     issues_per_project_list = [','.join((issue['id'],
                                          issue['key'],
@@ -299,10 +292,9 @@ def __get_service_desk_requests(jira_api, issues_distribution_id, service_desk):
     return distribution
 
 
-@print_timing('Retrieved customers requests')
+@print_timing('Preparing customers requests')
 def __get_requests(jira_api, service_desks, requests_without_distribution):
-    now = datetime.datetime.now()
-    print(f'Requests start {now.strftime("%H:%M:%S")}')
+    # TODO refactor this function (var names, simplify logic)
     service_desks_issues = []
     for service_desk in service_desks:
         service_desk_dict = dict()
@@ -314,13 +306,15 @@ def __get_requests(jira_api, service_desks, requests_without_distribution):
     issues_distribution_perc = __calculate_issues_per_project(len(service_desks))
     issues_distribution_id = {}
     for key, value in issues_distribution_perc.items():
-        issues_distribution_id[service_desks_issues[key-1]['projectKey']] = value
+        issues_distribution_id[service_desks_issues[key - 1]['projectKey']] = value
 
     print(f'Start retrieving issues by distribution per project: {issues_distribution_id}')
     distribution_success = True
-    pool = multiprocessing.pool.ThreadPool(processes=num_cores)
-    issues_list = pool.starmap(__get_service_desk_requests, [(jira_api, issues_distribution_id, i)
-                                                             for i in service_desks_issues])
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        issues_list = list(executor.map(__get_service_desk_requests, repeat(jira_api), repeat(issues_distribution_id),
+                                        [issue for issue in service_desks_issues]))
+
     # Check if requests distribution per service desk is success
     for service_desk in issues_list:
         if not service_desk['distribution_success']:
@@ -354,7 +348,7 @@ def __get_requests(jira_api, service_desks, requests_without_distribution):
     return issues_list
 
 
-def generate_random_string(length=20):
+def __generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
@@ -385,10 +379,12 @@ def __get_service_desk_request_types(jsm_api, service_desk):
     return requests_ids
 
 
+@print_timing("Preparing request types")
 def __get_request_types(jsm_api, service_desks):
-    pool = multiprocessing.pool.ThreadPool(processes=num_cores * 2)
-    requests_ids = pool.starmap(__get_service_desk_request_types,
-                                [(jsm_api, service_desk) for service_desk in service_desks])
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        requests_ids = list(executor.map(__get_service_desk_request_types, repeat(jsm_api),
+                                         [service_desk for service_desk in service_desks]))
+
     requests_ids = sum(requests_ids, [])
     request_types_list = []
     for request_id in requests_ids:
@@ -399,6 +395,7 @@ def __get_request_types(jsm_api, service_desks):
     return [','.join(i) for i in request_types_list]
 
 
+@print_timing("Preparing custom issues")
 def __get_custom_issues(jira_api, jsm_api, custom_jql):
     issues = []
     if custom_jql:
@@ -413,48 +410,57 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
     return issues
 
 
-def __create_data_set(jira_client, jsm_client):
-    dataset = dict()
+@print_timing("Getting all service desks")
+def __get_all_service_desks_and_validate(jsm_client):
     service_desks = jsm_client.get_all_service_desks()
     if not service_desks:
+
         raise Exception('ERROR: There were no Jira Service Desks found')
     if len(service_desks) < 2:
         raise Exception('ERROR: At least 2 service desks are needed')
-    # TODO improve organizations check to actually verify if service desk projects have orgs with performance_customers
+
+    return service_desks
+
+
+@print_timing("Searching issues by project keys")
+def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
     organizations = jsm_client.get_all_organizations()
     perf_organizations = [org for org in organizations if DEFAULT_ORGANIZATION in org['name']]
-    if not perf_organizations:
+    perf_organizations_with_users = []
+    for org in perf_organizations:
+        users_in_org = jsm_client.get_all_users_in_organization(org['id'])
+        for user in users_in_org:
+            if DEFAULT_CUSTOMER_PREFIX in user['name']:
+                perf_organizations_with_users.append(org)
+                break
+
+    if not perf_organizations_with_users:
         raise Exception(f'ERROR: There were no organizations found with prefix "{DEFAULT_ORGANIZATION}". '
                         f'Make sure JSM projects has organizations with prefix "{DEFAULT_ORGANIZATION}". '
                         f'Organizations "{DEFAULT_ORGANIZATION}" should have customers'
                         f' with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
-    projects_keys = ','.join([project['projectKey'] for project in service_desks])
-    requests = jira_client.issues_search_parallel(jql=f"project in ({projects_keys})",
-                                                  max_results=TOTAL_ISSUES_TO_RETRIEVE)
 
-    pool = multiprocessing.pool.ThreadPool(processes=num_cores)
-    agents_pool = pool.apply_async(__get_agents, kwds={'jira_client': jira_client})
-    customers_pool = pool.apply_async(__get_customers, kwds={'jira_client': jira_client, 'jsm_client': jsm_client})
-    requests_pool = pool.apply_async(__get_requests, kwds={'jira_api': jira_client,
-                                                           'service_desks': service_desks,
-                                                           'requests_without_distribution': requests})
-    service_desks_pool = pool.apply_async(__get_service_desks, kwds={'jsm_api': jsm_client,
-                                                                     'jira_api': jira_client,
-                                                                     'service_desks': service_desks})
+    return jira_client.issues_search(jql=f"project in ({','.join(project_keys)})", max_results=TOTAL_ISSUES_TO_RETRIEVE)
 
-    dataset[AGENTS] = agents_pool.get()
-    dataset[CUSTOMERS] = customers_pool.get()
-    dataset[REQUESTS] = requests_pool.get()
-    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM], dataset[SERVICE_DESKS_SMALL] = service_desks_pool.get()
-    requests_types = pool.apply_async(__get_request_types, kwds={'jsm_api': jsm_client,
-                                                                 'service_desks': service_desks})
-    dataset[REQUEST_TYPES] = requests_types.get()
+
+def __create_data_set(jira_client, jsm_client):
+    service_desks = __get_all_service_desks_and_validate(jsm_client)
+    dataset = dict()
+    dataset[AGENTS] = __get_agents(jira_client)
+    dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
+    issues = __get_issues_by_project_keys(jira_client, jsm_client,
+                                          [project['projectKey'] for project in service_desks])
+    dataset[REQUESTS] = __get_requests(jira_client, service_desks, issues)
+    dataset[SERVICE_DESKS_LARGE], dataset[SERVICE_DESKS_MEDIUM], dataset[SERVICE_DESKS_SMALL] = __get_service_desks(
+        jsm_client, jira_client, service_desks)
+    dataset[REQUEST_TYPES] = __get_request_types(jsm_client, service_desks)
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
 
     return dataset
 
 
-def write_test_data_to_files(datasets):
+@print_timing('Writing to file')
+def __write_test_data_to_files(datasets):
     agents = [f"{user['name']},{DEFAULT_PASSWORD}" for user in datasets[AGENTS]]
     __write_to_file(JSM_DATASET_AGENTS, agents)
     __write_to_file(JSM_DATASET_CUSTOMERS, datasets[CUSTOMERS])
@@ -468,7 +474,7 @@ def write_test_data_to_files(datasets):
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
 
 
-@print_timing('Full prepare data')
+@print_timing('JSM full prepare data', sep='=')
 def main():
     print("Started preparing data")
     url = JSM_SETTINGS.server_url
@@ -477,7 +483,7 @@ def main():
                                headers=JSM_EXPERIMENTAL_HEADERS)
     jira_client = JiraRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password, JSM_SETTINGS.secure)
     dataset = __create_data_set(jira_client=jira_client, jsm_client=jsm_client)
-    write_test_data_to_files(dataset)
+    __write_test_data_to_files(dataset)
 
 
 if __name__ == "__main__":

@@ -60,9 +60,13 @@ def __get_taurus_artifacts_dir():
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        local_run_results = Path(f'results/{results_dir_name}_local')
+        local_run_results = Path(f'results/local/{results_dir_name}')
         local_run_results.mkdir(parents=True)
         return local_run_results
+
+
+def __get_default_test_actions():
+    return Path(__file__).parents[0] / "default_test_actions.json"
 
 
 JIRA_YML = __get_jira_yml()
@@ -101,4 +105,5 @@ BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 
+DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()
