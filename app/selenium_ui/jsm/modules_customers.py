@@ -53,16 +53,21 @@ def login(webdriver, datasets):
     @print_timing("selenium_customer_login")
     def measure():
         login_page = Login(webdriver)
+        customer_portals = CustomerPortals(webdriver)
 
         @print_timing("selenium_customer_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            if login_page.is_logged_in():
+                login_page.delete_all_cookies()
+                login_page.go_to()
+            login_page.wait_for_page_loaded()
         sub_measure()
 
         @print_timing("selenium_customer_login:login_and_view_portal")
         def sub_measure():
             login_page.set_credentials(username=datasets['customer_username'], password=datasets['customer_password'])
-            login_page.wait_for_page_loaded()
+            customer_portals.wait_for_page_loaded()
         sub_measure()
     measure()
 
