@@ -28,7 +28,7 @@ class LoginPage(BasePage):
         return ''.join([i for i in el.text.split('.')[0] if i.isdigit()])
 
     def is_logged_in(self):
-        elements = self.get_elements(GetStartedLocators.bitbucket_is_ready_widget)
+        elements = self.get_elements(GetStartedLocators.user_profile_icon)
         return True if elements else False
 
 
@@ -39,15 +39,12 @@ class LogoutPage(BasePage):
 
 class GetStarted(BasePage):
     page_url = GetStartedLocators.get_started_url
-    page_loaded_selector = GetStartedLocators.bitbucket_is_ready_widget
+    page_loaded_selector = GetStartedLocators.user_profile_icon
 
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
     page_loaded_selector = DashboardLocators.dashboard_presence
-
-    def wait_search_field_is_visible(self):
-        self.wait_until_visible(DashboardLocators.search_field)
 
 
 class Projects(BasePage):

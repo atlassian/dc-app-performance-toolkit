@@ -105,9 +105,7 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_params = UrlManager().get_started_params
     get_started_url = UrlManager().get_started_url()
-
-    bitbucket_is_ready_widget = {'6': (By.CLASS_NAME, "marketing-page-footer"),
-                                 '7': (By.CLASS_NAME, "marketing-page-footer")}
+    user_profile_icon = {'6': (By.ID, 'current-user'), '7': (By.ID, 'current-user')}
 
 
 class DashboardLocators:
@@ -115,7 +113,6 @@ class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
 
     dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
-    search_field = {'6': (By.ID, 'quick-search'), '7': (By.ID, 'quick-search')}
 
 
 class ProjectsLocators:
