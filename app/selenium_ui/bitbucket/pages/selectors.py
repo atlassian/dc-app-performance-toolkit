@@ -115,6 +115,7 @@ class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
 
     dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
+    search_field = {'6': (By.ID, 'quick-search'), '7': (By.ID, 'quick-search')}
 
 
 class ProjectsLocators:

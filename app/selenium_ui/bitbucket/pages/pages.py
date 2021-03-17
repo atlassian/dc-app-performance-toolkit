@@ -46,6 +46,9 @@ class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
     page_loaded_selector = DashboardLocators.dashboard_presence
 
+    def wait_search_field_is_visible(self):
+        self.wait_until_visible(DashboardLocators.search_field)
+
 
 class Projects(BasePage):
     page_url = ProjectsLocators.project_url

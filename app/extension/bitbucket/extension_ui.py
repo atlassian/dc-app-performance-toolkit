@@ -28,7 +28,7 @@ def app_specific_action(webdriver, datasets):
     #         login_page.set_credentials(username=username, password=password)
     #         login_page.submit_login()
     #         dashboard_page = Dashboard(webdriver)
-    #         dashboard_page.wait_for_page_loaded()
+    #         dashboard_page.wait_search_field_is_visible()
     #     app_specific_user_login(username='admin', password='admin')
     # measure()
 
