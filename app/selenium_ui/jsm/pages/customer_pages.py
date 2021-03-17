@@ -9,13 +9,17 @@ from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocato
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
-    page_loaded_selector = LoginPageLocators.welcome_logged_in_page
+    page_loaded_selector = LoginPageLocators.login_submit_button
 
     def set_credentials(self, username, password):
         self.wait_until_visible(LoginPageLocators.login_field)
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
+
+    def is_logged_in(self):
+        elements = self.get_elements(CustomerPortalsSelectors.welcome_logged_in_page)
+        return True if elements else False
 
 
 class TopPanel(BasePage):
@@ -30,6 +34,7 @@ class TopPanel(BasePage):
 
 
 class CustomerPortals(BasePage):
+    page_loaded_selector = CustomerPortalsSelectors.welcome_logged_in_page
 
     def browse_projects(self):
         self.wait_until_visible(CustomerPortalsSelectors.browse_portals_button)

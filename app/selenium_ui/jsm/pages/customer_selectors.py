@@ -32,7 +32,6 @@ class LoginPageLocators:
     login_url = UrlManager().login_url()
 
     search_input_field = (By.ID, 'sd-customer-portal-smart-search-input')
-    welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
     login_field = (By.ID, 'os_username')
     password_field = (By.ID, 'os_password')
     login_submit_button = (By.ID, 'js-login-submit')
@@ -46,6 +45,7 @@ class TopPanelSelectors:
 
 
 class CustomerPortalsSelectors:
+    welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
     browse_portals_button = (By.CSS_SELECTOR, 'button.cv-smart-portal-browse-portals')
     full_portals_list = (By.CSS_SELECTOR, 'ul.cv-smart-portal-all-portals-list')
     portal_from_list = (By.CSS_SELECTOR, '"ul.cv-smart-portal-all-portals-list>li>a>span"')
