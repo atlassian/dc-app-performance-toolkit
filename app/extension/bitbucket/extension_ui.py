@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.conftest import print_timing
-from selenium_ui.bitbucket.pages.pages import LoginPage, Dashboard
+from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted
 from util.conf import BITBUCKET_SETTINGS
 
 
@@ -27,8 +27,8 @@ def app_specific_action(webdriver, datasets):
     #         login_page.go_to()
     #         login_page.set_credentials(username=username, password=password)
     #         login_page.submit_login()
-    #         dashboard_page = Dashboard(webdriver)
-    #         dashboard_page.wait_search_field_is_visible()
+    #         get_started_page = GetStarted(webdriver)
+    #         get_started_page.wait_for_page_loaded()
     #     app_specific_user_login(username='admin', password='admin')
     # measure()
 
