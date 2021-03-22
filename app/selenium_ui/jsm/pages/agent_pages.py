@@ -50,6 +50,7 @@ class Login(BasePage):
         text = self.__get_footer_text()
         return text.split(':')[-1].replace(')', '')
 
+
 class Logout(BasePage):
     page_url = LogoutLocators.logout_url
 
