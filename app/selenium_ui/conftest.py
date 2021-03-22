@@ -31,7 +31,7 @@ LOGIN_ACTION_NAME = 'login'
 
 class InitGlobals:
     def __init__(self):
-        self.driver = False
+        self.driver = None
         self.driver_title = False
         self.login_failed = False
 
@@ -182,6 +182,8 @@ def webdriver(app_settings):
             # check if driver is not broken
             globals.driver_title = globals.driver.title
             print('get driver from global')
+            globals.driver.delete_all_cookies()
+            print('clear browser cookies')
             return globals.driver
         except WebDriverException:
             # re-init driver if it broken
