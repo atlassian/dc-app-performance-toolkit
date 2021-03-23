@@ -3,12 +3,12 @@
 SEARCH_LOG="/var/atlassian/application-data/jira/log/*.log"
 TIMEOUT=300
 
-if [ `sudo su jira -c "ls -l "$SEARCH_LOG" 2>/dev/null | wc -l"` -gt 0 ]
+if [ "$(sudo su jira -c "ls -l ""$SEARCH_LOG"" 2>/dev/null | wc -l")" -gt 0 ]
 then
   echo "Log files were found:"
   sudo su jira -c "ls $SEARCH_LOG"
 else
-  echo "Log files do not exist"
+  echo "Log files matching $SEARCH_LOG template do not exist"
   exit 1
 fi
 
