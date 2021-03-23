@@ -1,4 +1,5 @@
 SEARCH_LOG="/var/atlassian/application-data/jira/log/*.log"
+TIMEOUT=300
 
 if [ `sudo su jira -c "ls -l "$SEARCH_LOG" 2>/dev/null | wc -l"` -gt 0 ]
 then
@@ -9,7 +10,6 @@ else
   exit 1
 fi
 
-TIMEOUT=300
 
 function find_word_in_log() {
         COUNTER=0
