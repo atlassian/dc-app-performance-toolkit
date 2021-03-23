@@ -1,14 +1,15 @@
-#!/bin/bash
+SEARCH_LOG="/var/atlassian/application-data/jira/log/*.log"
 
-SEARCH_LOG="/var/atlassian/application-data/jira/log/atlassian-jira.log"
-TIMEOUT=300
-
-if sudo -u jira test -f $SEARCH_LOG; then
-    echo "Log file: $SEARCH_LOG"
+if [ `sudo su jira -c "ls -l "$SEARCH_LOG" 2>/dev/null | wc -l"` -gt 0 ]
+then
+  echo "Log files were found:"
+  sudo su jira -c "ls $SEARCH_LOG"
 else
-    echo "File $SEARCH_LOG does not exist"
-    exit 1
+  echo "Log files do not exist"
+  exit 1
 fi
+
+TIMEOUT=300
 
 function find_word_in_log() {
         COUNTER=0
@@ -38,5 +39,4 @@ find_word_in_log "indexes - 60%"
 find_word_in_log "indexes - 80%"
 find_word_in_log "indexes - 100%"
 find_word_in_log "Index restore complete"
-
 echo "DCAPT util script execution is finished successfully."
