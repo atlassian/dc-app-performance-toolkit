@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SEARCH_LOG="/var/atlassian/application-data/jira/log/*.log"
 TIMEOUT=300
 
