@@ -39,7 +39,7 @@ class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
     def wait_for_logout(self):
-        self.wait_until_visible(LogoutLocators.logout_msg)
+        self.wait_until_visible(LoginPageLocators.login_button)
 
 
 class AllUpdates(BasePage):
