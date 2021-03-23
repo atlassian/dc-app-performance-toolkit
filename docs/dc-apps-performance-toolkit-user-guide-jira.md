@@ -1,5 +1,3 @@
-JMeter app-specific action development example
-
 ---
 title: "Data Center App Performance Toolkit User Guide For Jira"
 platform: platform
