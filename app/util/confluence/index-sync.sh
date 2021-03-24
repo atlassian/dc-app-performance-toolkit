@@ -10,7 +10,7 @@ then
   echo "Log files were found:"
   sudo su confluence -c "ls $SEARCH_LOG"
 else
-  echo "Log files matching $SEARCH_LOG template do not exist"
+  echo "There are no log files found like $SEARCH_LOG"
   exit 1
 fi
 
