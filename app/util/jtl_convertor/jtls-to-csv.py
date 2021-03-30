@@ -127,7 +127,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             sample[LABEL] = jtl_sample[LABEL_JTL]
             sample[SAMPLES] = 1
             sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current label
-            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]  # Temp list with 'success' value for current label
+            # Temp list with 'success' value for current label
+            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]
             csv_list.append(sample)
 
         else:
