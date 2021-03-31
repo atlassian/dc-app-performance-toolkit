@@ -277,7 +277,6 @@ For example, for app-specific action development you could set percentage of `st
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
 1. Click **Save** button.
 1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluence.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `run_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials.   
 1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ##### Using JMeter variables from the base script
