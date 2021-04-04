@@ -1,29 +1,35 @@
+import json
+import random
 import re
-from locustio.common_utils import init_logger, jira_measure, run_as_specific_user  # noqa F401
+from locustio.jira.requests_params import jira_datasets
+from locustio.common_utils import init_logger, jira_measure, RESOURCE_HEADERS, ADMIN_HEADERS, generate_random_string
 
 logger = init_logger(app_type='jira')
+jira_dataset = jira_datasets()
+
 
 
 @jira_measure("locust_app_specific_action")
 # @run_as_specific_user(username='admin', password='admin')  # run as specific user
 def app_specific_action(locust):
-    r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
-    content = r.content.decode('utf-8')   # decode response content
+    # Select Projecy 
+    project = random.choice(jira_dataset['projects'])
+    project_id = project[1]
 
-    token_pattern_example = '"token":"(.+?)"'
-    id_pattern_example = '"id":"(.+?)"'
-    token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
-    id = re.findall(id_pattern_example, content)    # get ID from response using regexp
+    # Get issue type for the project
+    response = locust.get(f'/rest/api/2/issue/createmeta?projectIds={project_id}', headers=RESOURCE_HEADERS)
+    content = json.loads(response.content)
+    project_key = content["projects"][0]["key"] 
+    issue_type = content["projects"][0]["issuetypes"][0]["name"]
+    logger.locust_info(f"Project Key: {project_key}")
+    logger.locust_info(f"issue_type: {issue_type}")
+    
+    # Create issue in project
+    summary = f'Locust summary {generate_random_string(10, only_letters=True)}'
+    description = f'Locust description {generate_random_string(10)}'
+    incident_id = f'IncidentId:{generate_random_string(5)}'
 
-    logger.locust_info(f'token: {token}, id: {id}')  # log info for debug when verbose is true in jira.yml file
-    if 'assertion string' not in content:
-        logger.error(f"'assertion string' was not found in {content}")
-    assert 'assertion string' in content  # assert specific string in response content
+    body = {"fields": {"project": {"key": project_key}, "summary": f"{summary}", "description": f"{description}", "priority": { "name": "High" }, "labels":[f"{incident_id}"], "issuetype": {"name": issue_type}}}
+    logger.locust_info(f"Json Body: {body}")
+    response = locust.post(f'/rest/api/2/issue', headers=ADMIN_HEADERS, json=body)
 
-    body = {"id": id, "token": token}  # include parsed variables to POST request body
-    headers = {'content-type': 'application/json'}
-    r = locust.post('/app/post_endpoint', body, headers, catch_response=True)  # call app-specific POST endpoint
-    content = r.content.decode('utf-8')
-    if 'assertion string after successful POST request' not in content:
-        logger.error(f"'assertion string after successful POST request' was not found in {content}")
-    assert 'assertion string after successful POST request' in content  # assertion after POST request
