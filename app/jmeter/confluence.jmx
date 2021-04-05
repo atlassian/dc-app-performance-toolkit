@@ -100,7 +100,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/smoro/repos/dc-app-performance-toolkit/app/results/confluence/2021-04-01_13-46-17/kpi.jtl</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Confluence" enabled="true">
