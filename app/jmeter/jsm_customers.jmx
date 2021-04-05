@@ -563,22 +563,6 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
-            <intProp name="ActionProcessor.action">1</intProp>
-            <intProp name="ActionProcessor.target">0</intProp>
-            <stringProp name="ActionProcessor.duration">0</stringProp>
-          </TestAction>
-          <hashTree>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
-</stringProp>
-              <stringProp name="scriptLanguage">groovy</stringProp>
-            </JSR223PreProcessor>
-            <hashTree/>
-          </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_view_portal" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
@@ -586,6 +570,22 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_view_portal}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_portal" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -719,6 +719,38 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_view_requests" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -727,6 +759,22 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_view_requests}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_requests:my_requests" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1025,6 +1073,38 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_view_request" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1033,6 +1113,22 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_view_request}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_request" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1120,6 +1216,38 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_add_comment" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1128,6 +1256,22 @@ vars.put(&quot;portal_request_filter&quot;, &quot;*${first}*${second}*&quot;)</s
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_add_comment}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_add_comment" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1232,6 +1376,38 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_share_request_with_customer" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1240,6 +1416,22 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_share_request_with_customer}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_customer:search_customer" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1456,6 +1648,38 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_share_request_with_org" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1464,6 +1688,22 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_share_request_with_org}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_share_request_with_org:search_org" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1673,6 +1913,38 @@ vars.put(&quot;p_comment&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_create_request" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -1681,6 +1953,22 @@ vars.put(&quot;p_comment&quot;, comment.toString())
             <stringProp name="ThroughputController.percentThroughput">${perc_customer_create_request}</stringProp>
           </ThroughputController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_create_request:open_create_request_view" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
@@ -1964,6 +2252,38 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_standalone_extension" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
@@ -2071,38 +2391,6 @@ vars.put(&quot;p_summary&quot;, comment.toString())
                 <hashTree/>
               </hashTree>
             </hashTree>
-          </hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
-            <intProp name="ActionProcessor.action">1</intProp>
-            <intProp name="ActionProcessor.target">0</intProp>
-            <stringProp name="ActionProcessor.duration">0</stringProp>
-          </TestAction>
-          <hashTree>
-            <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="script">// concurrency
-def concurrency = ctx.getThreadGroup().getNumThreads()
-
-// Delays between each action in milli-seconds
-def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
-
-//Sets the pacing length based on the last requests response time. x is the time in ms
-def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
-def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
-
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_customers}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
-
-if ( sleep_time &gt; 0 ) {
-    return sleep_time
-} else {
-    return 0
-}
-</stringProp>
-              <stringProp name="scriptLanguage">groovy</stringProp>
-            </JSR223Timer>
-            <hashTree/>
           </hashTree>
         </hashTree>
       </hashTree>
