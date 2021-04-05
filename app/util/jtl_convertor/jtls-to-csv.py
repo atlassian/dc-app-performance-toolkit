@@ -127,7 +127,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             sample[LABEL] = jtl_sample[LABEL_JTL]
             sample[SAMPLES] = 1
             sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current label
-            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL]]  # Temp list with 'success' value for current label
+            # Temp list with 'success' value for current label
+            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]
             csv_list.append(sample)
 
         else:
@@ -135,7 +136,7 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             processed_sample = [row for row in csv_list if row[LABEL] == jtl_sample['label']][0]
             processed_sample[SAMPLES] = processed_sample[SAMPLES] + 1  # Count samples
             processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
-            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL])  # list of success values
+            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL].lower())  # list of success values
 
         # Calculation after the last row in kpi.jtl is processed
         if jtl_sample == jtl_list[-1]:

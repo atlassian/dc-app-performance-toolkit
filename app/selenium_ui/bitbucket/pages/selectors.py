@@ -95,6 +95,7 @@ class LoginPageLocators:
     username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
     password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
     application_version = (By.ID, 'product-version')
+    node_id = (By.CLASS_NAME, 'footer-body')
 
 
 class LogoutPageLocators:

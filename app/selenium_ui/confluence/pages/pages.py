@@ -34,6 +34,14 @@ class Login(BasePage):
             self.wait_until_any_element_visible(LoginPageLocators.skip_find_content)[0].click()
             self.wait_until_clickable(LoginPageLocators.finish_setup).click()
 
+    def get_app_version(self):
+        text = self.get_element(LoginPageLocators.footer_build_info).text
+        return text
+
+    def get_node_id(self):
+        text = self.get_element(LoginPageLocators.footer_node_info).text
+        return text.split(':')[-1].replace(')', '').replace(' ', '')
+
 
 class Logout(BasePage):
     page_url = UrlManager().logout_url()

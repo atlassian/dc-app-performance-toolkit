@@ -27,7 +27,7 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
-            webdriver.app_version = login_page.get_app_version()
+            webdriver.app_version = login_page.get_app_major_version()
             if login_page.is_logged_in():
                 login_page.delete_all_cookies()
                 login_page.go_to()
@@ -40,7 +40,10 @@ def login(webdriver, datasets):
             login_page.submit_login()
             get_started_page = GetStarted(webdriver)
             get_started_page.wait_for_page_loaded()
+            webdriver.node_id = login_page.get_node_id()
+            print(f"node_id:{webdriver.node_id}")
         sub_measure()
+
     measure()
 
 

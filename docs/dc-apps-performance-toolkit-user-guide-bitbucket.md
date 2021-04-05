@@ -145,7 +145,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Elasticsearch master user password | Password1! |
+| Elasticsearch master user password | (leave blank) |
 | Elasticsearch instance type | m4.xlarge.elasticsearch |
 | Elasticsearch disk-space per node (GB) | 1000 |
 
