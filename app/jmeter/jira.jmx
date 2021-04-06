@@ -44,7 +44,7 @@
         <stringProp name="HTTPSampler.domain">${application.hostname}</stringProp>
         <stringProp name="HTTPSampler.port">${application.port}</stringProp>
         <stringProp name="HTTPSampler.protocol">${application.protocol}</stringProp>
-        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path">${application.postfix}</stringProp>
         <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
