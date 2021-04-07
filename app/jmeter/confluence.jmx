@@ -284,6 +284,16 @@
               </collectionProp>
             </HeaderManager>
             <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="50549">302</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="005 /index.action" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -360,16 +370,6 @@
               <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
               <stringProp name="RegexExtractor.match_number">1</stringProp>
             </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="2004794418">Log Out</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
             <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="010 /rest/webResources/1.0/resources" enabled="true">
@@ -9339,11 +9339,6 @@ if ( sleep_time &gt; 0 ) {
                     <stringProp name="Argument.value">admin</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
-                  <elementProp name="run_as_specific_user" elementType="Argument">
-                    <stringProp name="Argument.name">run_as_specific_user</stringProp>
-                    <stringProp name="Argument.value">True</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
                 </collectionProp>
               </Arguments>
               <hashTree/>
@@ -9433,7 +9428,53 @@ if ( sleep_time &gt; 0 ) {
                   <stringProp name="parameters"></stringProp>
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">prev.setIgnore()</stringProp>
+                  <stringProp name="script">vars.put(&quot;run_as_specific_user&quot;, &quot;true&quot;)
+prev.setIgnore()
+</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="check_logged_in_specific_user" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/user/current</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="ignore_request_result_from_view" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">import groovy.json.JsonSlurper;
+
+def slurper = new JsonSlurper()
+def jmsr = new org.apache.jmeter.samplers.SampleResult();
+def jmco = new org.apache.jmeter.threads.JMeterContext();
+response_data = slurper.parseText(prev.getResponseDataAsString())
+
+if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
+	prev.setSuccessful(false)
+	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &quot; + vars.get(&quot;app_specific_username&quot;) + &quot; or password is incorrect. Also, check please the CAPTCHA.&quot;) 
+	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)                            
+} else {
+	prev.setIgnore()
+}
+
+
+</stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
               </hashTree>
@@ -9631,6 +9672,47 @@ if ( sleep_time &gt; 0 ) {
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
                   <stringProp name="script">prev.setIgnore()</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="check_logged_in_default_user" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/user/current</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="ignore_request_result_from_view" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">import groovy.json.JsonSlurper
+
+def slurper = new JsonSlurper()
+response_data = slurper.parseText(prev.getResponseDataAsString())
+
+if (response_data.username != vars.get(&quot;username&quot;)) {
+	prev.setSuccessful(false)
+	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &quot; + vars.get(&quot;app_specific_username&quot;) + &quot; or password is incorrect. Also, chck please the CAPTCHA.&quot;) 
+} else {
+	prev.setIgnore()
+}
+
+
+</stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
               </hashTree>
