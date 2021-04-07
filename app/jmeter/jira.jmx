@@ -9262,6 +9262,16 @@ if ( sleep_time &gt; 0 ) {
                   <stringProp name="script">prev.setIgnore()</stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-33770102">title=&quot;loggedInUser&quot; value=&quot;${app_specific_username}&quot;</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
               </hashTree>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_app_specific_action" enabled="true">
@@ -9472,6 +9482,16 @@ if ( sleep_time &gt; 0 ) {
                   <stringProp name="cacheKey">true</stringProp>
                   <stringProp name="script">prev.setIgnore()</stringProp>
                 </JSR223PostProcessor>
+                <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1948182085">title=&quot;loggedInUser&quot; value=&quot;${username}&quot;</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
               </hashTree>
             </hashTree>
