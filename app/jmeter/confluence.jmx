@@ -9331,12 +9331,12 @@ if ( sleep_time &gt; 0 ) {
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="app_specific_username" elementType="Argument">
                     <stringProp name="Argument.name">app_specific_username</stringProp>
-                    <stringProp name="Argument.value">test-1</stringProp>
+                    <stringProp name="Argument.value">admin</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="app_specific_password" elementType="Argument">
                     <stringProp name="Argument.name">app_specific_password</stringProp>
-                    <stringProp name="Argument.value">test</stringProp>
+                    <stringProp name="Argument.value">admin</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="run_as_specific_user" elementType="Argument">
