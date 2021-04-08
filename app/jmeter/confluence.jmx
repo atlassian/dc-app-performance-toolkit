@@ -9465,7 +9465,7 @@ response_data = slurper.parseText(prev.getResponseDataAsString())
 
 if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
 	prev.setSuccessful(false)
-	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &quot; + vars.get(&quot;app_specific_username&quot;) + &quot; or password is incorrect. Also, check please the CAPTCHA.&quot;) 
+	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; or password is incorrect. Also, check the CAPTCHA for &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; user.&quot;) 
 	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)                            
 } else {
 	prev.setIgnore()
@@ -9704,7 +9704,7 @@ response_data = slurper.parseText(prev.getResponseDataAsString())
 
 if (response_data.username != vars.get(&quot;username&quot;)) {
 	prev.setSuccessful(false)
-	prev.setResponseMessage(&quot;Login Failed: Your username: &quot; + vars.get(&quot;username&quot;) + &quot; or password is incorrect. Also, check please the CAPTCHA.&quot;) 
+	prev.setResponseMessage(&quot;Re-login Failed: username: &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; failed to login. Check the CAPTCHA for &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; user.&quot;)
 	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)                            
 } else {
 	prev.setIgnore()
