@@ -1331,7 +1331,9 @@ def timetracking_remainingestimate = &quot;&quot;
 def isCreateIssue = &quot;true&quot;
 def hasWorkStarted = &quot;&quot;
 def resolution = vars.get(&quot;x_resolution_done&quot;)
-def request_body = &quot;pid=${pid}&amp;issuetype=${issuetype}&amp;atl_token=${atl_token}&amp;formToken=${formToken}&amp;summary=${summary}&amp;duedate=${duedate}&amp;reporter=${reporter}&amp;environment=${environment}&amp;description=${description}&amp;timetracking_originalestimate=${timetracking_originalestimate}&amp;timetracking_remainingestimate=${timetracking_remainingestimate}&amp;isCreateIssue=${isCreateIssue}&amp;hasWorkStarted=${hasWorkStarted}&amp;resolution=${resolution}&quot;
+//def request_body = &quot;pid=${pid}&amp;issuetype=${issuetype}&amp;atl_token=${atl_token}&amp;formToken=${formToken}&amp;summary=${summary}&amp;duedate=${duedate}&amp;reporter=${reporter}&amp;environment=${environment}&amp;description=${description}&amp;timetracking_originalestimate=${timetracking_originalestimate}&amp;timetracking_remainingestimate=${timetracking_remainingestimate}&amp;isCreateIssue=${isCreateIssue}&amp;hasWorkStarted=${hasWorkStarted}&amp;resolution=${resolution}&quot;
+
+def request_body = &quot;pid=&quot; + pid + &quot;&amp;issuetype=&quot; + issuetype + &quot;&amp;atl_token=&quot; + atl_token + &quot;&amp;formToken=&quot; + formToken + &quot;&amp;summary=&quot; + summary + &quot;&amp;duedate=&quot; + duedate + &quot;&amp;reporter=&quot; + reporter + &quot;&amp;environment=&quot; + environment + &quot;&amp;description=&quot; + description + &quot;&amp;timetracking_originalestimate=&quot; + timetracking_originalestimate + &quot;&amp;timetracking_remainingestimate=&quot; + timetracking_remainingestimate + &quot;&amp;isCreateIssue=&quot; + isCreateIssue + &quot;&amp;hasWorkStarted=&quot; + hasWorkStarted + &quot;&amp;resolution=&quot; + resolution
 
 // dynamic (generic fields)
 def fields_to_retain = &quot;&quot;
@@ -1359,7 +1361,8 @@ if (custom_fields_to_retain_total &gt; 0) {
 
 
 // request
-request_body = request_body + &quot;&amp;${custom_fields_to_retain}&amp;${fields_to_retain}&quot;
+//request_body = request_body + &quot;&amp;${custom_fields_to_retain}&amp;${fields_to_retain}&quot;
+request_body = request_body + &quot;&amp;&quot; + custom_fields_to_retain + &quot;&amp;&quot; + fields_to_retain
 vars.put(&quot;p_request_body&quot;, request_body.toString())
 </stringProp>
                 </JSR223PreProcessor>
@@ -1436,7 +1439,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -1957,7 +1961,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If issue ids found" enabled="true">
-                <stringProp name="IfController.condition">${__groovy((&quot;${x_issue_ids}&quot;) != &quot;&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy((&quot;${x_issue_ids}&quot;) != &quot;&quot;)}
+${__groovy((vars.get(&quot;x_issue_ids&quot;)) != &quot;&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -2189,7 +2194,8 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If issue ids found" enabled="true">
-                <stringProp name="IfController.condition">${__groovy((&quot;${x_issue_ids}&quot;) != &quot;&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy((&quot;${x_issue_ids}&quot;) != &quot;&quot;)}
+${__groovy((vars.get(&quot;x_issue_ids&quot;)) != &quot;&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
                 <stringProp name="TestPlan.comments">Load first issue</stringProp>
@@ -2293,7 +2299,8 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                   <hashTree/>
                 </hashTree>
                 <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If edit enabled" enabled="true">
-                  <stringProp name="IfController.condition">${__groovy(&quot;${x_edit_allowed}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                  <stringProp name="IfController.condition">//${__groovy(&quot;${x_edit_allowed}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_edit_allowed&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                   <boolProp name="IfController.evaluateAll">false</boolProp>
                   <boolProp name="IfController.useExpression">true</boolProp>
                 </IfController>
@@ -2406,7 +2413,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -2807,7 +2815,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If edit enabled" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_edit_allowed}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_edit_allowed}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_edit_allowed&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -2969,7 +2978,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3503,7 +3513,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3575,12 +3586,6 @@ if ( sleep_time &gt; 0 ) {
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
-                <hashTree/>
-                <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
-                  <stringProp name="RandomTimer.range">0.0</stringProp>
-                  <stringProp name="ConstantTimer.delay">0</stringProp>
-                  <stringProp name="TestPlan.comments">Recorded time was 0 milliseconds</stringProp>
-                </UniformRandomTimer>
                 <hashTree/>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="605 /rest/webResources/1.0/resources" enabled="true">
@@ -3977,7 +3982,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -5011,7 +5017,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -5850,7 +5857,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -6129,7 +6137,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -6509,7 +6518,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -6661,7 +6671,8 @@ if ( sleep_time &gt; 0 ) {
                 </hashTree>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key not returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) == &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -6908,7 +6919,8 @@ if ( sleep_time &gt; 0 ) {
                 </hashTree>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -6919,7 +6931,8 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}</stringProp>
+                        <stringProp name="Argument.value">//{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-&quot; + vars.get(&quot;x_project_plan&quot;)}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
                     </collectionProp>
@@ -6987,7 +7000,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -7247,7 +7261,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -7468,7 +7483,8 @@ if ( sleep_time &gt; 0 ) {
                 </hashTree>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key not returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) == &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -7715,7 +7731,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -7726,7 +7743,8 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}</stringProp>
+                        <stringProp name="Argument.value">//{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-&quot; + vars.get(&quot;x_project_plan&quot;)}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
                     </collectionProp>
@@ -7838,7 +7856,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -8105,7 +8124,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -8514,7 +8534,8 @@ if ( sleep_time &gt; 0 ) {
                 </hashTree>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key not returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; == &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) == &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -8725,7 +8746,8 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If project key returned" enabled="true">
-                <stringProp name="IfController.condition">${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}</stringProp>
+                <stringProp name="IfController.condition">//${__groovy(&quot;${x_project_key}&quot; != &quot;NOT FOUND&quot;)}
+${__groovy(vars.get(&quot;x_project_key&quot;) != &quot;NOT FOUND&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -8736,7 +8758,8 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}</stringProp>
+                        <stringProp name="Argument.value">//{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-&quot; + vars.get(&quot;x_project_plan&quot;)}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
                     </collectionProp>
@@ -8804,7 +8827,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9100,7 +9124,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9400,7 +9425,8 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
               </hashTree>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login_as_default_user_if_specific_user_was_loggedin " enabled="true">
-              <stringProp name="IfController.condition">${run_as_specific_user}</stringProp>
+              <stringProp name="IfController.condition">//${run_as_specific_user}
+vars.get(&quot;run_as_specific_user&quot;)</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
@@ -9573,7 +9599,8 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+//log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
