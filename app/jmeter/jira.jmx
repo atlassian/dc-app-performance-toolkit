@@ -1958,7 +1958,7 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If issue ids found" enabled="true">
-                <stringProp name="IfController.condition">${__groovy((vars.get(&quot;x_issue_ids&quot;)) != &quot;&quot;)}</stringProp>
+                <stringProp name="IfController.condition">${__groovy(vars.get(&quot;x_issue_ids&quot;) != &quot;&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
@@ -2181,7 +2181,7 @@ vars.put(&quot;p_request_body&quot;, p_request_body.trim());
                 <hashTree/>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If issue ids found" enabled="true">
-                <stringProp name="IfController.condition">${__groovy((vars.get(&quot;x_issue_ids&quot;)) != &quot;&quot;)}</stringProp>
+                <stringProp name="IfController.condition">${__groovy(vars.get(&quot;x_issue_ids&quot;) != &quot;&quot;)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
                 <stringProp name="TestPlan.comments">Load first issue</stringProp>
@@ -4387,7 +4387,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="730 /secure/EditIssue.jspa?atl_token=&lt;x_atl_token&gt;" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="730 /secure/EditIssue.jspa?atl_token=${x_atl_token}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="id" elementType="HTTPArgument">
@@ -4676,7 +4676,7 @@ vars.put(&quot;random_string_long&quot;, random_string_long)
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="745 /rest/bamboo/latest/deploy/&lt;space_key&gt;/&lt;issue_key&gt;" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="745 /rest/bamboo/latest/deploy/${issue_project_key}/${issue_key}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="_" elementType="HTTPArgument">
@@ -5415,7 +5415,7 @@ if ( sleep_time &gt; 0 ) {
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="850 /secure/AddComment.jspa?atl_token=&lt;x_atl_token&gt;" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="850 /secure/AddComment.jspa?atl_token=${x_atl_token}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="id" elementType="HTTPArgument">
@@ -7707,7 +7707,7 @@ if ( sleep_time &gt; 0 ) {
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1060 /rest/projects/1.0/project/&lt;project_key&gt;/lastVisited" enabled="true">
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1060 /rest/projects/1.0/project/${x_project_key}/lastVisited" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                     <collectionProp name="Arguments.arguments">
