@@ -1,5 +1,4 @@
 from selenium_ui.base_page import BasePage
-from selenium.common.exceptions import NoSuchElementException
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
     PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators
@@ -35,6 +34,10 @@ class Login(BasePage):
             self.wait_until_clickable(LoginPageLocators.finish_setup).click()
 
     def get_app_version(self):
+        text = self.get_element(LoginPageLocators.footer_build_info).text
+        return text
+
+    def get_node_id(self):
         if self.get_elements(LoginPageLocators.footer_node_info):
             text = self.get_element(LoginPageLocators.footer_node_info).text
             return text.split(':')[-1].replace(')', '').replace(' ', '')
