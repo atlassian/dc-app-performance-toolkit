@@ -46,7 +46,6 @@ class Login(BasePage):
             return 'UNDEFINED'
 
 
-
 class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
