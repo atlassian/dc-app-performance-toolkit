@@ -40,10 +40,10 @@ def validate_config(config: dict):
     validate_is_number(config, "image_width_px")
 
 
-def make_chart(config: dict, results_dir: Path) -> Path:
+def make_chart(config: dict, results_dir: Path, scenario_status: str) -> Path:
     csv_path_str = config["aggregated_csv_path"]
     index_col = config["index_col"]
-    title = config["title"]
+    title = config["title"] + f" | Scenario status: {scenario_status}"
     image_height_px = config["image_height_px"]
     image_width_px = config["image_width_px"]
 
@@ -73,7 +73,7 @@ def make_chart(config: dict, results_dir: Path) -> Path:
     return image_path
 
 
-def perform_chart_creation(config: dict, results_dir: Path) -> Path:
+def perform_chart_creation(config: dict, results_dir: Path, scenario_status: str) -> Path:
     validate_config(config)
-    output_file_path = make_chart(config, results_dir)
+    output_file_path = make_chart(config, results_dir, scenario_status)
     return output_file_path
