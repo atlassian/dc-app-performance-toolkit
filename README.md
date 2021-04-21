@@ -24,7 +24,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.6-3.8 and pip
+* Python 3.7-3.8 and pip
 * JDK 8
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
