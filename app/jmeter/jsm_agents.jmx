@@ -3427,7 +3427,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -4104,7 +4104,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -4685,7 +4685,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -7117,7 +7117,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -7698,7 +7698,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -8375,7 +8375,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -8625,7 +8625,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -8940,7 +8940,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9524,7 +9524,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9978,7 +9978,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -10451,7 +10451,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, total_actions_per_hour: ${total_actions_per_hour_agents}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + &quot;concurrency,&quot; + &quot;total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_agents&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
