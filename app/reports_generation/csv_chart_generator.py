@@ -9,9 +9,9 @@ def main():
 
     config = config_provider.get_config()
     agg_csv = csv_aggregator.aggregate(config, results_dir)
+    agg, scenario_status = summary_aggregator.aggregate(config, results_dir)
     chart_generator_config = config_provider.get_chart_generator_config(config, agg_csv)
-    chart_generator.perform_chart_creation(chart_generator_config, results_dir)
-    summary_aggregator.aggregate(config, results_dir)
+    chart_generator.perform_chart_creation(chart_generator_config, results_dir, scenario_status)
     results_archivator.archive_results(config, results_dir)
 
 
