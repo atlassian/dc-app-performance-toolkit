@@ -1714,7 +1714,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -2152,7 +2152,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -2995,7 +2995,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3235,7 +3235,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3525,7 +3525,7 @@ if ( sleep_time &gt; 0 ) {
                     <elementProp name="pageid" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">pageid</stringProp>
-                      <stringProp name="Argument.value">0</stringProp>
+                      <stringProp name="Argument.value">${ajs-page-id}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -3614,7 +3614,7 @@ if ( sleep_time &gt; 0 ) {
                     <elementProp name="pageid" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">pageid</stringProp>
-                      <stringProp name="Argument.value">0</stringProp>
+                      <stringProp name="Argument.value">${ajs-page-id}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -3892,7 +3892,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;draftId&quot;:&quot;${ajs-content-id}&quot;,&quot;pageId&quot;:&quot;0&quot;,&quot;type&quot;:&quot;blogpost&quot;,&quot;title&quot;:&quot;Performance Blog - ${p_new_file_name}&quot;,&quot;spaceKey&quot;:&quot;${spaceKey}&quot;,&quot;content&quot;:&quot;test blog draft&quot;,&quot;syncRev&quot;:&quot;0.mcPCPtDvwoayMR7zvuQSbf8.27&quot;}</stringProp>
+                      <stringProp name="Argument.value">{&quot;draftId&quot;:&quot;${ajs-content-id}&quot;,&quot;pageId&quot;:&quot;${ajs-page-id}&quot;,&quot;type&quot;:&quot;blogpost&quot;,&quot;title&quot;:&quot;Performance Blog - ${p_new_file_name}&quot;,&quot;spaceKey&quot;:&quot;${spaceKey}&quot;,&quot;content&quot;:&quot;test blog draft&quot;,&quot;syncRev&quot;:&quot;0.mcPCPtDvwoayMR7zvuQSbf8.27&quot;}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -3942,9 +3942,7 @@ if ( sleep_time &gt; 0 ) {
                   <stringProp name="parameters"></stringProp>
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">//vars.put(&quot;p_FileNumber&quot;, (Math.abs(new Random().nextInt() % 100) + 1).toString());
-
-vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
+                  <stringProp name="script">vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()}).toString());
 
 //log.info(&quot;Random String: &quot; + new Random().with {(1..9).collect {((&apos;A&apos;..&apos;Z&apos;)).join()[ nextInt(((&apos;A&apos;..&apos;Z&apos;)).join().length())]}.join()});</stringProp>
                 </JSR223PreProcessor>
@@ -4297,7 +4295,7 @@ vars.put(&quot;p_new_file_name&quot;, (new Random().with {(1..9).collect {((&apo
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;confluence.editor.close&quot;,&quot;properties&quot;:{&quot;source&quot;:&quot;publishButton&quot;},&quot;timeDelta&quot;:-25},{&quot;name&quot;:&quot;confluence.table.quality.in.page&quot;,&quot;properties&quot;:{&quot;pageId&quot;:&quot;0&quot;,&quot;total&quot;:0,&quot;fixed&quot;:0,&quot;fluid&quot;:0,&quot;relative&quot;:0,&quot;nested&quot;:0},&quot;timeDelta&quot;:-23}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;confluence.editor.close&quot;,&quot;properties&quot;:{&quot;source&quot;:&quot;publishButton&quot;},&quot;timeDelta&quot;:-25},{&quot;name&quot;:&quot;confluence.table.quality.in.page&quot;,&quot;properties&quot;:{&quot;pageId&quot;:&quot;${ajs-page-id}&quot;,&quot;total&quot;:0,&quot;fixed&quot;:0,&quot;fluid&quot;:0,&quot;relative&quot;:0,&quot;nested&quot;:0},&quot;timeDelta&quot;:-23}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -5232,7 +5230,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -5969,7 +5967,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;confluence.synchrony.editor.loaded&quot;,&quot;properties&quot;:{&quot;durationMillis&quot;:839,&quot;contentId&quot;:&quot;38904870&quot;},&quot;timeDelta&quot;:-4563},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;2222&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;a7c0ccb4-dcf5-46b1-b640-5dda29da5764&quot;,&quot;key&quot;:&quot;confluence.page.create.collaborative.view&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;3456&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;2008&quot;,&quot;resourceLoadedStart&quot;:313.95000009797513,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;292&quot;,&quot;unloadEventEnd&quot;:&quot;292&quot;,&quot;fetchStart&quot;:&quot;1&quot;,&quot;domainLookupStart&quot;:&quot;1&quot;,&quot;domainLookupEnd&quot;:&quot;1&quot;,&quot;connectStart&quot;:&quot;1&quot;,&quot;connectEnd&quot;:&quot;1&quot;,&quot;requestStart&quot;:&quot;4&quot;,&quot;responseStart&quot;:&quot;286&quot;,&quot;responseEnd&quot;:&quot;304&quot;,&quot;domLoading&quot;:&quot;296&quot;,&quot;domInteractive&quot;:&quot;2199&quot;,&quot;domContentLoadedEventStart&quot;:&quot;2199&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;2206&quot;,&quot;domComplete&quot;:&quot;3416&quot;,&quot;loadEventStart&quot;:&quot;3416&quot;,&quot;loadEventEnd&quot;:&quot;3417&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36&quot;,&quot;serverDuration&quot;:&quot;172&quot;,&quot;requestCorrelationId&quot;:&quot;094ec5fbb427a8c7&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,8p,cw,cn,8z,8p,,8p,8p,8p\&quot;,\&quot;2,8q,d0,co,90,8q,,8q,8q,8q\&quot;,\&quot;2,8q,g3,g2,ch,ch,,91,91,91\&quot;,\&quot;3,8q,xx,g5,ch,ch,,91,91,91\&quot;,\&quot;3,8q,1js,g6,ch,ch,,91,91,91\&quot;,\&quot;3,8q,hg,h9,cl,cl,,90,90,90\&quot;,\&quot;3,8q,ha,gj,cx,8q,,8q,8q,8q\&quot;,\&quot;5,1lo,1qn,1q2,1lq,1lo,,1lo,1lo,1lo\&quot;,\&quot;5,1lw,1pq,1pp,1ly,1lw,,1lw,1lw,1lw\&quot;,\&quot;4,1nn,1re,1rd,1no,1nn,,1nn,1nn,1nn\&quot;,\&quot;4,1no,1t8,1t5,1pn,1no,,1no,1no,1no\&quot;,\&quot;5,1qm,1u9,1u8,1qo,1qm,,1qm,1qm,1qm\&quot;,\&quot;5,1qr,1ud,1uc,1qt,1qr,,1qr,1qr,1qr\&quot;,\&quot;5,1qt,1us,1uq,1qz,1qt,,1qt,1qt,1qt\&quot;,\&quot;3,1r0,1ut,1us,1r7,1r0,,1r0,1r0,1r0\&quot;,\&quot;5,1r5,1v6,1v6,1re,1r5,,1r5,1r5,1r5\&quot;,\&quot;5,1rk,1xw,1xw,1ua,1rk,,1rk,1rk,1rk\&quot;,\&quot;5,1t5,1wt,1wr,1t8,1t5,,1t5,1t5,1t5\&quot;,\&quot;5,202,243,242,203,202,,202,202,202\&quot;,\&quot;5,205,23s,23r,208,205,,205,205,205\&quot;,\&quot;5,20a,23w,23v,20c,20a,,20a,20a,20a\&quot;,\&quot;5,24r,2bx,28g,24t,24r,,24r,24r,24r\&quot;,\&quot;5,24r,2ib,2bc,272,24r,,24r,24r,24r\&quot;,\&quot;5,26q,2b1,2b0,27d,26q,,26q,26q,26q\&quot;,\&quot;5,270,2b2,2b1,27i,270,,270,270,270\&quot;,\&quot;5,278,2bp,2bo,27t,278,,278,278,278\&quot;,\&quot;5,279,2bn,2bn,284,279,,279,279,279\&quot;,\&quot;5,27l,280\&quot;,\&quot;2,2br,2fe,2fb,2bs,2br,,2br,2br,2br\&quot;,\&quot;3,2br,2mv,2mu,2j5,2br,,2br,2br,2br\&quot;,\&quot;5,2jk,2ne,2nb,2jn,2jk,,2jk,2jk,2jk\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[2822]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[2823]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[2822],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[2823]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;},&quot;timeDelta&quot;:-4550},{&quot;name&quot;:&quot;confluence.synchrony.user.in.session&quot;,&quot;properties&quot;:{&quot;numOtherUsers&quot;:1,&quot;draftId&quot;:&quot;38904870&quot;,&quot;contentId&quot;:&quot;38904870&quot;},&quot;timeDelta&quot;:-3417},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;a7c0ccb4-dcf5-46b1-b640-5dda29da5764&quot;,&quot;key&quot;:&quot;confluence.page.create.collaborative.view.connected&quot;,&quot;readyForUser&quot;:&quot;1138&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,ea,ec\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;},&quot;timeDelta&quot;:-3415}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;confluence.synchrony.editor.loaded&quot;,&quot;properties&quot;:{&quot;durationMillis&quot;:839,&quot;contentId&quot;:&quot;${ajs-content-id}&quot;},&quot;timeDelta&quot;:-4563},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;2222&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;a7c0ccb4-dcf5-46b1-b640-5dda29da5764&quot;,&quot;key&quot;:&quot;confluence.page.create.collaborative.view&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;3456&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;2008&quot;,&quot;resourceLoadedStart&quot;:313.95000009797513,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;292&quot;,&quot;unloadEventEnd&quot;:&quot;292&quot;,&quot;fetchStart&quot;:&quot;1&quot;,&quot;domainLookupStart&quot;:&quot;1&quot;,&quot;domainLookupEnd&quot;:&quot;1&quot;,&quot;connectStart&quot;:&quot;1&quot;,&quot;connectEnd&quot;:&quot;1&quot;,&quot;requestStart&quot;:&quot;4&quot;,&quot;responseStart&quot;:&quot;286&quot;,&quot;responseEnd&quot;:&quot;304&quot;,&quot;domLoading&quot;:&quot;296&quot;,&quot;domInteractive&quot;:&quot;2199&quot;,&quot;domContentLoadedEventStart&quot;:&quot;2199&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;2206&quot;,&quot;domComplete&quot;:&quot;3416&quot;,&quot;loadEventStart&quot;:&quot;3416&quot;,&quot;loadEventEnd&quot;:&quot;3417&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36&quot;,&quot;serverDuration&quot;:&quot;172&quot;,&quot;requestCorrelationId&quot;:&quot;094ec5fbb427a8c7&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,8p,cw,cn,8z,8p,,8p,8p,8p\&quot;,\&quot;2,8q,d0,co,90,8q,,8q,8q,8q\&quot;,\&quot;2,8q,g3,g2,ch,ch,,91,91,91\&quot;,\&quot;3,8q,xx,g5,ch,ch,,91,91,91\&quot;,\&quot;3,8q,1js,g6,ch,ch,,91,91,91\&quot;,\&quot;3,8q,hg,h9,cl,cl,,90,90,90\&quot;,\&quot;3,8q,ha,gj,cx,8q,,8q,8q,8q\&quot;,\&quot;5,1lo,1qn,1q2,1lq,1lo,,1lo,1lo,1lo\&quot;,\&quot;5,1lw,1pq,1pp,1ly,1lw,,1lw,1lw,1lw\&quot;,\&quot;4,1nn,1re,1rd,1no,1nn,,1nn,1nn,1nn\&quot;,\&quot;4,1no,1t8,1t5,1pn,1no,,1no,1no,1no\&quot;,\&quot;5,1qm,1u9,1u8,1qo,1qm,,1qm,1qm,1qm\&quot;,\&quot;5,1qr,1ud,1uc,1qt,1qr,,1qr,1qr,1qr\&quot;,\&quot;5,1qt,1us,1uq,1qz,1qt,,1qt,1qt,1qt\&quot;,\&quot;3,1r0,1ut,1us,1r7,1r0,,1r0,1r0,1r0\&quot;,\&quot;5,1r5,1v6,1v6,1re,1r5,,1r5,1r5,1r5\&quot;,\&quot;5,1rk,1xw,1xw,1ua,1rk,,1rk,1rk,1rk\&quot;,\&quot;5,1t5,1wt,1wr,1t8,1t5,,1t5,1t5,1t5\&quot;,\&quot;5,202,243,242,203,202,,202,202,202\&quot;,\&quot;5,205,23s,23r,208,205,,205,205,205\&quot;,\&quot;5,20a,23w,23v,20c,20a,,20a,20a,20a\&quot;,\&quot;5,24r,2bx,28g,24t,24r,,24r,24r,24r\&quot;,\&quot;5,24r,2ib,2bc,272,24r,,24r,24r,24r\&quot;,\&quot;5,26q,2b1,2b0,27d,26q,,26q,26q,26q\&quot;,\&quot;5,270,2b2,2b1,27i,270,,270,270,270\&quot;,\&quot;5,278,2bp,2bo,27t,278,,278,278,278\&quot;,\&quot;5,279,2bn,2bn,284,279,,279,279,279\&quot;,\&quot;5,27l,280\&quot;,\&quot;2,2br,2fe,2fb,2bs,2br,,2br,2br,2br\&quot;,\&quot;3,2br,2mv,2mu,2j5,2br,,2br,2br,2br\&quot;,\&quot;5,2jk,2ne,2nb,2jn,2jk,,2jk,2jk,2jk\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[2822]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[2823]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[2822],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[2823]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;},&quot;timeDelta&quot;:-4550},{&quot;name&quot;:&quot;confluence.synchrony.user.in.session&quot;,&quot;properties&quot;:{&quot;numOtherUsers&quot;:1,&quot;draftId&quot;:&quot;38904870&quot;,&quot;contentId&quot;:&quot;38904870&quot;},&quot;timeDelta&quot;:-3417},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0.5&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;a7c0ccb4-dcf5-46b1-b640-5dda29da5764&quot;,&quot;key&quot;:&quot;confluence.page.create.collaborative.view.connected&quot;,&quot;readyForUser&quot;:&quot;1138&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,ea,ec\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;},&quot;timeDelta&quot;:-3415}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -8712,7 +8710,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9109,7 +9107,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -9940,7 +9938,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -10673,7 +10671,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -10906,7 +10904,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -11351,7 +11349,7 @@ def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_p
 def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 
-log.info(&quot;concurrency: ${concurrency}, delay_between_transactions: ${delay_between_transactions}, thread_sleep: ${sleep_time}&quot;)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
