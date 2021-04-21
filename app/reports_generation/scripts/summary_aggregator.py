@@ -48,7 +48,7 @@ def __get_overall_status(files: List[Path]) -> bool:
     return True
 
 
-def aggregate(config: dict, results_dir: Path) -> Path:
+def aggregate(config: dict, results_dir: Path) -> (Path, str):
     validate_config(config)
     output_file_path = __get_output_file_path(config, results_dir)
     summary_files = __get_summary_files(config)
@@ -57,4 +57,4 @@ def aggregate(config: dict, results_dir: Path) -> Path:
     __write_to_summary_report(summary_files, run_names, status_message, output_file_path)
     validate_file_exists(output_file_path, f"Results file {output_file_path} is not created")
     print(f'Results file {output_file_path.absolute()} is created')
-    return output_file_path
+    return output_file_path, status_message
