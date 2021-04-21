@@ -58,4 +58,3 @@ def aggregate(config: dict, results_dir: Path) -> (Path, str):
     validate_file_exists(output_file_path, f"Results file {output_file_path} is not created")
     print(f'Results file {output_file_path.absolute()} is created')
     return output_file_path, status_message
-
