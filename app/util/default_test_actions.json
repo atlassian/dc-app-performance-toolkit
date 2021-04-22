@@ -84,7 +84,6 @@
     "jmeter": [
       "jmeter_login_and_view_dashboard",
       "jmeter_view_page:open_page",
-      "jmeter_view_page:view_page_tree",
       "jmeter_view_blog",
       "jmeter_search_cql:recently_viewed",
       "jmeter_search_cql:search_results",

@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-03-18"
+date: "2021-04-26"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
@@ -333,7 +333,7 @@ JMeter and Locust actions are interchangeable, so you could select the tool you 
 
 
 {{% note %}}
-We strongly recommend to develop your app-specific actions on the development environment to reduce AWS infrastructure costs.
+We strongly recommend developing your app-specific actions on the development environment to reduce AWS infrastructure costs.
 {{% /note %}}
 
 
@@ -855,7 +855,7 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Use SSH to connect to execution environment.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
     cd dc-app-performance-toolkit
@@ -897,6 +897,8 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 1. Attach the screenshot to your DCHELP ticket.
 
 **Performance results generation with the app installed:**
+
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -955,7 +957,7 @@ To receive scalability benchmark results for one-node Jira Service Management DC
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
 1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -1008,7 +1010,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
 If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
 {{% /note %}}
    
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -1034,7 +1036,7 @@ To receive scalability benchmark results for four-node Jira Service Management D
 1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
 1. Scale your Jira Service Management Data Center deployment to 4 nodes as described in [Run 4](#run4).
 1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit

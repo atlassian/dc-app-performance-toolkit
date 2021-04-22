@@ -1,4 +1,3 @@
-
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
@@ -39,8 +38,11 @@ class Login(BasePage):
         return text
 
     def get_node_id(self):
-        text = self.get_element(LoginPageLocators.footer_node_info).text
-        return text.split(':')[-1].replace(')', '').replace(' ', '')
+        if self.get_elements(LoginPageLocators.footer_node_info):
+            text = self.get_element(LoginPageLocators.footer_node_info).text
+            return text.split(':')[-1].replace(')', '').replace(' ', '')
+        else:
+            return "SERVER"
 
 
 class Logout(BasePage):
