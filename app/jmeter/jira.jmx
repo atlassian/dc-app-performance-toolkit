@@ -9389,7 +9389,7 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
               </hashTree>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login_as_default_user_if_specific_user_was_loggedin " enabled="true">
-              <stringProp name="IfController.condition">vars.get(&quot;run_as_specific_user&quot;)</stringProp>
+              <stringProp name="IfController.condition">${run_as_specific_user}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
