@@ -1748,61 +1748,68 @@ if ( sleep_time &gt; 0 ) {
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="330 /rest/api/2/filter/favourite" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="expand" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">expand</stringProp>
-                      <stringProp name="Argument.value">subscriptions[-5:]</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="_" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">_</stringProp>
-                      <stringProp name="Argument.value">${__time(,)}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/filter/favourite</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if ssl not setuped" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(vars.get(&quot;application.protocol&quot;) != &quot;https&quot;)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
               <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept-Language" elementType="Header">
-                      <stringProp name="Header.name">Accept-Language</stringProp>
-                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Encoding" elementType="Header">
-                      <stringProp name="Header.name">Accept-Encoding</stringProp>
-                      <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="330 /rest/api/2/filter/favourite" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="expand" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                        <stringProp name="Argument.name">expand</stringProp>
+                        <stringProp name="Argument.value">subscriptions[-5:]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                      <elementProp name="_" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.name">_</stringProp>
+                        <stringProp name="Argument.value">${__time(,)}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/filter/favourite</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="335 /rest/issueNav/latest/preferredSearchLayout" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -3370,109 +3377,116 @@ if ( sleep_time &gt; 0 ) {
                 </RegexExtractor>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="535 /rest/api/2/user/properties/lastViewedVignette?username=${username}" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;id&quot;:&quot;priority&quot;}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/user/properties/lastViewedVignette?username=${username}</stringProp>
-                <stringProp name="HTTPSampler.method">PUT</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if ssl not setuped" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(vars.get(&quot;application.protocol&quot;) != &quot;https&quot;)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
               <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept-Language" elementType="Header">
-                      <stringProp name="Header.name">Accept-Language</stringProp>
-                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept-Encoding" elementType="Header">
-                      <stringProp name="Header.name">Accept-Encoding</stringProp>
-                      <stringProp name="Header.value">gzip, deflate</stringProp>
-                    </elementProp>
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">*/*</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="540 /rest/api/2/user/properties/lastViewedVignette" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="username" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">username</stringProp>
-                      <stringProp name="Argument.value">${username}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="_" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">_</stringProp>
-                      <stringProp name="Argument.value">${__time(,)}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/user/properties/lastViewedVignette</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="Accept" elementType="Header">
-                      <stringProp name="Header.name">Accept</stringProp>
-                      <stringProp name="Header.value">*/*</stringProp>
-                    </elementProp>
-                    <elementProp name="X-Requested-With" elementType="Header">
-                      <stringProp name="Header.name">X-Requested-With</stringProp>
-                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                    </elementProp>
-                    <elementProp name="Content-Type" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="535 /rest/api/2/user/properties/lastViewedVignette?username=${username}" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;priority&quot;}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/user/properties/lastViewedVignette?username=${username}</stringProp>
+                  <stringProp name="HTTPSampler.method">PUT</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="540 /rest/api/2/user/properties/lastViewedVignette" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="username" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.name">username</stringProp>
+                        <stringProp name="Argument.value">${username}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                      <elementProp name="_" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.name">_</stringProp>
+                        <stringProp name="Argument.value">${__time(,)}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/user/properties/lastViewedVignette</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
             </hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
@@ -6500,62 +6514,69 @@ if ( sleep_time &gt; 0 ) {
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1030 /rest/api/2/project/${x_project_key}" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="_" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.name">_</stringProp>
-                        <stringProp name="Argument.value">${__time(,)}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if ssl not setuped" enabled="true">
+                  <stringProp name="IfController.condition">${__groovy(vars.get(&quot;application.protocol&quot;) != &quot;https&quot;)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="X-AUSERNAME" elementType="Header">
-                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
-                        <stringProp name="Header.value">admin</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Content-Type" elementType="Header">
-                        <stringProp name="Header.name">Content-Type</stringProp>
-                        <stringProp name="Header.value">application/json</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">*/*</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1030 /rest/api/2/project/${x_project_key}" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments">
+                        <elementProp name="_" elementType="HTTPArgument">
+                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                          <stringProp name="Argument.name">_</stringProp>
+                          <stringProp name="Argument.value">${__time(,)}</stringProp>
+                          <stringProp name="Argument.metadata">=</stringProp>
+                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                        </elementProp>
+                      </collectionProp>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                    <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
+                    <stringProp name="HTTPSampler.method">GET</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="X-AUSERNAME" elementType="Header">
+                          <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                          <stringProp name="Header.value">admin</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Content-Type" elementType="Header">
+                          <stringProp name="Header.name">Content-Type</stringProp>
+                          <stringProp name="Header.value">application/json</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">*/*</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1035 /rest/projects/1.0/project/${x_project_key}/lastVisited" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
@@ -7239,62 +7260,69 @@ if ( sleep_time &gt; 0 ) {
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1035 /rest/api/2/project/${x_project_key}" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="_" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.name">_</stringProp>
-                        <stringProp name="Argument.value">${__time(,)}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if ssl not setuped" enabled="true">
+                  <stringProp name="IfController.condition">${__groovy(vars.get(&quot;application.protocol&quot;) != &quot;https&quot;)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="X-AUSERNAME" elementType="Header">
-                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
-                        <stringProp name="Header.value">admin</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Content-Type" elementType="Header">
-                        <stringProp name="Header.name">Content-Type</stringProp>
-                        <stringProp name="Header.value">application/json</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">*/*</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1035 /rest/api/2/project/${x_project_key}" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments">
+                        <elementProp name="_" elementType="HTTPArgument">
+                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                          <stringProp name="Argument.name">_</stringProp>
+                          <stringProp name="Argument.value">${__time(,)}</stringProp>
+                          <stringProp name="Argument.metadata">=</stringProp>
+                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                        </elementProp>
+                      </collectionProp>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                    <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
+                    <stringProp name="HTTPSampler.method">GET</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="X-AUSERNAME" elementType="Header">
+                          <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                          <stringProp name="Header.value">admin</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Content-Type" elementType="Header">
+                          <stringProp name="Header.name">Content-Type</stringProp>
+                          <stringProp name="Header.value">application/json</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">*/*</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1040 /rest/greenhopper/1.0/xboard/toolSections" enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -8098,62 +8126,69 @@ if ( sleep_time &gt; 0 ) {
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1135 /rest/api/2/project/${project_key}" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="_" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.name">_</stringProp>
-                        <stringProp name="Argument.value">${__time(,)}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if ssl not setuped" enabled="true">
+                  <stringProp name="IfController.condition">${__groovy(vars.get(&quot;application.protocol&quot;) != &quot;https&quot;)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="X-AUSERNAME" elementType="Header">
-                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
-                        <stringProp name="Header.value">admin</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Content-Type" elementType="Header">
-                        <stringProp name="Header.name">Content-Type</stringProp>
-                        <stringProp name="Header.value">application/json</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">*/*</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1135 /rest/api/2/project/${project_key}" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments">
+                        <elementProp name="_" elementType="HTTPArgument">
+                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                          <stringProp name="Argument.name">_</stringProp>
+                          <stringProp name="Argument.value">${__time(,)}</stringProp>
+                          <stringProp name="Argument.metadata">=</stringProp>
+                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                        </elementProp>
+                      </collectionProp>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                    <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/project/${x_project_key}</stringProp>
+                    <stringProp name="HTTPSampler.method">GET</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="X-AUSERNAME" elementType="Header">
+                          <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                          <stringProp name="Header.value">admin</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Content-Type" elementType="Header">
+                          <stringProp name="Header.name">Content-Type</stringProp>
+                          <stringProp name="Header.value">application/json</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">*/*</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1140 /rest/greenhopper/1.0/xboard/toolSections" enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -9616,7 +9651,7 @@ if ( sleep_time &gt; 0 ) {
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">/Users/mmizin/Projects/dc-app-performance-toolkit/app/results/jira/2021-04-23_09-32-59/error.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
