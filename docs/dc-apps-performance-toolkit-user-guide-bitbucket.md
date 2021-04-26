@@ -592,7 +592,7 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run toolkit with docker from the execution environment instance::
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
