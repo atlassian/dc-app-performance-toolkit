@@ -22,17 +22,17 @@ settings:
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
-    search_jql: 13
-    view_issue: 43
-    view_project_summary: 4
-    view_dashboard: 12
-    edit_issue: 4
+    search_jql: 11
+    view_issue: 34
+    view_project_summary: 3
+    view_dashboard: 10
+    edit_issue: 5
     add_comment: 2
-    browse_projects: 4
-    view_scrum_board: 3
-    view_kanban_board: 3
+    browse_projects: 9
+    view_scrum_board: 8
+    view_kanban_board: 7
     view_backlog: 6
-    browse_boards: 2
+    browse_boards: 1
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
@@ -113,7 +113,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "89.0.4389.23" # Supports Chrome version 89. You can refer to http://chromedriver.chromium.org/downloads
+      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

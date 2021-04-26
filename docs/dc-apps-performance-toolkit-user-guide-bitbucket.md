@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-03-17"
+date: "2021-04-26"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -145,7 +145,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Elasticsearch master user password | Password1! |
+| Elasticsearch master user password | (leave blank) |
 | Elasticsearch instance type | m4.xlarge.elasticsearch |
 | Elasticsearch disk-space per node (GB) | 1000 |
 
@@ -453,7 +453,7 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Use SSH to connect to execution environment.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
     cd dc-app-performance-toolkit
@@ -479,7 +479,7 @@ To receive performance results with an app installed:
 
 1. Install the app you want to test.
 1. Setup app license.
-1. Run bzt.
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -565,7 +565,7 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
 1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -592,7 +592,7 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -615,7 +615,7 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit

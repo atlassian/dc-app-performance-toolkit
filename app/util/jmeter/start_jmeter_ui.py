@@ -1,14 +1,19 @@
-import sys
-if sys.version_info < (3, 6):
-    raise SystemExit("ERROR: Script requires Python 3.6+. Current version: {}.\n"
-                     "Please make sure you use correct virtualenv.".format(sys.version_info[0:3]))
-
 import argparse
-from platform import system
 from pathlib import Path
+from platform import system
 from subprocess import run
+from sys import version_info
 
 import yaml
+
+SUPPORTED_PYTHON_VERSIONS = ["3.7", "3.8"]
+
+python_full_version = '.'.join(map(str, version_info[0:3]))
+python_short_version = '.'.join(map(str, version_info[0:2]))
+print("Python version: {}".format(python_full_version))
+if python_short_version not in SUPPORTED_PYTHON_VERSIONS:
+    raise SystemExit("Python version {} is not supported. "
+                     "Supported versions: {}.".format(python_full_version, SUPPORTED_PYTHON_VERSIONS))
 
 JIRA = "jira"
 CONFLUENCE = "confluence"

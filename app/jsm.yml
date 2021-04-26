@@ -21,27 +21,27 @@ settings:
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes             # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     agent_browse_projects: 10
-    agent_view_request: 25
-    agent_add_comment: 25
-    agent_view_queues_small: 10
-    agent_view_queues_medium: 10
+    agent_view_request: 24
+    agent_add_comment: 26
+    agent_view_queues_small: 11
+    agent_view_queues_medium: 9
     agent_view_report_workload_small: 4
-    agent_view_report_workload_medium: 4
-    agent_view_report_created_vs_resolved_small: 4
-    agent_view_report_created_vs_resolved_medium: 4
-    agent_view_customers: 4
+    agent_view_report_workload_medium: 3
+    agent_view_report_created_vs_resolved_small: 5
+    agent_view_report_created_vs_resolved_medium: 2
+    agent_view_customers: 6
     agent_standalone_extension: 0
 
-    customer_view_portal: 10
+    customer_view_portal: 11
     customer_view_requests: 25
     customer_view_request: 15
-    customer_add_comment: 25
+    customer_add_comment: 24
     customer_share_request_with_customer: 5
-    customer_share_request_with_org: 5
-    customer_create_request: 15
+    customer_share_request_with_org: 4
+    customer_create_request: 16
     customer_standalone_extension: 0
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
@@ -150,7 +150,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "89.0.4389.23" # Supports Chrome version 89. You can refer to http://chromedriver.chromium.org/downloads
+      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
   - data-source: sample-labels
     module: junit-xml

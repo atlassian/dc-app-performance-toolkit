@@ -21,16 +21,16 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
-    view_page: 54
-    view_dashboard: 6
-    view_blog: 8
-    search_cql: 7
+    view_page: 46
+    view_dashboard: 8
+    view_blog: 10
+    search_cql: 9
     create_blog: 3
-    create_and_edit_page: 6
-    comment_page: 5
-    view_attachment: 3
+    create_and_edit_page: 7
+    comment_page: 6
+    view_attachment: 4
     upload_attachment: 5
-    like_page: 3
+    like_page: 2
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
@@ -109,7 +109,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "89.0.4389.23" # Supports Chrome version 89. You can refer to http://chromedriver.chromium.org/downloads
+      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

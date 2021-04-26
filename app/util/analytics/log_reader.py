@@ -151,6 +151,6 @@ class ResultsFileReader(BaseFileReader):
     def actual_git_operations_count(self):
         count = 0
         for line in self.results_log:
-            if any(s in line.keys() for s in GIT_OPERATIONS):
+            if line['Label'] in GIT_OPERATIONS:
                 count = count + int(line['# Samples'])
         return count
