@@ -41,4 +41,37 @@ def app_specific_action(webdriver, datasets):
             page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
         sub_measure()
     measure()
+    
+ def zscale_view_test_case_in_issue_view(webdriver, datasets):
+    page = BasePage(webdriver)
+    issue_key = datasets['custom_issue_key']
+
+    @print_timing("zephyr_scale_view_test_case_in_issue_view")
+    def measure():
+        page.go_to_url(f"{JIRA_SETTINGS.server_url}/browse/{issue_key}")
+        page.wait_until_visible((By.ID, "TM4JTraceLinksPanel"))  # Wait for you app-specific UI element by ID selector
+        page.wait_until_visible((By.TAG_NAME, "test-case-trace-link"))  # Wait for you app-specific UI element by ID selector
+    measure()
+
+def zscale_view_test_cycle_in_issue_view(webdriver, datasets):
+    page = BasePage(webdriver)
+    issue_key = datasets['custom_issue_key']
+
+    @print_timing("zephyr_scale_view_test_cycle_in_issue_view")
+    def measure():
+        page.go_to_url(f"{JIRA_SETTINGS.server_url}/browse/{issue_key}")
+        page.wait_until_visible((By.ID, "TM4JTraceLinksPanel"))  # Wait for you app-specific UI element by ID selector
+        page.wait_until_visible((By.TAG_NAME, "test-run-trace-link"))  # Wait for you app-specific UI element by ID selector
+    measure()
+
+def zscale_view_test_plan_in_issue_view(webdriver, datasets):
+    page = BasePage(webdriver)
+    issue_key = datasets['custom_issue_key']
+
+    @print_timing("zephyr_scale_view_test_plan_in_issue_view")
+    def measure():
+        page.go_to_url(f"{JIRA_SETTINGS.server_url}/browse/{issue_key}")
+        page.wait_until_visible((By.ID, "TM4JTraceLinksPanel"))  # Wait for you app-specific UI element by ID selector
+        page.wait_until_visible((By.TAG_NAME, "test-plan-trace-link"))  # Wait for you app-specific UI element by ID selector
+    measure()
 
