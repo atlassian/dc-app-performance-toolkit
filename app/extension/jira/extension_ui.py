@@ -42,7 +42,7 @@ def app_specific_action(webdriver, datasets):
         sub_measure()
     measure()
     
- def zscale_view_test_case_in_issue_view(webdriver, datasets):
+def zscale_view_test_case_in_issue_view(webdriver, datasets):
     page = BasePage(webdriver)
     issue_key = datasets['custom_issue_key']
 
