@@ -26,31 +26,52 @@ def login_and_view_dashboard(locust):
     body['os_username'] = user[0]
     body['os_password'] = user[1]
 
+    # 100 /login.jsp
     locust.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
     r = locust.get('/', catch_response=True)
     if not r.content:
         raise Exception('Please check server hostname in jira.yml file')
     content = r.content.decode('utf-8')
+
+    # 110 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("110"),
                 headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post("/plugins/servlet/gadgets/dashboard-diagnostics",
-                {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"},
-                TEXT_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("120"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("125"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("130"),
-                headers=RESOURCE_HEADERS, catch_response=True)
 
+    # 115 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("115"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 120 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("120"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 125 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("125"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 130 /plugins/servlet/gadgets/dashboard-diagnostics
+    locust.post("/plugins/servlet/gadgets/dashboard-diagnostics",
+                {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"}, TEXT_HEADERS, catch_response=True)
+
+    # 135 /rest/activity-stream/1.0/preferences
     locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
+
+    # 140 /rest/gadget/1.0/issueTable/jql
     locust.get(f'/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard'
                f'&addDefault=true&enableSorting=true&paging=true&showActions=true'
                f'&jql=assignee+%3D+currentUser()+AND'
                f'+resolution+%3D+unresolved+ORDER+BY+priority+DESC%2C+created+ASC'
                f'&sortBy=&startIndex=0&_={timestamp_int()}', catch_response=True)
-    locust.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}',
-               catch_response=True)
+
+    # 145 /plugins/servlet/streams
+    locust.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}', catch_response=True)
+
     # Assertions
     token = fetch_by_re(params.atl_token_pattern, content)
     if not (f'title="loggedInUser" value="{user[0]}">' in content):
@@ -70,23 +91,62 @@ def view_issue(locust):
     issue_key = random.choice(jira_dataset['issues'])[0]
     project_key = random.choice(jira_dataset['issues'])[2]
 
+    # 400 /browse
     r = locust.get(f'/browse/{issue_key}', catch_response=True)
+
     content = r.content.decode('utf-8')
     issue_id = fetch_by_re(params.issue_id_pattern, content)
     project_avatar_id = fetch_by_re(params.project_avatar_id_pattern, content)
     edit_allowed = fetch_by_re(params.edit_allow_pattern, content, group_no=0)
+
+    # 405 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("405"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 410 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("410"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 415 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("415"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 420 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("420"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 425 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("425"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 430 /secure/projectavatar
     locust.get(f'/secure/projectavatar?avatarId={project_avatar_id}', catch_response=True)
+
     # Assertions
-    if not(f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
+    if not (f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
         logger.error(f'Issue {issue_key} not found: {content}')
     assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Issue not found'
     logger.locust_info(f"{params.action_name}: Issue {issue_key} is opened successfully")
-
     logger.locust_info(f'{params.action_name}: Issue key - {issue_key}, issue_id - {issue_id}')
+
+    # 435 /secure/AjaxIssueEditAction!default.jspa
     if edit_allowed:
         url = f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId={issue_id}&_={timestamp_int()}'
         locust.get(url, catch_response=True)
-    locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', params.browse_project_payload,
+
+    # 440 /rest/projects/1.0/project/<project_key>/lastVisited
+    locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
+                      params.browse_project_payload,
                       catch_response=True)
 
 
@@ -98,8 +158,10 @@ def create_issue(locust):
     @jira_measure('locust_create_issue:open_quick_create')
     def create_issue_open_quick_create():
         raise_if_login_failed(locust)
-        r = locust.post('/secure/QuickCreateIssue!default.jspa?decorator=none',
-                        ADMIN_HEADERS, catch_response=True)
+
+        # 200 /secure/QuickCreateIssue!default.jspa?decorator=none
+        r = locust.post('/secure/QuickCreateIssue!default.jspa?decorator=none', ADMIN_HEADERS, catch_response=True)
+
         content = r.content.decode('utf-8')
         atl_token = fetch_by_re(params.atl_token_pattern, content)
         form_token = fetch_by_re(params.form_token_pattern, content)
@@ -120,9 +182,17 @@ def create_issue(locust):
         if not ('"id":"project","label":"Project"' in content):
             logger.error(f'{params.err_message_create_issue}: {content}')
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
+
+        # 205 /rest/quickedit/1.0/userpreferences/create
         locust.post('/rest/quickedit/1.0/userpreferences/create', json=params.user_preferences_payload,
                     headers=ADMIN_HEADERS, catch_response=True)
+
+        # 210 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("210"),
+                    headers=RESOURCE_HEADERS, catch_response=True)
+
         locust.session_data_storage['issue_body_params_dict'] = issue_body_params_dict
+
     create_issue_open_quick_create()
 
     @jira_measure('locust_create_issue:fill_and_submit_issue_form')
@@ -131,14 +201,21 @@ def create_issue(locust):
         issue_body = params.prepare_issue_body(locust.session_data_storage['issue_body_params_dict'],
                                                user=locust.session_data_storage["username"])
 
+        # 215 /secure/QuickCreateIssue.jspa?decorator=none
         r = locust.post('/secure/QuickCreateIssue.jspa?decorator=none', params=issue_body,
                         headers=ADMIN_HEADERS, catch_response=True)
+
+        # 220 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("220"),
+                    headers=RESOURCE_HEADERS, catch_response=True)
+
         content = r.content.decode('utf-8')
         if '"id":"project","label":"Project"' not in content:
             logger.error(f'{params.err_message_create_issue}: {content}')
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         logger.locust_info(f"{params.action_name}: Issue {issue_key} was successfully created")
+
     create_issue_submit_form()
 
 
@@ -148,49 +225,100 @@ def search_jql(locust):
     params = SearchJql()
     jql = random.choice(jira_dataset['jqls'])[0]
 
+    # 300 /issues
     r = locust.get(f'/issues/?jql={jql}', catch_response=True)
     content = r.content.decode('utf-8')
     if not (locust.session_data_storage["token"] in content):
         logger.error(f'Can not search by {jql}: {content}')
     assert locust.session_data_storage["token"] in content, 'Can not search by jql'
 
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("305"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+    # 305 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("305"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
+    # 310 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("310"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 315 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("315"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 320 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("320"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 325 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("325"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 330 /rest/api/2/filter/favourite
     locust.get(f'/rest/api/2/filter/favourite?expand=subscriptions[-5:]&_={timestamp_int()}',
                catch_response=True)
-    locust.post('/rest/issueNav/latest/preferredSearchLayout', params={'layoutKey': 'split-view'},
-                headers=NO_TOKEN_HEADERS, catch_response=True)
 
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("320"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    r = locust.post('/rest/issueNav/1/issueTable', data=params.issue_table_payload,
-                    headers=NO_TOKEN_HEADERS, catch_response=True)
+    # 335 /rest/issueNav/latest/preferredSearchLayout
+    locust.post('/rest/issueNav/latest/preferredSearchLayout',
+                params={'layoutKey': 'split-view'},
+                headers=NO_TOKEN_HEADERS,
+                catch_response=True)
+
+    # 340 /rest/issueNav/1/issueTable
+    r = locust.post('/rest/issueNav/1/issueTable',
+                    data=params.issue_table_payload,
+                    headers=NO_TOKEN_HEADERS,
+                    catch_response=True)
+
     content = r.content.decode('utf-8')
     issue_ids = re.findall(params.ids_pattern, content)
 
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("330"),
-                headers=RESOURCE_HEADERS, catch_response=True)
     if issue_ids:
         body = params.prepare_jql_body(issue_ids)
-        r = locust.post('/rest/issueNav/1/issueTable/stable', data=body,
-                        headers=NO_TOKEN_HEADERS, catch_response=True)
+
+        # 345 /rest/issueNav/1/issueTable/stable
+        r = locust.post('/rest/issueNav/1/issueTable/stable',
+                        data=body,
+                        headers=NO_TOKEN_HEADERS,
+                        catch_response=True)
+
         content = r.content.decode('utf-8')
         issue_key = fetch_by_re(params.issue_key_pattern, content)
         issue_id = fetch_by_re(params.issue_id_pattern, content)
-    locust.post('/secure/QueryComponent!Jql.jspa', params={'jql': 'order by created DESC',
-                                                           'decorator': None}, headers=TEXT_HEADERS,
+
+    # 350 /secure/QueryComponent!Jql.jspa
+    locust.post('/secure/QueryComponent!Jql.jspa',
+                params={'jql': 'order by created DESC', 'decorator': None},
+                headers=TEXT_HEADERS,
                 catch_response=True)
+
+    # 355 /rest/orderbycomponent/latest/orderByOptions/primary
     locust.post('/rest/orderbycomponent/latest/orderByOptions/primary',
-                json={"jql": "order by created DESC"}, headers=RESOURCE_HEADERS, catch_response=True)
+                json={"jql": "order by created DESC"},
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 360 /secure/AjaxIssueAction!default.jspa
     if issue_ids:
-        r = locust.post('/secure/AjaxIssueAction!default.jspa', params={"decorator": None,
-                                                                        "issueKey": issue_key,
-                                                                        "prefetch": False,
-                                                                        "shouldUpdateCurrentProject": False,
-                                                                        "loadFields": False,
-                                                                        "_": timestamp_int()},
-                        headers=TEXT_HEADERS, catch_response=True)
+        r = locust.post('/secure/AjaxIssueAction!default.jspa',
+                        params={"decorator": None,
+                                "issueKey": issue_key,
+                                "prefetch": False,
+                                "shouldUpdateCurrentProject": False,
+                                "loadFields": False,
+                                "_": timestamp_int()},
+                        headers=TEXT_HEADERS,
+                        catch_response=True)
+
+        # 365 /secure/AjaxIssueEditAction!default.jspa
         if params.edit_allow_string in r.content.decode('utf-8'):
             locust.get(f'/secure/AjaxIssueEditAction!default.jspa?'
                        f'decorator=none&issueId={issue_id}&_={timestamp_int()}', catch_response=True)
@@ -203,7 +331,9 @@ def view_project_summary(locust):
     project = random.choice(jira_dataset['projects'])
     project_key = project[0]
 
+    # 500 /projects/<project_key>/summary
     r = locust.get(f'/projects/{project_key}/summary', catch_response=True)
+
     content = r.content.decode('utf-8')
     logger.locust_info(f"{params.action_name}. View project {project_key}: {content}")
 
@@ -212,32 +342,47 @@ def view_project_summary(locust):
         logger.error(f'{params.err_message} {project_key}')
     assert assert_string in content, params.err_message
 
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("505"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("510"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+    # 505 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("505"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 510 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("510"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 515 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("515"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 520 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("520"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 525 /rest/activity-stream/1.0/preferences
     locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("520"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/plugins/servlet/streams?maxResults=10&relativeLinks=true&streams=key+IS+{project_key}'
-               f'&providers=thirdparty+dvcs-streams-provider+issues&_={timestamp_int()}',
-               catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("530"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+
+    # 530 /projects/<project_key>
     locust.get(f'/projects/{project_key}?selectedItem=com.atlassian.jira.jira-projects-plugin:'
-               f'project-activity-summary&decorator=none&contentOnly=true&_={timestamp_int()}',
-               catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("545"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+               f'project-activity-summary&decorator=none&contentOnly=true&_={timestamp_int()}', catch_response=True)
+
+    # 535 /rest/api/2/user/properties/lastViewedVignette
     locust.client.put(f'/rest/api/2/user/properties/lastViewedVignette?'
-                      f'username={locust.session_data_storage["username"]}', data={"id": "priority"},
-                      headers=TEXT_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("555"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
-    locust.get(f'/plugins/servlet/streams?maxResults=10&relativeLinks=true&streams=key+IS+{project_key}'
-               f'&providers=thirdparty+dvcs-streams-provider+issues&_={timestamp_int()}',
-               catch_response=True)
+                      f'username={locust.session_data_storage["username"]}',
+                      data={"id": "priority"},
+                      headers=TEXT_HEADERS,
+                      catch_response=True)
+
+    # 540 /rest/api/2/user/properties/lastViewedVignette
+    locust.get(f'/rest/api/2/user/properties/lastViewedVignette?'
+               f'username={locust.session_data_storage["username"]}&_={timestamp_int()}', catch_response=True)
 
 
 def edit_issue(locust):
@@ -250,9 +395,11 @@ def edit_issue(locust):
     @jira_measure('locust_edit_issue:open_editor')
     def edit_issue_open_editor():
         raise_if_login_failed(locust)
-        r = locust.get(f'/secure/EditIssue!default.jspa?id={issue_id}', catch_response=True)
-        content = r.content.decode('utf-8')
 
+        # 700 /secure/EditIssue!default.jspa
+        r = locust.get(f'/secure/EditIssue!default.jspa?id={issue_id}', catch_response=True)
+
+        content = r.content.decode('utf-8')
         issue_type = fetch_by_re(params.issue_type_pattern, content)
         atl_token = fetch_by_re(params.atl_token_pattern, content)
         priority = fetch_by_re(params.issue_priority_pattern, content, group_no=2)
@@ -265,12 +412,31 @@ def edit_issue(locust):
             params.err_message_issue_not_found
         logger.locust_info(f"{params.action_name}: Editing issue {issue_key}")
 
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("705"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("710"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("720"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        # 705 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("705"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 710 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("710"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 715 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("715"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 720 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("720"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 725 /rest/internal/2/user/mention/search
         locust.get(f'/rest/internal/2/user/mention/search?issueKey={issue_key}'
                    f'&projectKey={project_key}&maxResults=10&_={timestamp_int()}', catch_response=True)
 
@@ -281,32 +447,65 @@ def edit_issue(locust):
                     f'&comment=""&commentLevel=""&atl_token={atl_token}&Update=Update'
         locust.session_data_storage['edit_issue_body'] = edit_body
         locust.session_data_storage['atl_token'] = atl_token
+
     edit_issue_open_editor()
 
     @jira_measure('locust_edit_issue:save_edit')
     def edit_issue_save_edit():
         raise_if_login_failed(locust)
+
+        # 730 /secure/EditIssue.jspa
         r = locust.post(f'/secure/EditIssue.jspa?atl_token={locust.session_data_storage["atl_token"]}',
                         params=locust.session_data_storage['edit_issue_body'],
-                        headers=TEXT_HEADERS, catch_response=True)
+                        headers=TEXT_HEADERS,
+                        catch_response=True)
+
         content = r.content.decode('utf-8')
         if not (f'[{issue_key}]' in content):
             logger.error(f'Could not save edited page: {content}')
         assert f'[{issue_key}]' in content, 'Could not save edited page'
 
-        locust.get(f'/browse/{issue_key}', catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("740"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("745"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("765"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        # 735 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("735"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 740 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("740"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 745 /rest/bamboo/latest/deploy
+        locust.get(f'/rest/bamboo/latest/deploy/{project_key}/{issue_key}?_{timestamp_int()}', catch_response=True)
+
+        # 750 /secure/AjaxIssueEditAction!default.jspa
         locust.get(f'/secure/AjaxIssueEditAction!default.jspa?decorator=none&issueId='
                    f'{issue_id}&_={timestamp_int()}', catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("775"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited', params.last_visited_body,
+
+        # 755 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("755"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 760 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("760"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 765 /rest/projects/1.0/project/${issue_project_key}/lastVisited
+        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
+                          params.last_visited_body,
                           catch_response=True)
+
+        # 770 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("770"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
     edit_issue_save_edit()
 
 
@@ -315,30 +514,62 @@ def view_dashboard(locust):
     raise_if_login_failed(locust)
     params = ViewDashboard()
 
+    # 600 /secure/Dashboard.jspa
     r = locust.get('/secure/Dashboard.jspa', catch_response=True)
+
     content = r.content.decode('utf-8')
     if not (f'title="loggedInUser" value="{locust.session_data_storage["username"]}">' in content):
         logger.error(f'User {locust.session_data_storage["username"]} authentication failed: {content}')
     assert f'title="loggedInUser" value="{locust.session_data_storage["username"]}">' in content, \
         'User authentication failed'
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("605"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+
+    # 605 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("605"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 610 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("610"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 615 /rest/gadget/1.0/issueTable/jql
+    locust.get('/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard&addDefault=true'
+               '&enableSorting=true&paging=true&showActions=true'
+               '&jql=assignee+%3D+currentUser()+AND+resolution+%3D+unresolved+ORDER+BY+priority+'
+               'DESC%2C+created+ASC&sortBy=&startIndex=0&_=1588507042019',
+               catch_response=True)
+
+    # 620 /plugins/servlet/gadgets/dashboard-diagnostics
     r = locust.post('/plugins/servlet/gadgets/dashboard-diagnostics',
                     params={'uri': f'{JIRA_SETTINGS.server_url.lower()}//secure/Dashboard.jspa'},
-                    headers=TEXT_HEADERS, catch_response=True)
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
     content = r.content.decode('utf-8')
     if not ('Dashboard Diagnostics: OK' in content):
         logger.error(f'view_dashboard dashboard-diagnostics failed: {content}')
     assert 'Dashboard Diagnostics: OK' in content, 'view_dashboard dashboard-diagnostics failed'
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("620"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
-    locust.get('/rest/gadget/1.0/issueTable/jql?num=10&tableContext=jira.table.cols.dashboard&addDefault=true'
-               '&enableSorting=true&paging=true&showActions=true'
-               '&jql=assignee+%3D+currentUser()+AND+resolution+%3D+unresolved+ORDER+BY+priority+'
-               'DESC%2C+created+ASC&sortBy=&startIndex=0&_=1588507042019', catch_response=True)
-    locust.get(f'/plugins/servlet/streams?maxResults=5&relativeLinks=true&_={timestamp_int()}',
-               catch_response=True)
+
+    # 625 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("625"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 630 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("630"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 635 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("635"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 def add_comment(locust):
@@ -369,6 +600,7 @@ def add_comment(locust):
                    f'&maxResults=10&_={timestamp_int()}', catch_response=True)
         locust.session_data_storage['token'] = token
         locust.session_data_storage['form_token'] = form_token
+
     add_comment_open_comment()
 
     @jira_measure('locust_add_comment:save_comment')
@@ -383,6 +615,7 @@ def add_comment(locust):
         if not (f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
             logger.error(f'Could not save comment: {content}')
         assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Could not save comment'
+
     add_comment_save_comment()
 
 
