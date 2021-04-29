@@ -582,7 +582,10 @@ def add_comment(locust):
     @jira_measure('locust_add_comment:open_comment')
     def add_comment_open_comment():
         raise_if_login_failed(locust)
+
+        # 800 /secure/AddComment!default.jspa
         r = locust.get(f'/secure/AddComment!default.jspa?id={issue_id}', catch_response=True)
+
         content = r.content.decode('utf-8')
         token = fetch_by_re(params.atl_token_pattern, content)
         form_token = fetch_by_re(params.form_token_pattern, content)
@@ -590,31 +593,93 @@ def add_comment(locust):
             logger.error(f'Could not open comment in the {issue_key} issue: {content}')
         assert f'Add Comment: {issue_key}' in content, 'Could not open comment in the issue'
 
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("805"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("810"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("820"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        # 805 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("805"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 810 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("810"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 815 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("815"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 820 /rest/internal/2/user/mention/search
         locust.get(f'/rest/internal/2/user/mention/search?issueKey={issue_key}&projectKey={project_key}'
                    f'&maxResults=10&_={timestamp_int()}', catch_response=True)
         locust.session_data_storage['token'] = token
         locust.session_data_storage['form_token'] = form_token
+
+        # 825 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("825"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
 
     add_comment_open_comment()
 
     @jira_measure('locust_add_comment:save_comment')
     def add_comment_save_comment():
         raise_if_login_failed(locust)
+
+        # 845 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("845"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 850 /secure/AddComment.jspa
         r = locust.post(f'/secure/AddComment.jspa?atl_token={locust.session_data_storage["token"]}',
                         params={"id": {issue_id}, "formToken": locust.session_data_storage["form_token"],
                                 "dnd-dropzone": None, "comment": generate_random_string(20),
                                 "commentLevel": None, "atl_token": locust.session_data_storage["token"],
-                                "Add": "Add"}, headers=TEXT_HEADERS, catch_response=True)
+                                "Add": "Add"},
+                        headers=TEXT_HEADERS,
+                        catch_response=True)
+
         content = r.content.decode('utf-8')
         if not (f'<meta name="ajs-issue-key" content="{issue_key}">' in content):
             logger.error(f'Could not save comment: {content}')
         assert f'<meta name="ajs-issue-key" content="{issue_key}">' in content, 'Could not save comment'
+
+        # 860 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("860"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 865 /rest/bamboo/latest/deploy/${issue_project_key}/${issue_key}
+        locust.get(f'/rest/bamboo/latest/deploy/{project_key}/{issue_key}?_={timestamp_int()}', catch_response=True)
+
+        # 870 /secure/AjaxIssueEditAction!default.jspa
+        locust.get(f'/secure/AjaxIssueEditAction!default.jspa?'
+                   f'decorator=none'
+                   f'&issueId={issue_id}'
+                   f'&_={timestamp_int()}', catch_response=True)
+
+        # 875 /rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("875"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 880 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("880"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 885 /rest/projects/1.0/project
+        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
+                          params.browse_project_payload,
+                          catch_response=True)
 
     add_comment_save_comment()
 

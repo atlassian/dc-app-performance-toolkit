@@ -143,6 +143,7 @@ class AddComment(JiraResource):
     action_name = 'add_comment'
     form_token_pattern = 'name="formToken"\s*type="hidden"\s*value="(.+?)"'  # noqa W605
     atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
+    browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
 
 
 class BrowseProjects(JiraResource):
