@@ -1,6 +1,6 @@
 import random
 import re
-from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
+from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, KanbanBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, jira_datasets
 from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string, TEXT_HEADERS, \
     ADMIN_HEADERS, NO_TOKEN_HEADERS, RESOURCE_HEADERS, init_logger, raise_if_login_failed
@@ -723,21 +723,21 @@ def browse_projects(locust):
 def view_kanban_board(locust):
     raise_if_login_failed(locust)
     kanban_board_id = random.choice(jira_dataset["kanban_boards"])[0]
-    view_board(locust, kanban_board_id)
+    #view_board(locust, kanban_board_id, board_type='kanban_board')
 
 
 @jira_measure('locust_view_scrum_board')
 def view_scrum_board(locust):
     raise_if_login_failed(locust)
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
-    view_board(locust, scrum_board_id)
+    kanban_board(locust, scrum_board_id)
 
 
 @jira_measure('locust_view_backlog')
 def view_backlog(locust):
     raise_if_login_failed(locust)
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
-    view_board(locust, scrum_board_id, view_backlog=True)
+    #view_board(locust, scrum_board_id)
 
 
 @jira_measure('locust_browse_boards')
@@ -756,15 +756,12 @@ def browse_boards(locust):
     locust.get(f'/rest/greenhopper/1.0/rapidviews/viewsData?_{timestamp_int()}', catch_response=True)
 
 
-def view_board(locust, board_id, view_backlog=False):
-    params = ViewBoard()
+def kanban_board(locust, board_id):
+
+    params = KanbanBoard()
+    url = f'/secure/RapidBoard.jspa?rapidView={board_id}'
 
     # 1000 /secure/RapidBoard.jspa
-    if view_backlog:
-        url = f'/secure/RapidBoard.jspa?rapidView={board_id}&view=planning'
-    else:
-        url = f'/secure/RapidBoard.jspa?rapidView={board_id}'
-
     r = locust.get(url, catch_response=True)
 
     content = r.content.decode('utf-8')
@@ -813,38 +810,25 @@ def view_board(locust, board_id, view_backlog=False):
                     json=params.resources_body.get("1040"),
                     headers=RESOURCE_HEADERS,
                     catch_response=True)
-
-        if view_backlog:
-            locust.get(f'/rest/inline-create/1.0/context/bootstrap?query='
-                       f'project%20%3D%20%22{project_key}%22%20ORDER%20BY%20Rank%20ASC&&_={timestamp_int()}',
-                       catch_response=True)
     else:
         # 1045 /rest/greenhopper/1.0/xboard/toolSections
         locust.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={board_id}'
                    f'&_={timestamp_int()}', catch_response=True)
 
-        if view_backlog:
-            locust.get(f'/rest/greenhopper/1.0/xboard/plan/backlog/data.json?rapidViewId={board_id}',
-                       catch_response=True)
-        else:
-            # 1050 /rest/greenhopper/1.0/xboard/work/allData.json
-            locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={board_id}', catch_response=True)
+        # 1050 /rest/greenhopper/1.0/xboard/work/allData.json
+        locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={board_id}', catch_response=True)
 
-            if project_id:
-                # 1055 /rest/greenhopper/1.0/xboard/work/transitions.json
-                locust.get(f'/rest/greenhopper/1.0/xboard/work/transitions.json?'
-                           f'projectId={project_id}'
-                           f'&_={timestamp_int()}')
+        if project_id:
+            # 1055 /rest/greenhopper/1.0/xboard/work/transitions.json
+            locust.get(f'/rest/greenhopper/1.0/xboard/work/transitions.json?'
+                       f'projectId={project_id}'
+                       f'&_={timestamp_int()}')
 
-            # 1060 /rest/analytics/1.0/publish/bulk
-            locust.post('/rest/analytics/1.0/publish/bulk',
-                        json=params.resources_body.get("1060"),
-                        headers=RESOURCE_HEADERS,
-                        catch_response=True)
-
-    if view_backlog:
-        locust.get(f'/rest/greenhopper/1.0/rapidviewconfig/editmodel.json?rapidViewId={board_id}'
-                   f'&_={timestamp_int()}', catch_response=True)
+        # 1060 /rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1060"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
 
     if project_key:
         # 1065 /rest/projects/1.0/project/{project_key}/lastVisited
