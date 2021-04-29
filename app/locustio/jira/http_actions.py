@@ -690,18 +690,33 @@ def browse_projects(locust):
     params = BrowseProjects()
 
     page = random.randint(1, jira_dataset['pages'])
+
+    # 900 /secure/BrowseProjects.jspa
     r = locust.get(f'/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all&page={page}',
                    catch_response=True)
+
     content = r.content.decode('utf-8')
     if not ('WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="' in content):
         logger.error(f'Could not browse projects: {content}')
     assert 'WRM._unparsedData["com.atlassian.jira.project.browse:projects"]="' in content, 'Could not browse projects'
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("905"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("910"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("920"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+
+    # 905 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("905"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 910 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("910"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 915 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("915"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 @jira_measure('locust_view_kanban_board')
