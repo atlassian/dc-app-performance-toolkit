@@ -152,8 +152,8 @@ class BrowseProjects(JiraResource):
 
 class ViewBoard(JiraResource):
 
-    def __init__(self, board_type):
-        self.action_name = board_type
+    def __init__(self, action_name):
+        self.action_name = action_name
         super().__init__()
 
     project_key_pattern = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  # noqa W605
