@@ -150,9 +150,12 @@ class BrowseProjects(JiraResource):
     action_name = 'browse_projects'
 
 
-class KanbanBoard(JiraResource):
+class ViewBoard(JiraResource):
 
-    action_name = 'kanban_board'
+    def __init__(self, board_type):
+        self.action_name = board_type
+        super().__init__()
+
     project_key_pattern = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  # noqa W605
     project_id_pattern = '\["project-id"\]=\"(.+?)\"'  # noqa W605
     project_plan_pattern = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'

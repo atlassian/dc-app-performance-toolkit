@@ -1,6 +1,6 @@
 import random
 import re
-from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, KanbanBoard, BrowseBoards, \
+from locustio.jira.requests_params import Login, BrowseIssue, CreateIssue, SearchJql, ViewBoard, BrowseBoards, \
     BrowseProjects, AddComment, ViewDashboard, EditIssue, ViewProjectSummary, jira_datasets
 from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string, TEXT_HEADERS, \
     ADMIN_HEADERS, NO_TOKEN_HEADERS, RESOURCE_HEADERS, init_logger, raise_if_login_failed
@@ -723,14 +723,14 @@ def browse_projects(locust):
 def view_kanban_board(locust):
     raise_if_login_failed(locust)
     kanban_board_id = random.choice(jira_dataset["kanban_boards"])[0]
-    #view_board(locust, kanban_board_id, board_type='kanban_board')
+    kanban_board(locust, kanban_board_id)
 
 
 @jira_measure('locust_view_scrum_board')
 def view_scrum_board(locust):
     raise_if_login_failed(locust)
     scrum_board_id = random.choice(jira_dataset["scrum_boards"])[0]
-    kanban_board(locust, scrum_board_id)
+    scrum_board(locust, scrum_board_id)
 
 
 @jira_measure('locust_view_backlog')
@@ -758,7 +758,7 @@ def browse_boards(locust):
 
 def kanban_board(locust, board_id):
 
-    params = KanbanBoard()
+    params = ViewBoard(board_type='kanban_board')
     url = f'/secure/RapidBoard.jspa?rapidView={board_id}'
 
     # 1000 /secure/RapidBoard.jspa
@@ -813,7 +813,8 @@ def kanban_board(locust, board_id):
     else:
         # 1045 /rest/greenhopper/1.0/xboard/toolSections
         locust.get(f'/rest/greenhopper/1.0/xboard/toolSections?mode=work&rapidViewId={board_id}'
-                   f'&_={timestamp_int()}', catch_response=True)
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
 
         # 1050 /rest/greenhopper/1.0/xboard/work/allData.json
         locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId={board_id}', catch_response=True)
@@ -835,3 +836,99 @@ def kanban_board(locust, board_id):
         locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
                           {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
                           catch_response=True)
+
+
+def scrum_board(locust, board_id):
+
+    params = ViewBoard(board_type='scrum_board')
+
+    # 1100 /secure/RapidBoard.jspa
+    r = locust.get(f'/secure/RapidBoard.jspa?rapidView={board_id}', catch_response=True)
+
+    content = r.content.decode('utf-8')
+    project_key = fetch_by_re(params.project_key_pattern, content)
+    project_id = fetch_by_re(params.project_id_pattern, content)
+    project_plan = fetch_by_re(params.project_plan_pattern, content, group_no=2)
+    if project_plan:
+        project_plan = project_plan.replace('\\', '')
+    logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
+    assert f'currentViewConfig\"{{\"id\":{board_id}', 'Could not open board'
+
+    # 1110 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1110"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1115 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1115"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    if project_key:
+        # 1105 /rest/greenhopper/1.0/xboard/work/allData.json
+        locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?'
+                   f'rapidViewId={board_id}'
+                   f'&selectedProjectKey={project_key}',
+                   catch_response=True)
+
+        # 1120 /rest/api/2/project/{x_project_key}
+        locust.get(f'/rest/api/2/project/{project_key}?'
+                   f'_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1125 /rest/greenhopper/1.0/xboard/toolSections
+        locust.get(f'/rest/greenhopper/1.0/xboard/toolSections?'
+                   f'mode=work'
+                   f'&rapidViewId={board_id}'
+                   f'&selectedProjectKey={project_key}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1130 /rest/greenhopper/1.0/xboard/work/allData.json
+        locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?'
+                   f'rapidViewId={board_id}'
+                   f'&selectedProjectKey={project_key}',
+                   catch_response=True)
+
+    if not project_key:
+        # 1140 /rest/greenhopper/1.0/xboard/toolSections
+        locust.get(f'/rest/greenhopper/1.0/xboard/toolSections?'
+                   f'mode=work'
+                   f'&rapidViewId={board_id}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1145 /rest/greenhopper/1.0/xboard/work/allData.json
+        locust.get(f'/rest/greenhopper/1.0/xboard/work/allData.json?'
+                   f'rapidViewId={board_id}',
+                   catch_response=True)
+
+    # 1150 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1150"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1155 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1155"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    if project_key:
+        # 1060 /rest/projects/1.0/project/{project_key}/lastVisited
+        locust.client.put(f'/rest/projects/1.0/project/{project_key}/lastVisited',
+                          {"id": f"com.pyxis.greenhopper.jira:project-sidebar-work-{project_plan}"},
+                          catch_response=True)
+
+    # 1165 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("1165"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+
+
+
