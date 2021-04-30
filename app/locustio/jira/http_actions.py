@@ -742,18 +742,34 @@ def view_backlog(locust):
 
 @jira_measure('locust_browse_boards')
 def browse_boards(locust):
+
     raise_if_login_failed(locust)
     params = BrowseBoards()
+
+    # 1300 /secure/ManageRapidViews.jspa
     locust.get('/secure/ManageRapidViews.jspa', catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1205"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1210"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1215"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1225"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+
+    # 1305 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1305"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1310 /rest/greenhopper/1.0/rapidviews/viewsData
     locust.get(f'/rest/greenhopper/1.0/rapidviews/viewsData?_{timestamp_int()}', catch_response=True)
+
+    # 1315 /rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1315"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1320 /rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("1320"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
 
 
 def kanban_board(locust, board_id):
