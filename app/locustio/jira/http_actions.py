@@ -27,15 +27,20 @@ def login_and_view_dashboard(locust):
     body['os_password'] = user[1]
 
     # 100 /login.jsp
-    locust.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
+    locust.post('/login.jsp', body,
+                TEXT_HEADERS,
+                catch_response=True)
+
     r = locust.get('/', catch_response=True)
     if not r.content:
         raise Exception('Please check server hostname in jira.yml file')
     content = r.content.decode('utf-8')
 
     # 110 /rest/webResources/1.0/resources
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("110"),
-                headers=RESOURCE_HEADERS, catch_response=True)
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("110"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
     # 115 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
@@ -57,7 +62,9 @@ def login_and_view_dashboard(locust):
 
     # 130 /plugins/servlet/gadgets/dashboard-diagnostics
     locust.post("/plugins/servlet/gadgets/dashboard-diagnostics",
-                {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"}, TEXT_HEADERS, catch_response=True)
+                {"uri": f"{locust.client.base_url.lower()}/secure/Dashboard.jspa"},
+                TEXT_HEADERS,
+                catch_response=True)
 
     # 135 /rest/activity-stream/1.0/preferences
     locust.get(f'/rest/activity-stream/1.0/preferences?_={timestamp_int()}', catch_response=True)
@@ -184,12 +191,16 @@ def create_issue(locust):
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
 
         # 205 /rest/quickedit/1.0/userpreferences/create
-        locust.post('/rest/quickedit/1.0/userpreferences/create', json=params.user_preferences_payload,
-                    headers=ADMIN_HEADERS, catch_response=True)
+        locust.post('/rest/quickedit/1.0/userpreferences/create',
+                    json=params.user_preferences_payload,
+                    headers=ADMIN_HEADERS,
+                    catch_response=True)
 
         # 210 /rest/analytics/1.0/publish/bulk
-        locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("210"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("210"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
 
         locust.session_data_storage['issue_body_params_dict'] = issue_body_params_dict
 
@@ -202,12 +213,16 @@ def create_issue(locust):
                                                user=locust.session_data_storage["username"])
 
         # 215 /secure/QuickCreateIssue.jspa?decorator=none
-        r = locust.post('/secure/QuickCreateIssue.jspa?decorator=none', params=issue_body,
-                        headers=ADMIN_HEADERS, catch_response=True)
+        r = locust.post('/secure/QuickCreateIssue.jspa?decorator=none',
+                        params=issue_body,
+                        headers=ADMIN_HEADERS,
+                        catch_response=True)
 
         # 220 /rest/analytics/1.0/publish/bulk
-        locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("220"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("220"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
 
         content = r.content.decode('utf-8')
         if '"id":"project","label":"Project"' not in content:
@@ -379,10 +394,6 @@ def view_project_summary(locust):
                       data={"id": "priority"},
                       headers=TEXT_HEADERS,
                       catch_response=True)
-
-    # 540 /rest/api/2/user/properties/lastViewedVignette
-    locust.get(f'/rest/api/2/user/properties/lastViewedVignette?'
-               f'username={locust.session_data_storage["username"]}&_={timestamp_int()}', catch_response=True)
 
 
 def edit_issue(locust):
@@ -771,9 +782,7 @@ def browse_boards(locust):
                 catch_response=True)
 
 
-
 def kanban_board(locust, board_id):
-
     params = ViewBoard(action_name='view_kanban_board')
     url = f'/secure/RapidBoard.jspa?rapidView={board_id}'
 

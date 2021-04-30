@@ -162,4 +162,5 @@ class ViewBoard(JiraResource):
 
 
 class BrowseBoards(JiraResource):
+
     action_name = 'browse_boards'
