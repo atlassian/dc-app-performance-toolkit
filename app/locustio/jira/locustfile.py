@@ -31,41 +31,41 @@ class JiraBehavior(MyBaseTaskSet):
     def view_project_summary_action(self):
         view_project_summary(self)
 
-    # @task(config.percentage('view_dashboard'))
-    # def view_dashboard_action(self):
-    #     view_dashboard(self)
-    #
-    # @task(config.percentage('edit_issue'))
-    # def edit_issue_action(self):
-    #     edit_issue(self)
-    #
-    # @task(config.percentage('add_comment'))
-    # def add_comment_action(self):
-    #     add_comment(self)
-    #
-    # @task(config.percentage('browse_projects'))
-    # def browse_projects_action(self):
-    #     browse_projects(self)
-    #
-    # @task(config.percentage('view_kanban_board'))
-    # def view_kanban_board_action(self):
-    #     view_kanban_board(self)
-    #
-    # @task(config.percentage('view_scrum_board'))
-    # def view_scrum_board_action(self):
-    #     view_scrum_board(self)
-    #
-    # @task(config.percentage('view_backlog'))
-    # def view_backlog_action(self):
-    #     view_backlog(self)
-    #
-    # @task(config.percentage('browse_boards'))
-    # def browse_boards_action(self):
-    #     browse_boards(self)
-    #
-    # @task(config.percentage('standalone_extension'))  # By default disabled
-    # def custom_action(self):
-    #     app_specific_action(self)
+    @task(config.percentage('view_dashboard'))
+    def view_dashboard_action(self):
+        view_dashboard(self)
+
+    @task(config.percentage('edit_issue'))
+    def edit_issue_action(self):
+        edit_issue(self)
+
+    @task(config.percentage('add_comment'))
+    def add_comment_action(self):
+        add_comment(self)
+
+    @task(config.percentage('browse_projects'))
+    def browse_projects_action(self):
+        browse_projects(self)
+
+    @task(config.percentage('view_kanban_board'))
+    def view_kanban_board_action(self):
+        view_kanban_board(self)
+
+    @task(config.percentage('view_scrum_board'))
+    def view_scrum_board_action(self):
+        view_scrum_board(self)
+
+    @task(config.percentage('view_backlog'))
+    def view_backlog_action(self):
+        view_backlog(self)
+
+    @task(config.percentage('browse_boards'))
+    def browse_boards_action(self):
+        browse_boards(self)
+
+    @task(config.percentage('standalone_extension'))  # By default disabled
+    def custom_action(self):
+        app_specific_action(self)
 
 
 class JiraUser(HttpUser):
