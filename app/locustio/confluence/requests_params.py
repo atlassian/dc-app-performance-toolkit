@@ -72,8 +72,10 @@ class CreateBlog(ConfluenceResource):
     action_name = 'create_blog'
     atl_token_re = 'name=\"ajs-atl-token\" content=\"(.*?)\">'
     content_id_re = 'name=\"ajs-content-id\" content=\"(.*?)\">'
+    ajs_page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
     space_key = 'createpage.action\?spaceKey=(.+?)\&'
     contribution_hash = '\"contributorsHash\":\"\"'
+    parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
 
     created_blog_title_re = 'anonymous_export_view.*?\"webui\":\"(.*?)\"'
 
