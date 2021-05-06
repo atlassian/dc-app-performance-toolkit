@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: jira-loadb-j2rtx9ki1j4r-1421217715.us-west-2.elb.amazonaws.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -12,9 +12,9 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
-    concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
-    concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
-    test_duration: 45m
+    concurrency_agents: 10          # number of concurrent virtual agent users for jmeter or locust scenario
+    concurrency_customers: 10      # number of concurrent virtual customer users for jmeter or locust scenario
+    test_duration: 1m
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000

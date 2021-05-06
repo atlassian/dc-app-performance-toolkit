@@ -58,13 +58,12 @@ def test_1_selenium_agent_view_queues_small(jsm_webdriver, jsm_datasets, jsm_scr
     modules_agents.view_queues_small(jsm_webdriver, jsm_datasets)
 
 
-"""
-Add custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/jsm/extension_ui_agents.py`.
-Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
-"""
-# def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-#     extension_ui_agents.app_specific_action(jsm_webdriver, jsm_datasets)
+def test_1_selenium_agent_custom_action_notification_config_web_action_support(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    extension_ui_agents.app_specific_action_notification_config_web_action_support(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_custom_action_notification_schema_web_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    extension_ui_agents.app_specific_action_notification_schema_web_action(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one
