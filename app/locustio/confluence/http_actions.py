@@ -28,25 +28,60 @@ def login_and_view_dashboard(locust):
     login_body = params.login_body
     login_body['os_username'] = username
     login_body['os_password'] = password
-    locust.post('/dologin.action', login_body, TEXT_HEADERS, catch_response=True)
+
+
+    # 10 dologin.action
+    locust.post('/dologin.action',
+                login_body,
+                TEXT_HEADERS,
+                catch_response=True)
+
     r = locust.get(url='/', catch_response=True)
     content = r.content.decode('utf-8')
+
     if 'Log Out' not in content:
         logger.error(f'Login with {username}, {password} failed: {content}')
     assert 'Log Out' in content, 'User authentication failed.'
     logger.locust_info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("010"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
+
+    # 20 index.action
+    locust.get('/index.action', catch_response=True)
+
+    # 30 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("30"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 40 rest/shortcuts/latest/shortcuts/{ajs-build-number}/{ajs-keyboardshortcut-hash}
     locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}', catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("025"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/rest/experimental/search?cql=type=space%20and%20space.type=favourite%20order%20by%20favourite'
-               f'%20desc&expand=space.icon&limit=100&_={timestamp_int()}', catch_response=True)
+
+    # 50 rest/mywork/latest/status/notification/count
+    locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
+
+    # 60 rest/dashboardmacros/1.0/updates
     locust.get('/rest/dashboardmacros/1.0/updates?maxResults=40&tab=all&showProfilePic=true&labels='
-               '&spaces=&users=&types=&category=&spaceKey=', catch_response=True)
+               '&spaces=&users=&types=&category=&spaceKey=',
+               catch_response=True)
+
+    # 70 rest/experimental/search
+    locust.get(f'/rest/experimental/search?cql=type=space%20and%20space.type=favourite%20order%20by%20'
+               f'favourite%20desc&expand=space.icon&limit=100&_={timestamp_int()}',
+               catch_response=True)
+
+    # 80 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("80"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 90 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("90"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
     locust.session_data_storage['build_number'] = build_number
     locust.session_data_storage['keyboard_hash'] = keyboard_hash
@@ -54,100 +89,142 @@ def login_and_view_dashboard(locust):
     locust.session_data_storage['password'] = user[1]
 
 
-def view_page_and_tree(locust):
+@confluence_measure('locust_view_page')
+def view_page(locust):
     raise_if_login_failed(locust)
     params = ViewPage()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
 
-    @confluence_measure('locust_view_page:open_page')
-    def view_page():
-        r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
-        content = r.content.decode('utf-8')
-        if 'Created by' not in content or 'Save for later' not in content:
-            logger.error(f'Fail to open page {page_id}: {content}')
-        assert 'Created by' in content and 'Save for later' in content, 'Could not open page.'
-        parent_page_id = fetch_by_re(params.parent_page_id_re, content)
-        parsed_page_id = fetch_by_re(params.page_id_re, content)
-        space_key = fetch_by_re(params.space_key_re, content)
-        tree_request_id = fetch_by_re(params.tree_result_id_re, content)
-        has_no_root = fetch_by_re(params.has_no_root_re, content)
-        root_page_id = fetch_by_re(params.root_page_id_re, content)
-        atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
-        editable = fetch_by_re(params.editable_re, content)
-        ancestor_ids = re.findall(params.ancestor_ids_re, content)
+    # 100 pages/viewpage.action
+    r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
 
-        ancestor_str = 'ancestors='
-        for ancestor in ancestor_ids:
-            ancestor_str = ancestor_str + str(ancestor) + '&'
+    content = r.content.decode('utf-8')
+    if 'Created by' not in content or 'Save for later' not in content:
+        logger.error(f'Fail to open page {page_id}: {content}')
+    assert 'Created by' in content and 'Save for later' in content, 'Could not open page.'
+    parent_page_id = fetch_by_re(params.parent_page_id_re, content)
+    parsed_page_id = fetch_by_re(params.page_id_re, content)
+    space_key = fetch_by_re(params.space_key_re, content)
+    tree_request_id = fetch_by_re(params.tree_result_id_re, content)
+    has_no_root = fetch_by_re(params.has_no_root_re, content)
+    root_page_id = fetch_by_re(params.root_page_id_re, content)
+    atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
+    editable = fetch_by_re(params.editable_re, content)
+    ancestor_ids = re.findall(params.ancestor_ids_re, content)
 
-        locust.session_data_storage['page_id'] = parsed_page_id
-        locust.session_data_storage['has_no_root'] = has_no_root
-        locust.session_data_storage['tree_request_id'] = tree_request_id
-        locust.session_data_storage['root_page_id'] = root_page_id
-        locust.session_data_storage['ancestors'] = ancestor_str
-        locust.session_data_storage['space_key'] = space_key
-        locust.session_data_storage['editable'] = editable
-        locust.session_data_storage['atl_token_view_issue'] = atl_token_view_issue
+    ancestor_str = 'ancestors='
+    for ancestor in ancestor_ids:
+        ancestor_str = ancestor_str + str(ancestor) + '&'
 
-        locust.get('/rest/helptips/1.0/tips', catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("110"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.get(f'/rest/likes/1.0/content/{parsed_page_id}/likes?commentLikes=true&_={timestamp_int()}',
+    locust.session_data_storage['page_id'] = parsed_page_id
+    locust.session_data_storage['has_no_root'] = has_no_root
+    locust.session_data_storage['tree_request_id'] = tree_request_id
+    locust.session_data_storage['root_page_id'] = root_page_id
+    locust.session_data_storage['ancestors'] = ancestor_str
+    locust.session_data_storage['space_key'] = space_key
+    locust.session_data_storage['editable'] = editable
+    locust.session_data_storage['atl_token_view_issue'] = atl_token_view_issue
+
+    # 110 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("110"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 120 rest/helptips/1.0/tips
+    locust.get('/rest/helptips/1.0/tips', catch_response=True)
+
+    # 130 rest/inlinecomments/1.0/comments
+    r = locust.get(f'/rest/inlinecomments/1.0/comments'
+                   f'?containerId={parsed_page_id}'
+                   f'&_={timestamp_int()}',
                    catch_response=True)
-        locust.get(f'/rest/highlighting/1.0/panel-items?pageId={parsed_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/mywork/latest/status/notification/count?pageId={parsed_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        r = locust.get(f'/rest/inlinecomments/1.0/comments?containerId={parsed_page_id}&_={timestamp_int()}',
-                       catch_response=True)
-        content = r.content.decode('utf-8')
-        if 'authorDisplayName' not in content and '[]' not in content:
-            logger.error(f'Could not open comments for page {parsed_page_id}: {content}')
-        assert 'authorDisplayName' in content or '[]' in content, 'Could not open comments for page.'
-        locust.get(f'/plugins/editor-loader/editor.action?parentPageId={parent_page_id}&pageId={parsed_page_id}'
-                   f'&spaceKey={space_key}&atl_after_login_redirect=/pages/viewpage.action'
-                   f'&timeout=12000&_={timestamp_int()}', catch_response=True)
-        locust.get(f'/rest/watch-button/1.0/watchState/{parsed_page_id}?_={timestamp_int()}',
-                   catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("145"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("150"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("155"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("160"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+    content = r.content.decode('utf-8')
+    if 'authorDisplayName' not in content and '[]' not in content:
+        logger.error(f'Could not open comments for page {parsed_page_id}: {content}')
+    assert 'authorDisplayName' in content or '[]' in content, 'Could not open comments for page.'
 
-    @confluence_measure('locust_view_page:view_page_tree')
-    def view_page_tree():
-        tree_request_id = locust.session_data_storage['tree_request_id'].replace('&amp;', '&')
-        # if postfix is set, need to trim it from the tree_request_id to avoid duplication
-        if tree_request_id.startswith(CONFLUENCE_SETTINGS.postfix):
-            tree_request_id = tree_request_id[len(CONFLUENCE_SETTINGS.postfix):]
-        ancestors = locust.session_data_storage['ancestors']
-        root_page_id = locust.session_data_storage['root_page_id']
-        viewed_page_id = locust.session_data_storage['page_id']
-        space_key = locust.session_data_storage['space_key']
-        r = ''
-        # Page has parent
-        if locust.session_data_storage['has_no_root'] == 'false':
-            request = f"{tree_request_id}&hasRoot=true&pageId={root_page_id}&treeId=0&startDepth=0&mobile=false" \
-                      f"&{ancestors}treePageId={viewed_page_id}&_={timestamp_int()}"
-            r = locust.get(f'{request}', catch_response=True)
-        # Page does not have parent
-        elif locust.session_data_storage['has_no_root'] == 'true':
-            request = f"{tree_request_id}&hasRoot=false&spaceKey={space_key}&treeId=0&startDepth=0&mobile=false" \
-                      f"&{ancestors}treePageId={viewed_page_id}&_={timestamp_int()}"
-            r = locust.get(f'{request}', catch_response=True)
-        content = r.content.decode('utf-8')
-        if 'plugin_pagetree_children_span' not in content or 'plugin_pagetree_children_list' not in content:
-            logger.error(f'Could not view page tree: {content}')
-        assert 'plugin_pagetree_children_span' in content and 'plugin_pagetree_children_list' in content, \
-               'Could not view page tree.'
+    # 140 rest/shortcuts/latest/shortcuts/{ajs-build-number}/{ajs-keyboardshortcut-hash}
+    locust.get(f'/rest/shortcuts/latest/shortcuts/'
+               f'{locust.session_data_storage["build_number"]}/'
+               f'{locust.session_data_storage["keyboard_hash"]}',
+               catch_response=True)
 
-    view_page()
-    view_page_tree()
+    # 150 plugins/pagetree/naturalchildren.action
+    locust.get(f'/plugins/pagetree/naturalchildren.action'
+               f'?decorator=none'
+               f'&expandCurrent=true'
+               f'&mobile=false'
+               f'&sort=position'
+               f'&reverse=false'
+               f'&spaceKey={space_key}'
+               f'&treeId=0'
+               f'&hasRoot=false'
+               f'&startDepth=0'
+               f'&disableLinks=false'
+               f'&placement=sidebar'
+               f'&excerpt=false'
+               f'&ancestors={parent_page_id}'
+               f'&treePageId={parsed_page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 160 rest/likes/1.0/content/{page_id}/likes
+    locust.get(f'/rest/likes/1.0/content/{parsed_page_id}/likes'
+               f'?commentLikes=true'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 170 rest/highlighting/1.0/panel-items
+    locust.get(f'/rest/highlighting/1.0/panel-items'
+               f'?pageId={parsed_page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 180 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?pageId={parsed_page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 190 rest/watch-button/1.0/watchState/${page_id}
+    locust.get(f'/rest/watch-button/1.0/watchState/{parsed_page_id}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 200 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("200"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 210 plugins/editor-loader/editor.action
+    locust.get(f'/plugins/editor-loader/editor.action'
+               f'?parentPageId={parent_page_id}'
+               f'&pageId={parsed_page_id}'
+               f'&spaceKey={space_key}'
+               f'&atl_after_login_redirect=/pages/viewpage.action'
+               f'&timeout=12000&_={timestamp_int()}',
+               catch_response=True)
+
+    # 220 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("220"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 230 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("230"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 240 plugins/macrobrowser/browse-macros.action
+    locust.get(f'/plugins/macrobrowser/browse-macros.action'
+               f'?macroMetadataClientCacheKey=1618567304880'
+               f'&detailed=false',
+               catch_response=True)
 
 
 @confluence_measure('locust_view_dashboard')
@@ -155,7 +232,9 @@ def view_dashboard(locust):
     raise_if_login_failed(locust)
     params = ViewDashboard()
 
+    # 270 index.action
     r = locust.get('/index.action', catch_response=True)
+
     content = r.content.decode('utf-8')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
@@ -163,18 +242,49 @@ def view_dashboard(locust):
         logger.error(f'Could not view dashboard: {content}')
     assert 'quick-search' in content and 'Log Out' in content, 'Could not view dashboard.'
 
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("205"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
+    # 280 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("280"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 290 rest/shortcuts/latest/shortcuts/${ajs-build-number}/${ajs-keyboardshortcut-hash}
     locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}', catch_response=True)
-    locust.get(f'/rest/experimental/search?cql=type=space%20and%20space.type=favourite%20order%20by%20'
-               f'favourite%20desc&expand=space.icon&limit=100&_={timestamp_int()}', catch_response=True)
-    r = locust.get('/rest/dashboardmacros/1.0/updates?maxResults=40&tab=all&showProfilePic=true&labels='
-                   '&spaces=&users=&types=&category=&spaceKey=', catch_response=True)
+
+    # 300 rest/mywork/latest/status/notification/count
+    locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
+
+    # 310 rest/dashboardmacros/1.0/updates
+    r = locust.get('/rest/dashboardmacros/1.0/updates'
+                   '?maxResults=40'
+                   '&tab=all'
+                   '&showProfilePic=true&'
+                   'labels='
+                   '&spaces='
+                   '&users='
+                   '&types='
+                   '&category='
+                   '&spaceKey=',
+                   catch_response=True)
+
     content = r.content.decode('utf-8')
     if 'changeSets' not in content:
         logger.error(f'Could not view dashboard macros: {content}')
     assert 'changeSets' in content, 'Could not view dashboard macros.'
+
+    # 320 rest/experimental/search
+    locust.get(f'/rest/experimental/search'
+               f'?cql=type=space%20and%20space.type=favourite%20order%20by%20favourite%20desc'
+               f'&expand=space.icon'
+               f'&limit=100'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 330 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("330"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 @confluence_measure('locust_view_blog')
@@ -184,50 +294,116 @@ def view_blog(locust):
     blog = random.choice(confluence_dataset["blogs"])
     blog_id = blog[0]
 
-    r = locust.get(f'/pages/viewpage.action?pageId={blog_id}', catch_response=True)
+    # 340 pages/viewpage.action
+    r = locust.get(f'/pages/viewpage.action'
+                   f'?pageId={blog_id}',
+                   catch_response=True)
+
     content = r.content.decode('utf-8')
     if 'Created by' not in content or 'Save for later' not in content:
         logger.error(f'Fail to open blog {blog_id}: {content}')
     assert 'Created by' in content and 'Save for later' in content, 'Could not view blog.'
 
+    keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
+    build_number = fetch_by_re(params.build_number_re, content)
     parent_page_id = fetch_by_re(params.parent_page_id_re, content)
-    parsed_blog_id = fetch_by_re(params.page_id_re, content)
+    #parsed_blog_id = fetch_by_re(params.page_id_re, content)
     space_key = fetch_by_re(params.space_key_re, content)
 
+    # 350 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("350"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 360 rest/helptips/1.0/tips
     locust.get('/rest/helptips/1.0/tips', catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("310"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/rest/likes/1.0/content/{parsed_blog_id}/likes?commentLikes=true&_={timestamp_int()}',
-               catch_response=True)
-    locust.get(f'/rest/highlighting/1.0/panel-items?pageId={parsed_blog_id}&_={timestamp_int()}',
-               catch_response=True)
-    locust.get(f'/rest/mywork/latest/status/notification/count?pageId={parsed_blog_id}&_={timestamp_int()}',
-               catch_response=True)
-    r = locust.get(f'/rest/inlinecomments/1.0/comments?containerId={parsed_blog_id}&_={timestamp_int()}',
+
+    # 370 rest/inlinecomments/1.0/comments
+    r = locust.get(f'/rest/inlinecomments/1.0/comments'
+                   f'?containerId={blog_id}'
+                   f'&_={timestamp_int()}',
                    catch_response=True)
     content = r.content.decode('utf-8')
     if 'authorDisplayName' not in content and '[]' not in content:
-        logger.error(f'Could not open comments for page {parsed_blog_id}: {content}')
+        logger.error(f'Could not open comments for page {blog_id}: {content}')
     assert 'authorDisplayName' in content or '[]' in content, 'Could not open comments for page.'
 
-    r = locust.get(f'/plugins/editor-loader/editor.action?parentPageId={parent_page_id}&pageId={parsed_blog_id}'
-                   f'&spaceKey={space_key}&atl_after_login_redirect=/pages/viewpage.action'
-                   f'&timeout=12000&_={timestamp_int()}', catch_response=True)
+    # 380 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+    locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 390 rest/likes/1.0/content/{blog_id}/likes
+    locust.get(f'/rest/likes/1.0/content/{blog_id}/likes'
+               f'?commentLikes=true'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 400 rest/highlighting/1.0/panel-items
+    locust.get(f'/rest/highlighting/1.0/panel-items'
+               f'?pageId={blog_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 410 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?pageId={blog_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 420 rest/watch-button/1.0/watchState/${ajs-page-id}
+    locust.get(f'/rest/watch-button/1.0/watchState/{blog_id}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 430 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("430"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 440 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("440"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 450 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 460 /rest/quickreload/latest/{blog_id}
+    locust.get(f'/rest/quickreload/latest/{blog_id}'
+               f'?since={timestamp_int()}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 470 plugins/editor-loader/editor.action
+    r = locust.get(f'/plugins/editor-loader/editor.action'
+                   f'?parentPageId={parent_page_id}'
+                   f'&pageId={blog_id}'
+                   f'&spaceKey={space_key}'
+                   f'&atl_after_login_redirect=/pages/viewpage.action'
+                   f'&timeout=12000&_={timestamp_int()}',
+                   catch_response=True)
+
     content = r.content.decode('utf-8')
     if 'draftId' not in content:
-        logger.error(f'Could not open editor for blog {parsed_blog_id}: {content}')
+        logger.error(f'Could not open editor for blog {blog_id}: {content}')
     assert 'draftId' in content, 'Could not open editor for blog.'
 
-    locust.get(f'/rest/watch-button/1.0/watchState/{parsed_blog_id}?_={timestamp_int()}', catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("345"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("350"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("355"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("360"),
-                headers=RESOURCE_HEADERS, catch_response=True)
-    locust.get(f'/rest/quickreload/latest/{parsed_blog_id}?since={timestamp_int()}&_={timestamp_int()}',
+    # 480 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("480"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 490 plugins/macrobrowser/browse-macros.action
+    locust.get(f'/plugins/macrobrowser/browse-macros.action'
+               f'?macroMetadataClientCacheKey=1618473279191'
+               f'&detailed=false',
                catch_response=True)
 
 

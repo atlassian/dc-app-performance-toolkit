@@ -64,6 +64,8 @@ class ViewBlog(ConfluenceResource):
     space_key_re = 'meta id=\"confluence-space-key\" name=\"confluence-space-key\" content=\"(.*?)\"'
     atl_token_re = '"ajs-atl-token" content="(.+?)"'
     inline_comment_re = '\"id\":(.+?)\,\"'
+    keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+    build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
 
 
 class CreateBlog(ConfluenceResource):
