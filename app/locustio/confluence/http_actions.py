@@ -412,18 +412,28 @@ def search_cql_and_view_results(locust):
 
     @confluence_measure('locust_search_cql:recently_viewed')
     def search_recently_viewed():
-        locust.get('/rest/recentlyviewed/1.0/recent?limit=8', catch_response=True)
+        # 520 rest/recentlyviewed/1.0/recent
+        locust.get('/rest/recentlyviewed/1.0/recent'
+                   '?limit=8',
+                   catch_response=True)
 
     @confluence_measure('locust_search_cql:search_results')
     def search_cql():
-        r = locust.get(f"/rest/api/search?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
-                       f"&start=0&limit=20", catch_response=True)
+        # 530 rest/api/search
+        r = locust.get(f"/rest/api/search"
+                       f"?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
+                       f"&start=0"
+                       f"&limit=20",
+                       catch_response=True)
+
         if '{"results":[' not in r.content.decode('utf-8'):
             logger.locust_info(r.content.decode('utf-8'))
         content = r.content.decode('utf-8')
         if 'results' not in content:
             logger.error(f"Search cql failed: {content}")
         assert 'results' in content, "Search cql failed."
+
+        # 540 rest/mywork/latest/status/notification/count
         locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
 
     search_recently_viewed()
