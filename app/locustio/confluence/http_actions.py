@@ -748,8 +748,14 @@ def create_and_edit_page(locust):
     @confluence_measure('locust_create_and_edit_page:create_page_editor')
     def create_page_editor():
         raise_if_login_failed(locust)
-        r = locust.get(f'/pages/createpage.action?spaceKey={space_key}&fromPageId={page_id}&src=quick-create',
+
+        # 960 pages/createpage.action
+        r = locust.get(f'/pages/createpage.action'
+                       f'?spaceKey={space_key}'
+                       f'&fromPageId={page_id}'
+                       f'&src=quick-create',
                        catch_response=True)
+
         content = r.content.decode('utf-8')
         if 'Page Title' not in content:
             logger.error(f'Could not open page editor: {content}')
@@ -758,35 +764,96 @@ def create_and_edit_page(locust):
         parsed_space_key = fetch_by_re(params.space_key_re, content)
         atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
+        ajs_page_id = fetch_by_re(params.page_id_re, content)
+        parent_page_id = fetch_by_re(params.parent_page_id, content)
+
+        # 970 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("970"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 980 rest/create-dialog/1.0/storage/quick-create
+        locust.get('/rest/create-dialog/1.0/storage/quick-create', catch_response=True)
+
+        # 990 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1000 plugins/macrobrowser/browse-macros.action
+        locust.get(f'/plugins/macrobrowser/browse-macros.action'
+                   f'?macroMetadataClientCacheKey={timestamp_int()}'
+                   f'&detailed=false',
+                   catch_response=True)
+
+        # 1010 rest/mywork/latest/status/notification/count
+        locust.get(f'/rest/mywork/latest/status/notification/count'
+                   f'?pageid={ajs_page_id}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1030 rest/jiraanywhere/1.0/servers
+        locust.get(f'/rest/jiraanywhere/1.0/servers'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        start_heartbeat_activity_body = {"dataType": "json",
+                                         "contentId": content_id,
+                                         "draftType": "page",
+                                         "spaceKey": parsed_space_key,
+                                         "atl_token": atl_token
+                                         }
+
+        # 1040 json/startheartbeatactivity.action
+        r = locust.post('/json/startheartbeatactivity.action',
+                        start_heartbeat_activity_body,
+                        TEXT_HEADERS,
+                        catch_response=True)
+
+        contributor_hash = r.json().get("contributorsHash", None)
+        if contributor_hash is None:
+            logger.error(f'The "contributorsHash" key was not found in content: {r.json()}')
+        assert contributor_hash is not None, 'The "contributorsHash" key was not found in content.'
+
+        # 1050 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1080 rest/autoconvert/latest/shortcutlinkconfigurations
+        locust.get(f'/rest/autoconvert/latest/shortcutlinkconfigurations'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1090 rest/ui/1.0/content/{content_id}/labels
+        locust.get(f'/rest/ui/1.0/content/{content_id}/labels'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1100 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("1100"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1110 rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1110"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1120 rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1120"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
         locust.session_data_storage['content_id'] = content_id
         locust.session_data_storage['atl_token'] = atl_token
-
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("705"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("710"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("715"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.get('/rest/create-dialog/1.0/storage/quick-create', catch_response=True)
-        locust.get(f'/rest/mywork/latest/status/notification/count?pageid=0&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
-        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}', catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("750"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-
-        heartbeat_activity_body = {"dataType": "json",
-                                   "contentId": content_id,
-                                   "draftType": "page",
-                                   "spaceKey": parsed_space_key,
-                                   "atl_token": atl_token
-                                   }
-        r = locust.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
-                        TEXT_HEADERS, catch_response=True)
-        content = r.content.decode('utf-8')
-        if atl_token not in content:
-            logger.error(f'Token {atl_token} not found in content: {content}')
-        assert atl_token in content, 'Token not found in content.'
+        locust.session_data_storage['ajs_page_id'] = ajs_page_id
+        locust.session_data_storage['parent_page_id'] = parent_page_id
+        locust.session_data_storage['contributor_hash'] = contributor_hash
 
     @confluence_measure('locust_create_and_edit_page:create_page')
     def create_page():
@@ -822,190 +889,388 @@ def create_and_edit_page(locust):
 
         TEXT_HEADERS['Content-Type'] = 'application/json'
         TEXT_HEADERS['X-Requested-With'] = 'XMLHttpRequest'
-        r = locust.client.put(f'/rest/api/content/{content_id}?status=draft', json=create_page_body,
-                              headers=TEXT_HEADERS, catch_response=True)
+
+        start_heartbeat_activity_body = {"dataType": "json",
+                                         "contentId": content_id,
+                                         "space_key": space_key,
+                                         "draftType": "page",
+                                         "atl_token": atl_token,
+                                         "contributorsHash": locust.session_data_storage['contributor_hash'],
+                                         }
+
+        stop_heartbeat_activity_body = {"dataType": "json",
+                                        "contentId": content_id,
+                                        "draftType": "page",
+                                        "atl_token": atl_token,
+                                        }
+
+        # 1130 json/startheartbeatactivity.action
+        locust.post('/json/startheartbeatactivity.action',
+                    params=start_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1140 rest/api/content/{ajs-content-id}?status=draft
+        r = locust.client.put(f'/rest/api/content/{content_id}'
+                              f'?status=draft',
+                              json=create_page_body,
+                              headers=TEXT_HEADERS,
+                              catch_response=True)
+
         content = r.content.decode('utf-8')
         if 'draftId' not in content:
             logger.error(f'Could not create PAGE draft: {content}')
         assert 'draftId' in content, 'Could not create PAGE draft.'
         page_title = fetch_by_re(params.page_title_re, content)
+        locust.session_data_storage['page_title'] = page_title
 
-        r = locust.get(f'{page_title}', catch_response=True)
-        content = r.content.decode('utf-8')
-        if 'Created by' not in content:
-            logger.error(f'Page {page_title} was not created: {content}')
-        assert 'Created by' in content, 'Page was not created.'
+        # 1045 rest/mywork/latest/status/notification/count
+        locust.get(f'/rest/mywork/latest/status/notification/count'
+                   f'?_{timestamp_int()}',
+                   catch_response=True)
 
-        parent_page_id = fetch_by_re(params.parent_page_id, content)
-        create_page_id = fetch_by_re(params.create_page_id, content)
-        locust.session_data_storage['create_page_id'] = create_page_id
-        locust.session_data_storage['parent_page_id'] = parent_page_id
+        # 1150 json/stopheartbeatactivity.action
+        locust.post('/json/stopheartbeatactivity.action',
+                    params=stop_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
 
-        heartbeat_activity_body = {"dataType": "json",
-                                   "contentId": content_id,
-                                   "space_key": space_key,
-                                   "draftType": "page",
-                                   "atl_token": atl_token
-                                   }
-        locust.post('/json/stopheartbeatactivity.action', params=heartbeat_activity_body,
-                    headers=TEXT_HEADERS, catch_response=True)
+        # 1160 display/{space_key}/{page_title}
+        locust.get(f'{page_title}', catch_response=True)
 
+        # 1170 json/startheartbeatactivity.action
+        locust.post('/json/startheartbeatactivity.action',
+                    params=start_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1180 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("1180"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1190 rest/helptips/1.0/tips
         locust.get('/rest/helptips/1.0/tips', catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("795"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.get(f'/rest/jira-metadata/1.0/metadata/aggregate?pageId={create_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/likes/1.0/content/{create_page_id}/likes?commentLikes=true&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/inlinecomments/1.0/comments?containerId={create_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/mywork/latest/status/notification/count?pageid={create_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/highlighting/1.0/panel-items?pageId={create_page_id}&_={timestamp_int()}',
-                   catch_response=True)
-        locust.get(f'/rest/watch-button/1.0/watchState/{create_page_id}?_={timestamp_int()}',
-                   catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("830"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("835"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
 
-        r = locust.get(f'/plugins/editor-loader/editor.action?parentPageId={parent_page_id}'
-                       f'&pageId={create_page_id}&spaceKey={space_key}'
-                       f'&atl_after_login_redirect={page_title}&timeout=12000&_={timestamp_int()}',
+        # 1200 rest/inlinecomments/1.0/comments
+        locust.get(f'/rest/inlinecomments/1.0/comments'
+                   f'?containerId={content_id}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1210 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1220 plugins/pagetree/naturalchildren.action
+        locust.get(f'/plugins/pagetree/naturalchildren.action'
+                   f'?decorator=none'
+                   f'&expandCurrent=true'
+                   f'&mobile=false'
+                   f'&sort=position'
+                   f'&reverse=false'
+                   f'&spaceKey={space_key}'
+                   f'&treeId=0'
+                   f'&hasRoot=false'
+                   f'&startDepth=0'
+                   f'&disableLinks=false'
+                   f'&placement=sidebar'
+                   f'&excerpt=false'
+                   f'&ancestors={locust.session_data_storage["parent_page_id"]}'
+                   f'&treePageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1230 rest/jira-metadata/1.0/metadata/aggregate
+        locust.get(f'/rest/jira-metadata/1.0/metadata/aggregate'
+                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1240 rest/likes/1.0/content/{content_id}/likes
+        locust.get(f'/rest/likes/1.0/content/{locust.session_data_storage["content_id"]}/likes'
+                   f'?commentLikes=true'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1250 rest/highlighting/1.0/panel-items
+        locust.get(f'/rest/highlighting/1.0/panel-items'
+                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1260 rest/mywork/latest/status/notification/count
+        locust.get(f'/rest/mywork/latest/status/notification/count'
+                   f'?pageid={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1270 rest/watch-button/1.0/watchState/{content_id}
+        locust.get(f'/rest/watch-button/1.0/watchState/{content_id}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1280 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("1280"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1290 plugins/editor-loader/editor.action
+        r = locust.get(f'/plugins/editor-loader/editor.action'
+                       f'?parentPageId={locust.session_data_storage["parent_page_id"]}'
+                       f'&pageId={locust.session_data_storage["ajs_page_id"]}'
+                       f'&spaceKey={space_key}'
+                       f'&atl_after_login_redirect={page_title}'
+                       f'&timeout=12000&_={timestamp_int()}',
                        catch_response=True)
+
         content = r.content.decode('utf-8')
         if page_title not in content:
             logger.error(f'Page editor load failed for page {page_title}: {content}')
         assert page_title in content, 'Page editor load failed for page.'
 
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("845"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("850"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
-        locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("855"),
-                    headers=RESOURCE_HEADERS, catch_response=True)
+        # 1300 rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1300"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1310 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("1310"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1320 plugins/macrobrowser/browse-macros.action
+        locust.get(f'/plugins/macrobrowser/browse-macros.action'
+                   f'?macroMetadataClientCacheKey=1618492783694'
+                   f'&detailed=false',
+                   catch_response=True)
 
     @confluence_measure('locust_create_and_edit_page:open_editor')
     def open_editor():
         raise_if_login_failed(locust)
-        create_page_id = locust.session_data_storage['create_page_id']
 
-        r = locust.get(f'/pages/editpage.action?pageId={create_page_id}', catch_response=True)
-        content = r.content.decode('utf-8')
-        if '<title>Edit' not in content or 'Update</button>' not in content:
-            logger.error(f'Could not open PAGE {create_page_id} to edit: {content}')
-        assert '<title>Edit' in content and 'Update</button>' in content, \
-               'Could not open PAGE to edit.'
+        start_heartbeat_activity_body = {"dataType": "json",
+                                         "contentId": locust.session_data_storage["content_id"],
+                                         "space_key": space_key,
+                                         "draftType": "page",
+                                         "atl_token": locust.session_data_storage["atl_token"],
+                                         }
 
-        edit_page_version = fetch_by_re(params.editor_page_version_re, content)
-        edit_atl_token = fetch_by_re(params.atl_token_re, content)
-        edit_space_key = fetch_by_re(params.space_key_re, content)
-        edit_content_id = fetch_by_re(params.content_id_re, content)
-        edit_page_id = fetch_by_re(params.page_id_re, content)
-        edit_parent_page_id = fetch_by_re(params.parent_page_id, content)
-
-        locust.session_data_storage['edit_parent_page_id'] = edit_parent_page_id
-        locust.session_data_storage['edit_page_version'] = edit_page_version
-        locust.session_data_storage['edit_page_id'] = edit_page_id
-        locust.session_data_storage['atl_token'] = edit_atl_token
-        locust.session_data_storage['edit_content_id'] = edit_content_id
-
-        locust.get(f'/rest/jiraanywhere/1.0/servers?_={timestamp_int()}', catch_response=True)
-        heartbeat_activity_body = {"dataType": "json",
-                                   "contentId": edit_content_id,
-                                   "draftType": "page",
-                                   "spaceKey": edit_space_key,
-                                   "atl_token": edit_atl_token
-                                   }
-        locust.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
-                    TEXT_HEADERS, catch_response=True)
-        expand = 'history.createdBy.status%2Chistory.contributors.publishers.users.status' \
-                 '%2Cchildren.comment.version.by.status'
-        locust.get(f'/rest/api/content/{edit_page_id}?expand={expand}&_={timestamp_int()}',
+        # 1360 rest/tinymce/1/content/{content_id}.json
+        locust.get(f'/rest/tinymce/1/content/{locust.session_data_storage["content_id"]}.json'
+                   f'?_={timestamp_int()}',
                    catch_response=True)
-        locust.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
-                    TEXT_HEADERS, catch_response=True)
-        locust.get(f'/rest/ui/1.0/content/{edit_page_id}/labels?_={timestamp_int()}', catch_response=True)
-        locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
-        locust.post('/json/startheartbeatactivity.action', heartbeat_activity_body,
-                    TEXT_HEADERS, catch_response=True)
+
+        # 1370 rest/jiraanywhere/1.0/servers
+        locust.get(f'/rest/jiraanywhere/1.0/servers'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1380 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1390 json/startheartbeatactivity.action
+        locust.post('/json/startheartbeatactivity.action',
+                    params=start_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1400 rest/api/content/{content_id}
+        locust.get(f'/rest/api/content/{locust.session_data_storage["content_id"]}'
+                   f'?expand=history.createdBy.status,history.contributors.publishers.users.status,'
+                   f'children.comment.version.by.status'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1410 rest/autoconvert/latest/shortcutlinkconfigurations
+        locust.get(f'/rest/autoconvert/latest/shortcutlinkconfigurations'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1420 rest/autoconvert/latest/shortcutlinkconfigurations
+        locust.get(f'/rest/ui/1.0/content/{locust.session_data_storage["content_id"]}/labels'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1430 rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1430"),
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1440 rest/mywork/latest/status/notification/count
+        locust.get(f'/rest/mywork/latest/status/notification/count'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1450 rest/analytics/1.0/publish/bulk
+        locust.post('/rest/analytics/1.0/publish/bulk',
+                    json=params.resources_body.get("1450"),
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
 
     @confluence_measure('locust_create_and_edit_page:edit_page')
     def edit_page():
         raise_if_login_failed(locust)
+
+        # locust.session_data_storage["content_id"] = content_id
+        # locust.session_data_storage["atl_token"] = atl_token
+        # locust.session_data_storage["ajs_page_id"] = ajs_page_id
+        # locust.session_data_storage["parent_page_id"] = parent_page_id
+        # locust.session_data_storage['contributor_hash'] = contributor_hash
+        # locust.session_data_storage["page_title"]
+
         locust.session_data_storage['draft_name'] = f"{generate_random_string(10, only_letters=True)}"
         edit_parent_page_id = locust.session_data_storage['edit_parent_page_id']
         edit_page_id = locust.session_data_storage['edit_page_id']
         content_id = locust.session_data_storage['edit_content_id']
-        edit_page_version = int(locust.session_data_storage['edit_page_version']) + 1
         edit_atl_token = locust.session_data_storage['atl_token']
-        edit_page_body = dict()
 
-        if edit_parent_page_id:
-            edit_page_body = {
-                  "status": "current",
-                  "title": f"Test Performance Edit with locust {locust.session_data_storage['draft_name']}",
-                  "space": {
-                    "key": f"{space_key}"
-                  },
-                  "body": {
-                    "storage": {
-                      "value": f"Page edit with locust {locust.session_data_storage['draft_name']}",
-                      "representation": "storage",
-                      "content": {
-                        "id": f"{content_id}"
-                      }
-                    }
-                  },
-                  "id": f"{content_id}",
-                  "type": "page",
-                  "version": {
-                    "number": f"{edit_page_version}"
-                  },
-                  "ancestors": [
-                    {
-                      "id": f"{edit_parent_page_id}",
-                      "type": "page"
-                    }
-                  ]
-                }
-
-        if not edit_parent_page_id:
-            edit_page_body = {
-                              "status": "current",
-                              "title": f"Test Performance Edit with locust {locust.session_data_storage['draft_name']}",
-                              "space": {
-                                "key": f"{space_key}"
-                              },
-                              "body": {
-                                "storage": {
-                                  "value": f"Page edit with locust {locust.session_data_storage['draft_name']}",
-                                  "representation": "storage",
-                                  "content": {
-                                    "id": f"{content_id}"
-                                  }
-                                }
-                              },
-                              "id": f"{content_id}",
-                              "type": "page",
-                              "version": {
-                                "number": f"{edit_page_version}"
-                              }
-                            }
         TEXT_HEADERS['Content-Type'] = 'application/json'
         TEXT_HEADERS['X-Requested-With'] = 'XMLHttpRequest'
-        r = locust.client.put(f'/rest/api/content/{content_id}?status=draft', json=edit_page_body,
-                              headers=TEXT_HEADERS, catch_response=True)
-        content = r.content.decode('utf-8')
 
+        start_heartbeat_activity_body = {"dataType": "json",
+                                         "contentId": locust.session_data_storage["content_id"],
+                                         "space_key": space_key,
+                                         "draftType": "page",
+                                         "atl_token": locust.session_data_storage["atl_token"],
+                                         "contributorsHash": locust.session_data_storage['contributor_hash'],
+                                         }
+
+        stop_heartbeat_activity_body = {"dataType": "json",
+                                        "contentId": locust.session_data_storage["content_id"],
+                                        "draftType": "page",
+                                        "atl_token": locust.session_data_storage["atl_token"],
+                                        }
+        edt_page_body_data = {
+            "status": "current",
+            "title": f"Test Performance Edit with locust {locust.session_data_storage['draft_name']}",
+            "space": {
+                "key": f"{space_key}"
+            },
+            "body": {
+                "editor": {
+                    "value": f"<p>Page edit with locust {locust.session_data_storage['draft_name']}</p>",
+                    "representation": "editor",
+                    "content": {
+                        "id": f"{locust.session_data_storage['content_id']}"
+                    }
+                }
+            },
+            "id": f"{locust.session_data_storage['content_id']}",
+            "type": "page",
+            "version": {
+                "number": 2,
+                "message": "",
+                "minorEdit": "false",
+                "syncRev": "0.oLWs6S5l3gY2mwHJiA9jHao.5"
+            },
+            "ancestors": [
+                {
+                    "id": f"{locust.session_data_storage['parent_page_id']}",
+                    "type": "page"
+                }
+            ]
+        }
+
+        # 1460 json/startheartbeatactivity.action
+        locust.post('/json/startheartbeatactivity.action',
+                    params=start_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1470 rest/api/content/{content_id}?status=draft
+        r = locust.client.put(f'/rest/api/content/{content_id}'
+                              f'?status=draft',
+                              json=edt_page_body_data,
+                              headers=TEXT_HEADERS,
+                              catch_response=True)
+
+        content = r.content.decode('utf-8')
         if 'history' not in content:
             logger.info(f'Could not edit page. Response content: {content}')
         if 'history' not in content:
             logger.error(f'User {locust.session_data_storage["username"]} could not edit page {content_id}, '
-                         f'parent page id: {edit_parent_page_id}: {content}')
+                         f'parent page id: {locust.session_data_storage["parent_page_id"]}: {content}')
         assert 'history' in content, \
                'User could not edit page.'
+
+        # 1480 json/stopheartbeatactivity.action
+        locust.post('/json/stopheartbeatactivity.action',
+                    params=stop_heartbeat_activity_body,
+                    headers=TEXT_HEADERS,
+                    catch_response=True)
+
+        # 1490 display/{page_title} locust.session_data_storage["page_title"]
+        locust.get(f'{locust.session_data_storage["page_title"]}',
+                   catch_response=True)
+
+        # 1500 rest/webResources/1.0/resources
+        locust.post('/rest/webResources/1.0/resources',
+                    json=params.resources_body.get("1500"),
+                    headers=RESOURCE_HEADERS,
+                    catch_response=True)
+
+        # 1510 rest/helptips/1.0/tips
+        locust.get('/rest/helptips/1.0/tips', catch_response=True)
+
+        # 1520 rest/inlinecomments/1.0/comments
+        locust.get(f'/rest/inlinecomments/1.0/comments'
+                   f'?containerId={content_id}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1530 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+        locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+                   f'?_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1540 plugins/pagetree/naturalchildren.action
+        locust.get(f'/plugins/pagetree/naturalchildren.action'
+                   f'?decorator=none'
+                   f'&expandCurrent=true'
+                   f'&mobile=false'
+                   f'&sort=position'
+                   f'&reverse=false'
+                   f'&spaceKey={space_key}'
+                   f'&treeId=0'
+                   f'&hasRoot=false'
+                   f'&startDepth=0'
+                   f'&disableLinks=false'
+                   f'&placement=sidebar'
+                   f'&excerpt=false'
+                   f'&ancestors={locust.session_data_storage["parent_page_id"]}'
+                   f'&treePageId={space_key}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1550 rest/jira-metadata/1.0/metadata/aggregate
+        locust.get(f'/rest/jira-metadata/1.0/metadata/aggregate'
+                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1560 rest/likes/1.0/content/{content_id}/likes
+        locust.get(f'/rest/likes/1.0/content/{content_id}/likes'
+                   f'?commentLikes=true'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+        # 1570 rest/highlighting/1.0/panel-items
+        locust.get(f'/rest/highlighting/1.0/panel-items'
+                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'&_={timestamp_int()}',
+                   catch_response=True)
+
+
+
 
         r = locust.get(f'/pages/viewpage.action?pageId={edit_page_id}', catch_response=True)
         content = r.content.decode('utf-8')
@@ -1014,21 +1279,13 @@ def create_and_edit_page(locust):
         assert 'last-modified' in content and 'Created by' in content, "Could not open page to edit."
 
         locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
-        heartbeat_activity_body = {"dataType": "json",
-                                   "contentId": content_id,
-                                   "space_key": space_key,
-                                   "draftType": "page",
-                                   "atl_token": edit_atl_token
-                                   }
-        locust.post('/json/stopheartbeatactivity.action', params=heartbeat_activity_body,
-                    headers=TEXT_HEADERS, catch_response=True)
-        locust.get('/rest/helptips/1.0/tips', catch_response=True)
+
+
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1175"),
                     headers=RESOURCE_HEADERS, catch_response=True)
         locust.get(f'/rest/jira-metadata/1.0/metadata/aggregate?pageId={edit_page_id}&_={timestamp_int()}',
                    catch_response=True)
-        locust.get(f'/rest/likes/1.0/content/{edit_page_id}/likes?commentLikes=true&_={timestamp_int()}',
-                   catch_response=True)
+
         locust.get(f'/rest/highlighting/1.0/panel-items?pageId={edit_page_id}&_={timestamp_int()}',
                    catch_response=True)
         locust.get(f'/rest/mywork/latest/status/notification/count?pageId={edit_page_id}&_={timestamp_int()}',
@@ -1036,8 +1293,7 @@ def create_and_edit_page(locust):
         locust.get(f'/plugins/editor-loader/editor.action?parentPageId={edit_parent_page_id}'
                    f'&pageId={edit_page_id}&spaceKey={space_key}&atl_after_login_redirect=/pages/viewpage.action'
                    f'&timeout=12000&_={timestamp_int()}', catch_response=True)
-        locust.get(f'/rest/inlinecomments/1.0/comments?containerId={content_id}&_={timestamp_int()}',
-                   catch_response=True)
+
         locust.get(f'/rest/watch-button/1.0/watchState/{edit_page_id}?_={timestamp_int()}',
                    catch_response=True)
         locust.post('/rest/webResources/1.0/resources', json=params.resources_body.get("1215"),
