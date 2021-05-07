@@ -84,16 +84,12 @@ class CreateEditPage(ConfluenceResource):
     action_name = 'create_and_edit_page'
     content_id_re = 'meta name=\"ajs-content-id\" content=\"(.*?)\">'
     atl_token_re = 'meta name=\"ajs-atl-token\" content=\"(.*?)\">'
-    space_key_re = 'createpage.action\?spaceKey=(.+?)\&'
-    page_title_re = 'anonymous_export_view.*?\"webui\":\"(.*?)\"'
-    page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
     parent_page_id = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
 
     editor_page_title_re = 'name=\"ajs-page-title\" content=\"(.*?)\"'
     editor_page_version_re = 'name=\"ajs-page-version\" content=\"(.*?)\">'
     editor_page_content_re = 'id=\"wysiwygTextarea\" name=\"wysiwygContent\" class=\
                               "hidden tinymce-editor\">([\w\W]*?)</textarea>'
-
 
 
 class CommentPage(ConfluenceResource):
