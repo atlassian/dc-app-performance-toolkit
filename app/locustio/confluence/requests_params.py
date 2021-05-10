@@ -33,6 +33,7 @@ class Login(ConfluenceResource):
     static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
     version_number_re = 'meta name=\"ajs-version-number\" content=\"(.*?)\">'
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
+    atl_token_re = '"ajs-atl-token" content="(.+?)"'
 
 
 class ViewPage(ConfluenceResource):
@@ -72,7 +73,7 @@ class CreateBlog(ConfluenceResource):
     action_name = 'create_blog'
     atl_token_re = 'name=\"ajs-atl-token\" content=\"(.*?)\">'
     content_id_re = 'name=\"ajs-content-id\" content=\"(.*?)\">'
-    ajs_page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
+    page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
     space_key = 'createpage.action\?spaceKey=(.+?)\&'
     contribution_hash = '\"contributorsHash\":\"\"'
     parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
@@ -98,9 +99,25 @@ class CommentPage(ConfluenceResource):
 
 class UploadAttachments(ConfluenceResource):
     action_name = 'upload_attachments'
+
     atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
+    keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+    build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
+    parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
 
 
 class LikePage(ConfluenceResource):
     action_name = 'like_page'
     like_re = '\{\"likes\":\[\{"user":\{"name\"\:\"(.+?)",'
+
+
+class ViewAttachment(ConfluenceResource):
+    action_name = 'view_attachment'
+
+    keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+    build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
+    parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
+    remote_user_key_re = 'meta name=\"ajs-remote-user-key\" content=\"(.*?)\">'
+    data_linked_resource_id_re = 'data-linked-resource-id=\"(.*?)\"'
+    page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
+

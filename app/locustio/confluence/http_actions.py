@@ -5,12 +5,13 @@ from locustio.common_utils import confluence_measure, fetch_by_re, timestamp_int
     TEXT_HEADERS, NO_TOKEN_HEADERS, JSON_HEADERS, RESOURCE_HEADERS, generate_random_string, init_logger, \
     raise_if_login_failed
 from locustio.confluence.requests_params import confluence_datasets, Login, ViewPage, ViewDashboard, ViewBlog, \
-    CreateBlog, CreateEditPage, UploadAttachments, LikePage
+    CreateBlog, CreateEditPage, UploadAttachments, LikePage, CommentPage, ViewAttachment
 from util.conf import CONFLUENCE_SETTINGS
 import uuid
 
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
+common_data = {"atl_token": ""}
 
 
 @confluence_measure('locust_login_and_view_dashboard')
@@ -29,7 +30,6 @@ def login_and_view_dashboard(locust):
     login_body['os_username'] = username
     login_body['os_password'] = password
 
-
     # 10 dologin.action
     locust.post('/dologin.action',
                 login_body,
@@ -45,6 +45,7 @@ def login_and_view_dashboard(locust):
     logger.locust_info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
+    common_data["atl_token"] = fetch_by_re(params.atl_token_re, content)
 
     # 20 index.action
     locust.get('/index.action', catch_response=True)
@@ -307,7 +308,6 @@ def view_blog(locust):
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
     parent_page_id = fetch_by_re(params.parent_page_id_re, content)
-    #parsed_blog_id = fetch_by_re(params.page_id_re, content)
     space_key = fetch_by_re(params.space_key_re, content)
 
     # 350 rest/webResources/1.0/resources
@@ -464,7 +464,7 @@ def open_editor_and_create_blog(locust):
         atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
         parsed_space_key = fetch_by_re(params.space_key, content)
-        parsed_page_id = fetch_by_re(params.ajs_page_id_re, content)
+        parsed_page_id = fetch_by_re(params.page_id_re, content)
         parent_page_id = fetch_by_re(params.parent_page_id_re, content)
 
         # 560 rest/webResources/1.0/resources
@@ -1245,7 +1245,7 @@ def create_and_edit_page(locust):
 
         # 1550 rest/jira-metadata/1.0/metadata/aggregate
         locust.get(f'/rest/jira-metadata/1.0/metadata/aggregate'
-                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'?pageId={page_id}'
                    f'&_={timestamp_int()}',
                    catch_response=True)
 
@@ -1257,13 +1257,13 @@ def create_and_edit_page(locust):
 
         # 1570 rest/highlighting/1.0/panel-items
         locust.get(f'/rest/highlighting/1.0/panel-items'
-                   f'?pageId={locust.session_data_storage["ajs_page_id"]}'
+                   f'?pageId={page_id}'
                    f'&_={timestamp_int()}',
                    catch_response=True)
 
         # 1580 rest/mywork/latest/status/notification/count
         locust.get(f'/rest/mywork/latest/status/notification/count'
-                   f'?pageid={locust.session_data_storage["ajs_page_id"]}'
+                   f'?pageid={page_id}'
                    f'&_={timestamp_int()}', catch_response=True)
 
         # 1590 rest/watch-button/1.0/watchState/{content_id}
@@ -1279,7 +1279,7 @@ def create_and_edit_page(locust):
 
         # 1610 plugins/editor-loader/editor.action
         locust.get(f'/plugins/editor-loader/editor.action?parent'
-                   f'PageId={locust.session_data_storage["parent_page_id"]}'
+                   f'parentPageId={locust.session_data_storage["parent_page_id"]}'
                    f'&pageId={locust.session_data_storage["content_id"]}'
                    f'&spaceKey={space_key}'
                    f'&atl_after_login_redirect=/pages/viewpage.action'
@@ -1312,31 +1312,166 @@ def create_and_edit_page(locust):
 
 @confluence_measure('locust_comment_page')
 def comment_page(locust):
-    raise_if_login_failed(locust)
+    params = CommentPage()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
-    comment = f'<p>{generate_random_string(length=15, only_letters=True)}</p>'
+    space_key = page[1]
+    comment_text = generate_random_string(length=15, only_letters=True)
+    comment = f'<div style="display: none;"><br /></div><p>{comment_text}</p>'
     uid = str(uuid.uuid4())
-    r = locust.post(f'/rest/tinymce/1/content/{page_id}/comment?actions=true',
-                    params={'html': comment, 'watch': True, 'uuid': uid}, headers=NO_TOKEN_HEADERS,
+    build_number = locust.session_data_storage.get('build_number', '')
+    keyboard_hash = locust.session_data_storage.get('keyboard_hash', '')
+
+    start_heartbeat_activity_body = {"dataType": "json",
+                                     "contentId": page_id,
+                                     "space_key": space_key,
+                                     "draftType": "comment",
+                                     "atl_token": common_data["atl_token"],
+                                     }
+
+    # 1680 rest/jiraanywhere/1.0/servers
+    locust.get(f'/rest/jiraanywhere/1.0/servers'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1690 /rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+    locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1700 json/startheartbeatactivity.action
+    locust.post('/json/startheartbeatactivity.action',
+                params=start_heartbeat_activity_body,
+                headers=TEXT_HEADERS,
+                catch_response=True)
+
+    # 1710 rest/autoconvert/latest/shortcutlinkconfigurations
+    locust.get(f'/rest/autoconvert/latest/shortcutlinkconfigurations'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1720 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1730 rest/tinymce/1/content/{page_id}/comment
+    r = locust.post(f'/rest/tinymce/1/content/{page_id}/comment'
+                    f'?actions=true',
+                    params={'html': comment, 'watch': True, 'uuid': uid},
+                    headers=NO_TOKEN_HEADERS,
                     catch_response=True)
+
     content = r.content.decode('utf-8')
-    if not('reply-comment' in content and 'edit-comment' in content):
+    if comment_text not in content:
         logger.error(f'Could not add comment: {content}')
-    assert 'reply-comment' in content and 'edit-comment' in content, 'Could not add comment.'
+    assert comment_text in content, 'Could not add comment.'
+
+    # 1740 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("1740"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 @confluence_measure('locust_view_attachment')
 def view_attachments(locust):
     raise_if_login_failed(locust)
+
+    params = ViewAttachment()
     page = random.choice(confluence_dataset["pages"])
     page_id = page[0]
-    r = locust.get(f'/pages/viewpageattachments.action?pageId={page_id}', catch_response=True)
+    space_key = page[1]
+
+    # 1750 rest/quickreload/latest/{page_id}
+    locust.get(f'/rest/quickreload/latest/{page_id}'
+               f'?since={timestamp_int()}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1760 pages/viewpageattachments.action
+    r = locust.get(f'/pages/viewpageattachments.action'
+                   f'?pageId={page_id}',
+                   catch_response=True)
+
     content = r.content.decode('utf-8')
-    if not('Upload file' in content and 'Attach more files' in content or 'currently no attachments' in content):
+
+    if not ('Upload file' in content and 'Attach more files' in content or 'currently no attachments' in content):
         logger.error(f'View attachments failed: {content}')
     assert 'Upload file' in content and 'Attach more files' in content \
            or 'currently no attachments' in content, 'View attachments failed.'
+    build_number = fetch_by_re(params.build_number_re, content)
+    keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
+    parent_page_id = fetch_by_re(params.parent_page_id_re, content)
+
+    # 1770 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+    locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1790 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?pageid={page_id}'
+               f'&_={timestamp_int()}', catch_response=True)
+
+    # 1800 plugins/pagetree/naturalchildren.action
+    locust.get(f'/plugins/pagetree/naturalchildren.action'
+               f'?decorator=none'
+               f'&expandCurrent=true'
+               f'&mobile=false'
+               f'&sort=position'
+               f'&reverse=false'
+               f'&spaceKey={space_key}'
+               f'&treeId=0'
+               f'&hasRoot=false'
+               f'&startDepth=0'
+               f'&disableLinks=false'
+               f'&placement=sidebar'
+               f'&excerpt=false'
+               f'&ancestors={parent_page_id}'
+               f'&treePageId={page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1810 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1810"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1820 plugins/editor-loader/editor.action
+    locust.get(f'/plugins/editor-loader/editor.action?parent'
+               f'parentPageId={parent_page_id}'
+               f'&pageId={page_id}'
+               f'&spaceKey={space_key}'
+               f'&atl_after_login_redirect=/pages/viewpage.action'
+               f'&timeout=12000'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1830 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("1830"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1840 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1840"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1850 plugins/macrobrowser/browse-macros.action
+    locust.get(f'/plugins/macrobrowser/browse-macros.action'
+               f'?macroMetadataClientCacheKey=1618579820365'
+               f'&detailed=false',
+               catch_response=True)
+
+    # 1890 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1890"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 @confluence_measure('locust_upload_attachment')
@@ -1349,6 +1484,7 @@ def upload_attachments(locust):
     file_name = static_content[2]
     file_extension = static_content[1]
     page_id = page[0]
+    space_key = page[1]
 
     r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
     content = r.content.decode('utf-8')
@@ -1356,19 +1492,95 @@ def upload_attachments(locust):
         logger.error(f'Failed to open page {page_id}: {content}')
     assert 'Created by' in content and 'Save for later' in content, 'Failed to open page to upload attachments.'
     atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
+    build_number = fetch_by_re(params.build_number_re, content)
+    keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
+    parent_page_id = fetch_by_re(params.parent_page_id_re, content)
 
     multipart_form_data = {
         "file": (file_name, open(file_path, 'rb'), file_extension)
     }
 
-    r = locust.post(f'/pages/doattachfile.action?pageId={page_id}',
+    # 1900 pages/doattachfile.action?pageId={page_id}
+    r = locust.post(f'/pages/doattachfile.action'
+                    f'?pageId={page_id}',
                     params={"atl_token": atl_token_view_issue, "comment_0": "", "comment_1": "", "comment_2": "",
-                            "comment_3": "", "comment_4": "0", "confirm": "Attach"}, files=multipart_form_data,
+                            "comment_3": "", "comment_4": "0", "confirm": "Attach"},
+                    files=multipart_form_data,
                     catch_response=True)
     content = r.content.decode('utf-8')
     if not('Upload file' in content and 'Attach more files' in content):
         logger.error(f'Could not upload attachments: {content}')
     assert 'Upload file' in content and 'Attach more files' in content, 'Could not upload attachments.'
+
+    # 1910 rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}
+    locust.get(f'/rest/shortcuts/latest/shortcuts/{build_number}/{keyboard_hash}'
+               f'?_={timestamp_int()}',
+               catch_response=True)
+
+    # 1920 plugins/pagetree/naturalchildren.action
+    locust.get(f'/plugins/pagetree/naturalchildren.action'
+               f'?decorator=none'
+               f'&expandCurrent=true'
+               f'&mobile=false'
+               f'&sort=position'
+               f'&reverse=false'
+               f'&spaceKey={space_key}'
+               f'&treeId=0'
+               f'&hasRoot=false'
+               f'&startDepth=0'
+               f'&disableLinks=false'
+               f'&placement=sidebar'
+               f'&excerpt=false'
+               f'&ancestors={parent_page_id}'
+               f'&treePageId={page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1930 rest/mywork/latest/status/notification/count
+    locust.get(f'/rest/mywork/latest/status/notification/count'
+               f'?pageid={page_id}'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1940 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1940"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1950 rest/analytics/1.0/publish/bulk
+    locust.post('/rest/analytics/1.0/publish/bulk',
+                json=params.resources_body.get("1950"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1960 plugins/editor-loader/editor.action
+    locust.get(f'/plugins/editor-loader/editor.action?parent'
+               f'parentPageId={parent_page_id}'
+               f'&pageId={page_id}'
+               f'&spaceKey={space_key}'
+               f'&atl_after_login_redirect=/pages/viewpage.action'
+               f'&timeout=12000'
+               f'&_={timestamp_int()}',
+               catch_response=True)
+
+    # 1970 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1970"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
+
+    # 1980 plugins/macrobrowser/browse-macros.action
+    locust.get(f'/plugins/macrobrowser/browse-macros.action'
+               f'?macroMetadataClientCacheKey=1618624163503'
+               f'&detailed=false',
+               catch_response=True)
+
+    # 1990 rest/webResources/1.0/resources
+    locust.post('/rest/webResources/1.0/resources',
+                json=params.resources_body.get("1990"),
+                headers=RESOURCE_HEADERS,
+                catch_response=True)
 
 
 @confluence_measure('locust_like_page')
@@ -1379,14 +1591,24 @@ def like_page(locust):
     page_id = page[0]
 
     JSON_HEADERS['Origin'] = CONFLUENCE_SETTINGS.server_url
-    r = locust.get(f'/rest/likes/1.0/content/{page_id}/likes', headers=JSON_HEADERS, catch_response=True)
+
+    # 2030 rest/likes/1.0/content/{page_id}/likes
+    r = locust.get(f'/rest/likes/1.0/content/{page_id}/likes',
+                   headers=JSON_HEADERS,
+                   catch_response=True)
+
     content = r.content.decode('utf-8')
     like = fetch_by_re(params.like_re, content)
 
     if like is None:
-        r = locust.post(f'/rest/likes/1.0/content/{page_id}/likes', headers=JSON_HEADERS, catch_response=True)
+        # 2050 rest/likes/1.0/content/{page_id}/likes
+        r = locust.post(f'/rest/likes/1.0/content/{page_id}/likes',
+                        headers=JSON_HEADERS,
+                        catch_response=True)
     else:
-        r = locust.client.delete(f'/rest/likes/1.0/content/{page_id}/likes', catch_response=True)
+        # 2040 rest/likes/1.0/content/${page_id}/likes
+        r = locust.client.delete(f'/rest/likes/1.0/content/{page_id}/likes',
+                                 catch_response=True)
 
     content = r.content.decode('utf-8')
     if 'likes' not in content:
