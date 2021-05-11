@@ -222,9 +222,9 @@ def view_page(locust):
                 catch_response=True)
 
     # 240 plugins/macrobrowser/browse-macros.action
-    locust.get(f'/plugins/macrobrowser/browse-macros.action'
-               f'?macroMetadataClientCacheKey=1618567304880'
-               f'&detailed=false',
+    locust.get('/plugins/macrobrowser/browse-macros.action'
+               '?macroMetadataClientCacheKey=1618567304880'
+               '&detailed=false',
                catch_response=True)
 
 
@@ -401,9 +401,9 @@ def view_blog(locust):
                 catch_response=True)
 
     # 490 plugins/macrobrowser/browse-macros.action
-    locust.get(f'/plugins/macrobrowser/browse-macros.action'
-               f'?macroMetadataClientCacheKey=1618473279191'
-               f'&detailed=false',
+    locust.get('/plugins/macrobrowser/browse-macros.action'
+               '?macroMetadataClientCacheKey=1618473279191'
+               '&detailed=false',
                catch_response=True)
 
 
@@ -1048,9 +1048,9 @@ def create_and_edit_page(locust):
                     catch_response=True)
 
         # 1320 plugins/macrobrowser/browse-macros.action
-        locust.get(f'/plugins/macrobrowser/browse-macros.action'
-                   f'?macroMetadataClientCacheKey=1618492783694'
-                   f'&detailed=false',
+        locust.get('/plugins/macrobrowser/browse-macros.action'
+                   '?macroMetadataClientCacheKey=1618492783694'
+                   '&detailed=false',
                    catch_response=True)
 
     @confluence_measure('locust_create_and_edit_page:open_editor')
@@ -1299,9 +1299,9 @@ def create_and_edit_page(locust):
                     catch_response=True)
 
         # 1640 plugins/macrobrowser/browse-macros.action
-        locust.get(f'/plugins/macrobrowser/browse-macros.action'
-                   f'?macroMetadataClientCacheKey=1618492783694'
-                   f'&detailed=false',
+        locust.get('/plugins/macrobrowser/browse-macros.action'
+                   '?macroMetadataClientCacheKey=1618492783694'
+                   '&detailed=false',
                    catch_response=True)
 
     create_page_editor()
@@ -1462,9 +1462,9 @@ def view_attachments(locust):
                 catch_response=True)
 
     # 1850 plugins/macrobrowser/browse-macros.action
-    locust.get(f'/plugins/macrobrowser/browse-macros.action'
-               f'?macroMetadataClientCacheKey=1618579820365'
-               f'&detailed=false',
+    locust.get('/plugins/macrobrowser/browse-macros.action'
+               '?macroMetadataClientCacheKey=1618579820365'
+               '&detailed=false',
                catch_response=True)
 
     # 1890 rest/webResources/1.0/resources
@@ -1571,9 +1571,9 @@ def upload_attachments(locust):
                 catch_response=True)
 
     # 1980 plugins/macrobrowser/browse-macros.action
-    locust.get(f'/plugins/macrobrowser/browse-macros.action'
-               f'?macroMetadataClientCacheKey=1618624163503'
-               f'&detailed=false',
+    locust.get('/plugins/macrobrowser/browse-macros.action'
+               '?macroMetadataClientCacheKey=1618624163503'
+               '&detailed=false',
                catch_response=True)
 
     # 1990 rest/webResources/1.0/resources
