@@ -1057,8 +1057,3 @@ def backlog_board(locust, board_id):
                f'rapidViewId={board_id}'
                f'&_={timestamp_int()}',
                catch_response=True)
-
-
-
-
-
