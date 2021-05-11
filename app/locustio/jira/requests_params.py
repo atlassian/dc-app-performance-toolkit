@@ -38,7 +38,6 @@ class Login(JiraResource):
     }
 
 
-
 class BrowseIssue(JiraResource):
     issue_id_pattern = r'id="key-val" rel="(.+?)">'
     project_avatar_id_pattern = r'projectavatar\?avatarId\=(.+?)" '
