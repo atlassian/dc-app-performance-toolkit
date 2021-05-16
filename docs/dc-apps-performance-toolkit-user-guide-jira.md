@@ -4,33 +4,326 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2019-09-12"
+date: "2021-04-26"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
-To use the Data Center App Performance Toolkit, you'll need to first clone its repo.
+This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-``` bash
-git clone git@github.com:atlassian/dc-app-performance-toolkit.git
+In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
+
+**[Development environment](#mainenvironmentdev)**: Jira Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
+
+1. [Set up a development environment Jira Data Center on AWS](#devinstancesetup).
+2. [Create a dataset for the development environment](#devdataset).
+3. [Run toolkit on the development environment locally](#devtestscenario).
+4. [Develop and test app-specific actions locally](#devappaction).
+
+**[Enterprise-scale environment](#mainenvironmententerprise)**: Jira Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Jira Data Center.
+
+5. [Set up an enterprise-scale environment Jira Data Center on AWS](#instancesetup).
+6. [Load an enterprise-scale dataset on your Jira Data Center deployment](#preloading).
+7. [Set up an execution environment for the toolkit](#executionhost).
+8. [Running the test scenarios from execution environment against enterprise-scale Jira Data Center](#testscenario).
+
+---
+
+## <a id="mainenvironmentdev"></a>Development environment
+
+Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing. Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
+
+### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
+
+We recommend that you set up development environment using the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. If you already have an existing Jira Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
+
+
+#### Using the AWS Quick Start for Jira
+
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
+
+{{% note %}}
+You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
+{{% /note %}}
+
+To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
+
+#### AWS cost estimation for the development environment
+
+AWS Jira Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+
+#### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
+
+All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
+
+**Jira setup**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Jira Product | Software |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.4`, `8.5.12` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+
+**Cluster nodes**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Cluster node instance type | [t3.medium](https://aws.amazon.com/ec2/instance-types/t3/) (we recommend this instance type for its good balance between price and performance in testing environments) |
+| Maximum number of cluster nodes | 1 |
+| Minimum number of cluster nodes | 1 |
+| Cluster node instance volume size | 50 |
+
+
+**Database**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| RDS Provisioned IOPS | 1000 |
+| Master (admin) password | Password1! |
+| Enable RDS Multi-AZ deployment | false |
+| Application user database password | Password1! |
+| Database storage | 200 |
+
+
+**Networking (for new ASI)**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Availability Zones | _Select two availability zones in your region_ |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Make instance internet facing | True |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+**Networking (for existing ASI)**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Make instance internet facing | True |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+#### Running the setup wizard
+
+After successfully deploying the Jira Data Center on AWS, configure it as follows:
+
+1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
+1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
+1. Open **LoadBalancerURL** in your browser. This will take you to the Jira setup wizard.
+1. On the **Set up application properties** page, fill in the following fields:
+    - **Application Title**: any name for your Jira Data Center deployment
+    - **Mode**: private
+    - **Base URL**: your stack's Elastic LoadBalancer URL
+
+    Then select **Next**.
+1. On the next page, fill in the **Your License Key** field in one of the following ways:
+    - Using your existing license
+    - Generating a Jira trial license
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your DCHELP ticket.
+
+    Then select **Next**.
+1. On the **Set up administrator account** page, fill in the following fields:
+    - **Full name**: a full name of the admin user
+    - **Email Address**: email address of the admin user
+    - **Username**: admin _(recommended)_
+    - **Password**: admin _(recommended)_
+    - **Confirm Password**: admin _(recommended)_
+
+    Then select **Next**.
+
+1. On the **Set up email notifications** page, configure your email notifications, and then select **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
+1. After going through the welcome setup, select **Create new project** to create a new project.
+
+---
+
+### <a id="devdataset"></a>2. Generate dataset for development environment  
+
+After creating the development environment Jira Data Center, generate test dataset to run Data Center App Performance Toolkit:
+- 1 Scrum software development project with 1-5 issues
+- 1 Kanban software development project with 1-5 issues
+
+---
+
+### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
+
+{{% warning %}}
+Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
+1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
+1. Navigate to `dc-app-performance-toolkit/app` folder.
+1. Open the `jira.yml` file and fill in the following variables:
+    - `application_hostname`: your_dc_jira_instance_hostname without protocol.
+    - `application_protocol`: http or https.
+    - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
+    - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
+    - `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira.
+    - `admin_login`: admin user username.
+    - `admin_password`: admin user password.
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
+    - `concurrency`: `2` - number of concurrent JMeter/Locust users.
+    - `test_duration`: `5m` - duration of the performance run.
+    - `ramp-up`: `3s` - amount of time it will take JMeter or Locust to add all test users to test execution.
+    - `total_actions_per_hour`: `5450` - number of total JMeter/Locust actions per hour.
+    - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
+    
+1. Run bzt.
+
+    ``` bash
+    bzt jira.yml
+    ```
+
+1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
+In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+
+    - `results_summary.log`: detailed run summary
+    - `results.csv`: aggregated .csv file with all actions and timings
+    - `bzt.log`: logs of the Taurus tool execution
+    - `jmeter.*`: logs of the JMeter tool execution
+    - `locust.*`: logs of the Locust tool execution (in case you use Locust as load_executor in jira.yml)
+    - `pytest.*`: logs of Pytest-Selenium execution
+
+{{% warning %}}
+Do not proceed with the next step until you have all actions 95+% success rate. Ask [support](#support) if above logs analysis did not help.
+{{% /warning %}}
+
+---
+
+### <a id="devappaction"></a>4. Develop and test app-specific action locally
+Data Center App Performance Toolkit has its own set of default test actions for Jira Data Center: JMeter/Locust and Selenium for load and UI tests respectively.     
+
+**App-specific action** - action (performance test) you have to develop to cover main use cases of your application. Performance test should focus on the common usage of your application and not to cover all possible functionality of your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
+
+1. Define main use case of your app. Usually it is one or two main app use cases.
+1. Your app adds new UI elements in Jira Data Center - Selenium app-specific action has to be developed.
+1. Your app introduces new endpoint or extensively calls existing Jira Data Center API - JMeter/Locust app-specific actions has to be developed.  
+JMeter and Locust actions are interchangeable, so you could select the tool you prefer:
+
+- JMeter - UI-based [performance tool](https://jmeter.apache.org/).
+- Locust - code-based (Python requests library) [performance tool](https://locust.io/).
+
+
+{{% note %}}
+We strongly recommend developing your app-specific actions on the development environment to reduce AWS infrastructure costs.
+{{% /note %}}
+
+
+#### Custom dataset
+You can filter your own app-specific issues for your app-specific actions.
+
+1. Create app-specific issues that have specific anchor in summary, e.g. *AppIssue* anchor and issues summaries like *AppIssue1*, *AppIssue2*, *AppIssue3*.
+1. Go to the search page of your Jira Data Center - `JIRA_URL/issues/?jql=` and select `Advanced`.
+1. Write [JQL](https://www.atlassian.com/blog/jira-software/jql-the-most-flexible-way-to-search-jira-14) that filter just your issues from step 1, e.g. `summary ~ 'AppIssue*'`.
+1. Edit Jira configuration file `dc-app-performance-toolkit/app/jira.yml`:  
+    - `custom_dataset_query:` JQL from step 3.
+
+Next time when you run toolkit, custom dataset issues will be stored to the `dc-app-performance-toolkit/app/datasets/jira/custom-issues.csv` with columns: `issue_key`, `issue_id`, `project_key`.
+
+#### Example of app-specific Selenium action development with custom dataset  
+You develop an app that adds some additional fields to specific types of Jira issues. In this case, you should develop Selenium app-specific action:
+
+1. Create app-specific Jira issues with *AppIssue* anchor in summary: *AppIssue1*, *AppIssue2*, etc.
+2. Go to the search page of your Jira Data Center - `JIRA_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppIssue*'`.
+3. Edit `dc-app-performance-toolkit/app/jira.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppIssue*'`.
+4. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jira/extension_ui.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py)
+So, our test has to open app-specific issues and measure time to load of this app-specific issues.
+5. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+6. In `dc-app-performance-toolkit/app/selenium_ui/jira_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+``` python
+# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
+#     app_specific_action(webdriver, datasets)
 ```
 
-Follow installation instructions described in the `dc-app-performance-toolkit/README.md` file.
+7. Run toolkit with `bzt jira.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
 
-If you need performance testing results at a production level, follow instructions in this chapter to set up Jira Data Center with the corresponding dataset.
+#### Example of app-specific Locust/JMeter action development
 
-For spiking, testing, or developing, your local Jira instance would work well. Thus, you can skip this chapter and proceed with [Testing scenarios](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#testing-scenarios). Still, script adjustments for your local dataset may be required.
+You develop an app that introduces new GET and POST endpoints in Jira Data Center. In this case, you should develop Locust or JMeter app-specific action.
 
-## Setting up Jira Data Center
+**Locust app-specific action development example**
 
-We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) to deploy a Jira Data Center testing environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jira/extension_locust.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_locust.py)
+1. In `dc-app-performance-toolkit/app/jira.yml` set `load_executor: locust` to make `locust` as load executor.
+1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
+Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
+1. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that. 
+1. Run toolkit with `bzt jira.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
+
+**JMeter app-specific action development example**
+
+1. Check that `jira.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_dashboard` and `standalone_extension` actions would be executed.
+1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+    
+    ```python util/jmeter/start_jmeter_ui.py --app jira```
+    
+1. Open `Jira` thread group > `actions per login` and navigate to `standalone_extension`
+![Jira JMeter standalone extension](/platform/marketplace/images/jira-standalone-extension.png)
+1. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
+![Jira JMeter standalone GET](/platform/marketplace/images/jira-standalone-get-request.png)
+1. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
+![Jira JMeter standalone regexp](/platform/marketplace/images/jira-standalone-regexp.png)
+1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
+![Jira JMeter standalone assertions](/platform/marketplace/images/jira-standalone-assertions.png)
+1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that you located your app-specific tests between `login_as_specific_user` and `login_as_default_user_if_specific_user_was_loggedin` controllers.
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
+
+
+##### Using JMeter variables from the base script
+
+Use or access the following variables in your `standalone_extension` script if needed.
+
+- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
+- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
+- `${project_key}` - project key being viewed or modified (e.g. ABC)
+- `${project_id}` - project id being viewed or modified (e.g. 3423)
+- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
+- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
+- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
+- `${username}` - the logged in username (e.g. admin)
+
+{{% warning %}}
+App-specific actions are required. Do not proceed with the next step until you have completed app-specific actions development and got successful results from toolkit run.
+{{% /warning %}}
+
+---
+## <a id="mainenvironmententerprise"></a> Enterprise-scale environment
+
+After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
+
+### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Jira Data Center on AWS
+
+We recommend that you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) (**How to deploy** tab) to deploy a Jira Data Center enterprise-scale environment. This Quick Start will allow you to deploy Jira Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Jira into this new VPC. Deploying Jira with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
-### Using the AWS Quick Start for Jira
+#### Using the AWS Quick Start for Jira
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Jira into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Jira into your existing ASI.
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Jira into your existing ASI:
+
+Navigate to **[AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -38,17 +331,52 @@ You are responsible for the cost of the AWS services used while running this Qui
 
 To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
 
-### AWS cost estimation ###
-[SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html) provides an estimate of usage charges for AWS services based on certain information you provide.
-Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
+#### AWS cost estimation
+[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
+Monthly charges will be based on your actual usage of AWS services and may vary from the estimates the Calculator has provided.
 
-*The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
+*The prices below are approximate and may vary depending on such factors like region, instance type, deployment type of DB, and other.  
+
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Jira DC | 1 - 1.3 |
-| Two Nodes Jira DC | 1.7 - 2.1 |
-| Four Nodes Jira DC | 3.1 - 3.8 |
+| One Node Jira DC | 0.8 - 1.1
+| Two Nodes Jira DC | 1.2 - 1.7
+| Four Nodes Jira DC | 2.0 - 3.0
+
+#### Stop cluster nodes
+
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+
+To stop one node within the cluster, follow the instructions below:
+
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
+
+To return node into a working state follow the instructions:  
+
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters
 
@@ -59,35 +387,29 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Jira Version | 8.0.3 or 7.13.6 or 8.5.0 |
-
-The Data Center App Performance Toolkit officially supports:
-
-- The latest Jira Platform Release version: 8.0.3
-- The following Jira [Enterprise Releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.6 and 8.5.0
+| Version | The Data Center App Performance Toolkit officially supports `8.13.4`, `8.5.12` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Cluster node instance type | [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) |
+| Cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) (This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Data Center customers. The Data Center App Performance Toolkit framework is set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.)|
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 100 |
-
-We recommend [c5.4xlarge](https://aws.amazon.com/ec2/instance-types/c5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. This differs from our [public recommendation on c4.8xlarge](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-jira-instances-on-aws-969532459.html) for production instances but is representative for a lot of our Jira Data Center customers.
-
-The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
 **Database**
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
+| Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
-| Enable RDS Multi-AZ deployment | true |
+| Enable RDS Multi-AZ deployment | false |
 | Application user database password | Password1! |
+| Database storage | 200 |
 
 {{% note %}}
 The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Jira deployment with an enterprise-scale dataset](#preloading)).
@@ -98,7 +420,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region. Both zones must support EFS (see [Supported AWS regions](https://confluence.atlassian.com/enterprise/getting-started-with-jira-data-center-on-aws-969535550.html#GettingstartedwithJiraDataCenteronAWS-SupportedAWSregions) for details)._ |
+| Availability Zones | _Select two availability zones in your region_ |
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Make instance internet facing | true |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
@@ -111,11 +433,11 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
-### Running the setup wizard
+#### Running the setup wizard
 
 After successfully deploying Jira Data Center in AWS, you'll need to configure it:
 
-1. In the AWS console, go to **Services > CloudFormation > Stack > Stack details > Select your stack**.
+1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
 1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
 1. Open **LoadBalancerURL** in your browser. This will take you to the Jira setup wizard.
 1. On the **Set up application properties** page, populate the following fields:
@@ -136,13 +458,16 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
     - **Confirm Password**: admin _(recommended)_
     Click **Next**.
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
+1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, click **Create new project** to create a new project.
 
 {{% note %}}
 After [Preloading your Jira deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 {{% /note %}}
 
-## <a id="preloading"></a> Preloading your Jira deployment with an enterprise-scale dataset
+---
+
+### <a id="preloading"></a>6. Preloading your Jira deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -170,7 +495,7 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 
-Pre-loading the dataset is a three-step process:
+#### Pre-loading the dataset is a three-step process:
 
 1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script or restore from xml backup file.
 1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/upload_attachments.sh) script.
@@ -178,26 +503,23 @@ Pre-loading the dataset is a three-step process:
 
 The following subsections explain each step in greater detail.
 
-### <a id="importingdataset"></a> Importing the main dataset
+#### <a id="importingdataset"></a> Importing the main dataset
 
 You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script), or import it via XML.  
 
-#### Option 1: Loading the dataset via populate_db.sh script (~1 hour)
+##### Option 1 (recommended): Loading the dataset via populate_db.sh script (~1 hour)
 
-{{% note %}}
-We recommend doing this via the CLI.
-{{% /note %}}
 
 To populate the database with SQL:
 
-1. In the AWS console, go to **Services > EC2 > Instances**.
+1. In the AWS console, go to **Services** > **EC2** > **Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -214,7 +536,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
     JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
     CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
@@ -228,7 +549,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh | tee -a populate_db.log
+    ./populate_db.sh 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -237,18 +558,18 @@ Do not close or interrupt the session. It will take about an hour to restore SQL
 In case of a failure, check the `Variables` section and run the script one more time.
 {{% /note %}}
 
-#### Option 2: Loading the dataset through XML import (~4 hours)
+##### Option 2: Loading the dataset through XML import (~4 hours)
 
 We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/jira/populate_db.sh) script.
 
-1. In the AWS console, go to **Services > EC2 > Instances**.
+1. In the AWS console, go to **Services** > **EC2** > **Instances**.
 1. On the **Description** tab, do the following:
     - Copy the _Public IP_ of the Bastion instance.
     - Copy the _Private IP_ of the Jira node instance.
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -264,18 +585,22 @@ We recommend that you only use this method if you are having problems with the [
     sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JIRA_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. From a different computer, log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
 1. Populate the **File name** field with `xml_backup.zip`.
 1. Click **Restore** and wait until the import is completed.
 
-### <a id="copyingattachments"></a> Restoring attachments (~2 hours)
+#### <a id="copyingattachments"></a> Restoring attachments (~2 hours)
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Jira node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Jira node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
@@ -301,29 +626,73 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh | tee -a upload_attachments.log
+    ./upload_attachments.sh 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-### <a id="reindexing"></a> Re-indexing Jira Data Center (~1 hour)
+#### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 min)
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
+1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+1. Attach the screenshot to your DCHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
+---
+
+### <a id="executionhost"></a>7. Setting up an execution environment
+
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+
+1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
+1. Clone the fork locally, then edit the `jira.yml` configuration file. Set enterprise-scale Jira Data Center parameters:
+
+   ``` yaml
+       application_hostname: test_jira_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+       application_protocol: http      # http or https
+       application_port: 80            # 80, 443, 8080, 2990, etc
+       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
+       concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+       test_duration: 45m
+       ramp-up: 3m                     # time to spin all concurrent users
+       total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
+   ```  
+
+1. Push your changes to the forked repository.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+   ```bash
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
+1. Clone forked repository.
+
 {{% note %}}
-Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration**, click **Edit Settings** and set **Base URL** to **LoadBalancerURL** value.
+At this stage app-specific actions are not needed yet. Use code from `master` branch with your `jira.yml` changes.
 {{% /note %}}
 
-## Testing scenarios
+You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
+
+---
+
+### <a id="testscenario"></a>8. Running the test scenarios from execution environment against enterprise-scale Jira Data Center
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -332,31 +701,23 @@ Using the Data Center App Performance Toolkit for [Performance and scale testing
 
 Each scenario will involve multiple test runs. The following subsections explain both in greater detail.
 
-### <a id="testscenario1"></a> Scenario 1: Performance regression
+#### <a id="testscenario1"></a> Scenario 1: Performance regression
 
 This scenario helps to identify basic performance issues without a need to spin up a multi-node Jira DC. Make sure the app does not have any performance impact when it is not exercised.
 
-#### <a id="regressionrun1"></a> Run 1 (~50 min)
+##### <a id="regressionrun1"></a> Run 1 (~50 min)
 
-To receive performance baseline results without an app installed:
+To receive performance baseline results **without** an app installed:
 
-1. On the computer where you cloned the Data Center App Performance Toolkit, navigate to `dc-app-performance-toolkit/app folder`.
-1. Open the `jira.yml` file and fill in the following variables:
-    - `application_hostname`: your_dc_jira_instance_hostname without protocol
-    - `application_protocol`: HTTP or HTTPS
-    - `application_port`: for HTTP - 80, for HTTPS - 443, or your instance-specific port. The self-signed certificate is not supported.
-    - `admin_login`: admin user username
-    - `admin_password`: admin user password
-    - `concurrency`: number of concurrent users for JMeter scenario - we recommend you use the defaults to generate full-scale results.
-    - `test_duration`: duration of the performance run - we recommend you use the defaults to generate full-scale results.
-    - `ramp-up`: amount of time it will take JMeter to add all test users to test execution - we recommend you use the defaults to generate full-scale results.
-1. Run bzt.
-
+1. Use SSH to connect to execution environment.
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
-    bzt jira.yml
+    cd dc-app-performance-toolkit
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
     ```
-    
+
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -365,207 +726,118 @@ To receive performance baseline results without an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "without app"` for report generation.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
+{{% /note %}}
+
+##### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
+
+If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
+
+{{% note %}}
+Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~30 min.
 {{% /note %}}
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required to wait ~2 hours after previous reindex finish before starting a new one.
 {{% /note %}}
 
-#### <a id="regressionrun2"></a> Run 2 (~50 min + Lucene Index timing test)
+**Benchmark your re-index time with your app installed:**
 
-If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (without and with your app installed) and a dataset that has 1M issues. 
-
-First, benchmark your re-index time without your app installed:
-
-{{% note %}}
-Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~40 min.
-{{% /note %}}
-
+1. Install the app you want to test.
+1. Setup app license.
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
+1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DC HELP ticket.
+1. Attach the screenshot to your DCHELP ticket.
 
-Next, benchmark your re-index time with your app installed:
+**Performance results generation with the app installed:**
 
-1. Install the app you want to test. 
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Lock one Jira node and rebuild index** option.
-1. Click **Re-Index** and wait until re-indexing is completed.
-1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DC HELP ticket.
+1. Run toolkit with docker from the execution environment instance:
 
-After attaching both screenshots to your DC HELP ticket, move on to performance results generation with an app installed:
-
-    ``` bash
-    bzt jira.yml
-    ```
-    
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "with app"` for report generation.
-{{% /note %}}
+   ``` bash
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
-#### Generating a performance regression report
+##### Generating a performance regression report
 
 To generate a performance regression report:  
 
+1. Use SSH to connect to execution environment.
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
 1. Run the following command:
-
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see a significant impact (>10%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
+
+1. From local machine terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 
-### <a id="testscenario2"></a> Scenario 2: Scalability testing
+#### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
 The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. For this, you have to run scale testing on your app.
 
 For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Jira DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Jira DC app in a cluster.
 
-#### Extending the base action
 
-Extension scripts, which extend the base JMeter (`jira.jmx`) and Selenium (`jira-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/jira`). You can modify these scripts to include their app-specific actions.
+###### <a id="run3"></a> Run 3 (~50 min)
 
-##### Modifying JMeter
+To receive scalability benchmark results for one-node Jira DC **with** app-specific actions:
 
-JMeter is written in XML and requires JMeter GUI to view and make changes. You can launch JMeter GUI by running the `~/.bzt/jmeter-taurus/<jmeter_version>/bin/jmeter` command.
+1. Apply app-specific code changes to a new branch of forked repo.
+1. Use SSH to connect to execution environment.
+1. Pull cloned fork repo branch with app-specific actions.
+1. Run toolkit with docker from the execution environment instance:
 
-Make sure you run this command inside the `dc-app-performance-toolkit/app directory`. The main `jmeter/jira.jmx` file contains relative paths to other scripts and will throw errors if run and loaded elsewhere.
-
-Here's a snippet of the base JMeter script (`jira.jmx`):
-
-![Base JMeter script](/platform/marketplace/images/jmeter-base.png)
-
-For every base action, there is an extension script executed after the base script. In most cases, you should modify only the `extension.jmx` file. For example, if there are additional REST APIs introduced as part of viewing an issue, you can include these calls in the `extension.jmx` file under the view issue transaction.
-
-Here's a snippet of the extension JMeter script (`extension.jmx`).
-
-![Extended JMeter script](/platform/marketplace/images/jmeter-extended.png)
-
-This ensures that these APIs are called as part of the view issue transaction with minimal intrusion (for example, no additional logins). For a fairer comparison, you have to keep the same number of base transactions before and after the plugin is installed.
+   ``` bash
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   ```
 
 {{% note %}}
-The controllers in the extension script, which are executed along with the base action, are named after the corresponding base action (for example, `extend_search_jql`, `extend_view_issue`).
-{{% /note %}}
-
-When debugging, if you want to only test transactions in the `extend_view_issue` action, you can comment out other transactions in the `jira.yml` config file and set the percentage of the base execution to 100. Alternatively, you can change percentages of others to 0.
-
-``` yml
-#      perc_create_issue: 4
-#      perc_search_jql: 16
-      perc_view_issue: 100
-#      perc_view_project_summary: 4
-#      perc_view_dashboard: 8
-```
-
-{{% note %}}
-If multiple actions are affected, add transactions to multiple extension controllers.
-{{% /note %}}
-
-##### Extending a stand-alone transaction
-
-You can run your script independently of the base action under a specific workload if, for example, your plugin introduces a separate URL and has no correlation to the base transactions.
-
-In such a case, you extend the `extend_standalone_extension` controller, which is also located in the `extension.jmx` file. With this option, you can define the execution percentage by the `perc_standalone_extension` parameter in the `jira.yml` config file.
-
-The following configuration ensures that extend_standalone_extension controller is executed 10% of the total transactions.
-
-``` yml
-      perc_standalone_extension: 10
-```
-
-##### Using JMeter variables from the base script
-
-Use or access the following variables of the extension script from the base script. They can also be inherited.
-
-- `${issue_key}` - issue key being viewed or modified (e.g. ABC-123)
-- `${issue_id}` - issue id being viewed or modified (e.g. 693484)
-- `${project_key}` - project key being viewed or modified (e.g. ABC)
-- `${project_id}` - project id being viewed or modified (e.g. 3423)
-- `${scrum_board_id}` - scrum board id being viewed (e.g. 328)
-- `${kanban_board_id}` - kanban board id being viewed (e.g. 100)
-- `${jql}` - jql query being used (e.g. text ~ "qrk*" order by key)
-- `${username}` - the logged in username (e.g. admin)
-
-{{% note %}}
-If there are some additional variables from the base script required by the extension script, you can add variables to the base script using extractors. For more information, go to [Regular expression extractors](http://jmeter.apache.org/usermanual/component_reference.html#Regular_Expression_Extractor).
-{{% /note %}}
-
-##### Modifying Selenium
-
-In addition to JMeter, you can extend Selenium scripts to measure the end-to-end browser timings.
-
-We use **Pytest** to drive Selenium tests. The `jira-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
-
-In the `jira-ui.py` script, view the following block of code:
-
-``` python
-# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     custom_action(webdriver, datasets)
-```
-
-This is a placeholder to add an extension action. The custom action can be moved to a different line, depending on the required workflow, as long as it is between the login (`test_0_selenium_a_login`) and logout (`test_2_selenium_z_log_out`) actions.
-
-To implement the custom_action function, modify the `extension_ui.py` file in the `extension/jira/` directory. The following is an example of the `custom_action` function, where Selenium navigates to a URL, clicks on an element, and waits until an element is visible:
-
-``` python
-def custom_action(webdriver, datasets):
-    @print_timing
-    def measure(webdriver, interaction):
-        @print_timing
-        def measure(webdriver, interaction):
-            webdriver.get(f'{APPLICATION_URL}/plugins/servlet/some-app/reporter')
-            WebDriverWait(webdriver, timeout).until(EC.visibility_of_element_located((By.ID, 'plugin-element')))
-        measure(webdriver, 'selenium_app_custom_action:view_report')
-```
-
-To view more examples, see the `modules.py` file in the `selenium_ui/jira` directory.
-
-#### Running tests with your modification
-
-To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
-
-##### <a id="run3"></a> Run 3 (~50 min)
-To receive scalability benchmark results for one-node Jira DC with app-specific actions, run `bzt`:
-
-``` bash
-bzt jira.yml
-```
-
-{{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed.
-Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 1"` for report generation.
-{{% /note %}}
-
-{{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run4"></a> Run 4 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
-To receive scalability benchmark results for two-node Jira DC with app-specific actions:
+To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
-1. In the AWS console, go to **CloudFormation > Stack details > Select your stack**.
+1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next > Next > Update stack** and wait until stack is updated.
+1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
 1. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
 
     ```bash
@@ -579,50 +851,56 @@ To receive scalability benchmark results for two-node Jira DC with app-specific 
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
-    IndexCopyService] Index restore started. Total 0 issues on instance before loading Snapshot file: IndexSnapshot_10203.tar.sz
-    Recovering search indexes - 60% complete... Recovered added and updated issues
-    Recovering search indexes - 80% complete... Cleaned removed issues
-    Recovering search indexes - 100% complete... Recovered all indexes
-    IndexCopyService] Index restore complete. Total N issues on instance
+    Index restore started
+    indexes - 60%
+    indexes - 80%
+    indexes - 100%
+    Index restore complete
     ```
-1. Run bzt.
-
-    ``` bash
-    bzt jira.yml
-    ```    
-
 {{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output. Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 2"` for report generation.
+If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
 {{% /note %}}
 
+1. Run toolkit with docker from the execution environment instance:
+
+   ``` bash
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   ```
+
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Jira DC with app-specific actions:
 
-1. Scale your Jira Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
-1. Run bzt.
+1. Scale your Jira Data Center deployment to 3 nodes as described in [Run 4](#run4).
+1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
+1. Scale your Jira Data Center deployment to 4 nodes as described in [Run 4](#run4).
+1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
+1. Run toolkit with docker from the execution environment instance:
 
-    ``` bash
-    bzt jira.yml
-    ```    
+   ``` bash
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+   ```  
 
 {{% note %}}
-When the execution is successfully completed, the `INFO: Artifacts dir:` line with the full path to results directory will be displayed in console output.
-Save this full path to the run results folder. Later you will have to insert it under `runName: "Node 4"` for report generation.
-{{% /note %}}
-
-{{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -630,23 +908,47 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
+1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
     - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
     - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
     - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command:
-
+1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
 1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
 
+
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Jira Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review action timings on Jira Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+
+{{% warning %}}
 After completing all your tests, delete your Jira Data Center stacks.
+{{% /warning %}}
 
-## Support
+#### Attaching testing results to DCHELP ticket
+
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
+
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
+
+## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

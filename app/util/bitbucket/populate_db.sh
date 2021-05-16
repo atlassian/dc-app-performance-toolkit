@@ -1,18 +1,17 @@
 #!/bin/bash
 
 ###################    Check if NFS exists        ###################
-pgrep nfsd > /dev/null && echo "NFS found" || (echo "NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine."; exit 1)
+pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
 
 # Depending on BITBUCKET installation directory
-BITBUCKET_CURRENT_DIR="/opt/atlassian/bitbucket/current/"
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
 
 # DB admin user name, password and DB name
@@ -20,9 +19,17 @@ BITBUCKET_DB_NAME="bitbucket"
 BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
+# Bitbucket DC has auto PRs decline feature enabled by default from 7.7.X version
+BITBUCKET_AUTO_DECLINE_VERSION="7.7.0"
+
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.0 7.0.0)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.9 7.0.5 7.6.4)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
+if [[ -z "$BITBUCKET_VERSION" ]]; then
+  echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
+  has a valid file path of the Bitbucket version file or set your Cluster BITBUCKET_VERSION explicitly.
+  exit 1
+fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
@@ -33,24 +40,24 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_D
 
 ###################    End of variables section  ###################
 
-
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
+  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Bitbucket, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 6.10.0"
   echo "!!! Warning !!! This may break your Bitbucket instance. Also, note that downgrade is not supported by Bitbucket."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
     # Check if passed Bitbucket version is in list of supported
-    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "$2" ]]; then
+    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${2} ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
-      echo "Correct dataset version was not specified after --force flag."
-      echo "Available datasets: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
-      exit 1
+      LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$LAST_DATASET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+      echo "Specific dataset version was not specified after --force flag, using the last available: ${LAST_DATASET_VERSION}"
+      echo "Dataset URL: ${DB_DUMP_URL}"
     fi
   else
     # No force flag
@@ -64,7 +71,6 @@ echo "This script restores Postgres DB from SQL DB dump for Bitbucket DC created
 echo "You can review or modify default variables in 'Variables section' of this script."
 echo # move to a new line
 echo "Variables:"
-echo "BITBUCKET_CURRENT_DIR=${BITBUCKET_CURRENT_DIR}"
 echo "DB_CONFIG=${DB_CONFIG}"
 echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
 echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
@@ -91,8 +97,55 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Download DB dump"
+echo "Step2: Get DB Host and check DB connection"
+DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
+if [[ -z ${DB_HOST} ]]; then
+  echo "DataBase URL was not found in ${DB_CONFIG}"
+  exit 1
+fi
+echo "DB_HOST=${DB_HOST}"
+
+PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
+if [[ $? -ne 0 ]]; then
+  echo "Connection to DB failed. Please check correctness of following variables:"
+  echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
+  echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
+  echo "BITBUCKET_DB_PASS=${BITBUCKET_DB_PASS}"
+  echo "DB_HOST=${DB_HOST}"
+  exit 1
+fi
+
+echo "Step3: Write 'instance.url' property to file"
+BITBUCKET_BASE_URL_FILE="base_url"
+if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+  echo "File ${BITBUCKET_BASE_URL_FILE} was found. Base url: $(cat ${BITBUCKET_BASE_URL_FILE})."
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -Atc \
+  "select prop_value from app_property where prop_key='instance.url';" > ${BITBUCKET_BASE_URL_FILE}
+  if [[ ! -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${BITBUCKET_BASE_URL_FILE}) was written to the ${BITBUCKET_BASE_URL_FILE} file."
+fi
+
+echo "Step4: Write license to file"
+BITBUCKET_LICENSE_FILE="license"
+if [[ -s ${BITBUCKET_LICENSE_FILE} ]]; then
+  echo "File ${BITBUCKET_LICENSE_FILE} was found. License: $(cat ${BITBUCKET_LICENSE_FILE})."
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -tAc \
+  "select prop_value from app_property where prop_key = 'license';" | sed "s/\r//g" > ${BITBUCKET_LICENSE_FILE}
+  if [[ ! -s ${BITBUCKET_LICENSE_FILE} ]]; then
+    echo "Failed to get bitbucket license from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${BITBUCKET_LICENSE_FILE}) was written to the ${BITBUCKET_LICENSE_FILE} file."
+fi
+
+echo "Step5: Download DB dump"
 DUMP_DIR='/media/atl/bitbucket/shared'
 if [[ $? -ne 0 ]]; then
     echo "Directory ${DUMP_DIR} does not exist"
@@ -117,25 +170,8 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step3: Get DB Host"
-DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
-if [[ -z ${DB_HOST} ]]; then
-  echo "DataBase URL was not found in ${DB_CONFIG}"
-  exit 1
-fi
-echo "DB_HOST=${DB_HOST}"
-
-echo "Step4: SQL Restore"
+echo "Step6: SQL Restore"
 echo "Check DB connection"
-PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
-if [[ $? -ne 0 ]]; then
-  echo "Connection to DB failed. Please check correctness of following variables:"
-  echo "BITBUCKET_DB_NAME=${BITBUCKET_DB_NAME}"
-  echo "BITBUCKET_DB_USER=${BITBUCKET_DB_USER}"
-  echo "BITBUCKET_DB_PASS=${BITBUCKET_DB_PASS}"
-  echo "DB_HOST=${DB_HOST}"
-  exit 1
-fi
 echo "Drop DB"
 sudo su -c "PGPASSWORD=${BITBUCKET_DB_PASS} dropdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} ${BITBUCKET_DB_NAME}"
 if [[ $? -ne 0 ]]; then
@@ -151,17 +187,56 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
+sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore --schema=public -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
 fi
 sudo su -c "rm -rf ${DUMP_DIR}/${DB_DUMP_NAME}"
 
-echo "Finished"
-echo  # move to a new line
+echo "Step7: Update 'instance.url' property in database"
+if [[ -s ${BITBUCKET_BASE_URL_FILE} ]]; then
+  BASE_URL=$(cat ${BITBUCKET_BASE_URL_FILE})
+  if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+    "UPDATE app_property SET prop_value = '${BASE_URL}' WHERE prop_key = 'instance.url';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database 'instance.url' property. Please check your database connection."
+    exit 1
+  else
+    echo "The database 'instance.url' property was updated with ${BASE_URL}"
+  fi
+else
+  echo "The ${BITBUCKET_BASE_URL_FILE} file doesn't exist or empty. Please check file existence or 'instance.url' property in the database."
+  exit 1
+fi
+
+echo "Step8: Update license property in database"
+if [[ -s ${BITBUCKET_LICENSE_FILE} ]]; then
+  LICENSE=$(cat ${BITBUCKET_LICENSE_FILE})
+  if [[ $(PGPASSWORD=${BITBUCKET_DB_PASS} psql -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} -U ${BITBUCKET_DB_USER} -c \
+    "update app_property set prop_value = '${LICENSE}' where prop_key = 'license';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database bitbucket license property. Please check your database connection."
+    exit 1
+  else
+    echo "The database bitbucket license property was updated with ${LICENSE}"
+  fi
+else
+  echo "The ${BITBUCKET_LICENSE_FILE} file doesn't exist or empty. Please check file existence or 'bitbucket license' property in the database."
+  exit 1
+fi
+
+echo "Step9: Remove ${BITBUCKET_BASE_URL_FILE} file"
+sudo rm ${BITBUCKET_BASE_URL_FILE}
+
+echo "Step10: Remove ${BITBUCKET_LICENSE_FILE} file"
+sudo rm ${BITBUCKET_LICENSE_FILE}
+
+echo "DCAPT util script execution is finished successfully."
+echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
 
-
+if [ "$(printf '%s\n' "$BITBUCKET_AUTO_DECLINE_VERSION" "$BITBUCKET_VERSION" | sort -V | head -n1)" = "$BITBUCKET_AUTO_DECLINE_VERSION" ]; then
+       echo "Bitbucket ${BITBUCKET_VERSION} version has auto PRs decline feature enabled and it will be disabled in bitbucket.properties file."
+       echo "feature.pull.request.auto.decline=false" | sudo tee -a ${DB_CONFIG}
+fi

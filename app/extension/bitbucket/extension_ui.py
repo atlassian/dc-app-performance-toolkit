@@ -1,25 +1,44 @@
+import random
+
 from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import BITBUCKET_SETTINGS
 
 from selenium_ui.base_page import BasePage
+from selenium_ui.conftest import print_timing
+from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted
+from util.conf import BITBUCKET_SETTINGS
 
 
-def custom_action(webdriver, datasets):
+def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    @print_timing
-    def measure(webdriver, interaction):
-        @print_timing
-        def measure(webdriver, interaction):
-            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/plugin/report")
-            page.wait_until_visible((By.ID, 'report_app_element_id'), interaction)
+    rnd_repo = random.choice(datasets["repos"])
 
-        measure(webdriver, 'selenium_app_custom_action:view_report')
+    project_key = rnd_repo[1]
+    repo_slug = rnd_repo[0]
 
-        @print_timing
-        def measure(webdriver, interaction):
-            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/plugin/dashboard")
-            page.wait_until_visible((By.ID, 'dashboard_app_element_id'), interaction)
+    # To run action as specific user uncomment code bellow.
+    # NOTE: If app_specific_action is running as specific user, make sure that app_specific_action is running
+    # just before test_2_selenium_logout action
 
-        measure(webdriver, 'selenium_app_custom_action:view_dashboard')
-    measure(webdriver, 'selenium_app_custom_action')
+    # @print_timing("selenium_app_specific_user_login")
+    # def measure():
+    #     def app_specific_user_login(username='admin', password='admin'):
+    #         login_page = LoginPage(webdriver)
+    #         login_page.delete_all_cookies()
+    #         login_page.go_to()
+    #         login_page.set_credentials(username=username, password=password)
+    #         login_page.submit_login()
+    #         get_started_page = GetStarted(webdriver)
+    #         get_started_page.wait_for_page_loaded()
+    #     app_specific_user_login(username='admin', password='admin')
+    # measure()
+
+    @print_timing("selenium_app_custom_action")
+    def measure():
+
+        @print_timing("selenium_app_custom_action:view_repo_page")
+        def sub_measure():
+            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/projects/{project_key}/repos/{repo_slug}/browse")
+            page.wait_until_visible((By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')) # Wait for repo navigation panel is visible
+            page.wait_until_visible((By.ID, 'ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT'))  # Wait for you app-specific UI element by ID selector
+        sub_measure()
+    measure()

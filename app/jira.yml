@@ -1,58 +1,67 @@
 ---
-version: '3'
 settings:
-  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%ST
+  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: localhost      # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: test_jira_instance.atlassian.com    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
-    application_port: 2990            # 80, 443, 8080, 2990, etc
-    application_postfix: /jira           # e.g. /jira in case of url like http://localhost:2990/jira
+    application_port: 80            # 80, 443, 8080, 2990, etc
+    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    concurrency: 200
+    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
+    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
+    ramp-up: 3m                     # time to spin all concurrent users
+    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
+    LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    print_in_shell: No
-    max_nr_projects_to_use: 100
- #   TAURUS_ARTIFACTS_DIR: /bzt-configs/results/jira
+    # Action percentage for Jmeter and Locust load executors
+    create_issue: 4
+    search_jql: 11
+    view_issue: 34
+    view_project_summary: 3
+    view_dashboard: 10
+    edit_issue: 5
+    add_comment: 2
+    browse_projects: 9
+    view_scrum_board: 8
+    view_kanban_board: 7
+    view_backlog: 6
+    browse_boards: 1
+    standalone_extension: 0 # By default disabled
+    # Custom dataset section.
+    custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
 services:
   - module: shellexec
     prepare:
-      - pip install pytest-parallel
-      - python3 util/environment_checker.py
-      - python3 util/data_preparation/jira/prepare-data.py
+      - python util/pre_run/environment_checker.py
+      - python util/data_preparation/jira_prepare_data.py
     shutdown:
-      - python3 util/jmeter_post_check.py
-      - python3 util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytests_run.jtl
+      - python util/post_run/jmeter_post_check.py
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
     post-process:
-      - python3 util/analytics.py jira
-      - python3 util/cleanup_results_dir.py
+      - python util/analytics/analytics.py jira
+      - python util/post_run/cleanup_results_dir.py
 execution:
-  - scenario: jmeter
+  - scenario: ${load_executor}
+    executor: ${load_executor}
     concurrency: ${concurrency}
     hold-for: ${test_duration}
-    ramp-up: 3m
-  - executor: selenium
-    scenario: selenium
+    ramp-up: ${ramp-up}
+  - scenario: selenium
+    executor: selenium
     runner: pytest
     hold-for: ${test_duration}
-    concurrency:  ${concurrency}
-    ramp-up: 3m
-  - scenario: pytest-run
-    executor: pytest
-    runner: pytest
-    hold-for: ${test_duration}
-    ramp-up: 3m
 scenarios:
-  pytest-run:
-    additional-args: --workers 8 --tests-per-worker 25
-    script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py
+  locust:
+    script: locustio/jira/locustfile.py
   jmeter:
     script: jmeter/jira.jmx
     properties:
@@ -61,20 +70,20 @@ scenarios:
       application_port: ${application_port}
       application_postfix: ${application_postfix}
       # Workload model
-      total_actions_per_hr: 54500
-      perc_create_issue: 4
-      perc_search_jql: 13
-      perc_view_issue: 43
-      perc_view_project_summary: 4
-      perc_view_dashboard: 12
-      perc_edit_issue: 4
-      perc_add_comment: 2
-      perc_browse_projects: 4
-      perc_view_scrum_board: 3
-      perc_view_kanban_board: 3
-      perc_view_backlog: 6
-      perc_browse_boards: 2
-      perc_standalone_extension: 0 # By default disabled
+      total_actions_per_hr: ${total_actions_per_hour}
+      perc_create_issue: ${create_issue}
+      perc_search_jql: ${search_jql}
+      perc_view_issue: ${view_issue}
+      perc_view_project_summary: ${view_project_summary}
+      perc_view_dashboard: ${view_dashboard}
+      perc_edit_issue: ${edit_issue}
+      perc_add_comment: ${add_comment}
+      perc_browse_projects: ${browse_projects}
+      perc_view_scrum_board: ${view_scrum_board}
+      perc_view_kanban_board: ${view_kanban_board}
+      perc_view_backlog: ${view_backlog}
+      perc_browse_boards: ${browse_boards}
+      perc_standalone_extension: ${standalone_extension}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
@@ -97,7 +106,6 @@ modules:
       - jpgc-tst=2.4
       - jpgc-wsc=0.3
       - tilln-sshmon=1.0
-      - jpgc-cmd=2.2
       - jpgc-synthesis=2.2
     system-properties:
       server.rmi.ssl.disable: true
@@ -105,19 +113,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "80.0.3987.106" # Supports Chrome version 80. You can refer to http://chromedriver.chromium.org/downloads
+      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
-  summary: true
-  percentiles: true
-  failed-labels: false
-  test-duration: true
-  dump-csv: result.csv
-- module: final-stats
-  summary: true
-  percentiles: true 
-  summary-labels: true
-  failed-labels: false
-  test-duration: true
-  dump-csv: results.csv

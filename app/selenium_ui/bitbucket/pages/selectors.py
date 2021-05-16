@@ -84,6 +84,7 @@ class PopupLocators:
     default_popup = '.feature-discovery-close'
     popup_1 = '.css-1it7f5o'
     popup_2 = 'button.aui-button-link.feature-discovery-close'
+    popup_3 = '.css-15p34h1'
 
 
 class LoginPageLocators:
@@ -94,6 +95,7 @@ class LoginPageLocators:
     username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
     password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
     application_version = (By.ID, 'product-version')
+    node_id = (By.CLASS_NAME, 'footer-body')
 
 
 class LogoutPageLocators:
@@ -104,9 +106,7 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_params = UrlManager().get_started_params
     get_started_url = UrlManager().get_started_url()
-
-    bitbucket_is_ready_widget = {'6': (By.CLASS_NAME, "marketing-page-footer"),
-                                 '7': (By.CLASS_NAME, "marketing-page-footer")}
+    user_profile_icon = {'6': (By.ID, 'current-user'), '7': (By.ID, 'current-user')}
 
 
 class DashboardLocators:
@@ -183,7 +183,7 @@ class PullRequestLocator:
                              '7': (By.CSS_SELECTOR, ".diff-line-comment-trigger")}
     comment_text_area = {'6': (By.CSS_SELECTOR, "textarea.text"), '7': (By.CLASS_NAME, "comment-editor-wrapper")}
     text_area = {'6': (By.CSS_SELECTOR, 'textarea.text'), '7': (By.CLASS_NAME, 'CodeMirror-code')}
-    comment_button = {'6': (By.CSS_SELECTOR, "div.buttons>button:nth-child(1)"),
+    comment_button = {'6': (By.CSS_SELECTOR, "div.comment-form-footer>div.buttons>button:nth-child(1)"),
                       '7': (By.CSS_SELECTOR, "div.editor-controls>button:nth-child(1)")}
     pull_request_activity_content = {'6': (By.CSS_SELECTOR, ".pull-request-activity-content"),
                                      '7': (By.CSS_SELECTOR, ".pull-request-activities")}

@@ -1,153 +1,190 @@
-# Data Center App Performance Toolkit
+# Data Center App Performance Toolkit 
+The Data Center App Performance Toolkit extends [Taurus](https://gettaurus.org/) which is an open source performance framework that executes JMeter and Selenium.
 
-This is FindOuts fork of https://github.com/atlassian/dc-app-performance-toolkit - see original README there.
+This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Jira Service Management, Confluence, and Bitbucket.
 
-The pytests for DM can be run either directly with:
+## Supported versions
+* Supported Jira versions: 
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.4`, `8.5.12`
 
-    git clone https://github.com/FindOut/dc-app-performance-toolkit fo-dcapt
-    cd fo-dcapt
-    cd app/pytest
-    pytest setup.py
-    cd ..
-    pytest pytests
+* Supported Jira Service Management versions: 
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.4`, `4.5.12`
     
-## Run tests in docker
+* Supported Confluence versions:
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.4.8`  
+    * Confluence Platform release: `7.0.5`
 
-or in the Taurus test suite with
+* Supported Bitbucket Server versions:
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.4`, `6.10.9`  
+    * Bitbucket Server Platform release: `7.0.5`
 
-    docker run --rm -it --net="host" -v ${PWD}:/bzt-configs -v ${PWD}/results:/tmp/artifacts dagrende/taurus:v1 jira.yml
-    
-alternativ when running on windows bash give explicit path
+## Support
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
 
-    winpty docker run --rm -it --net="host" -v //c/dc-app-performance/dc-app-performance-toolkit/app:/bzt-configs -v //c/dc-app-performance/dc-app-performance-toolkit/app/result:/tmp/artifacts dagrende/taurus:v1 jira.yml
+## Installation and set up
 
-### Building the taurus test tool docker image
+#### Dependencies
+* Python 3.7-3.8 and pip
+* JDK 8
+* Google Chrome web browser
+* Git client (only for Bitbucket DC)
 
-Taurus have published the taurus test tool as a docker image with the name Blazemeter/taurus. If you get problems when you run it the reason may be it is built some time ago and their components are outdated.
-It is easy to rebuild it yourself:
+Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product.yml file (modules->selenium->chromedriver->version).
 
-    git clone git@github.com:Blazemeter/taurus.git
-    cd taurus
-    docker build -t taurus .
-    
-Now you can run the test as above, but with the command:
+If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
-    docker run --rm -it --net="host" -v ${PWD}:/bzt-configs -v ${PWD}/results:/tmp/artifacts taurus jira.yml
-    
-In addition, you may publish your taurus image, for anyone to run:
-
-    docker tag taurus yourname/taurus:v1
-    docker push yourname/taurus:v1
-
-Run it with:
-
-    docker run --rm -it --net="host" -v ${PWD}:/bzt-configs -v ${PWD}/results:/tmp/artifacts yourname/taurus:v1 jira.yml
-
-
-### Useful links for test writing
-
-* pytest - https://docs.pytest.org/en/latest/contents.html
-* requests - https://requests.readthedocs.io/en/master/user/quickstart/#response-headers
-* jira rest api authentication - https://community.atlassian.com/t5/Jira-questions/How-to-authenticate-to-Jira-REST-API/qaq-p/814987
-
-## Have to install crome and cromedriver
-
-    download crome from:
-        https://www.google.com/chrome/?platform=linux
-    sudo apt install ./google-chrome-stable_current_amd64.deb
-    # download ChromeDriver 80.0.3987.106 
-    #    you will find https://chromedriver.chromium.org/downloads or
-    wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
-    unzip chromedriver_linux64.zip
-    sudo mv chromedriver /usr/bin/chromedriver
-    sudo chown root:root /usr/bin/chromedriver
-    sudo chmod +x /usr/bin/chromedriver
-    
-## Run tests on an AWS server
-
-    git clone https://github.com/FindOut/dc-app-performance-toolkit.git fo-dcapt
-    cd fo-dcapt
-    sudo apt install virtualenv
-    virtualenv venv -p python3
-    source venv/bin/activate
-    pip install pytest
-    deactivate
-    source venv/bin/activate
-    pip install -r requirements.txt
-    
-
-    
-Now we have an environment with python and pytest using python3 and the required python packages.
-
-### run the DM test suite
-
-In the Jira Datacenter App Perfomance test, one step is to run tests specific for Dependency Map. 
-
-    cd app/pytests
-
-Create initial data specific to DM, like links between random issues and dependency map objects. The nohup command executes another command, and instructs the system to continue running it even if the session is disconnected. This will take a couple of hours.
-
-    nohup python setup.py &
-    
-Here we should probably re-index Jira.
-
-    Go to  > System.
-    Select Advanced > Indexing 
-    
-Copy the delete instructions for the setup, and find out how man objects have been created
-
-    cp deleteCreatedObjects deleteCreatedObjectsSetup
-    wc -l deleteCreatedObjects 
-    
-Run the DM specific test suite.
-
-    bzt jira-dm.yml
-    
-Remove DM specific data created during run
-
-    wc -l deleteCreatedObjects
-    tail -n +<lines diff> deleteCreatedObjects > deleteDuringRun   
-    
-Remove DM specific data created by setup.py above.
-
-    nohup python cleanupObjCreatedDuringRun.py &
-    
-If you want to remove all objects created of setup and running    
-
-    nohup python cleanup.py &
-    
-## Log in on the  Jira server
-    I have scp the jira-dc-test.pem fil to bastion. 
-    
-    export BASTION_IP=18.195.132.253
-    export NODE_IP=10.0.42.73
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh -i jira-dc-test.pem ${SSH_OPTS} -o 'proxycommand ssh -i jira-dc-test.pem -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}' ec2-user@${NODE_IP}
-
-
-
-## Stop and start Jira command line
-
-    JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-    STOP_JIRA="${JIRA_CURRENT_DIR}/bin/stop-jira.sh"
-    START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
-    sudo su jira
-    cd  /home/jira
-    /opt/atlassian/jira-software/current/bin/stop-jira.sh
-    /opt/atlassian/jira-software/current/bin/start-jira.sh 
-
-## Extending JMeter tests
-
-GT: If you would like to extend the JMeter tests, the following might help with debugging. From the DC-Performance-Testing slack channel:
-S
+### macOS setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* XCode Command Line Tools
+* Google Chrome web browser
 ```
-1. Open JMeter UI from app folder: ~/.bzt/jmeter-taurus/5.2.1/bin/jmeter
-2. File->Open-> jira.jmx
-3. In Test Plan->Global Variables setup your appication.hostname
-4. In Jira -> load profile set perc_standalone_extension to 100
-5. Enable View Results Tree
-6. Extend stanalone extension with new steps
-7. Run Jmeter with Green arrow button and see debug info in View Results Tree
+python3 --version
+pip --version
+java -version
+# command to check if XCode Command Line Tools installed
+xcode-select --print-path
+# or command to install if XCode Command Line Tools
+xcode-select --install
+```
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
+```
 
-To include variables such as ${project_key} for debugging, you can edit file app/datasets/jira/project_keys.csv . But later on for bzt run, it may be better to edit app/util/data_preparation/jira/prepare-data.py to filter only needed project keys with jql.
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
 
+1. Install virtualenv with pip:
+```
+pip install virtualenv
+```
+2. Create new virtual env with python3:
+```
+virtualenv venv -p python3
+```
+3. Activate virtual env:
+```
+source venv/bin/activate
+```
+4. Install dependencies:
+```
+pip install -r requirements.txt
+```
+
+### Linux setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* Python developer package (e.g. `python3.8-dev` package for Python3.8)
+* Google Chrome web browser
+```
+python3 --version
+pip --version
+java -version
+```
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
+```
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
+
+## Example setup for clean Ubuntu 18.04
+JDK setup (if missing):
+```
+sudo apt-get update
+sudo apt-get install -y openjdk-8-jre-headless
+```
+Chrome setup (if missing):
+```
+sudo apt-get update
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+```
+Python and virtualenv setup:
+```
+sudo apt-get update
+sudo apt-get -y install python3.8-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+virtualenv venv -p python
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Windows setup
+#### Installing Taurus manually
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+```
+python --version or python3 --version
+pip --version
+java -version
+Microsoft Visual C++ 14
+Windows 10 SDK
+```
+For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
+```
+
+Make sure you have Visual Studio build tool v14.22 installed. 
+Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualstudio.microsoft.com/downloads) and do the following:
+1. Select **Tools for Visual Studio 2019**.
+2. Download and run **Build Tools for Visual Studio 2019**.
+3. Select the **C++ build tools** check box.
+4. Select the **MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.22)** check box (clear all the others).
+5. Click **Install**.
+
+Setup [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
+
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
+1. Install virtualenv with pip:
+```
+pip install virtualenv
+```
+2. Create new virtual env with python3:
+```
+virtualenv venv -p python
+```
+3. Activate virtual env:
+```
+venv\Scripts\activate
+```
+4. Install dependencies:
+```
+pip install -r requirements.txt
+```
+
+## Upgrading the toolkit
+Get latest codebase from master branch:
+```
+git pull
+```
+Activate virtual env for the toolkit and install latest versions of libraries:
+```
+pip install -r requirements.txt
+```
+
+## Additional info
+Official Taurus installation instructions are located [here](https://gettaurus.org/docs/Installation/).
+
+## Analytics
+The Data Center App Performance Toolkit includes some simple usage analytics.  
+We collect this data to better understand how the community is using the Performance Toolkit, and to help us plan our roadmap.
+When a performance tests is completed we send one HTTP POST request with analytics.
+
+The request include the following data, and will in no way contain PII (Personally Identifiable Information).
+- application under test (Jira/Confluence/Bitbucket)
+- timestamp of performance toolkit run
+- performance toolkit version
+- operating system
+- `concurrency` and `test_duration` from `$product.yml` file
+- actual run duration
+- executed action names and success rates
+- unique user identifier (non PII)
+
+To help us continue improving the Toolkit, we’d love you to keep these analytics enabled in testing, staging, and production. If you don’t want to send us analytics, you can turn off the `allow_analytics` toggle in `$product.yml` file.
+
+## Running Taurus
+Navigate to [docs](docs) folder and follow instructions.
