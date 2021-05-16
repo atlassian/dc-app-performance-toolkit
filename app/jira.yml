@@ -36,6 +36,8 @@ settings:
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
+    max_nr_projects_to_use: 100
+
 services:
   - module: shellexec
     prepare:
@@ -58,15 +60,15 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
-  - scenario: pytest-run
-    executor: pytest
-    runner: pytest
-    hold-for: ${test_duration}
-    ramp-up: 3m
+#   - scenario: pytest-run
+#     executor: pytest
+#     runner: pytest
+#     hold-for: ${test_duration}
+#     ramp-up: 3m
 scenarios:
-  pytest-run:
-    additional-args: --workers 8 --tests-per-worker 25
-    script: pytests/
+#   pytest-run:
+#     additional-args: --workers 8 --tests-per-worker 25
+#     script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py
   locust:
