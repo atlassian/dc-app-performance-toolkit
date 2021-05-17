@@ -19,7 +19,7 @@ settings:
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
     search_jql: 11
@@ -33,7 +33,7 @@ settings:
     view_kanban_board: 7
     view_backlog: 6
     browse_boards: 1
-    standalone_extension: 0 # By default disabled
+    standalone_extension: 1 # By default disabled
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
 services:
