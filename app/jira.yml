@@ -60,15 +60,15 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
-#   - scenario: pytest-run
-#     executor: pytest
-#     runner: pytest
-#     hold-for: ${test_duration}
-#     ramp-up: 3m
+  - scenario: pytest-run
+    executor: pytest
+    runner: pytest
+    hold-for: ${test_duration}
+    ramp-up: 3m
 scenarios:
-#   pytest-run:
-#     additional-args: --workers 8 --tests-per-worker 25
-#     script: pytests/
+  pytest-run:
+    additional-args: --workers 8 --tests-per-worker 25
+    script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py
   locust:

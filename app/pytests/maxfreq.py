@@ -6,7 +6,6 @@ import time
 # If func is called less than 1/freq seconds since last call, it doesn't execute and None is returned
 def max_freq(maxfreq):
     def decorator(func):
-        print("MMM");
         last_run_time = 0
         @functools.wraps(func)
         def wrapper(*args, **kwargs):

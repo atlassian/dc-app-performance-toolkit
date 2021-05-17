@@ -14,8 +14,11 @@ class TestDelete:
         # Prepare
         # request list of diagrams using the session id
         HOSTNAME = os.environ.get('application_hostname')
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
+        assert diagrams_response.status_code == 200
 
-        ##CREATE DIAGRAM
+        # To make it thread save need to create the diagram before removing
+
         # Get user
         diagrams_response = session.get('/rest/dependency-map/1.0/user')
         assert diagrams_response.status_code == 200
@@ -25,62 +28,31 @@ class TestDelete:
         diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
         assert diagrams_response.status_code == 200
 
-        # Get field status
-        diagrams_response = session.get('/rest/dependency-map/1.0/field/status')
-        assert diagrams_response.status_code == 200
-        field= diagrams_response.json()["id"]
-
-        # Get field priority
-        diagrams_response = session.get('/rest/dependency-map/1.0/field/priority')
-        assert diagrams_response.status_code == 200
-        field2= diagrams_response.json()["id"]
-
         #Get filterKey randomly among the project in the project file
         filterKey= getRandomFilter(session)
 
         # Create diagram
-        payload ={ 'name':"F100", 'author':userKey,
-                   'lastEditedBy':userKey, 'layoutId':2, 'filterKey': filterKey,
-                   'boxColorFieldKey': field, 'groupedLayoutFieldKey': field,
-                   'matrixLayoutHorizontalFieldKey': field, 'matrixLayoutVerticalFieldKey': field2}
+        payload ={
+          'name':"F100",
+          'author':userKey,
+          'layoutId':2,
+          'filterId': filterKey,
+          'boxColorFieldKey': 'status',
+          'groupedLayoutFieldKey': 'status',
+          'matrixLayoutHorizontalFieldKey': 'status',
+          'matrixLayoutVerticalFieldKey': 'priority',
+          'showTypeIcons': True,
+          'parallelIssueBatches': 4,
+          'issuesPerRow': 5,
+          'secondaryIssues': 1,
+          'boxType': 0
+        }
 
         diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
                                          json=payload)
         assert diagrams_response.status_code == 200
         diagramId = diagrams_response.json()['id']
 
-        print("Hej")
-
-        ##FIND DIAGRAM
-
-        # To make it thread save need to create the diagram before removing
-        # Get user
-        diagrams_response = session.get('/rest/dependency-map/1.0/user')
-        assert diagrams_response.status_code == 200
-        userKey = diagrams_response.json()["key"]
-
-        # Get filter key
-        diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
-        assert diagrams_response.status_code == 200
-
-
-        #Get favoritDiagram
-        diagrams_response = session.get('/rest/dependency-map/1.0/favoriteDiagram')
-        assert diagrams_response.status_code == 200
-
-        #Get diagrams with filterKey
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
-
-     #   #Get filter
-        diagrams_response = session.get('/rest/api/2/filter/' + filterKey)
-        assert diagrams_response.status_code == 200
-
-        #Get diagram
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram/' + str(diagramId))
-        assert diagrams_response.status_code == 200
-
-        ##REMOVE
         #remove
         diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + str(diagramId))
         assert diagrams_response2.status_code == 200
@@ -88,7 +60,7 @@ class TestDelete:
         #print_in_shell( diagrams_response.json() );
 
         #get all diagrams after delete
-        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?filterKey=' + filterKey + '&searchTerm=&sortBy=name&reverseSort=&startAt=0&maxResults=50')
+        diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
 
         

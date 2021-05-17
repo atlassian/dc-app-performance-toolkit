@@ -30,30 +30,41 @@ class TestChangeDiagram:
         print_in_shell("User key: " + userKey)
 
         # Create diagram
-        payload ={ 'name':"D100", 'author':userKey,
-           'lastEditedBy':userKey, 'layoutId':0, 'filterKey': 10000,
-            'boxColorFieldKey': "priority", 'groupedLayoutFieldKey': "priority", 
-            'matrixLayoutHorizontalFieldKey': 'fixVersions', 'matrixLayoutVerticalFieldKey': 'fixVersions'}
+        payload ={
+          'name':"D100",
+          'layoutId':0,
+          'filterKey': 10000,
+          'boxColorFieldKey': "priority",
+          'groupedLayoutFieldKey': "priority",
+          'matrixLayoutHorizontalFieldKey': 'fixVersions',
+          'matrixLayoutVerticalFieldKey': 'fixVersions',
+          'showTypeIcons': True,
+          'parallelIssueBatches': 4,
+          'issuesPerRow': 5,
+          'secondaryIssues': 1,
+          'boxType': 0
+        }
 
         diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
             json=payload)
-        assert diagrams_response.status_code == 200    
+        print('diag resp=',str(diagrams_response.text))
+        assert diagrams_response.status_code == 200
         newDiagram = diagrams_response.json()
         diagramId = str(newDiagram["id"])
         print_in_shell('diagramid=' +diagramId)
 
         saveRemoveDiagramCmd(diagramId)
-         
+
         # Get all priorities
         diagrams_response = session.get('/rest/dependency-map/1.0/fieldOption/priority')
-        assert diagrams_response.status_code == 200            
+        assert diagrams_response.status_code == 200
         priorityItem = diagrams_response.json()[4]
         priorityItemId = str(priorityItem['id'])
         print_in_shell('priorityItemId=' + priorityItemId)
-        
-        #Get colore palete entry for diagram for field=priority option=5 
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=' + priorityItemId)
-        assert diagrams_response.status_code == 200            
+
+        #Get colore palete entry for diagram for field=priority option=5
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
+        assert diagrams_response.status_code == 200
         value = diagrams_response.text
         if not value:
            print_in_shell( "No response value")
@@ -61,25 +72,8 @@ class TestChangeDiagram:
            print_in_shell( diagrams_response.json() )
 
         #create box coloure resource entry
-        payload = {"diagramId":diagramId,"fieldId":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":4}
+        payload = {"diagramId":diagramId,"fieldKey":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":4}
         diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
             json=payload)
         assert diagrams_response.status_code == 200
         print_in_shell( diagrams_response.json() )
-        boxColorResource = diagrams_response.json()['id']
-        
-        #update box coloure resource entry, created if not exists.
-        payload = {"id":boxColorResource,"diagramId":diagramId,"fieldId":"priority","fieldOptionId":priorityItemId,"colorPaletteEntryId":5}
-        diagrams_response = session.put('/rest/dependency-map/1.0/boxColor',
-            json=payload)
-        assert diagrams_response.status_code == 200
-        print_in_shell( diagrams_response.json() )
-        
-        
-    
-           
-        
-        
-              
-        
- 

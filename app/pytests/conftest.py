@@ -110,12 +110,6 @@ def getRandomFilter(session):
     filterKey = project["filterId"]
     return filterKey
 
-def getFilterId(project):
-    for pro in projects:
-        if pro['id']==project:
-          return pro["filterId"];
-    return '0'
-
 def getRandomProjectId():
     nrProjects = len(projects)
     projectId=projects[random.randint(0,nrProjects-1)]['id']
@@ -125,9 +119,6 @@ def getRandomProject():
     nrProjects = len(projects)
     project=projects[random.randint(0,nrProjects-1)]
     return project
-
-def getNrProjects():
-    return len(projects)
 
 
 
@@ -153,6 +144,7 @@ def print_timing(func):
         with open(pytest_results_file, "a") as file:
             file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
         global_lock.release()
+
         print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
         if not success:
