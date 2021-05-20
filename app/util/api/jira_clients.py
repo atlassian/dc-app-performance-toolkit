@@ -245,3 +245,15 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
         service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
         return service_desk_info.json()
+
+    def get_reindex_info(self):
+        api_url = f'{self.host}/rest/api/2/reindex'
+        reindex_info = self.get(api_url, 'Could not retrieve reindex info.', verify_response=False)
+        if 'A task could not be found for the given task id' in reindex_info.text:
+            raise SystemExit('Jira is unable to perform a background re-index at this time because the index files '
+                             'are either missing or corrupted.\nPlease navigate to System > Indexing. '
+                             'Select the Full re-index option. Click Re-Index and wait until re-indexing is completed.')
+        elif '"currentProgress":100' in reindex_info.text:
+            pass
+        else:
+            raise SystemExit('Could not retrieve reindex info.')
