@@ -70,13 +70,13 @@ class RestClient(Client):
             expected_status_codes: list = None,
             allow_redirect: bool = False,
             headers: dict = None,
-            auth: tuple = None,
-            verify_response: bool = True):
+            auth: tuple = None):
+
         response = self.session.get(url, verify=self.verify, timeout=self.requests_timeout,
                                     allow_redirects=allow_redirect, headers=headers if headers else self.headers,
                                     auth=auth if auth else self.base_auth)
-        if verify_response:
-            self.__verify_response(response, error_msg, expected_status_codes)
+
+        self.__verify_response(response, error_msg, expected_status_codes)
 
         return response
 

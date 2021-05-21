@@ -248,12 +248,10 @@ class JiraRestClient(RestClient):
 
     def get_reindex_info(self):
         api_url = f'{self.host}/rest/api/2/reindex'
-        reindex_info = self.get(api_url, 'Could not retrieve reindex info.', verify_response=False)
+        reindex_info = self.get(api_url, 'Could not retrieve reindex info.', expected_status_codes=[404])
         if 'A task could not be found for the given task id' in reindex_info.text:
             raise SystemExit('Jira is unable to perform a background re-index at this time because the index files '
                              'are either missing or corrupted.\nPlease navigate to System > Indexing. '
                              'Select the Full re-index option. Click Re-Index and wait until re-indexing is completed.')
-        elif '"currentProgress":100' in reindex_info.text:
-            pass
-        else:
+        elif not reindex_info.ok:
             raise SystemExit('Could not retrieve reindex info.')
