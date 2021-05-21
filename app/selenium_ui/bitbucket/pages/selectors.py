@@ -193,7 +193,7 @@ class PullRequestLocator:
     merge_spinner = (By.CSS_SELECTOR, "aui-spinner[size='small']")
     diagram_selector = {'6': (By.CSS_SELECTOR, 'div.diagram-image'), '7': (By.CLASS_NAME, 'branches-diagram')}
     pull_request_modal_merge_button = {'6': (By.CSS_SELECTOR, 'button.confirm-button'),
-                                       '7': (By.CSS_SELECTOR, "button[type='submit']")}
+                                       '7': (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")}
     del_branch_checkbox_selector = {'6': (By.CSS_SELECTOR, 'span.pull-request-cleanup-checkbox-wrapper'),
                                     '7': (By.NAME, 'deleteSourceRef')}
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
