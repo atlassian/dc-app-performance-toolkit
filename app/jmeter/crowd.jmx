@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, atlas-loadb-eyhlwv11xgay-984307768.us-east-2.elb.amazonaws.com)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, atlas-loadb-1js4nit9lf9qz-1905270657.us-east-2.elb.amazonaws.com)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
@@ -187,7 +187,7 @@
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/authentication?username=performance_owknoycqsaygciz</stringProp>
+            <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/authentication?username=performance_aaadwisujnazryl</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -202,7 +202,7 @@
               <collectionProp name="AuthManager.auth_list">
                 <elementProp name="" elementType="Authorization">
                   <stringProp name="Authorization.url">${application.postfix}</stringProp>
-                  <stringProp name="Authorization.username">jira_8512</stringProp>
+                  <stringProp name="Authorization.username">crowd</stringProp>
                   <stringProp name="Authorization.password">1111</stringProp>
                   <stringProp name="Authorization.domain"></stringProp>
                   <stringProp name="Authorization.realm"></stringProp>
