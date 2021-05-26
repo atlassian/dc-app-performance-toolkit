@@ -34,6 +34,16 @@
             <stringProp name="Argument.value">${__P(application_postfix, )}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="application.name" elementType="Argument">
+            <stringProp name="Argument.name">application.name</stringProp>
+            <stringProp name="Argument.value">${__P(application_name, crowd)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="application.password" elementType="Argument">
+            <stringProp name="Argument.name">application.password</stringProp>
+            <stringProp name="Argument.value">${__P(application_password, 1111)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -187,7 +197,7 @@
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/authentication?username=performance_aaadwisujnazryl</stringProp>
+            <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/authentication?username=${username}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -202,8 +212,8 @@
               <collectionProp name="AuthManager.auth_list">
                 <elementProp name="" elementType="Authorization">
                   <stringProp name="Authorization.url">${application.postfix}</stringProp>
-                  <stringProp name="Authorization.username">crowd</stringProp>
-                  <stringProp name="Authorization.password">1111</stringProp>
+                  <stringProp name="Authorization.username">${application.name}</stringProp>
+                  <stringProp name="Authorization.password">${application.password}</stringProp>
                   <stringProp name="Authorization.domain"></stringProp>
                   <stringProp name="Authorization.realm"></stringProp>
                 </elementProp>
