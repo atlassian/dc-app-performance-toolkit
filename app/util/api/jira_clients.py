@@ -1,6 +1,7 @@
 from selenium.common.exceptions import WebDriverException
 
 from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -46,6 +47,7 @@ class JiraRestClient(RestClient):
 
         return boards_list
 
+    @retry()
     def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
         Returns a list of users that match the search string. This resource cannot be accessed anonymously.
@@ -118,6 +120,7 @@ class JiraRestClient(RestClient):
 
         return issues
 
+    @retry()
     def get_total_issues_count(self, jql: str = ''):
         api_url = f'{self.host}/rest/api/2/search'
         body = {"jql": jql if jql else "order by key",
