@@ -4,21 +4,20 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname:    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname:     # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
+    application_postfix:            # e.g. /crowd in case of url like http://localhost:2990/crowd
     admin_login: admin
     admin_password: admin
-    application_name: jira_8512
+    application_name: crowd
     application_password: 1111
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 10000                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 10m
-    ramp-up: 1000s     # time to spin all concurrent users
-    rps: 10 # ramp-up: conc / rps, tah: 3600*rps
-    total_actions_per_hour: 36000   # number of total JMeter/Locust actions per hour
+    load_executor: jmeter            
+    concurrency: 1000                # number of concurrent threads to authenticate random users
+    test_duration: 45m
+    ramp-up: 250s                     # time to spin all concurrent users
+    total_actions_per_hour: 144000   # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
@@ -30,11 +29,11 @@ services:
     prepare:
       - python util/pre_run/environment_checker.py
       - python util/data_preparation/crowd_prepare_data.py
-#    shutdown:
+    shutdown:
 #      - python util/post_run/jmeter_post_check.py
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
 #    post-process:
-#      - python util/analytics/analytics.py jira
+#      - python util/analytics/analytics.py crowd
 #      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: ${load_executor}
@@ -48,9 +47,9 @@ execution:
 #    hold-for: ${test_duration}
 scenarios:
   selenium:
-    script: selenium_ui/jira_ui.py
+    script: selenium_ui/crowd_ui.py
   locust:
-    script: locustio/jira/locustfile.py
+    script: locustio/crowd/locustfile.py
   jmeter:
     script: jmeter/crowd.jmx
     properties:
@@ -69,7 +68,7 @@ modules:
   jmeter:
     version: ${JMETER_VERSION}
     detect-plugins: true
-    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    memory-xmx: 14G  # allow JMeter to use up to 8G of memory
     plugins:
       - bzm-parallel=0.4
       - bzm-random-csv=0.6

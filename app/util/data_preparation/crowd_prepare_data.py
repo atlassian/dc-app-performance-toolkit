@@ -16,6 +16,9 @@ DEFAULT_USER_PREFIX = 'performance'
 USER_SEARCH_CQL = f'name={DEFAULT_USER_PREFIX}*'
 ERROR_LIMIT = 10
 
+NECESSARY_USERS_COUNT = 100000
+NECESSARY_GROUPS_COUNT = 10
+
 
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
@@ -25,35 +28,37 @@ def __get_users(crowd_api, count):
     errors_count = 0
     cur_perf_users = crowd_api.users_search_parallel(cql=USER_SEARCH_CQL, max_results=count)
     if len(cur_perf_users) >= count:
+        print('All performance test users were successfully created')
         return cur_perf_users
+    else:
+        raise Exception(f'Your Atlassian Crowd instance does not have enough users ')
 
-    while len(cur_perf_users) < count:
-        if errors_count >= ERROR_LIMIT:
-            raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
-                            f'Please check the errors in bzt.log')
-        random_str = f"{generate_random_string(10)}"
-        username = f"{DEFAULT_USER_PREFIX}_{random_str}"
-        first_name = f"{DEFAULT_USER_PREFIX}_{random_str[:5]}"
-        last_name = f"{random_str[5:]}"
-        try:
-
-            user = crowd_api.add_user(name=username, password=DEFAULT_USER_PASSWORD,
-                                      first_name=first_name, last_name=last_name)
-
-            print(f"User {user['email']} is created, number of users to create is "
-                  f"{count - len(cur_perf_users)}")
-            cur_perf_users.append(user)
-        # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
-        except Exception as error:
-            print(f"Warning: Create Crowd user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
-            errors_count = errors_count + 1
-    print('All performance test users were successfully created')
-    return cur_perf_users
+    # TODO Remove this part of code in final version (we do not need to create Crowd users)
+    # while len(cur_perf_users) < count:
+    #     if errors_count >= ERROR_LIMIT:
+    #         raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
+    #                         f'Please check the errors in bzt.log')
+    #     random_str = f"{generate_random_string(10)}"
+    #     username = f"{DEFAULT_USER_PREFIX}_{random_str}"
+    #     first_name = f"{DEFAULT_USER_PREFIX}_{random_str[:5]}"
+    #     last_name = f"{random_str[5:]}"
+    #     try:
+    #
+    #         user = crowd_api.add_user(name=username, password=DEFAULT_USER_PASSWORD,
+    #                                   first_name=first_name, last_name=last_name)
+    #
+    #         print(f"User {user['email']} is created, number of users to create is "
+    #               f"{count - len(cur_perf_users)}")
+    #         cur_perf_users.append(user)
+    #     # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
+    #     except Exception as error:
+    #         print(f"Warning: Create Crowd user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
+    #         errors_count = errors_count + 1
 
 
 def __create_data_set(crowd_api):
     dataset = dict()
-    dataset[USERS] = __get_users(crowd_api, CROWD_SETTINGS.concurrency)
+    dataset[USERS] = __get_users(crowd_api, NECESSARY_USERS_COUNT)
 
     print(f'Users count: {len(dataset[USERS])}')
 
