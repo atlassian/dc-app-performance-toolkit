@@ -474,6 +474,10 @@ def __write_test_data_to_files(datasets):
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
 
 
+def __check_reindex_info(jira_api):
+    jira_api.get_reindex_info()
+
+
 @print_timing('JSM full prepare data', sep='=')
 def main():
     print("Started preparing data")
@@ -482,6 +486,7 @@ def main():
     jsm_client = JsmRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password, verify=JSM_SETTINGS.secure,
                                headers=JSM_EXPERIMENTAL_HEADERS)
     jira_client = JiraRestClient(url, JSM_SETTINGS.admin_login, JSM_SETTINGS.admin_password, JSM_SETTINGS.secure)
+    __check_reindex_info(jira_client)
     dataset = __create_data_set(jira_client=jira_client, jsm_client=jsm_client)
     __write_test_data_to_files(dataset)
 
