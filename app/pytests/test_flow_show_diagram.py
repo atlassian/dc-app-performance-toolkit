@@ -100,6 +100,7 @@ def create_data(session):
 class TestFlowShowDiagram:
     @max_freq(1000/3600)
     @print_timing_with_additional_arg
+
     def test_show_diagram_flow_sd(self, base_url, session, create_data):
         diagramId=create_data
         #Get all diagrams
@@ -126,13 +127,13 @@ class TestFlowShowDiagram:
         print_in_shell(issue_ids)
 
         #Get color palet entries
-        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '0')
+        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?paletteId=' + '0')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get color palet entries
-        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?palettId=' + '1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?paletteId=' + '1')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
     #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
@@ -210,13 +211,3 @@ class TestFlowShowDiagram:
         #Get all link configs
         diagrams_response = session.get('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId)
     #    print_in_shell( diagrams_response.json())
-
-
-
-
-
-
-
-
-
-             
