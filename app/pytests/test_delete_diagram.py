@@ -9,7 +9,7 @@ from conftest import getRandomFilter
 
 class TestDelete:
     @max_freq(50/3600)
-    @print_timing
+#    @print_timing
     def test_delete_diagram(self, base_url, session):
         # Prepare
         # request list of diagrams using the session id
@@ -36,7 +36,7 @@ class TestDelete:
           'name':"F100",
           'author':userKey,
           'layoutId':2,
-          'filterId': filterKey,
+          'filterKey': filterKey,
           'boxColorFieldKey': 'status',
           'groupedLayoutFieldKey': 'status',
           'matrixLayoutHorizontalFieldKey': 'status',
@@ -62,6 +62,3 @@ class TestDelete:
         #get all diagrams after delete
         diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
         assert diagrams_response.status_code == 200
-
-        
- 

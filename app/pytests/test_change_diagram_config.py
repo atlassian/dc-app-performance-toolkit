@@ -44,7 +44,7 @@ class TestChangeDiagram:
           'secondaryIssues': 1,
           'boxType': 0
         }
-
+        print_in_shell('payload=', payload)
         diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
             json=payload)
         print('diag resp=',str(diagrams_response.text))
