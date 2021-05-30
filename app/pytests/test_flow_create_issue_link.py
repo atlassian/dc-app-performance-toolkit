@@ -101,27 +101,28 @@ def create_data(session):
     issueLinkTypeId2 = diagrams_response.json()['issueLinkTypes'][1]['id']
     issueLinkTypeId3 = diagrams_response.json()['issueLinkTypes'][2]['id']
 
-    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 20}
+    print_in_shell('payload', payload)
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramKey=' + diagramIdStr,
                                      json=payload)
     assert diagrams_response.status_code == 200, diagrams_response.text
 
-    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId2, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 6}
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId2, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 21}
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
     assert(diagrams_response.status_code == 200, 'asd')
 
-    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId3 , 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 1}
+    payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId3 , 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 22}
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
     assert(diagrams_response.status_code == 200, 'zxc')
 
     yield {'diagramId': diagramIdStr,  'projectId':projectId}
-    diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramIdStr)
-    assert diagrams_response2.status_code == 200
-    print_in_shell("Deleted diagram id=" + diagramIdStr)
-
-    return {'diagramId': diagramIdStr,  'projectId':projectId}
+    # diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramIdStr)
+    # assert diagrams_response2.status_code == 200
+    # print_in_shell("Deleted diagram id=" + diagramIdStr)
+    #
+    # return {'diagramId': diagramIdStr,  'projectId':projectId}
 
 def get_link_type(session):
     #JIRA Get list of available link types
