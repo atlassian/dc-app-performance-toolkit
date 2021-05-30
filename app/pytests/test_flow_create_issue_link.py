@@ -32,7 +32,7 @@ def create_data(session):
     diagrams_response = session.get('/rest/dependency-map/1.0/user')
     assert diagrams_response.status_code == 200
     userKey = diagrams_response.json()["key"]
-    print_in_shell("User key: " + userKey)
+    print_in_shell("User key: ", userKey)
 
     # Get filter key
     diagrams_response = session.get('/rest/dependency-map/1.0/filter?searchTerm=&page=0&resultsPerPage=25')
@@ -50,9 +50,8 @@ def create_data(session):
     # Create diagram
     payload ={
       'name':"G100",
-      'author': userKey,
       'layoutId':0,
-      'filterId': filterKey,
+      'filterKey': filterKey,
       'boxColorFieldKey': field,
       'groupedLayoutFieldKey': field,
       'matrixLayoutHorizontalFieldKey': 'fixVersions',
@@ -63,7 +62,7 @@ def create_data(session):
       'secondaryIssues': 1,
       'boxType': 0
     }
-
+    print_in_shell('payload=', payload)
     diagrams_response = session.post('/rest/dependency-map/1.0/diagram',
                                      json=payload)
     assert diagrams_response.status_code == 200
@@ -72,22 +71,24 @@ def create_data(session):
 
 
     #create box colore resource entries.
-    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":1,"colorPaletteEntryId":5}
+    payload = {"diagramId":diagramId,"fieldKey":"status","fieldOptionId":1,"colorPaletteEntryId":5}
+    print_in_shell('payload=', payload)
+
     diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":2,"colorPaletteEntryId":6}
+    payload = {"diagramId":diagramId,"fieldKey":"status","fieldOptionId":2,"colorPaletteEntryId":6}
     diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":3,"colorPaletteEntryId":7}
+    payload = {"diagramId":diagramId,"fieldKey":"status","fieldOptionId":3,"colorPaletteEntryId":7}
     diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
 
-    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":4,"colorPaletteEntryId":8}
+    payload = {"diagramId":diagramId,"fieldKey":"status","fieldOptionId":4,"colorPaletteEntryId":8}
     diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
                                      json=payload)
     assert diagrams_response.status_code == 200
@@ -101,19 +102,19 @@ def create_data(session):
     issueLinkTypeId3 = diagrams_response.json()['issueLinkTypes'][2]['id']
 
     payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
-    diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
+    diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramKey=' + diagramIdStr,
                                      json=payload)
-    assert(diagrams_response.status_code == 200)
+    assert diagrams_response.status_code == 200, diagrams_response.text
 
     payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId2, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 6}
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
-    assert(diagrams_response.status_code == 200)
+    assert(diagrams_response.status_code == 200, 'asd')
 
     payload = { 'diagramId': diagramIdStr, 'linkKey': issueLinkTypeId3 , 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 1}
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramIdStr,
                                      json=payload)
-    assert(diagrams_response.status_code == 200)
+    assert(diagrams_response.status_code == 200, 'zxc')
 
     yield {'diagramId': diagramIdStr,  'projectId':projectId}
     diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramIdStr)
@@ -228,32 +229,32 @@ class TestCreateLink:
         assert diagrams_response.status_code == 200
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=2')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=3')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=4')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=5')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramIdStr + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramIdStr + '&fieldId=priority&fieldOptionId=-1')
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
 
@@ -316,6 +317,3 @@ class TestCreateLink:
                        saveRemoveIssueLinkCmd(issueLinksId)
                    except IOError:
                        print_in_shell("File not accessible")
-
-
-

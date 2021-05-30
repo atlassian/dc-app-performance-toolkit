@@ -42,7 +42,7 @@ def create_data(session):
       'author':userKey,
       'lastEditedBy':userKey,
       'layoutId':2,
-      'filterId': filterKey,
+      'filterKey': filterKey,
       'boxColorFieldKey': field,
       'groupedLayoutFieldKey': field,
       'matrixLayoutHorizontalFieldKey': field,
@@ -63,7 +63,7 @@ def create_data(session):
 
 
     #update box colore resource entry, created if not exists.
-    payload = {"diagramId":diagramId,"fieldId":"status","fieldOptionId":1,"colorPaletteEntryId":5}
+    payload = {"diagramId":diagramId,"fieldKey":"status","fieldOptionId":1,"colorPaletteEntryId":5}
     diagrams_response = session.post('/rest/dependency-map/1.0/boxColor',
         json=payload)
     assert diagrams_response.status_code == 200
@@ -79,40 +79,52 @@ def create_data(session):
     print_in_shell("issueLinkTypeId=" + issueLinkTypeId)
 
     # Create linkConfig
-    payload = { 'diagramId': diagramId, 'linkKey': issueLinkTypeId, 'visible': True, 'dashType': 0, 'width': 0, 'colorPaletteEntryId': 5}
+    payload = {
+        'diagramId': int(diagramId),
+        'linkKey': int(issueLinkTypeId),
+        'visible': True,
+        'dashType': 0,
+        'width': 0,
+        'colorPaletteEntryId': 20
+    }
+    print_in_shell('payload', payload)
 
     diagrams_response = session.post('/rest/dependency-map/1.0/linkConfig?diagramId=' + diagramId,
         json=payload)
-    assert(diagrams_response.status_code == 200)
+    assert diagrams_response.status_code == 200, diagrams_response.text
     newLinkConfig = diagrams_response.json()
-    linkConfigId = str(newLinkConfig["id"])
-    print_in_shell("linkConfigId=" + linkConfigId)
+    print_in_shell('newLinkConfig', newLinkConfig)
+    #linkConfigId = str(newLinkConfig["id"])
+    #print_in_shell("linkConfigId=" + linkConfigId)
 
-    yield diagramId
-
-    diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramId)
-    assert diagrams_response2.status_code == 200
-    print_in_shell("Deleted diagram id=" + diagramId)
+    # yield diagramId
+    #
+    # diagrams_response2 = session.delete('/rest/dependency-map/1.0/diagram/' + diagramId)
+    # assert diagrams_response2.status_code == 200
+    # print_in_shell("Deleted diagram id=" + diagramId)
 
     return diagramId
 
 
 class TestFlowShowDiagram:
     @max_freq(1000/3600)
-    @print_timing_with_additional_arg
+#    @print_timing_with_additional_arg
 
     def test_show_diagram_flow_sd(self, base_url, session, create_data):
+        print_in_shell('test_show_diagram_flow_sd start')
         diagramId=create_data
+        print_in_shell('diagramId', diagramId)
         #Get all diagrams
         HOSTNAME = os.environ.get('application_hostname')
         diagrams_response = session.get('/rest/dependency-map/1.0/diagram?searchTerm=&startAt=0&maxResults=50')
-        assert diagrams_response.status_code == 200
+        assert diagrams_response.status_code == 200, diagrams_response.text
 
         resp = session.get('/rest/api/latest/project')
         assert resp.status_code == 200
         #result = resp.json()
         #length = len(result)
         project_id=getRandomProjectId()
+        print_in_shell('project_id', project_id)
 
         issue_ids = []
         startAt = 0
@@ -130,25 +142,25 @@ class TestFlowShowDiagram:
         diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?paletteId=' + '0')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
-    #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
+        print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get color palet entries
         diagrams_response = session.get('/rest/dependency-map/1.0/colorPaletteEntry?paletteId=' + '1')
         assert diagrams_response.status_code == 200
         colorPaletteEntryId =  diagrams_response.json() [-1]["id"]
-    #    print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
+        print_in_shell("colorPaletteEntryId=" + str(colorPaletteEntryId))
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=1')
-        assert diagrams_response.status_code == 200
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
+        assert diagrams_response.status_code == 200, diagrams_response.text
         value = diagrams_response.text
-    #    if not value:
-    #        print_in_shell( "No response value fieldId 1")
-    #    else:
-    #        print_in_shell( diagrams_response.json() )
+        if not value:
+            print_in_shell( "No response value fieldId 1")
+        else:
+            print_in_shell( diagrams_response.text )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=2')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -157,7 +169,7 @@ class TestFlowShowDiagram:
     #       print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=3')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -166,7 +178,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=4')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -175,7 +187,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=5')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:
@@ -184,7 +196,7 @@ class TestFlowShowDiagram:
     #        print_in_shell( diagrams_response.json() )
 
         #Get boxcolor, värden när dessa är explicit ändrade.
-        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor?diagramId=' + diagramId + '&fieldId=priority&fieldOptionId=-1')
+        diagrams_response = session.get('/rest/dependency-map/1.0/boxColor/' + diagramId)
         assert diagrams_response.status_code == 200
         value = diagrams_response.text
     #    if not value:

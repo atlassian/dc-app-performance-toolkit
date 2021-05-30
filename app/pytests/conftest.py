@@ -23,11 +23,11 @@ def pytest_addoption(parser):
     parser.addoption('--repeat', action='store',
                      help='Number of times to repeat each test')
 
-def print_in_shell(value):
+def print_in_shell(*values):
     if PRINT_IN_SHELL=="No":
         pass
     else:
-        print(value)
+        print(*values)
 
 
 def __get_current_results_dir():
