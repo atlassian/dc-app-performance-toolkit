@@ -41,15 +41,7 @@ execution:
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: ${ramp-up}
-#  - scenario: selenium
-#    executor: selenium
-#    runner: pytest
-#    hold-for: ${test_duration}
 scenarios:
-  selenium:
-    script: selenium_ui/crowd_ui.py
-  locust:
-    script: locustio/crowd/locustfile.py
   jmeter:
     script: jmeter/crowd.jmx
     properties:
@@ -88,9 +80,6 @@ modules:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
       httpsampler.ignore_failed_embedded_resources: "true"
-  selenium:
-    chromedriver:
-      version: "89.0.4389.23" # Supports Chrome version 89. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
