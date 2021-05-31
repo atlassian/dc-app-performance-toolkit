@@ -29,10 +29,12 @@ class CrowdRestClient(RestClient):
 
         return response.json()
 
-    def search(self, entity_type: str = "user", start_index: int = 0, max_results: int = 1000, restriction: str = ''):
+    def search(self, entity_type: str = "user", start_index: int = 0, max_results: int = 1000, restriction: str = '',
+               expand: str = 'user'):
         api_url = self.host + f"/rest/usermanagement/1/search" \
                               f"?entity-type={entity_type}" \
-                              f"&start-index={start_index}&max-results={max_results}&restriction={restriction}"
+                              f"&start-index={start_index}&max-results={max_results}&restriction={restriction}" \
+                              f"&expand={expand}"
         response = self.get(api_url, "Search failed")
 
         return [i['name'] for i in response.json()[f'{entity_type}s']]
@@ -79,3 +81,9 @@ class CrowdRestClient(RestClient):
                               f"?groupname={group_name}&start-index={start_index}&max-results={max_results}"
         r = self.get(api_url, "Group members call failed")
         return r.json()
+
+    def get_group_membership(self):
+        api_url = self.host + '/rest/usermanagement/1/group/membership'
+        self.headers = {'Accept': 'application/xml', 'Content-Type': 'application/xml'}
+        response = self.get(api_url, 'Can not get group memberships')
+        return response.content

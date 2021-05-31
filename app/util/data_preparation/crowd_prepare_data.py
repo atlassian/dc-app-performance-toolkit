@@ -16,8 +16,7 @@ DEFAULT_USER_PREFIX = 'performance'
 USER_SEARCH_CQL = f'name={DEFAULT_USER_PREFIX}*'
 ERROR_LIMIT = 10
 
-NECESSARY_USERS_COUNT = 100000
-NECESSARY_GROUPS_COUNT = 10
+NECESSARY_USERS_COUNT = 10000
 
 
 def generate_random_string(length=20):
@@ -31,7 +30,7 @@ def __get_users(crowd_api, count):
         print('All performance test users were successfully created')
         return cur_perf_users
     else:
-        raise Exception(f'Your Atlassian Crowd instance does not have enough users ')
+        raise Exception(f'Your Atlassian Crowd instance does not have enough users {len(cur_perf_users)} out of {count}')
 
     # TODO Remove this part of code in final version (we do not need to create Crowd users)
     # while len(cur_perf_users) < count:
@@ -85,7 +84,6 @@ def main():
 
     client = CrowdRestClient(url, CROWD_SETTINGS.application_name,
                              CROWD_SETTINGS.application_password, verify=CROWD_SETTINGS.secure)
-
 
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
