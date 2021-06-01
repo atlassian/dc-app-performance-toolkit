@@ -181,10 +181,6 @@ def __check_for_admin_permissions(jira_api):
         raise SystemExit(f"The '{jira_api.user}' user does not have admin permissions.")
 
 
-def __check_reindex_info(jira_api):
-    jira_api.get_reindex_info()
-
-
 def main():
     print("Started preparing data")
 
@@ -195,7 +191,6 @@ def main():
 
     __check_for_admin_permissions(client)
     __check_current_language(client)
-    __check_reindex_info(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 
