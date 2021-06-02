@@ -1497,8 +1497,8 @@ def upload_attachments(locust):
     # 1900 pages/doattachfile.action?pageId={page_id}
     r = locust.post(f'/pages/doattachfile.action'
                     f'?pageId={page_id}',
-                    params={"atl_token": locust.session_data_storage['token'], "comment_0": "", "comment_1": "", "comment_2": "",
-                            "comment_3": "", "comment_4": "0", "confirm": "Attach"},
+                    params={"atl_token": locust.session_data_storage['token'], "comment_0": "", "comment_1": "",
+                            "comment_2": "", "comment_3": "", "comment_4": "0", "confirm": "Attach"},
                     files=multipart_form_data,
                     catch_response=True)
     content = r.content.decode('utf-8')
