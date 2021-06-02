@@ -56,8 +56,9 @@ JSON_HEADERS = {
 }
 
 JIRA_API_URL = '/'
-CONFLUENCE_API_URL = '/rest/api/user/anonymous'
+CONFLUENCE_API_URL = '/'
 JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
+CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
 
 JIRA = 'jira'
 JSM = 'jsm'
@@ -327,9 +328,10 @@ def run_as_specific_user(username=None, password=None):
                 # JSM Customer
                 elif app == JSM and app_type == TYPE_CUSTOMER:
                     url = JIRA_API_URL
-                # Confluence
+                # Confluence - redefine token value
                 elif app == CONFLUENCE:
                     url = CONFLUENCE_API_URL
+                    token_pattern = CONFLUENCE_TOKEN_PATTERN
                 else:
                     raise Exception(f'The "{app}" application type is not known.')
 

@@ -11,7 +11,6 @@ import uuid
 
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
-common_data = {"atl_token": ""}
 
 
 @confluence_measure('locust_login_and_view_dashboard')
@@ -45,7 +44,7 @@ def login_and_view_dashboard(locust):
     logger.locust_info(f'User {username} is successfully logged in')
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
-    common_data["atl_token"] = fetch_by_re(params.atl_token_re, content)
+    token = fetch_by_re(params.atl_token_pattern, content)
 
     # 20 index.action
     locust.get('/index.action', catch_response=True)
@@ -88,6 +87,7 @@ def login_and_view_dashboard(locust):
     locust.session_data_storage['keyboard_hash'] = keyboard_hash
     locust.session_data_storage['username'] = user[0]
     locust.session_data_storage['password'] = user[1]
+    locust.session_data_storage["token"] = token
 
 
 @confluence_measure('locust_view_page')
@@ -1326,7 +1326,7 @@ def comment_page(locust):
                                      "contentId": page_id,
                                      "space_key": space_key,
                                      "draftType": "comment",
-                                     "atl_token": common_data["atl_token"],
+                                     "atl_token": locust.session_data_storage["token"],
                                      }
 
     # 1680 rest/jiraanywhere/1.0/servers

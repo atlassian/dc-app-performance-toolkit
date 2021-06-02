@@ -33,7 +33,7 @@ class Login(ConfluenceResource):
     static_resource_url_re = 'meta name=\"ajs-static-resource-url-prefix\" content=\"(.*?)/_\">'
     version_number_re = 'meta name=\"ajs-version-number\" content=\"(.*?)\">'
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
-    atl_token_re = '"ajs-atl-token" content="(.+?)"'
+    atl_token_pattern = r'"ajs-atl-token" content="(.+?)"'
 
 
 class ViewPage(ConfluenceResource):
