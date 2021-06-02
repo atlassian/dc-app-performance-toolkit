@@ -1,6 +1,6 @@
 import yaml
 
-from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML
+from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML
 
 TOOLKIT_VERSION = '4.2.0'
 
@@ -80,7 +80,19 @@ class JsmSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
 
 
+class CrowdSettings(BaseAppSettings):
+
+    def __init__(self, config_yml):
+        super().__init__(config_yml)
+        self.concurrency = self.get_property('concurrency')
+        self.application_name = self.get_property('application_name')
+        self.application_password = self.get_property('application_password')
+
+
+
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
 CONFLUENCE_SETTINGS = ConfluenceSettings(config_yml=CONFLUENCE_YML)
 BITBUCKET_SETTINGS = BitbucketSettings(config_yml=BITBUCKET_YML)
 JSM_SETTINGS = JsmSettings(config_yml=JSM_YML)
+CROWD_SETTINGS = CrowdSettings(config_yml=CROWD_YML)
+
