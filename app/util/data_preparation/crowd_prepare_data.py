@@ -16,7 +16,7 @@ DEFAULT_USER_PREFIX = 'performance_'
 USER_SEARCH_CQL = f'name={DEFAULT_USER_PREFIX}*'
 ERROR_LIMIT = 10
 
-NECESSARY_USERS_COUNT = 10000
+USERS_COUNT = 100000
 
 
 def generate_random_string(length=20):
@@ -34,7 +34,7 @@ def __get_users(crowd_api, count):
 
 def __create_data_set(crowd_api):
     dataset = dict()
-    dataset[USERS] = __get_users(crowd_api, NECESSARY_USERS_COUNT)
+    dataset[USERS] = __get_users(crowd_api, USERS_COUNT)
 
     print(f'Users count: {len(dataset[USERS])}')
 
