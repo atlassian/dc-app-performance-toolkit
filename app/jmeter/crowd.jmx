@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, atlas-loadb-1js4nit9lf9qz-1905270657.us-east-2.elb.amazonaws.com)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, your_crowd_instance)})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
@@ -160,11 +160,6 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_user_auth" enabled="false">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
-        <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="jmeter_user_auth" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
@@ -285,8 +280,8 @@
                 <collectionProp name="AuthManager.auth_list">
                   <elementProp name="" elementType="Authorization">
                     <stringProp name="Authorization.url">${application.postfix}</stringProp>
-                    <stringProp name="Authorization.username">jira_8512</stringProp>
-                    <stringProp name="Authorization.password">1111</stringProp>
+                    <stringProp name="Authorization.username">${application.name}</stringProp>
+                    <stringProp name="Authorization.password">${application.password}</stringProp>
                     <stringProp name="Authorization.domain"></stringProp>
                     <stringProp name="Authorization.realm"></stringProp>
                   </elementProp>
@@ -330,7 +325,9 @@
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
-              <stringProp name="script">log.info(&quot;Username: ${vars.get(&quot;username&quot;)}&quot;)</stringProp>
+              <stringProp name="script">log.info(&quot;Username: ${vars.get(&quot;username&quot;)}&quot;)
+
+</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
