@@ -87,7 +87,7 @@ def login_and_view_dashboard(locust):
     locust.session_data_storage['keyboard_hash'] = keyboard_hash
     locust.session_data_storage['username'] = user[0]
     locust.session_data_storage['password'] = user[1]
-    locust.session_data_storage["token"] = token
+    locust.session_data_storage['token'] = token
 
 
 @confluence_measure('locust_view_page')
