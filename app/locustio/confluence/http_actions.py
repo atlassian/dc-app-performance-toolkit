@@ -110,7 +110,7 @@ def view_page(locust):
     tree_request_id = fetch_by_re(params.tree_result_id_re, content)
     has_no_root = fetch_by_re(params.has_no_root_re, content)
     root_page_id = fetch_by_re(params.root_page_id_re, content)
-    atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
+
     editable = fetch_by_re(params.editable_re, content)
     ancestor_ids = re.findall(params.ancestor_ids_re, content)
 
@@ -125,7 +125,6 @@ def view_page(locust):
     locust.session_data_storage['ancestors'] = ancestor_str
     locust.session_data_storage['space_key'] = space_key
     locust.session_data_storage['editable'] = editable
-    locust.session_data_storage['atl_token_view_issue'] = atl_token_view_issue
 
     # 110 rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
@@ -461,7 +460,6 @@ def open_editor_and_create_blog(locust):
             logger.error(f'Could not open editor for {blog_space_key}: {content}')
         assert 'Blog post title' in content, 'Could not open editor for blog.'
 
-        atl_token = fetch_by_re(params.atl_token_re, content)
         content_id = fetch_by_re(params.content_id_re, content)
         parsed_space_key = fetch_by_re(params.space_key, content)
         parsed_page_id = fetch_by_re(params.page_id_re, content)
@@ -506,7 +504,7 @@ def open_editor_and_create_blog(locust):
                                    "contentId": content_id,
                                    "draftType": "blogpost",
                                    "spaceKey": parsed_space_key,
-                                   "atl_token": atl_token
+                                   "atl_token": locust.session_data_storage['token']
                                    }
 
         # 640 json/startheartbeatactivity.action
@@ -516,9 +514,9 @@ def open_editor_and_create_blog(locust):
                         catch_response=True)
 
         content = r.content.decode('utf-8')
-        if atl_token not in content:
-            logger.error(f'Token {atl_token} not found in content: {content}')
-        assert atl_token in content, 'Token not found in content.'
+        if locust.session_data_storage['token'] not in content:
+            logger.error(f"Token {locust.session_data_storage['token']} not found in content: {content}")
+        assert locust.session_data_storage['token'] in content, 'Token not found in content.'
 
         contributor_hash = fetch_by_re(params.contribution_hash, content)
         locust.session_data_storage['contributor_hash'] = contributor_hash
@@ -535,7 +533,6 @@ def open_editor_and_create_blog(locust):
         locust.session_data_storage['draft_name'] = draft_name
         locust.session_data_storage['parsed_space_key'] = parsed_space_key
         locust.session_data_storage['content_id'] = content_id
-        locust.session_data_storage['atl_token'] = atl_token
         locust.session_data_storage['parsed_page_id'] = parsed_page_id
         locust.session_data_storage['parent_page_id'] = parent_page_id
 
@@ -566,7 +563,6 @@ def open_editor_and_create_blog(locust):
         draft_name = locust.session_data_storage['draft_name']
         parsed_space_key = locust.session_data_storage['parsed_space_key']
         content_id = locust.session_data_storage['content_id']
-        atl_token = locust.session_data_storage['atl_token']
 
         draft_body = {"status": "current", "title": draft_name, "space": {"key": f"{parsed_space_key}"},
                       "body": {"editor": {"value": f"Test Performance Blog Page Content {draft_name}",
@@ -601,7 +597,8 @@ def open_editor_and_create_blog(locust):
                                    "contentId": content_id,
                                    "draftType": "blogpost",
                                    "spaceKey": parsed_space_key,
-                                   "atl_token": atl_token
+
+                                   "atl_token": locust.session_data_storage['token']
                                    }
 
         # 690 json/stopheartbeatactivity.action
@@ -729,9 +726,9 @@ def open_editor_and_create_blog(locust):
                         catch_response=True)
 
         content = r.content.decode('utf-8')
-        if atl_token not in content:
-            logger.error(f'Token {atl_token} not found in content: {content}')
-        assert atl_token in content, 'Token not found in content.'
+        if locust.session_data_storage['token'] not in content:
+            logger.error(f"Token {locust.session_data_storage['token']} not found in content: {content}")
+        assert locust.session_data_storage['token'] in content, 'Token not found in content.'
 
     create_blog_editor()
     create_blog()
@@ -761,7 +758,6 @@ def create_and_edit_page(locust):
             logger.error(f'Could not open page editor: {content}')
         assert 'Page Title' in content, 'Could not open page editor.'
 
-        atl_token_fetched_by_re = fetch_by_re(params.atl_token_re, content)
         content_id_fetched_by_re = fetch_by_re(params.content_id_re, content)
         parent_page_id_fetched_by_re = fetch_by_re(params.parent_page_id, content)
 
@@ -800,7 +796,7 @@ def create_and_edit_page(locust):
                                          "contentId": content_id_fetched_by_re,
                                          "draftType": "page",
                                          "spaceKey": space_key,
-                                         "atl_token": atl_token_fetched_by_re
+                                         "atl_token": locust.session_data_storage['token']
                                          }
 
         # 1040 json/startheartbeatactivity.action
@@ -848,7 +844,6 @@ def create_and_edit_page(locust):
                     catch_response=True)
 
         locust.session_data_storage["content_id"] = content_id_fetched_by_re
-        locust.session_data_storage["atl_token"] = atl_token_fetched_by_re
         locust.session_data_storage["parent_page_id"] = parent_page_id_fetched_by_re
         locust.session_data_storage["contributor_hash"] = contributor_hash
 
@@ -895,14 +890,14 @@ def create_and_edit_page(locust):
                                          "contentId": locust.session_data_storage["content_id"],
                                          "space_key": space_key,
                                          "draftType": "page",
-                                         "atl_token": locust.session_data_storage["atl_token"],
+                                         "atl_token": locust.session_data_storage['token'],
                                          "contributorsHash": locust.session_data_storage['contributor_hash'],
                                          }
 
         stop_heartbeat_activity_body = {"dataType": "json",
                                         "contentId": locust.session_data_storage["content_id"],
                                         "draftType": "page",
-                                        "atl_token": locust.session_data_storage["atl_token"],
+                                        "atl_token": locust.session_data_storage['token'],
                                         }
 
         # 1130 json/startheartbeatactivity.action
@@ -1060,7 +1055,7 @@ def create_and_edit_page(locust):
                                          "contentId": locust.session_data_storage["content_id"],
                                          "space_key": space_key,
                                          "draftType": "page",
-                                         "atl_token": locust.session_data_storage["atl_token"],
+                                         "atl_token": locust.session_data_storage['token'],
                                          }
 
         # 1360 rest/tinymce/1/content/{content_id}.json
@@ -1132,14 +1127,14 @@ def create_and_edit_page(locust):
                                          "contentId": locust.session_data_storage["content_id"],
                                          "space_key": space_key,
                                          "draftType": "page",
-                                         "atl_token": locust.session_data_storage["atl_token"],
+                                         "atl_token": locust.session_data_storage['token'],
                                          "contributorsHash": locust.session_data_storage['contributor_hash'],
                                          }
 
         stop_heartbeat_activity_body = {"dataType": "json",
                                         "contentId": locust.session_data_storage["content_id"],
                                         "draftType": "page",
-                                        "atl_token": locust.session_data_storage["atl_token"],
+                                        "atl_token": locust.session_data_storage['token'],
                                         }
 
         edt_page_body_data = {"status": "current",
@@ -1326,7 +1321,7 @@ def comment_page(locust):
                                      "contentId": page_id,
                                      "space_key": space_key,
                                      "draftType": "comment",
-                                     "atl_token": locust.session_data_storage["token"],
+                                     "atl_token": locust.session_data_storage['token'],
                                      }
 
     # 1680 rest/jiraanywhere/1.0/servers
@@ -1491,7 +1486,6 @@ def upload_attachments(locust):
     if not('Created by' in content and 'Save for later' in content):
         logger.error(f'Failed to open page {page_id}: {content}')
     assert 'Created by' in content and 'Save for later' in content, 'Failed to open page to upload attachments.'
-    atl_token_view_issue = fetch_by_re(params.atl_token_view_issue_re, content)
     build_number = fetch_by_re(params.build_number_re, content)
     keyboard_hash = fetch_by_re(params.keyboard_hash_re, content)
     parent_page_id = fetch_by_re(params.parent_page_id_re, content)
@@ -1503,7 +1497,7 @@ def upload_attachments(locust):
     # 1900 pages/doattachfile.action?pageId={page_id}
     r = locust.post(f'/pages/doattachfile.action'
                     f'?pageId={page_id}',
-                    params={"atl_token": atl_token_view_issue, "comment_0": "", "comment_1": "", "comment_2": "",
+                    params={"atl_token": locust.session_data_storage['token'], "comment_0": "", "comment_1": "", "comment_2": "",
                             "comment_3": "", "comment_4": "0", "confirm": "Attach"},
                     files=multipart_form_data,
                     catch_response=True)

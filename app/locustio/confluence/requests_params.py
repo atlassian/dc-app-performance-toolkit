@@ -45,7 +45,6 @@ class ViewPage(ConfluenceResource):
     tree_result_id_re = 'name="treeRequestId" value="(.+?)"'
     has_no_root_re = '"noRoot" value="(.+?)"'
     root_page_id_re = 'name="rootPageId" value="(.+?)"'
-    atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
     editable_re = 'id=\"editPageLink\" href="(.+?)\?pageId=(.+?)\"'
     inline_comment_re = '\"id\":(.+?)\,\"'
 
@@ -63,7 +62,6 @@ class ViewBlog(ConfluenceResource):
     parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
     page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
     space_key_re = 'meta id=\"confluence-space-key\" name=\"confluence-space-key\" content=\"(.*?)\"'
-    atl_token_re = '"ajs-atl-token" content="(.+?)"'
     inline_comment_re = '\"id\":(.+?)\,\"'
     keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
@@ -71,7 +69,6 @@ class ViewBlog(ConfluenceResource):
 
 class CreateBlog(ConfluenceResource):
     action_name = 'create_blog'
-    atl_token_re = 'name=\"ajs-atl-token\" content=\"(.*?)\">'
     content_id_re = 'name=\"ajs-content-id\" content=\"(.*?)\">'
     page_id_re = 'meta name=\"ajs-page-id\" content=\"(.*?)\">'
     space_key = 'createpage.action\?spaceKey=(.+?)\&'
@@ -84,7 +81,6 @@ class CreateBlog(ConfluenceResource):
 class CreateEditPage(ConfluenceResource):
     action_name = 'create_and_edit_page'
     content_id_re = 'meta name=\"ajs-content-id\" content=\"(.*?)\">'
-    atl_token_re = 'meta name=\"ajs-atl-token\" content=\"(.*?)\">'
     parent_page_id = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
 
     editor_page_title_re = 'name=\"ajs-page-title\" content=\"(.*?)\"'
@@ -100,7 +96,6 @@ class CommentPage(ConfluenceResource):
 class UploadAttachments(ConfluenceResource):
     action_name = 'upload_attachments'
 
-    atl_token_view_issue_re = '"ajs-atl-token" content="(.+?)"'
     keyboard_hash_re = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
     build_number_re = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
     parent_page_id_re = 'meta name=\"ajs-parent-page-id\" content=\"(.*?)\"'
