@@ -28,7 +28,7 @@ def app_specific_action_notification_schema_web_action(webdriver, datasets):
 
         @print_timing("selenium_agent_app_custom_action:notification_schema_web_action")
         def sub_measure():
-            page.go_to_url(f"{JSM_SETTINGS.server_url}/secure/MFJSDCNotificationSchemaWebAction.jspa?projectKey=SDP")
+            page.go_to_url(f"{JSM_SETTINGS.server_url}/secure/MFJSDCNotificationSchemaWebAction.jspa?projectKey=IT")
             page.wait_until_visible((By.ID, "system-rules-table"))
         sub_measure()
     measure()
