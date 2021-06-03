@@ -8,7 +8,7 @@ INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/usr/lib/systemd/system/crowd.service"
 
-# Depending on Confluence installation directory
+# Depending on Crowd installation directory
 CROWD_VERSION_FILE="/media/atl/crowd/shared/crowd.version"
 
 # DB admin user name, password and DB name
@@ -16,7 +16,7 @@ CROWD_DB_NAME="crowd"
 CROWD_DB_USER="postgres"
 CROWD_DB_PASS="Password1!"
 
-# Confluence version variables
+# Crowd version variables
 SUPPORTED_CROWD_VERSIONS=(4.3.0)
 
 if [[ ! $(systemctl status crowd) ]]; then
@@ -28,7 +28,7 @@ fi
 CROWD_VERSION=$(sudo su crowd -c "cat ${CROWD_VERSION_FILE}")
 if [[ -z "$CROWD_VERSION" ]]; then
   echo The $CROWD_VERSION_FILE file does not exists or emtpy. Please check if CROWD_VERSION_FILE variable \
-  has a valid file path of the Confluence version file or set your Cluster CROWD_VERSION explicitly.
+  has a valid file path of the Crowd version file or set your Cluster CROWD_VERSION explicitly.
   exit 1
 fi
 echo "Crowd Version: ${CROWD_VERSION}"
