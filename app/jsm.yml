@@ -12,8 +12,8 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
-    concurrency_agents: 0          # number of concurrent virtual agent users for jmeter or locust scenario
-    concurrency_customers: 0      # number of concurrent virtual customer users for jmeter or locust scenario
+    concurrency_agents: 1          # number of concurrent virtual agent users for jmeter or locust scenario
+    concurrency_customers: 1      # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 1m
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 500
