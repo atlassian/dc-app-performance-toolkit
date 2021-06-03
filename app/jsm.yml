@@ -16,8 +16,8 @@ settings:
     concurrency_customers: 1      # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 1m
     ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour_agents: 5000
-    total_actions_per_hour_customers: 15000
+    total_actions_per_hour_agents: 500
+    total_actions_per_hour_customers: 1500
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
