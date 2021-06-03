@@ -42,6 +42,8 @@ class LoginPageLocators:
     login_button = (By.ID, "loginButton")
     login_username_field = (By.ID, "os_username")
     login_password_field = (By.ID, "os_password")
+    footer_build_info = (By.ID, "footer-build-information")
+    footer_node_info = (By.ID, "footer-cluster-node")
 
     # Setup user page per first login
     first_login_setup_page = (By.ID, "grow-ic-nav-container")

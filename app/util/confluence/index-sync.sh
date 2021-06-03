@@ -2,14 +2,16 @@
 
 # Wait until index sync is finished on a new Confluence DC node
 
-SEARCH_LOG="/var/atlassian/application-data/confluence/logs/atlassian-confluence.log"
+SEARCH_LOG="/var/atlassian/application-data/confluence/logs/*.log"
 TIMEOUT=1200
 
-if sudo -u confluence test -f $SEARCH_LOG; then
-    echo "Log file: $SEARCH_LOG"
+if [ "$(sudo su confluence -c "ls -l ""$SEARCH_LOG"" 2>/dev/null | wc -l")" -gt 0 ]
+then
+  echo "Log files were found:"
+  sudo su confluence -c "ls $SEARCH_LOG"
 else
-    echo "File $SEARCH_LOG does not exist"
-    exit 1
+  echo "There are no log files found like $SEARCH_LOG"
+  exit 1
 fi
 
 function find_word_in_log() {

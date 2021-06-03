@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-03-18"
+date: "2021-04-26"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -207,7 +207,7 @@ JMeter and Locust actions are interchangeable, so you could select the tool you 
 
 
 {{% note %}}
-We strongly recommend to develop your app-specific actions on the development environment to reduce AWS infrastructure costs.
+We strongly recommend developing your app-specific actions on the development environment to reduce AWS infrastructure costs.
 {{% /note %}}
 
 
@@ -249,7 +249,7 @@ You develop an app that introduces new GET and POST endpoints in Confluence Data
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/confluence/extension_locust.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_locust.py)
 1. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
-1. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
 1. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
 1. Run toolkit with `bzt confluence.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
@@ -277,6 +277,7 @@ For example, for app-specific action development you could set percentage of `st
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
 1. Click **Save** button.
 1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluence.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that you located your app-specific tests between `login_as_specific_user` and `login_as_default_user_if_specific_user_was_loggedin` controllers.   
 1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ##### Using JMeter variables from the base script
@@ -514,8 +515,9 @@ To populate the database with SQL:
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/populate_db.sh) script and make it executable:
@@ -562,8 +564,9 @@ Populate DB and restore attachments scripts could be run in parallel in separate
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/upload_attachments.sh) script and make it executable:
@@ -619,8 +622,9 @@ For more information, go to [Administer your Data Center search index](https://c
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Download the [index-snapshot.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh) file. Then, make it executable and run it:
 
@@ -695,7 +699,7 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Use SSH to connect to execution environment.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
     cd dc-app-performance-toolkit
@@ -720,7 +724,7 @@ To receive performance results with an app installed:
 
 1. Install the app you want to test.
 1. Setup app license.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -778,7 +782,7 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
 1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -804,14 +808,16 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
+1. Confirm new node is appeared on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Clustering** page.   
 1. Make sure that Confluence index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
 
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh) file. Then, make it executable and run it:
 
@@ -826,7 +832,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
     main index recovered from shared home directory
     ```
 
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -852,7 +858,7 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
 1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
 1. Scale your Confluence Data Center deployment to 4 nodes as described in [Run 4](#run4).
 1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit

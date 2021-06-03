@@ -41,6 +41,17 @@ class Login(BasePage):
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
 
+    def __get_footer_text(self):
+        return self.get_element(LoginPageLocators.footer).text
+
+    def get_app_version(self):
+        text = self.__get_footer_text()
+        return text.split('#')[0].replace('(v', '')
+
+    def get_node_id(self):
+        text = self.__get_footer_text()
+        return text.split(':')[-1].replace(')', '')
+
 
 class Logout(BasePage):
     page_url = LogoutLocators.logout_url
