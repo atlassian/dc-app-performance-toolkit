@@ -166,3 +166,7 @@ def generate_test_actions_by_type(test_actions, application):
         else:
             app_specific_actions.setdefault(test_action, value)
     return selenium_actions, jmeter_actions, locust_actions, app_specific_actions
+
+
+def get_crowd_sync_test_results(bzt_log):
+    crowd_sync_test_

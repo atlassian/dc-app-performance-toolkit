@@ -54,6 +54,8 @@ class AnalyticsCollector:
         if self.app_type == JSM:
             self.concurrency_agents = self.conf.agents_concurrency
             self.concurrency_customers = self.conf.customers_concurrency
+        if self.app_type == CROWD:
+            self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
 
     def is_analytics_enabled(self):
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
