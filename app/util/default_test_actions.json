@@ -255,5 +255,6 @@
       "locust_customer_share_request_with_org:add_org",
       "locust_customer_share_request_with_org:remove_org"
     ]
-  }
+  },
+  "crowd": {"jmeter": ["jmeter_user_auth"], "selenium": [], "locust": []}
 }

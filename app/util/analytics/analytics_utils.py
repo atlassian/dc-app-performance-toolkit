@@ -94,7 +94,7 @@ def generate_report_summary(collector):
         summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
     max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
-    offset_1st = max_summary_report_str_len + 5
+    offset_1st = max(max_summary_report_str_len + 5, 50)
 
     pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)
     write_to_file(pretty_report, summary_report_file)

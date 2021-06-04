@@ -13,11 +13,13 @@ JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 JSM = 'jsm'
+CROWD = 'crowd'
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
-                JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
+                JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
+                CROWD: {'test_duration': 2700, 'concurrency': 1000}
                 }
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
@@ -71,8 +73,10 @@ class AnalyticsCollector:
         if not load_test_rates:
             return False, f"Jmeter/Locust test results was not found."
 
-        if not self.selenium_test_rates:
-            return False, f"Selenium test results was not found."
+        # There are no selenium tests for Crowd
+        if self.app_type != CROWD:
+            if not self.selenium_test_rates:
+                return False, f"Selenium test results was not found."
 
         success = (is_all_tests_successful(load_test_rates) and
                    is_all_tests_successful(self.selenium_test_rates))
@@ -159,8 +163,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    if collector.is_analytics_enabled():
-        send_analytics(collector)
+    # if collector.is_analytics_enabled():
+    #     send_analytics(collector)
 
 
 if __name__ == '__main__':
