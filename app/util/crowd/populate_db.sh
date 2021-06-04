@@ -44,12 +44,10 @@ DB_DUMP_NAME="db.dump"
 if [[ ! "${SUPPORTED_CROWD_VERSIONS[*]}" =~ ${CROWD_VERSION} ]]; then
   echo "Crowd Version: ${CROWD_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Crowd Versions: ${SUPPORTED_CROWD_VERSIONS[*]}"
-  echo "!!! Warning !!! It is not revertable operation and may break your Crowd instance."
-
+  echo "!!! Warning !!! Dump from version ${SUPPORTED_CROWD_VERSIONS[0]} would be used"
 fi
 
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${SUPPORTED_CROWD_VERSIONS[0]}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
-
 
 echo "!!! Warning !!!"
 echo # move to a new line
@@ -103,7 +101,6 @@ if [[ $? -ne 0 ]]; then
   echo "DB_HOST=${DB_HOST}"
   exit 1
 fi
-
 
 echo "Step3: Stop Crowd"
 sudo systemctl stop crowd
