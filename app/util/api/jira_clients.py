@@ -1,12 +1,11 @@
 from selenium.common.exceptions import WebDriverException
 
 from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
 BATCH_SIZE_ISSUES = 1000
-
-REINDEX_ERROR_MESSAGE = 'A task could not be found for the given task id'
 
 
 class JiraRestClient(RestClient):
@@ -48,6 +47,7 @@ class JiraRestClient(RestClient):
 
         return boards_list
 
+    @retry()
     def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
         Returns a list of users that match the search string. This resource cannot be accessed anonymously.
@@ -120,6 +120,7 @@ class JiraRestClient(RestClient):
 
         return issues
 
+    @retry()
     def get_total_issues_count(self, jql: str = ''):
         api_url = f'{self.host}/rest/api/2/search'
         body = {"jql": jql if jql else "order by key",
@@ -247,13 +248,3 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
         service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
         return service_desk_info.json()
-
-    def get_reindex_info(self):
-        api_url = f'{self.host}/rest/api/2/reindex'
-        reindex_info = self.get(api_url, 'Could not retrieve reindex info.', expected_status_codes=[404])
-        if REINDEX_ERROR_MESSAGE in reindex_info.text:
-            raise SystemExit('Jira is unable to perform a background re-index at this time because the index files '
-                             'are either missing or corrupted.\nPlease navigate to System > Indexing. '
-                             'Select the Full re-index option. Click Re-Index and wait until re-indexing is completed.')
-        elif not reindex_info.ok:
-            raise SystemExit('Could not retrieve reindex info.')
