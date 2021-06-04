@@ -29,7 +29,8 @@ def __get_users(crowd_api, count):
         print('All performance test users were successfully created')
         return cur_perf_users
     else:
-        raise Exception(f'Your Atlassian Crowd instance does not have enough users {len(cur_perf_users)} out of {count}')
+        raise SystemExit(f'Your Atlassian Crowd instance does not have enough users. '
+                         f'Current users count {len(cur_perf_users)} out of {count}.')
 
 
 def __create_data_set(crowd_api):
@@ -70,4 +71,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
