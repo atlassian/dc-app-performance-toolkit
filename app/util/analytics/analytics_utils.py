@@ -2,6 +2,7 @@ import os
 import platform
 import hashlib
 import getpass
+import re
 import socket
 from datetime import datetime, timezone
 
@@ -78,6 +79,16 @@ def generate_report_summary(collector):
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
+
+
+    if collector.app_type.lower() == 'crowd':
+        # assert yml parameters for nodes count. 2-write sync time for two tests
+        print('asd')
+
+
+
+
+
 
     summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
@@ -169,4 +180,13 @@ def generate_test_actions_by_type(test_actions, application):
 
 
 def get_crowd_sync_test_results(bzt_log):
-    crowd_sync_test_
+    users_sync_template = 'Users synchronization: (.*) seconds'
+    membership_sync_template = 'Users membership synchronization: (.*) seconds'
+    users_sync_time = ''
+    membership_sync_time = ''
+    for line in bzt_log.bzt_log:
+        if re.search(users_sync_template, line):
+            users_sync_time = re.search(users_sync_template, line).group(1)
+        if re.search(membership_sync_template, line):
+            membership_sync_time = re.search(membership_sync_template, line).group(1)
+    return {"crowd_users_sync": users_sync_time, "crowd_group_membership_sync": membership_sync_time}
