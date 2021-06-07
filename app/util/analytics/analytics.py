@@ -185,8 +185,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    # if collector.is_analytics_enabled():
-    #     send_analytics(collector)
+    if collector.is_analytics_enabled():
+        send_analytics(collector)
 
 
 if __name__ == '__main__':
