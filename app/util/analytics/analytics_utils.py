@@ -80,15 +80,11 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-
     if collector.app_type.lower() == 'crowd':
-        # assert yml parameters for nodes count. 2-write sync time for two tests
-        print('asd')
-
-
-
-
-
+        summary_report.append(
+            f'Crowd users directory synchronization time|{collector.crowd_sync_test["crowd_users_sync"]}')
+        summary_report.append(
+            f'Crowd groups membership synchronization time|{collector.crowd_sync_test["crowd_group_membership_sync"]}')
 
     summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates

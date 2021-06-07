@@ -110,7 +110,8 @@ class AnalyticsCollector:
             total_actions_compliant = rps_compliant * 3600
             ramp_up_compliant = MIN_DEFAULTS[CROWD]['concurrency'] / rps_compliant
             ramp_up = convert_to_sec(self.ramp_up)
-            compliant = (ramp_up >= ramp_up_compliant and self.total_actions_per_hour >= total_actions_compliant)
+            compliant = (ramp_up >= ramp_up_compliant and self.total_actions_per_hour >= total_actions_compliant and
+                         self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'])
         else:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
