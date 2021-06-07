@@ -241,11 +241,7 @@ def search_jql(locust):
     jql = random.choice(jira_dataset['jqls'])[0]
 
     # 300 /issues
-    r = locust.get(f'/issues/?jql={jql}', catch_response=True)
-    content = r.content.decode('utf-8')
-    if not (locust.session_data_storage["token"] in content):
-        logger.error(f'Can not search by {jql}: {content}')
-    assert locust.session_data_storage["token"] in content, 'Can not search by jql'
+    locust.get(f'/issues/?jql={jql}', catch_response=True)
 
     # 305 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
