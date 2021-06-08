@@ -87,3 +87,13 @@ class CrowdRestClient(RestClient):
         self.headers = {'Accept': 'application/xml', 'Content-Type': 'application/xml'}
         response = self.get(api_url, 'Can not get group memberships')
         return response.content
+
+    def get_server_info(self):
+        api_url = self.host + '/rest/admin/1.0/server-info'
+        response = self.get(api_url, 'Can not get Crowd server info')
+        return response.json()
+
+    def get_cluster_nodes(self):
+        api_url = self.host + '/rest/atlassian-cluster-monitoring/cluster/nodes'
+        response = self.get(api_url, 'Can not get Crowd cluster nodes information')
+        return response.json()
