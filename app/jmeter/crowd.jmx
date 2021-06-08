@@ -147,16 +147,6 @@
               <stringProp name="Argument.value">${__P(total_actions_per_hr, 10000)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_user_auth" elementType="Argument">
-              <stringProp name="Argument.name">perc_user_auth</stringProp>
-              <stringProp name="Argument.value">${__P(perc_user_auth, 0)}</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="perc_standalone_extension" elementType="Argument">
-              <stringProp name="Argument.name">perc_standalone_extension</stringProp>
-              <stringProp name="Argument.value">${__P(perc_standalone_extension, 0)}</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>

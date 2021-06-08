@@ -4,26 +4,34 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname:     # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
+    application_hostname: test_crowd_instance.atlassian.com    # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
     application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 2990, etc
+    application_port: 80            # 80, 443, 8080, 4990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /crowd in case of url like http://localhost:2990/crowd
+    application_postfix:            # e.g. /crowd in case of url like http://localhost:4990/crowd
     admin_login: admin
     admin_password: admin
     application_name: crowd
     application_password: 1111
     load_executor: jmeter            
-    concurrency: 1000                # number of concurrent threads to authenticate random users
+    concurrency: 1000               # number of concurrent threads to authenticate random users
     test_duration: 45m
-    ramp-up: 250s                     # time to spin all concurrent users
-    total_actions_per_hour: 144000   # number of total JMeter/Locust actions per hour
-    WEBDRIVER_VISIBLE: False
+
+    # 1 node scenario parameters
+    ramp-up: 20s                    # time to spin all concurrent threads
+    total_actions_per_hour: 180000  # number of total JMeter actions per hour
+
+    # 2 nodes scenario parameters
+    # ramp-up: 10s                    # time to spin all concurrent threads
+    # total_actions_per_hour: 360000  # number of total JMeter actions per hour
+
+    # 4 nodes scenario parameters
+    # ramp-up: 5s                     # time to spin all concurrent threads
+    # total_actions_per_hour: 720000  # number of total JMeter actions per hour
+
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    # Action percentage for Jmeter and Locust load executors
-    user_auth: 100
 services:
   - module: shellexec
     prepare:
@@ -31,17 +39,17 @@ services:
       - python util/data_preparation/crowd_prepare_data.py
       - python util/data_preparation/crowd_sync_check.py
     shutdown:
-#      - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
-#    post-process:
+      - python util/post_run/jmeter_post_check.py
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl
+    post-process:
 #      - python util/analytics/analytics.py crowd
-#      - python util/post_run/cleanup_results_dir.py
-#execution:
-#  - scenario: ${load_executor}
-#    executor: ${load_executor}
-#    concurrency: ${concurrency}
-#    hold-for: ${test_duration}
-#    ramp-up: ${ramp-up}
+      - python util/post_run/cleanup_results_dir.py
+execution:
+  - scenario: ${load_executor}
+    executor: ${load_executor}
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
 scenarios:
   jmeter:
     script: jmeter/crowd.jmx
@@ -52,8 +60,6 @@ scenarios:
       application_postfix: ${application_postfix}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
-      perc_create_issue: ${user_auth}
-      perc_standalone_extension: ${standalone_extension}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
@@ -61,7 +67,7 @@ modules:
   jmeter:
     version: ${JMETER_VERSION}
     detect-plugins: true
-    memory-xmx: 14G  # allow JMeter to use up to 8G of memory
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
     plugins:
       - bzm-parallel=0.4
       - bzm-random-csv=0.6
