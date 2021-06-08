@@ -21,6 +21,7 @@ MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
                 CROWD: {'test_duration': 2700, 'concurrency': 1000}
                 }
+CROWD_RPS = {1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 SUCCESS_TEST_RATE = 95.00
@@ -105,8 +106,7 @@ class AnalyticsCollector:
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
         elif self.app_type == CROWD:
-            rps = {1: 40, 2: 80, 4: 160}
-            rps_compliant = rps[self.nodes_count]
+            rps_compliant = CROWD_RPS[self.nodes_count]
             total_actions_compliant = rps_compliant * 3600
             ramp_up_compliant = MIN_DEFAULTS[CROWD]['concurrency'] / rps_compliant
             ramp_up = convert_to_sec(self.ramp_up)
