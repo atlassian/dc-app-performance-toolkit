@@ -33,7 +33,7 @@ settings:
     agent_view_report_created_vs_resolved_small: 5
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
-    agent_standalone_extension: 0
+    agent_standalone_extension: 1
 
     customer_view_portal: 11
     customer_view_requests: 25
@@ -42,7 +42,7 @@ settings:
     customer_share_request_with_customer: 5
     customer_share_request_with_org: 4
     customer_create_request: 16
-    customer_standalone_extension: 0
+    customer_standalone_extension: 1
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
 services:
