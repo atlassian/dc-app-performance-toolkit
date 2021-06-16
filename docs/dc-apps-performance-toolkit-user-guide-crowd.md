@@ -476,8 +476,9 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-1. Edit **run parameters** for 2 nodes run. To do it, uncomment the following part of `crowd.yml` file.
-   ```    # 1 node scenario parameters
+1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
+   ```
+   # 1 node scenario parameters
    # ramp-up: 20s                    # time to spin all concurrent threads
    # total_actions_per_hour: 180000  # number of total JMeter actions per hour
 
@@ -487,7 +488,8 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
 
    # 4 nodes scenario parameters
    # ramp-up: 5s                     # time to spin all concurrent threads
-   # total_actions_per_hour: 720000  # number of total JMeter actions per hour```
+   # total_actions_per_hour: 720000  # number of total JMeter actions per hour
+   ```
 1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
@@ -511,8 +513,9 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for four-node Crowd DC with app-specific actions:
 
 1. Scale your Crowd Data Center deployment to 4 nodes as described in [Run 4](#run4).
-1. Edit **run parameters** for 4 nodes run. To do it, uncomment the following part of `crowd.yml` file.
-   ```    # 1 node scenario parameters
+1. Edit **run parameters** for 4 nodes run. To do it, left uncommented only 4 nodes scenario parameters `crowd.yml` file.
+   ```
+   # 1 node scenario parameters
    # ramp-up: 20s                    # time to spin all concurrent threads
    # total_actions_per_hour: 180000  # number of total JMeter actions per hour
 
@@ -522,7 +525,8 @@ To receive scalability benchmark results for four-node Crowd DC with app-specifi
 
    # 4 nodes scenario parameters
    ramp-up: 5s                     # time to spin all concurrent threads
-   total_actions_per_hour: 720000  # number of total JMeter actions per hour```   
+   total_actions_per_hour: 720000  # number of total JMeter actions per hour
+   ```   
    
 1. Run toolkit with docker from the execution environment instance:
 
