@@ -44,7 +44,7 @@ next steps.
 
 # Useful information
 
-## Changing performance workload for JMeter and Locust
+## Changing performance workload for JMeter
 The [crowd.yml](../../app/crowd.yml) has three pairs of parameters for different workload depends on crowd instance nodes count. 
 ``` 
     # 1 node scenario parameters
