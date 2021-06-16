@@ -1,0 +1,12 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,Latency,IdleTime,Connect
+1619616036085,7562,jmeter_login_and_view_dashboard,200,"Number of samples in transaction : 10, number of failing samples : 0",Jira 1-1,,true,,57204,16514,1,1,0,65,0
+1619616030382,1921,100 /login.jsp,200,OK,Jira 1-1,text,true,,15178,2449,1,1,645,0,92
+1619616031607,1222,105 /,200,OK,Jira 1-1,text,true,,13959,1783,1,1,518,0,51
+1619616032172,527,110 /rest/webResources/1.0/resources,200,OK,Jira 1-1,text,true,,1454,1702,1,1,527,0,58
+1619616032643,470,115 /plugins/servlet/gadgets/dashboard-diagnostics,200,OK,Jira 1-1,text,true,,1253,1053,1,1,469,0,13
+1619616033305,661,120 /rest/webResources/1.0/resources,200,OK,Jira 1-1,text,true,,1119,2152,1,1,660,0,47
+1619616033846,538,125 /rest/webResources/1.0/resources,200,OK,Jira 1-1,text,true,,1580,2243,1,1,538,0,38
+1619616034349,499,130 /rest/webResources/1.0/resources,200,OK,Jira 1-1,text,true,,1533,1997,1,1,497,0,22
+1619616034843,490,140 /rest/activity-stream/1.0/preferences,200,OK,Jira 1-1,text,true,,1148,971,1,1,487,0,29
+1619616035362,517,145 /rest/gadget/1.0/issueTable/jql,200,OK,Jira 1-1,text,true,,1278,1182,1,1,516,0,34
+1619616036083,717,150 /plugins/servlet/streams,200,OK,Jira 1-1,text,true,,18702,982,1,1,504,0,34
