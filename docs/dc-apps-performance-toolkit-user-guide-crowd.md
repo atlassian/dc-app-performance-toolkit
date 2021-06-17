@@ -157,15 +157,15 @@ After successfully deploying Crowd Data Center in AWS, you'll need to configure 
     - Generating a Crowd trial license, or
     - Contacting Atlassian to be provided two time-bomb licenses for testing.  
     Click **Continue**.
-1. On the **Crowd installation** page chose **New Installation** and click **Continue**.
+1. On the **Crowd installation** page choose **New Installation** and click **Continue**.
 1. On the **Database configuration** page, leave all fields default and click **Continue**.
 1. On the **Options** page, populate the following fields:
-    - **Deployment title**: any instance tittle
+    - **Deployment title**: any instance title
     - **Session timeout**: 30 _(recommended)_. The number of minutes a session lasts before expiring. Must be greater than 0.
     - **Base Url**: review and confirm the Crowd instance base url.  
     Click **Continue**.
 1. On the **Internal directory** page, populate the following fields and press **Continue**:
-    - **Name**: a short, recognisable name that characterises this user directory. For example: "Chicago employees" or "Web customers".
+    - **Name**: a short, recognisable name that characterises this user directory.
     - **Password encryption**: chose **ATLASSIAN-SECURITY** from the dropdown list _(recommended)_  
    Click **Continue**.
 1. On the **Default administrator** page, fill the following fields:
