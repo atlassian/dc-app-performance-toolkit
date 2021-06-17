@@ -586,7 +586,7 @@ We recommend that you only use this method if you are having problems with the [
     JIRA_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-software.version")
     sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JIRA_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
-1. From a different computer, log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
 1. Populate the **File name** field with `xml_backup.zip`.
 1. Click **Restore** and wait until the import is completed.
