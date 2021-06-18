@@ -278,11 +278,11 @@ We recommend that you only use this method if you are having problems with the [
 1. Download the db.xml file corresponding to your Crowd version.
 
     ``` bash
-    CROWD_VERSION_FILE="/media/atl/crowd/shared/crowd.version"
-    sudo su crowd -c "wget https://centaurus-datasets.s3.amazonaws.com/crowd/${CROWD_VERSION_FILE}/large/db.xml -O /media/atl/crowd/shared/db.xml"
+    CROWD_VERSION=$(sudo su crowd -c "cat /media/atl/crowd/shared/crowd.version")
+    sudo su crowd -c "wget https://centaurus-datasets.s3.amazonaws.com/crowd/${CROWD_VERSION}/large/db.xml -O /media/atl/crowd/shared/db.xml"
     ```
 1. Log in as a user with the **Crowd System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Restore.** from the menu.
 1. Populate the **Restore file path** field with `/media/atl/crowd/shared/db.xml`.
 1. Click **Submit** and wait until the import is completed.
 
