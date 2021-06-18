@@ -2807,37 +2807,15 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get / Get Notifications History" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET / Get Notifications History" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="userKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">JIRAUSER10110</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">userKey</stringProp>
-                  </elementProp>
-                  <elementProp name="limit" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">1000</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">limit</stringProp>
-                  </elementProp>
-                  <elementProp name="offset" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">0</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">offset</stringProp>
-                  </elementProp>
-                </collectionProp>
+                <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.servletUrl}/NotificationsHistory</stringProp>
+              <stringProp name="HTTPSampler.path">${application.servletUrl}/NotificationsHistory?userKey=JIRAUSER10110&amp;limit=1000&amp;offset=0</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2848,7 +2826,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get / Check License" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET / Check License" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2867,23 +2845,15 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get / Get Notification" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET / Get Notification" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="userKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${userKey}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">userKey</stringProp>
-                  </elementProp>
-                </collectionProp>
+                <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.servletUrl}/Notification</stringProp>
+              <stringProp name="HTTPSampler.path">${application.servletUrl}/Notification?userKey=${request.userKey}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2894,7 +2864,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete / Delete Notification" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE / Delete Notification" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="notificationId" elementType="HTTPArgument">
@@ -2921,12 +2891,12 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Post / Logout" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST / Logout" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="userKey" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${userKey}</stringProp>
+                    <stringProp name="Argument.value">${request.userKey}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     <stringProp name="Argument.name">userKey</stringProp>
@@ -2948,23 +2918,15 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get / Get Notifications Count" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET / Get Notifications Count" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="userKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${userKey}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">userKey</stringProp>
-                  </elementProp>
-                </collectionProp>
+                <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${application.servletUrl}/NotificationsCounter</stringProp>
+              <stringProp name="HTTPSampler.path">${application.servletUrl}/NotificationsCounter?userKey=${request.userKey}</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2975,7 +2937,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get / Get Application Information" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET / Get Application Information" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2996,8 +2958,8 @@ if ( sleep_time &gt; 0 ) {
             <hashTree/>
             <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Customer Key" enabled="true">
               <collectionProp name="Arguments.arguments">
-                <elementProp name="userKey" elementType="Argument">
-                  <stringProp name="Argument.name">userKey</stringProp>
+                <elementProp name="request.userKey" elementType="Argument">
+                  <stringProp name="Argument.name">request.userKey</stringProp>
                   <stringProp name="Argument.value">JIRAUSER10110</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
