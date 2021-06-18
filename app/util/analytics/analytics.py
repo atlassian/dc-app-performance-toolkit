@@ -21,7 +21,7 @@ MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
                 CROWD: {'test_duration': 2700, 'concurrency': 1000}
                 }
-CROWD_RPS = {1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
+CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 SUCCESS_TEST_RATE = 95.00

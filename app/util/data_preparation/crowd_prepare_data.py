@@ -26,7 +26,7 @@ def generate_random_string(length=20):
 def __get_users(crowd_api, count):
     cur_perf_users = crowd_api.users_search_parallel(cql=USER_SEARCH_CQL, max_results=count)
     if len(cur_perf_users) >= count:
-        print('All performance test users were successfully created')
+        print(f'{USERS_COUNT} performance test users were found')
         return cur_perf_users
     else:
         raise SystemExit(f'Your Atlassian Crowd instance does not have enough users. '

@@ -141,7 +141,8 @@ class Crowd(BaseApplication):
     @property
     def nodes_count(self):
         cluster_nodes_info = self.client.get_cluster_nodes()
-        return len(cluster_nodes_info)
+        nodes_count = len(cluster_nodes_info)
+        return nodes_count if nodes_count > 0 else "server"
 
     def __users_count(self):
         self.application_crowd_client = CrowdRestClient(host=CROWD_SETTINGS.server_url,
