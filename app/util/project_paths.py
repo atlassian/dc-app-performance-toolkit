@@ -43,6 +43,18 @@ def __get_bitbucket_datasets():
     return __get_datasets() / "bitbucket"
 
 
+def __get_crowd_yml():
+    return Path(__file__).parents[1] / "crowd.yml"
+
+
+def __get_crowd_datasets():
+    return __get_datasets() / "crowd"
+
+
+def __get_crowd_dataset(file_name):
+    return __get_crowd_datasets() / file_name
+
+
 def __get_confluence_datasets():
     return __get_datasets() / "confluence"
 
@@ -104,6 +116,11 @@ BITBUCKET_USERS = __get_bitbucket_dataset('users.csv')
 BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
+
+CROWD_YML = __get_crowd_yml()
+CROWD_DATASETS = __get_crowd_datasets()
+CROWD_USERS = __get_crowd_dataset('users.csv')
+
 
 DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()

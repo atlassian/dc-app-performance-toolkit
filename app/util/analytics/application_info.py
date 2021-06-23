@@ -1,7 +1,8 @@
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, CROWD_SETTINGS
 from util.api.jira_clients import JiraRestClient
 from util.api.confluence_clients import ConfluenceRestClient
 from util.api.bitbucket_clients import BitbucketRestClient
+from util.api.crowd_clients import CrowdRestClient
 from lxml import etree
 import json
 
@@ -9,6 +10,7 @@ JIRA = 'jira'
 CONFLUENCE = 'confluence'
 BITBUCKET = 'bitbucket'
 JSM = 'jsm'
+CROWD = 'crowd'
 DEFAULT_ACTIONS = 'util/default_test_actions.json'
 
 
@@ -128,6 +130,31 @@ class Jsm(BaseApplication):
         return f"{self.__issues_count()} issues"
 
 
+class Crowd(BaseApplication):
+    type = CROWD
+
+    @property
+    def version(self):
+        crowd_server_info = self.client.get_server_info()
+        return crowd_server_info.get('version', '')
+
+    @property
+    def nodes_count(self):
+        cluster_nodes_info = self.client.get_cluster_nodes()
+        nodes_count = len(cluster_nodes_info)
+        return nodes_count if nodes_count > 0 else "server"
+
+    def __users_count(self):
+        self.application_crowd_client = CrowdRestClient(host=CROWD_SETTINGS.server_url,
+                                                        user=CROWD_SETTINGS.application_name,
+                                                        password=CROWD_SETTINGS.application_password)
+        return len(self.application_crowd_client.search(start_index=0, max_results=-1, expand='user'))
+
+    @property
+    def dataset_information(self):
+        return f"{self.__users_count()} users"
+
+
 class ApplicationSelector:
     APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
                     'E.g. python util/analytics.py jira/confluence/bitbucket/jsm')
@@ -136,7 +163,7 @@ class ApplicationSelector:
         self.application_type = self.__get_application_type(app_name)
 
     def __get_application_type(self, app_name):
-        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET, JSM]:
+        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET, JSM, CROWD]:
             raise SystemExit(self.APP_TYPE_MSG)
         return app_name.lower()
 
@@ -150,3 +177,5 @@ class ApplicationSelector:
             return Bitbucket(api_client=BitbucketRestClient, config_yml=BITBUCKET_SETTINGS)
         if self.application_type == JSM:
             return Jsm(api_client=JiraRestClient, config_yml=JSM_SETTINGS)
+        if self.application_type == CROWD:
+            return Crowd(api_client=CrowdRestClient, config_yml=CROWD_SETTINGS)

@@ -32,7 +32,7 @@ APP_SPECIFIC = 'App specific'
 CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE},' \
              f'{APP_SPECIFIC}\n'
 RESULTS_CSV_NAME = 'results.csv'
-APPS = ['jira', 'confluence', 'bitbucket', 'jsm']
+APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'crowd']
 TEST_TYPES = ['selenium', 'jmeter', 'locust']
 
 

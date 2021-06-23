@@ -2,6 +2,7 @@ import os
 import platform
 import hashlib
 import getpass
+import re
 import socket
 from datetime import datetime, timezone
 
@@ -79,6 +80,12 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
+    if collector.app_type.lower() == 'crowd':
+        summary_report.append(
+            f'Crowd users directory synchronization time|{collector.crowd_sync_test["crowd_users_sync"]}')
+        summary_report.append(
+            f'Crowd groups membership synchronization time|{collector.crowd_sync_test["crowd_group_membership_sync"]}')
+
     summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
@@ -94,7 +101,7 @@ def generate_report_summary(collector):
         summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
     max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
-    offset_1st = max_summary_report_str_len + 5
+    offset_1st = max(max_summary_report_str_len + 5, 50)
 
     pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)
     write_to_file(pretty_report, summary_report_file)
@@ -166,3 +173,16 @@ def generate_test_actions_by_type(test_actions, application):
         else:
             app_specific_actions.setdefault(test_action, value)
     return selenium_actions, jmeter_actions, locust_actions, app_specific_actions
+
+
+def get_crowd_sync_test_results(bzt_log):
+    users_sync_template = 'Users synchronization: (.*) seconds'
+    membership_sync_template = 'Users membership synchronization: (.*) seconds'
+    users_sync_time = ''
+    membership_sync_time = ''
+    for line in bzt_log.bzt_log:
+        if re.search(users_sync_template, line):
+            users_sync_time = re.search(users_sync_template, line).group(1)
+        if re.search(membership_sync_template, line):
+            membership_sync_time = re.search(membership_sync_template, line).group(1)
+    return {"crowd_users_sync": users_sync_time, "crowd_group_membership_sync": membership_sync_time}
