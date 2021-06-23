@@ -58,6 +58,8 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
+      application_name: ${application_name}
+      application_password: ${application_password}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
 modules:
