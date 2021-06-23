@@ -99,14 +99,18 @@ class ViewCustomerRequest(BasePage):
         if rte_status:
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
             tinymce_field = self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", tinymce_field)
             self.action_chains().send_keys_to_element(tinymce_field, comment_text).perform()
             self.return_to_parent_frame()
         else:
             comment_text_field = self.get_element(ViewCustomerRequestLocators.comment_text_field)
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_text_field)
             self.action_chains().move_to_element(comment_text_field).click()\
                 .send_keys_to_element(comment_text_field, comment_text).perform()
 
-        self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
+        comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
+        comment_button.click()
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
 
 
