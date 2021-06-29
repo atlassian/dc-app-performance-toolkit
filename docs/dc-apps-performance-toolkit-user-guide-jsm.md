@@ -1013,6 +1013,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
     indexes - 100%
     Index restore complete
     ```
+   
 {{% note %}}
 If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
 {{% /note %}}
