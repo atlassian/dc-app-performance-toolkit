@@ -1,6 +1,6 @@
-matplotlib==3.4.1
+matplotlib==3.4.2
 pandas==1.2.4
-importlib-metadata==4.0.1
+importlib-metadata==4.5.0
 bzt==1.15.3
 locust==1.4.4
 filelock==3.0.12

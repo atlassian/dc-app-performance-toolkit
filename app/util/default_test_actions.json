@@ -101,22 +101,21 @@
     ],
     "locust": [
       "locust_login_and_view_dashboard",
-      "locust_comment_page",
+      "locust_view_page",
       "locust_view_dashboard",
-      "locust_view_page:open_page",
-      "locust_create_and_edit_page:create_page_editor",
-      "locust_upload_attachment",
       "locust_view_blog",
       "locust_search_cql:recently_viewed",
-      "locust_create_blog:blog_editor",
-      "locust_view_page:view_page_tree",
-      "locust_create_and_edit_page:create_page",
-      "locust_like_page",
-      "locust_view_attachment",
       "locust_search_cql:search_results",
-      "locust_create_blog:feel_and_publish",
+      "locust_comment_page",
+      "locust_create_and_edit_page:create_page_editor",
+      "locust_create_and_edit_page:create_page",
       "locust_create_and_edit_page:open_editor",
-      "locust_create_and_edit_page:edit_page"
+      "locust_create_and_edit_page:edit_page",
+      "locust_upload_attachment",
+      "locust_create_blog:blog_editor",
+      "locust_create_blog:feel_and_publish",
+      "locust_like_page",
+      "locust_view_attachment"
     ]
   },
   "bitbucket": {
@@ -256,5 +255,6 @@
       "locust_customer_share_request_with_org:add_org",
       "locust_customer_share_request_with_org:remove_org"
     ]
-  }
+  },
+  "crowd": {"jmeter": ["jmeter_user_auth"], "selenium": [], "locust": []}
 }

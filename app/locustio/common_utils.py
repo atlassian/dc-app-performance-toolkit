@@ -55,11 +55,15 @@ JSON_HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01"
 }
 
-JIRA_API_URL = '/rest/api/2/serverInfo'
-CONFLUENCE_API_URL = '/rest/api/user/anonymous'
+JIRA_API_URL = '/'
+CONFLUENCE_API_URL = '/'
+JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
+CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
 
 JIRA = 'jira'
 JSM = 'jsm'
+TYPE_AGENT = 'agent'
+TYPE_CUSTOMER = 'customer'
 CONFLUENCE = 'confluence'
 
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
@@ -314,22 +318,38 @@ def run_as_specific_user(username=None, password=None):
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
                 app = locust.session_data_storage['app']
+                app_type = locust.session_data_storage.get('app_type', None)
+                token_pattern = None
 
-                if app == JIRA or app == JSM:
+                # Jira or JSM Agent - redefine token value
+                if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
                     url = JIRA_API_URL
+                    token_pattern = JIRA_TOKEN_PATTERN
+                # JSM Customer
+                elif app == JSM and app_type == TYPE_CUSTOMER:
+                    url = JIRA_API_URL
+                # Confluence - redefine token value
                 elif app == CONFLUENCE:
                     url = CONFLUENCE_API_URL
+                    token_pattern = CONFLUENCE_TOKEN_PATTERN
                 else:
                     raise Exception(f'The "{app}" application type is not known.')
 
-                locust.client.cookies.clear()
-                locust.get(url, auth=(username, password), catch_response=True)  # send requests by the specific user
+                def do_login(usr, pwd):
+                    locust.client.cookies.clear()
+                    r = locust.get(url, auth=(usr, pwd), catch_response=True)
+                    if token_pattern:
+                        content = r.content.decode('utf-8')
+                        token = fetch_by_re(token_pattern, content)
+                        locust.session_data_storage["token"] = token
+
+                # send requests by the specific user
+                do_login(usr=username, pwd=password)
 
                 func(*args, **kwargs)
 
-                locust.client.cookies.clear()
-                locust.get(url, auth=(session_user_name, session_user_password),
-                           catch_response=True)  # send requests by the session user
+                # send requests by the session user
+                do_login(usr=session_user_name, pwd=session_user_password)
 
             else:
                 raise SystemExit(f"There is no 'locust' object in the '{func.__name__}' function.")

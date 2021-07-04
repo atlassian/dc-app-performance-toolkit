@@ -8,6 +8,9 @@ FROM blazemeter/taurus
 
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 
+# Remove bintray manually until PR https://github.com/Blazemeter/taurus/pull/1484/files is promoted to prod
+RUN sed -i '/dl.bintray.com/d' /etc/apt/sources.list
+
 RUN apt-get -y update \
   && $APT_INSTALL vim git openssh-server python3.8-dev python3-pip wget \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1 \

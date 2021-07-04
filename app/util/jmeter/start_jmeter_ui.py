@@ -19,13 +19,16 @@ JIRA = "jira"
 CONFLUENCE = "confluence"
 BITBUCKET = "bitbucket"
 JSM = "jsm"
+CROWD = "crowd"
 APP_DIR = Path(__file__).resolve().parents[2]
 PROPERTIES = APP_DIR / "util" / "jmeter" / "jmeter.properties"
 JIRA_YML = APP_DIR / "jira.yml"
+CROWD_YML = APP_DIR / "crowd.yml"
 CONFLUENCE_YML = APP_DIR / "confluence.yml"
 BITBUCKET_YML = APP_DIR / "bitbucket.yml"
 JSM_YML = APP_DIR / "jsm.yml"
 JIRA_JMX = APP_DIR / "jmeter" / "jira.jmx"
+CROWD_JMX = APP_DIR / "jmeter" / "crowd.jmx"
 CONFLUENCE_JMX = APP_DIR / "jmeter" / "confluence.jmx"
 BITBUCKET_JMX = APP_DIR / "jmeter" / "bitbucket.jmx"
 JSM_JMX_AGENTS = APP_DIR / "jmeter" / "jsm_agents.jmx"
@@ -35,7 +38,8 @@ WINDOWS = "Windows"
 DEFAULT_HOSTNAMES = ['test_jira_instance.atlassian.com',
                      'test_confluence_instance.atlassian.com',
                      'test_bitbucket_instance.atlassian.com',
-                     'test_jsm_instance.atlassian.com']
+                     'test_jsm_instance.atlassian.com',
+                     'test_crowd_instance.atlassian.com']
 AGENTS = "agents"
 CUSTOMERS = "customers"
 
@@ -60,6 +64,9 @@ class StartJMeter:
         elif self.args.app == BITBUCKET:
             self.yml = BITBUCKET_YML
             self.jmx = BITBUCKET_JMX
+        elif self.args.app == CROWD:
+            self.yml = CROWD_YML
+            self.jmx = CROWD_JMX
         elif self.args.app == JSM:
             if not self.args.type:
                 raise SystemExit('JSM user type is not specified. e.g. --type agents/customers')
