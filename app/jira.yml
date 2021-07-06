@@ -40,6 +40,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/data_preparation/jira_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
