@@ -90,16 +90,18 @@ class ViewCustomerRequest(BasePage):
     def wait_for_page_loaded(self):
         self.wait_until_visible(ViewCustomerRequestLocators.bread_crumbs)
 
-    def check_comment_text_is_displayed(self, field, text, button, rte_status=None):
-        if rte_status:
-            self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
-            if field.text != text:
-                field.send_keys(text)
-                self.return_to_parent_frame()
-                button.click()
-        elif field.text != text:
-            field.send_keys(text)
-            button.click()
+    def check_comment_text_is_displayed(self, text, rte_status=None):
+        if self.get_elements(ViewCustomerRequestLocators.comment_text_field_RTE) or \
+                self.get_elements(ViewCustomerRequestLocators.comment_text_field):
+            if rte_status:
+                self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
+                if self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).text != text:
+                    self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
+                    self.return_to_parent_frame()
+                    self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
+            elif self.get_element(ViewCustomerRequestLocators.comment_text_field).text != text:
+                self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
+                self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
@@ -115,12 +117,12 @@ class ViewCustomerRequest(BasePage):
             tinymce_field.send_keys(comment_text)
             self.return_to_parent_frame()
             comment_button.click()
-            self.check_comment_text_is_displayed(tinymce_field, comment_text, comment_button, True)
+            self.check_comment_text_is_displayed(comment_text, True)
         else:
             comment_text_field = self.get_element(ViewCustomerRequestLocators.comment_text_field)
             comment_text_field.send_keys(comment_text)
             comment_button.click()
-            self.check_comment_text_is_displayed(comment_text_field, comment_text, comment_button)
+            self.check_comment_text_is_displayed(comment_text)
 
         self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
 
