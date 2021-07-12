@@ -103,7 +103,6 @@ class ViewCustomerRequest(BasePage):
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
-        print('ADD COMMENT :::::::::::::: :::::::::: ::::::::::::::::::')
         if rte_status:
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
             tinymce_field = self.get_element(ViewCustomerRequestLocators.comment_tinymce_field)
@@ -186,6 +185,5 @@ class ViewQueue(BasePage):
                                       ['All open', 'Recently resolved', 'Resolved past 7 days']
                                       and queue.text.partition('\n')[2] != '0'])
         random_queue.click()
-        print('RANDOM QUEUE ::::::::::::::::: ::::::::::::::::::::: :::::::::::::::::::::::')
         self.wait_until_any_ec_presented(
             selector_names=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
