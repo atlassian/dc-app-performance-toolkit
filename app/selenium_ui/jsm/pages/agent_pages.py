@@ -190,5 +190,4 @@ class ViewQueue(BasePage):
                                           ['All open', 'Recently resolved', 'Resolved past 7 days']
                                           and queue.text.partition('\n')[2] != '0'])
             random_queue.click()
-        self.wait_until_any_ec_presented(
-            selector_names=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
+            self.wait_until_present(ViewQueueLocators.queues_status, timeout=self.timeout)
