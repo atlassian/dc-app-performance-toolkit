@@ -66,7 +66,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.7`, `8.5.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.8`, `8.5.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -387,7 +387,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.7`, `8.5.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.8`, `8.5.15` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -865,7 +865,6 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     indexes - 100%
     Index restore complete
     ```
-   
 {{% note %}}
 If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
 {{% /note %}}
