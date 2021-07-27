@@ -21,7 +21,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 **[Enterprise-scale environment](#mainenvironmententerprise)**: Bitbucket Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Bitbucket Data Center.
 
-1. [Set up Bitbucket Data Center on AWS](#instancesetup).
+1. [Set up an enterprise-scale environment Bitbucket Data Center on AWS](#instancesetup).
 1. [Load an enterprise-scale dataset on your Bitbucket Data Center deployment](#preloading).
 1. [Set up an execution environment for the toolkit](#executionhost).
 1. [Run all the testing scenarios in the toolkit](#testscenario).
@@ -230,10 +230,13 @@ So, our test has to open app-specific issues and measure time to load of this ap
 #     app_specific_action(webdriver, datasets)
 ```
 
-1. Run toolkit with `bzt bitbucket.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+4. Run toolkit with `bzt bitbucket.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
 
+## <a id="mainenvironmententerprise"></a> Enterprise-scale environment
 
-## <a id="instancesetup"></a>1. Setting up Bitbucket Data Center
+After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
+
+## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Bitbucket Data Center on AWS
 
 We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) (**How to deploy** tab) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
