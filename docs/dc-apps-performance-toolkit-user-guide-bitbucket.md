@@ -10,7 +10,16 @@ date: "2021-06-16"
 
 This document walks you through the process of testing your app on Bitbucket using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
-To use the Data Center App Performance Toolkit, you'll need to:
+In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
+
+**[Development environment](#mainenvironmentdev)**: Bitbucket Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) with the parameters prescribed here.
+
+1. [Set up a development environment Bitbucket Data Center on AWS](#devinstancesetup).
+2. [Create a dataset for the development environment](#devdataset).
+3. [Run toolkit on the development environment locally](#devtestscenario).
+4. [Develop and test app-specific actions locally](#devappaction).
+
+**[Enterprise-scale environment](#mainenvironmententerprise)**: Bitbucket Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Bitbucket Data Center.
 
 1. [Set up Bitbucket Data Center on AWS](#instancesetup).
 1. [Load an enterprise-scale dataset on your Bitbucket Data Center deployment](#preloading).
@@ -22,6 +31,207 @@ For simple spikes or tests, you can skip steps 1-2 and target any Bitbucket test
 {{% /note %}}
 
 ---
+
+## <a id="mainenvironmentdev"></a>Development environment
+
+Running the tests in a development environment helps familiarize you with the toolkit. It'll also provide you with a lightweight and less expensive environment for developing. Once you're ready to generate test results for the Marketplace Data Center Apps Approval process, run the toolkit in an **enterprise-scale environment**.
+
+### <a id="devinstancesetup"></a>1. Setting up Bitbucket Data Center development environment
+
+We recommend that you set up development environment using the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. If you already have an existing Bitbucket Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
+
+#### Using the AWS Quick Start for Bitbucket
+
+If you are a new user, perform an end-to-end deployment. This involves deploying Bitbucket into a _new_ ASI:
+
+Navigate to **[AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Bitbucket into your existing ASI:
+
+Navigate to **[AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
+
+{{% note %}}
+You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
+{{% /note %}}
+
+To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
+
+#### AWS cost estimation for the development environment
+
+AWS Bitbucket Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+
+#### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
+
+All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
+
+**Bitbucket setup**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Bitbucket Product | Software |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.7`, `6.10.11` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+
+**Cluster nodes**
+
+| Parameter | Recommended value |
+| --------- | ----------------- |
+| Cluster node instance type | [t3.medium](https://aws.amazon.com/ec2/instance-types/t3/) (we recommend this instance type for its good balance between price and performance in testing environments) |
+| Maximum number of cluster nodes | 1 |
+| Minimum number of cluster nodes | 1 |
+| Cluster node instance volume size | 50 |
+
+**File server**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| File server instance type | m4.xlarge |
+| Home directory size | 1000 |
+
+
+**Database**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| RDS Provisioned IOPS | 1000 |
+| Master password | Password1! |
+| Enable RDS Multi-AZ deployment | false |
+| Bitbucket database password | Password1! |
+| Database storage | 100 |
+
+**Elasticsearch**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Elasticsearch master user password | (leave blank) |
+| Elasticsearch instance type | m4.xlarge.elasticsearch |
+| Elasticsearch disk-space per node (GB) | 1000 |
+
+**Networking (for new ASI)**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Availability Zones | _Select two availability zones in your region_ |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Make instance internet facing | true |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+**Networking (for existing ASI)**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Make instance internet facing | true |
+| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
+| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
+
+### Running the setup wizard
+
+After successfully deploying Bitbucket Data Center in AWS, you'll need to configure it:
+
+1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
+1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
+1. Open **LoadBalancerURL** in your browser. This will take you to the Bitbucket setup wizard.
+1. On the **Bitbucket setup** page, populate the following fields:
+    - **Application title**: any name for your Bitbucket Data Center deployment
+    - **Base URL**: your stack's Elastic LoadBalancer URL
+    - **License key**: select new evaluation license or existing license checkbox
+    Click **Next**.
+1. On the **Administrator account setup** page, populate the following fields:
+    - **Username**: admin _(recommended)_
+    - **Full name**: any full name of the admin user
+    - **Email address**: email address of the admin user
+    - **Password**: admin _(recommended)_
+    - **Confirm Password**: admin _(recommended)_
+    Click **Go to Bitbucket**.
+
+---
+
+### <a id="devdataset"></a>2. Generate dataset for development environment  
+
+After creating the development environment Bitbucket Data Center, generate test dataset to run Data Center App Performance Toolkit:
+- Create project
+- Create repository in project
+- Create pull request 
+
+---
+
+### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
+
+{{% warning %}}
+Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
+1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
+1. Navigate to `dc-app-performance-toolkit/app` folder.
+1. Open the `bitbucket.yml` file and fill in the following variables:
+    - `application_hostname`: your_dc_bitbucket_instance_hostname without protocol.
+    - `application_protocol`: http or https.
+    - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 7990 or your instance-specific port.
+    - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
+    - `application_postfix`: it is empty by default; e.g., /bitbucket for url like this http://localhost:7990/bitbucket.
+    - `admin_login`: admin user username.
+    - `admin_password`: admin user password.
+    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default)
+    - `concurrency`: `2` - number of concurrent JMeter users.
+    - `test_duration`: `5m` - duration of the performance run.
+    - `ramp-up`: `3s` - amount of time it will take JMeter to add all test users to test execution.
+    - `total_actions_per_hour`: `5450` - number of total JMeter actions per hour.
+    - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
+    
+1. Run bzt.
+
+    ``` bash
+    bzt bitbucket.yml
+    ```
+
+1. Review the resulting table in the console log. All JMeter and Selenium actions should have 95+% success rate.  
+In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
+
+    - `results_summary.log`: detailed run summary
+    - `results.csv`: aggregated .csv file with all actions and timings
+    - `bzt.log`: logs of the Taurus tool execution
+    - `jmeter.*`: logs of the JMeter tool execution
+    - `pytest.*`: logs of Pytest-Selenium execution
+
+{{% warning %}}
+Do not proceed with the next step until you have all actions 95+% success rate. Ask [support](#support) if above logs analysis did not help.
+{{% /warning %}}
+
+---
+
+### <a id="devappaction"></a>4. Develop and test app-specific action locally
+Data Center App Performance Toolkit has its own set of default test actions for Bitbucket Data Center: JMeter and Selenium for load and UI tests respectively.     
+
+**App-specific action** - action (performance test) you have to develop to cover main use cases of your application. Performance test should focus on the common usage of your application and not to cover all possible functionality of your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
+
+1. Define main use case of your app. Usually it is one or two main app use cases.
+1. Your app adds new UI elements in Bitbucket Data Center - Selenium app-specific action has to be developed.
+1. Your app introduces new endpoint or extensively calls existing Bitbucket Data Center API - JMeter app-specific actions has to be developed.  
+
+
+{{% note %}}
+We strongly recommend developing your app-specific actions on the development environment to reduce AWS infrastructure costs.
+{{% /note %}}
+
+#### Example of app-specific Selenium action development
+You develop an app that adds some additional fields to specific types of Bitbucket issues. In this case, you should develop Selenium app-specific action:
+
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/bitbucket/extension_ui.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
+So, our test has to open app-specific issues and measure time to load of this app-specific issues.
+1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+1. In `dc-app-performance-toolkit/app/selenium_ui/bitbucket-ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+``` python
+# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
+#     app_specific_action(webdriver, datasets)
+```
+
+1. Run toolkit with `bzt bitbucket.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+
 
 ## <a id="instancesetup"></a>1. Setting up Bitbucket Data Center
 
@@ -533,35 +743,6 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. For this, you have to run scale testing on your app.
 
 For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Bitbucket DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Bitbucket DC app in a cluster.
-
-#### Extending the base action
-
-You can find more info about the local Bitbucket setup for developer's purpose in the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) file. 
-Extension scripts, which extend the base Selenium (`bitbucket-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/bitbucket`). You can modify these scripts to include their app-specific actions.
-
-##### Modifying Selenium
-
-You can extend Selenium scripts to measure the end-to-end browser timings.
-
-We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script is located in the `app/selenium_ui/` folder. This file contains all browser actions, defined by the `test_ functions`. These actions are executed one by one during the testing.
-
-#### Example of app-specific Selenium action development
-You develop an app that adds additional UI elements to a repository page, in this case you should edit `dc-app-performance-toolkit/extension/bitbucket/extension_ui.py`:
-[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
-
-In the `bitbucket-ui.py` script, view the following block of code:
-
-``` python
-# def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
-#     app_specific_action(webdriver, datasets)
-```
-If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_logout` action.
-
-To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
-
-#### Running tests with your modification
-
-To ensure that the test runs without errors in parallel, run your extension scripts with the base scripts as a sanity check.
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
 
