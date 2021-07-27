@@ -90,6 +90,12 @@ if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z ${version} ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Jira version is in list of supported
     if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
