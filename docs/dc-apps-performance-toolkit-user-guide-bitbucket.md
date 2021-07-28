@@ -58,7 +58,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Bitbucket Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Bitbucket Data Center development environment infrastructure costs about 25 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -85,7 +85,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | File server instance type | m4.xlarge |
-| Home directory size | 1000 |
+| Home directory size | 100 |
 
 
 **Database**
@@ -106,8 +106,8 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Elasticsearch master user password | (leave blank) |
-| Elasticsearch instance type | m4.xlarge.elasticsearch |
-| Elasticsearch disk-space per node (GB) | 1000 |
+| Elasticsearch instance type | m4.large.elasticsearch |
+| Elasticsearch disk-space per node (GB) | 100 |
 
 **Networking (for new ASI)**
 
@@ -152,9 +152,9 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 ### <a id="devdataset"></a>2. Generate dataset for development environment  
 
 After creating the development environment Bitbucket Data Center, generate test dataset to run Data Center App Performance Toolkit:
-- Create project
-- Create repository in project
-- Create pull request 
+- Create at least one project
+- Create repository with some files in a project
+- Create a new branch from the repo, make and push changes to the branch and create a pull request
 
 ---
 
@@ -236,7 +236,7 @@ So, our test has to open app-specific issues and measure time to load of this ap
 
 After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
 
-## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Bitbucket Data Center on AWS
+### <a id="instancesetup"></a>5. Set up an enterprise-scale environment Bitbucket Data Center on AWS
 
 We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) (**How to deploy** tab) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
@@ -406,7 +406,7 @@ After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#p
 
 ---
 
-## <a id="preloading"></a>2. Preloading your Bitbucket deployment with an enterprise-scale dataset
+## <a id="preloading"></a>6. Preloading your Bitbucket deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -423,7 +423,7 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 
-Pre-loading the dataset is a three-step process:
+Pre-loading the dataset is a two-step process:
 
 1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/populate_db.sh) script or restore from xml backup file.
 1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/upload_attachments.sh) script.
@@ -604,7 +604,7 @@ In case of any difficulties with Index generation, contact us for support in the
 
 ---
 
-## <a id="executionhost"></a>3. Setting up an execution environment
+## <a id="executionhost"></a>7. Setting up an execution environment
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
@@ -648,7 +648,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ---
 
-## <a id="testscenario"></a> 4. Running the test scenarios on your execution environment
+## <a id="testscenario"></a>8. Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
