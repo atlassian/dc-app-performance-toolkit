@@ -56,7 +56,7 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
       exit 1
     fi
     # Check if passed Bitbucket version is in list of supported
-    if [ "${SUPPORTED_BITBUCKET_VERSIONS[0]}" == ${2} ] || [ "${SUPPORTED_BITBUCKET_VERSIONS[1]}" == ${2} ]; then
+    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else

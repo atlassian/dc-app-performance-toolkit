@@ -97,7 +97,7 @@ if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
       exit 1
     fi
     # Check if passed Jira version is in list of supported
-    if [ "${SUPPORTED_VERSIONS[0]}" == ${version} ] || [ "${SUPPORTED_VERSIONS[1]}" == ${version} ]; then
+    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it

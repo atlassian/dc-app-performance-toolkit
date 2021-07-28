@@ -60,7 +60,7 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
       exit 1
     fi
     # Check if passed Confluence version is in list of supported
-    if [ "${SUPPORTED_CONFLUENCE_VERSIONS[0]}" == ${2} ] || [ "${SUPPORTED_CONFLUENCE_VERSIONS[1]}" == ${2} ]; then
+    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
