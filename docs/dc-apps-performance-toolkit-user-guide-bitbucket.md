@@ -176,9 +176,9 @@ Make sure **English (United States)** language is selected as a default language
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default)
-    - `concurrency`: `2` - number of concurrent JMeter users.
+    - `concurrency`: `1` - number of concurrent JMeter users.
     - `test_duration`: `5m` - duration of the performance run.
-    - `ramp-up`: `3s` - amount of time it will take JMeter to add all test users to test execution.
+    - `ramp-up`: `1s` - amount of time it will take JMeter to add all test users to test execution.
     - `total_actions_per_hour`: `5450` - number of total JMeter actions per hour.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
     
