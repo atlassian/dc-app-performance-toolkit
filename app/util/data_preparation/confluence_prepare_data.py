@@ -1,9 +1,8 @@
 import random
 import string
-
 import urllib3
 
-from multiprocessing import cpu_count
+from util.util import print_timing
 from multiprocessing.pool import ThreadPool
 from util.conf import CONFLUENCE_SETTINGS
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
@@ -11,7 +10,6 @@ from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BL
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-NUM_CORES = cpu_count()
 USERS = "users"
 PAGES = "pages"
 CUSTOM_PAGES = "custom_pages"
@@ -24,44 +22,27 @@ ENGLISH_US = 'en_US'
 ENGLISH_GB = 'en_GB'
 
 
-def print_timing(message, sep='-'):
-    assert message is not None, "Message is not passed to print_timing decorator"
-
-    def deco_wrapper(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs) -> object:
-            start = timer()
-            print(sep * 20)
-            print(f'{message} started {datetime.datetime.now().strftime("%H:%M:%S")}')
-            result = func(*args, **kwargs)
-            end = timer()
-            print(f"{message} finished in {timedelta(seconds=end - start)}")
-            print(sep * 20)
-            return result
-
-        return wrapper
-
-    return deco_wrapper
-
-
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
 @print_timing('Creating dataset started')
 def __create_data_set(rest_client, rpc_client):
-    dataset = dict()
+    dataset = dict([])
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
     perf_user = random.choice(dataset[USERS])['user']
     perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
 
-    def __get_pages_blogs(func):
-        return func(perf_user_api, 5000)
-
     pool = ThreadPool(processes=2)
-    blogs, pages = pool.map(__get_pages_blogs, [__get_blogs, __get_pages])
-    dataset[PAGES] = pages
-    dataset[BLOGS] = blogs
+    async_pages = pool.apply_async(__get_pages, (perf_user_api, 5000))
+    async_blogs = pool.apply_async(__get_blogs, (perf_user_api, 5000))
+
+    async_pages.wait()
+    async_blogs.wait()
+
+    dataset[PAGES] = async_pages.get()
+    dataset[BLOGS] = async_blogs.get()
+
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
@@ -69,6 +50,7 @@ def __create_data_set(rest_client, rpc_client):
     print('------------------------')
     print(f'Custom pages count: {len(dataset[CUSTOM_PAGES])}')
     return dataset
+
 
 @print_timing('Getting users')
 def __get_users(confluence_api, rpc_api, count):
