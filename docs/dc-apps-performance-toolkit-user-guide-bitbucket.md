@@ -175,11 +175,11 @@ Make sure **English (United States)** language is selected as a default language
     - `application_postfix`: it is empty by default; e.g., /bitbucket for url like this http://localhost:7990/bitbucket.
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
-    - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default)
+    - `load_executor`: executor for load tests - [jmeter](https://jmeter.apache.org/)
     - `concurrency`: `1` - number of concurrent JMeter users.
     - `test_duration`: `5m` - duration of the performance run.
     - `ramp-up`: `1s` - amount of time it will take JMeter to add all test users to test execution.
-    - `total_actions_per_hour`: `5450` - number of total JMeter actions per hour.
+    - `total_actions_per_hour`: `3270` - number of total JMeter actions per hour.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
     
 1. Run bzt.
@@ -406,7 +406,7 @@ After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#p
 
 ---
 
-## <a id="preloading"></a>6. Preloading your Bitbucket deployment with an enterprise-scale dataset
+### <a id="preloading"></a>6. Preloading your Bitbucket deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -425,7 +425,7 @@ All the datasets use the standard `admin`/`admin` credentials.
 
 Pre-loading the dataset is a two-step process:
 
-1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/populate_db.sh) script or restore from xml backup file.
+1. [Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/populate_db.sh).
 1. [Restoring attachments](#copyingattachments). We also provide attachments, which you can pre-load via an [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/upload_attachments.sh) script.
 
 The following subsections explain each step in greater detail.
@@ -604,7 +604,7 @@ In case of any difficulties with Index generation, contact us for support in the
 
 ---
 
-## <a id="executionhost"></a>7. Setting up an execution environment
+### <a id="executionhost"></a>7. Setting up an execution environment
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
@@ -648,7 +648,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ---
 
-## <a id="testscenario"></a>8. Running the test scenarios on your execution environment
+### <a id="testscenario"></a>8. Running the test scenarios on your execution environment
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
