@@ -3,6 +3,21 @@
 ###################    Check if NFS exists        ###################
 pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
