@@ -48,8 +48,12 @@ fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
+
 DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 

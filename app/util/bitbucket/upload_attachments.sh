@@ -30,9 +30,13 @@ if [[ -z "$BITBUCKET_VERSION" ]]; then
 fi
 echo "Bitbucket Version: ${BITBUCKET_VERSION}"
 
+DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 ATTACHMENTS_TAR="attachments.tar.gz"
-DATASETS_SIZE="large"
 ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
 NFS_DIR="/media/atl/bitbucket/shared"
 ATTACHMENT_DIR_DATA="data"
