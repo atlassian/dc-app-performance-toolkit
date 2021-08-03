@@ -28,7 +28,7 @@ def generate_random_string(length=20):
 
 @print_timing('Creating dataset started')
 def __create_data_set(rest_client, rpc_client):
-    dataset = dict([])
+    dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
     perf_user = random.choice(dataset[USERS])['user']
     perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
