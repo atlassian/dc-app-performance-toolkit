@@ -21,10 +21,10 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 **[Enterprise-scale environment](#mainenvironmententerprise)**: Bitbucket Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Bitbucket Data Center.
 
-1. [Set up an enterprise-scale environment Bitbucket Data Center on AWS](#instancesetup).
-1. [Load an enterprise-scale dataset on your Bitbucket Data Center deployment](#preloading).
-1. [Set up an execution environment for the toolkit](#executionhost).
-1. [Run all the testing scenarios in the toolkit](#testscenario).
+5. [Set up an enterprise-scale environment Bitbucket Data Center on AWS](#instancesetup).
+6. [Load an enterprise-scale dataset on your Bitbucket Data Center deployment](#preloading).
+7. [Set up an execution environment for the toolkit](#executionhost).
+8. [Run all the testing scenarios in the toolkit](#testscenario).
 
 {{% note %}}
 For simple spikes or tests, you can skip steps 1-2 and target any Bitbucket test instance. When you [set up your execution environment](#executionhost), you may need to edit the scripts according to your test instance's data set.
@@ -161,7 +161,7 @@ After creating the development environment Bitbucket Data Center, generate test 
 ### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
 
 {{% warning %}}
-Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; General configuration** page. Other languages are **not supported** by the toolkit.
+Make sure **English (United States)** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings &gt; Language** page. Other languages are **not supported** by the toolkit.
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
