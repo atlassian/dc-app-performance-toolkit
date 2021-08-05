@@ -1,7 +1,8 @@
 import requests
 from packaging import version
 
-from util.conf import TOOLKIT_VERSION
+from util.conf import TOOLKIT_VERSION, UNSUPPORTED_VERSION
+
 
 CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
 VERSION_STR = "TOOLKIT_VERSION"
@@ -18,8 +19,12 @@ latest_version_str = version_line.split('=')[1].replace("'", "").replace('"', ""
 
 latest_version = version.parse(latest_version_str)
 current_version = version.parse(TOOLKIT_VERSION)
+unsupported_version = version.parse(UNSUPPORTED_VERSION)
 
-if current_version < latest_version:
+if current_version <= unsupported_version:
+    raise SystemExit("DCAPT version {} is no longer supported. "
+                     "Consider an upgrade to the latest version:{}".format(current_version,latest_version))
+elif current_version < latest_version:
     print(f"Warning: DCAPT version {TOOLKIT_VERSION} is outdated. "
           f"Consider upgrade to the latest version: {latest_version}.")
 elif current_version == latest_version:
