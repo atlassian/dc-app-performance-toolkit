@@ -4,8 +4,13 @@ import hashlib
 import getpass
 import re
 import socket
+import requests
+from util.conf import TOOLKIT_VERSION
+from packaging import version
 from datetime import datetime, timezone
 
+CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
+VERSION_STR = "TOOLKIT_VERSION"
 SUCCESS_TEST_RATE = 95.00
 SUCCESS_RT_THRESHOLD = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
@@ -13,6 +18,13 @@ APP_SPECIFIC_TAG = 'APP-SPECIFIC'
 
 # Add an exception to these actions because of long time execution
 EXCEPTIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh', 'selenium_create_pull_request']
+
+r = requests.get(CONF_URL)
+conf = r.text.splitlines()
+version_line = next((line for line in conf if VERSION_STR in line))
+latest_version_str = version_line.split('=')[1].replace("'", "").replace('"', "").strip()
+current_version = version.parse(TOOLKIT_VERSION)
+latest_version = version.parse(latest_version_str)
 
 
 def is_docker():
@@ -62,7 +74,14 @@ def generate_report_summary(collector):
     summary_report.append(f'Summary run status|{overall_status}\n')
     summary_report.append(f'Artifacts dir|{os.path.basename(collector.log_dir)}')
     summary_report.append(f'OS|{collector.os}')
-    summary_report.append(f'DC Apps Performance Toolkit version|{collector.tool_version}')
+    # summary_report.append(f'DC Apps Performance Toolkit version|{collector.tool_version}')
+    if latest_version > current_version:
+        summary_report.append(
+            f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit to the version {latest_version}')
+    elif latest_version == current_version:
+        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} Your Toolkit version is up to date")
+    else:
+        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} is ahead of the latest production version.")
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')
