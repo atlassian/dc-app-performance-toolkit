@@ -6,7 +6,7 @@ import re
 import socket
 
 from datetime import datetime, timezone
-from util.pre_run.check_for_updates import current_version,latest_version
+from util.pre_run.check_for_updates import current_version, latest_version
 
 SUCCESS_TEST_RATE = 95.00
 SUCCESS_RT_THRESHOLD = 20
@@ -66,11 +66,14 @@ def generate_report_summary(collector):
     summary_report.append(f'OS|{collector.os}')
     if latest_version > current_version:
         summary_report.append(
-            f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit to the version {latest_version}')
+            f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit '
+            f'to the version {latest_version}')
     elif latest_version == current_version:
-        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} Your Toolkit version is up to date")
+        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
+                              f"Your Toolkit version is up to date")
     else:
-        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} is ahead of the latest production version.")
+        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
+                              f"is ahead of the latest production version.")
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')
