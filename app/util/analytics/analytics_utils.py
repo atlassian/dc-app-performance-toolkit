@@ -66,14 +66,14 @@ def generate_report_summary(collector):
     summary_report.append(f'OS|{collector.os}')
     if latest_version > current_version:
         summary_report.append(
-            f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit '
-            f'to the version {latest_version}')
+            f'DC Apps Performance Toolkit version|{collector.tool_version}.'
+            f'FAIL: Please update toolkit to the latest version - {latest_version}')
     elif latest_version == current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"Your Toolkit version is up to date")
+                              f"(OK: Toolkit is up to date)")
     else:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"is ahead of the latest production version.")
+                              f"(OK: Toolkit is ahead of the latest production version: {latest_version}")
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')
