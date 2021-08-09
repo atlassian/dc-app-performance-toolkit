@@ -22,8 +22,8 @@ current_version = version.parse(TOOLKIT_VERSION)
 unsupported_version = version.parse(UNSUPPORTED_VERSION)
 
 if current_version <= unsupported_version:
-    raise SystemExit("DCAPT version {} is no longer supported. "
-                     "Consider an upgrade to the latest version:{}".format(current_version, latest_version))
+    raise SystemExit(f"DCAPT version {current_version} is no longer supported. "
+                     f"Consider an upgrade to the latest version: {latest_version}")
 elif current_version < latest_version:
     print(f"Warning: DCAPT version {TOOLKIT_VERSION} is outdated. "
           f"Consider upgrade to the latest version: {latest_version}.")
