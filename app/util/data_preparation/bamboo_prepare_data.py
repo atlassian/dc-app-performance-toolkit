@@ -62,11 +62,6 @@ def main():
     client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admin_password,
                           verify=BAMBOO_SETTINGS.secure)
 
-    # __is_remote_api_enabled(rest_client)
-    # __check_for_admin_permissions(rest_client)
-    # __is_collaborative_editing_enabled(rest_client)
-    # __check_current_language(rest_client)
-    #
     dataset = __create_dataset(client)
     write_test_data_to_files(dataset)
 
