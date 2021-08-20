@@ -2,7 +2,7 @@ import random
 import string
 import urllib3
 
-from util.util import print_timing
+from util.common_util import print_timing
 from multiprocessing.pool import ThreadPool
 from util.conf import CONFLUENCE_SETTINGS
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
