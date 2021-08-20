@@ -3,6 +3,21 @@
 ###################    Check if NFS exists        ###################
 pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
@@ -33,8 +48,12 @@ fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
+
 DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
