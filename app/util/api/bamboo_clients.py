@@ -34,15 +34,15 @@ class BambooClient(RestClient):
         """
         Retrieve a page of users. The authenticated user must have restricted
         administrative permission or higher to use this resource.
-        :param start: The starting index of the returned boards. Base index: 0.
-        :param limit: The maximum number of boards to return per page. Default: 50.
+        :param start: The starting index of the returned users. Base index: 0.
+        :param limit: The maximum number of users to return per page. Default: 25.
         """
         request = self.get(f'{self.host}/rest/api/latest/admin/users?limit={limit}',
                            error_msg="Can not retrieve users")
         content = request.json()
         return content['results']
 
-    def create_user(self, username, password):
+    def create_user(self, name, password):
         """
         Create a new user. The authenticated user must have restricted administrative
         permission or higher to use this resource.
@@ -53,13 +53,10 @@ class BambooClient(RestClient):
         :passwordConfirm: confirm password.
         """
         api_url = f'{self.host}/rest/api/latest/admin/users'
-        payload = {"name": username,
-                   "fullName": username,
-                   "email": f'{username}@example.com',
+        payload = {"name": name,
+                   "fullName": name,
+                   "email": f'{name}@example.com',
                    "password": password,
                    "passwordConfirm": password}
-        request = self.post(api_url, body = payload, error_msg="Could not create user")
-        if request.ok:
-            return {'name': username}
-        else:
-            raise Exception(f'Can not create user')
+        self.post(api_url, body=payload, error_msg="Could not create user")
+        return {'name': name}

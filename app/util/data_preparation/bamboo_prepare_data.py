@@ -13,6 +13,7 @@ BUILD_PLANS = 'plans'
 USERS = 'users'
 DEFAULT_PASSWORD = 'password'
 
+
 def generate_random_string(length=20):
     return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
@@ -28,7 +29,7 @@ def get_users(client, users_count):
         for i in range(0, users_to_generate):
             username = f'performance_user_{generate_random_string(5)}'
             password = DEFAULT_PASSWORD
-            generated_user = client.create_user(username=username, password=password)
+            generated_user = client.create_user(name=username, password=password)
             users.append(generated_user)
     return users
 
@@ -52,6 +53,7 @@ def write_test_data_to_files(dataset):
     __write_to_file(BAMBOO_BUILD_PLANS, build_plans)
     users = [f"{user['name']},{DEFAULT_PASSWORD}" for user in dataset[USERS] if user['name'] != 'admin']
     __write_to_file(BAMBOO_USERS, users)
+
 
 def main():
     print("Started preparing data")
