@@ -6,14 +6,13 @@ from timeit import default_timer as timer
 from packaging import version
 from util.conf import TOOLKIT_VERSION
 
-CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
-VERSION_STR = "TOOLKIT_VERSION"
-UNSUPPORTED_VERSION_STR = "UNSUPPORTED_VERSION"
+CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/dca-1230-check-up-to-date-version-of-the-toolkit-in-the-summary-report/app/util/conf.py"
 
 
-def latest_version():
+def latest_version(supported=True):
+    VERSION_STR = "TOOLKIT_VERSION" if supported else "UNSUPPORTED_VERSION"
     try:
-        r = requests.get(CONF_URL, UNSUPPORTED_VERSION_STR)
+        r = requests.get(CONF_URL)
         r.raise_for_status()
         conf = r.text.splitlines()
         version_line = next((line for line in conf if VERSION_STR in line))
@@ -22,25 +21,21 @@ def latest_version():
         return latest_version_check
     except requests.exceptions.RequestException as e:
         print(f"Warning: DCAPT check for update failed - {e}")
+    except StopIteration:
+        print("Warning: failed to get the unsupported version")
 
 
 def unsupported_version():
-    try:
-        r = requests.get(CONF_URL, UNSUPPORTED_VERSION_STR)
-        r.raise_for_status()
-        conf = r.text.splitlines()
-        unsupported_version_line = next((line for line in conf if UNSUPPORTED_VERSION_STR in line))
-        unsupported_version_str = unsupported_version_line.split('=')[1].replace("'", "").replace('"', "").strip()
-        unsupported_version_check = version.parse(unsupported_version_str)
-        return unsupported_version_check
-    except requests.exceptions.RequestException as e:
-        print(f"Warning: DCAPT check for update failed - {e}")
+
+    unsupported_version_str = latest_version(supported=False)
+
+    return unsupported_version_str
 
 
 def current_version():
-    current_version_parse = version.parse(TOOLKIT_VERSION)
+    version.parse(TOOLKIT_VERSION)
 
-    return current_version_parse
+    return version.parse(TOOLKIT_VERSION)
 
 
 def print_timing(message, sep='-'):

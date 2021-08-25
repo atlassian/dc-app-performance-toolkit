@@ -7,6 +7,9 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import current_version, latest_version
+
+latest_version = latest_version()
+current_version = current_version()
 SUCCESS_TEST_RATE = 95.00
 SUCCESS_RT_THRESHOLD = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
@@ -63,14 +66,14 @@ def generate_report_summary(collector):
     summary_report.append(f'Summary run status|{overall_status}\n')
     summary_report.append(f'Artifacts dir|{os.path.basename(collector.log_dir)}')
     summary_report.append(f'OS|{collector.os}')
-    if latest_version() is None:
-        summary_report.append(f'DC Apps Performance Toolkit version|{collector.tool_version}.'
-                              ' (FAIL to check for updates due connection)')
-    elif latest_version() > current_version():
+    if latest_version is None:
+        summary_report.append((f"DC Apps Performance Toolkit version|{collector.tool_version} "
+                               f"(FAIL: Could not get the latest version.)"))
+    elif latest_version > current_version:
         summary_report.append(
             f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit '
-            f'to the version {latest_version()}')
-    elif latest_version() == current_version():
+            f'to the version {latest_version}')
+    elif latest_version == current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
                               f"Your Toolkit version is up to date")
     else:
