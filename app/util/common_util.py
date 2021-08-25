@@ -6,7 +6,7 @@ from timeit import default_timer as timer
 from packaging import version
 from util.conf import TOOLKIT_VERSION
 
-CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/dca-1230-check-up-to-date-version-of-the-toolkit-in-the-summary-report/app/util/conf.py"
+CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
 
 
 def latest_version(supported=True):
