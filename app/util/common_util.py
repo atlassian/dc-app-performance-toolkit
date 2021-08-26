@@ -33,7 +33,7 @@ def get_unsupported_version():
 
 
 def get_current_version():
-    version.parse(TOOLKIT_VERSION)
+    return version.parse(TOOLKIT_VERSION)
 
 
 def print_timing(message, sep='-'):
