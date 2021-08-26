@@ -1,6 +1,6 @@
 import yaml
 
-from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML
+from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
 TOOLKIT_VERSION = '4.3.0'
 
@@ -94,8 +94,18 @@ class CrowdSettings(BaseAppSettings):
         self.ramp_up = self.get_property('ramp-up')
 
 
+class BambooSettings(BaseAppSettings):
+
+    def __init__(self, config_yml):
+        super().__init__(config_yml)
+        self.concurrency = self.get_property('concurrency')
+        self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.ramp_up = self.get_property('ramp-up')
+
+
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
 CONFLUENCE_SETTINGS = ConfluenceSettings(config_yml=CONFLUENCE_YML)
 BITBUCKET_SETTINGS = BitbucketSettings(config_yml=BITBUCKET_YML)
 JSM_SETTINGS = JsmSettings(config_yml=JSM_YML)
 CROWD_SETTINGS = CrowdSettings(config_yml=CROWD_YML)
+BAMBOO_SETTINGS = BambooSettings(config_yml=BAMBOO_YML)
