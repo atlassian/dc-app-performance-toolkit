@@ -6,10 +6,10 @@ import re
 import socket
 
 from datetime import datetime, timezone
-from util.common_util import current_version, latest_version
+from util.common_util import get_current_version, get_latest_version
 
-latest_version = latest_version()
-current_version = current_version()
+latest_version = get_latest_version()
+current_version = get_current_version()
 SUCCESS_TEST_RATE = 95.00
 SUCCESS_RT_THRESHOLD = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
@@ -68,17 +68,16 @@ def generate_report_summary(collector):
     summary_report.append(f'OS|{collector.os}')
     if latest_version is None:
         summary_report.append((f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                               f"(FAIL: Could not get the latest version.)"))
+                               f"(WARNING: Could not get the latest version.)"))
     elif latest_version > current_version:
-        summary_report.append(
-            f'DC Apps Performance Toolkit version|{collector.tool_version}. Please update your toolkit '
-            f'to the version {latest_version}')
+        summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
+                              f"(FAIL: Please update toolkit to the latest version - {latest_version})")
     elif latest_version == current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"Your Toolkit version is up to date")
+                              f"(OK: Toolkit is up to date)")
     else:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"is ahead of the latest production version.")
+                              f"(OK: Toolkit is ahead of the latest production version: {latest_version})")
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')

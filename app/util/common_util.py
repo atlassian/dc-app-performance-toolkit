@@ -9,7 +9,7 @@ from util.conf import TOOLKIT_VERSION
 CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
 
 
-def latest_version(supported=True):
+def get_latest_version(supported=True):
     VERSION_STR = "TOOLKIT_VERSION" if supported else "UNSUPPORTED_VERSION"
     try:
         r = requests.get(CONF_URL)
@@ -17,25 +17,23 @@ def latest_version(supported=True):
         conf = r.text.splitlines()
         version_line = next((line for line in conf if VERSION_STR in line))
         latest_version_str = version_line.split('=')[1].replace("'", "").replace('"', "").strip()
-        latest_version_check = version.parse(latest_version_str)
-        return latest_version_check
+        latest_version = version.parse(latest_version_str)
+        return latest_version
     except requests.exceptions.RequestException as e:
         print(f"Warning: DCAPT check for update failed - {e}")
     except StopIteration:
         print("Warning: failed to get the unsupported version")
 
 
-def unsupported_version():
+def get_unsupported_version():
 
-    unsupported_version_str = latest_version(supported=False)
+    unsupported_version_str = get_latest_version(supported=False)
 
     return unsupported_version_str
 
 
-def current_version():
+def get_current_version():
     version.parse(TOOLKIT_VERSION)
-
-    return version.parse(TOOLKIT_VERSION)
 
 
 def print_timing(message, sep='-'):

@@ -1,8 +1,8 @@
-from util.common_util import latest_version, current_version, unsupported_version
+from util.common_util import get_latest_version, get_current_version, get_unsupported_version
 
-latest_version = latest_version()
-current_version = current_version()
-unsupported_version = unsupported_version()
+latest_version = get_latest_version()
+current_version = get_current_version()
+unsupported_version = get_unsupported_version()
 
 if latest_version is None:
     print('Warning: failed to get the latest version')
