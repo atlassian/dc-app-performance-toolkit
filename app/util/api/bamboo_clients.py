@@ -19,7 +19,8 @@ class BambooClient(RestClient):
                                 f'&max-result={max_result}'
             )
             request = self.get(api_url, "Could not retrieve build plans")
-
+            if request.json()['start-index'] != start:
+                break
             content.extend(request.json()['searchResults'])
 
             loop_count -= 1
