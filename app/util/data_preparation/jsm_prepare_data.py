@@ -6,7 +6,7 @@ from itertools import repeat
 
 
 import urllib3
-from util.util import print_timing
+from util.common_util import print_timing
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
