@@ -26,4 +26,3 @@ class LoginPageLocators:
 
 class LogoutLocators:
     logout = (By.XPATH, "//a[@href='/userLogout.action']")
-

@@ -18,8 +18,3 @@ class Login(BasePage):
 class Logout(BasePage):
     page_url = UrlManager().logout_url()
     logout = LogoutLocators.logout
-
-
-
-
-
