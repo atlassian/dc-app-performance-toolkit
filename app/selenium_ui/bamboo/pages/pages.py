@@ -17,4 +17,3 @@ class Login(BasePage):
 
 class Logout(BasePage):
     UrlManager().logout_url()
-
