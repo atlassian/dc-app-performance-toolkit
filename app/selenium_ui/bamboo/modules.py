@@ -34,7 +34,5 @@ def login(webdriver, datasets):
 def log_out(webdriver, datasets):
     @print_timing("selenium_log_out")
     def measure():
-        logout_page = Logout(webdriver)
-        logout_page.go_to()
-
+        Logout(webdriver)
     measure()

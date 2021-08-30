@@ -1,6 +1,6 @@
 from selenium_ui.base_page import BasePage
 
-from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators, LogoutLocators
+from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators
 
 
 class Login(BasePage):
@@ -16,5 +16,5 @@ class Login(BasePage):
 
 
 class Logout(BasePage):
-    page_url = UrlManager().logout_url()
-    logout = LogoutLocators.logout
+    UrlManager().logout_url()
+
