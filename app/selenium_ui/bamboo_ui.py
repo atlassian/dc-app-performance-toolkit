@@ -1,5 +1,4 @@
 from selenium_ui.bamboo import modules
-from extension.bamboo import extension_ui  # noqa F401
 
 
 # this action should be the first one
