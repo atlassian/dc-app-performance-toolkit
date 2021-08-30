@@ -2,10 +2,14 @@
 
 start=$(date +%s)
 
-BAMBOO_URL="http://3.133.150.205:8085"
+BAMBOO_URL="http://bamboo-test-stack.com" # e.g. http://1.123.150.205:8085
 USERNAME="admin"
 PASSWORD="admin"
-REMOTE_AGENTS_COUNT=10
+REMOTE_AGENTS_COUNT=55
+
+# shellcheck disable=SC2001
+# trim trailing slash from URL if any
+BAMBOO_URL=$(echo $BAMBOO_URL | sed 's:/*$::')
 
 AGENT_JAR_URL=$BAMBOO_URL/agentServer/agentInstaller
 AGENT_JAR=agentInstaller.jar
@@ -66,7 +70,7 @@ do
   do
     ((retries+=1))
     if [ "$retries" -eq "$attempts" ]; then
-      echo "Terminated due to timeout. Agent $i uuid-temp.properties file not found in $attempts attempts."
+      echo "Error: Terminated due to timeout. Agent $i uuid-temp.properties file not found in $attempts attempts."
       exit 1
     fi
     echo "Waiting for agent $i/$REMOTE_AGENTS_COUNT temp properties file creation. Attempt $retries/$attempts. Sleeping $sleep_time seconds."
@@ -92,7 +96,7 @@ do
       fi
   done
   if [ "$auth_response" != "0" ]; then
-    echo "Unable to authenticate agent $i in $attempts attempts"
+    echo "Error: Unable to authenticate agent $i in $attempts attempts"
     exit 1
   fi
   echo "Agent $i/$REMOTE_AGENTS_COUNT has been authenticated"
@@ -108,13 +112,22 @@ do
   sleep_time=5
   retries=0
   check_grep=""
+  check_grep_fail=""
 
   while [ -z "$check_grep" ]
   do
     ((retries+=1))
     check_grep=$(grep "ready to receive builds" "$HOME/$AGENT_HOME$i/atlassian-bamboo-agent.log")
+    check_grep_fail=$(grep "Failed to connect to" "$HOME/$AGENT_HOME$i/atlassian-bamboo-agent.log")
     if [ "$retries" -eq "$attempts" ]; then
-      echo "Terminated due to timeout. Agent $i is not ready in $attempts attempts."
+      echo "Error: Terminated due to timeout. Agent $i is not ready in $attempts attempts."
+      echo "See logs for more details: $HOME/$AGENT_HOME$i/atlassian-bamboo-agent.log"
+      exit 1
+    fi
+    if [ -n "$check_grep_fail" ]; then
+      echo "Error: Agent $i/$REMOTE_AGENTS_COUNT could not connect to server. Check bamboo server network setup."
+      echo "Message: $check_grep_fail"
+      echo "See logs for more details: $HOME/$AGENT_HOME$i/atlassian-bamboo-agent.log"
       exit 1
     fi
     if [ -z "$check_grep" ]; then
