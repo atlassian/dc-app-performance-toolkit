@@ -19,13 +19,13 @@ settings:
     ramp-up: 20s                    # time to spin all concurrent threads
     total_actions_per_hour: 180000  # number of total JMeter actions per hour
 
-    # 2 nodes scenario parameters
-    # ramp-up: 10s                    # time to spin all concurrent threads
-    # total_actions_per_hour: 360000  # number of total JMeter actions per hour
-
-    # 4 nodes scenario parameters
-    # ramp-up: 5s                     # time to spin all concurrent threads
-    # total_actions_per_hour: 720000  # number of total JMeter actions per hour
+#     2 nodes scenario parameters
+#     ramp-up: 10s                    # time to spin all concurrent threads
+#     total_actions_per_hour: 360000  # number of total JMeter actions per hour
+#
+#     4 nodes scenario parameters
+#     ramp-up: 5s                     # time to spin all concurrent threads
+#     total_actions_per_hour: 720000  # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
@@ -35,18 +35,18 @@ services:
     prepare:
       - python util/pre_run/environment_checker.py
       - python util/data_preparation/bamboo_prepare_data.py
-#    shutdown:
-#      - python util/post_run/jmeter_post_check.py
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl
-#    post-process:
-#      - python util/analytics/analytics.py bamboo
-#      - python util/post_run/cleanup_results_dir.py
+    shutdown:
+      - python util/post_run/jmeter_post_check.py
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl
+    post-process:
+      - python util/analytics/analytics.py bamboo
+      - python util/post_run/cleanup_results_dir.py
 execution:
-#  - scenario: ${load_executor}
-#    executor: ${load_executor}
-#    concurrency: ${concurrency}
-#    hold-for: ${test_duration}
-#    ramp-up: ${ramp-up}
+  - scenario: ${load_executor}
+    executor: ${load_executor}
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
   - scenario: selenium
     executor: selenium
     runner: pytest
@@ -54,42 +54,42 @@ execution:
 scenarios:
   selenium:
     script: selenium_ui/bamboo_ui.py
-#  jmeter:
-#    script: jmeter/bamboo.jmx
-#    properties:
-#      application_hostname: ${application_hostname}
-#      application_protocol: ${application_protocol}
-#      application_port: ${application_port}
-#      application_postfix: ${application_postfix}
-#      # Workload model
-#      total_actions_per_hr: ${total_actions_per_hour}
+  jmeter:
+    script: jmeter/bamboo.jmx
+    properties:
+      application_hostname: ${application_hostname}
+      application_protocol: ${application_protocol}
+      application_port: ${application_port}
+      application_postfix: ${application_postfix}
+      # Workload model
+      total_actions_per_hr: ${total_actions_per_hour}
 modules:
-#  consolidator:
-#    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
-#    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
-#  jmeter:
-#    version: ${JMETER_VERSION}
-#    detect-plugins: true
-#    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
-#    plugins:
-#      - bzm-parallel=0.4
-#      - bzm-random-csv=0.6
-#      - jpgc-casutg=2.5
-#      - jpgc-dummy=0.2
-#      - jpgc-ffw=2.0
-#      - jpgc-fifo=0.2
-#      - jpgc-functions=2.1
-#      - jpgc-json=2.6
-#      - jpgc-perfmon=2.1
-#      - jpgc-prmctl=0.4
-#      - jpgc-tst=2.4
-#      - jpgc-wsc=0.3
-#      - tilln-sshmon=1.0
-#      - jpgc-synthesis=2.2
-#    system-properties:
-#      server.rmi.ssl.disable: true
-#      java.rmi.server.hostname: localhost
-#      httpsampler.ignore_failed_embedded_resources: "true"
+  consolidator:
+    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
+    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+  jmeter:
+    version: ${JMETER_VERSION}
+    detect-plugins: true
+    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    plugins:
+      - bzm-parallel=0.4
+      - bzm-random-csv=0.6
+      - jpgc-casutg=2.5
+      - jpgc-dummy=0.2
+      - jpgc-ffw=2.0
+      - jpgc-fifo=0.2
+      - jpgc-functions=2.1
+      - jpgc-json=2.6
+      - jpgc-perfmon=2.1
+      - jpgc-prmctl=0.4
+      - jpgc-tst=2.4
+      - jpgc-wsc=0.3
+      - tilln-sshmon=1.0
+      - jpgc-synthesis=2.2
+    system-properties:
+      server.rmi.ssl.disable: true
+      java.rmi.server.hostname: localhost
+      httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
       version: "91.0.4472.101" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
