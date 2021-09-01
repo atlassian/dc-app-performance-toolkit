@@ -53,8 +53,14 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "!!! Warning !!! This may break your Confluence instance. Also, note that downgrade is not supported by Confluence."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z "$2" ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Confluence version is in list of supported
-    if [[ "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${2} ]]; then
+    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else

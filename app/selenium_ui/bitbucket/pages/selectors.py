@@ -224,4 +224,4 @@ class UserSettingsLocator:
 
 
 class RepoCommitsLocator:
-    repo_commits_graph = (By.CSS_SELECTOR, 'svg.commit-graph')
+    repo_commits_graph = (By.ID, 'commits-table')

@@ -205,7 +205,7 @@
               <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
                 <collectionProp name="AuthManager.auth_list">
                   <elementProp name="" elementType="Authorization">
-                    <stringProp name="Authorization.url">${application.postfix}</stringProp>
+                    <stringProp name="Authorization.url">${application.protocol}://${application.hostname}:${application.port}${application.postfix}</stringProp>
                     <stringProp name="Authorization.username">${application.name}</stringProp>
                     <stringProp name="Authorization.password">${application.password}</stringProp>
                     <stringProp name="Authorization.domain"></stringProp>
@@ -269,7 +269,7 @@
               <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
                 <collectionProp name="AuthManager.auth_list">
                   <elementProp name="" elementType="Authorization">
-                    <stringProp name="Authorization.url">${application.postfix}</stringProp>
+                    <stringProp name="Authorization.url">${application.protocol}://${application.hostname}:${application.port}${application.postfix}</stringProp>
                     <stringProp name="Authorization.username">${application.name}</stringProp>
                     <stringProp name="Authorization.password">${application.password}</stringProp>
                     <stringProp name="Authorization.domain"></stringProp>
