@@ -11,7 +11,7 @@ settings:
     application_postfix:            # e.g. /bamboo in case of url like http://localhost/bamboo
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter            
+    load_executor: jmeter
     concurrency: 1000               # number of Bamboo users for Selenium actions
     test_duration: 45m
 
@@ -19,14 +19,14 @@ settings:
     ramp-up: 20s                    # time to spin all concurrent threads
     total_actions_per_hour: 180000  # number of total JMeter actions per hour
 
-    # 2 nodes scenario parameters
-    # ramp-up: 10s                    # time to spin all concurrent threads
-    # total_actions_per_hour: 360000  # number of total JMeter actions per hour
-
-    # 4 nodes scenario parameters
-    # ramp-up: 5s                     # time to spin all concurrent threads
-    # total_actions_per_hour: 720000  # number of total JMeter actions per hour
-
+#     2 nodes scenario parameters
+#     ramp-up: 10s                    # time to spin all concurrent threads
+#     total_actions_per_hour: 360000  # number of total JMeter actions per hour
+#
+#     4 nodes scenario parameters
+#     ramp-up: 5s                     # time to spin all concurrent threads
+#     total_actions_per_hour: 720000  # number of total JMeter actions per hour
+    WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
@@ -47,7 +47,13 @@ execution:
     concurrency: ${concurrency}
     hold-for: ${test_duration}
     ramp-up: ${ramp-up}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
 scenarios:
+  selenium:
+    script: selenium_ui/bamboo_ui.py
   jmeter:
     script: jmeter/bamboo.jmx
     properties:
@@ -84,6 +90,9 @@ modules:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
       httpsampler.ignore_failed_embedded_resources: "true"
+  selenium:
+    chromedriver:
+      version: "91.0.4472.101" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

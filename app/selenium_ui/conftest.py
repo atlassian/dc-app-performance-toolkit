@@ -14,12 +14,13 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
-    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES, \
+    BAMBOO_USERS, BAMBOO_BUILD_PLANS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -76,6 +77,13 @@ class Dataset:
             self.dataset["users"] = self.__read_input_file(BITBUCKET_USERS)
             self.dataset["repos"] = self.__read_input_file(BITBUCKET_REPOS)
             self.dataset["pull_requests"] = self.__read_input_file(BITBUCKET_PRS)
+        return self.dataset
+
+    def bamboo_dataset(self):
+        if not self.dataset:
+            self.dataset["users"] = self.__read_input_file(BAMBOO_USERS)
+            self.dataset["build_plans"] = self.__read_input_file(BAMBOO_BUILD_PLANS)
+
         return self.dataset
 
     @staticmethod
@@ -147,6 +155,7 @@ def print_timing(interaction=None):
                 raise Exception(error_msg, full_exception)
 
         return wrapper
+
     return deco_wrapper
 
 
@@ -167,6 +176,7 @@ def webdriver(app_settings):
         driver = Chrome(options=chrome_options)
         driver.app_settings = app_settings
         return driver
+
     # First time driver init
     if not globals.driver:
         driver = driver_init()
@@ -174,6 +184,7 @@ def webdriver(app_settings):
 
         def driver_quit():
             driver.quit()
+
         globals.driver = driver
         atexit.register(driver_quit)
         return driver
@@ -212,6 +223,11 @@ def bitbucket_webdriver():
     return webdriver(app_settings=BITBUCKET_SETTINGS)
 
 
+@pytest.fixture(scope="module")
+def bamboo_webdriver():
+    return webdriver(app_settings=BAMBOO_SETTINGS)
+
+
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item):
     # Making test result information available in fixtures
@@ -243,6 +259,12 @@ def confluence_screen_shots(request, confluence_webdriver):
 def bitbucket_screen_shots(request, bitbucket_webdriver):
     yield
     get_screen_shots(request, bitbucket_webdriver)
+
+
+@pytest.fixture
+def bamboo_screen_shots(request, bamboo_webdriver):
+    yield
+    get_screen_shots(request, bamboo_webdriver)
 
 
 def get_screen_shots(request, webdriver):
@@ -293,6 +315,11 @@ def bitbucket_datasets():
     return application_dataset.bitbucket_dataset()
 
 
+@pytest.fixture(scope="module")
+def bamboo_datasets():
+    return application_dataset.bamboo_dataset()
+
+
 def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
     """
     Retry "tries" times, with initial "delay", increasing delay "delay*backoff" each time.
@@ -319,4 +346,5 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
                     return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
 
         return f_retry
+
     return deco_retry

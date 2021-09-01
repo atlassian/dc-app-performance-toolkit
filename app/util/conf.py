@@ -99,8 +99,7 @@ class BambooSettings(BaseAppSettings):
     def __init__(self, config_yml):
         super().__init__(config_yml)
         self.concurrency = self.get_property('concurrency')
-        self.total_actions_per_hour = self.get_property('total_actions_per_hour')
-        self.ramp_up = self.get_property('ramp-up')
+        self.webdriver_visible = self.get_property('WEBDRIVER_VISIBLE')
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
