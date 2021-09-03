@@ -107,7 +107,7 @@ fi
 
 echo "Step1: Download msrcync"
 # https://github.com/jbd/msrsync
-cd ${TMP_DIR}
+cd ${TMP_DIR} || exit 1
 if [[ -s msrsync ]]; then
   echo "msrsync already downloaded"
 else
