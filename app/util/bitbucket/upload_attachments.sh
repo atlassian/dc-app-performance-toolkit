@@ -50,10 +50,10 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "e.g. ./upload_attachments --force 6.10.0"
   echo "!!! Warning !!! This may broke your Bitbucket instance."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if passed Bitbucket version is in list of supported
-    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${2} ]]; then
-      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${version} ]]; then
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
