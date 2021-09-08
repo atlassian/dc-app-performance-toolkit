@@ -1,6 +1,7 @@
 import random
 
-from selenium_ui.bamboo.pages.pages import Login, Logout
+from selenium_ui.bamboo.pages.pages import Login, Logout, ProjectList, BuildList, PlanConfiguration, BuildActivity, \
+    PlanSummary, BuildSummary, BuildLogs, PlanHistory, JobConfiguration
 from selenium_ui.conftest import print_timing
 
 USERS = "users"
@@ -9,8 +10,10 @@ BUILD_PLANS = "build_plans"
 
 def setup_run_data(datasets):
     user = random.choice(datasets[USERS])
+    build_plans = random.choice(datasets[BUILD_PLANS])
     datasets['username'] = user[0]
     datasets['password'] = user[1]
+    datasets['build_plans'] = build_plans[1]
 
 
 def login(webdriver, datasets):
@@ -31,8 +34,99 @@ def login(webdriver, datasets):
     measure()
 
 
+def view_all_projects(webdriver, datasets):
+    @print_timing("selenium_view_all_projects")
+    def measure():
+        project_page = ProjectList(webdriver)
+        project_page.click_projects_button()
+        project_page.view_all_projects()
+
+    measure()
+
+
+def view_all_builds(webdriver, datasets):
+    @print_timing("selenium_view_all_builds")
+    def measure():
+        builds_page = BuildList(webdriver)
+        builds_page.click_all_builds_button()
+        builds_page.view_all_builds()
+
+    measure()
+
+
+def config_plan(webdriver, datasets):
+    @print_timing("selenium_config_plan")
+    def measure():
+        config_page = PlanConfiguration(webdriver)
+        config_page.click_config_plan_button()
+        config_page.config_plan_page()
+
+    measure()
+
+
+def builds_queue_page(webdriver, datasets):
+    @print_timing("selenium_view_build_activity")
+    def measure():
+        activity_page = BuildActivity(webdriver)
+        activity_page.open_build_dropdown()
+        activity_page.build_activity_page()
+
+    measure()
+
+
+def view_plan_summary(webdriver, datasets):
+    plan_summary = PlanSummary(webdriver, build_plans=datasets['build_plans'])
+
+    @print_timing("selenium_view_plan_summary")
+    def measure():
+        plan_summary.view_summary_plan()
+
+    measure()
+
+
+def view_build_summary(webdriver, datasets):
+    build_summary = BuildSummary(webdriver, build_plans=datasets['build_plans'])
+
+    @print_timing("selenium_view_build_summary")
+    def measure():
+        build_summary.view_build_summary_page()
+
+    measure()
+
+
+def view_plan_history_page(webdriver, datasets):
+    plan_history = PlanHistory(webdriver, build_plans=datasets['build_plans'])
+
+    @print_timing("selenium_view_plan_history")
+    def measure():
+        plan_history.view_plan_history()
+
+    measure()
+
+
+def view_build_logs(webdriver, datasets):
+    @print_timing("selenium_view_build_logs")
+    def measure():
+        view_logs = BuildLogs(webdriver)
+        view_logs.view_build_logs()
+
+    measure()
+
+
+def view_job_configuration(webdriver, datasets):
+
+    view_job_configuration_page = JobConfiguration(webdriver, build_plans=datasets['build_plans'])
+
+    @print_timing("selenium_view_job_configuration")
+    def measure():
+        view_job_configuration_page.job_configuration_page()
+
+    measure()
+
+
 def log_out(webdriver, datasets):
     @print_timing("selenium_log_out")
     def measure():
         Logout(webdriver)
+
     measure()
