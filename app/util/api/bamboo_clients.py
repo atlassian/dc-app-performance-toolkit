@@ -43,6 +43,32 @@ class BambooClient(RestClient):
         content = request.json()
         return content['results']
 
+    def get_projects(self, start=0, max_result=100):
+        loop_count = max_result // BATCH_SIZE_SEARCH + 1
+        content = list()
+        last_loop_remainder = max_result % BATCH_SIZE_SEARCH
+        max_result = BATCH_SIZE_SEARCH if max_result > BATCH_SIZE_SEARCH else max_result
+
+        while loop_count > 0:
+            if not max_result:
+                break
+            api_url = (
+                    self.host + f'/rest/api/latest/project?start-index={start}'
+                                f'&max-result={max_result}'
+            )
+            request = self.get(api_url, "Could not retrieve projects")
+            if request.json()['projects']['start-index'] != start:
+                break
+            content.extend(request.json()['projects']['project'])
+
+            loop_count -= 1
+            if loop_count == 1:
+                max_result = last_loop_remainder
+
+            start += len(request.json()['projects']['project'])
+
+        return content
+
     def create_user(self, name, password):
         """
         Create a new user. The authenticated user must have restricted administrative
