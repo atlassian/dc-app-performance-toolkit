@@ -43,7 +43,6 @@ def generate_project_name_keys_dict(client):
     return projects_name_key_dict
 
 
-
 def __create_dataset(client):
     dataset = dict()
     dataset[BUILD_PLANS] = client.get_build_plans(max_result=2000)
