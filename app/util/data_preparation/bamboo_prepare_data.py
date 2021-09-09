@@ -7,7 +7,6 @@ from util.conf import BAMBOO_SETTINGS
 from util.api.bamboo_clients import BambooClient
 from util.project_paths import BAMBOO_BUILD_PLANS, BAMBOO_USERS
 
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BUILD_PLANS = 'plans'
