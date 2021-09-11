@@ -12,24 +12,20 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
-    concurrency: 1000               # number of Bamboo users for Selenium actions
+    concurrency: 200               # number of Bamboo users for Selenium actions
     test_duration: 45m
-
-    # 1 node scenario parameters
-    ramp-up: 20s                    # time to spin all concurrent threads
-    total_actions_per_hour: 180000  # number of total JMeter actions per hour
-
-#     2 nodes scenario parameters
-#     ramp-up: 10s                    # time to spin all concurrent threads
-#     total_actions_per_hour: 360000  # number of total JMeter actions per hour
-#
-#     4 nodes scenario parameters
-#     ramp-up: 5s                     # time to spin all concurrent threads
-#     total_actions_per_hour: 720000  # number of total JMeter actions per hour
+    ramp-up: 3m                    # time to spin all concurrent threads
+    total_actions_per_hour: 18000  # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    view_all_builds: 15
+    view_build_result: 15
+    view_build_configuration: 10
+    view_job_configuration: 10
+    view_build_summary: 10
+    view_projects_list: 10
 services:
   - module: shellexec
     prepare:
@@ -63,6 +59,12 @@ scenarios:
       application_postfix: ${application_postfix}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
+      perc_view_all_builds: ${view_all_builds}
+      perc_view_build_result: ${view_build_result}
+      perc_view_build_configuration: ${view_build_configuration}
+      perc_view_job_configuration: ${view_job_configuration}
+      perc_view_build_summary: ${view_build_summary}
+      perc_view_projects_list: ${view_projects_list}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
