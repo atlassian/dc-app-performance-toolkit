@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium_ui.conftest import retry
 import time
 import random
 import json
@@ -21,9 +22,15 @@ class Login(BasePage):
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
 
+    def is_first_login_second_page(self):
+        return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
+
     def first_login_setup(self):
         self.wait_until_visible(LoginPageLocators.continue_button).send_keys(Keys.ESCAPE)
         self.get_element(LoginPageLocators.continue_button).click()
+        self.first_login_second_page_setup()
+
+    def first_login_second_page_setup(self):
         self.wait_until_visible(LoginPageLocators.avatar_page_next_button).click()
         self.wait_until_visible(LoginPageLocators.explore_current_projects).click()
         self.go_to_url(DashboardLocators.dashboard_url)
@@ -33,6 +40,17 @@ class Login(BasePage):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
+
+    def __get_footer_text(self):
+        return self.get_element(LoginPageLocators.footer).text
+
+    def get_app_version(self):
+        text = self.__get_footer_text()
+        return text.split('#')[0].replace('(v', '')
+
+    def get_node_id(self):
+        text = self.__get_footer_text()
+        return text.split(':')[-1].replace(')', '')
 
 
 class Logout(BasePage):
@@ -138,15 +156,19 @@ class Issue(BasePage):
                         issue_types[label['label']] = label['selected']
         if 'Epic' in issue_types:
             if issue_types['Epic']:
-                # Do in case of 'Epic' issue type is selected
-                self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
-                self.get_element(IssueLocators.issue_type_field).click()
-                issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
-                if issue_dropdown_elements:
-                    filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
-                    rnd_issue_type_el = random.choice(filtered_issue_elements)
-                    self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
-                self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
+
+                @retry(delay=0.25, backoff=1.5)
+                def choose_non_epic_issue_type():
+                    # Do in case of 'Epic' issue type is selected
+                    self.action_chains().move_to_element(self.get_element(IssueLocators.issue_type_field))
+                    self.get_element(IssueLocators.issue_type_field).click()
+                    issue_dropdown_elements = self.get_elements(IssueLocators.issue_type_dropdown_elements)
+                    if issue_dropdown_elements:
+                        filtered_issue_elements = list(filter(__filer_epic, issue_dropdown_elements))
+                        rnd_issue_type_el = random.choice(filtered_issue_elements)
+                        self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
+                    self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
+                choose_non_epic_issue_type()
 
     def submit_issue(self):
         self.wait_until_clickable(IssueLocators.issue_submit_button).click()

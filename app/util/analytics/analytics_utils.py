@@ -2,12 +2,17 @@ import os
 import platform
 import hashlib
 import getpass
+import re
 import socket
 from datetime import datetime, timezone
 
 SUCCESS_TEST_RATE = 95.00
+SUCCESS_RT_THRESHOLD = 20
 OS = {'macOS': ['Darwin'], 'Windows': ['Windows'], 'Linux': ['Linux']}
 APP_SPECIFIC_TAG = 'APP-SPECIFIC'
+
+# Add an exception to these actions because of long time execution
+EXCEPTIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh', 'selenium_create_pull_request']
 
 
 def is_docker():
@@ -18,9 +23,18 @@ def is_docker():
     )
 
 
-def format_string_summary_report(string_to_format, offset=50):
+def format_string_summary_report(string_to_format, offset_1st=50, offset=20):
     # format string with delimiter "|"
-    return ''.join([f'{item}{" " * (offset - len(str(item)))}' for item in string_to_format.split("|")]) + "\n"
+    result = ''
+    for i, item in enumerate(string_to_format.split("|")):
+        if i == 0:
+            off = offset_1st
+        else:
+            # Set 50 spaces after first column and 20 spaces after second+ column
+            off = offset
+        result = result + f'{item}{" " * (off - len(str(item)))}'
+    result = result + '\n'
+    return result
 
 
 def write_to_file(content, file):
@@ -66,18 +80,30 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    summary_report.append('\nAction|Success Rate|Status')
+    if collector.app_type.lower() == 'crowd':
+        summary_report.append(
+            f'Crowd users directory synchronization time|{collector.crowd_sync_test["crowd_users_sync"]}')
+        summary_report.append(
+            f'Crowd groups membership synchronization time|{collector.crowd_sync_test["crowd_group_membership_sync"]}')
+
+    summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{status}')
+        rt_status = None
+        if status != 'Fail' and key not in EXCEPTIONS and collector.test_actions_timing[key] >= SUCCESS_RT_THRESHOLD:
+            rt_status = f'WARNING - action timing >= {SUCCESS_RT_THRESHOLD} sec. Check your configuration.'
+        summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{rt_status or status}')
 
     for key, value in collector.app_specific_rates.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
-        summary_report.append(f'{key}|{value}|{status}|{APP_SPECIFIC_TAG}')
+        summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
-    pretty_report = map(format_string_summary_report, summary_report)
+    max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
+    offset_1st = max(max_summary_report_str_len + 5, 50)
+
+    pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)
     write_to_file(pretty_report, summary_report_file)
 
 
@@ -108,8 +134,8 @@ def convert_to_sec(duration):
 
 
 def is_all_tests_successful(tests: dict):
-    for success_rate in tests.values():
-        if success_rate < SUCCESS_TEST_RATE:
+    for test_stats in tests.values():
+        if test_stats < SUCCESS_TEST_RATE:
             return False
     return True
 
@@ -118,7 +144,7 @@ def get_first_elem(elems: list):
     try:
         return elems[1]
     except IndexError:
-        raise Exception('analytics.py expects application name as argument')
+        raise SystemExit('ERROR: analytics.py expects application name as argument')
 
 
 def get_date():
@@ -147,3 +173,16 @@ def generate_test_actions_by_type(test_actions, application):
         else:
             app_specific_actions.setdefault(test_action, value)
     return selenium_actions, jmeter_actions, locust_actions, app_specific_actions
+
+
+def get_crowd_sync_test_results(bzt_log):
+    users_sync_template = 'Users synchronization: (.*) seconds'
+    membership_sync_template = 'Users membership synchronization: (.*) seconds'
+    users_sync_time = ''
+    membership_sync_time = ''
+    for line in bzt_log.bzt_log:
+        if re.search(users_sync_template, line):
+            users_sync_time = re.search(users_sync_template, line).group(1)
+        if re.search(membership_sync_template, line):
+            membership_sync_time = re.search(membership_sync_template, line).group(1)
+    return {"crowd_users_sync": users_sync_time, "crowd_group_membership_sync": membership_sync_time}

@@ -1,5 +1,7 @@
-from util.api.abstract_clients import RestClient
 from selenium.common.exceptions import WebDriverException
+
+from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
 BATCH_SIZE_USERS = 1000
@@ -45,6 +47,7 @@ class JiraRestClient(RestClient):
 
         return boards_list
 
+    @retry()
     def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
         Returns a list of users that match the search string. This resource cannot be accessed anonymously.
@@ -117,13 +120,18 @@ class JiraRestClient(RestClient):
 
         return issues
 
-    def get_total_issues_count(self):
+    @retry()
+    def get_total_issues_count(self, jql: str = ''):
         api_url = f'{self.host}/rest/api/2/search'
-        body = {"jql": "order by key"}
+        body = {"jql": jql if jql else "order by key",
+                "startAt": 0,
+                "maxResults": 0,
+                "fields": ["summary"]
+                }
         response = self.post(api_url, "Could not retrieve issues", body=body)
         return response.json().get('total', 0)
 
-    def create_user(self, display_name=None, email=None, name='', password=''):
+    def create_user(self, display_name=None, email=None, name='', password='', application_keys=None):
         """
         Creates a user. This resource is retained for legacy compatibility.
         As soon as a more suitable alternative is available this resource will be deprecated.
@@ -131,6 +139,7 @@ class JiraRestClient(RestClient):
         :param password: A password for the user. If a password is not set, a random password is generated.
         :param email: tThe email address for the user. Required.
         :param display_name: The display name for the user. Required.
+        :param application_keys
         :return: Returns the created user.
         """
         api_url = self._host + "/rest/api/2/user"
@@ -140,6 +149,10 @@ class JiraRestClient(RestClient):
             "emailAddress": email or name + '@localdomain.com',
             "displayName": display_name or name
         }
+
+        if application_keys is not None:
+            payload["applicationKeys"] = application_keys
+
         response = self.post(api_url, "Could not create user", body=payload)
 
         return response.json()
@@ -165,7 +178,7 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
         if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
             return 'Server'
-        nodes = [1 if node['state'] == "ACTIVE" else 0 for node in response.json()]
+        nodes = [1 if node['state'] == "ACTIVE" and node['alive'] else 0 for node in response.json()]
         return nodes.count(1)
 
     def get_system_info_page(self):
@@ -184,7 +197,7 @@ class JiraRestClient(RestClient):
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        headers = self.LOGIN_POST_HEADERS
+        headers = LOGIN_POST_HEADERS
         headers['Origin'] = self.host
 
         session.post(url=login_url, data=login_body, headers=headers)
@@ -230,3 +243,8 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/api/2/mypermissions'
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
+
+    def get_service_desk_info(self):
+        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
+        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
+        return service_desk_info.json()

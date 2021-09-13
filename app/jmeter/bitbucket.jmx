@@ -260,13 +260,13 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If OS is not Windows" enabled="true">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_os_is_not_windows" enabled="true">
           <stringProp name="IfController.condition">${__BeanShell(import org.apache.commons.lang3.SystemUtils; !SystemUtils.IS_OS_WINDOWS;)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
         <hashTree>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Chmod 400 ssh key" enabled="true">
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="chmod_400_ssh_key" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">chmod</stringProp>
@@ -309,9 +309,9 @@ else{
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Add ssh key on Bitbucket" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="add_ssh_key_on_bitbucket" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Admin" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="login_admin" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="j_username" elementType="HTTPArgument">
@@ -356,7 +356,7 @@ else{
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get all ssh keys from Bitbucket" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_all_ssh_keys_from_bitbucket" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -396,7 +396,7 @@ vars.put(&quot;SERVER_SSH_KEYS&quot;, result.join(&quot;::&quot;));
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Read user pub ssh key file" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="read_user_pub_ssh_key_file" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
@@ -406,7 +406,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
 </stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If ssh key not present on server" enabled="true">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_ssh_key_not_present_on_server" enabled="true">
             <stringProp name="IfController.condition">${__groovy(
         def userSshKey = vars.get(&quot;USER_SSH_KEY&quot;);
         def key_list = vars.get(&quot;SERVER_SSH_KEYS&quot;);
@@ -423,7 +423,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
             <boolProp name="IfController.useExpression">true</boolProp>
           </IfController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Add ssh key" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="add_ssh_key" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -474,7 +474,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
               <hashTree/>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout Admin" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="logout_admin" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -493,7 +493,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree/>
-          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Hide Samplers result if success" enabled="true">
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="hide_samplers_result_if_success" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
@@ -552,7 +552,7 @@ else{
         <hashTree/>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="set_up_random_variables" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
@@ -725,7 +725,7 @@ import java.util.UUID;
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set up random variables" enabled="true">
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="set_up_random_variables" enabled="true">
               <stringProp name="scriptLanguage">groovy</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
@@ -768,7 +768,7 @@ vars.put(&quot;COMMIT_MESSAGE&quot;, &quot;${commitMessage}&quot;)</stringProp>
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Change file" enabled="true">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="change_file" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">1</stringProp>
             </LoopController>
@@ -996,7 +996,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Delete repo from disk if exists" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="delete_repo_from_disk_if_exists" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>

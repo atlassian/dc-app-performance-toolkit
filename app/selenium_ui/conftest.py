@@ -1,20 +1,25 @@
 import atexit
 import csv
 import datetime
+import functools
+import os
 import sys
 import time
-import functools
+from datetime import timezone
 
+import filelock
 import pytest
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from time import sleep
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
-    JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS,\
-    BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES,\
-    CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR
+    JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
+    BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
+    CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -26,7 +31,7 @@ LOGIN_ACTION_NAME = 'login'
 
 class InitGlobals:
     def __init__(self):
-        self.driver = False
+        self.driver = None
         self.driver_title = False
         self.login_failed = False
 
@@ -44,6 +49,17 @@ class Dataset:
             self.dataset["kanban_boards"] = self.__read_input_file(JIRA_DATASET_KANBAN_BOARDS)
             self.dataset["projects"] = self.__read_input_file(JIRA_DATASET_PROJECTS)
             self.dataset["custom_issues"] = self.__read_input_file(JIRA_DATASET_CUSTOM_ISSUES)
+        return self.dataset
+
+    def jsm_dataset(self):
+        if not self.dataset:
+            self.dataset["requests"] = self.__read_input_file(JSM_DATASET_REQUESTS)
+            self.dataset["customers"] = self.__read_input_file(JSM_DATASET_CUSTOMERS)
+            self.dataset["agents"] = self.__read_input_file(JSM_DATASET_AGENTS)
+            self.dataset["service_desks_large"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_L)
+            self.dataset["service_desks_small"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_S)
+            self.dataset["service_desks_medium"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_M)
+            self.dataset["custom_issues"] = self.__read_input_file(JSM_DATASET_CUSTOM_ISSUES)
         return self.dataset
 
     def confluence_dataset(self):
@@ -84,6 +100,14 @@ def datetime_now(prefix):
     return prefix + "-" + "".join(symbols)
 
 
+def is_docker():
+    path = '/proc/self/cgroup'
+    return (
+            os.path.exists('/.dockerenv') or
+            os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def print_timing(interaction=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
@@ -108,9 +132,12 @@ def print_timing(interaction=None):
             end = time.time()
             timing = str(int((end - start) * 1000))
 
-            with open(selenium_results_file, "a+") as jtl_file:
-                timestamp = round(time.time() * 1000)
-                jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+            lockfile = f'{selenium_results_file}.lock'
+
+            with filelock.SoftFileLock(lockfile):
+                with open(selenium_results_file, "a+") as jtl_file:
+                    timestamp = round(time.time() * 1000)
+                    jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
@@ -126,6 +153,8 @@ def print_timing(interaction=None):
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
+        if app_settings.webdriver_visible and is_docker():
+            raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         if not app_settings.secure:
@@ -153,6 +182,8 @@ def webdriver(app_settings):
             # check if driver is not broken
             globals.driver_title = globals.driver.title
             print('get driver from global')
+            globals.driver.delete_all_cookies()
+            print('clear browser cookies')
             return globals.driver
         except WebDriverException:
             # re-init driver if it broken
@@ -164,6 +195,11 @@ def webdriver(app_settings):
 @pytest.fixture(scope="module")
 def jira_webdriver():
     return webdriver(app_settings=JIRA_SETTINGS)
+
+
+@pytest.fixture(scope="module")
+def jsm_webdriver():
+    return webdriver(app_settings=JSM_SETTINGS)
 
 
 @pytest.fixture(scope="module")
@@ -192,6 +228,12 @@ def jira_screen_shots(request, jira_webdriver):
 
 
 @pytest.fixture
+def jsm_screen_shots(request, jsm_webdriver):
+    yield
+    get_screen_shots(request, jsm_webdriver)
+
+
+@pytest.fixture
 def confluence_screen_shots(request, confluence_webdriver):
     yield
     get_screen_shots(request, confluence_webdriver)
@@ -211,7 +253,12 @@ def get_screen_shots(request, webdriver):
         action_name = request.node.rep_call.head_line
         error_text = request.node.rep_call.longreprtext
         with open(selenium_error_file, mode) as err_file:
-            err_file.write(f"Action: {action_name}, Error: {error_text}\n")
+            timestamp = round(time.time() * 1000)
+            dt = datetime.datetime.now()
+            utc_time = dt.replace(tzinfo=timezone.utc)
+            str_time = utc_time.strftime("%m-%d-%Y, %H:%M:%S")
+            str_time_stamp = f'{str_time}, {timestamp}'
+            err_file.write(f"{str_time_stamp}, Action: {action_name}, Error: {error_text}\n")
         print(f"Action: {action_name}, Error: {error_text}\n")
         errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
         errors_artifacts.mkdir(parents=True, exist_ok=True)
@@ -232,6 +279,11 @@ def jira_datasets():
 
 
 @pytest.fixture(scope="module")
+def jsm_datasets():
+    return application_dataset.jsm_dataset()
+
+
+@pytest.fixture(scope="module")
 def confluence_datasets():
     return application_dataset.confluence_dataset()
 
@@ -239,3 +291,32 @@ def confluence_datasets():
 @pytest.fixture(scope="module")
 def bitbucket_datasets():
     return application_dataset.bitbucket_dataset()
+
+
+def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
+    """
+    Retry "tries" times, with initial "delay", increasing delay "delay*backoff" each time.
+    """
+    assert tries > 0, "tries must be 1 or greater"
+    if not retry_exception:
+        retry_exception = Exception
+
+    def deco_retry(f):
+        @functools.wraps(f)
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+
+            while mtries > 0:
+                sleep(mdelay)
+                mdelay *= backoff
+                try:
+                    return f(*args, **kwargs)
+                except retry_exception as e:
+                    print(repr(e))
+                print(f'Retrying: {mtries}')
+                mtries -= 1
+                if mtries == 0:
+                    return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
+
+        return f_retry
+    return deco_retry

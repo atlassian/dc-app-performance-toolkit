@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-06-16"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -25,15 +25,19 @@ For simple spikes or tests, you can skip steps 1-2 and target any Bitbucket test
 
 ## <a id="instancesetup"></a>1. Setting up Bitbucket Data Center
 
-We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) (**How to deploy** tab) to deploy a Bitbucket Data Center testing environment. This Quick Start will allow you to deploy Bitbucket Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Bitbucket into this new VPC. Deploying Bitbucket with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 ### Using the AWS Quick Start for Bitbucket
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Bitbucket into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Bitbucket into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Bitbucket into your existing ASI.
+Navigate to **[AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Bitbucket into your existing ASI:
+
+Navigate to **[AWS Quick Start for Bitbucket Data Center](https://aws.amazon.com/quickstart/architecture/bitbucket/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -53,19 +57,39 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 | Two Nodes Bitbucket DC | 1.7 - 2.5 |
 | Four Nodes Bitbucket DC | 2.4 - 3.6 |
 
-#### Stop Bitbucket cluster nodes
-To reduce AWS infrastructure costs you could stop Bitbucket nodes when the cluster is standing idle.  
-Bitbucket node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+#### Stop cluster nodes
 
-To stop one node within the Bitbucket cluster follow the instructions:
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to `Instances` and stop Bitbucket node.
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
 
-To return Bitbucket node into a working state follow the instructions:  
-1. Go to `Instances` and start Bitbucket node, wait a few minutes for Bitbucket node to become responsible.
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+To stop one node within the cluster, follow the instructions below:
+
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
+
+To return node into a working state follow the instructions:  
+
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### <a id="quick-start-parameters"></a>  Quick Start parameters
 
@@ -75,7 +99,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `6.10.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) or `7.0.5` |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.7`, `6.10.11` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
 
 
 **Cluster nodes**
@@ -103,6 +127,8 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
+| The database engine to deploy with | PostgresSQL |
+| The database engine version to use | 11 |
 | Database instance class | [db.m4.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master password | Password1! |
@@ -119,6 +145,7 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
+| Elasticsearch master user password | (leave blank) |
 | Elasticsearch instance type | m4.xlarge.elasticsearch |
 | Elasticsearch disk-space per node (GB) | 1000 |
 
@@ -209,14 +236,15 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Bitbucket NFS Server instance.
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Stop Bitbucket Server:
@@ -226,14 +254,15 @@ To populate the database with SQL:
     ```
 1. In a new terminal session connect to the Bitbucket NFS Server over SSH:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NFS_SERVER_IP=nfs_server_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NFS_SERVER_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NFS_SERVER_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 
@@ -245,7 +274,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
 
     # Depending on BITBUCKET installation directory
@@ -264,7 +292,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh | tee -a populate_db.log
+    ./populate_db.sh 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -277,16 +305,21 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Bitbucket NFS Server via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+   
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NFS_SERVER_IP=nfs_server_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@$BASTION_IP" ec2-user@${NFS_SERVER_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@$BASTION_IP" ec2-user@${NFS_SERVER_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/bitbucket/upload_attachments.sh) script and make it executable:
@@ -307,7 +340,7 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh | tee -a upload_attachments.log
+    ./upload_attachments.sh 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
@@ -315,25 +348,26 @@ Do not close or interrupt the session. It will take about two hours to upload at
 {{% /note %}}
 
 
-### Start Bitbucket Server
+### Start Bitbucket DC
 1. Using SSH, connect to the Bitbucket node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Bitbucket node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Start Bitbucket Server:
+1. Start Bitbucket DC:
 
     ``` bash
     sudo systemctl start bitbucket
     ```
-1. Wait 10-15 minutes until Bitbucket Server is started.
+1. Wait 10-15 minutes until Bitbucket DC is started.
 
 ### Elasticsearch Index
 If your app does not use Bitbucket search functionality just **skip** this section.
@@ -359,35 +393,38 @@ In case of any difficulties with Index generation, contact us for support in the
 
 ## <a id="executionhost"></a>3. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
-    ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
-    ```
-
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Jira Data Center parameters:  
+1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Bitbucket Data Center parameters:
 
-``` yaml
-    application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 7990 etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter           # only jmeter executor is supported
-    concurrency: 20                 # number of concurrent virtual users for jmeter scenario
-    test_duration: 50m
-    ramp-up: 10m                    # time to spin all concurrent users
-    total_actions_per_hour: 32700   # number of total JMeter actions per hour
-```  
+   ``` yaml
+       application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
+       application_protocol: http      # http or https
+       application_port: 80            # 80, 443, 8080, 7990 etc
+       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter           # only jmeter executor is supported
+       concurrency: 20                 # number of concurrent virtual users for jmeter scenario
+       test_duration: 50m
+       ramp-up: 10m                    # time to spin all concurrent users
+       total_actions_per_hour: 32700   # number of total JMeter actions per hour
+   ```  
 
 1. Push your changes to the forked repository.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+   ```bash
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Connect to the AWS EC2 instance and clone forked repository.
 
 {{% note %}}
@@ -407,6 +444,10 @@ Using the Data Center App Performance Toolkit for [Performance and scale testing
 
 Each scenario will involve multiple test runs. The following subsections explain both in greater detail.
 
+{{% warning %}}
+Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; Server settings &gt; Language** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
 ### <a id="testscenario1"></a> Scenario 1: Performance regression
 
 This scenario helps to identify basic performance issues without a need to spin up a multi-node Bitbucket DC. Make sure the app does not have any performance impact when it is not exercised.
@@ -416,14 +457,15 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Use SSH to connect to execution environment.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
     ```
 
-1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
@@ -431,7 +473,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -440,15 +482,17 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive performance results with an app installed:
 
 1. Install the app you want to test.
-1. Run bzt.
+1. Setup app license.
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -458,13 +502,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
 1. Run the following command:
-
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
@@ -472,8 +519,14 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local machine terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 ### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
@@ -483,6 +536,7 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 #### Extending the base action
 
+You can find more info about the local Bitbucket setup for developer's purpose in the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) file. 
 Extension scripts, which extend the base Selenium (`bitbucket-ui.py`) scripts, are located in a separate folder (`dc-app-performance-toolkit/extension/bitbucket`). You can modify these scripts to include their app-specific actions.
 
 ##### Modifying Selenium
@@ -493,32 +547,7 @@ We use **Pytest** to drive Selenium tests. The `bitbucket-ui.py` executor script
 
 #### Example of app-specific Selenium action development
 You develop an app that adds additional UI elements to a repository page, in this case you should edit `dc-app-performance-toolkit/extension/bitbucket/extension_ui.py`:
-
-``` python
-from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import BITBUCKET_SETTINGS
-
-from selenium_ui.base_page import BasePage
-
-
-def app_specific_action(webdriver, datasets):
-    page = BasePage(webdriver)
-    repo = datasets['repos']
-    repo_slug = repo[0]
-    project_key = repo[1]
-
-    @print_timing("selenium_app_custom_action")
-    def measure():
-
-        @print_timing("selenium_app_custom_action:view_repo_page")
-        def sub_measure():
-            page.go_to_url(f"{BITBUCKET_SETTINGS.server_url}/projects/{project_key}/repos/{repo_slug}/browse")
-            page.wait_until_visible((By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')) # Wait for repo navigation panel is visible 
-            page.wait_until_visible((By.ID, 'ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT'))  # Wait for you app-specific UI element by ID selector
-        sub_measure()
-    measure()
-```
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
 
 In the `bitbucket-ui.py` script, view the following block of code:
 
@@ -526,6 +555,8 @@ In the `bitbucket-ui.py` script, view the following block of code:
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
 #     app_specific_action(webdriver, datasets)
 ```
+If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_logout` action.
+
 To view more examples, see the `modules.py` file in the `selenium_ui/bitbucket` directory.
 
 #### Running tests with your modification
@@ -534,25 +565,31 @@ To ensure that the test runs without errors in parallel, run your extension scri
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
 
-To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
 1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 
 ##### <a id="run4"></a> Run 4 (~1 hour)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
@@ -560,32 +597,39 @@ To receive scalability benchmark results for two-node Bitbucket DC with app-spec
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~1 hour)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes the same way as in [Run 4](#run4).
-1. Run bzt.
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -594,13 +638,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a scalability report:
 
 1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
-    - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
-    - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
-    - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
-
+    - For `runName: "1 Node"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
+    - For `runName: "2 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
+    - For `runName: "4 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
+1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
@@ -609,9 +656,28 @@ To generate a scalability report:
 
 #### Analyzing report
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
-1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
-1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
+
+1. From local terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review action timings on Bitbucket Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+
+{{% warning %}}
+After completing all your tests, delete your Bitbucket Data Center stacks.
+{{% /warning %}}
+
+#### Attaching testing results to DCHELP ticket
+
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
+
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
 
 
 ## Support

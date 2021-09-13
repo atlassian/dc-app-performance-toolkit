@@ -1,27 +1,11 @@
 from pathlib import Path
 from typing import List
 
-from scripts.utils import validate_str_is_not_blank, validate_file_exists, resolve_path
+from scripts.utils import validate_file_exists, resolve_path, validate_config
 
 SUMMARY_FILE_NAME = "results_summary.log"
 DELIMITER = ('\n================================================================================'
              '========================================\n')
-
-
-def __validate_config(config: dict):
-    validate_str_is_not_blank(config, 'column_name')
-    validate_str_is_not_blank(config, 'profile')
-
-    runs = config.get('runs')
-    if not isinstance(runs, list):
-        raise SystemExit(f'Config key "runs" should be a list')
-
-    for run in runs:
-        if not isinstance(run, dict):
-            raise SystemExit(f'Config key "run" should be a dictionary')
-
-        validate_str_is_not_blank(run, 'runName')
-        validate_str_is_not_blank(run, 'fullPath')
 
 
 def __get_summary_files(config: dict) -> List[Path]:
@@ -64,8 +48,8 @@ def __get_overall_status(files: List[Path]) -> bool:
     return True
 
 
-def aggregate(config: dict, results_dir: Path) -> Path:
-    __validate_config(config)
+def aggregate(config: dict, results_dir: Path) -> (Path, str):
+    validate_config(config)
     output_file_path = __get_output_file_path(config, results_dir)
     summary_files = __get_summary_files(config)
     run_names = __get_run_names(config)
@@ -73,4 +57,4 @@ def aggregate(config: dict, results_dir: Path) -> Path:
     __write_to_summary_report(summary_files, run_names, status_message, output_file_path)
     validate_file_exists(output_file_path, f"Results file {output_file_path} is not created")
     print(f'Results file {output_file_path.absolute()} is created')
-    return output_file_path
+    return output_file_path, status_message

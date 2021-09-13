@@ -24,8 +24,19 @@ class LoginPage(BasePage):
         self.fill_password(password)
 
     def get_app_version(self):
-        el = self.get_element(LoginPageLocators.application_version)
-        return ''.join([i for i in el.text.split('.')[0] if i.isdigit()])
+        text = self.get_element(LoginPageLocators.application_version).text
+        return text.replace('v', '')
+
+    def get_app_major_version(self):
+        return self.get_app_version().split('.')[0]
+
+    def get_node_id(self):
+        text = self.get_element(LoginPageLocators.node_id).text
+        return text.split('\n')[2]
+
+    def is_logged_in(self):
+        elements = self.get_elements(GetStartedLocators.user_profile_icon)
+        return True if elements else False
 
 
 class LogoutPage(BasePage):
@@ -35,7 +46,7 @@ class LogoutPage(BasePage):
 
 class GetStarted(BasePage):
     page_url = GetStartedLocators.get_started_url
-    page_loaded_selector = GetStartedLocators.bitbucket_is_ready_widget
+    page_loaded_selector = GetStartedLocators.user_profile_icon
 
 
 class Dashboard(BasePage):
@@ -81,7 +92,8 @@ class RepoNavigationPanel(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2)
+        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
+                                  PopupLocators.popup_3)
 
 
 class Repository(BasePage):
@@ -232,7 +244,7 @@ class PullRequest(BasePage):
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
-        self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).click()
+        self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
         self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
         self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
