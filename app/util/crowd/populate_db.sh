@@ -17,7 +17,8 @@ CROWD_DB_USER="postgres"
 CROWD_DB_PASS="Password1!"
 
 # Crowd version variables
-SUPPORTED_CROWD_VERSIONS=(4.3.0)
+BASE_CROWD_VERSION=4.3.0
+SUPPORTED_CROWD_VERSIONS=(4.3.5)
 
 if [[ ! $(systemctl status crowd) ]]; then
   echo "The Crowd service was not found on this host." \
@@ -44,10 +45,10 @@ DB_DUMP_NAME="db.dump"
 if [[ ! "${SUPPORTED_CROWD_VERSIONS[*]}" =~ ${CROWD_VERSION} ]]; then
   echo "Crowd Version: ${CROWD_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Crowd Versions: ${SUPPORTED_CROWD_VERSIONS[*]}"
-  echo "!!! Warning !!! Dump from version ${SUPPORTED_CROWD_VERSIONS[0]} would be used"
+  echo "!!! Warning !!! Dump from version $BASE_CROWD_VERSION would be used"
 fi
 
-DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${SUPPORTED_CROWD_VERSIONS[0]}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$BASE_CROWD_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 echo "!!! Warning !!!"
 echo # move to a new line
