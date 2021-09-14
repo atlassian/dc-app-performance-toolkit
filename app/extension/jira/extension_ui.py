@@ -34,11 +34,10 @@ def app_specific_action(webdriver, datasets):
 
     @print_timing("selenium_app_custom_action")
     def measure():
-        @print_timing("selenium_app_custom_action:view_issue")
+        @print_timing("selenium_app_custom_action:open_pfm")
         def sub_measure():
-            page.go_to_url(f"{JIRA_SETTINGS.server_url}/browse/{issue_key}")
-            page.wait_until_visible((By.ID, "summary-val"))  # Wait for summary field visible
-            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
+            page.go_to_url(f"{JIRA_SETTINGS.server_url}/projects/SCRUM?selectedItem=tech.realigned.portfoliomap:sidebar-item")
+            page.wait_until_visible((By.ID, "app"))  # Wait for you app-specific UI element by ID selector
         sub_measure()
     measure()
 
