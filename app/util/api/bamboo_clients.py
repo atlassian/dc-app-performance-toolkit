@@ -61,3 +61,25 @@ class BambooClient(RestClient):
                    "passwordConfirm": password}
         self.post(api_url, body=payload, error_msg="Could not create user")
         return {'name': name}
+
+    def get_agents(self):
+        api_url = f'{self.host}/rest/api/latest/agent/remote?online=True'
+        r = self.get(api_url, error_msg="Could not get agents")
+        return r.json()
+
+    def start_build_plan(self, plan_key):
+        api_url = f'{self.host}/rest/api/latest/queue/{plan_key}'
+        r = self.post(api_url, error_msg=f"Could not start the plan {plan_key}")
+        return r.json()
+
+    def get_build_plan_status(self, plan_key):
+        api_url = f'{self.host}/rest/api/latest/plan/{plan_key}'
+        r = self.get(api_url, error_msg=f"Could not get plan {plan_key} status")
+        return r.json()
+
+    def get_build_results(self, plan_key, run_number: int = None):
+        api_url = f'{self.host}/rest/api/latest/result/{plan_key}'
+        if run_number:
+            api_url = f'{self.host}/rest/api/latest/result/{plan_key}-{run_number}'
+        r = self.get(api_url, error_msg=f"Could not get plan {plan_key} results")
+        return r.json()
