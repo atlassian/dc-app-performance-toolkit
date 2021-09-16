@@ -597,16 +597,39 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
-{{% note %}}
-For Confluence 7, `populate_db.sh` script triggers index process automatically. So no need to start index manually once again, just wait until current index process is finished.
-{{% /note %}}
+Index process is triggered automatically after `polulate_db.sh` script execution.
 
-For Confluence 6:
+For Confluence **7.4.x**:
+
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
-1. Click **Rebuild** and wait until re-indexing is completed.
+1. Wait until re-indexing is completed.
 
-Confluence will be unavailable for some time during the re-indexing process.
+For Confluence **7.13.x**:
+
+1. Using SSH, connect to the Confluence node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the [index-wait-till-finished.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/index-wait-till-finished.sh) script and make it executable:
+
+    ``` bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-wait-till-finished.sh && chmod +x index-wait-till-finished.sh
+    ```
+1. Run the script:
+
+    ``` bash
+    ./index-wait-till-finished.sh 2>&1 | tee -a index-wait-till-finished.log
+    ```
 
 ### <a id="index-snapshot"></a> Create Index Snapshot (~30 min)
 
