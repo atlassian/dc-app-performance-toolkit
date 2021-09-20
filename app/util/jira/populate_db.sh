@@ -45,8 +45,8 @@ JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
 
-SUPPORTED_JIRA_VERSIONS=(8.5.15 8.13.7)
-SUPPORTED_JSM_VERSIONS=(4.5.15 4.13.7)
+SUPPORTED_JIRA_VERSIONS=(8.5.18 8.13.10)
+SUPPORTED_JSM_VERSIONS=(4.5.18 4.13.10)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -90,8 +90,14 @@ if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z ${version} ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Jira version is in list of supported
-    if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
+    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it

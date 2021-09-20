@@ -1,14 +1,12 @@
-import datetime
-import functools
+
 import random
 import string
 from concurrent.futures.thread import ThreadPoolExecutor
-from datetime import timedelta
 from itertools import repeat
-from timeit import default_timer as timer
+
 
 import urllib3
-
+from util.common_util import print_timing
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
@@ -52,26 +50,6 @@ performance_customers_count = JSM_SETTINGS.customers_concurrency
 
 # TODO write here why do we need this.
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-def print_timing(message, sep='-'):
-    assert message is not None, "Message is not passed to print_timing decorator"
-
-    def deco_wrapper(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            start = timer()
-            print(sep * 20)
-            print(f'{message} started {datetime.datetime.now().strftime("%H:%M:%S")}')
-            result = func(*args, **kwargs)
-            end = timer()
-            print(f"{message} finished in {timedelta(seconds=end - start)}")
-            print(sep * 20)
-            return result
-
-        return wrapper
-
-    return deco_wrapper
 
 
 def __calculate_issues_per_project(projects_count):
