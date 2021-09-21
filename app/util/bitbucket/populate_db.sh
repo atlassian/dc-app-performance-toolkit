@@ -38,7 +38,7 @@ BITBUCKET_DB_PASS="Password1!"
 BITBUCKET_AUTO_DECLINE_VERSION="7.7.0"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.11 7.0.5 7.6.7)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.13 7.0.5 7.6.9)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -67,16 +67,16 @@ if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "e.g. ./populate_db.sh --force 6.10.0"
   echo "!!! Warning !!! This may break your Bitbucket instance. Also, note that downgrade is not supported by Bitbucket."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if version was specified after --force flag
-    if [[ -z "$2" ]]; then
+    if [[ -z ${version} ]]; then
       echo "Error: --force flag requires version after it."
       echo "Specify one of these versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
       exit 1
     fi
     # Check if passed Bitbucket version is in list of supported
-    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
-      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${version} " ]]; then
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}

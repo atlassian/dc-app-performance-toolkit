@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.9)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.4.11 7.13.0)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -73,7 +73,7 @@ fi
 
 echo "Step1: Download msrcync"
 # https://github.com/jbd/msrsync
-cd ${TMP_DIR} || exit
+cd ${TMP_DIR} || exit 1
 if [[ -s msrsync ]]; then
   echo "msrsync already downloaded"
 else
