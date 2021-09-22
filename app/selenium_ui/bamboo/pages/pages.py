@@ -1,7 +1,8 @@
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators, AllProjectsLocators, AllBuildsLocators, \
-    PlanConfigurationLocators, BuildActivityLocators, BuildLogsLocators
+    PlanConfigurationLocators, BuildActivityLocators, PlanSummaryLocators, PlanHistoryLocators, BuildSummaryLocators, \
+    BuildLogsLocators, JobConfigLocators
 
 
 class Login(BasePage):
@@ -17,69 +18,65 @@ class Login(BasePage):
 
 
 class ProjectList(BasePage):
+    page_loaded_selector = [AllProjectsLocators.project_table, AllProjectsLocators.project_name_column]
 
     def click_projects_button(self):
         self.wait_until_visible(AllProjectsLocators.projects_button).click()
 
-    def view_all_projects(self):
-        self.wait_until_visible(AllProjectsLocators.project_table)
-
 
 class BuildList(BasePage):
+    page_loaded_selector = AllBuildsLocators.builds_table
 
     def click_all_builds_button(self):
         self.wait_until_visible(AllBuildsLocators.all_builds_button).click()
 
-    def view_all_builds(self):
-        self.wait_until_visible(AllBuildsLocators.builds_table)
-
 
 class PlanConfiguration(BasePage):
+    page_loaded_selector = [PlanConfigurationLocators.config_plan_page,
+                            PlanConfigurationLocators.config_plan_page_content]
 
     def click_config_plan_button(self):
         self.wait_until_visible(PlanConfigurationLocators.edit_config_button).click()
 
-    def config_plan_page(self):
-        self.wait_until_visible(PlanConfigurationLocators.config_plan_page)
-
 
 class BuildActivity(BasePage):
+    page_loaded_selector = [BuildActivityLocators.build_activity_page, BuildActivityLocators.build_dashboard]
 
     def open_build_dropdown(self):
         self.wait_until_clickable(BuildActivityLocators.build_dropdown).click()
         self.wait_until_clickable(BuildActivityLocators.build_activity_button).click()
 
-    def build_activity_page(self):
-        self.wait_until_visible(BuildActivityLocators.build_activity_page)
-
 
 class PlanSummary(BasePage):
+    page_loaded_selector = [PlanSummaryLocators.plan_details_summary, PlanSummaryLocators.plan_stats_summary]
 
-    def __init__(self, driver, build_plans=None):
+    def __init__(self, driver, build_plans_id=None):
         BasePage.__init__(self, driver)
-        plan_summary = UrlManager(builds_plan=build_plans)
+        plan_summary = UrlManager(build_plans_id=build_plans_id)
         self.plan_summary_url = plan_summary.plan_summary_url()
 
-    def view_summary_plan(self):
+    def go_to_summary_plan_page(self):
         self.go_to_url(self.plan_summary_url)
 
 
 class PlanHistory(BasePage):
+    page_loaded_selector = PlanHistoryLocators.build_results
 
-    def __init__(self, driver, build_plans=None):
+    def __init__(self, driver, build_plans_id=None):
         BasePage.__init__(self, driver)
-        plan_history = UrlManager(builds_plan=build_plans)
+        plan_history = UrlManager(build_plans_id=build_plans_id)
         self.plan_history_url = plan_history.plan_history_url()
 
-    def view_plan_history(self):
+    def go_to_plan_history_page(self):
         self.go_to_url(self.plan_history_url)
 
 
 class BuildSummary(BasePage):
+    page_loaded_selector = BuildSummaryLocators.build_summary_status
 
-    def __init__(self, driver, build_plans=None):
+    def __init__(self, driver, build_plans_id=None):
         BasePage.__init__(self, driver)
-        build_summary = UrlManager(builds_plan=build_plans)
+        build_summary = UrlManager(build_plans_id=build_plans_id)
         self.build_summary_url = build_summary.build_summary_url()
 
     def view_build_summary_page(self):
@@ -87,17 +84,18 @@ class BuildSummary(BasePage):
 
 
 class BuildLogs(BasePage):
+    page_loaded_selector = BuildLogsLocators.view_logs
 
     def view_build_logs(self):
         self.wait_until_clickable(BuildLogsLocators.logs_button).click()
-        self.wait_until_visible(BuildLogsLocators.view_logs)
 
 
 class JobConfiguration(BasePage):
+    page_loaded_selector = [JobConfigLocators.edit_panel, JobConfigLocators.edit_panel_list]
 
-    def __init__(self, driver, build_plans=None):
+    def __init__(self, driver, build_plans_id=None):
         BasePage.__init__(self, driver)
-        job_config = UrlManager(builds_plan=build_plans)
+        job_config = UrlManager(build_plans_id=build_plans_id)
         self.job_config_url = job_config.job_configuration_url()
 
     def job_configuration_page(self):

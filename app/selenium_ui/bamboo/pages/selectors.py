@@ -4,15 +4,15 @@ from util.conf import BAMBOO_SETTINGS
 
 class UrlManager:
 
-    def __init__(self, builds_plan=None):
+    def __init__(self, build_plans_id=None):
         self.host = BAMBOO_SETTINGS.server_url
         self.login_params = '/userlogin!doDefault.action?os_destination=%2FallPlans.action'
         self.logout_params = '/userLogout.action'
         self.all_projects_params = '/allProjects.action'
-        self.plan_summary_params = f'/browse/{builds_plan}'
-        self.plan_history_params = f'/browse/{builds_plan}/history'
-        self.build_summary_params = f'/browse/{builds_plan}-1'
-        self.job_configuration_params = f'/build/admin/edit/editBuildTasks.action?buildKey={builds_plan}-JB1'
+        self.plan_summary_params = f'/browse/{build_plans_id}'
+        self.plan_history_params = f'/browse/{build_plans_id}/history'
+        self.build_summary_params = f'/browse/{build_plans_id}-1'
+        self.job_configuration_params = f'/build/admin/edit/editBuildTasks.action?buildKey={build_plans_id}-JB1'
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -46,6 +46,7 @@ class LoginPageLocators:
 class AllProjectsLocators:
     view_all_projects_url = UrlManager().all_projects_url()
     project_table = (By.ID, "projectsTable")
+    project_name_column = (By.ID, "projectsTable")
     projects_button = (By.ID, "allProjects")
 
 
@@ -57,17 +58,37 @@ class AllBuildsLocators:
 class PlanConfigurationLocators:
     edit_config_button = (By.XPATH, "//tbody/tr[1]/td[8]/a[1]/span[1]")
     config_plan_page = (By.ID, "config-sidebar")
+    config_plan_page_content = (By.ID, "content")
 
 
 class BuildActivityLocators:
     build_dropdown = (By.ID, "system_build_menu")
-    build_activity_button = (By.XPATH, "//a[@id='currentTab']")
-    build_activity_page = (By.XPATH, "//body/div[@id='page']/section[@id='content']")
+    build_activity_button = (By.ID, "currentTab")
+    build_activity_page = (By.ID, "page")
+    build_dashboard = (By.ID, "dashboard-instance-name")
+
+
+class PlanSummaryLocators:
+    plan_details_summary = (By.ID, "planDetailsSummary")
+    plan_stats_summary = (By.ID, "planStatsSummary")
+
+
+class PlanHistoryLocators:
+    build_results = (By.ID, "buildResultsTable")
+
+
+class BuildSummaryLocators:
+    build_summary_status = (By.ID, "status-ribbon")
 
 
 class BuildLogsLocators:
     logs_button = (By.XPATH, "//strong[contains(text(),'Logs')]")
     view_logs = (By.CLASS_NAME, "log-trace")
+
+
+class JobConfigLocators:
+    edit_panel = (By.ID, "panel-editor-setup")
+    edit_panel_list = (By.ID, "panel-editor-list")
 
 
 class LogoutLocators:
