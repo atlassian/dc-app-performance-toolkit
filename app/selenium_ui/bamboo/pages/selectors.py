@@ -4,15 +4,15 @@ from util.conf import BAMBOO_SETTINGS
 
 class UrlManager:
 
-    def __init__(self, build_plans_id=None):
+    def __init__(self, build_plan_id=None):
         self.host = BAMBOO_SETTINGS.server_url
         self.login_params = '/userlogin!doDefault.action?os_destination=%2FallPlans.action'
         self.logout_params = '/userLogout.action'
         self.all_projects_params = '/allProjects.action'
-        self.plan_summary_params = f'/browse/{build_plans_id}'
-        self.plan_history_params = f'/browse/{build_plans_id}/history'
-        self.build_summary_params = f'/browse/{build_plans_id}-1'
-        self.job_configuration_params = f'/build/admin/edit/editBuildTasks.action?buildKey={build_plans_id}-JB1'
+        self.plan_summary_params = f'/browse/{build_plan_id}'
+        self.plan_history_params = f'/browse/{build_plan_id}/history'
+        self.build_summary_params = f'/browse/{build_plan_id}-1'
+        self.job_configuration_params = f'/build/admin/edit/editBuildTasks.action?buildKey={build_plan_id}-JB1'
 
     def login_url(self):
         return f"{self.host}{self.login_params}"

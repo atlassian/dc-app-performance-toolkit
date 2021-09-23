@@ -74,7 +74,7 @@ def builds_queue_page(webdriver, datasets):
 
 
 def view_plan_summary(webdriver, datasets):
-    plan_summary = PlanSummary(webdriver, build_plans_id=datasets['build_plan_id'])
+    plan_summary = PlanSummary(webdriver, build_plan_id=datasets['build_plan_id'])
 
     @print_timing("selenium_view_plan_summary")
     def measure():
@@ -85,18 +85,18 @@ def view_plan_summary(webdriver, datasets):
 
 
 def view_build_summary(webdriver, datasets):
-    build_summary = BuildSummary(webdriver, build_plans_id=datasets['build_plan_id'])
+    build_summary = BuildSummary(webdriver, build_plan_id=datasets['build_plan_id'])
 
     @print_timing("selenium_view_build_summary")
     def measure():
-        build_summary.view_build_summary_page()
+        build_summary.go_to_build_summary_page()
         build_summary.wait_for_page_loaded()
 
     measure()
 
 
 def view_plan_history_page(webdriver, datasets):
-    plan_history = PlanHistory(webdriver, build_plans_id=datasets['build_plan_id'])
+    plan_history = PlanHistory(webdriver, build_plan_id=datasets['build_plan_id'])
 
     @print_timing("selenium_view_plan_history")
     def measure():
@@ -110,7 +110,7 @@ def view_build_logs(webdriver, datasets):
     @print_timing("selenium_view_build_logs")
     def measure():
         view_logs = BuildLogs(webdriver)
-        view_logs.view_build_logs()
+        view_logs.go_to_build_logs()
         view_logs.wait_for_page_loaded()
 
     measure()
@@ -118,11 +118,11 @@ def view_build_logs(webdriver, datasets):
 
 def view_job_configuration(webdriver, datasets):
 
-    view_job_configuration_page = JobConfiguration(webdriver, build_plans_id=datasets['build_plan_id'])
+    view_job_configuration_page = JobConfiguration(webdriver, build_plan_id=datasets['build_plan_id'])
 
     @print_timing("selenium_view_job_configuration")
     def measure():
-        view_job_configuration_page.job_configuration_page()
+        view_job_configuration_page.go_to_job_configuration_page()
         view_job_configuration_page.wait_for_page_loaded()
 
     measure()
