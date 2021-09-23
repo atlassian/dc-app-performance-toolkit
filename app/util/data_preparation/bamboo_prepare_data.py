@@ -11,6 +11,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BUILD_PLANS = 'plans'
 USERS = 'users'
+PROJECTS = 'projects'
 DEFAULT_PASSWORD = 'password'
 
 
@@ -34,10 +35,20 @@ def get_users(client, users_count):
     return users
 
 
+def generate_project_name_keys_dict(client):
+    projects_name_key_dict = {}
+    projects = client.get_projects()
+    for project in projects:
+        projects_name_key_dict[project['name']] = project['key']
+    return projects_name_key_dict
+
+
 def __create_dataset(client):
     dataset = dict()
     dataset[BUILD_PLANS] = client.get_build_plans(max_result=2000)
+    dataset[PROJECTS] = generate_project_name_keys_dict(client)
     dataset[USERS] = get_users(client, BAMBOO_SETTINGS.concurrency)
+
     return dataset
 
 
@@ -48,7 +59,7 @@ def __write_to_file(file_path, items):
 
 
 def write_test_data_to_files(dataset):
-    build_plans = [f"{build_plan['searchEntity']['projectName']},{build_plan['id']}" for
+    build_plans = [f"{dataset[PROJECTS][build_plan['searchEntity']['projectName']]},{build_plan['id']}" for
                    build_plan in dataset[BUILD_PLANS]]
     __write_to_file(BAMBOO_BUILD_PLANS, build_plans)
     users = [f"{user['name']},{DEFAULT_PASSWORD}" for user in dataset[USERS] if user['name'] != 'admin']
