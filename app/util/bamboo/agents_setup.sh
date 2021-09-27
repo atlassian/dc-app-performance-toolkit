@@ -58,10 +58,10 @@ echo "Step4: Check available disk space"
 FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
 FREE_SPACE_GB=$((FREE_SPACE_KB/1024/1024))
 REQUIRED_SPACE_GB=$((2 + AGENT_HOME_SIZE*REMOTE_AGENTS_COUNT/1024))
-echo "Free space: ${FREE_SPACE_GB} GB"
-echo "Required space: ${REQUIRED_SPACE_GB} GB"
+echo "Free disk space: ${FREE_SPACE_GB} GB"
+echo "Required disk space: ${REQUIRED_SPACE_GB} GB"
 if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
-  echo "ERROR: Not enough free space for $REMOTE_AGENTS_COUNT agents creation."
+  echo "ERROR: Not enough free disk space for $REMOTE_AGENTS_COUNT agents creation."
   exit 1
 fi
 echo  # move to a new line
