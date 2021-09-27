@@ -16,7 +16,7 @@ AGENT_JAR=agentInstaller.jar
 AGENT_HOME="bamboo-agent-home"
 
 echo NUMBERS OF REMOTE AGENTS: $REMOTE_AGENTS_COUNT
-echo BAMBOO INSTANCE URL: $BAMBOO_URL
+echo BAMBOO INSTANCE URL: "$BAMBOO_URL"
 echo BAMBOO CREDENTIALS: $USERNAME/$PASSWORD
 echo  # move to a new line
 
@@ -34,6 +34,15 @@ java -version
 echo  # move to a new line
 
 
+echo "Step2: Check URL accessible"
+if curl --output /dev/null --silent --fail "$BAMBOO_URL"; then
+  echo "Success"
+else
+  echo "ERROR: $BAMBOO_URL is not accessible"
+  exit 1
+fi
+
+
 echo "Step2: Cleanup"
 echo "Stop existing agents processes"
 pkill -f "agentServer"
@@ -44,7 +53,7 @@ echo  # move to a new line
 
 
 echo "Step3: Download agent installer"
-curl $AGENT_JAR_URL --output $AGENT_JAR
+curl "$AGENT_JAR_URL" --output $AGENT_JAR
 echo  # move to a new line
 
 
@@ -52,7 +61,7 @@ echo "Step4: Start agents"
 # start agents
 for ((i=1;i<=REMOTE_AGENTS_COUNT;i++))
 do
-  java -jar -Dbamboo.home=$AGENT_HOME"$i" -Dbamboo.fs.timestamp.precision=1000000 $AGENT_JAR $BAMBOO_URL/agentServer/ > /dev/null 2>&1 &
+  java -jar -Dbamboo.home=$AGENT_HOME"$i" -Dbamboo.fs.timestamp.precision=1000000 $AGENT_JAR "$BAMBOO_URL"/agentServer/ > /dev/null 2>&1 &
   echo Agent "$i/$REMOTE_AGENTS_COUNT" started
 done
 echo  # move to a new line
