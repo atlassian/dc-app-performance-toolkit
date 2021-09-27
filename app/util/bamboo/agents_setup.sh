@@ -6,6 +6,7 @@ BAMBOO_URL="http://bamboo-test-stack.com" # e.g. http://1.123.150.205:8085
 USERNAME="admin"
 PASSWORD="admin"
 REMOTE_AGENTS_COUNT=55
+AGENT_HOME_SIZE=400
 
 # shellcheck disable=SC2001
 # trim trailing slash from URL if any
@@ -41,9 +42,10 @@ else
   echo "ERROR: $BAMBOO_URL is not accessible"
   exit 1
 fi
+echo  # move to a new line
 
 
-echo "Step2: Cleanup"
+echo "Step3: Cleanup"
 echo "Stop existing agents processes"
 pkill -f "agentServer"
 
@@ -52,12 +54,25 @@ rm -rf $AGENT_HOME* $AGENT_JAR
 echo  # move to a new line
 
 
-echo "Step3: Download agent installer"
+echo "Step4: Check available disk space"
+FREE_SPACE_KB=$(df -k --output=avail "$PWD" | tail -n1)
+FREE_SPACE_GB=$((FREE_SPACE_KB/1024/1024))
+REQUIRED_SPACE_GB=$((2 + AGENT_HOME_SIZE*REMOTE_AGENTS_COUNT/1024))
+echo "Free space: ${FREE_SPACE_GB} GB"
+echo "Required space: ${REQUIRED_SPACE_GB} GB"
+if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
+  echo "ERROR: Not enough free space for $REMOTE_AGENTS_COUNT agents creation."
+  exit 1
+fi
+echo  # move to a new line
+
+
+echo "Step5: Download agent installer"
 curl "$AGENT_JAR_URL" --output $AGENT_JAR
 echo  # move to a new line
 
 
-echo "Step4: Start agents"
+echo "Step6: Start agents"
 # start agents
 for ((i=1;i<=REMOTE_AGENTS_COUNT;i++))
 do
@@ -67,7 +82,7 @@ done
 echo  # move to a new line
 
 
-echo "Step5: Authenticate agents"
+echo "Step7: Authenticate agents"
 # authenticate created agents
 for ((i=1;i<=REMOTE_AGENTS_COUNT;i++))
 do
@@ -114,7 +129,7 @@ done
 echo  # move to a new line
 
 
-echo "Step6: Wait for agents to be ready"
+echo "Step8: Wait for agents to be ready"
 for ((i=1;i<=REMOTE_AGENTS_COUNT;i++))
 do
   attempts=200
