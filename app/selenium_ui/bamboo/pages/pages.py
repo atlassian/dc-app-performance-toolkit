@@ -91,15 +91,14 @@ class BuildLogs(BasePage):
 
 
 class JobConfiguration(BasePage):
-    page_loaded_selector = [JobConfigLocators.edit_panel, JobConfigLocators.edit_panel_list]
+    page_loaded_selector = [JobConfigLocators.edit_panel, JobConfigLocators.edit_panel]
 
-    def __init__(self, driver, build_plan_id=None):
-        BasePage.__init__(self, driver)
-        job_config = UrlManager(build_plan_id=build_plan_id)
-        self.job_config_url = job_config.job_configuration_url()
+    def click_config_plan_button(self):
+        self.wait_until_clickable(AllBuildsLocators.all_builds_button).click()
+        self.wait_until_visible(PlanConfigurationLocators.edit_config_button).click()
 
-    def go_to_job_configuration_page(self):
-        self.go_to_url(self.job_config_url)
+    def job_config_click(self):
+        self.wait_until_clickable(JobConfigLocators.job_config).click()
 
 
 class Logout(BasePage):

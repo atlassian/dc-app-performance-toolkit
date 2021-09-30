@@ -12,7 +12,6 @@ class UrlManager:
         self.plan_summary_params = f'/browse/{build_plan_id}'
         self.plan_history_params = f'/browse/{build_plan_id}/history'
         self.build_summary_params = f'/browse/{build_plan_id}-1'
-        self.job_configuration_params = f'/build/admin/edit/editBuildTasks.action?buildKey={build_plan_id}-JB1'
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -28,9 +27,6 @@ class UrlManager:
 
     def build_summary_url(self):
         return f"{self.host}{self.build_summary_params}"
-
-    def job_configuration_url(self):
-        return f"{self.host}{self.job_configuration_params}"
 
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
@@ -56,7 +52,7 @@ class AllBuildsLocators:
 
 
 class PlanConfigurationLocators:
-    edit_config_button = (By.XPATH, "//tbody/tr[1]/td[8]/a[1]/span[1]")
+    edit_config_button = (By.XPATH, "//span[contains(text(),'Configure plan')]")
     config_plan_page = (By.ID, "config-sidebar")
     config_plan_page_content = (By.ID, "content")
 
@@ -89,6 +85,7 @@ class BuildLogsLocators:
 class JobConfigLocators:
     edit_panel = (By.ID, "panel-editor-setup")
     edit_panel_list = (By.ID, "panel-editor-list")
+    job_config = (By.CLASS_NAME, "job")
 
 
 class LogoutLocators:

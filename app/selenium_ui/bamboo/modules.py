@@ -118,13 +118,12 @@ def view_build_logs(webdriver, datasets):
 
 def view_job_configuration(webdriver, datasets):
 
-    view_job_configuration_page = JobConfiguration(webdriver, build_plan_id=datasets['build_plan_id'])
-
     @print_timing("selenium_view_job_configuration")
     def measure():
-        view_job_configuration_page.go_to_job_configuration_page()
+        view_job_configuration_page = JobConfiguration(webdriver)
+        view_job_configuration_page.click_config_plan_button()
+        view_job_configuration_page.job_config_click()
         view_job_configuration_page.wait_for_page_loaded()
-
     measure()
 
 
