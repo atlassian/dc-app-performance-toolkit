@@ -122,8 +122,6 @@ class ViewCustomerRequest(BasePage):
             comment_button.click()
             self.check_comment_text_is_displayed(comment_text)
 
-        self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
-
 
 class Report:
 
