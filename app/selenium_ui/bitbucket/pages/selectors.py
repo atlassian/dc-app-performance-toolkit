@@ -113,7 +113,7 @@ class DashboardLocators:
     dashboard_params = UrlManager().dashboard_params
     dashboard_url = UrlManager().dashboard_url()
 
-    dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
+    dashboard_presence = {'6': (By.TAG_NAME, 'h2'), '7': (By.TAG_NAME, 'h2')}
 
 
 class ProjectsLocators:
