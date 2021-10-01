@@ -97,7 +97,7 @@ class JobConfiguration(BasePage):
         self.wait_until_clickable(AllBuildsLocators.all_builds_button).click()
         self.wait_until_visible(PlanConfigurationLocators.edit_config_button).click()
 
-    def job_config_click(self):
+    def click_job_config_button(self):
         self.wait_until_clickable(JobConfigLocators.job_config).click()
 
 
