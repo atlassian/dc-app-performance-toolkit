@@ -8,6 +8,14 @@ FROM blazemeter/taurus
 
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 
+# Temp solution for the https://github.com/nodesource/distributions/issues/1266
+RUN curl -s http://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+RUN sh -c "echo deb http://deb.nodesource.com/node_14.x focal main > /etc/apt/sources.list.d/nodesource.list"
+RUN apt-get update
+RUN apt-get install nodejs
+
+
+
 RUN apt-get -y update \
   && $APT_INSTALL vim git openssh-server python3.8-dev python3-pip wget \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1 \
