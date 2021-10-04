@@ -47,10 +47,10 @@ def run_build_plans(locust):
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
     locust.session_data_storage['app'] = 'bamboo'
-    user_auth = tuple(random.choice(bamboo_dataset['users']))
+    #user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
     build_plan_id = build_plan[1]
-
+    user_auth = ('admin', 'admin')
     # client = BambooClient(BAMBOO_SETTINGS.server_url, user=user_auth[0], password=user_auth[1])
     # print(client.get_build_plan_status(plan_key=build_plan_id))
     r = locust.get(f'/rest/api/latest/plan/{build_plan_id}', auth=user_auth, catch_response=True, headers=JSON_HEADERS)
@@ -65,21 +65,21 @@ def run_build_plans(locust):
     @bamboo_measure('run_build_plan')
     def run_build_plan(locust):
         plan_is_running = False
-        locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True, headers = auth_headers)
+        locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
+                    headers=auth_headers, auth=user_auth)
 
-        @bamboo_measure('get_plan_status_request')
-        def get_status(locust):
+        def plan_is_building(locust):
             request = locust.get(f'/rest/api/latest/plan/{build_plan_id}',
                                  catch_response=True, headers=auth_headers)
-            plan_is_running = request.json()['isBuilding']
-            return plan_is_running
+            return request.json()['isBuilding']
 
         timeout = time.time() + PLAN_IS_NOT_STARTED_TIMEOUT
         number_of_get_status_requests = 0
         start_time_get_status_requests = time.time()
 
         while not plan_is_running:
-            get_status(locust)
+            if plan_is_building(locust):
+                plan_is_running = True
             number_of_get_status_requests = number_of_get_status_requests + 1
             if time.time() > timeout:
                 raise Exception(f'Build plan {build_plan_id} could not started in '
@@ -97,4 +97,3 @@ def run_build_plans(locust):
     logger.info(f'Total functions time: {total}. '
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}')
     time.sleep(sleep_time)
-
