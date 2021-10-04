@@ -16,7 +16,7 @@ url = BAMBOO_SETTINGS.server_url
 api_client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admin_password,
                           verify=BAMBOO_SETTINGS.secure)
 action_time = calculate_bamboo_sleep()
-PLAN_IS_NOT_STARTED_TIMEOUT = 120  # seconds
+PLAN_IS_NOT_STARTED_TIMEOUT = BAMBOO_SETTINGS.start_plan_timeout  # seconds
 
 
 def wait_for_online_free_agent():
