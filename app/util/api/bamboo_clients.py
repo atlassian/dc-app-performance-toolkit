@@ -88,7 +88,7 @@ class BambooClient(RestClient):
         self.post(api_url, body=payload, error_msg="Could not create user")
         return {'name': name}
 
-    def get_agents(self):
+    def get_online_agents(self, online=True):
         api_url = f'{self.host}/rest/api/latest/agent/remote?online=True'
         r = self.get(api_url, error_msg="Could not get agents")
         return r.json()

@@ -13,6 +13,7 @@ BUILD_PLANS = 'plans'
 USERS = 'users'
 PROJECTS = 'projects'
 DEFAULT_PASSWORD = 'password'
+AGENTS_BUILD_PLANS_PERCENT = 10
 
 
 def generate_random_string(length=20):
@@ -43,6 +44,26 @@ def generate_project_name_keys_dict(client):
     return projects_name_key_dict
 
 
+def assert_number_of_agents(client):
+    number_of_online_agents = len(client.get_online_agents())
+    if number_of_online_agents < BAMBOO_SETTINGS.number_of_agents:
+        raise Exception(f'There are {number_of_online_agents} of desired {BAMBOO_SETTINGS.number_of_agents}. '
+                        f'Please, review the number of online agents.')
+    print(f'There are {number_of_online_agents} online agents.')
+
+
+def verify_agents_plans_setup():
+    parallel_plans_count = BAMBOO_SETTINGS.parallel_plans_count
+    number_of_agents = BAMBOO_SETTINGS.number_of_agents
+    agents_plans_diff_in_perc = 100 * float(number_of_agents) / float(parallel_plans_count) - 100
+
+    if agents_plans_diff_in_perc < AGENTS_BUILD_PLANS_PERCENT:
+        raise Exception(f'The number of online agents should be more thant the number of parallel '
+                        f'runs by {AGENTS_BUILD_PLANS_PERCENT}%. '
+                        f'There {number_of_agents} agents and {parallel_plans_count} parallel plans to '
+                        f'build are configured, which is {agents_plans_diff_in_perc}%. ')
+
+
 def __create_dataset(client):
     dataset = dict()
     dataset[BUILD_PLANS] = client.get_build_plans(max_result=2000)
@@ -68,6 +89,7 @@ def write_test_data_to_files(dataset):
 
 def main():
     print("Started preparing data")
+    verify_agents_plans_setup()
 
     url = BAMBOO_SETTINGS.server_url
     print("Server url: ", url)
@@ -77,6 +99,7 @@ def main():
 
     dataset = __create_dataset(client)
     write_test_data_to_files(dataset)
+    assert_number_of_agents(client)
 
     print("Finished preparing data")
 
