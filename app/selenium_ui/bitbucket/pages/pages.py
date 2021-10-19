@@ -202,7 +202,7 @@ class PullRequest(BasePage):
         self.wait_until_any_element_visible(PullRequestLocator.commit_message_label)
 
     def click_inline_comment_button_js(self):
-        selector = self.get_selector(PullRequestLocator.inline_comment_button)
+        selector = PullRequestLocator.inline_comment_button
         self.execute_js(f"elems=document.querySelectorAll('{selector[1]}'); "
                         "item=elems[Math.floor(Math.random() * elems.length)];"
                         "item.scrollIntoView();"
@@ -211,21 +211,9 @@ class PullRequest(BasePage):
     def wait_for_comment_text_area(self):
         return self.wait_until_visible(PullRequestLocator.comment_text_area)
 
-    def add_code_comment_v6(self):
-        self.wait_for_comment_text_area()
-        selector = self.get_selector(PullRequestLocator.comment_text_area)
-        self.execute_js(f"document.querySelector('{selector[1]}').value = 'Comment from Selenium script';")
-        self.click_save_comment_button()
-
-    def add_code_comment_v7(self):
+    def add_code_comment(self, ):
         self.wait_until_visible(PullRequestLocator.text_area).send_keys('Comment from Selenium script')
         self.click_save_comment_button()
-
-    def add_code_comment(self, ):
-        if self.app_version == '6':
-            self.add_code_comment_v6()
-        elif self.app_version == '7':
-            self.add_code_comment_v7()
 
     def click_save_comment_button(self):
         return self.wait_until_visible(PullRequestLocator.comment_button).click()
@@ -238,9 +226,6 @@ class PullRequest(BasePage):
         self.wait_until_clickable(PullRequestLocator.pull_request_page_merge_button)
 
     def merge_pull_request(self):
-        if self.driver.app_version == '6':
-            if self.get_elements(PullRequestLocator.merge_spinner):
-                self.wait_until_invisible(PullRequestLocator.merge_spinner)
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
@@ -275,7 +260,7 @@ class RepositoryBranches(BasePage):
         self.wait_until_visible(BranchesLocator.branches_name)
         self.wait_until_visible(BranchesLocator.search_branch_action).click()
         self.execute_js("document.querySelector('li>a.delete-branch').click()")
-        self.wait_until_clickable(BranchesLocator.delete_branch_diaglog_submit).click()
+        self.wait_until_clickable(BranchesLocator.delete_branch_dialog_submit).click()
 
 
 class RepositorySettings(BasePage):

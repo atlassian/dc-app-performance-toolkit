@@ -14,8 +14,7 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.13.0`, `7.4.11` 
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.9`, `6.10.13`  
-    * Bitbucket Server Platform release: `7.0.5`
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.9`  
 
 * Supported Crowd versions:
     * Crowd [Long Term Support release](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `4.3.5`

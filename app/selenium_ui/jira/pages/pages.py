@@ -205,7 +205,7 @@ class ProjectsList(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_any_ec_presented(
-            selector_names=[ProjectLocators.projects_list, ProjectLocators.projects_not_found])
+            selectors=[ProjectLocators.projects_list, ProjectLocators.projects_not_found])
 
 
 class BoardsList(BasePage):
@@ -221,9 +221,9 @@ class Search(BasePage):
         self.page_url = url_manager.jql_search_url()
 
     def wait_for_page_loaded(self):
-        self.wait_until_any_ec_presented(selector_names=[SearchLocators.search_issue_table,
-                                                         SearchLocators.search_issue_content,
-                                                         SearchLocators.search_no_issue_found])
+        self.wait_until_any_ec_presented(selectors=[SearchLocators.search_issue_table,
+                                                    SearchLocators.search_issue_content,
+                                                    SearchLocators.search_no_issue_found])
 
 
 class Board(BasePage):

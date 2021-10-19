@@ -178,7 +178,7 @@ class ViewQueue(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_any_ec_presented(
-            selector_names=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
+            selectors=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
 
     def get_random_queue(self):
         if not self.get_elements(ViewQueueLocators.queue_is_empty):
