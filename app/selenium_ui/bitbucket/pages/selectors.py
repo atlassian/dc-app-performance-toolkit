@@ -85,6 +85,7 @@ class PopupLocators:
     popup_1 = '.css-1it7f5o'
     popup_2 = 'button.aui-button-link.feature-discovery-close'
     popup_3 = '.css-15p34h1'
+    popup_4 = '.css-1dqf51u'
 
 
 class LoginPageLocators:

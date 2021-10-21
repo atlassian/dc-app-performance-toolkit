@@ -93,7 +93,7 @@ class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3)
+                                  PopupLocators.popup_3, PopupLocators.popup_4)
 
 
 class Repository(BasePage):
