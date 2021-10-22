@@ -47,10 +47,9 @@ def run_build_plans(locust):
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
     locust.session_data_storage['app'] = 'bamboo'
-    #user_auth = tuple(random.choice(bamboo_dataset['users']))
+    user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
     build_plan_id = build_plan[1]
-    user_auth = ('admin', 'admin')
     # client = BambooClient(BAMBOO_SETTINGS.server_url, user=user_auth[0], password=user_auth[1])
     # print(client.get_build_plan_status(plan_key=build_plan_id))
     r = locust.get(f'/rest/api/latest/plan/{build_plan_id}', auth=user_auth, catch_response=True, headers=JSON_HEADERS)
@@ -62,7 +61,7 @@ def run_build_plans(locust):
     plan_is_ready_to_run = not plan_is_active
     wait_for_online_free_agent()
 
-    @bamboo_measure('run_build_plan')
+    @bamboo_measure('1_locust_run_build_plan')
     def run_build_plan(locust):
         plan_is_running = False
         locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
@@ -74,9 +73,13 @@ def run_build_plans(locust):
             return request.json()['isBuilding']
 
         timeout = time.time() + PLAN_IS_NOT_STARTED_TIMEOUT
+        warning_timeout = time.time() + PLAN_IS_NOT_STARTED_TIMEOUT / 2
+        warning_reported = False
+
         number_of_get_status_requests = 0
         start_time_get_status_requests = time.time()
 
+        logger.info(f'Starting plan {build_plan_id}...')
         while not plan_is_running:
             if plan_is_building(locust):
                 plan_is_running = True
@@ -85,6 +88,12 @@ def run_build_plans(locust):
                 raise Exception(f'Build plan {build_plan_id} could not started in '
                                 f'{PLAN_IS_NOT_STARTED_TIMEOUT} seconds.')
 
+            if time.time() > warning_timeout:
+                if not warning_reported:
+                    logger.info(f'WARNING!! PLAN {build_plan_id} CAN NOT START IN {PLAN_IS_NOT_STARTED_TIMEOUT/2} '
+                                f'SECONDS.')
+                    warning_reported = True
+
         total_time_get_status_requests = time.time() - start_time_get_status_requests
         logger.info(f'The number of get_plan_status requests is {number_of_get_status_requests}, '
                     f'it takes {total_time_get_status_requests} seconds.')
@@ -92,8 +101,10 @@ def run_build_plans(locust):
         run_build_plan(locust)
 
     total = (time.time() - start)
-
     sleep_time = action_time - total if action_time > total else 0
-    logger.info(f'Total functions time: {total}. '
+    logger.info(f'Total functions time: {total}. Action time {action_time}'
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}')
     time.sleep(sleep_time)
+    with open("/Users/smoroz/repos/dc-app-performance-toolkit/app/results/actions.csv", "a") as file_object:
+        # Append 'hello' at the end of file
+        file_object.write(f'{total},\n')

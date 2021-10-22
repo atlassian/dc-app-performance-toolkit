@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test-bamboo.atlassian.com    # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
+    application_hostname:  test-bamboo.atlassian.com    # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 8085            # 80, 443, 8080, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -16,7 +16,7 @@ settings:
     locust_concurrency: 1
     test_duration: 45m
     ramp-up: 3m                    # time to spin all concurrent threads
-    total_actions_per_hour: 18000  # number of total JMeter actions per hour
+    total_actions_per_hour: 22000  # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
@@ -54,7 +54,7 @@ execution:
     executor: locust
     concurrency: ${locust_concurrency}
     hold-for: ${test_duration}
-#    ramp-up: ${ramp-up}
+    ramp-up: 0
   - scenario: selenium
     executor: selenium
     runner: pytest
@@ -108,7 +108,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "91.0.4472.101" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
+      version: "94.0.4606.61" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
