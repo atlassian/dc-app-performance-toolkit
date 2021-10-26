@@ -1,4 +1,6 @@
-from locust import HttpUser, task, between
+import uuid
+
+from locust import HttpUser, task, between, events
 from locustio.bamboo.http_actions import run_build_plans
 from locustio.common_utils import LocustConfig, MyBaseTaskSet
 from util.conf import BAMBOO_SETTINGS

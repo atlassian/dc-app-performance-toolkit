@@ -104,7 +104,7 @@ def run_build_plans(locust):
     sleep_time = action_time - total if action_time > total else 0
     logger.info(f'Total functions time: {total}. Action time {action_time}'
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}')
-    time.sleep(sleep_time)
+    #time.sleep(sleep_time)
     with open("/Users/smoroz/repos/dc-app-performance-toolkit/app/results/actions.csv", "a") as file_object:
         # Append 'hello' at the end of file
         file_object.write(f'{total},\n')
