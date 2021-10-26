@@ -18,6 +18,7 @@ def customer_login_and_view_portals(locust):
     locust.cross_action_storage[session_id] = dict()
     locust.session_data_storage = locust.cross_action_storage[session_id]
     locust.session_data_storage['app'] = 'jsm'
+    locust.session_data_storage['app_type'] = 'customer'
 
     params = Login()
 
