@@ -1,5 +1,4 @@
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedLocators, \
