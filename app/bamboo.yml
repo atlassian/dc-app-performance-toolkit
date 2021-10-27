@@ -13,7 +13,6 @@ settings:
     admin_password: admin
     load_executor: jmeter
     concurrency: 200               # number of Bamboo users for Selenium actions
-    locust_concurrency: 1
     test_duration: 45m
     ramp-up: 3m                    # time to spin all concurrent threads
     total_actions_per_hour: 22000  # number of total JMeter actions per hour
@@ -30,8 +29,8 @@ settings:
     view_projects_list: 10
 
     number_of_agents: 55
-    parallel_plans_count: 50
-    start_plan_timeout: 120 #send stop trigger
+    parallel_plans_count: 45
+    start_plan_timeout: 120
     default_dataset_plan_duration: 60
 services:
   - module: shellexec
@@ -52,9 +51,9 @@ execution:
     ramp-up: ${ramp-up}
   - scenario: locust
     executor: locust
-    concurrency: ${locust_concurrency}
+    concurrency: ${parallel_plans_count}
     hold-for: ${test_duration}
-    ramp-up: 0
+    ramp-up: ${default_dataset_plan_duration}
   - scenario: selenium
     executor: selenium
     runner: pytest

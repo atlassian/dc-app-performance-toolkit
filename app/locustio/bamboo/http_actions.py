@@ -1,21 +1,18 @@
 import random
-import re
 import time
 
 from locustio.bamboo.requests_params import bamboo_datasets
-from locustio.common_utils import jira_measure, fetch_by_re, timestamp_int, generate_random_string, TEXT_HEADERS, \
-    ADMIN_HEADERS, NO_TOKEN_HEADERS, RESOURCE_HEADERS, init_logger, JSON_HEADERS, calculate_bamboo_sleep, bamboo_measure
+from locustio.common_utils import init_logger, JSON_HEADERS,  bamboo_measure
 from util.api.bamboo_clients import BambooClient
 
 from util.conf import BAMBOO_SETTINGS
-import uuid
 
 logger = init_logger(app_type='bamboo')
 bamboo_dataset = bamboo_datasets()
 url = BAMBOO_SETTINGS.server_url
 api_client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admin_password,
                           verify=BAMBOO_SETTINGS.secure)
-action_time = calculate_bamboo_sleep()
+action_time = BAMBOO_SETTINGS.default_dataset_plan_duration
 PLAN_IS_NOT_STARTED_TIMEOUT = BAMBOO_SETTINGS.start_plan_timeout  # seconds
 
 
@@ -43,15 +40,10 @@ def wait_for_online_free_agent():
 
 def run_build_plans(locust):
     start = time.time()
-    session_id = str(uuid.uuid4())
-    locust.cross_action_storage[session_id] = dict()
-    locust.session_data_storage = locust.cross_action_storage[session_id]
     locust.session_data_storage['app'] = 'bamboo'
     user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
     build_plan_id = build_plan[1]
-    # client = BambooClient(BAMBOO_SETTINGS.server_url, user=user_auth[0], password=user_auth[1])
-    # print(client.get_build_plan_status(plan_key=build_plan_id))
     r = locust.get(f'/rest/api/latest/plan/{build_plan_id}', auth=user_auth, catch_response=True, headers=JSON_HEADERS)
     response = r.json()
     auth_headers = r.request.headers
@@ -61,7 +53,7 @@ def run_build_plans(locust):
     plan_is_ready_to_run = not plan_is_active
     wait_for_online_free_agent()
 
-    @bamboo_measure('1_locust_run_build_plan')
+    @bamboo_measure('locust_run_build_plan')
     def run_build_plan(locust):
         plan_is_running = False
         locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
@@ -90,8 +82,8 @@ def run_build_plans(locust):
 
             if time.time() > warning_timeout:
                 if not warning_reported:
-                    logger.info(f'WARNING!! PLAN {build_plan_id} CAN NOT START IN {PLAN_IS_NOT_STARTED_TIMEOUT/2} '
-                                f'SECONDS.')
+                    logger.info(f'Warning!! Plan {build_plan_id} could not start in {PLAN_IS_NOT_STARTED_TIMEOUT/2} '
+                                f'seconds.')
                     warning_reported = True
 
         total_time_get_status_requests = time.time() - start_time_get_status_requests
@@ -104,7 +96,4 @@ def run_build_plans(locust):
     sleep_time = action_time - total if action_time > total else 0
     logger.info(f'Total functions time: {total}. Action time {action_time}'
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}')
-    #time.sleep(sleep_time)
-    with open("/Users/smoroz/repos/dc-app-performance-toolkit/app/results/actions.csv", "a") as file_object:
-        # Append 'hello' at the end of file
-        file_object.write(f'{total},\n')
+    time.sleep(sleep_time)
