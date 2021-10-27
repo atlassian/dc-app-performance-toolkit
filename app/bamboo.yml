@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname:  test-bamboo.atlassian.com    # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
+    application_hostname: test-bamboo.atlassian.com    # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 8085            # 80, 443, 8080, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
