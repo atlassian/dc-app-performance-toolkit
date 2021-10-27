@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedLocators, \
@@ -229,9 +230,12 @@ class PullRequest(BasePage):
         self.wait_until_present(PullRequestLocator.pull_request_page_merge_button).click()
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
-        self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
-        self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
-        self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
+        self.wait_until_visible(PullRequestLocator.merge_diagram_selector)
+        if self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).is_selected():
+            self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
+        else:
+            self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
+            self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
 
 class RepositoryBranches(BasePage):
