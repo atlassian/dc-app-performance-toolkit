@@ -20,7 +20,7 @@ class UrlManager:
         self.fork_repo_params = f'/users/{self.user}/repos/{self.repo_slug}/settings'
         self.user_settings_params = f'/users/{self.user}'
         self.repo_commits_params = f'{self.repo_params}/commits'
-        self.login_params = '/login?next=/getting-started'
+        self.login_params = '/plugins/servlet/secsignid?returnUrl=/getting-started'
         self.logout_params = '/j_atl_security_logout'
         self.get_started_params = '/getting-started'
         self.dashboard_params = '/dashboard'
@@ -90,10 +90,10 @@ class PopupLocators:
 class LoginPageLocators:
     login_params = UrlManager().login_params
     login_url = UrlManager().login_url()
-
-    submit_button = {'6': (By.ID, "submit"), '7': (By.ID, "submit")}
-    username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
-    password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
+ 
+    submit_button = {'6': (By.ID, "standard-login-button"), '7': (By.ID, "standard-login-button")}
+    username_textfield = {'6': (By.ID, "login-form-username"), '7': (By.ID, "login-form-username")}
+    password_textfield = {'6': (By.ID, "login-form-password"), '7': (By.ID, "login-form-password")}
     application_version = (By.ID, 'product-version')
     node_id = (By.CLASS_NAME, 'footer-body')
 
