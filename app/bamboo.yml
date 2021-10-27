@@ -20,7 +20,6 @@ settings:
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-
     view_all_builds: 15
     view_build_result: 15
     view_build_configuration: 10
@@ -107,7 +106,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "94.0.4606.61" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
+      version: "94.0.4606.61" # Supports Chrome version 94. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
