@@ -262,12 +262,6 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
     return result
 
 
-def calculate_bamboo_sleep():
-    parallel_plans_count = BAMBOO_SETTINGS.parallel_plans_count
-    default_plan_duration = BAMBOO_SETTINGS.default_dataset_plan_duration
-    return default_plan_duration/parallel_plans_count * BAMBOO_SETTINGS.locust_concurrency
-
-
 def read_input_file(file_path):
     with open(file_path, 'r') as fs:
         reader = csv.reader(fs)
