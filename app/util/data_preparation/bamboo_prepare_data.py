@@ -13,7 +13,7 @@ BUILD_PLANS = 'plans'
 USERS = 'users'
 PROJECTS = 'projects'
 DEFAULT_PASSWORD = 'password'
-AGENTS_BUILD_PLANS_PERCENT = 10
+AGENTS_BUILD_PLANS_PERCENT = 15
 
 
 def generate_random_string(length=20):

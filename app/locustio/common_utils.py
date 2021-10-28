@@ -225,14 +225,14 @@ def confluence_measure(interaction=None):
 
 
 def bamboo_measure(interaction=None):
-    assert interaction is not None, "Interaction name is not passed to the confluence_measure decorator"
+    assert interaction is not None, "Interaction name is not passed to the bamboo_measure decorator"
 
     def deco_wrapper(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             start = time.time()
             result = global_measure(func, start, interaction, *args, **kwargs)
-            total = (time.time() - start)
+            total = time.time() - start
             logger.info(f'action: {interaction}, action_execution_time: {total}.')
             return result
         return wrapper

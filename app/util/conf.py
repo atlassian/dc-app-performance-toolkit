@@ -104,7 +104,6 @@ class BambooSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
         self.number_of_agents = self.env_settings['number_of_agents']
         self.parallel_plans_count = self.env_settings['parallel_plans_count']
-        self.locust_concurrency = self.env_settings['locust_concurrency']
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
 
