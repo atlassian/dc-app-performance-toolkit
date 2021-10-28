@@ -1,4 +1,4 @@
-from locustio.common_utils import generate_random_string, read_input_file
+from locustio.common_utils import read_input_file
 from util.project_paths import BAMBOO_USERS, BAMBOO_BUILD_PLANS
 
 
