@@ -22,16 +22,13 @@ def wait_for_online_free_agent():
     attempt_to_find_agent = 0
     attempts = 90
     while not has_free_agent:
-        r = api_client.get(f'{url}/rest/api/latest/agent/remote?online=True', error_msg="Could not get online agents")
-        result = r.json()
-        free_agents_bool = [agent['busy'] for agent in result]
-        free_agents_count = free_agents_bool.count(False)
+        agents = api_client.get_remote_agents(online=True)
+        free_agents_count = [agent['busy'] for agent in agents].count(False)
         if attempt_to_find_agent >= attempts:
-            raise Exception(f'Unable to find free agents for {attempts} seconds')
+            raise Exception(f'Unable to find free agents for {attempts*sleep_time} seconds')
         if free_agents_count > 0:
-            logger.info(f'There are {free_agents_count}/{len(free_agents_bool)} free agents\n')
+            logger.info(f'There are {free_agents_count}/{len(agents)} free agents\n')
             has_free_agent = True
-            attempt_to_find_agent = 0
         else:
             logger.info(f'Still no free agents, wait {sleep_time} seconds, attempt {attempt_to_find_agent}/{attempts}')
             time.sleep(sleep_time)
@@ -40,7 +37,6 @@ def wait_for_online_free_agent():
 
 def run_build_plans(locust):
     start = time.time()
-    locust.session_data_storage['app'] = 'bamboo'
     user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
     build_plan_id = build_plan[1]

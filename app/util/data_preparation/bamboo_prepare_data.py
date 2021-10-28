@@ -45,9 +45,9 @@ def generate_project_name_keys_dict(client):
 
 
 def assert_number_of_agents(client):
-    number_of_online_agents = len(client.get_online_agents())
+    number_of_online_agents = len(client.get_remote_agents(online=True))
     if number_of_online_agents < BAMBOO_SETTINGS.number_of_agents:
-        raise Exception(f'There are {number_of_online_agents} of desired {BAMBOO_SETTINGS.number_of_agents}. '
+        raise Exception(f'ERROR: There are {number_of_online_agents} of desired {BAMBOO_SETTINGS.number_of_agents}. '
                         f'Please, review the number of online agents.')
     print(f'There are {number_of_online_agents} online agents.')
 
@@ -58,10 +58,10 @@ def verify_agents_plans_setup():
     agents_plans_diff_in_perc = 100 * float(number_of_agents) / float(parallel_plans_count) - 100
 
     if agents_plans_diff_in_perc < AGENTS_BUILD_PLANS_PERCENT:
-        raise Exception(f'The number of online agents should be more thant the number of parallel '
-                        f'runs by {AGENTS_BUILD_PLANS_PERCENT}%. '
-                        f'There {number_of_agents} agents and {parallel_plans_count} parallel plans to '
-                        f'build are configured, which is {agents_plans_diff_in_perc}%. ')
+        raise Exception(f'ERROR: The number of online agents should be more than the number of parallel running'
+                        f'plans by {AGENTS_BUILD_PLANS_PERCENT}%. '
+                        f'There are {number_of_agents} agents and {parallel_plans_count} parallel plans to '
+                        f'build are configured, which is {agents_plans_diff_in_perc}% difference.')
 
 
 def __create_dataset(client):
