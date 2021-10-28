@@ -44,8 +44,6 @@ def run_build_plans(locust):
     response = r.json()
     auth_headers = r.request.headers
     plan_is_active = response['isActive']
-    plan_is_building = response['isBuilding']
-    plan_is_queued = plan_is_active and not plan_is_building
     plan_is_ready_to_run = not plan_is_active
     wait_for_online_free_agent()
 
