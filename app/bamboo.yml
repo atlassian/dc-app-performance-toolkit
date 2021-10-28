@@ -29,7 +29,7 @@ settings:
 
     number_of_agents: 55
     parallel_plans_count: 45
-    start_plan_timeout: 120
+    start_plan_timeout: 60
     default_dataset_plan_duration: 60
 services:
   - module: shellexec
