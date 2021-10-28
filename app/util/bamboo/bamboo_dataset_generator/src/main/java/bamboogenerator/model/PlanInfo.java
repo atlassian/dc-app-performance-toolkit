@@ -1,15 +1,15 @@
-package bamboogenerator;
+package bamboogenerator.model;
 
-public class CustomPlan {
+public class PlanInfo {
     private final String planName;
-    private final boolean planIsFailed;
+    private final boolean failed;
     private final String planKey;
     private final String projectName;
     private final String projectKey;
 
-    public CustomPlan(String planName, boolean planIsFailed, String planKey, String projectName, String projectKey) {
+    public PlanInfo(String planName, boolean failed, String planKey, String projectName, String projectKey) {
         this.planName = planName;
-        this.planIsFailed = planIsFailed;
+        this.failed = failed;
         this.planKey = planKey;
         this.projectName = projectName;
         this.projectKey = projectKey;
@@ -18,9 +18,8 @@ public class CustomPlan {
     public String getPlanName() {
         return planName;
     }
-
-    public boolean isPlanIsFailed() {
-        return planIsFailed;
+    public boolean isFailed() {
+        return failed;
     }
 
     public String getPlanKey() {
