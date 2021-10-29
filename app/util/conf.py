@@ -101,6 +101,11 @@ class BambooSettings(BaseAppSettings):
         super().__init__(config_yml)
         self.concurrency = self.get_property('concurrency')
         self.webdriver_visible = self.get_property('WEBDRIVER_VISIBLE')
+        self.verbose = self.settings['verbose']
+        self.number_of_agents = self.env_settings['number_of_agents']
+        self.parallel_plans_count = self.env_settings['parallel_plans_count']
+        self.start_plan_timeout = self.env_settings['start_plan_timeout']
+        self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
