@@ -70,7 +70,7 @@ def run_build_plans(locust):
                 plan_is_running = True
             number_of_get_status_requests = number_of_get_status_requests + 1
             if time.time() > timeout:
-                raise Exception(f'Build plan {build_plan_id} could not start in '
+                raise Exception(f'ERROR: Build plan {build_plan_id} could not start in '
                                 f'{PLAN_STARTED_TIMEOUT} seconds.')
 
             if time.time() > warning_timeout:
@@ -87,6 +87,6 @@ def run_build_plans(locust):
 
     total = time.time() - start
     sleep_time = action_time - total if action_time > total else 0
-    logger.info(f'Total functions time: {total}. Action time {action_time}'
+    logger.info(f'Total functions time: {total}. Action time {action_time}.'
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}.')
     time.sleep(sleep_time)
