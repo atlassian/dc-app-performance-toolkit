@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
 
-    <artifactId>bamboo-specs</artifactId>
+    <artifactId>bamboo-dataset-generator</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -35,12 +35,6 @@
             <version>1.4.0</version>
         </dependency>
 
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -62,6 +56,22 @@
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.7</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -77,7 +87,4 @@
             <url>https://packages.atlassian.com/mvn/maven-external/</url>
         </pluginRepository>
     </pluginRepositories>
-
-    <!-- run 'mvn test' to perform offline validation of the plan -->
-    <!-- run 'mvn -Ppublish-specs' to upload the plan to your Bamboo server -->
 </project>
