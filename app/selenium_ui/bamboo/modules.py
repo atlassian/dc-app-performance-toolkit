@@ -20,9 +20,9 @@ def login(webdriver, datasets):
     setup_run_data(datasets)
     login_page = Login(webdriver)
 
-    @print_timing("login")
+    @print_timing("selenium_login")
     def measure():
-        @print_timing("login:open_login_page")
+        @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
 
@@ -35,7 +35,7 @@ def login(webdriver, datasets):
 
 
 def view_all_projects(webdriver, datasets):
-    @print_timing("view_all_projects")
+    @print_timing("selenium_view_all_projects")
     def measure():
         projects_page = ProjectList(webdriver)
         projects_page.click_projects_button()
@@ -44,7 +44,7 @@ def view_all_projects(webdriver, datasets):
 
 
 def view_all_builds(webdriver, datasets):
-    @print_timing("view_all_builds")
+    @print_timing("selenium_view_all_builds")
     def measure():
         builds_page = BuildList(webdriver)
         builds_page.click_all_builds_button()
@@ -54,7 +54,7 @@ def view_all_builds(webdriver, datasets):
 
 
 def config_plan(webdriver, datasets):
-    @print_timing("config_plan")
+    @print_timing("selenium_config_plan")
     def measure():
         config_page = PlanConfiguration(webdriver)
         config_page.click_config_plan_button()
@@ -64,7 +64,7 @@ def config_plan(webdriver, datasets):
 
 
 def builds_queue_page(webdriver, datasets):
-    @print_timing("view_build_activity")
+    @print_timing("selenium_view_build_activity")
     def measure():
         activity_page = BuildActivity(webdriver)
         activity_page.open_build_dropdown()
@@ -76,7 +76,7 @@ def builds_queue_page(webdriver, datasets):
 def view_plan_summary(webdriver, datasets):
     plan_summary = PlanSummary(webdriver, build_plan_id=datasets['build_plan_id'])
 
-    @print_timing("view_plan_summary")
+    @print_timing("selenium_view_plan_summary")
     def measure():
         plan_summary.go_to_summary_plan_page()
         plan_summary.wait_for_page_loaded()
@@ -87,7 +87,7 @@ def view_plan_summary(webdriver, datasets):
 def view_build_summary(webdriver, datasets):
     build_summary = BuildSummary(webdriver, build_plan_id=datasets['build_plan_id'])
 
-    @print_timing("view_build_summary")
+    @print_timing("selenium_view_build_summary")
     def measure():
         build_summary.go_to_build_summary_page()
         build_summary.wait_for_page_loaded()
@@ -98,7 +98,7 @@ def view_build_summary(webdriver, datasets):
 def view_plan_history_page(webdriver, datasets):
     plan_history = PlanHistory(webdriver, build_plan_id=datasets['build_plan_id'])
 
-    @print_timing("view_plan_history")
+    @print_timing("selenium_view_plan_history")
     def measure():
         plan_history.go_to_plan_history_page()
         plan_history.wait_for_page_loaded()
@@ -107,7 +107,7 @@ def view_plan_history_page(webdriver, datasets):
 
 
 def view_build_logs(webdriver, datasets):
-    @print_timing("view_build_logs")
+    @print_timing("selenium_view_build_logs")
     def measure():
         view_logs = BuildLogs(webdriver)
         view_logs.go_to_build_logs()
@@ -118,7 +118,7 @@ def view_build_logs(webdriver, datasets):
 
 def view_job_configuration(webdriver, datasets):
 
-    @print_timing("view_job_configuration")
+    @print_timing("selenium_view_job_configuration")
     def measure():
         view_job_configuration_page = JobConfiguration(webdriver)
         view_job_configuration_page.click_config_plan_button()
@@ -128,7 +128,7 @@ def view_job_configuration(webdriver, datasets):
 
 
 def log_out(webdriver, datasets):
-    @print_timing("log_out")
+    @print_timing("selenium_log_out")
     def measure():
         Logout(webdriver)
 
