@@ -47,11 +47,14 @@ class Login(BasePage):
         return text.split('#')[0].replace('(v', '')
 
     def get_node_id(self):
-        if self.__get_footer_text():
-            text = self.__get_footer_text()
-            return text.split(':')[-1].replace(')', '')
-        else:
+        text = self.get_element(LoginPageLocators.footer).text
+        text_split = text.split(':')
+        if len(text_split) == 2:
             return "SERVER"
+        elif len(text_split) == 3:
+            return text_split[2].replace(')', '')
+        else:
+            return f"Warning:  failed to get the node id from {text}"
 
 
 class Logout(BasePage):

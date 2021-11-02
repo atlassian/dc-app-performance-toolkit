@@ -31,11 +31,8 @@ class LoginPage(BasePage):
         return self.get_app_version().split('.')[0]
 
     def get_node_id(self):
-        if self.get_element(LoginPageLocators.node_id):
-            text = self.get_element(LoginPageLocators.node_id.text)
-            return text.split('\n')[2]
-        else:
-            return "SERVER"
+        text = self.get_element(LoginPageLocators.node_id).text
+        return text.split('\n')[2]
 
     def is_logged_in(self):
         elements = self.get_elements(GetStartedLocators.user_profile_icon)

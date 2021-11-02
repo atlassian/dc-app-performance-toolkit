@@ -55,8 +55,6 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
-            webdriver.node_id = login_page.get_node_id()
-            print(f"node_id:{webdriver.node_id}")
         sub_measure()
 
         @print_timing("selenium_login:login_and_view_dashboard")
@@ -67,6 +65,8 @@ def login(webdriver, datasets):
             if login_page.is_first_login_second_page():
                 login_page.first_login_second_page_setup()
             login_page.wait_for_page_loaded()
+            webdriver.node_id = login_page.get_node_id()
+            print(f"node_id:{webdriver.node_id}")
         sub_measure()
     measure()
     PopupManager(webdriver).dismiss_default_popup()
