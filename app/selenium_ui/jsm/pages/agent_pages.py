@@ -54,7 +54,7 @@ class Login(BasePage):
         elif len(text_split) == 3:
             return text_split[2].replace(')', '')
         else:
-            return f"Warning:  failed to get the node id from {text}"
+            return f"Warning: failed to get the node information from '{text}'."
 
 
 class Logout(BasePage):
