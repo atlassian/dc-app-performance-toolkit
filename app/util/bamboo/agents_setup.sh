@@ -12,8 +12,8 @@ AGENT_HOME_SIZE=400
 # trim trailing slash from URL if any
 BAMBOO_URL=$(echo $BAMBOO_URL | sed 's:/*$::')
 
-AGENT_JAR_URL=$BAMBOO_URL/agentServer/agentInstaller
-AGENT_JAR=agentInstaller.jar
+AGENT_JAR_URL="$BAMBOO_URL/agentServer/agentInstaller"
+AGENT_JAR="agentInstaller.jar"
 AGENT_HOME="bamboo-agent-home"
 
 echo NUMBERS OF REMOTE AGENTS: $REMOTE_AGENTS_COUNT
