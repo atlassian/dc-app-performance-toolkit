@@ -39,7 +39,8 @@ class CustomerPortals(BasePage):
     def browse_projects(self):
         self.wait_until_visible(CustomerPortalsSelectors.browse_portals_button)
         self.get_element(CustomerPortalsSelectors.browse_portals_button).click()
-        self.wait_until_visible(CustomerPortalsSelectors.full_portals_list)
+        if not self.element_exists(CustomerPortalSelectors.new_version):
+            self.wait_until_visible(CustomerPortalsSelectors.full_portals_list)
 
     def open_random_portal(self):
         portals = self.get_elements(CustomerPortalsSelectors.portal_from_list)
@@ -71,8 +72,13 @@ class CustomerPortal(BasePage):
     def create_and_submit_request(self):
         self.get_element(CustomerPortalSelectors.summary_field).\
             send_keys(f'Selenium - {self.generate_random_string(5)}')
-        self.get_element(CustomerPortalSelectors.description_field).\
-            send_keys(f'Selenium - Description {self.generate_random_string(5)}')
+        if self.element_exists(CustomerPortalSelectors.new_version):
+            self.wait_until_visible(CustomerPortalSelectors.new_description_field)
+            self.get_element(CustomerPortalSelectors.new_description_field). \
+                send_keys(f'Selenium - Description {self.generate_random_string(5)}')
+        else:
+            self.get_element(CustomerPortalSelectors.description_field).\
+                send_keys(f'Selenium - Description {self.generate_random_string(5)}')
 
         # If required dropdown
         required_dropdown_elements = self.get_elements(CustomerPortalSelectors.required_dropdown_field)
@@ -107,11 +113,19 @@ class CustomerRequest(BasePage):
     def comment_request(self):
         self.wait_until_visible(RequestSelectors.comment_request_field)
         self.get_element(RequestSelectors.comment_request_field).click()
-        self.get_element(RequestSelectors.comment_request_field).\
-            send_keys(f'Selenium comment - {self.generate_random_string(10)}')
-        self.wait_until_clickable(RequestSelectors.add_comment_button)
-        self.get_element(RequestSelectors.add_comment_button).click()
-        self.wait_until_invisible(RequestSelectors.add_comment_button)
+        if self.element_exists(RequestSelectors.new_version):
+            self.wait_until_visible(RequestSelectors.new_comment_request_field)
+            self.get_element(RequestSelectors.new_comment_request_field). \
+                send_keys(f'Selenium comment - {self.generate_random_string(10)}')
+            self.wait_until_clickable(RequestSelectors.add_comment_button)
+            self.get_element(RequestSelectors.add_comment_button).click()
+            self.wait_until_invisible(RequestSelectors.add_comment_button)
+        else:
+            self.get_element(RequestSelectors.comment_request_field).\
+                send_keys(f'Selenium comment - {self.generate_random_string(10)}')
+            self.wait_until_clickable(RequestSelectors.add_comment_button)
+            self.get_element(RequestSelectors.add_comment_button).click()
+            self.wait_until_invisible(RequestSelectors.add_comment_button)
 
     def search_for_customer_to_share_with(self, customer_name):
         if not self.element_exists(RequestSelectors.share_request_button):

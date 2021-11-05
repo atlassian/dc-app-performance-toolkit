@@ -49,7 +49,7 @@ class CustomerPortalsSelectors:
     browse_portals_button = (By.CSS_SELECTOR, 'button.cv-smart-portal-browse-portals')
     full_portals_list = (By.CSS_SELECTOR, 'ul.cv-smart-portal-all-portals-list')
     portal_from_list = (By.CSS_SELECTOR, '"ul.cv-smart-portal-all-portals-list>li>a>span"')
-
+    new_portal_from_list = (By.CSS_SELECTOR, '"portal-card-item"')
 
 class CustomerPortalSelectors:
     portal_title = (By.CSS_SELECTOR, '.cv-page-title-text')
@@ -57,7 +57,8 @@ class CustomerPortalSelectors:
     create_request_button = (By.XPATH, "//button[contains(text(),'Create')]")
     summary_field = (By.ID, 'summary')
     description_field = (By.ID, 'description')
-
+    new_description_field = (By.CSS_SELECTOR, '.ProseMirror')
+    new_version = (By.XPATH, "//*[contains(text(), 'jira/service-management')]")
     required_dropdown_field = (By.CSS_SELECTOR, "#s2id_components>ul.select2-choices")
     required_dropdown_list = (By.ID, 'select2-drop')
     required_dropdown_element = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
@@ -67,11 +68,12 @@ class CustomerPortalSelectors:
 
     comment_request_field = (By.CSS_SELECTOR, 'textarea#comment-on-request')
 
-
 class RequestSelectors:
     request_url = UrlManager().request_url()
     request_option = (By.CLASS_NAME, 'cv-request-options')
     comment_request_field = (By.CSS_SELECTOR, 'textarea#comment-on-request')
+    new_comment_request_field = (By.CSS_SELECTOR, '.ProseMirror')
+    new_version = (By.XPATH, "//*[contains(text(), 'jira/service-management')]")
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
     share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
     share_request_search_field = (By.ID, 's2id_participants')
