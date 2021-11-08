@@ -116,9 +116,11 @@ def __validate_file_names(file_names: List[str]):
 
 
 def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
-    reader = csv.DictReader(input_jtl.open(mode='r'))
+    # TODO: If list is too big, read iteratively from CSV if possible
+    with input_jtl.open(mode='r') as f:
+        reader = csv.DictReader(f)
+        jtl_list = [row for row in reader]
 
-    jtl_list = [row for row in reader]
     csv_list = []
 
     for jtl_sample in jtl_list:
