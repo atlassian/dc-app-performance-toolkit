@@ -7,3 +7,5 @@ selenium==3.141.0
 filelock==3.3.2
 packaging==21.3
 bzt==1.16.0
+prettytable==2.4.0
+scipy==1.7.2
