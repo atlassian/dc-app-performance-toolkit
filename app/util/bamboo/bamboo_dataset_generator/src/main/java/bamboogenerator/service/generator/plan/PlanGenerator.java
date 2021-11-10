@@ -7,6 +7,7 @@ import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.artifact.Artifact;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
+import com.atlassian.bamboo.specs.builders.repository.git.GitRepository;
 import com.atlassian.bamboo.specs.builders.task.CheckoutItem;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.task.TestParserTask;
@@ -37,7 +38,10 @@ public class PlanGenerator {
         return new Plan(new Project().name(planInfo.getProjectName())
                 .key(planInfo.getProjectKey()), planInfo.getPlanName(), planInfo.getPlanKey())
                 .description("DCAPT Bamboo test build plan")
-                .linkedRepositories("dcapt-test-repo")
+                .planRepositories(new GitRepository()
+                        .name("dcapt-test-repo")
+                        .url("ssh://git@bitbucket.org:atlassianlabs/dcapt-bamboo-test-repo.git")
+                        .branch("master"))
                 .variables(new Variable("stack_name", ""))
                 .stages(new Stage("Stage 1")
                         .jobs(new Job("Job 1", "JB1")
@@ -50,7 +54,7 @@ public class PlanGenerator {
                                         new ScriptTask()
                                                 .description("Run Bash code")
                                                 .interpreterBinSh()
-                                                .inlineBody("for i in $(seq 1 1000); do date=`date -u`; echo $date >> results.log; echo $date; sleep 0.06; done"),
+                                                .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
                                         new ScriptTask()
                                                 .description("Write XML test results")
                                                 .interpreterBinSh()
