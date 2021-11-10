@@ -99,7 +99,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `4.3.5` |
+| Version | The Data Center App Performance Toolkit officially supports `4.4.0` |
 
 **Cluster nodes**
 
