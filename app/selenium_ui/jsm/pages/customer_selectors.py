@@ -53,9 +53,9 @@ class CustomerPortalsSelectors:
     welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
     browse_portals_button = (By.CSS_SELECTOR, "button.cv-smart-portal-browse-portals")
     full_portals_list = OrderedDict({"4.13.0": (By.CSS_SELECTOR, "ul.cv-smart-portal-all-portals-list"),
-                                     "4.20.0": (By.CLASS_NAME, "cv-portal-cards-react-container")})
+                                     "4.15.0": (By.CLASS_NAME, "cv-portal-cards-react-container")})
     portal_from_list = OrderedDict({"4.13.0": (By.CSS_SELECTOR, "ul.cv-smart-portal-all-portals-list>li>a>span"),
-                                    "4.20.0": (By.CSS_SELECTOR, "portal-card-item")})
+                                    "4.15.0": (By.CSS_SELECTOR, "portal-card-item")})
 
 
 class CustomerPortalSelectors:
@@ -64,7 +64,7 @@ class CustomerPortalSelectors:
     create_request_button = (By.XPATH, "//button[contains(text(),'Create')]")
     summary_field = (By.ID, 'summary')
     description_field = OrderedDict({"4.13.0": (By.ID, 'description'),
-                                     "4.20.0": (By.CLASS_NAME, "ProseMirror")})
+                                     "4.15.0": (By.CLASS_NAME, "ProseMirror")})
     required_dropdown_field = (By.CSS_SELECTOR, "#s2id_components>ul.select2-choices")
     required_dropdown_list = (By.ID, 'select2-drop')
     required_dropdown_element = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
@@ -77,9 +77,9 @@ class RequestSelectors:
     request_url = UrlManager().request_url()
     request_option = (By.CLASS_NAME, 'cv-request-options')
     comment_field_minimized = OrderedDict({"4.13.0": (By.CSS_SELECTOR, 'textarea#comment-on-request'),
-                                           "4.20.0": (By.CLASS_NAME, 'cv-request-comment')})
+                                           "4.15.0": (By.CLASS_NAME, 'cv-request-comment')})
     comment_request_field = OrderedDict({"4.13.0": (By.CSS_SELECTOR, 'textarea#comment-on-request'),
-                                         "4.20.0": (By.CLASS_NAME, 'ProseMirror')})
+                                         "4.15.0": (By.CLASS_NAME, 'ProseMirror')})
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
     share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
     share_request_search_field = (By.ID, 's2id_participants')
