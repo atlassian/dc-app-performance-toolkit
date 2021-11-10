@@ -3,23 +3,20 @@ import requests
 import uuid
 from datetime import datetime, timezone
 
-from util.analytics.application_info import ApplicationSelector, BaseApplication
+from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
+    CROWD, BAMBOO
 from util.analytics.log_reader import BztFileReader, ResultsFileReader
 from util.conf import TOOLKIT_VERSION
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
 
-JIRA = 'jira'
-CONFLUENCE = 'confluence'
-BITBUCKET = 'bitbucket'
-JSM = 'jsm'
-CROWD = 'crowd'
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
-                CROWD: {'test_duration': 2700, 'concurrency': 1000}
+                CROWD: {'test_duration': 2700, 'concurrency': 1000},
+                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 45}
                 }
 CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
@@ -59,6 +56,9 @@ class AnalyticsCollector:
             self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
             self.ramp_up = application.config.ramp_up
             self.total_actions_per_hour = application.config.total_actions_per_hour
+        if self.app_type == BAMBOO:
+            self.parallel_plans_count = application.config.parallel_plans_count
+            #self.post_run_collector = BambooPostColletor(bzt_log)
 
     def is_analytics_enabled(self):
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
@@ -112,6 +112,10 @@ class AnalyticsCollector:
             ramp_up = convert_to_sec(self.ramp_up)
             compliant = (ramp_up >= ramp_up_compliant and self.total_actions_per_hour >= total_actions_compliant and
                          self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'])
+        elif self.app_type == BAMBOO:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'] and
+                         self.parallel_plans_count >= MIN_DEFAULTS[self.app_type]['parallel_plans_count'])
         else:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
@@ -185,8 +189,8 @@ def main():
     application = ApplicationSelector(application_name).application
     collector = AnalyticsCollector(application)
     generate_report_summary(collector)
-    if collector.is_analytics_enabled():
-        send_analytics(collector)
+    # if collector.is_analytics_enabled():
+    #     send_analytics(collector)
 
 
 if __name__ == '__main__':

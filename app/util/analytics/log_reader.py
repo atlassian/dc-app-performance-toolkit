@@ -118,6 +118,14 @@ class BztFileReader(BaseFileReader):
     def all_test_actions_bzt_log(self):
         return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
+    @property
+    def start_bzt_run_time(self):
+        first_bzt_log_string = self.bzt_log[0]
+        match = re.search(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}", first_bzt_log_string)
+        date = datetime.strptime(match.group(), '%Y-%m-%d %H:%M:%S')
+        return date
+
+
 
 class ResultsFileReader(BaseFileReader):
     header_validation = {0: 'Label', 1: '# Samples'}
