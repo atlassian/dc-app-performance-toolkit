@@ -25,10 +25,8 @@ public class PlanGenerator {
     private static final String RESULT_NAME_FAIL = "failed.xml";
     private static final String RESULT_NAME_SUCCESS = "success.xml";
 
-
-    public static List<Plan> generate(int projectsNumber, int plansNumber, int failedPercent) {
-        return PlanInfoGenerator.generate(projectsNumber, plansNumber, failedPercent)
-                .stream()
+    public static List<Plan> generate(List<PlanInfo> planInfoList) {
+        return planInfoList.stream()
                 .map(PlanGenerator::createPlan)
                 .collect(Collectors.toList());
     }
