@@ -51,24 +51,16 @@ class BambooPostRunCollector:
 
     def filter_results_current_run(self):
         builds_started_in_current_run = []
-        res = []
+        test_start_datetime = self.bzt_log.bzt_run_start_datetime_utc
 
-        test_start_datetime = self.bzt_log.start_bzt_run_time
         expanded_run_results = self.parallel_get_build_results()
         build_start_time_regexp = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"
         for build_result in expanded_run_results:
             build_start_match = re.search(build_start_time_regexp, build_result['buildStartedTime'])
             build_start_datetime = datetime.datetime.strptime(build_start_match.group(), '%Y-%m-%dT%H:%M:%S')
 
-            if build_result['planResultKey']['entityKey']['key'] in ['PRJ71-FSYWXON', 'PRJ46-PDUPMOS', 'PRJ20-NFMSFMG', 'PRJ99-VQQZWFW']:
-                res.append(build_result)
-
             if build_start_datetime > test_start_datetime:
                 builds_started_in_current_run.append(build_result)
-
-        print('asd')
-
-
 
 
         print(builds_started_in_current_run)

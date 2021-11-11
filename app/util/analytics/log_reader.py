@@ -1,7 +1,11 @@
 import os
 import re
-from datetime import datetime
+import time
+from datetime import datetime, timedelta
 import csv
+
+import pytz
+
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
@@ -119,11 +123,15 @@ class BztFileReader(BaseFileReader):
         return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
     @property
-    def start_bzt_run_time(self):
+    def bzt_run_start_datetime_utc(self):
+
         first_bzt_log_string = self.bzt_log[0]
-        match = re.search(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}", first_bzt_log_string)
-        date = datetime.strptime(match.group(), '%Y-%m-%d %H:%M:%S')
-        return date
+        regexp_datetime_bzt_log = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
+        datetime_format = '%Y-%m-%d %H:%M:%S'
+        match_start = re.search(regexp_datetime_bzt_log, first_bzt_log_string)
+        start_datetime = datetime.strptime(match_start.group(), datetime_format)
+        start_datetime = start_datetime + timedelta(seconds=time.timezone)
+        return start_datetime
 
 
 
