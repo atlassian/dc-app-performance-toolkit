@@ -233,12 +233,11 @@ class PullRequest(BasePage):
         self.wait_until_visible(PullRequestLocator.diagram_selector)
         self.wait_until_visible(PullRequestLocator.merge_diagram_selector)
         self.action_chains().move_to_element(self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox))
-        self.wait_until_visible(PullRequestLocator.delete_branch_field_selector)
+        self.wait_until_present(PullRequestLocator.delete_branch_per_merge_checkbox)
         if self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).is_selected():
             self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
-        else:
-            self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
-            self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
+        self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
+        self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
 
 class RepositoryBranches(BasePage):
