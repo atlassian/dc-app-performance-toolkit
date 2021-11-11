@@ -268,6 +268,15 @@ class Insight(BasePage):
         text = self.generate_random_string(10)
         self.wait_until_visible(InsightLocators.random_insight_schema).click()
         self.wait_until_visible(InsightLocators.create_object_button).click()
+        self.wait_until_visible(InsightLocators.object_name_field)
         self.get_element(InsightLocators.object_name_field).send_keys(text)
+        self.wait_until_visible(InsightLocators.create_button)
+        self.wait_until_visible(InsightLocators.create_button).click()
+
+    def add_insight_custom_field(self):
+        self.wait_until_clickable(InsightLocators.admin_menu_dropdown).click()
+        self.wait_until_clickable(InsightLocators.admin_menu_issue).click()
+        self.wait_until_clickable(InsightLocators.custom_fields_settings).click()
+        self.wait_until_visible(InsightLocators.add_custom_field_button)
 
 

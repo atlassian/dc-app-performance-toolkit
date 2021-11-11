@@ -258,6 +258,7 @@ def insight_workflow(webdriver, datasets):
     def measure():
         insight_workflow_flow.insight_create_new_schema()
         insight_workflow_flow.insight_create_new_objects()
+        insight_workflow_flow.add_insight_custom_field()
     measure()
 
 
