@@ -6,7 +6,7 @@ import json
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
-    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
+    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators, InsightLocators
 
 
 class PopupManager(BasePage):
@@ -248,3 +248,26 @@ class Board(BasePage):
 
     def wait_for_scrum_board_backlog(self):
         self.wait_until_present(BoardLocators.scrum_board_backlog_content)
+
+
+class Insight(BasePage):
+    dashboard_url = UrlManager().dashboard_url()
+
+    def insight_create_new_schema(self):
+        text = self.generate_random_string(10)
+        self.wait_until_clickable(InsightLocators.insight_dropdown).click()
+        self.wait_until_visible(InsightLocators.insight_object_schemas_button).click()
+        self.wait_until_visible(InsightLocators.create_object_schemas).click()
+        self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
+        self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
+        self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
+        self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
+        self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+
+    def insight_create_new_objects(self):
+        text = self.generate_random_string(10)
+        self.wait_until_visible(InsightLocators.random_insight_schema).click()
+        self.wait_until_visible(InsightLocators.create_object_button).click()
+        self.get_element(InsightLocators.object_name_field).send_keys(text)
+
+
