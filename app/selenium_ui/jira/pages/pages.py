@@ -275,6 +275,7 @@ class Insight(BasePage):
 
     def add_insight_custom_field(self):
         self.wait_until_clickable(InsightLocators.admin_menu_dropdown).click()
+        self.wait_until_visible(InsightLocators.admin_menu_issue)
         self.wait_until_clickable(InsightLocators.admin_menu_issue).click()
         self.wait_until_clickable(InsightLocators.custom_fields_settings).click()
         self.wait_until_visible(InsightLocators.add_custom_field_button)
