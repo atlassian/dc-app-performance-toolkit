@@ -266,18 +266,27 @@ class Insight(BasePage):
 
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
+        # for now clicking on schema named "test schema" need create dataset so can click randomly
         self.wait_until_visible(InsightLocators.random_insight_schema).click()
+        # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
         self.wait_until_visible(InsightLocators.object_name_field)
         self.get_element(InsightLocators.object_name_field).send_keys(text)
         self.wait_until_visible(InsightLocators.create_button)
         self.wait_until_visible(InsightLocators.create_button).click()
+        self.wait_until_visible(InsightLocators.pop_up_after_create_object)
+        # self.wait_until_visible(InsightLocators.close_pop_up_after_creating_object).click()
+        self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
 
     def add_insight_custom_field(self):
+        field_type = 'Insight'
         self.wait_until_clickable(InsightLocators.admin_menu_dropdown).click()
         self.wait_until_visible(InsightLocators.admin_menu_issue)
         self.wait_until_clickable(InsightLocators.admin_menu_issue).click()
         self.wait_until_clickable(InsightLocators.custom_fields_settings).click()
         self.wait_until_visible(InsightLocators.add_custom_field_button)
-
-
+        self.wait_until_clickable(InsightLocators.create_new_custom_field).click()
+        self.get_element(InsightLocators.custom_type_field_search).sendkeys(field_type)
+        self.wait_until_visible(InsightLocators.custom_type_field_all).click()
+        from time import sleep
+        sleep(10)
