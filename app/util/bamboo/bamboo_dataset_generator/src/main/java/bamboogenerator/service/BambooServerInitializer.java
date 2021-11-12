@@ -20,7 +20,7 @@ public class BambooServerInitializer {
         return new BambooServer(serverUrl, new SimpleTokenCredentials(token));
     }
 
-    private static String getToken() {
+    public static String getToken() {
         String token = System.getenv(BAMBOO_TOKEN);
         if (isBlank(token)) {
             LOG.warn("Env variable " + BAMBOO_TOKEN + " is not set or empty");
