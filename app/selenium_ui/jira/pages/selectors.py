@@ -168,8 +168,9 @@ class InsightLocators:
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
     close_pop_up_after_creating_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]/button[1]")
     create_new_custom_field = (By.ID, "add_custom_fields")
-    custom_type_field_search = (By.ID, "jira-field-search")
+    custom_type_field_search = (By.CLASS_NAME, "jira-field-search")
     custom_type_field_all = (By.CLASS_NAME, "item-button")
+    custom_fields_next_button = (By.ID, "customfields-select-type-next")
 
 
 
