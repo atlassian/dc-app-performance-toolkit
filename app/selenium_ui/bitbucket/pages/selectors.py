@@ -192,7 +192,6 @@ class PullRequestLocator:
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
 
 
-
 class BranchesLocator:
 
     branches_name = (By.ID, "branch-name-column")
