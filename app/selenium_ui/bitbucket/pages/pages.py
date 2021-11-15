@@ -230,11 +230,12 @@ class PullRequest(BasePage):
         PopupManager(self.driver).dismiss_default_popup()
         self.wait_until_visible(PullRequestLocator.diagram_selector)
         self.wait_until_visible(PullRequestLocator.merge_diagram_selector)
+        self.wait_until_present(PullRequestLocator.delete_branch_per_merge_checkbox)
         if self.get_element(PullRequestLocator.delete_branch_per_merge_checkbox).is_selected():
-            self.execute_js(f'document.querySelector("{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
-        else:
-            self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
-            self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
+            self.execute_js(f'document.querySelector('
+                            f'"{PullRequestLocator.delete_branch_per_merge_checkbox[1]}").click()')
+        self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
+        self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
 
 class RepositoryBranches(BasePage):
