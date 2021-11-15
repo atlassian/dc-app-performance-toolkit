@@ -22,6 +22,9 @@ Configuration located inside: [src/main/java/bamboogenerator/Main.java](src/main
 Please make sure you haven't changed `Generator Configuration` after initial generation.
 In case you need another configuration you have to start from clean dataset.
 
+The generator will check if you have plans on a Bamboo server that are out of the generated set,
+it will fail execution if such plans exist.
+
 ---
 
 **Run on Linux/Mac:**
