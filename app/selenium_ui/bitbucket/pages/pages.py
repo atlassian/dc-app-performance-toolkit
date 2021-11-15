@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
