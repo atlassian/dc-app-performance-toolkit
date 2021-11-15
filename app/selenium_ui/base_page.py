@@ -1,10 +1,13 @@
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.support.ui import Select
 import random
 import string
+from collections import OrderedDict
+
+from packaging import version
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.wait import WebDriverWait
 
 TIMEOUT = 20
 
@@ -29,6 +32,17 @@ class BasePage:
 
     def go_to_url(self, url):
         self.driver.get(url)
+
+    def get_selector(self, selector):
+        if type(selector) is OrderedDict:
+            result = next(iter(selector.items()))[1]
+            for sel_version, sel in selector.items():
+                selector_version = version.parse(sel_version)
+                if self.app_version >= selector_version:
+                    result = sel
+            return result
+        else:
+            return selector
 
     def get_element(self, selector):
         by, locator = selector[0], selector[1]
