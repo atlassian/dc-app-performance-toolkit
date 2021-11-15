@@ -3,10 +3,25 @@
 ###################    Check if NFS exists        ###################
 pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.13 7.0.5 7.6.9)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
         echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -15,26 +30,30 @@ if [[ -z "$BITBUCKET_VERSION" ]]; then
 fi
 echo "Bitbucket Version: ${BITBUCKET_VERSION}"
 
+DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+
 DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 ATTACHMENTS_TAR="attachments.tar.gz"
-DATASETS_SIZE="large"
 ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
 NFS_DIR="/media/atl/bitbucket/shared"
 ATTACHMENT_DIR_DATA="data"
 ###################    End of variables section  ###################
 
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Peformance Toolkit."
-  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
+  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your BITBUCKET, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./upload_attachments --force 6.10.0"
   echo "!!! Warning !!! This may broke your Bitbucket instance."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
     # Check if passed Bitbucket version is in list of supported
-    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
-      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${version} ]]; then
+      ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
       echo "Force mode. Dataset URL: ${ATTACHMENTS_TAR_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
@@ -85,6 +104,6 @@ if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1
 fi
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo "Important: do not forget to start Bitbucket"
 echo  # move to a new line

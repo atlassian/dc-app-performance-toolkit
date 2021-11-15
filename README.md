@@ -1,49 +1,62 @@
 # Data Center App Performance Toolkit 
 The Data Center App Performance Toolkit extends [Taurus](https://gettaurus.org/) which is an open source performance framework that executes JMeter and Selenium.
 
-This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Confluence, and Bitbucket.
+This repository contains Taurus scripts for performance testing of Atlassian Data Center products: Jira, Jira Service Management, Confluence, Bitbucket and Crowd.
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 7.13.15 and 8.5.8
-    * Jira Platform release: 8.0.3
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.10`, `8.5.18`
+
+* Supported Jira Service Management versions: 
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.10`, `4.5.18`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.4
-    * Confluence Platform release: 7.0.5
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.13.0`, `7.4.11` 
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.10.5
-    * Bitbucket Server Platform release: 7.0.5
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.9`, `6.10.13`  
+    * Bitbucket Server Platform release: `7.0.5`
 
+* Supported Crowd versions:
+    * Crowd [Long Term Support release](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `4.3.5`
+  
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
 
 ## Installation and set up
 
 #### Dependencies
-* Python 3.6+ and pip
+* Python 3.7-3.8 and pip
 * JDK 8
 * Google Chrome web browser
-* Git client (only for Bitbucket Server)
+* Git client (only for Bitbucket DC)
 
 Please make sure you have a version of Chrome browser that is compatible with [ChromeDriver](http://chromedriver.chromium.org/downloads) version set in app/$product.yml file (modules->selenium->chromedriver->version).
 
 If a first part of ChromeDriver version does not match with a first part of your Chrome browser version, update Chrome browser or set compatible [ChromeDriver](http://chromedriver.chromium.org/downloads) version in .yml file.
 
-### macOS/Linux
-Make sure that you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+### macOS setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* XCode Command Line Tools
+* Google Chrome web browser
 ```
 python3 --version
 pip --version
 java -version
+# command to check if XCode Command Line Tools installed
+xcode-select --print-path
+# or command to install if XCode Command Line Tools
+xcode-select --install
 ```
-For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
 ```
 git --version
 ```
 
-We recommend using virtualenv for Taurus.
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
 
 1. Install virtualenv with pip:
 ```
@@ -62,14 +75,55 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Windows
+### Linux setup
+Make sure that you have:
+* [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
+* pip
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* Python developer package (e.g. `python3.8-dev` package for Python3.8)
+* Google Chrome web browser
+```
+python3 --version
+pip --version
+java -version
+```
+For Bitbucket DC check that [Git](https://git-scm.com/downloads) is installed:
+```
+git --version
+```
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
+
+## Example setup for clean Ubuntu 18.04
+JDK setup (if missing):
+```
+sudo apt-get update
+sudo apt-get install -y openjdk-8-jre-headless
+```
+Chrome setup (if missing):
+```
+sudo apt-get update
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+```
+Python and virtualenv setup:
+```
+sudo apt-get update
+sudo apt-get -y install python3.8-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+virtualenv venv -p python
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Windows setup
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) 3.6+, pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
 ```
 python --version or python3 --version
 pip --version
 java -version
 Microsoft Visual C++ 14
+Windows 10 SDK
 ```
 For Bitbucket Server check that [Git](https://git-scm.com/downloads) is installed:
 ```
@@ -84,8 +138,9 @@ Otherwise, download it from [Microsoft Visual C++ Build Tools:](https://visualst
 4. Select the **MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.22)** check box (clear all the others).
 5. Click **Install**.
 
-We recommend using virtualenv for Taurus.
+Setup [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
 
+We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus.
 1. Install virtualenv with pip:
 ```
 pip install virtualenv

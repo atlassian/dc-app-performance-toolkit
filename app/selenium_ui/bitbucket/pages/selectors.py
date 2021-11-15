@@ -84,6 +84,7 @@ class PopupLocators:
     default_popup = '.feature-discovery-close'
     popup_1 = '.css-1it7f5o'
     popup_2 = 'button.aui-button-link.feature-discovery-close'
+    popup_3 = '.css-15p34h1'
 
 
 class LoginPageLocators:
@@ -94,6 +95,7 @@ class LoginPageLocators:
     username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
     password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
     application_version = (By.ID, 'product-version')
+    node_id = (By.CLASS_NAME, 'footer-body')
 
 
 class LogoutPageLocators:
@@ -104,9 +106,7 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_params = UrlManager().get_started_params
     get_started_url = UrlManager().get_started_url()
-
-    bitbucket_is_ready_widget = {'6': (By.CLASS_NAME, "marketing-page-footer"),
-                                 '7': (By.CLASS_NAME, "marketing-page-footer")}
+    user_profile_icon = {'6': (By.ID, 'current-user'), '7': (By.ID, 'current-user')}
 
 
 class DashboardLocators:
@@ -193,7 +193,7 @@ class PullRequestLocator:
     merge_spinner = (By.CSS_SELECTOR, "aui-spinner[size='small']")
     diagram_selector = {'6': (By.CSS_SELECTOR, 'div.diagram-image'), '7': (By.CLASS_NAME, 'branches-diagram')}
     pull_request_modal_merge_button = {'6': (By.CSS_SELECTOR, 'button.confirm-button'),
-                                       '7': (By.CSS_SELECTOR, "button[type='submit']")}
+                                       '7': (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")}
     del_branch_checkbox_selector = {'6': (By.CSS_SELECTOR, 'span.pull-request-cleanup-checkbox-wrapper'),
                                     '7': (By.NAME, 'deleteSourceRef')}
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
@@ -224,4 +224,4 @@ class UserSettingsLocator:
 
 
 class RepoCommitsLocator:
-    repo_commits_graph = (By.CSS_SELECTOR, 'svg.commit-graph')
+    repo_commits_graph = (By.ID, 'commits-table')

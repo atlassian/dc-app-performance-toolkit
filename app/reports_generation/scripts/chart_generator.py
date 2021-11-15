@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import DataFrame
 
-from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number
+from scripts.utils import validate_file_exists, validate_str_is_not_blank, validate_is_number, get_app_specific_actions
 
 
 def __normalize_file_name(s) -> str:
@@ -40,10 +40,10 @@ def validate_config(config: dict):
     validate_is_number(config, "image_width_px")
 
 
-def make_chart(config: dict, results_dir: Path) -> Path:
+def make_chart(config: dict, results_dir: Path, scenario_status: str) -> Path:
     csv_path_str = config["aggregated_csv_path"]
     index_col = config["index_col"]
-    title = config["title"]
+    title = config["title"] + f" | Scenario status: {scenario_status}"
     image_height_px = config["image_height_px"]
     image_width_px = config["image_width_px"]
 
@@ -53,6 +53,11 @@ def make_chart(config: dict, results_dir: Path) -> Path:
     file_path = __resolve_and_expand_user_path(Path(csv_path_str))
     data_frame = __read_file_as_data_frame(file_path, index_col)
     print(f"Input data file {file_path} successfully read")
+
+    # Set app-specific mark
+    app_specific_actions_list = get_app_specific_actions(file_path)
+    for action in app_specific_actions_list:
+        data_frame = data_frame.rename(index={action: f"\u2714{action}"})
 
     data_frame = data_frame.sort_index()
     data_frame.plot.barh(figsize=(image_width, image_height))
@@ -68,7 +73,7 @@ def make_chart(config: dict, results_dir: Path) -> Path:
     return image_path
 
 
-def perform_chart_creation(config: dict, results_dir: Path) -> Path:
+def perform_chart_creation(config: dict, results_dir: Path, scenario_status: str) -> Path:
     validate_config(config)
-    output_file_path = make_chart(config, results_dir)
+    output_file_path = make_chart(config, results_dir, scenario_status)
     return output_file_path

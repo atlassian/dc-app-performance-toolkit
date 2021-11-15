@@ -7,6 +7,10 @@ def __get_jira_yml():
     return Path(__file__).parents[1] / "jira.yml"
 
 
+def __get_jsm_yml():
+    return Path(__file__).parents[1] / "jsm.yml"
+
+
 def __get_datasets():
     return Path(__file__).parents[1] / "datasets"
 
@@ -15,8 +19,16 @@ def __get_jira_datasets():
     return __get_datasets() / "jira"
 
 
+def __get_jsm_datasets():
+    return __get_datasets() / "jsm"
+
+
 def __get_jira_dataset(file_name):
     return __get_jira_datasets() / file_name
+
+
+def __get_jsm_dataset(file_name):
+    return __get_jsm_datasets() / file_name
 
 
 def __get_confluence_yml():
@@ -29,6 +41,18 @@ def __get_bitbucket_yml():
 
 def __get_bitbucket_datasets():
     return __get_datasets() / "bitbucket"
+
+
+def __get_crowd_yml():
+    return Path(__file__).parents[1] / "crowd.yml"
+
+
+def __get_crowd_datasets():
+    return __get_datasets() / "crowd"
+
+
+def __get_crowd_dataset(file_name):
+    return __get_crowd_datasets() / file_name
 
 
 def __get_confluence_datasets():
@@ -48,9 +72,13 @@ def __get_taurus_artifacts_dir():
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        local_run_results = Path(f'results/{results_dir_name}_local')
+        local_run_results = Path(f'results/local/{results_dir_name}')
         local_run_results.mkdir(parents=True)
         return local_run_results
+
+
+def __get_default_test_actions():
+    return Path(__file__).parents[0] / "default_test_actions.json"
 
 
 JIRA_YML = __get_jira_yml()
@@ -63,6 +91,16 @@ JIRA_DATASET_ISSUES = __get_jira_dataset('issues.csv')
 JIRA_DATASET_PROJECTS = __get_jira_dataset('projects.csv')
 JIRA_DATASET_CUSTOM_ISSUES = __get_jira_dataset('custom-issues.csv')
 
+JSM_YML = __get_jsm_yml()
+JSM_DATASETS = __get_jsm_datasets()
+JSM_DATASET_AGENTS = __get_jsm_dataset('agents.csv')
+JSM_DATASET_CUSTOMERS = __get_jsm_dataset('customers.csv')
+JSM_DATASET_REQUESTS = __get_jsm_dataset('requests.csv')
+JSM_DATASET_SERVICE_DESKS_L = __get_jsm_dataset('service_desks_large.csv')
+JSM_DATASET_SERVICE_DESKS_M = __get_jsm_dataset('service_desks_medium.csv')
+JSM_DATASET_SERVICE_DESKS_S = __get_jsm_dataset('service_desks_small.csv')
+JSM_DATASET_REQUEST_TYPES = __get_jsm_dataset('request_types.csv')
+JSM_DATASET_CUSTOM_ISSUES = __get_jsm_dataset('custom-issues.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()
@@ -79,4 +117,10 @@ BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 
+CROWD_YML = __get_crowd_yml()
+CROWD_DATASETS = __get_crowd_datasets()
+CROWD_USERS = __get_crowd_dataset('users.csv')
+
+
+DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()

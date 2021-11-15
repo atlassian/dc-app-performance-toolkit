@@ -20,7 +20,7 @@ CONFLUENCE_DB_PASS="Password1!"
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(6.13.13 7.0.5 7.4.4)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.4.11 7.13.0)
 
 if [[ ! $(systemctl status confluence) ]]; then
   echo "The Confluence service was not found on this host." \
@@ -45,14 +45,20 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZE}/${DB_
 ###################    End of variables section  ###################
 
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[@]}" =~ "${CONFLUENCE_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[@]}"
+  echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Confluence, use --force flag with version of dataset you want to apply:"
-  echo "e.g. ./populate_db.sh --force 6.13.8"
+  echo "e.g. ./populate_db.sh --force 7.4.5"
   echo "!!! Warning !!! This may break your Confluence instance. Also, note that downgrade is not supported by Confluence."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z "$2" ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Confluence version is in list of supported
     if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
@@ -101,6 +107,7 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
 echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
@@ -178,7 +185,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
+time PGPASSWORD=${CONFLUENCE_DB_PASS} pg_restore --schema=public -v -j 8 -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -d ${CONFLUENCE_DB_NAME} ${DB_DUMP_NAME}
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
@@ -217,7 +224,7 @@ rm -rf ${DB_DUMP_NAME}
 echo "Step9: Remove ${CONFLUENCE_BASE_URL_FILE} file"
 sudo rm ${CONFLUENCE_BASE_URL_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"

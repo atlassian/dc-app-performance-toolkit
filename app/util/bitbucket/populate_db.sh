@@ -3,10 +3,25 @@
 ###################    Check if NFS exists        ###################
 pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --small) small=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
-INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
+INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql11"
 
 # DB config file location (dbconfig.xml)
 DB_CONFIG="/media/atl/bitbucket/shared/bitbucket.properties"
@@ -19,8 +34,11 @@ BITBUCKET_DB_NAME="bitbucket"
 BITBUCKET_DB_USER="postgres"
 BITBUCKET_DB_PASS="Password1!"
 
+# Bitbucket DC has auto PRs decline feature enabled by default from 7.7.X version
+BITBUCKET_AUTO_DECLINE_VERSION="7.7.0"
+
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.5 7.0.5)
+SUPPORTED_BITBUCKET_VERSIONS=(6.10.13 7.0.5 7.6.9)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -30,25 +48,35 @@ fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
+
 DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
 
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[@]}" =~ "${BITBUCKET_VERSION}" ]]; then
+if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Performance Toolkit."
-  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[@]}"
+  echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Bitbucket, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 6.10.0"
   echo "!!! Warning !!! This may break your Bitbucket instance. Also, note that downgrade is not supported by Bitbucket."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z ${version} ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Bitbucket version is in list of supported
-    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${2} " ]]; then
-      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${version} " ]]; then
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
@@ -94,6 +122,7 @@ if ! [[ -x "$(command -v psql)" ]]; then
 else
   echo "Postgres client is already installed"
 fi
+echo "Current PostgreSQL version is $(psql -V)"
 
 echo "Step2: Get DB Host and check DB connection"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
@@ -183,7 +212,7 @@ if [[ $? -ne 0 ]]; then
 fi
 sleep 5
 echo "PG Restore"
-sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
+sudo su -c "time PGPASSWORD=${BITBUCKET_DB_PASS} pg_restore --schema=public -v -j 8 -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -d ${BITBUCKET_DB_NAME} ${DUMP_DIR}/${DB_DUMP_NAME}"
 if [[ $? -ne 0 ]]; then
   echo "SQL Restore failed!"
   exit 1
@@ -226,8 +255,13 @@ sudo rm ${BITBUCKET_BASE_URL_FILE}
 echo "Step10: Remove ${BITBUCKET_LICENSE_FILE} file"
 sudo rm ${BITBUCKET_LICENSE_FILE}
 
-echo "Finished"
+echo "DCAPT util script execution is finished successfully."
 echo # move to a new line
 
 echo "Important: new admin user credentials are admin/admin"
 echo "Important: do not start Bitbucket until attachments restore is finished"
+
+if [ "$(printf '%s\n' "$BITBUCKET_AUTO_DECLINE_VERSION" "$BITBUCKET_VERSION" | sort -V | head -n1)" = "$BITBUCKET_AUTO_DECLINE_VERSION" ]; then
+       echo "Bitbucket ${BITBUCKET_VERSION} version has auto PRs decline feature enabled and it will be disabled in bitbucket.properties file."
+       echo "feature.pull.request.auto.decline=false" | sudo tee -a ${DB_CONFIG}
+fi

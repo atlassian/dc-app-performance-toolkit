@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2020-10-12"
+date: "2021-09-16"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -34,14 +34,18 @@ Running the tests in a development environment helps familiarize you with the to
 
 ### <a id="devinstancesetup"></a>1. Setting up Confluence Data Center development environment
 
-We recommend that you set up a this development using the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/). All the instructions on this page are optimized for AWS. If you already have an existing Confluence Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
+We recommend that you set up development environment using the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) (**How to deploy** tab). All the instructions on this page are optimized for AWS. If you already have an existing Confluence Data Center environment, you can also use that too (if so, skip to [Create a dataset for the development environment](#devdataset)).
 
 
 #### Using the AWS Quick Start for Confluence
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Confluence into your existing ASI.
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Confluence into your existing ASI:
+
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of AWS services used while running this Quick Start reference deployment. This Quick Start doesn't have any additional prices. See [Amazon EC2 pricing](https://aws.amazon.com/ec2/pricing/) for more detail.
@@ -51,7 +55,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 #### AWS cost estimation for the development environment
 
-AWS Confluence Data Center development environment infrastructure costs about 10 - 15$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
+AWS Confluence Data Center development environment infrastructure costs about 20 - 40$ per working week depending on such factors like region, instance type, deployment type of DB, and other.  
 
 #### <a id="quick-start-parameters"></a> Quick Start parameters for development environment
 
@@ -59,10 +63,11 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.4|
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.0` and `7.4.11` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+
 
 **Cluster nodes**
 
@@ -78,7 +83,9 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended value |
 | --------- | ----------------- |
-| Database instance class | [db.t2.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
+| The database engine | PostgresSQL |
+| The database engine version to use | 10 |
+| Database instance class | [db.t3.medium](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
 | Enable RDS Multi-AZ deployment | false |
@@ -118,7 +125,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
@@ -140,6 +147,10 @@ After creating the development environment Confluence Data Center, generate test
 ---
 
 ### <a id="devtestscenario"></a>3. Run toolkit on the development environment locally
+
+{{% warning %}}
+Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Languages** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
@@ -165,8 +176,8 @@ After creating the development environment Confluence Data Center, generate test
     bzt confluence.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 100% Success rate.  
-In case some actions does not have 100% Success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
+1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
+In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -176,7 +187,7 @@ In case some actions does not have 100% Success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 100% Success rate. Ask [support](#support) if above logs analysis did not help.
+Do not proceed with the next step until you have all actions 95+% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
@@ -196,7 +207,7 @@ JMeter and Locust actions are interchangeable, so you could select the tool you 
 
 
 {{% note %}}
-We strongly recommend to develop your app-specific actions on the development environment to reduce AWS infrastructure costs.
+We strongly recommend developing your app-specific actions on the development environment to reduce AWS infrastructure costs.
 {{% /note %}}
 
 
@@ -218,39 +229,16 @@ You develop an app that adds additional UI elements to Confluence pages or blog 
 2. Go to the search page of your Confluence Data Center - `CONFLUENCE_URL/dosearchsite.action?queryString=` (Confluence versions 6.X and below) or just click to search field in UI (Confluence versions 7.X and higher) and check if CQL is correct: `title ~ 'AppPage*'`.
 3. Edit `dc-app-performance-toolkit/app/confluence.yml` configuration file and set `custom_dataset_query: "title ~ 'AppPage*'"`.
 4. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/confluence/extension_ui.py`.  
-So, our test have to open page or blog post with app-specific UI element and measure time to load of this app-specific page or blog post.
-``` python
-from selenium.webdriver.common.by import By
-from selenium_ui.conftest import print_timing
-from util.conf import CONFLUENCE_SETTINGS
-
-from selenium_ui.base_page import BasePage
-
-
-def app_specific_action(webdriver, datasets):
-    page = BasePage(webdriver)
-    app_specific_page = datasets['custom_pages']
-    app_specific_page_id = app_specific_page[0]
-
-
-    @print_timing("selenium_app_custom_action")
-    def measure():
-
-        @print_timing("selenium_app_custom_action:view_page")
-        def sub_measure():
-            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_specific_page_id}")
-            page.wait_until_visible((By.ID, "title-text"))  # Wait for title field visible
-            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
-        sub_measure()
-    measure()
-```
-5. In `dc-app-performance-toolkit/app/selenium_ui/confluence_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_ui.py)
+So, our test has to open page or blog post with app-specific UI element and measure time to load of this app-specific page or blog post.
+5. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+6. In `dc-app-performance-toolkit/app/selenium_ui/confluence_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_custom_action(confluence_webdriver, confluence_datasets, confluence_screen_shots):
 #     extension_ui.app_specific_action(confluence_webdriver, confluence_datasets)
 ```
 
-6. Run toolkit with `bzt confluence.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+7. Run toolkit with `bzt confluence.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
 
 #### Example of app-specific Locust/JMeter action development
 
@@ -259,66 +247,38 @@ You develop an app that introduces new GET and POST endpoints in Confluence Data
 **Locust app-specific action development example**
 
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/confluence/extension_locust.py`, so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
-
-``` python
-import re
-from locustio.common_utils import init_logger, confluence_measure
-
-logger = init_logger(app_type='confluence')
-
-
-@confluence_measure
-def app_specific_action(locust):
-    r = locust.get('/app/get_endpoint')  # call app-specific GET endpoint
-    content = r.content.decode('utf-8')   # decode response content
-
-    token_pattern_example = '"token":"(.+?)"'
-    id_pattern_example = '"id":"(.+?)"'
-    token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
-    id = re.findall(id_pattern_example, content)    # get ID from response using regexp
-
-    logger.locust_info(f'token: {token}, id: {id}')  # log information for debug when verbose is true in jira.yml file
-    if 'assertion string' not in content:
-        logger.error(f"'assertion string' was not found in {content}")
-    assert 'assertion string' in content  # assert specific string in response content
-
-    body = {"id": id, "token": token}  # include parsed variables to POST request body
-    headers = {'content-type': 'application/json'}
-    r = locust.post('/app/post_endpoint', body, headers)  # call app-specific POST endpoint
-    content = r.content.decode('utf-8')
-    if 'assertion string after successful POST request' not in content:
-        logger.error(f"'assertion string after successful POST request' was not found in {content}")
-    assert 'assertion string after successful POST request' in content  # assertion after POST request
-```
-
-2. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
-3. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `view_page: 54` and `standalone_extensions: 108` that means thats `standalone_extension` will be called twice more.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/confluence/extension_locust.py)
+1. In `dc-app-performance-toolkit/app/confluence.yml` set `load_executor: locust` to make `locust` as load executor.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. Locust uses actions percentage as relative [weights](https://docs.locust.io/en/stable/writing-a-locustfile.html#weight-attribute), so if `some_action: 10` and `standalone_extension: 20` that means that `standalone_extension` will be called twice more.  
 Set `standalone_extension` weight in accordance with the expected frequency of your app use case compared with other base actions.
-4. Run toolkit with `bzt confluence.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
+1. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
+1. Run toolkit with `bzt confluence.yml` command to ensure that all Locust actions including `app_specific_action` are successful.
 
 **JMeter app-specific action development example**
 
-1. Navigate to `dc-app-performance-toolkit/app` folder and launch JMeter by `~/.bzt/jmeter-taurus/5.2.1/bin/jmeter` (it is important to launch from `app` folder), open `dc-app-performance-toolkit/app/jmeter/confluence.jmx`.
-2. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
+1. Check that `confluence.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_dashboard` and `standalone_extension` actions would be executed.
+1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+    
+    ```python util/jmeter/start_jmeter_ui.py --app confluence```
+    
+1. Open `Confluence` thread group > `actions per login` and navigate to `standalone_extension`
 ![Confluence JMeter standalone extension](/platform/marketplace/images/confluence-standalone-extenstion.png)
-3. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
+1. Add GET `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method GET and set endpoint in Path.
 ![Confluence JMeter standalone GET](/platform/marketplace/images/confluence-standalone-get-request.png)
-4. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
+1. Add `Regular Expression Extractor`: right-click to to newly created `HTTP Request` > `Add` > `Post processor` > `Regular Expression Extractor`
 ![Confluence JMeter standalone regexp](/platform/marketplace/images/confluence-standalone-regexp.png)
-5. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
+1. Add `Response Assertion`: right-click to newly created `HTTP Request` > `Add` > `Assertions` > `Response Assertion` and add assertion with `Contains`, `Matches`, `Equals`, etc types.
 ![Confluence JMeter standalone assertions](/platform/marketplace/images/confluence-standalone-assertions.png)
-6. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
-7. Navigate to `Global Variables` and modify default values of hostname, port, protocol and postfix variables.
-![Confluence JMeter standalone global vars](/platform/marketplace/images/confluence-jmeter-global-vars.png)
-8. Navigate to `load profile` and set `perc_standalone_extension` default percentage to 100.
-![Confluence JMeter standalone load profile](/platform/marketplace/images/confluence-jmeter-load-profile.png)
-9. Right-click on `View Results Tree` and enable this controller.
-10. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
-11. Right-click on `View Results Tree` and disable this controller.
-12. Click **Save** button.
-13. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluencec.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-14. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
-
+1. Add POST `HTTP Request`: right-click to `standalone_extension` > `Add` > `Sampler` `HTTP Request`, chose method POST, set endpoint in Path and add Parameters or Body Data if needed.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are successful.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/confluence.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that you located your app-specific tests between `login_as_specific_user` and `login_as_default_user_if_specific_user_was_loggedin` controllers.   
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ##### Using JMeter variables from the base script
 
@@ -345,15 +305,19 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>5. Setting up Confluence Data Center enterprise-scale environment
 
-We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) (**How to deploy** tab) to deploy a Confluence Data Center testing environment. This Quick Start will allow you to deploy Confluence Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
 
 The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Confluence into this new VPC. Deploying Confluence with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
 
 ### Using the AWS Quick Start for Confluence
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI.
+If you are a new user, perform an end-to-end deployment. This involves deploying Confluence into a _new_ ASI:
 
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center), deploy Confluence into your existing ASI.
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
+
+If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, or Confluence Data Center development environment) with ASI, deploy Confluence into your existing ASI:
+
+Navigate to **[AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
 
 {{% note %}}
 You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -369,23 +333,43 @@ Monthly charges will be based on your actual usage of AWS services, and may vary
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Confluence DC | 1.2 - 1.7 |
-| Two Nodes Confluence DC | 2 - 3 |
-| Four Nodes Confluence DC | 3.6 - 5.6 |
+| One Node Confluence DC | 0.8 - 1.1 |
+| Two Nodes Confluence DC | 1.2 - 1.7 |
+| Four Nodes Confluence DC | 2.0 - 3.0 |
 
-#### Stop Confluence cluster nodes
-To reduce AWS infrastructure costs you could stop Confluence nodes when the cluster is standing idle.  
-Confluence node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+#### Stop cluster nodes
 
-To stop one node within the Confluence cluster follow the instructions:
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to stop.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to `Instances` and stop Confluence node.
+To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
+Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
 
-To return Confluence node into a working state follow the instructions:  
-1. Go to `Instances` and start Confluence node, wait a few minutes for Confluence node to become responsible.
-1. Go to EC2 `Auto Scaling Groups` and open the necessary group to which belongs the node you want to start.
-1. Press `Edit` (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+To stop one node within the cluster, follow the instructions below:
+
+1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
+1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
+
+To return node into a working state follow the instructions:  
+
+1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
+1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
+1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
+
+#### Stop database
+
+To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
+Keep in mind that database would be **automatically started** in **7** days.
+
+To stop database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Stop**.
+
+To start database:
+
+1. In the AWS console, go to **Services** > **RDS** > **Databases**.
+1. Select cluster database.
+1. Click on **Actions** > **Start**.
 
 #### Quick Start parameters
 
@@ -393,26 +377,21 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended Value |
+| Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | 6.13.13 or 7.0.5 or 7.4.4|
-
-The Data Center App Performance Toolkit officially supports:
-
-- Confluence Platform release version: 7.0.5
-- Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): 6.13.13 and 7.4.4
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.0` and `7.4.11` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
 | Parameter | Recommended Value |
 | ----------| ----------------- |
-| Cluster node instance type | [m5.4xlarge](https://aws.amazon.com/ec2/instance-types/m5/) |
+| Cluster node instance type | [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) |
 | Maximum number of cluster nodes | 1 |
 | Minimum number of cluster nodes | 1 |
 | Cluster node instance volume size | 200 |
 
-We recommend [m5.4xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
+We recommend [m5.2xlarge](https://aws.amazon.com/ec2/instance-types/m5/) to strike the balance between cost and hardware we see in the field for our enterprise customers. More info could be found in public [recommendations](https://confluence.atlassian.com/enterprise/infrastructure-recommendations-for-enterprise-confluence-instances-on-aws-965544795.html).
 
 The Data Center App Performance Toolkit framework is also set up for concurrency we expect on this instance size. As such, underprovisioning will likely show a larger performance impact than expected.
 
@@ -420,6 +399,8 @@ The Data Center App Performance Toolkit framework is also set up for concurrency
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
+| The database engine | PostgresSQL |
+| The database engine version to use | 10 |
 | Database instance class | [db.m5.xlarge](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
 | RDS Provisioned IOPS | 1000 |
 | Master (admin) password | Password1! |
@@ -449,6 +430,12 @@ The **Master (admin) password** will be used later when restoring the SQL databa
 | Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
 | Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
 
+**Application tuning**
+
+| Parameter | Recommended Value |
+| --------- | ----------------- |
+| Catalina options | -Dreindex.thread.count=8 -Dreindex.attachments.thread.count=8 -Dconfluence.reindex.documents.to.pop=600 |
+
 ### Running the setup wizard
 
 After successfully deploying Confluence Data Center in AWS, you'll need to configure it:
@@ -463,7 +450,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
     - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
     Click **Next**.
 1. On the **Load Content** page, click on the **Empty Site**.
-1. On the **Configure User Management** page, click on the **Mane users and groups within Confluence**.
+1. On the **Configure User Management** page, click on the **Manage users and groups within Confluence**.
 1. On the **Configure System Administrator Account** page, populate the following fields:
     - **Username**: admin _(recommended)_
     - **Name**: admin _(recommended)_
@@ -522,14 +509,15 @@ To populate the database with SQL:
     - Copy the _Private IP_ of the Confluence node instance.
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/populate_db.sh) script and make it executable:
@@ -540,7 +528,6 @@ To populate the database with SQL:
 1. Review the following `Variables section` of the script:
 
     ``` bash
-    INSTALL_PSQL_CMD="amazon-linux-extras install -y postgresql10"
     DB_CONFIG="/var/atlassian/application-data/confluence/confluence.cfg.xml"
     CONFLUENCE_CURRENT_DIR="/opt/atlassian/confluence/current"
     CONFLUENCE_DB_NAME="confluence"
@@ -552,7 +539,7 @@ To populate the database with SQL:
 1. Run the script:
 
     ``` bash
-    ./populate_db.sh | tee -a populate_db.log
+    ./populate_db.sh 2>&1 | tee -a populate_db.log
     ```
 
 {{% note %}}
@@ -565,16 +552,21 @@ In case of a failure, check the `Variables` section and run the script one more 
 
 After [Importing the main dataset](#importingdataset), you'll now have to pre-load an enterprise-scale set of attachments.
 
+{{% note %}}
+Populate DB and restore attachments scripts could be run in parallel in separate terminal sessions to save time.
+{{% /note %}}
+
 1. Using SSH, connect to the Confluence node via the Bastion instance:
 
-    For Windows, use Putty to connect to the Confluence node over SSH.
-    For Linux or MacOS:
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
     For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
 1. Download the [upload_attachments.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/upload_attachments.sh) script and make it executable:
@@ -594,22 +586,50 @@ After [Importing the main dataset](#importingdataset), you'll now have to pre-lo
 1. Run the script:
 
     ``` bash
-    ./upload_attachments.sh | tee -a upload_attachments.log
+    ./upload_attachments.sh 2>&1 | tee -a upload_attachments.log
     ```
 
 {{% note %}}
 Do not close or interrupt the session. It will take some time to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-4 hours)
+### <a id="reindexing"></a> Re-indexing Confluence Data Center (~2-3 hours)
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
+Index process is triggered automatically after `polulate_db.sh` script execution.
+
+For Confluence **7.4.x**:
+
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
-1. Click **Rebuild** and wait until re-indexing is completed.
+1. Wait until re-indexing is completed.
 
-Confluence will be unavailable for some time during the re-indexing process.
+For Confluence **7.13.x**:
+
+1. Using SSH, connect to the Confluence node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the [index-wait-till-finished.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/index-wait-till-finished.sh) script and make it executable:
+
+    ``` bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-wait-till-finished.sh && chmod +x index-wait-till-finished.sh
+    ```
+1. Run the script:
+
+    ``` bash
+    ./index-wait-till-finished.sh 2>&1 | tee -a index-wait-till-finished.log
+    ```
 
 ### <a id="index-snapshot"></a> Create Index Snapshot (~30 min)
 
@@ -625,14 +645,15 @@ For more information, go to [Administer your Data Center search index](https://c
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Download the [index-snapshot.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh) file. Then, make it executable and run it:
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-snapshot.sh && chmod +x index-snapshot.sh
-    ./index-snapshot.sh | tee -a index-snapshot.log
+    ./index-snapshot.sh 2>&1 | tee -a index-snapshot.log
     ```
     Index snapshot creation time is about 20-30 minutes. When index snapshot is successfully created, the following will be displayed in console output:
     ```bash
@@ -641,36 +662,39 @@ For more information, go to [Administer your Data Center search index](https://c
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running toolkit from dedicated instance but not from local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/), OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
-    ```bash
-    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
-    ```
-
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:  
+1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:
 
-``` yaml
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 2990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
-    admin_login: admin
-    admin_password: admin
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 5m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour.
-```  
+   ``` yaml
+       application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+       application_protocol: http      # http or https
+       application_port: 80            # 80, 443, 8080, 2990, etc
+       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
+       admin_login: admin
+       admin_password: admin
+       load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
+       concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+       test_duration: 45m
+       ramp-up: 5m                     # time to spin all concurrent users
+       total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
+   ```  
 
 1. Push your changes to the forked repository.
-1. Connect to the AWS EC2 instance and clone forked repository.
+1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
+   * Storage size: `30` GiB
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+   ```bash
+   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
+   ```
+
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
+1. Clone forked repository.
 
 {{% note %}}
 At this stage app-specific actions are not needed yet. Use code from `master` branch with your `confluence.yml` changes.
@@ -698,11 +722,12 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Use SSH to connect to execution environment.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
@@ -713,7 +738,7 @@ To receive performance baseline results **without** an app installed:
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2 (~50 min)
@@ -721,15 +746,17 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To receive performance results with an app installed:
 
 1. Install the app you want to test.
-1. Run bzt.
+1. Setup app license.
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -738,13 +765,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a performance regression report:  
 
 1. Use SSH to connect to execution environment.
-1. Install the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `performance_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
 1. Run the following command:
-
     ``` bash
     python csv_chart_generator.py performance_profile.yml
     ```
@@ -752,8 +782,14 @@ To generate a performance regression report:
 
 #### Analyzing report
 
-Once completed, you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local machine terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
@@ -764,24 +800,30 @@ For many apps and extensions to Atlassian products, there should not be a signif
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions, run `bzt`:
+To receive scalability benchmark results for one-node Confluence DC **with** app-specific actions:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
 1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run4"></a> Run 4 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for two-node Confluence DC **with** app-specific actions:
 
@@ -789,20 +831,22 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 1. On the **Update** tab, select **Use current template**, and then click **Next**.
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next > Next > Update stack** and wait until stack is updated.
+1. Confirm new node is appeared on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Clustering** page.   
 1. Make sure that Confluence index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
 
     ```bash
     ssh-add path_to_your_private_key_pem
     export BASTION_IP=bastion_instance_public_ip
     export NODE_IP=node_private_ip
-    export SSH_OPTS='-o ServerAliveInterval=60 -o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS} -o "proxycommand ssh -W %h:%p ${SSH_OPTS} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
 1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh) file. Then, make it executable and run it:
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh | tee -a index-sync.log
+    ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 10-30 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
@@ -811,35 +855,42 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
     main index recovered from shared home directory
     ```
 
-1. Run toolkit with docker:
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
 ##### <a id="run5"></a> Run 5 (~50 min)
+{{% note %}}
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
+The same article has instructions on how to increase limit if needed.
+{{% /note %}}
 
 To receive scalability benchmark results for four-node Confluence DC with app-specific actions:
 
 1. Scale your Confluence Data Center deployment to 3 nodes as described in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
-1. Scale your Confluence Data Center deployment to 4 nodes as described  in [Run 4](#run4).
-1. Check Index is synchronized to new nodes the same way as in [Run 4](#run4).
-1. Run toolkit with docker:
+1. Check Index is synchronized to the new node #3 the same way as in [Run 4](#run4).
+1. Scale your Confluence Data Center deployment to 4 nodes as described in [Run 4](#run4).
+1. Check Index is synchronized to the new node #4 the same way as in [Run 4](#run4).
+1. Run toolkit with docker from the execution environment instance:
 
    ``` bash
-    cd dc-app-performance-toolkit
-    docker run --shm-size=4g  -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt confluence.yml
    ```  
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 
@@ -848,13 +899,16 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 To generate a scalability report:
 
 1. Use SSH to connect to execution environment.
+1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
+   ``` bash
+   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
+   ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
 1. Edit the `scale_profile.yml` file:
-    - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
-    - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
-    - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv`:
-
+    - For `runName: "1 Node"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
+    - For `runName: "2 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
+    - For `runName: "4 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
+1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
     ``` bash
     python csv_chart_generator.py scale_profile.yml
     ```
@@ -863,15 +917,28 @@ To generate a scalability report:
 
 #### Analyzing report
 
-Once completed, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
+1. From local terminal (Git bash terminal for Windows) run command:
+   ``` bash
+   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
+   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
+   ```
+1. Once completed, in the `./reports` folder, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+
+{{% warning %}}
 After completing all your tests, delete your Confluence Data Center stacks.
+{{% /warning %}}
 
 #### Attaching testing results to DCHELP ticket
 
-1. Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy `dc-app-performance-toolkit/app/results` folder to your local machine.
-1. Make sure you have five run results folders and two reports (remove all unsuccessful attempts).
-1. Zip `dc-app-performance-toolkit/app/results` folder and attach archive to DCHELP ticket.
+{{% warning %}}
+Do not forget to attach performance testing results to your DCHELP ticket.
+{{% /warning %}}
+
+1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
