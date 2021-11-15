@@ -290,5 +290,7 @@ class Insight(BasePage):
         self.get_element(InsightLocators.custom_type_field_search).send_keys(field_type)
         self.wait_until_visible(InsightLocators.custom_type_field_all).click()
         self.wait_until_visible(InsightLocators.custom_fields_next_button).click()
+        self.get_element(InsightLocators.text_field_custom_field_name).send_keys(field_type)
+        self.wait_until_clickable(InsightLocators.next_button_configure_custom_field).click()
         from time import sleep
         sleep(10)

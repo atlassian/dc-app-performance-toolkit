@@ -171,6 +171,8 @@ class InsightLocators:
     custom_type_field_search = (By.CLASS_NAME, "jira-field-search")
     custom_type_field_all = (By.CLASS_NAME, "item-button")
     custom_fields_next_button = (By.ID, "customfields-select-type-next")
+    text_field_custom_field_name = (By.XPATH, "//input[@id='custom-field-name']")
+    next_button_configure_custom_field = (By.XPATH, "//button[@id='customfields-configure-next']")
 
 
 
