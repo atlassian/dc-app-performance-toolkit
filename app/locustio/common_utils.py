@@ -229,18 +229,18 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
     except Exception as e:
         total = int((time.time() - start_time) * 1000)
         print(e)
-        events.request_failure.fire(request_type="Action",
-                                    name=interaction,
-                                    response_time=total,
-                                    response_length=0,
-                                    exception=e)
+        events.request.fire(request_type="Action",
+                            name=interaction,
+                            response_time=total,
+                            response_length=0,
+                            exception=e)
         logger.error(f'{interaction} action failed. Reason: {e}')
     else:
         total = int((time.time() - start_time) * 1000)
-        events.request_success.fire(request_type="Action",
-                                    name=interaction,
-                                    response_time=total,
-                                    response_length=0)
+        events.request.fire(request_type="Action",
+                            name=interaction,
+                            response_time=total,
+                            response_length=0)
         logger.info(f'{interaction} is finished successfully')
     return result
 
