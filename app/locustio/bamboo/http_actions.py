@@ -35,7 +35,7 @@ def wait_for_online_free_agent():
             attempt = attempt + 1
 
 
-def run_build_plans(locust):
+def run_build_plans(locust, run):
     start = time.time()
     user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
@@ -44,7 +44,7 @@ def run_build_plans(locust):
     response = r.json()
     auth_headers = r.request.headers
     plan_is_active = response['isActive']
-    wait_for_online_free_agent()
+    #wait_for_online_free_agent()
 
     @bamboo_measure('locust_run_build_plan')
     def run_build_plan(locust):
@@ -70,6 +70,7 @@ def run_build_plans(locust):
                 plan_is_running = True
             number_of_get_status_requests = number_of_get_status_requests + 1
             if time.time() > timeout:
+                logger.info(f'{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}')
                 raise Exception(f'ERROR: Build plan {build_plan_id} could not start in '
                                 f'{PLAN_STARTED_TIMEOUT} seconds.')
 
@@ -77,6 +78,7 @@ def run_build_plans(locust):
                 if not warning_reported:
                     logger.info(f'WARNING: Plan {build_plan_id} could not start in {PLAN_STARTED_TIMEOUT/2} '
                                 f'seconds.')
+                    logger.info(f'{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}')
                     warning_reported = True
 
         total_time_get_status_requests = time.time() - start_time_get_status_requests
@@ -87,6 +89,6 @@ def run_build_plans(locust):
 
     total = time.time() - start
     sleep_time = action_time - total if action_time > total else 0
-    logger.info(f'Total functions time: {total}. Action time {action_time}.'
-                f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}.')
+    logger.info(f'Total functions time: {total}. Expected full action time {action_time}. '
+                f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}.\n')
     time.sleep(sleep_time)
