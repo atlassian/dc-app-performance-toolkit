@@ -382,7 +382,7 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
         )
     for issue in issues:
         expanded_issue = jsm_api.get_request(issue_id_or_key=issue['key'])
-        issue['service_desk_id'] = expanded_issue[0]['serviceDeskId']
+        issue['service_desk_id'] = expanded_issue['serviceDeskId']
     if not issues:
         print(f"There are no issues found using JQL {custom_jql}")
     return issues
