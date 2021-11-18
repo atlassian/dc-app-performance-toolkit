@@ -21,7 +21,7 @@ esac; shift; done
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.13 7.0.5 7.6.9)
+SUPPORTED_BITBUCKET_VERSIONS=(7.6.10 7.17.1)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
         echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \

@@ -1,4 +1,5 @@
 import xmlrpc.client
+from selenium_ui.conftest import retry
 
 from util.api.abstract_clients import RestClient, Client
 from lxml import html
@@ -44,6 +45,7 @@ class ConfluenceRestClient(RestClient):
 
         return content
 
+    @retry()
     def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
         """
         Fetch a list of content using the Confluence Query Language (CQL).
