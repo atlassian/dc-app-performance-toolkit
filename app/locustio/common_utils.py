@@ -1,6 +1,5 @@
 import functools
 
-import requests
 from locust import events
 import time
 import csv
