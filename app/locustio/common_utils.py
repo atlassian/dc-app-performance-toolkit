@@ -115,11 +115,13 @@ class MyBaseTaskSet(TaskSet):
         if hasattr(response, 'error') or not response:
             if 'login' in action_name:
                 self.login_failed = True
-            events.request_failure.fire(request_type="Action",
-                                        name=f"locust_{action_name}",
-                                        response_time=0,
-                                        response_length=0,
-                                        exception=str(response.raise_for_status()))
+            events.request.fire(request_type="Action",
+                                name=f"locust_{action_name}",
+                                response_time=0,
+                                response_length=0,
+                                context=None,
+                                response=None,
+                                exception=str(response.raise_for_status()))
 
     def get(self, *args, **kwargs):
         r = self.client.get(*args, **kwargs)
@@ -233,6 +235,8 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
                             name=interaction,
                             response_time=total,
                             response_length=0,
+                            response=None,
+                            context=None,
                             exception=e)
         logger.error(f'{interaction} action failed. Reason: {e}')
     else:
@@ -240,7 +244,11 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
         events.request.fire(request_type="Action",
                             name=interaction,
                             response_time=total,
-                            response_length=0)
+                            response_length=0,
+                            response=None,
+                            context=None,
+                            exception=None
+                            )
         logger.info(f'{interaction} is finished successfully')
     return result
 
