@@ -275,22 +275,25 @@ class Insight(BasePage):
         self.wait_until_visible(InsightLocators.create_button)
         self.wait_until_visible(InsightLocators.create_button).click()
         self.wait_until_visible(InsightLocators.pop_up_after_create_object)
-        # self.wait_until_visible(InsightLocators.close_pop_up_after_creating_object).click()
         self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
-
-    def add_insight_custom_field(self):
-        field_type = 'Insight'
-        self.wait_until_clickable(InsightLocators.admin_menu_dropdown).click()
-        self.wait_until_visible(InsightLocators.admin_menu_issue)
-        self.wait_until_clickable(InsightLocators.admin_menu_issue).click()
-        self.wait_until_clickable(InsightLocators.custom_fields_settings).click()
-        self.wait_until_visible(InsightLocators.add_custom_field_button)
-        self.wait_until_clickable(InsightLocators.create_new_custom_field).click()
-        self.wait_until_visible(InsightLocators.custom_type_field_search)
-        self.get_element(InsightLocators.custom_type_field_search).send_keys(field_type)
-        self.wait_until_visible(InsightLocators.custom_type_field_all).click()
-        self.wait_until_visible(InsightLocators.custom_fields_next_button).click()
-        self.get_element(InsightLocators.text_field_custom_field_name).send_keys(field_type)
-        self.wait_until_clickable(InsightLocators.next_button_configure_custom_field).click()
-        from time import sleep
+    #
+    # def add_insight_custom_field(self):
+    #     field_type = 'Insight'
+    #     self.wait_until_clickable(InsightLocators.admin_menu_dropdown).click()
+    #     self.wait_until_visible(InsightLocators.admin_menu_issue)
+    #     self.wait_until_clickable(InsightLocators.admin_menu_issue).click()
+    #     self.wait_until_clickable(InsightLocators.custom_fields_settings).click()
+    #     self.wait_until_visible(InsightLocators.add_custom_field_button)
+    #     self.wait_until_clickable(InsightLocators.create_new_custom_field).click()
+    #     self.wait_until_visible(InsightLocators.custom_type_field_search)
+    #     self.get_element(InsightLocators.custom_type_field_search).send_keys(field_type)
+    #     self.wait_until_visible(InsightLocators.custom_type_field_all).click()
+    #     self.wait_until_visible(InsightLocators.custom_fields_next_button).click()
+    #     self.get_element(InsightLocators.text_field_custom_field_name).send_keys(field_type)
+    #     self.wait_until_clickable(InsightLocators.next_button_configure_custom_field).click()
+    #     self.get_element(InsightLocators.options_text_field).send_keys(field_type)
+    #     self.wait_until_clickable(InsightLocators.add_custom_option_button).click()
+    #     self.wait_until_clickable(InsightLocators.next_button_configure_custom_field).click()
+    #     self.wait_until_visible(InsightLocators.apply_custom_field_to_all_issues).click()
+    #     from time import sleep
         sleep(10)

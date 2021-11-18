@@ -2,7 +2,7 @@ import random
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewQueue, Report
+    ViewCustomerRequest, ViewQueue, Report, Insight
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -234,6 +234,18 @@ def view_queues_small(webdriver, datasets):
                                    queue_id=datasets['all_open_queue_id_small'])
     view_queues_form_diff_projects_size(browse_queues_page, project_size='small')
     PopupManager(webdriver).dismiss_default_popup()
+
+
+def insight_workflow(webdriver, datasets):
+    insight_workflow_flow = Insight(webdriver)
+
+    @print_timing("selenium_insight_workflow")
+    def measure():
+        insight_workflow_flow.insight_create_new_schema()
+        insight_workflow_flow.insight_create_new_objects()
+        # insight_workflow_flow.add_insight_custom_field()
+
+    measure()
 
 
 def logout(webdriver, datasets):

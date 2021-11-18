@@ -155,6 +155,7 @@ class InsightLocators:
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
+    object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
     object_schemas_name = (By.CLASS_NAME, "js-name")
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
@@ -173,6 +174,11 @@ class InsightLocators:
     custom_fields_next_button = (By.ID, "customfields-select-type-next")
     text_field_custom_field_name = (By.XPATH, "//input[@id='custom-field-name']")
     next_button_configure_custom_field = (By.XPATH, "//button[@id='customfields-configure-next']")
+    options_text_field = (By.ID, "custom-field-options-input")
+    add_custom_option_button = (By.ID, "custom-field-options-add")
+    # apply_custom_field_to_all_issues = (By.CSS_SELECTOR, "input[type='radio']")
+    apply_custom_field_to_all_issues = (By.ID, "custom-field--contextglobal")
+
 
 
 
