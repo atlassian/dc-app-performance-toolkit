@@ -3,13 +3,14 @@ Create AWS Jira DC stack and delete the PostgreSQL database
 ===============================
 Test instance storage at least 15GB
 
-#install oracle 19 Oracle Standard Edition Two lowest settings (Oracle 18.0.0.0.ru-2019-07.rur-2019-07.r1 IOP 1000, 500 GB scale to 1000)
+#install oracle 19 Oracle Standard Edition Two lowest settings (Oracle Oracle 19.0.0.0.ru-2021-07.rur-2021-07.r1 IOP 1000, 500 GB scale to 1000 - Availability: Do not create a standby instance - VPC: same as Jira Stack - Public Access: yes)
 https://confluence.atlassian.com/adminjiraserver/supported-platforms-938846830.html
 #download orcle jdbc (login and download locally then copy the url and wget in the server)
 #stop jira
 sudo systemctl stop jira
 #Download sql plus and tools from https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads.html and copy all lib files to /usr/lib64
 # conntect using this command https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.Oracle.html
+# Don't forget to open the port in inboud rules of the security group
 # PROMPT>sqlplus 'mydbusr@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=endpoint)(PORT=1521))(CONNECT_DATA=(SID=ORCL)))'
 #Then do steps in https://confluence.atlassian.com/adminjiraserver/connecting-jira-applications-to-oracle-938846856.html
 
@@ -22,7 +23,7 @@ grant create trigger to jiradbuser;
 
 ================================================================
 #copy jdbc jar to lib dir
-sudo cp ojdbc8.jar /opt/atlassian/jira-software/8.5.8/lib
+sudo cp ojdbc8.jar /opt/atlassian/jira-software/8.13.10/lib
 #delete config file
 sudo systemctl stop jira
 sudo rm /var/atlassian/application-data/jira/dbconfig.xml
