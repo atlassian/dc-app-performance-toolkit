@@ -6,6 +6,8 @@ class PopupLocators:
     default_popup = '.aui-message .icon-close'
     popup_1 = 'form.tip-footer>.helptip-close'
     popup_2 = '.aui-inline-dialog-contents .cancel'
+    popup_3 = '.dialog-close-button'
+
 
 
 class UrlManager:
@@ -131,7 +133,7 @@ class InsightLocators:
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
     object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
-    object_schemas_name = (By.CLASS_NAME, "js-name")
+    # object_schemas_name = (By.CLASS_NAME, "js-name")
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test chema')]")
     object_name_field = (By.ID, "rlabs-insight-attribute-2")

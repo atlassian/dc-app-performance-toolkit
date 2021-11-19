@@ -236,15 +236,27 @@ def view_queues_small(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def insight_workflow(webdriver, datasets):
-    insight_workflow_flow = Insight(webdriver)
+def insight_main_page(webdriver, datasets):
+    PopupManager(webdriver).dismiss_default_popup()
+    insight_main_page = Insight(webdriver)
 
-    @print_timing("selenium_insight_workflow")
+    @print_timing("selenium_insight_main_page")
     def measure():
-        insight_workflow_flow.insight_create_new_schema()
-        insight_workflow_flow.insight_create_new_objects()
-        # insight_workflow_flow.add_insight_custom_field()
+        insight_main_page.insight_schema()
+        insight_main_page.login_2(username=datasets['agent_username'], password=datasets['agent_password'])
 
+    measure()
+    PopupManager(webdriver).dismiss_default_popup()
+
+
+def insight_create_new_schema_object(webdriver, datasets):
+    insight_create_schema_object = Insight(webdriver)
+    PopupManager(webdriver).dismiss_default_popup()
+
+    @print_timing('selenium_insight_create_new_schema_object')
+    def measure():
+        insight_create_schema_object.create_new_schema()
+        insight_create_schema_object.insight_create_new_objects()
     measure()
 
 

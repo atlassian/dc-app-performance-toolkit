@@ -296,4 +296,4 @@ class Insight(BasePage):
     #     self.wait_until_clickable(InsightLocators.next_button_configure_custom_field).click()
     #     self.wait_until_visible(InsightLocators.apply_custom_field_to_all_issues).click()
     #     from time import sleep
-        sleep(10)
+    #     sleep(10)

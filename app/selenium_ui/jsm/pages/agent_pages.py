@@ -10,7 +10,8 @@ from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocato
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2)
+        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
+                                  PopupLocators.popup_3)
 
 
 class Login(BasePage):
@@ -39,22 +40,22 @@ class Login(BasePage):
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
 
-    # def __get_footer_text(self):
-    #     return self.get_element(LoginPageLocators.footer).text
-    #
-    # def get_app_version(self):
-    #     text = self.__get_footer_text()
-    #     return text.split('#')[0].replace('(v', '')
-    #
-    # def get_node_id(self):
-    #     text = self.get_element(LoginPageLocators.footer).text
-    #     text_split = text.split(':')
-    #     if len(text_split) == 2:
-    #         return "SERVER"
-    #     elif len(text_split) == 3:
-    #         return text_split[2].replace(')', '')
-    #     else:
-    #         return f"Warning: failed to get the node information from '{text}'."
+    def __get_footer_text(self):
+        return self.get_element(LoginPageLocators.footer).text
+
+    def get_app_version(self):
+        text = self.__get_footer_text()
+        return text.split('#')[0].replace('(v', '')
+
+    def get_node_id(self):
+        text = self.get_element(LoginPageLocators.footer).text
+        text_split = text.split(':')
+        if len(text_split) == 2:
+            return "SERVER"
+        elif len(text_split) == 3:
+            return text_split[2].replace(')', '')
+        else:
+            return f"Warning: failed to get the node information from '{text}'."
 
 
 class Logout(BasePage):
@@ -201,10 +202,17 @@ class Insight(BasePage):
     timeout = 30
     dashboard_url = UrlManager().dashboard_url()
 
-    def insight_create_new_schema(self):
-        text = self.generate_random_string(10)
+    def insight_schema(self):
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.insight_object_schemas_button).click()
+
+    def login_2(self, username, password):
+        self.get_element(LoginPageLocators.login_field).send_keys(username)
+        self.get_element(LoginPageLocators.password_field).send_keys(password)
+        self.get_element(LoginPageLocators.login_submit_button).click()
+
+    def create_new_schema(self):
+        text = self.generate_random_string(10)
         self.wait_until_visible(InsightLocators.create_object_schemas).click()
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
@@ -215,7 +223,8 @@ class Insight(BasePage):
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
         # for now clicking on schema named "test schema" need create dataset so can click randomly
-        self.wait_until_visible(InsightLocators.random_insight_schema).click()
+        self.wait_until_visible(InsightLocators.random_insight_schema)
+        self.wait_until_clickable(InsightLocators.random_insight_schema).click()
         # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
         self.wait_until_visible(InsightLocators.object_name_field)
