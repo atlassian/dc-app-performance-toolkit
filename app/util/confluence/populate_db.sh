@@ -44,8 +44,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZE}/${DB_
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ "$1" == "--custom" ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$CONFLUENCE_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $CONFLUENCE_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $CONFLUENCE_VERSION"
+    exit 1
+  fi
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Confluence, use --force flag with version of dataset you want to apply:"
