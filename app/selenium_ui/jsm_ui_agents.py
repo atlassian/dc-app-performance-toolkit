@@ -11,6 +11,7 @@ def is_dataset_small(jsm_datasets):
 def test_0_selenium_agent_a_login(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     modules_agents.login(jsm_webdriver, jsm_datasets)
 
+
 #
 # def test_1_selenium_agent_browse_projects(jsm_webdriver, jsm_datasets, jsm_screen_shots):
 #     modules_agents.agent_browse_projects(jsm_webdriver, jsm_datasets)
@@ -22,6 +23,17 @@ def test_1_selenium_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_s
 
 def test_1_selenium_insight_create_new_schema_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.insight_create_new_schema_object(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
+    modules_agents.insigh_view_queue_insight_column(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):
+    modules_agents.insight_search_object_by_iql(jsm_webdriver, jsm_datasets)
+
+def test_1_selenium_view_issue_with_objects(jsm_webdriver, jsm_datasets, jira_screen_shots):
+    modules_agents.view_issue_with_insight_objects(jsm_webdriver, jsm_datasets)
 
 
 # def test_1_selenium_agent_view_customers(jsm_webdriver, jsm_datasets, jsm_screen_shots):

@@ -9,7 +9,6 @@ class PopupLocators:
     popup_3 = '.dialog-close-button'
 
 
-
 class UrlManager:
 
     def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None):
@@ -24,6 +23,9 @@ class UrlManager:
         self.queue_all_open = f'{self.view_queue}/{queue_id}'
         self.workload_report_params = f'/projects/{project_key}/reports/workload'
         self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
+        self.view_insight_queue_params = f'{self.view_queue}/1102'
+        self.view_issue_with_insight_object_param = f'/browse/{project_key}-350034'
+        # with correct dataset need to be replaced with right variable(random issue with object)
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -52,9 +54,14 @@ class UrlManager:
     def view_queue_all_open(self):
         return f'{self.host}{self.queue_all_open}'
 
+    def view_insight_queue(self):
+        return f'{self.host}{self.view_insight_queue_params}'
+
+    def view_issue_with_object(self):
+        return f'{self.host}{self.view_issue_with_insight_object_param}'
+
 
 class LoginPageLocators:
-
     login_url = UrlManager().login_url()
 
     # First time login setup page
@@ -69,32 +76,27 @@ class LoginPageLocators:
 
 
 class DashboardLocators:
-
     dashboard_url = UrlManager().dashboard_url()
     dashboard_params = UrlManager().dashboard_params
     dashboard_window = (By.CLASS_NAME, "page-type-dashboard")
 
 
 class LogoutLocators:
-
     logout_url = UrlManager().logout_url()
     logout_submit_button = (By.ID, "confirm-logout-submit")
     login_button_link = (By.CLASS_NAME, "login-link")
 
 
 class BrowseProjectsLocators:
-
     brows_projects_url = UrlManager().browse_all_projects_url()
     page_title = (By.XPATH, "//h1[contains(text(),'Browse projects')]")
 
 
 class BrowseCustomersLocators:
-
     page_title = (By.XPATH, "//h2[contains(text(),'Customers')]")
 
 
 class ViewCustomerRequestLocators:
-
     bread_crumbs = (By.CSS_SELECTOR, ".aui-nav.aui-nav-breadcrumbs")
 
     comment_collapsed_textarea = (By.ID, "sd-comment-collapsed-textarea")
@@ -105,7 +107,6 @@ class ViewCustomerRequestLocators:
 
 
 class ViewReportsLocators:
-
     # locators to click
     workload = (By.XPATH, "//span[contains(text(),'Workload')]")
     time_to_resolution = (By.XPATH, "//span[contains(text(),'Time to resolution')]")
@@ -118,22 +119,24 @@ class ViewReportsLocators:
 
 
 class ViewQueueLocators:
-
     queues = (By.CSS_SELECTOR, "#pinnednav-opts-sd-queues-nav li")
     queues_status = (By.XPATH, "//span[contains(text(),'Status')]")
     queue_is_empty = (By.CSS_SELECTOR, '.sd-queue-empty')
 
+
 class InsightLocators:
     # insight_all_selectors
+    # insight_schema
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
+    # insight_create_new_schema
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
     object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
-    # object_schemas_name = (By.CLASS_NAME, "js-name")
+    # insight_create_new_object
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test chema')]")
     object_name_field = (By.ID, "rlabs-insight-attribute-2")
@@ -143,14 +146,25 @@ class InsightLocators:
     custom_fields_settings = (By.XPATH, "//a[@id='view_custom_fields']")
     add_custom_field_button = (By.ID, "add_custom_fields")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
-    close_pop_up_after_creating_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]/button[1]")
-    create_new_custom_field = (By.ID, "add_custom_fields")
-    custom_type_field_search = (By.CLASS_NAME, "jira-field-search")
-    custom_type_field_all = (By.CLASS_NAME, "item-button")
-    custom_fields_next_button = (By.ID, "customfields-select-type-next")
-    text_field_custom_field_name = (By.XPATH, "//input[@id='custom-field-name']")
-    next_button_configure_custom_field = (By.XPATH, "//button[@id='customfields-configure-next']")
-    options_text_field = (By.ID, "custom-field-options-input")
-    add_custom_option_button = (By.ID, "custom-field-options-add")
-    # apply_custom_field_to_all_issues = (By.CSS_SELECTOR, "input[type='radio']")
-    apply_custom_field_to_all_issues = (By.ID, "custom-field--contextglobal")
+    ###selectors_for_add_custom_field_configuration
+    # create_new_custom_field = (By.ID, "add_custom_fields")
+    # custom_type_field_search = (By.CLASS_NAME, "jira-field-search")
+    # custom_type_field_all = (By.CLASS_NAME, "item-button")
+    # custom_fields_next_button = (By.ID, "customfields-select-type-next")
+    # text_field_custom_field_name = (By.XPATH, "//input[@id='custom-field-name']")
+    # next_button_configure_custom_field = (By.XPATH, "//button[@id='customfields-configure-next']")
+    # options_text_field = (By.ID, "custom-field-options-input")
+    # add_custom_option_button = (By.ID, "custom-field-options-add")
+    # apply_custom_field_to_all_issues = (By.ID, "custom-field--contextglobal")
+
+    # view_queue_insight_column
+    view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
+    insight_column = (By.CLASS_NAME, "_3DjtzZ5cCJ")
+
+    # search_insight_object_by_IQL
+    search_object_by_iql = (By.ID, "rlabs_iam_search_lnk")
+    search_object_text_field = (By.CSS_SELECTOR, "textarea[name='iql']")
+    search_iql_button = (By.CLASS_NAME, "rIcon-search")
+
+    # view_issue_with_object
+    custom_field_insight = (By.ID, "rowForcustomfield_10600")

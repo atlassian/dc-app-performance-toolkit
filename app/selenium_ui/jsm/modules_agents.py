@@ -2,7 +2,7 @@ import random
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewQueue, Report, Insight
+    ViewCustomerRequest, ViewQueue, Report, Insight, InsightActions, ViewIssueWithObject
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -257,8 +257,39 @@ def insight_create_new_schema_object(webdriver, datasets):
     def measure():
         insight_create_schema_object.create_new_schema()
         insight_create_schema_object.insight_create_new_objects()
+
     measure()
 
+
+def insigh_view_queue_insight_column(webdriver, datasets):
+    insight_random_queue_page = InsightActions(webdriver)
+
+    @print_timing('selenium_view_queue_with_insight_column')
+    def measure():
+        insight_random_queue_page.go_to()
+        insight_random_queue_page.view_random_queue_with_insight()
+
+    measure()
+
+
+def insight_search_object_by_iql(webdriver, datasets):
+    search_object_by_iql = InsightActions(webdriver)
+
+    @print_timing('selenium_search_object_by_iql')
+    def measure():
+        search_object_by_iql.search_object_by_iql()
+
+    measure()
+
+def view_issue_with_insight_objects(webdriver, datasets):
+    view_issue_with_objects = ViewIssueWithObject(webdriver)
+
+    @print_timing('selenium_view_issue_with_objects')
+    def measure():
+        view_issue_with_objects.go_to()
+        view_issue_with_objects.view_issue_with_insight_custom_field()
+
+    measure()
 
 def logout(webdriver, datasets):
     logout_page = Logout(webdriver)

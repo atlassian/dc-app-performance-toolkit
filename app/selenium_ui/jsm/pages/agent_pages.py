@@ -224,6 +224,8 @@ class Insight(BasePage):
         text = self.generate_random_string(10)
         # for now clicking on schema named "test schema" need create dataset so can click randomly
         self.wait_until_visible(InsightLocators.random_insight_schema)
+        from time import sleep
+        sleep(3)
         self.wait_until_clickable(InsightLocators.random_insight_schema).click()
         # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
@@ -233,3 +235,35 @@ class Insight(BasePage):
         self.wait_until_visible(InsightLocators.create_button).click()
         self.wait_until_visible(InsightLocators.pop_up_after_create_object)
         self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
+
+
+class InsightActions(BasePage):
+
+    def __init__(self, driver, project_key='AHSNDOOWEY'):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.view_insight_queue()
+
+    def view_random_queue_with_insight(self):  # for know we going to look only in one (not random que), but with the dataset we will do random
+        self.wait_until_visible(InsightLocators.view_queue_insight_column).click()
+        self.wait_until_visible(InsightLocators.insight_column)
+
+    def search_object_by_iql(self):
+        text = 'Name >= t'
+        self.wait_until_clickable(InsightLocators.insight_dropdown).click()
+        self.wait_until_visible(InsightLocators.search_object_by_iql).click()
+        self.wait_until_visible(InsightLocators.search_object_text_field)
+        self.get_element(InsightLocators.search_object_text_field).send_keys(text)
+        self.wait_until_visible(InsightLocators.search_iql_button).click()
+
+
+class ViewIssueWithObject(BasePage):
+
+    def __init__(self, driver, project_key='AHSNDOOWEY'):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.view_issue_with_object()
+
+    def view_issue_with_insight_custom_field(self):
+        # will use a specific issue with an insight custom field , after dataset will be created will use random choice
+        self.wait_until_visible(InsightLocators.custom_field_insight)
