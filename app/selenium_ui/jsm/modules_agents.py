@@ -238,12 +238,12 @@ def view_queues_small(webdriver, datasets):
 
 def insight_main_page(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
-    insight_main_page = Insight(webdriver)
+    view_insight_main_page = Insight(webdriver)
 
-    @print_timing("selenium_insight_main_page")
+    @print_timing("selenium_view_insight_main_page")
     def measure():
-        insight_main_page.insight_schema()
-        insight_main_page.login_2(username=datasets['agent_username'], password=datasets['agent_password'])
+        view_insight_main_page.insight_schema()
+        view_insight_main_page.login_2(username=datasets['agent_username'], password=datasets['agent_password'])
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
@@ -261,7 +261,7 @@ def insight_create_new_schema_object(webdriver, datasets):
     measure()
 
 
-def insigh_view_queue_insight_column(webdriver, datasets):
+def insight_view_queue_insight_column(webdriver, datasets):
     insight_random_queue_page = InsightActions(webdriver)
 
     @print_timing('selenium_view_queue_with_insight_column')
@@ -281,6 +281,7 @@ def insight_search_object_by_iql(webdriver, datasets):
 
     measure()
 
+
 def view_issue_with_insight_objects(webdriver, datasets):
     view_issue_with_objects = ViewIssueWithObject(webdriver)
 
@@ -290,6 +291,7 @@ def view_issue_with_insight_objects(webdriver, datasets):
         view_issue_with_objects.view_issue_with_insight_custom_field()
 
     measure()
+
 
 def logout(webdriver, datasets):
     logout_page = Logout(webdriver)

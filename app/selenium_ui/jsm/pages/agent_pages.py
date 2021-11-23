@@ -206,6 +206,7 @@ class Insight(BasePage):
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.insight_object_schemas_button).click()
 
+    #second login required to start working with insight
     def login_2(self, username, password):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
@@ -222,7 +223,8 @@ class Insight(BasePage):
 
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
-        # for now clicking on schema named "test schema" need create dataset so can click randomly
+        # for now clicking on schema named "test schema" need create dataset so we can click randomly
+        # self.wait_until_visible(InsightLocators.view)
         self.wait_until_visible(InsightLocators.random_insight_schema)
         from time import sleep
         sleep(3)
@@ -244,16 +246,16 @@ class InsightActions(BasePage):
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.view_insight_queue()
 
-    def view_random_queue_with_insight(self):  # for know we going to look only in one (not random que), but with the dataset we will do random
+    def view_random_queue_with_insight(self):  # for know we going to look only in one (not random queue), but with the dataset we will do random
         self.wait_until_visible(InsightLocators.view_queue_insight_column).click()
         self.wait_until_visible(InsightLocators.insight_column)
 
     def search_object_by_iql(self):
-        text = 'Name >= t'
+        iql_attribute_search = 'Name >= t'
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.search_object_by_iql).click()
         self.wait_until_visible(InsightLocators.search_object_text_field)
-        self.get_element(InsightLocators.search_object_text_field).send_keys(text)
+        self.get_element(InsightLocators.search_object_text_field).send_keys(iql_attribute_search)
         self.wait_until_visible(InsightLocators.search_iql_button).click()
 
 

@@ -26,7 +26,7 @@ def test_1_selenium_insight_create_new_schema_object(jsm_webdriver, jsm_datasets
 
 
 def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
-    modules_agents.insigh_view_queue_insight_column(jsm_webdriver, jsm_datasets)
+    modules_agents.insight_view_queue_insight_column(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):

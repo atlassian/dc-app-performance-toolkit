@@ -138,6 +138,7 @@ class InsightLocators:
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
     # insight_create_new_object
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
+    # view_all_schemas_selector (By.ID, "rlabs-manage-main")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test chema')]")
     object_name_field = (By.ID, "rlabs-insight-attribute-2")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
