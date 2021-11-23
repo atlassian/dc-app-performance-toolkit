@@ -6,6 +6,7 @@ pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. 
 # Read command line arguments
 while [[ "$#" -gt 0 ]]; do case $1 in
   --small) small=1 ;;
+  --custom) custom=1 ;;
   --force)
    if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
@@ -59,8 +60,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_D
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ ${custom} == 1 ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$BITBUCKET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $BITBUCKET_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $BITBUCKET_VERSION"
+    exit 1
+  fi
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Bitbucket, use --force flag with version of dataset you want to apply:"
