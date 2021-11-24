@@ -100,6 +100,8 @@ def generate_report_summary(collector):
                               f'{collector.post_run_collector.unexpected_status_plan_count}')
         summary_report.append(f'Number of plans with queue more than 1 sec|'
                               f'{collector.post_run_collector.get_plan_count_with_n_queue(n_sec=1)}')
+        summary_report.append(f'Number of plans with unexpected duration|'
+                              f'{collector.post_run_collector.unexpected_duration_plan_count}')
 
     if collector.app_type == CROWD:
         summary_report.append(

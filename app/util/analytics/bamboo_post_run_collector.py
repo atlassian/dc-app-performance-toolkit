@@ -48,3 +48,15 @@ class BambooPostRunCollector:
             if build_result['queueTimeInSeconds'] >= n_sec:
                 plan_count_with_n_sec = plan_count_with_n_sec + 1
         return plan_count_with_n_sec
+
+    @property
+    def unexpected_duration_plan_count(self):
+        possible_diff_perc = 10
+        expected_yml_build_duration = BAMBOO_SETTINGS.default_dataset_plan_duration
+        expected_min_duration = expected_yml_build_duration - expected_yml_build_duration*possible_diff_perc/100
+        expected_max_duration = expected_yml_build_duration + expected_yml_build_duration*possible_diff_perc/100
+        unexpected_duration_plans_count = 0
+        for build_result in self.locust_build_job_results:
+            if not expected_min_duration <= build_result['buildDuration']/1000 <= expected_max_duration:
+                unexpected_duration_plans_count = unexpected_duration_plans_count + 1
+        return unexpected_duration_plans_count
