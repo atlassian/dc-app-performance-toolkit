@@ -96,8 +96,10 @@ def generate_report_summary(collector):
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
     if collector.app_type == BAMBOO:
-        summary_report.append(f'Number of plans with unexpected status|{collector.post_run_collector.unexpected_status_plan_count}')
-        summary_report.append(f'Number of plans with queue more than 1 sec|{collector.post_run_collector.get_plan_count_with_n_queue(1)}')
+        summary_report.append(f'Number of plans with unexpected status|'
+                              f'{collector.post_run_collector.unexpected_status_plan_count}')
+        summary_report.append(f'Number of plans with queue more than 1 sec|'
+                              f'{collector.post_run_collector.get_plan_count_with_n_queue(n_sec=1)}')
 
     if collector.app_type == CROWD:
         summary_report.append(
