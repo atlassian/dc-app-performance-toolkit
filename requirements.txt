@@ -6,3 +6,4 @@ locust==2.5.0
 selenium==3.141.0
 filelock==3.3.2
 packaging==21.2
+numpy==1.21.4
