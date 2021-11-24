@@ -15,7 +15,7 @@ settings:
     concurrency: 200               # number of Bamboo users for Selenium actions
     test_duration: 45m
     ramp-up: 3m                    # time to spin all concurrent threads
-    total_actions_per_hour: 22000  # number of total JMeter actions per hour
+    total_actions_per_hour: 2000  # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: en_US.utf8
@@ -27,8 +27,8 @@ settings:
     view_build_summary: 10
     view_projects_list: 10
 
-    number_of_agents: 55
-    parallel_plans_count: 45
+    number_of_agents: 50
+    parallel_plans_count: 40
     start_plan_timeout: 60
     default_dataset_plan_duration: 60
 services:
@@ -36,12 +36,12 @@ services:
     prepare:
       - python util/pre_run/environment_checker.py
       - python util/data_preparation/bamboo_prepare_data.py
-#    shutdown:
-#      - python util/post_run/jmeter_post_check.py
-#      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl
-#    post-process:
-#      - python util/analytics/analytics.py bamboo
-#      - python util/post_run/cleanup_results_dir.py
+    shutdown:
+      - python util/post_run/jmeter_post_check.py
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
+    post-process:
+      - python util/analytics/analytics.py bamboo
+      - python util/post_run/cleanup_results_dir.py
 execution:
   - scenario: jmeter
     executor: jmeter
@@ -106,7 +106,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "95.0.4638.54" # Supports Chrome version 95. You can refer to http://chromedriver.chromium.org/downloads
+      version: "96.0.4664.45" # Supports Chrome version 96. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
