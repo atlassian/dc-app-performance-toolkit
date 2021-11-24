@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-06-16"
+date: "2021-11-17"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -99,7 +99,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `4.3.0` ([Long Term Support release](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.4.0` |
 
 **Cluster nodes**
 

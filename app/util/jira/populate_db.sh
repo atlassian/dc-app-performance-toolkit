@@ -4,6 +4,7 @@
 while [[ "$#" -gt 0 ]]; do case $1 in
   --jsm) jsm=1 ;;
   --small) small=1 ;;
+  --custom) custom=1 ;;
   --force)
    if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
@@ -45,8 +46,8 @@ JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
 
-SUPPORTED_JIRA_VERSIONS=(8.5.18 8.13.10)
-SUPPORTED_JSM_VERSIONS=(4.5.18 4.13.10)
+SUPPORTED_JIRA_VERSIONS=(8.13.13 8.20.1)
+SUPPORTED_JSM_VERSIONS=(4.13.13 4.20.1)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -81,8 +82,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ ${custom} == 1 ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$JIRA_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $JIRA_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $JIRA_VERSION"
+    exit 1
+  fi
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
