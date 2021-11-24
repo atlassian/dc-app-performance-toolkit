@@ -134,7 +134,6 @@ class BztFileReader(BaseFileReader):
         return start_datetime
 
 
-
 class ResultsFileReader(BaseFileReader):
     header_validation = {0: 'Label', 1: '# Samples'}
 
@@ -170,3 +169,16 @@ class ResultsFileReader(BaseFileReader):
             if line['Label'] in GIT_OPERATIONS:
                 count = count + int(line['# Samples'])
         return count
+
+
+class LocustFileReader(BaseFileReader):
+
+    locust_log_name = 'locust.log'
+
+    def get_locust_log(self):
+        locust_log_path = f'{self.log_dir}/{self.locust_log_name}'
+        self.validate_file_exists(locust_log_path)
+        with open(locust_log_path) as log_file:
+            log_file = log_file.readlines()
+            self.validate_file_not_empty(log_file)
+            return log_file

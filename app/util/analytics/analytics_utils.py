@@ -7,7 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
-from util.analytics.application_info import BITBUCKET, BAMBOO
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -95,7 +95,11 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    if collector.app_type.lower() == 'crowd':
+    if collector.app_type == BAMBOO:
+        summary_report.append(f'Number of plans with unexpected status|{collector.post_run_collector.unexpected_status_plan_count}')
+        summary_report.append(f'Number of plans with queue more than 1 sec|{collector.post_run_collector.get_plan_count_with_n_queue(1)}')
+
+    if collector.app_type == CROWD:
         summary_report.append(
             f'Crowd users directory synchronization time|{collector.crowd_sync_test["crowd_users_sync"]}')
         summary_report.append(
@@ -103,6 +107,7 @@ def generate_report_summary(collector):
 
     summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
+
     if collector.app_type == BAMBOO:
         load_test_rates = {**collector.jmeter_test_rates, **collector.locust_test_rates}
 

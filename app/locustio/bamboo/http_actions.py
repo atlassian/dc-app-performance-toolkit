@@ -2,8 +2,9 @@ import random
 import time
 
 from locustio.bamboo.requests_params import bamboo_datasets
-from locustio.common_utils import init_logger, JSON_HEADERS,  bamboo_measure
+from locustio.common_utils import init_logger, JSON_HEADERS
 from util.api.bamboo_clients import BambooClient
+from locust import events
 
 from util.conf import BAMBOO_SETTINGS
 
@@ -14,28 +15,10 @@ api_client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admi
                           verify=BAMBOO_SETTINGS.secure)
 action_time = BAMBOO_SETTINGS.default_dataset_plan_duration
 PLAN_STARTED_TIMEOUT = BAMBOO_SETTINGS.start_plan_timeout  # seconds
+PLAN_STATUS_REQUEST_TIMEOUT = 10
 
 
-def wait_for_online_free_agent():
-    sleep_time = 1
-    has_free_agent = False
-    attempt = 0
-    attempts = 90
-    while not has_free_agent:
-        agents = api_client.get_remote_agents(online=True)
-        free_agents_count = [agent['busy'] for agent in agents].count(False)
-        if attempt >= attempts:
-            raise Exception(f'Unable to find free agents for {attempts*sleep_time} seconds')
-        if free_agents_count > 0:
-            logger.info(f'There are {free_agents_count}/{len(agents)} free agents\n')
-            has_free_agent = True
-        else:
-            logger.info(f'Still no free agents, wait {sleep_time} seconds, attempt {attempt}/{attempts}')
-            time.sleep(sleep_time)
-            attempt = attempt + 1
-
-
-def run_build_plans(locust, run):
+def run_build_plans(locust):
     start = time.time()
     user_auth = tuple(random.choice(bamboo_dataset['users']))
     build_plan = random.choice(bamboo_dataset['build_plans'])
@@ -44,48 +27,60 @@ def run_build_plans(locust, run):
     response = r.json()
     auth_headers = r.request.headers
     plan_is_active = response['isActive']
-    #wait_for_online_free_agent()
 
-    @bamboo_measure('locust_run_build_plan')
     def run_build_plan(locust):
+        r = locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
+                        headers=auth_headers, auth=user_auth)
+        build_num = r.json()['buildNumber']
+        build_job_num = f'{build_plan_id}-JB1-{build_num}'
         plan_is_running = False
-        locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
-                    headers=auth_headers, auth=user_auth)
-
-        def plan_is_building(locust):
-            request = locust.get(f'/rest/api/latest/plan/{build_plan_id}',
-                                 catch_response=True, headers=auth_headers)
-            return request.json()['isBuilding']
-
-        timeout = time.time() + PLAN_STARTED_TIMEOUT
-        warning_timeout = time.time() + PLAN_STARTED_TIMEOUT / 2
+        total_sleep_time = 0
+        build_queue_duration_msec = None
         warning_reported = False
-
-        number_of_get_status_requests = 0
-        start_time_get_status_requests = time.time()
-
-        logger.info(f'Starting plan {build_plan_id}...')
         while not plan_is_running:
-            if plan_is_building(locust):
+            time.sleep(PLAN_STATUS_REQUEST_TIMEOUT)
+            r = locust.get(f'/rest/api/latest/result/{build_job_num}',
+                           catch_response=True, headers=auth_headers)
+            response = r.json()
+            if 'buildStartedTime' in response:
                 plan_is_running = True
-            number_of_get_status_requests = number_of_get_status_requests + 1
-            if time.time() > timeout:
-                logger.info(f'{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}')
+                build_queue_duration_msec = int(response['queueDuration'])
+                logger.info(f'Plan |{build_job_num}| starts with queue duration {build_queue_duration_msec} ms. '
+                            f'Build start time: {response["buildStartedTime"]}')
+
+            if total_sleep_time >= PLAN_STARTED_TIMEOUT / 2:
+                if not warning_reported:
+                    logger.info(f'WARNING: Plan |{build_job_num}| could not start in {PLAN_STARTED_TIMEOUT / 2} '
+                                f'seconds.')
+                    warning_reported = True
+                    logger.info(f'{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}')
+                total_sleep_time = total_sleep_time + PLAN_STATUS_REQUEST_TIMEOUT
+
+            if total_sleep_time >= PLAN_STARTED_TIMEOUT:
                 raise Exception(f'ERROR: Build plan {build_plan_id} could not start in '
                                 f'{PLAN_STARTED_TIMEOUT} seconds.')
+            else:
+                total_sleep_time = total_sleep_time + PLAN_STATUS_REQUEST_TIMEOUT
+        return build_queue_duration_msec
 
-            if time.time() > warning_timeout:
-                if not warning_reported:
-                    logger.info(f'WARNING: Plan {build_plan_id} could not start in {PLAN_STARTED_TIMEOUT/2} '
-                                f'seconds.')
-                    logger.info(f'{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}')
-                    warning_reported = True
-
-        total_time_get_status_requests = time.time() - start_time_get_status_requests
-        logger.info(f'The number of get_plan_status requests is {number_of_get_status_requests}, '
-                    f'it takes {total_time_get_status_requests} seconds.')
     if not plan_is_active:
-        run_build_plan(locust)
+        try:
+            build_queue_duration_sec = run_build_plan(locust)
+            events.request.fire(request_type="Action",
+                                name='locust_run_build_plan',
+                                response_time=float(build_queue_duration_sec),
+                                response_length=0,
+                                response=None,
+                                context=None,
+                                exception=None)
+        except Exception as e:
+            events.request.fire(request_type="Action",
+                                name='locust_run_build_plan',
+                                response_time=10,
+                                response_length=0,
+                                response=None,
+                                context=None,
+                                exception=e)
 
     total = time.time() - start
     sleep_time = action_time - total if action_time > total else 0

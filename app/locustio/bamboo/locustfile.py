@@ -4,13 +4,13 @@ from locustio.common_utils import LocustConfig, MyBaseTaskSet
 from util.conf import BAMBOO_SETTINGS
 
 config = LocustConfig(config_yml=BAMBOO_SETTINGS)
-run = []
+
 
 class BambooBehavior(MyBaseTaskSet):
 
     @task()
     def run_build_plans(self):
-        run_build_plans(self, run)
+        run_build_plans(self)
 
 
 class BambooUser(HttpUser):

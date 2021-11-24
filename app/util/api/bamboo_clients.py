@@ -1,4 +1,5 @@
 from util.api.abstract_clients import RestClient
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_SEARCH = 500
 
@@ -57,9 +58,16 @@ class BambooClient(RestClient):
 
         return content
 
-    def get_build_plan_results(self, build_run_id, start=0, max_result=100):
+    def get_build_plan_results(self, build_run_id):
         request = self.get(f'{self.host}/rest/api/latest/result/{build_run_id}',
                            "Could not retrieve build plan result")
+
+        return request.json()
+
+    @retry()
+    def get_build_job_results(self, build_job_id):
+        request = self.get(f'{self.host}/rest/api/latest/result/{build_job_id}',
+                           "Could not retrieve build job results")
 
         return request.json()
 

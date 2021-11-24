@@ -5,7 +5,8 @@ from datetime import datetime, timezone
 
 from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
     CROWD, BAMBOO
-from util.analytics.log_reader import BztFileReader, ResultsFileReader
+from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
+from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
 from util.conf import TOOLKIT_VERSION
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
@@ -58,7 +59,8 @@ class AnalyticsCollector:
             self.total_actions_per_hour = application.config.total_actions_per_hour
         if self.app_type == BAMBOO:
             self.parallel_plans_count = application.config.parallel_plans_count
-            #self.post_run_collector = BambooPostColletor(bzt_log)
+            self.locust_log = LocustFileReader()
+            self.post_run_collector = BambooPostRunCollector(self.locust_log)
 
     def is_analytics_enabled(self):
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
