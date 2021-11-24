@@ -199,14 +199,14 @@ class ViewQueue(BasePage):
 
 
 class Insight(BasePage):
-    timeout = 30
+
     dashboard_url = UrlManager().dashboard_url()
 
     def insight_schema(self):
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.insight_object_schemas_button).click()
 
-    #second login required to start working with insight
+    # #second login required to start working with insight for admin but not for other users
     def login_2(self, username, password):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
@@ -224,10 +224,8 @@ class Insight(BasePage):
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
         # for now clicking on schema named "test schema" need create dataset so we can click randomly
-        # self.wait_until_visible(InsightLocators.view)
+        self.wait_until_visible(InsightLocators.view_all_schemas_selector)
         self.wait_until_visible(InsightLocators.random_insight_schema)
-        from time import sleep
-        sleep(3)
         self.wait_until_clickable(InsightLocators.random_insight_schema).click()
         # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
