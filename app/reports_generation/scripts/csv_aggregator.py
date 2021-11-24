@@ -56,11 +56,15 @@ def __write_list_to_csv(header: List[str], tests_results: List[ResultsCSV], outp
         writer = csv.writer(file_stream)
         writer.writerow(header)
         for action in actions:
-            row = [action] + \
-                  #[value_by_action.actions[action][config['column_name']] for value_by_action in tests_results] + \
-                  [value_by_action.actions[action][config['column_name']] if value_by_action.actions.get(action) else None for value_by_action in tests_results] + \
-                  [tests_results[0].actions[action]['App-specific']]
-
+            row = [action]
+            app_specific = False
+            for test_result in tests_results:
+                if test_result.actions.get(action):
+                    row.append(test_result.actions.get(action)[config['column_name']])
+                    app_specific = test_result.actions.get(action)['App-specific']
+                else:
+                    row.append(None)
+            row.append(app_specific)
             writer.writerow(row)
 
 
