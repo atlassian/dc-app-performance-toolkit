@@ -122,17 +122,6 @@ class BztFileReader(BaseFileReader):
     def all_test_actions_bzt_log(self):
         return self._get_all_test_actions(log=self._get_results_bzt_log_part())
 
-    @property
-    def bzt_run_start_datetime_utc(self):
-
-        first_bzt_log_string = self.bzt_log[0]
-        regexp_datetime_bzt_log = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
-        datetime_format = '%Y-%m-%d %H:%M:%S'
-        match_start = re.search(regexp_datetime_bzt_log, first_bzt_log_string)
-        start_datetime = datetime.strptime(match_start.group(), datetime_format)
-        start_datetime = start_datetime + timedelta(seconds=time.timezone)
-        return start_datetime
-
 
 class ResultsFileReader(BaseFileReader):
     header_validation = {0: 'Label', 1: '# Samples'}
