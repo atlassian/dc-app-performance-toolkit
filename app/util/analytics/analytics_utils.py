@@ -71,7 +71,7 @@ def generate_report_summary(collector):
                                f"(WARNING: Could not get the latest version.)"))
     elif latest_version > current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"(FAIL: Please update toolkit to the latest version - {latest_version})")
+                              f"(WARNING: Please consider upgrade to the latest version - {latest_version})")
     elif latest_version == current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
                               f"(OK: Toolkit is up to date)")

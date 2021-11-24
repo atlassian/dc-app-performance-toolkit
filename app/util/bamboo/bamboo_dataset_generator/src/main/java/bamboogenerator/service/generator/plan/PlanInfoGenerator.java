@@ -1,23 +1,24 @@
 package bamboogenerator.service.generator.plan;
 
 import bamboogenerator.model.PlanInfo;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-class PlanInfoGenerator {
+public class PlanInfoGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(PlanInfoGenerator.class);
-    private static final int PLAN_KEY_LENGTH = 7;
+    private static final Map<Integer, String> LETTERS_BY_NUMBER = prepareLettersByNumber();
 
-    static List<PlanInfo> generate(int projectsNumber, int plansNumber, int failedPercent) {
+    public static List<PlanInfo> generate(int projectsNumber, int plansNumber, int failedPercent) {
         List<ArrayList<String>> projectNamesKeys = generateProjectsNameKeys(projectsNumber, plansNumber);
         List<Integer> failedPlansIndexes = generateFailedPlansIndexes(plansNumber, failedPercent);
         LOG.info("Project name keys {}", projectNamesKeys);
@@ -32,7 +33,7 @@ class PlanInfoGenerator {
                 planIsFailed = TRUE;
                 planName = formatted + " - Plan Fail";
             }
-            String planKey = generatePlanKey();
+            String planKey = "PLANKEY" + generatePlanKeySuffix(i);
             String projectName = projectNamesKeys.get(i).get(0);
             String projectKey = projectNamesKeys.get(i).get(1);
             LOG.info("Generating plan: PlanName: " + planName + ". PlanKey: " + planKey + ". " +
@@ -86,7 +87,27 @@ class PlanInfoGenerator {
         return failedPlansIndexes;
     }
 
-    private static String generatePlanKey() {
-        return RandomStringUtils.randomAlphabetic(PLAN_KEY_LENGTH).toUpperCase(Locale.ROOT);
+    private static Map<Integer, String> prepareLettersByNumber() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(0, "A");
+        map.put(1, "B");
+        map.put(2, "C");
+        map.put(3, "D");
+        map.put(4, "E");
+        map.put(5, "F");
+        map.put(6, "G");
+        map.put(7, "H");
+        map.put(8, "I");
+        map.put(9, "J");
+
+        return map;
+    }
+
+    private static String generatePlanKeySuffix(int number) {
+        return String.valueOf(number)
+                .chars()
+                .mapToObj(Character::getNumericValue)
+                .map(LETTERS_BY_NUMBER::get)
+                .collect(Collectors.joining());
     }
 }
