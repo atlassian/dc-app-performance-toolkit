@@ -63,7 +63,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p python3
+virtualenv venv -p full_path_to_python # e.g. use `which python3.9` to find path
 ```
 3. Activate virtual env:
 ```
@@ -78,8 +78,8 @@ pip install -r requirements.txt
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
-* Python developer package (e.g. `python3.8-dev` package for Python3.8)
+* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
+* Python developer package (e.g. `python3.9-dev` package for Python3.9)
 * Google Chrome web browser
 ```
 python3 --version
@@ -92,11 +92,11 @@ git --version
 ```
 We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
 
-## Example setup for clean Ubuntu 18.04
+## Example setup for clean Ubuntu 20.04
 JDK setup (if missing):
 ```
 sudo apt-get update
-sudo apt-get install -y openjdk-8-jre-headless
+sudo apt-get install -y openjdk-11-jre-headless
 ```
 Chrome setup (if missing):
 ```
@@ -107,9 +107,9 @@ sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
 Python and virtualenv setup:
 ```
 sudo apt-get update
-sudo apt-get -y install python3.8-dev python3-pip virtualenv
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
-virtualenv venv -p python
+sudo apt-get -y install python3.9-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
+virtualenv venv -p /usr/bin/python
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -146,7 +146,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p python
+virtualenv venv -p full_path_to_python
 ```
 3. Activate virtual env:
 ```
