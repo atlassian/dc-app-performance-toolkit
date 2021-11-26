@@ -1499,14 +1499,14 @@ if (actual_username != app_specific_username) {
                     <elementProp name="os_username" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">os_username</stringProp>
-                      <stringProp name="Argument.value">${app_specific_username}</stringProp>
+                      <stringProp name="Argument.value">${username}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
                     <elementProp name="os_password" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">os_password</stringProp>
-                      <stringProp name="Argument.value">${app_specific_password}</stringProp>
+                      <stringProp name="Argument.value">${password}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -1626,10 +1626,10 @@ if (actual_username != app_specific_username) {
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
                   <stringProp name="script">actual_username = vars.get(&apos;actual_username&apos;)
-app_specific_username = vars.get(&quot;app_specific_username&quot;)
-if (actual_username != app_specific_username) {
+default_username = vars.get(&quot;username&quot;)
+if (actual_username != default_username) {
 	prev.setSuccessful(false)
-	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; or password is incorrect. Also, check the CAPTCHA for &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; user.&quot;)
+	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; or password is incorrect. Also, check the CAPTCHA for &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; user.&quot;)
 	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)   
 } else {
 	prev.setIgnore()
