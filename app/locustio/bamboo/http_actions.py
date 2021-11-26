@@ -16,6 +16,7 @@ api_client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admi
 action_time = BAMBOO_SETTINGS.default_dataset_plan_duration
 PLAN_STARTED_TIMEOUT = BAMBOO_SETTINGS.start_plan_timeout  # seconds
 PLAN_STATUS_REQUEST_TIMEOUT = 10
+DEFAULT_DATASET_JOB_KEY = 'JB1'
 
 
 def run_build_plans(locust):
@@ -32,7 +33,7 @@ def run_build_plans(locust):
         r = locust.post(f'/rest/api/latest/queue/{build_plan_id}', catch_response=True,
                         headers=auth_headers, auth=user_auth)
         build_num = r.json()['buildNumber']
-        build_job_num = f'{build_plan_id}-JB1-{build_num}'
+        build_job_num = f'{build_plan_id}-{DEFAULT_DATASET_JOB_KEY}-{build_num}'
         plan_is_running = False
         total_sleep_time = 0
         build_queue_duration_msec = None
