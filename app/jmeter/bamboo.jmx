@@ -289,7 +289,7 @@
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="TestPlan.comments">Detected the start of a redirect chain</stringProp>
+            <stringProp name="TestPlan.comments">User login action</stringProp>
           </HTTPSamplerProxy>
           <hashTree>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -1201,7 +1201,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="standalone_extension" enabled="false">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="standalone_extension" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
@@ -1259,16 +1259,9 @@ if ( sleep_time &gt; 0 ) {
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
                     <elementProp name="os_destination" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">os_destination</stringProp>
-                      <stringProp name="Argument.value"></stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="user_role" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">user_role</stringProp>
-                      <stringProp name="Argument.value"></stringProp>
+                      <stringProp name="Argument.value">/allPlans.action</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -1279,9 +1272,9 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
-                    <elementProp name="login" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                      <stringProp name="Argument.name">login</stringProp>
+                    <elementProp name="save" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.name">save</stringProp>
                       <stringProp name="Argument.value">Log In</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
@@ -1292,9 +1285,9 @@ if ( sleep_time &gt; 0 ) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/login.jsp</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/userlogin.action</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                 <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
@@ -1355,7 +1348,7 @@ prev.setIgnore()</stringProp>
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/myself</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/profile/userProfile.action</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1366,20 +1359,27 @@ prev.setIgnore()</stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
               </HTTPSamplerProxy>
               <hashTree>
-                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="check_current_user" enabled="true">
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="extract logged in username" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">actual_username</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;span id=&quot;currentUser_name&quot; class=&quot;field-value&quot;&gt;(.+?)&lt;/span&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                </RegexExtractor>
+                <hashTree/>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="ignore_request_result_from_view" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
                   <stringProp name="parameters"></stringProp>
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">import groovy.json.JsonSlurper;
-
-def slurper = new JsonSlurper()
-response_data = slurper.parseText(prev.getResponseDataAsString())
-
-if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
+                  <stringProp name="script">actual_username = vars.get(&apos;actual_username&apos;)
+app_specific_username = vars.get(&quot;app_specific_username&quot;)
+if (actual_username != app_specific_username) {
 	prev.setSuccessful(false)
 	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; or password is incorrect. Also, check the CAPTCHA for &apos;&quot; + vars.get(&quot;app_specific_username&quot;) + &quot;&apos; user.&quot;)
-	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)
+	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)   
 } else {
 	prev.setIgnore()
 }
@@ -1487,7 +1487,7 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login_as_default_user_if_specific_user_was_loggedin " enabled="true">
+            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login_as_default_user_if_specific_user_was_loggedin " enabled="false">
               <stringProp name="IfController.condition">${run_as_specific_user}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <boolProp name="IfController.useExpression">true</boolProp>
@@ -1511,16 +1511,9 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
                     <elementProp name="os_destination" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">os_destination</stringProp>
-                      <stringProp name="Argument.value"></stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="user_role" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">user_role</stringProp>
-                      <stringProp name="Argument.value"></stringProp>
+                      <stringProp name="Argument.value">/allPlans.action</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -1531,9 +1524,9 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
-                    <elementProp name="login" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                      <stringProp name="Argument.name">login</stringProp>
+                    <elementProp name="save" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.name">save</stringProp>
                       <stringProp name="Argument.value">Log In</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
@@ -1544,9 +1537,9 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/login.jsp</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/userlogin.action</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                 <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
@@ -1606,7 +1599,7 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/2/myself</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/profile/userProfile.action</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1617,25 +1610,30 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
               </HTTPSamplerProxy>
               <hashTree>
-                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="check_current_user" enabled="true">
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="extract logged in username" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">actual_username</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;span id=&quot;currentUser_name&quot; class=&quot;field-value&quot;&gt;(.+?)&lt;/span&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                </RegexExtractor>
+                <hashTree/>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="ignore_request_result_from_view" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
                   <stringProp name="parameters"></stringProp>
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">import groovy.json.JsonSlurper;
-
-def slurper = new JsonSlurper()
-response_data = slurper.parseText(prev.getResponseDataAsString())
-
-if (response_data.name != vars.get(&quot;username&quot;)) {
+                  <stringProp name="script">actual_username = vars.get(&apos;actual_username&apos;)
+default_username = vars.get(&quot;username&quot;)
+if (actual_username != default_username) {
 	prev.setSuccessful(false)
-	prev.setResponseMessage(&quot;Re-login Failed: username: &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; failed to login. Check the CAPTCHA for &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; user.&quot;)
-	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)
+	prev.setResponseMessage(&quot;Login Failed: Your app_specific_username: &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; or password is incorrect. Also, check the CAPTCHA for &apos;&quot; + vars.get(&quot;username&quot;) + &quot;&apos; user.&quot;)
+	prev.setTestLogicalAction(org.apache.jmeter.threads.JMeterContext.TestLogicalAction.BREAK_CURRENT_LOOP)   
 } else {
 	prev.setIgnore()
 }
-
-
 </stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
