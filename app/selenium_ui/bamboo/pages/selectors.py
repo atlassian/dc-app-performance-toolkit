@@ -70,7 +70,7 @@ class PlanSummaryLocators:
 
 
 class PlanHistoryLocators:
-    build_results = (By.ID, "buildResultsTable")
+    build_results = (By.CLASS_NAME, "aui-page-panel-content")
 
 
 class BuildSummaryLocators:
