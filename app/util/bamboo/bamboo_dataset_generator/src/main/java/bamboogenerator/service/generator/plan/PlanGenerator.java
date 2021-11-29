@@ -38,7 +38,7 @@ public class PlanGenerator {
                 .description("DCAPT Bamboo test build plan")
                 .planRepositories(new GitRepository()
                         .name("dcapt-test-repo")
-                        .url("ssh://git@bitbucket.org:atlassianlabs/dcapt-bamboo-test-repo.git")
+                        .url("https://bitbucket.org/atlassianlabs/dcapt-bamboo-test-repo.git")
                         .branch("master"))
                 .variables(new Variable("stack_name", ""))
                 .stages(new Stage("Stage 1")
