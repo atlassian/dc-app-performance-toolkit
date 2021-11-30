@@ -16,9 +16,11 @@ AGENTS_BUILD_PLANS_PERCENT = 15
 
 def get_users(client, users_count):
     existing_users = client.get_users(users_count)
+    existing_users = [user for user in existing_users if user['name'] != 'admin']
+
     users_to_generate = 0
     users = []
-    if len(existing_users) < users_count:
+    if len(existing_users) <= users_count:
         users_to_generate = users_count - len(existing_users)
     users.extend(existing_users)
     if users_to_generate:
@@ -71,7 +73,7 @@ def write_test_data_to_files(dataset):
     build_plans = [f"{dataset[PROJECTS][build_plan['searchEntity']['projectName']]},{build_plan['id']}" for
                    build_plan in dataset[BUILD_PLANS]]
     __write_to_file(BAMBOO_BUILD_PLANS, build_plans)
-    users = [f"{user['name']},{DEFAULT_PASSWORD}" for user in dataset[USERS] if user['name'] != 'admin']
+    users = [f"{user['name']},{DEFAULT_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(BAMBOO_USERS, users)
 
 
