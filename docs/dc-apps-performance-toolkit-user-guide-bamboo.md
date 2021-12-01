@@ -271,7 +271,7 @@ your app. For example, application setup screen or other one-time use cases are 
 1. Check that `bamboo.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
     
-    ```python util/jmeter/start_jmeter_ui.py --app crowd```
+    ```python util/jmeter/start_jmeter_ui.py --app bamboo```
 1. Open `Crowd` thread group and add new transaction controller.
 1. Open newly added transaction controller, and add new HTTP requests (based on your app use cases) into it.
 1. Run toolkit locally from `dc-app-performance-toolkit/app` folder with the command  
