@@ -60,12 +60,13 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
 
 1. Edit Bamboo instance security group to allow inbound **PostgreSQL** traffic on port `5432` from Bamboo instance **Private IP**.
 
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
+1. Connect to the Bamboo instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
    or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
    ```bash
    ssh -i path_to_pem_file ubuntu@BAMBOO_INSTANCE_PUBLIC_IP
    ```
+   
 1. Install jdk:
    
    ```bash
@@ -124,8 +125,37 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
     - **Email Address**: email address of the admin user
     Then select **Finish**.
       
+1. Setup remote agents instance:
+   1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   *  OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
+   * Instance type: [`m5.2xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
+   * Storage size: `100` GiB
+   * Select the same security group as your Bamboo instance.
+   
+1. Edit Bamboo instance security group to allow inbound **Custom TCP** traffic on port `54663` from Agents instance **Private IP**.
 
-      
+1. Connect to the Agents instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
+   or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+   ```bash
+   ssh -i path_to_pem_file ubuntu@AGENTS_INSTANCE_PUBLIC_IP
+   ```
+   
+1. Setup remote agents:
+   - Download `agents_setup.sh` file   
+
+   ```bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bamboo/agents_setup.sh && chmod +x agents_setup.sh
+   ```
+   
+   - Edit `agents_setup.sh` file and set correct `BAMBOO_URL`, `USERNAME` and `PASSWORD` values.
+   
+   - Run command:
+   
+   ```bash
+   ./agents_setup.sh 2>&1 | tee -a agents_setup.log
+   ```
+   
 {{% note %}}
 You are responsible for the cost of the AWS services running during the reference deployment. For more information, 
 go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -142,26 +172,17 @@ Monthly charges will be based on your actual usage of AWS services and may vary 
 
 | Stack | Estimated hourly cost ($) |
 | ----- | ------------------------- |
-| One Node Crowd DC | 0.4 - 0.6
-| Two Nodes Crowd DC | 0.6 - 0.8
-| Four Nodes Crowd DC | 0.9 - 1.4
+| One Node Bamboo DC + Agents instance | 0.7 - 0.8
 
-#### Stop cluster nodes
+#### Stop Bamboo instance and Agents instance
 
-To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
-Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
+To reduce AWS infrastructure costs you could stop bamboo node or agents instance in AWS EC2 console:
 
-To stop one node within the cluster, follow the instructions below:
-
-1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
-1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
 1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
 
 To return node into a working state follow the instructions:  
 
 1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
-1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
-1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
 
 #### Stop database
 
@@ -180,107 +201,22 @@ To start database:
 1. Select cluster database.
 1. Click on **Actions** > **Start**.
 
-#### <a id="quick-start-parameters"></a> Quick Start parameters
-
-All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
-
-**Crowd setup**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `4.4.0` |
-
-**Cluster nodes**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Cluster node instance type | [c5.xlarge](https://aws.amazon.com/ec2/instance-types/c5/)
-| Maximum number of cluster nodes | 1 |
-| Minimum number of cluster nodes | 1 |
-| Cluster node instance volume size | 100 |
-
-**Database**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| The database engine to deploy with | PostgresSQL |
-| The database engine version to use | 11 |
-| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
-| RDS Provisioned IOPS | 1000 |
-| Master (admin) password | Password1! |
-| Enable RDS Multi-AZ deployment | false |
-| Application user database password | Password1! |
-| Database storage | 200 |
-
 {{% note %}}
-The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading)).
-{{% /note %}}
-
-**Networking (for new ASI)**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region_ |
-| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Make instance internet facing | true |
-| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
-
-**Networking (for existing ASI)**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Make instance internet facing | true |
-| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
-
-#### Running the setup wizard
-
-After successfully deploying Crowd Data Center in AWS, you'll need to configure it:
-
-1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
-1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
-1. Open **LoadBalancerURL** in your browser. This will take you to the Crowd setup wizard.
-1. On the **License** page, populate the **License Key** field by either:
-    - Using your existing license, or
-    - Generating a Crowd trial license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing.  
-    Click **Continue**.
-1. On the **Crowd installation** page choose **New Installation** and click **Continue**.
-1. On the **Database configuration** page, leave all fields default and click **Continue**.
-1. On the **Options** page, populate the following fields:
-    - **Deployment title**: any instance title
-    - **Session timeout**: 30 _(recommended)_. The number of minutes a session lasts before expiring. Must be greater than 0.
-    - **Base Url**: review and confirm the Crowd instance base url.  
-    Click **Continue**.
-1. On the **Internal directory** page, populate the following fields and press **Continue**:
-    - **Name**: a short, recognisable name that characterises this user directory.
-    - **Password encryption**: chose **ATLASSIAN-SECURITY** from the dropdown list _(recommended)_  
-   Click **Continue**.
-1. On the **Default administrator** page, fill the following fields:
-    - **Email Address**: email address of the admin user
-    - **Username**: admin _(recommended)_
-    - **Password**: admin _(recommended)_
-    - **Confirm Password**: admin _(recommended)_
-    - **First name**: admin user first name
-    - **Last name**: admin user last name  
-   Click **Continue**.
-1. On the **Integrated applications** page leave **Open ID server** unchecked and click **Continue**.
-
-{{% note %}}
-After [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+After [Preloading your Bamboo deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 {{% /note %}}
 
 ---
 
-## <a id="preloading"></a>2. Preloading your Crowd deployment with an enterprise-scale dataset
+## <a id="preloading"></a>2. Preloading your Bamboo deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
 | Data dimensions | Value for an enterprise-scale dataset |
 | --------------- | ------------------------------------- |
-| Users | ~100 000 |
-| Groups | ~15 |
+| Users | 2000 |
+| Projects | 100 |
+| Plans | 2000 |
+| Remote agents | 50 |
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -288,105 +224,51 @@ All the datasets use the standard `admin`/`admin` credentials.
 
 #### Pre-loading the dataset:
 
-[Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script or restore from xml backup file.
+[Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import.
 
-The following subsections explain dataset import process in greater detail.
+#### <a id="importingdataset"></a> Importing the main dataset through import (~30 minutes)
 
-#### <a id="importingdataset"></a> Importing the main dataset
+1. Connect to the Bamboo instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
+   or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
-You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script), or import it via XML.  
-
-##### Option 1 (recommended): Loading the dataset via populate_db.sh script (~15 minutes)
-
-
-To populate the database with SQL:
-
-1. In the AWS console, go to **Services** > **EC2** > **Instances**.
-1. On the **Description** tab, do the following:
-    - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of the Crowd node instance.
-1. Using SSH, connect to the Crowd node via the Bastion instance:
-
-    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
-    
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script and make it executable:
+   ```bash
+   ssh -i path_to_pem_file ubuntu@BAMBOO_INSTANCE_PUBLIC_IP
+   ```
+   
+1. Download the dcapt-bamboo.zip file:
 
     ``` bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/crowd/populate_db.sh && chmod +x populate_db.sh
+    wget https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip -O /home/ubuntu/bamboo-home/shared/dcapt-bamboo.zip
     ```
-1. Review the following `Variables section` of the script:
+   
+1. Log in as a user with the **Bamboo System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Overview &gt; Import** from the menu.
+1. Populate the **Restore file path** field with `home/ubuntu/bamboo-home/shared/dcapt-bamboo.zip`.
+1. Uncheck **Backup data** option.
+1. Check **Clear artifact directory** option.
+1. Click **Import** and **Confirm** and wait until the import is completed.
+1. Restart Bamboo:
 
     ``` bash
-    DB_CONFIG="/usr/lib/systemd/system/crowd.service"
-    CROWD_DB_NAME="crowd"
-    CROWD_DB_USER="postgres"
-    CROWD_DB_PASSWORD="Password1!"
+    cd <Bamboo installation directory>
+    ./bin/stop-bamboo.sh 
+    ./bin/start-bamboo.sh 
     ```
-1. Run the script:
-
-    ``` bash
-    ./populate_db.sh 2>&1 | tee -a populate_db.log
-    ```
-
-{{% note %}}
-Do not close or interrupt the session. It will take about an hour to restore SQL database. When SQL restoring is finished, an admin user will have `admin`/`admin` credentials.
-
-In case of a failure, check the `Variables` section and run the script one more time.
-{{% /note %}}
-
-##### Option 2: Loading the dataset through XML import (~30 minutes)
-
-We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script.
-
-1. In the AWS console, go to **Services** > **EC2** > **Instances**.
-1. On the **Description** tab, do the following:
-    - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of the Crowd node instance.
-1. Using SSH, connect to the Crowd node via the Bastion instance:
-
-    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
-    
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the db.xml file corresponding to your Crowd version.
-
-    ``` bash
-    CROWD_VERSION=$(sudo su crowd -c "cat /media/atl/crowd/shared/crowd.version")
-    sudo su crowd -c "wget https://centaurus-datasets.s3.amazonaws.com/crowd/${CROWD_VERSION}/large/db.xml -O /media/atl/crowd/shared/db.xml"
-    ```
-1. Log in as a user with the **Crowd System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Restore.** from the menu.
-1. Populate the **Restore file path** field with `/media/atl/crowd/shared/db.xml`.
-1. Click **Submit** and wait until the import is completed.
-
+   
 ---
 
 ## <a id="appspecificaction"></a>3. App-specific actions development
 
-Data Center App Performance Toolkit has its own set of default [JMeter](https://jmeter.apache.org/) test actions for Crowd Data Center.
+Data Center App Performance Toolkit has its own set of default test actions: JMeter for load at scale generation, selenium for UI timings measuring and locust for steady parallel plans running.     
 
-**App-specific action** - action (performance test) you have to develop to cover main use cases of your application. Performance test should focus on the common usage of your application and not to cover all possible functionality of your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
+**App-specific action** - action (performance test) you have to develop to cover main use cases of your application. 
+Performance test should focus on the common usage of your application and not to cover all possible functionality of 
+your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
 
 **JMeter app-specific actions development**
 
 1. Set up local environment for toolkit using the [README](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-1. Check that `crowd.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Check that `bamboo.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
     
     ```python util/jmeter/start_jmeter_ui.py --app crowd```
