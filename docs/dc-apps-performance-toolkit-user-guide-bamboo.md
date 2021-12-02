@@ -268,30 +268,55 @@ Data Center App Performance Toolkit has its own set of default test actions:
 Performance test should focus on the common usage of your application and not to cover all possible functionality of 
 your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
 
-#### Example of app-specific Selenium action development  
-You develop an app that adds some additional fields to specific types of Jira issues. In this case, you should develop Selenium app-specific action:
+### App specific dataset extension
+If your app has introduced new functionalities for Bamboo entities, for example new task, it is important to extend base 
+dataset with your app specific functionality.
 
-1. Create app-specific Jira issues with *AppIssue* anchor in summary: *AppIssue1*, *AppIssue2*, etc.
-1. Go to the search page of your Jira Data Center - `JIRA_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppIssue*'`.
-1. Edit `dc-app-performance-toolkit/app/jira.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppIssue*'`.
-1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jira/extension_ui.py`.  
-[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py)
-So, our test has to open app-specific issues and measure time to load of this app-specific issues.
-1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
-1. In `dc-app-performance-toolkit/app/selenium_ui/jira_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/Main.java` and set:
+   - `BAMBOO_SERVER_URL`: url of Bamboo stack
+   - `ADMIN_USER_NAME`: username of admin user (default is `admin`)
+1. Login as `ADMIN_USER_NAME`, go to **Profile** -> **Personal access tokens** and create a new token with the same 
+permissions as admin user
+1. Run following command:
    
+    ``` bash
+    export BAMBOO_TOKEN=newly_generarted_token  # for MacOS and Linux
+    or
+    set BAMBOO_TOKEN newly_generarted_token     # for Windows
+    ```
+1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/service/generator/plan/PlanGenerator.java` 
+file and modify plan template according to your app. e.g. add new task.
+1. Navigate to `app/util/bamboo/bamboo_dataset_generator` and start generation:
+    ``` bash
+    ./run.sh     # for MacOS and Linux
+    or
+    run          # for Windows
+    ```
+
+#### Example of app-specific Selenium action development
+For example, you develop an app that adds some additional UI elements to view plan summary page. 
+In this case, you should develop Selenium app-specific action:
+
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/bamboo/extension_ui.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bamboo/extension_ui.py)
+So, our test has to open plan summary page and measure time to load of this new app-specific element on the page.
+1. If you need to run `app_specific_action` as specific user uncomment `app_specific_user_login` function in 
+   [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bamboo/extension_ui.py). 
+   Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+1. In `dc-app-performance-toolkit/app/selenium_ui/bamboo_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+
    ``` python
    # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
    #     app_specific_action(webdriver, datasets)
    ```
-
-1. Run toolkit with `bzt jira.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+1. Run toolkit with `bzt bamboo.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
 
 #### Example of JMeter app-specific action development
 
 1. Check that `bamboo.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
-For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all 
+   other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
 1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
     
     ```python util/jmeter/start_jmeter_ui.py --app bamboo```
@@ -307,8 +332,13 @@ For example, for app-specific action development you could set percentage of `st
 1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are executed.
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
 1. Click **Save** button.
-1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
-1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that you located your app-specific tests between `login_as_specific_user` and `login_as_default_user_if_specific_user_was_loggedin` controllers.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set 
+   execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment 
+   `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for 
+   `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that 
+   you located your app-specific tests between `login_as_specific_user` and 
+   `login_as_default_user_if_specific_user_was_loggedin` controllers.
 1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ---
@@ -346,13 +376,15 @@ local machine eliminates network fluctuations and guarantees stable CPU and memo
    * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
+   or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
    ```bash
    ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
    ```
 
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker 
+   as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
 1. Clone forked repository.
 
 
@@ -362,16 +394,14 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ## <a id="testscenario"></a>5. Running the test scenarios from execution environment against enterprise-scale Crowd Data Center
 
-Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
+Using the Data Center App Performance Toolkit for 
+[Performance testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) includes one scenarios:
 
-- [Performance regression](#testscenario1)
-- [Scalability testing](#testscenario2)
+- [Bamboo performance regression](#testscenario1)
 
-Each scenario will involve multiple test runs. The following subsections explain both in greater detail.
+#### <a id="testscenario1"></a> Bamboo performance regression
 
-#### <a id="testscenario1"></a> Scenario 1: Performance regression
-
-This scenario helps to identify basic performance issues without a need to spin up a multi-node Crowd DC. Make sure the app does not have any performance impact when it is not exercised.
+This scenario helps to identify basic performance issues.
 
 ##### <a id="regressionrun1"></a> Run 1 (~50 min)
 
@@ -383,21 +413,22 @@ To receive performance baseline results **without** an app installed and **witho
     ``` bash
     cd dc-app-performance-toolkit
     docker pull atlassian/dcapt
-    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
     ```
 
-1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/crowd/YY-MM-DD-hh-mm-ss` folder:
+1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bamboo/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
     - `bzt.log`: logs of the Taurus tool execution
     - `jmeter.*`: logs of the JMeter tool execution
+    - `locust.*`: logs of the Locust tool execution
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to 
+the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
 ##### <a id="regressionrun2"></a> Run 2
-
 
 **Performance results generation with the app installed (still use master branch):**
 
@@ -406,15 +437,35 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
    ``` bash
    cd dc-app-performance-toolkit
    docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
    ```
 
 {{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to 
+the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
+###### <a id="run3"></a> Run 3 (~50 min)
 
-##### Generating a performance regression report
+To receive scalability benchmark results for one-node Bamboo DC **with** app-specific actions:
+
+1. Apply app-specific code changes to a new branch of forked repo.
+1. Use SSH to connect to execution environment.
+1. Pull cloned fork repo branch with app-specific actions.
+1. Run toolkit with docker from the execution environment instance:
+
+   ``` bash
+   cd dc-app-performance-toolkit
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
+   ```
+
+{{% note %}}
+Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to 
+the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
+{{% /note %}}
+
+##### Generating a Bamboo performance regression report
 
 To generate a performance regression report:  
 
@@ -425,177 +476,42 @@ To generate a performance regression report:
    sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
    ```
 1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `performance_profile.yml` file:
+1. Edit the `bamboo_profile.yml` file:
     - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
+    - Under `runName: "with app and app-specific actions"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).    
 1. Run the following command:
     ``` bash
-    python csv_chart_generator.py performance_profile.yml
+    python csv_chart_generator.py bamboo_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
+1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file 
+   (with consolidated scenario results), the `.png` chart file and bamboo performance scenario summary report.
 
 #### Analyzing report
 
 Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
 
 1. From local machine terminal (Git bash terminal for Windows) run command:
-   ``` bash
-   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
-   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
-   ```
-1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
-
-
-#### <a id="testscenario2"></a> Scenario 2: Scalability testing
-
-The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. For this, you have to run scale testing on your app.
-
-For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Crowd DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Crowd DC app in a cluster.
-
-
-###### <a id="run3"></a> Run 3 (~50 min)
-
-To receive scalability benchmark results for one-node Crowd DC **with** app-specific actions:
-
-1. Apply app-specific code changes to a new branch of forked repo.
-1. Use SSH to connect to execution environment.
-1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker from the execution environment instance:
-
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```
-
-{{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
-{{% /note %}}
-
-
-##### <a id="run4"></a> Run 4 (~50 min)
-{{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
-{{% /note %}}
-
-To receive scalability benchmark results for two-node Crowd DC **with** app-specific actions:
-
-1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
-   ```
-   # 1 node scenario parameters
-   # ramp-up: 20s                    # time to spin all concurrent threads
-   # total_actions_per_hour: 180000  # number of total JMeter actions per hour
-
-   # 2 nodes scenario parameters
-     ramp-up: 10s                    # time to spin all concurrent threads
-     total_actions_per_hour: 360000  # number of total JMeter actions per hour
-
-   # 4 nodes scenario parameters
-   # ramp-up: 5s                     # time to spin all concurrent threads
-   # total_actions_per_hour: 720000  # number of total JMeter actions per hour
-   ```
-1. Run toolkit with docker from the execution environment instance:
-
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```
-
-{{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
-{{% /note %}}
-
-
-##### <a id="run5"></a> Run 5 (~50 min)
-{{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
-{{% /note %}}
-
-To receive scalability benchmark results for four-node Crowd DC with app-specific actions:
-
-1. Scale your Crowd Data Center deployment to 4 nodes as described in [Run 4](#run4).
-1. Edit **run parameters** for 4 nodes run. To do it, left uncommented only 4 nodes scenario parameters `crowd.yml` file.
-   ```
-   # 1 node scenario parameters
-   # ramp-up: 20s                    # time to spin all concurrent threads
-   # total_actions_per_hour: 180000  # number of total JMeter actions per hour
-
-   # 2 nodes scenario parameters
-   # ramp-up: 10s                    # time to spin all concurrent threads
-   # total_actions_per_hour: 360000  # number of total JMeter actions per hour
-
-   # 4 nodes scenario parameters
-   ramp-up: 5s                     # time to spin all concurrent threads
-   total_actions_per_hour: 720000  # number of total JMeter actions per hour
-   ```   
    
-1. Run toolkit with docker from the execution environment instance:
-
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```  
-
-{{% note %}}
-Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
-{{% /note %}}
-
-
-#### Generating a report for scalability scenario
-
-To generate a scalability report:
-
-1. Use SSH to connect to execution environment.
-1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
-   ``` bash
-   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
-   ```
-1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `scale_profile.yml` file:
-    - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
-    - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
-    - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
-    ``` bash
-    python csv_chart_generator.py scale_profile.yml
-    ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
-
-
-#### Analyzing report
-
-Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
-
-1. From local terminal (Git bash terminal for Windows) run command:
    ``` bash
    export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
    scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
    ```
-1. Once completed, in the `./reports` folder you will be able to review action timings on Crowd Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
-
-{{% warning %}}
-After completing all your tests, delete your Crowd Data Center stacks.
-{{% /warning %}}
-
+   
+1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to 
+   see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend 
+   taking a look into the app implementation to understand the root cause of this delta.
+   
 #### Attaching testing results to DCHELP ticket
 
 {{% warning %}}
 Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
-1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+1. Make sure you have reports folders with bamboo performance scenario results. 
+   Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
+1. Attach report folder to your DCHELP ticket.
 
 ## <a id="support"></a> Support
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the 
+[community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

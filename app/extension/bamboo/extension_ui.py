@@ -35,6 +35,7 @@ def app_specific_action(webdriver, datasets):
         def sub_measure():
             page.go_to_url(f"{BAMBOO_SETTINGS.server_url}/browse/{build_plan_id}")
             page.wait_until_visible((By.ID, "buildResultsTable"))  # Wait for summary field visible
-            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
+            # Wait for you app-specific UI element by ID selector
+            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))
         sub_measure()
     measure()
