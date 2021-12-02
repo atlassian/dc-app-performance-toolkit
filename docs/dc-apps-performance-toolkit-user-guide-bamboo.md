@@ -36,11 +36,11 @@ how to deploy a Bamboo Data Center environment.
 [Bamboo installation guide](https://confluence.atlassian.com/bamboo/bamboo-installation-guide-289276785.html) describes 
 installation flow for [linux environment](https://confluence.atlassian.com/bamboo/installing-bamboo-on-linux-289276792.html):
 
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
-   * Instance type: [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
-   * Storage size: `100` GiB
-  
+1. Create Bamboo instance:
+   1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   1. OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
+   1. Instance type: [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
+   1. Storage size: `100` GiB
 1. Create DB in AWS:
    1. Go to AWS RDS service.
    1. Click **Create database** button.
@@ -84,7 +84,7 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
    source /etc/profile
    ```
    
-1. Setup DB on the instance:
+1. Setup DB on the Bamboo instance:
 
    ```bash
    sudo apt-get update
@@ -100,62 +100,57 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
    PGPASSWORD=YOUR_DB_MASTERPASSWORD psql -h ${DB_HOST} -U postgres -c "alter database bamboo owner to bamboouser;"
    ```
 
-1. Install Bamboo `8.1.0`:
-   Follows [installation instructions](https://confluence.atlassian.com/bamboo/installing-bamboo-on-linux-289276792.html).
+1. Install Bamboo (see supported versions in main [README.md](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/README.md)):
+   - Follow [installation instructions](https://confluence.atlassian.com/bamboo/installing-bamboo-on-linux-289276792.html).
 
 1. Go to Bamboo UI in browser `http://BAMBOO_INSTANCE_PUBLIC_IP:8085` and follow setup wizard flow:
    1. On the **License** page enter license by either:
-    - Using your existing license, or
-    - Generating an evaluation license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
-    Click **Continue**.
+      - Using your existing license, or
+      - Generating an evaluation license, or
+      - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
+      - Click **Continue**.
    1. On the **Configure instance** page left all the defaults and click **Continue**.
    1. On the **Configure database** page select database type to `PostgresSQL` and click **Continue**.
    1. On the **Configure how Bamboo will connect to your database** page:
-    - **Connection type**: Connect using JDBC
-    - **Driver class name**: org.postgresql.Driver
-    - **Database URL**: jdbc:postgresql://YOUR_DB_ENDPOINT:5432/bamboo
-    - **User name**: bamboouser
-    - **Password**: PASSWORD_FOR_BAMBOO_USER
-   1. On the **Import data** page select **Create a new Bamboo home** page and click **Continue**.
+      - **Connection type**: `Connect using JDBC`
+      - **Driver class name**: `org.postgresql.Driver`
+      - **Database URL**: `jdbc:postgresql://YOUR_DB_ENDPOINT:5432/bamboo`
+      - **User name**: `bamboouser`
+      - **Password**: PASSWORD_FOR_BAMBOO_USER
+   1. On the **Import data** page select **Create a new Bamboo home** option and click **Continue**.
    1. On the **Create admin** page, fill in the following fields:
-    - **Username**: admin _(recommended)_
-    - **Password**: admin _(recommended)_
-    - **Confirm Password**: admin _(recommended)_
-    - **Full name**: a full name of the admin user
-    - **Email Address**: email address of the admin user
+      - **Username**: `admin` _(recommended)_
+      - **Password**: `admin` _(recommended)_
+      - **Confirm Password**: `admin` _(recommended)_
+      - **Full name**: a full name of the admin user
+      - **Email Address**: email address of the admin user
     Then select **Finish**.
       
-1. Setup remote agents instance:
+1. Create remote agents instance:
    1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   *  OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
-   * Instance type: [`m5.2xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
-   * Storage size: `100` GiB
-   * Select the same security group as your Bamboo instance.
+   1.  OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
+   1. Instance type: [`m5.2xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
+   1. Storage size: `100` GiB
+   1. Select the **same** security group as your Bamboo instance.
    
 1. Edit Bamboo instance security group to allow inbound **Custom TCP** traffic on port `54663` from Agents instance **Private IP**.
 
 1. Connect to the Agents instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
    or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
    ```bash
    ssh -i path_to_pem_file ubuntu@AGENTS_INSTANCE_PUBLIC_IP
    ```
    
 1. Setup remote agents:
-   - Download `agents_setup.sh` file   
-
-   ```bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bamboo/agents_setup.sh && chmod +x agents_setup.sh
-   ```
-   
-   - Edit `agents_setup.sh` file and set correct `BAMBOO_URL`, `USERNAME` and `PASSWORD` values.
-   
-   - Run command:
-   
-   ```bash
-   ./agents_setup.sh 2>&1 | tee -a agents_setup.log
-   ```
+   1. Download `agents_setup.sh` file
+      ```bash
+      wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bamboo/agents_setup.sh && chmod +x agents_setup.sh
+      ```
+   1. Edit `agents_setup.sh` file and set correct `BAMBOO_URL`, `USERNAME` and `PASSWORD` values.
+   1. Run command:
+      ```bash
+      ./agents_setup.sh 2>&1 | tee -a agents_setup.log
+      ```
    
 {{% note %}}
 You are responsible for the cost of the AWS services running during the reference deployment. For more information, 
