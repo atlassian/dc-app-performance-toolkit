@@ -259,52 +259,91 @@ All the datasets use the standard `admin`/`admin` credentials.
 
 ## <a id="appspecificaction"></a>3. App-specific actions development
 
-Data Center App Performance Toolkit has its own set of default test actions: JMeter for load at scale generation, selenium for UI timings measuring and locust for steady parallel plans running.     
+Data Center App Performance Toolkit has its own set of default test actions: 
+ - JMeter: for load at scale generation
+ - Selenium: for UI timings measuring 
+ - Locust: for defined parallel plans execution     
 
 **App-specific action** - action (performance test) you have to develop to cover main use cases of your application. 
 Performance test should focus on the common usage of your application and not to cover all possible functionality of 
 your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
 
-**JMeter app-specific actions development**
+#### Example of app-specific Selenium action development  
+You develop an app that adds some additional fields to specific types of Jira issues. In this case, you should develop Selenium app-specific action:
 
-1. Set up local environment for toolkit using the [README](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+1. Create app-specific Jira issues with *AppIssue* anchor in summary: *AppIssue1*, *AppIssue2*, etc.
+1. Go to the search page of your Jira Data Center - `JIRA_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppIssue*'`.
+1. Edit `dc-app-performance-toolkit/app/jira.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppIssue*'`.
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/jira/extension_ui.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py)
+So, our test has to open app-specific issues and measure time to load of this app-specific issues.
+1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jira/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+1. In `dc-app-performance-toolkit/app/selenium_ui/jira_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+   
+   ``` python
+   # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
+   #     app_specific_action(webdriver, datasets)
+   ```
+
+1. Run toolkit with `bzt jira.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+
+#### Example of JMeter app-specific action development
+
 1. Check that `bamboo.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
+1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
+For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
 1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
     
     ```python util/jmeter/start_jmeter_ui.py --app bamboo```
-1. Open `Crowd` thread group and add new transaction controller.
-1. Open newly added transaction controller, and add new HTTP requests (based on your app use cases) into it.
-1. Run toolkit locally from `dc-app-performance-toolkit/app` folder with the command  
-```bzt crowd.yml```  
-   Make sure that execution is successful.
+    
+1. Open `Bamboo` thread group > `actions per login` and navigate to `standalone_extension`
+1. Review existing stabs of `jmeter_app_specific_action`: 
+- example GET request
+- example POST request
+- example extraction of variables from the response - `app_id` and `app_token`
+- example assertions of GET and POST requests
+1. Modify examples or add new controllers according to your app main use case.
+1. Right-click on `View Results Tree` and enable this controller.
+1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are executed.
+1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
+1. Click **Save** button.
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set execution percentage of `standalone_extension` accordingly to your use case frequency.
+1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for `app_specific_username` and `app_specific_password` names with your specific user credentials. Also make sure that you located your app-specific tests between `login_as_specific_user` and `login_as_default_user_if_specific_user_was_loggedin` controllers.
+1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
 ---
 
 ## <a id="executionhost"></a>4. Setting up an execution environment
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+For generating performance results suitable for Marketplace approval process use dedicated execution environment. This 
+is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a 
+local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `crowd.yml` configuration file. Set enterprise-scale Crowd Data Center parameters:
+1. Clone the fork locally, then edit the `bamboo.yml` configuration file. Set enterprise-scale Bamboo Data Center parameters:
 
    ``` yaml
-    application_hostname: test_crowd_instance.atlassian.com    # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 4990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /crowd in case of url like http://localhost:4990/crowd
+    application_hostname: bamboo_host_name or public_ip   # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
+    application_protocol: http          # http or https
+    application_port: 8085              # 80, 443, 8080, 8085, etc
+    secure: True                        # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix:                # e.g. /babmoo in case of url like http://localhost:8085/bamboo
     admin_login: admin
     admin_password: admin
-    application_name: crowd
-    application_password: 1111
     load_executor: jmeter            
-    concurrency: 1000               # number of concurrent threads to authenticate random users
+    concurrency: 200                    # number of concurrent threads to authenticate random users
     test_duration: 45m
+    ramp-up: 3m
+    total_actions_per_hour: 2000        # number of total JMeter actions per hour
+    number_of_agents: 50                # number of available remote agent
+    parallel_plans_count: 40            # number of parallel plans execution
+    start_plan_timeout: 60              # maximum timeout of plan to start
+    default_dataset_plan_duration: 60   # expected plan execution duration
    ```  
 
 1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
