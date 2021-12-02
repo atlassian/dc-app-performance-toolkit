@@ -218,11 +218,7 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 
-#### Pre-loading the dataset:
-
-[Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import.
-
-#### <a id="importingdataset"></a> Importing the main dataset through import (~30 minutes)
+#### <a id="importingdataset"></a> Importing the main dataset through import
 
 1. Connect to the Bamboo instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
    or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -250,7 +246,6 @@ All the datasets use the standard `admin`/`admin` credentials.
     ./bin/stop-bamboo.sh 
     ./bin/start-bamboo.sh 
     ```
-   
 ---
 
 ## <a id="appspecificaction"></a>3. App-specific actions development
@@ -258,26 +253,27 @@ All the datasets use the standard `admin`/`admin` credentials.
 Data Center App Performance Toolkit has its own set of default test actions: 
  - JMeter: for load at scale generation
  - Selenium: for UI timings measuring 
- - Locust: for defined parallel plans execution     
+ - Locust: for defined parallel Bamboo plans execution     
 
 **App-specific action** - action (performance test) you have to develop to cover main use cases of your application. 
 Performance test should focus on the common usage of your application and not to cover all possible functionality of 
 your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
 
 ### App specific dataset extension
-If your app has introduced new functionalities for Bamboo entities, for example new task, it is important to extend base 
+If your app introduces new functionality for Bamboo entities, for example new task, it is important to extend base 
 dataset with your app specific functionality.
 
 1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/Main.java` and set:
    - `BAMBOO_SERVER_URL`: url of Bamboo stack
    - `ADMIN_USER_NAME`: username of admin user (default is `admin`)
-1. Login as `ADMIN_USER_NAME`, go to **Profile** -> **Personal access tokens** and create a new token with the same 
-permissions as admin user
+1. Login as `ADMIN_USER_NAME`, go to **Profile &gt; Personal access tokens** and create a new token with the same 
+permissions as admin user.
 1. Run following command:
-   
     ``` bash
     export BAMBOO_TOKEN=newly_generarted_token  # for MacOS and Linux
+    ```
     or
+    ``` bash
     set BAMBOO_TOKEN newly_generarted_token     # for Windows
     ```
 1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/service/generator/plan/PlanGenerator.java` 
@@ -285,11 +281,12 @@ file and modify plan template according to your app. e.g. add new task.
 1. Navigate to `app/util/bamboo/bamboo_dataset_generator` and start generation:
     ``` bash
     ./run.sh     # for MacOS and Linux
+    ```
     or
+    ``` bash
     run          # for Windows
     ```
-
-#### Example of app-specific Selenium action development
+### Example of app-specific Selenium action development
 For example, you develop an app that adds some additional UI elements to view plan summary page. 
 In this case, you should develop Selenium app-specific action:
 
@@ -307,7 +304,7 @@ So, our test has to open plan summary page and measure time to load of this new 
    ```
 1. Run toolkit with `bzt bamboo.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
 
-#### Example of JMeter app-specific action development
+### Example of JMeter app-specific action development
 
 1. Check that `bamboo.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
@@ -319,10 +316,10 @@ For example, for app-specific action development you could set percentage of `st
     
 1. Open `Bamboo` thread group > `actions per login` and navigate to `standalone_extension`
 1. Review existing stabs of `jmeter_app_specific_action`: 
-- example GET request
-- example POST request
-- example extraction of variables from the response - `app_id` and `app_token`
-- example assertions of GET and POST requests
+   - example GET request
+   - example POST request
+   - example extraction of variables from the response - `app_id` and `app_token`
+   - example assertions of GET and POST requests
 1. Modify examples or add new controllers according to your app main use case.
 1. Right-click on `View Results Tree` and enable this controller.
 1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are executed.
@@ -390,11 +387,6 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ## <a id="testscenario"></a>5. Running the test scenarios from execution environment against enterprise-scale Bamboo Data Center
 
-Using the Data Center App Performance Toolkit for 
-[Performance testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) includes one scenarios:
-
-- [Bamboo performance regression](#testscenario1)
-
 #### <a id="testscenario1"></a> Bamboo performance regression
 
 This scenario helps to identify basic performance issues.
@@ -424,7 +416,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
-##### <a id="regressionrun2"></a> Run 2
+##### <a id="regressionrun2"></a> Run 2 (~50 min)
 
 **Performance results generation with the app installed (still use master branch):**
 
@@ -441,9 +433,9 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
-###### <a id="run3"></a> Run 3 (~50 min)
+##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Bamboo DC **with** app-specific actions:
+To receive scalability benchmark results for one-node Bamboo DC **with app** and **with app-specific actions**:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
