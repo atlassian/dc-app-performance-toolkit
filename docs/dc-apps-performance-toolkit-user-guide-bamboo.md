@@ -10,7 +10,7 @@ date: "2021-12-10"
 
 This document walks you through the process of testing your app on Bamboo using the Data Center App Performance Toolkit. 
 These instructions focus on producing the required 
-[performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+[performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on Enterprise-scale environment.
 
@@ -35,6 +35,7 @@ how to deploy a Bamboo Data Center environment.
 
 [Bamboo installation guide](https://confluence.atlassian.com/bamboo/bamboo-installation-guide-289276785.html) describes 
 installation flow for [linux environment](https://confluence.atlassian.com/bamboo/installing-bamboo-on-linux-289276792.html):
+
 1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
    * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
@@ -43,11 +44,11 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
 1. Create DB in AWS:
    1. Go to AWS RDS service.
    1. Click **Create database** button.
-   1. Select **Postgre SQL** and version **PostgreSQL 12**.
+   1. Select **Postgre SQL** and version `PostgreSQL 12`.
    1. Input **DB instance identifier**.
    1. Input **Master password** and **Confirm password**.
-   1. Select **DB instance class** as **db.t3.medium**. 
-   1. In **Storage** section select **Storage type** to **General Purpose SSD** and **Allocated storage** to **100** GiB.
+   1. Select **DB instance class** as `db.t3.medium`. 
+   1. In **Storage** section select **Storage type** to `General Purpose SSD` and **Allocated storage** to `100` GiB.
    1. In **Availability & durability** section select **Do not create a standby instance** option.
    1. In **Connectivity** section select the same **Virtual private cloud (VPC)** as your Bamboo instance.
    1. In **Connectivity** section set **Public access** option to **No**.
@@ -332,7 +333,7 @@ For example, for app-specific action development you could set percentage of `st
 1. Click **Start** button and make sure that `login_and_view_dashboard` and `standalone_extension` are executed.
 1. Right-click on `View Results Tree` and disable this controller. It is important to disable `View Results Tree` controller before full-scale results generation.
 1. Click **Save** button.
-1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/jira.yml` and set 
+1. To make `standalone_extension` executable during toolkit run edit `dc-app-performance-toolkit/app/bamboo.yml` and set 
    execution percentage of `standalone_extension` accordingly to your use case frequency.
 1. App-specific tests could be run (if needed) as a specific user. In the `standalone_extension` uncomment 
    `login_as_specific_user` controller. Navigate to the `username:password` config element and update values for 
@@ -365,7 +366,7 @@ local machine eliminates network fluctuations and guarantees stable CPU and memo
     test_duration: 45m
     ramp-up: 3m
     total_actions_per_hour: 2000        # number of total JMeter actions per hour
-    number_of_agents: 50                # number of available remote agent
+    number_of_agents: 50                # number of available remote agents
     parallel_plans_count: 40            # number of parallel plans execution
     start_plan_timeout: 60              # maximum timeout of plan to start
     default_dataset_plan_duration: 60   # expected plan execution duration
@@ -392,7 +393,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ---
 
-## <a id="testscenario"></a>5. Running the test scenarios from execution environment against enterprise-scale Crowd Data Center
+## <a id="testscenario"></a>5. Running the test scenarios from execution environment against enterprise-scale Bamboo Data Center
 
 Using the Data Center App Performance Toolkit for 
 [Performance testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) includes one scenarios:

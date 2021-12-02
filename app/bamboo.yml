@@ -28,8 +28,7 @@ settings:
     view_projects_list: 10
     standalone_extension: 0            # By default disabled
 
-
-    number_of_agents: 50               # number of available remote agent
+    number_of_agents: 50               # number of available remote agents
     parallel_plans_count: 40           # number of parallel plans execution
     start_plan_timeout: 60             # maximum timeout of plan to start
     default_dataset_plan_duration: 60  # expected plan execution duration
