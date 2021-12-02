@@ -6,9 +6,10 @@ from pathlib import Path
 from typing import IO, List, Set
 import csv
 import pandas
+import json
 
 from util.jtl_convertor import jtl_validator
-from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR, DEFAULT_TEST_ACTIONS
 
 LABEL = 'Label'
 SAMPLES = '# Samples'
@@ -26,9 +27,29 @@ ELAPSED_JTL = 'elapsed'
 SUCCESS_JTL = 'success'
 SUCCESS_JTL_TMP = 'success_tmp'
 FALSE_JTL = 'false'
+APP_SPECIFIC = 'App specific'
 
-CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE}\n'
+CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE},' \
+             f'{APP_SPECIFIC}\n'
 RESULTS_CSV_NAME = 'results.csv'
+APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'crowd']
+TEST_TYPES = ['selenium', 'jmeter', 'locust']
+
+
+def __get_all_default_actions():
+    full_actions_list = []
+    actions_data = read_json_file(DEFAULT_TEST_ACTIONS)
+    for app in APPS:
+        for test_type in TEST_TYPES:
+            for action in actions_data[app][test_type]:
+                full_actions_list.append(action)
+    return full_actions_list
+
+
+def read_json_file(file_path):
+    with open(file_path) as json_file:
+        data = json.load(json_file)
+        return data
 
 
 def __count_file_lines(stream: IO) -> int:
@@ -39,11 +60,11 @@ def __reset_file_stream(stream: IO) -> None:
     stream.seek(0)
 
 
-def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path) -> None:
+def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list) -> None:
     if not input_file_path.exists():
         raise SystemExit(f'Input file {output_file_path} does not exist')
     start = time.time()
-    convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path)
+    convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path, default_test_actions=default_test_actions)
     if not output_file_path.exists():
         raise SystemExit(f'Something went wrong. Output file {output_file_path} does not exist')
 
@@ -94,7 +115,7 @@ def __validate_file_names(file_names: List[str]):
         file_names_set.add(file_name_without_extension)
 
 
-def convert_to_csv(input_jtl: Path, output_csv: Path):
+def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
     reader = csv.DictReader(input_jtl.open(mode='r'))
 
     jtl_list = [row for row in reader]
@@ -106,7 +127,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path):
             sample[LABEL] = jtl_sample[LABEL_JTL]
             sample[SAMPLES] = 1
             sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current label
-            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL]]  # Temp list with 'success' value for current label
+            # Temp list with 'success' value for current label
+            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]
             csv_list.append(sample)
 
         else:
@@ -114,7 +136,7 @@ def convert_to_csv(input_jtl: Path, output_csv: Path):
             processed_sample = [row for row in csv_list if row[LABEL] == jtl_sample['label']][0]
             processed_sample[SAMPLES] = processed_sample[SAMPLES] + 1  # Count samples
             processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
-            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL])  # list of success values
+            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL].lower())  # list of success values
 
         # Calculation after the last row in kpi.jtl is processed
         if jtl_sample == jtl_list[-1]:
@@ -130,6 +152,7 @@ def convert_to_csv(input_jtl: Path, output_csv: Path):
 
                 success_list = processed_sample[SUCCESS_JTL_TMP]
                 processed_sample[ERROR_RATE] = round(success_list.count(FALSE_JTL) / len(success_list), 2) * 100.00
+                processed_sample[APP_SPECIFIC] = processed_sample['Label'] not in default_test_actions
                 del processed_sample[SUCCESS_JTL_TMP]
                 del processed_sample[ELAPSED_JTL_TMP]
 
@@ -151,7 +174,8 @@ def main():
             jtl_file_path = ENV_TAURUS_ARTIFACT_DIR / file_name
             jtl_validator.validate(jtl_file_path)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
-            __convert_jtl_to_csv(jtl_file_path, csv_file_path)
+            default_test_actions = __get_all_default_actions()
+            __convert_jtl_to_csv(jtl_file_path, csv_file_path, default_test_actions)
             temp_csv_list.append(csv_file_path)
 
         results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
