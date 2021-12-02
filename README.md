@@ -25,7 +25,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.7, 3.8, 3.9 and pip
+* Python 3.7, 3.8 or 3.9 and pip
 * JDK 8
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
@@ -63,7 +63,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p full_path_to_python # e.g. use `which python3.9` to find path
+virtualenv venv -p full_path_to_python # e.g. use `which python3.9` to find the path
 ```
 3. Activate virtual env:
 ```
@@ -146,7 +146,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p full_path_to_python
+virtualenv venv -p full_path_to_python # e.g. use `where python3.9` to find the path
 ```
 3. Activate virtual env:
 ```
