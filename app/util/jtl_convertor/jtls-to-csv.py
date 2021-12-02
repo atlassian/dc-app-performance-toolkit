@@ -32,7 +32,7 @@ APP_SPECIFIC = 'App specific'
 CSV_HEADER = f'{LABEL},{SAMPLES},{AVERAGE},{MEDIAN},{PERC_90},{PERC_95},{PERC_99},{MIN},{MAX},{ERROR_RATE},' \
              f'{APP_SPECIFIC}\n'
 RESULTS_CSV_NAME = 'results.csv'
-APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'crowd']
+APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'crowd', 'bamboo']
 TEST_TYPES = ['selenium', 'jmeter', 'locust']
 
 
@@ -138,23 +138,21 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
             processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL].lower())  # list of success values
 
-        # Calculation after the last row in kpi.jtl is processed
-        if jtl_sample == jtl_list[-1]:
-            for processed_sample in csv_list:
-                elapsed_df = pandas.Series(processed_sample[ELAPSED_JTL_TMP])
-                processed_sample[AVERAGE] = int(round(elapsed_df.mean()))
-                processed_sample[MEDIAN] = int(round(elapsed_df.quantile(0.5)))
-                processed_sample[PERC_90] = int(round(elapsed_df.quantile(0.9)))
-                processed_sample[PERC_95] = int(round(elapsed_df.quantile(0.95)))
-                processed_sample[PERC_99] = int(round(elapsed_df.quantile(0.99)))
-                processed_sample[MIN] = min(processed_sample[ELAPSED_JTL_TMP])
-                processed_sample[MAX] = max(processed_sample[ELAPSED_JTL_TMP])
-
-                success_list = processed_sample[SUCCESS_JTL_TMP]
-                processed_sample[ERROR_RATE] = round(success_list.count(FALSE_JTL) / len(success_list), 2) * 100.00
-                processed_sample[APP_SPECIFIC] = processed_sample['Label'] not in default_test_actions
-                del processed_sample[SUCCESS_JTL_TMP]
-                del processed_sample[ELAPSED_JTL_TMP]
+    # Calculation after the last row in kpi.jtl is processed
+    for processed_sample in csv_list:
+        elapsed_df = pandas.Series(processed_sample[ELAPSED_JTL_TMP])
+        processed_sample[AVERAGE] = int(round(elapsed_df.mean()))
+        processed_sample[MEDIAN] = int(round(elapsed_df.quantile(0.5)))
+        processed_sample[PERC_90] = int(round(elapsed_df.quantile(0.9)))
+        processed_sample[PERC_95] = int(round(elapsed_df.quantile(0.95)))
+        processed_sample[PERC_99] = int(round(elapsed_df.quantile(0.99)))
+        processed_sample[MIN] = min(processed_sample[ELAPSED_JTL_TMP])
+        processed_sample[MAX] = max(processed_sample[ELAPSED_JTL_TMP])
+        success_list = processed_sample[SUCCESS_JTL_TMP]
+        processed_sample[ERROR_RATE] = round(success_list.count(FALSE_JTL) / len(success_list), 2) * 100.00
+        processed_sample[APP_SPECIFIC] = processed_sample['Label'] not in default_test_actions
+        del processed_sample[SUCCESS_JTL_TMP]
+        del processed_sample[ELAPSED_JTL_TMP]
 
     headers = csv_list[0].keys()
     with output_csv.open('w') as output_file:

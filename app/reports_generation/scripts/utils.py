@@ -64,5 +64,7 @@ def validate_config(config: dict):
 
 
 def clean_str(string: str):
-    # Return alphanumeric characters from a string
-    return ''.join(e for e in string if e.isalnum())
+    # replace spaces with "_"
+    string = string.replace(" ", "_")
+    # Return alphanumeric characters from a string, except "_"
+    return ''.join(e for e in string if e.isalnum() or e == "_")

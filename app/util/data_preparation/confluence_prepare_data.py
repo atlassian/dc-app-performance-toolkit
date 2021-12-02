@@ -1,11 +1,12 @@
 import random
-import string
+from multiprocessing.pool import ThreadPool
+
 import urllib3
 
-from util.common_util import print_timing
-from multiprocessing.pool import ThreadPool
-from util.conf import CONFLUENCE_SETTINGS
+from prepare_data_common import __generate_random_string, __write_to_file
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
+from util.common_util import print_timing
+from util.conf import CONFLUENCE_SETTINGS
 from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CUSTOM_PAGES
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -20,10 +21,6 @@ ERROR_LIMIT = 10
 
 ENGLISH_US = 'en_US'
 ENGLISH_GB = 'en_GB'
-
-
-def generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
 @print_timing('Creating dataset started')
@@ -63,7 +60,7 @@ def __get_users(confluence_api, rpc_api, count):
         if errors_count >= ERROR_LIMIT:
             raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
                             f'Please check the errors in bzt.log')
-        username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
+        username = f"{DEFAULT_USER_PREFIX}{__generate_random_string(10)}"
         try:
             user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
             print(f"User {user['user']['username']} is created, number of users to create is "
@@ -117,12 +114,6 @@ def __get_blogs(confluence_api, count):
 
 def __is_remote_api_enabled(confluence_api):
     return confluence_api.is_remote_api_enabled()
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
 
 
 @print_timing('Started writing data to files')

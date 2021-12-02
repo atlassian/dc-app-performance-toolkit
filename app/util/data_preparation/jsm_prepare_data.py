@@ -1,15 +1,14 @@
-
 import random
-import string
 from concurrent.futures.thread import ThreadPoolExecutor
 from itertools import repeat
 
-
 import urllib3
-from util.common_util import print_timing
+
+from prepare_data_common import __write_to_file, __generate_random_string
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
+from util.common_util import print_timing
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
@@ -324,16 +323,6 @@ def __get_requests(jira_api, service_desks, requests_without_distribution):
         raise Exception("ERROR: Jira Service Management instance does not have any requests.")
     print(f"Force retrieved {len(issues_list)} issues.")
     return issues_list
-
-
-def __generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
 
 
 def __get_service_desk_reports(jsm_api, service_desk):

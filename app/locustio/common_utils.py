@@ -11,7 +11,7 @@ import json
 import socket
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, JSM_SETTINGS, BaseAppSettings
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, BaseAppSettings
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 from locust import exception
 import inspect
@@ -100,6 +100,8 @@ class Logger(logging.Logger):
             is_verbose = JIRA_SETTINGS.verbose
         elif self.type.lower() == 'jsm':
             is_verbose = JSM_SETTINGS.verbose
+        elif self.type.lower() == 'bamboo':
+            is_verbose = BAMBOO_SETTINGS.verbose
         if is_verbose or not self.type:
             if self.isEnabledFor(logging.INFO):
                 self._log(logging.INFO, msg, args, **kwargs)
@@ -219,6 +221,21 @@ def confluence_measure(interaction=None):
                 sleep = (confluence_action_time - total)
                 logger.info(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
                 time.sleep(sleep)
+            return result
+        return wrapper
+    return deco_wrapper
+
+
+def bamboo_measure(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to the bamboo_measure decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = global_measure(func, start, interaction, *args, **kwargs)
+            total = time.time() - start
+            logger.info(f'action: {interaction}, action_execution_time: {total}.')
             return result
         return wrapper
     return deco_wrapper
