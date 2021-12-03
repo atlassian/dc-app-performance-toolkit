@@ -5,7 +5,7 @@ start=$(date +%s)
 BAMBOO_URL="http://bamboo-test-stack.com" # e.g. http://1.123.150.205:8085
 USERNAME="admin"
 PASSWORD="admin"
-REMOTE_AGENTS_COUNT=55
+REMOTE_AGENTS_COUNT=50
 AGENT_HOME_SIZE=400
 
 # shellcheck disable=SC2001
