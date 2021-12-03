@@ -47,7 +47,7 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
    1. Select **Postgre SQL** and version `PostgreSQL 12`.
    1. Input **DB instance identifier**.
    1. Input **Master password** and **Confirm password**.
-   1. Select **DB instance class** as `db.t3.medium`. 
+   1. Set **DB instance class &gt; Burstable classes (includes t classes)** as `db.t3.medium`. 
    1. In **Storage** section select **Storage type** to `General Purpose SSD` and **Allocated storage** to `100` GiB.
    1. In **Availability & durability** section select **Do not create a standby instance** option.
    1. In **Connectivity** section select the same **Virtual private cloud (VPC)** as your Bamboo instance.
