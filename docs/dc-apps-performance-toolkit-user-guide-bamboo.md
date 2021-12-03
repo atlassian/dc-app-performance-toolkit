@@ -133,7 +133,7 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
    1. Storage size: `100` GiB
    1. Select the **same** security group as your Bamboo instance.
    
-1. Edit Bamboo instance security group to allow inbound **Custom TCP** traffic on port `54663` from Agents instance **Private IP**.
+1. Edit Bamboo instance security group to allow inbound **All TCP** traffic from Agents instance **Private IP**.
 
 1. Connect to the Agents instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
    or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
