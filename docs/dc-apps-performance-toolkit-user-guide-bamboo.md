@@ -496,7 +496,7 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
-1. Make sure you have reports folders with bamboo performance scenario results. 
+1. Make sure you have report folder with bamboo performance scenario results. 
    Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
 1. Attach report folder to your DCHELP ticket.
 
