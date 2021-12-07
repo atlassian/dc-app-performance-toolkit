@@ -235,7 +235,7 @@ All the datasets use the standard `admin`/`admin` credentials.
    
 1. Log in as a user with the **Bamboo System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Overview &gt; Import** from the menu.
-1. Populate the **Restore file path** field with `home/ubuntu/bamboo-home/shared/dcapt-bamboo.zip`.
+1. Populate the **Restore file path** field with `/home/ubuntu/bamboo-home/shared/dcapt-bamboo.zip`.
 1. Uncheck **Backup data** option.
 1. Check **Clear artifact directory** option.
 1. Click **Import** and **Confirm** and wait until the import is completed.
