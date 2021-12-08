@@ -17,7 +17,7 @@ MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
                 CROWD: {'test_duration': 2700, 'concurrency': 1000},
-                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 45}
+                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40}
                 }
 CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
