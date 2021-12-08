@@ -136,6 +136,19 @@ class AnalyticsCollector:
                         err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
                                        f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
 
+                elif self.app_type == BAMBOO:
+                    if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
+                        err_msg.append(f"The actual test duration {self.actual_duration} is less than "
+                                       f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
+                    if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
+                        err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
+                                       f"than minimum concurrency "
+                                       f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
+                    if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
+                        err_msg.append(f"The parallel_plans_count {self.parallel_plans_count} is less "
+                                       f"than minimum parallel_plans_count value "
+                                       f"required {MIN_DEFAULTS[self.app_type]['parallel_plans_count']}")
+
                 elif self.app_type == CROWD:
                     if ramp_up < ramp_up_compliant:
                         err_msg.append(f"The run ramp-up {ramp_up} is less than minimum ramp-up "
