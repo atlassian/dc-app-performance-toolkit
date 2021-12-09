@@ -286,6 +286,13 @@ file and modify plan template according to your app. e.g. add new task.
     ``` bash
     run          # for Windows
     ```
+1. Login into Bamboo UI and make sure that plan configurations were updated.
+1. Default duration of the plan is 60 seconds. Measure plan duration with new app-specific functionality and modify
+   `default_dataset_plan_duration` value accordingly in `bamboo.yml` file.
+
+   For example, if plan duration with app-specific task became 70 seconds, than `default_dataset_plan_duration`
+   should be set to 70 seconds in `bamboo.yml` file.
+
 ### Example of app-specific Selenium action development
 For example, you develop an app that adds some additional UI elements to view plan summary page. 
 In this case, you should develop Selenium app-specific action:
