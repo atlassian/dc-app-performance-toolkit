@@ -37,7 +37,7 @@ how to deploy a Bamboo Data Center environment.
 installation flow for [linux environment](https://confluence.atlassian.com/bamboo/installing-bamboo-on-linux-289276792.html):
 
 1. Create Bamboo instance:
-   1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
    1. OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    1. Instance type: [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
    1. Storage size: `100` GiB
@@ -127,7 +127,7 @@ installation flow for [linux environment](https://confluence.atlassian.com/bambo
     Then select **Finish**.
       
 1. Create remote agents instance:
-   1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+   1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
    1.  OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    1. Instance type: [`m5.2xlarge`](https://aws.amazon.com/ec2/instance-types/m5/)
    1. Storage size: `100` GiB
@@ -372,7 +372,7 @@ local machine eliminates network fluctuations and guarantees stable CPU and memo
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
    * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB

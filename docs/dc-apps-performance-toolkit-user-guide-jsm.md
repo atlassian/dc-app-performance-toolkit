@@ -822,7 +822,7 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
    * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
