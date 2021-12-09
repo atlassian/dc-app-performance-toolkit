@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="application.hostname" elementType="Argument">
             <stringProp name="Argument.name">application.hostname</stringProp>
-            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, your_jira_instance)})}</stringProp>
+            <stringProp name="Argument.value">${__lowercase(${__P(application_hostname, your_jira_instance )})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="application.port" elementType="Argument">
@@ -56,6 +56,7 @@
       <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
         <collectionProp name="CookieManager.cookies"/>
         <boolProp name="CookieManager.clearEachIteration">true</boolProp>
+        <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
       </CookieManager>
       <hashTree/>
       <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -10830,6 +10831,47 @@ if ( sleep_time &gt; 0 ) {
               </JSR223Timer>
               <hashTree/>
             </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_test_export_dataset" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">false</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json;charset=UTF-8 </stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:269,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_OnS/360,S/370,andsuccessormainframes&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_TRONProject&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:270,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_TCSC(laterNCSC)&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_ScientificDataSystems(SDS)&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:268,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_TRONProject&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Novell&quot;,&quot;rank&quot;:1}]}]}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset/export?entityId=10476&amp;entityType=TEST</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="debug sampler" enabled="false">
             <boolProp name="displayJMeterProperties">false</boolProp>
@@ -10839,7 +10881,7 @@ if ( sleep_time &gt; 0 ) {
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
