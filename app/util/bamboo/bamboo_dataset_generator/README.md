@@ -10,7 +10,7 @@ Configuration located inside: [src/main/java/bamboogenerator/Main.java](src/main
 - `ADMIN_USER_NAME` - the username of admin account
 
 
-  **Generator Configuration**
+**Generator Configuration**
 - `PROJECTS_NUMBER` - the number of projects to generate
 - `PLANS` - the number of plans to generate
 - `PERCENT_OF_FAILED_PLANS` - the percent of plans to be generated as failed
@@ -26,14 +26,17 @@ The generator will check if you have plans on a Bamboo server that are out of th
 it will fail execution if such plans exist.
 
 ---
+**Generate Bamboo token**
+
+Login as admin user, go to **Profile > Personal access tokens** and create a new token with the same 
+permissions as admin user.
 
 **Run on Linux/Mac:**
 
+    export BAMBOO_TOKEN=newly_generarted_token
     ./run.sh
 
 **Run on Windows:**
-    
+
+    set BAMBOO_TOKEN=newly_generarted_token
     run
-
-
-

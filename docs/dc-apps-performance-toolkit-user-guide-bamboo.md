@@ -263,6 +263,7 @@ your app. For example, application setup screen or other one-time use cases are 
 If your app introduces new functionality for Bamboo entities, for example new task, it is important to extend base 
 dataset with your app specific functionality.
 
+1. Follow installation instructions described in [bamboo dataset generator README.md](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bamboo/bamboo_dataset_generator/README.md)
 1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/Main.java` and set:
    - `BAMBOO_SERVER_URL`: url of Bamboo stack
    - `ADMIN_USER_NAME`: username of admin user (default is `admin`)
@@ -274,7 +275,7 @@ permissions as admin user.
     ```
     or
     ``` bash
-    set BAMBOO_TOKEN newly_generarted_token     # for Windows
+    set BAMBOO_TOKEN=newly_generarted_token     # for Windows
     ```
 1. Open `app/util/bamboo/bamboo_dataset_generator/src/main/java/bamboogenerator/service/generator/plan/PlanGenerator.java` 
 file and modify plan template according to your app. e.g. add new task.
