@@ -1,7 +1,7 @@
 import time
 from enum import Enum
 
-from util.api.abstract_clients import RestClient
+from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
 from lxml import html
 
 BATCH_SIZE_PROJECTS = 100
@@ -137,7 +137,7 @@ class BitbucketRestClient(RestClient):
             'queryString': 'next=/admin/clustering',
             'submit': 'Log in'
         }
-        headers = self.LOGIN_POST_HEADERS
+        headers = LOGIN_POST_HEADERS
         headers['Origin'] = self.host
         r = session.post(url, data=body, headers=headers)
         cluster_html = r.content.decode("utf-8")
@@ -156,7 +156,7 @@ class BitbucketRestClient(RestClient):
         body = {'j_username': self.user, 'j_password': self.password, '_atl_remember_me': 'on',
                 'next': f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
                 'submit': 'Log in'}
-        headers = self.LOGIN_POST_HEADERS
+        headers = LOGIN_POST_HEADERS
         headers['Origin'] = self.host
         session.post(url, data=body, headers=headers)
         r = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
@@ -164,7 +164,7 @@ class BitbucketRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(f'{self.host}/dashboard', "Could not get page content.").content
+        page = self.get(f'{self.host}/dashboard', "Could not get page content.", headers=LOGIN_POST_HEADERS).content
         tree = html.fromstring(page)
         try:
             language = tree.xpath('//html/@lang')[0]

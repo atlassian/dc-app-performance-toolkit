@@ -33,6 +33,7 @@ class PopupLocators:
     skip_onbording_1 = '.aui-button aui-button-link .skip-onboarding'
     skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
     time_saving_template = '#closeDisDialog'
+    welcome_to_confluence = '.aui-button.aui-button-primary.show-onboarding'
 
 
 class LoginPageLocators:
@@ -41,6 +42,8 @@ class LoginPageLocators:
     login_button = (By.ID, "loginButton")
     login_username_field = (By.ID, "os_username")
     login_password_field = (By.ID, "os_password")
+    footer_build_info = (By.ID, "footer-build-information")
+    footer_node_info = (By.ID, "footer-cluster-node")
 
     # Setup user page per first login
     first_login_setup_page = (By.ID, "grow-ic-nav-container")
@@ -49,6 +52,9 @@ class LoginPageLocators:
     skip_photo_upload = (By.CSS_SELECTOR, ".aui-button-link")
     skip_find_content = (By.CSS_SELECTOR, ".intro-find-spaces-space>.space-checkbox")
     finish_setup = (By.CSS_SELECTOR, ".intro-find-spaces-button-continue")
+
+    # logout
+    logout = (By.XPATH, "//a[@href='logout.action']")
 
 
 class AllUpdatesLocators:
@@ -62,7 +68,7 @@ class PageLocators:
 
 class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
-    updated_items = (By.CLASS_NAME, "update-items")
+    all_updates = (By.CLASS_NAME, "content-header-all-updates")
 
 
 class TopPanelLocators:
@@ -79,3 +85,7 @@ class EditorLocators:
 
     status_indicator = (By.CLASS_NAME, "status-indicator-message")
     save_spinner = (By.ID, "rte-spinner")
+
+
+class LogoutLocators:
+    logout_msg = (By.ID, "logout-message")
