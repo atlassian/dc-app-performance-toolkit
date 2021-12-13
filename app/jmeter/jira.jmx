@@ -9214,6 +9214,7 @@ vars.put(&quot;random_page&quot;, String.valueOf(random_page));</stringProp>
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
+
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1230 /rest/greenhopper/1.0/rapidviews/viewsData" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
