@@ -4,11 +4,11 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-11-17"
+date: "2021-12-10"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
-This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -687,8 +687,8 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).

@@ -1,5 +1,5 @@
 # flake8: noqa
-from locustio.common_utils import generate_random_string, read_input_file, BaseResource
+from locustio.common_utils import read_input_file, BaseResource
 from util.project_paths import CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_USERS, CONFLUENCE_STATIC_CONTENT
 import json
 

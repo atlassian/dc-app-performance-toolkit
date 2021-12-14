@@ -1,8 +1,9 @@
 matplotlib==3.4.3
 pandas==1.3.4
-bzt==1.16.0
+numpy==1.21.4
 pytest==6.2.5
 locust==2.5.0
 selenium==3.141.0
 filelock==3.3.2
-packaging==21.2
+packaging==21.3
+bzt==1.16.0

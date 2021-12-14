@@ -3,9 +3,9 @@ import string
 
 import urllib3
 
-
-from util.conf import JIRA_SETTINGS
+from prepare_data_common import __generate_random_string, __write_to_file
 from util.api.jira_clients import JiraRestClient
+from util.conf import JIRA_SETTINGS
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS, JIRA_DATASET_CUSTOM_ISSUES
 
@@ -46,7 +46,7 @@ def generate_perf_users(cur_perf_user, api):
             if errors_count >= ERROR_LIMIT:
                 raise Exception(f'ERROR: Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
                                 f'Please check the errors in bzt.log')
-            username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
+            username = f"{DEFAULT_USER_PREFIX}{__generate_random_string(10)}"
             try:
                 user = api.create_user(name=username, password=DEFAULT_USER_PASSWORD)
                 print(f"User {user['name']} is created, number of users to create is "
@@ -58,10 +58,6 @@ def generate_perf_users(cur_perf_user, api):
                 errors_count = errors_count + 1
         print('All performance test users were successfully created')
         return cur_perf_user
-
-
-def generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
 def write_test_data_to_files(datasets):
@@ -84,12 +80,6 @@ def write_test_data_to_files(datasets):
 
     keys = datasets[PROJECTS]
     __write_to_file(JIRA_DATASET_PROJECTS, keys)
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
 
 
 def __create_data_set(jira_api):

@@ -11,7 +11,7 @@ import json
 import socket
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, JSM_SETTINGS, BaseAppSettings
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, BaseAppSettings
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 from locust import exception
 import inspect
@@ -100,6 +100,8 @@ class Logger(logging.Logger):
             is_verbose = JIRA_SETTINGS.verbose
         elif self.type.lower() == 'jsm':
             is_verbose = JSM_SETTINGS.verbose
+        elif self.type.lower() == 'bamboo':
+            is_verbose = BAMBOO_SETTINGS.verbose
         if is_verbose or not self.type:
             if self.isEnabledFor(logging.INFO):
                 self._log(logging.INFO, msg, args, **kwargs)
@@ -115,11 +117,13 @@ class MyBaseTaskSet(TaskSet):
         if hasattr(response, 'error') or not response:
             if 'login' in action_name:
                 self.login_failed = True
-            events.request_failure.fire(request_type="Action",
-                                        name=f"locust_{action_name}",
-                                        response_time=0,
-                                        response_length=0,
-                                        exception=str(response.raise_for_status()))
+            events.request.fire(request_type="Action",
+                                name=f"locust_{action_name}",
+                                response_time=0,
+                                response_length=0,
+                                context=None,
+                                response=None,
+                                exception=str(response.raise_for_status()))
 
     def get(self, *args, **kwargs):
         r = self.client.get(*args, **kwargs)
@@ -222,6 +226,21 @@ def confluence_measure(interaction=None):
     return deco_wrapper
 
 
+def bamboo_measure(interaction=None):
+    assert interaction is not None, "Interaction name is not passed to the bamboo_measure decorator"
+
+    def deco_wrapper(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = global_measure(func, start, interaction, *args, **kwargs)
+            total = time.time() - start
+            logger.info(f'action: {interaction}, action_execution_time: {total}.')
+            return result
+        return wrapper
+    return deco_wrapper
+
+
 def global_measure(func, start_time, interaction, *args, **kwargs):
     result = None
     try:
@@ -233,6 +252,8 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
                             name=interaction,
                             response_time=total,
                             response_length=0,
+                            response=None,
+                            context=None,
                             exception=e)
         logger.error(f'{interaction} action failed. Reason: {e}')
     else:
@@ -240,7 +261,11 @@ def global_measure(func, start_time, interaction, *args, **kwargs):
         events.request.fire(request_type="Action",
                             name=interaction,
                             response_time=total,
-                            response_length=0)
+                            response_length=0,
+                            response=None,
+                            context=None,
+                            exception=None
+                            )
         logger.info(f'{interaction} is finished successfully')
     return result
 

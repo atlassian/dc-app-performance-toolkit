@@ -28,8 +28,17 @@ if [[ ! $(systemctl status confluence) ]]; then
  exit 1
 fi
 
+# Custom version check
+if [[ "$1" == "--custom" ]]; then
+  ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$CONFLUENCE_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+  if curl --output /dev/null --silent --head --fail "$ATTACHMENTS_TAR_URL"; then
+    echo "Custom version $CONFLUENCE_VERSION dataset URL found: ${ATTACHMENTS_TAR_URL}"
+  else
+    echo "Error: there is no dataset for version $CONFLUENCE_VERSION"
+    exit 1
+  fi
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Peformance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your CONFLUENCE, use --force flag with version of dataset you want to apply:"
