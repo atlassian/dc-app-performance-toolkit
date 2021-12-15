@@ -9763,7 +9763,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/overall?projectId=10502&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=false&amp;withDetails=true</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/overall?projectId=10502&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=true&amp;withDetails=true</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9788,7 +9788,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testexecutionreport/testexecutions/?start=0&amp;pageSize=20&amp;projectId=10502&amp;filterscope=filter&amp;version=v0</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testexecutionreport/testexecutions/?start=0&amp;pageSize=20&amp;projectId=10502&amp;filterscope=saved_filter&amp;savedfilter=10200</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9813,7 +9813,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=0&amp;pageSize=1&amp;hideTestRuns=&amp;fixVersion=30002&amp;previousVersions=false</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=0&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10201</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9832,7 +9832,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=1&amp;pageSize=1&amp;hideTestRuns=&amp;fixVersion=30002&amp;previousVersions=false</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=1&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10201</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9851,7 +9851,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=2&amp;pageSize=1&amp;hideTestRuns=&amp;fixVersion=30002&amp;previousVersions=false</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;start=2&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10201</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9918,7 +9918,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10502&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=false</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10502&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=true</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
