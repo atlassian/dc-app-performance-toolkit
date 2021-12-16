@@ -1,4 +1,4 @@
-from locustio.common_utils import generate_random_string, read_input_file
+from locustio.common_utils import generate_random_string, read_input_file, BaseResource
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS
 import json
@@ -19,23 +19,13 @@ def jira_datasets():
     return data_sets
 
 
-class BaseResource:
-    resources_file = 'locustio/jira/resources.json'
-    action_name = ''
-
-    def __init__(self):
-        self.resources_json = self.read_json()
-        self.resources_body = self.action_resources()
-
-    def read_json(self):
-        with open(self.resources_file) as f:
-            return json.load(f)
-
-    def action_resources(self):
-        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
+class JiraResource(BaseResource):
+    
+    def __init__(self, resource_file='locustio/jira/resources.json'):
+        super().__init__(resource_file)
 
 
-class Login(BaseResource):
+class Login(JiraResource):
     action_name = 'login_and_view_dashboard'
     atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
     login_body = {
@@ -48,18 +38,20 @@ class Login(BaseResource):
     }
 
 
-class BrowseIssue(BaseResource):
+class BrowseIssue(JiraResource):
+    action_name = "view_issue"
     issue_id_pattern = r'id="key-val" rel="(.+?)">'
     project_avatar_id_pattern = r'projectavatar\?avatarId\=(.+?)" '
     edit_allow_pattern = "secure\/EditLabels\!default"  # noqa W605
     browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
 
 
-class ViewDashboard(BaseResource):
+class ViewDashboard(JiraResource):
     action_name = 'view_dashboard'
 
 
-class CreateIssue(BaseResource):
+class CreateIssue(JiraResource):
+    action_name = 'create_issue'
     atl_token_pattern = '"atl_token":"(.+?)"'
     form_token_pattern = '"formToken":"(.+?)"'
     issue_type_pattern = '\{&quot;label&quot;:&quot;Story&quot;,&quot;value&quot;:&quot;([0-9]*)&quot;'  # noqa W605
@@ -67,8 +59,8 @@ class CreateIssue(BaseResource):
     resolution_done_pattern = r'<option value=\\"([0-9]*)\\">\\n            Done\\n'
     fields_to_retain_pattern = '"id":"([a-z]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'  # noqa W605
     custom_fields_to_retain_pattern = '"id":"customfield_([0-9]*)","label":"[A-Za-z0-9\- ]*","required":(false|true),'  # noqa W605
-    user_preferences_payload = {"useQuickForm": False, "fields": ["summary", "description",
-                                                                  "priority", "versions", "components"],
+    user_preferences_payload = {"useQuickForm": False,
+                                "fields": ["summary", "description", "priority", "versions", "components"],
                                 "showWelcomeScreen": True}
     create_issue_key_pattern = '"issueKey":"(.+?)"'
     err_message_create_issue = 'Issue was not created'
@@ -110,7 +102,7 @@ class CreateIssue(BaseResource):
         return request_body
 
 
-class SearchJql(BaseResource):
+class SearchJql(JiraResource):
     action_name = 'search_jql'
     issue_table_payload = {"startIndex": "0",
                            "jql": "order by created DESC",
@@ -130,12 +122,12 @@ class SearchJql(BaseResource):
         return request_body
 
 
-class ViewProjectSummary(BaseResource):
+class ViewProjectSummary(JiraResource):
     action_name = 'view_project_summary'
     err_message = 'Project not found'
 
 
-class EditIssue(BaseResource):
+class EditIssue(JiraResource):
     action_name = 'edit_issue'
     issue_type_pattern = 'name="issuetype" type="hidden" value="(.+?)"'
     atl_token_pattern = 'atl_token=(.+?)"'
@@ -147,22 +139,28 @@ class EditIssue(BaseResource):
     err_message_issue_not_found = 'Issue not found'
 
 
-class AddComment(BaseResource):
+class AddComment(JiraResource):
     action_name = 'add_comment'
     form_token_pattern = 'name="formToken"\s*type="hidden"\s*value="(.+?)"'  # noqa W605
     atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
+    browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
 
 
-class BrowseProjects(BaseResource):
+class BrowseProjects(JiraResource):
     action_name = 'browse_projects'
 
 
-class ViewBoard(BaseResource):
-    action_name = 'view_kanban_board'
+class ViewBoard(JiraResource):
+
+    def __init__(self, action_name):
+        self.action_name = action_name
+        super().__init__()
+
     project_key_pattern = '\["project-key"\]=\"\\\\"(.+?)\\\\""'  # noqa W605
     project_id_pattern = '\["project-id"\]=\"(.+?)\"'  # noqa W605
     project_plan_pattern = 'com.pyxis.greenhopper.jira:project-sidebar-(.+?)-(.+?)"'
 
 
-class BrowseBoards(BaseResource):
+class BrowseBoards(JiraResource):
+
     action_name = 'browse_boards'

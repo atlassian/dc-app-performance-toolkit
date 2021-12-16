@@ -9,3 +9,4 @@ outputs/
 *.log
 *.pyc
 local_*.yml
+**jmeter.properties

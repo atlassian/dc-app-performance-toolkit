@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: jira1-loadb-7fvk3rwna5rw-779770669.us-west-2.elb.amazonaws.com    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: jira-loadb-14uvmsg49dk4e-147347679.us-west-2.elb.amazonaws.com    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -22,15 +22,15 @@ settings:
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
-    search_jql: 13
-    view_issue: 43
-    view_project_summary: 4
-    view_dashboard: 12
-    edit_issue: 4
+    search_jql: 11
+    view_issue: 34
+    view_project_summary: 3
+    view_dashboard: 10
+    edit_issue: 5
     add_comment: 2
-    browse_projects: 4
-    view_scrum_board: 3
-    view_kanban_board: 3
+    browse_projects: 9
+    view_scrum_board: 8
+    view_kanban_board: 7
     view_backlog: 6
     browse_boards: 2
     standalone_extension: 12 # By default disabled
@@ -113,7 +113,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "86.0.4240.22" # Supports Chrome version 86. You can refer to http://chromedriver.chromium.org/downloads
+      version: "95.0.4638.69" # Supports Chrome version 95. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
