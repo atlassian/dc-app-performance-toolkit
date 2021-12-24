@@ -20,7 +20,7 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `4.4.0`
   
 * Supported Bamboo versions:
-    * Bamboo [release notes](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `8.1.0`
+    * Bamboo [release notes](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `8.1.1`
   
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
@@ -149,7 +149,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p full_path_to_python # e.g. use `where python3.9` to find the path
+virtualenv venv -p full_path_to_python # e.g. use `where python` to find the path to correct python
 ```
 3. Activate virtual env:
 ```
