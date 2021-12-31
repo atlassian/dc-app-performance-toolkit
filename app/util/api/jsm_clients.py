@@ -81,7 +81,8 @@ class JsmRestClient(RestClient):
 
     def get_request(self, issue_id_or_key: str, auth: tuple = None):
         api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}"
-        return self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+        response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+        return response.json()
 
     def get_requests(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, status: str = None):
         """

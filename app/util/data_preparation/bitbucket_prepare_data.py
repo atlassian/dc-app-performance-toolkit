@@ -1,9 +1,8 @@
-import random
-import string
 import time
 
-from util.conf import BITBUCKET_SETTINGS
+from prepare_data_common import __generate_random_string, __write_to_file
 from util.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
+from util.conf import BITBUCKET_SETTINGS
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
 
 DEFAULT_USER_PREFIX = 'dcapt-perf-user'
@@ -16,10 +15,6 @@ FETCH_LIMIT_REPOS = 50
 FETCH_LIMIT_PROJECTS = FETCH_LIMIT_REPOS
 
 ENGLISH = 'en'
-
-
-def generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
 def __get_users(client: BitbucketRestClient):
@@ -41,7 +36,7 @@ def __get_users(client: BitbucketRestClient):
 
 def __create_users(client: BitbucketRestClient, perf_user_count_to_create):
     while perf_user_count_to_create > 0:
-        user_name = f'{DEFAULT_USER_PREFIX}-{generate_random_string(5)}'
+        user_name = f'{DEFAULT_USER_PREFIX}-{__generate_random_string(5)}'
         client.create_user(user_name)
         client.apply_user_permissions(user_name, BitbucketUserPermission.ADMIN)
         perf_user_count_to_create = perf_user_count_to_create - 1
@@ -110,12 +105,6 @@ def __create_data_set(bitbucket_api):
     print(f'Repos count: {len(dataset[REPOS])}')
     print(f'Pull requests count: {len(dataset[PULL_REQUESTS])}')
     return dataset
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
 
 
 def write_test_data_to_files(datasets):

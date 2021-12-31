@@ -4,11 +4,11 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-09-16"
+date: "2021-12-10"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
-This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -66,7 +66,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.0` and `7.4.11` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.2` and `7.4.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 
 **Cluster nodes**
@@ -150,6 +150,10 @@ After creating the development environment Confluence Data Center, generate test
 
 {{% warning %}}
 Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Languages** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
+{{% warning %}}
+Make sure **Remote API** is enabled on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Further Configuration** page.
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
@@ -380,7 +384,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.0` and `7.4.11` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.2` and `7.4.13` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -683,8 +687,8 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).

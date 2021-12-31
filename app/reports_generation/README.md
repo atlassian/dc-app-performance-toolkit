@@ -17,3 +17,4 @@ Before run, you should edit `performance_profile.yml` or `scale_profile.yml` and
 - `title` - chart title (also this value is used to generate file name)
 - `image_height_px` - chart image height in pixels
 - `image_width_px` - chart image width in pixels
+- `check_actions_count` - [optional] check if actions count is the same for all runs. Default value is `true`

@@ -7,6 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -47,7 +48,6 @@ def write_to_file(content, file):
 
 
 def generate_report_summary(collector):
-    bitbucket = 'bitbucket'
     git_compliant = None
 
     summary_report = []
@@ -59,7 +59,7 @@ def generate_report_summary(collector):
 
     overall_status = 'OK' if finished[0] and success[0] and compliant[0] else 'FAIL'
 
-    if collector.app_type == bitbucket:
+    if collector.app_type == BITBUCKET:
         git_compliant = collector.is_git_operations_compliant()
         overall_status = 'OK' if finished[0] and success[0] and compliant[0] and git_compliant[0] else 'FAIL'
 
@@ -71,7 +71,7 @@ def generate_report_summary(collector):
                                f"(WARNING: Could not get the latest version.)"))
     elif latest_version > current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
-                              f"(FAIL: Please update toolkit to the latest version - {latest_version})")
+                              f"(WARNING: Please consider upgrade to the latest version - {latest_version})")
     elif latest_version == current_version:
         summary_report.append(f"DC Apps Performance Toolkit version|{collector.tool_version} "
                               f"(OK: Toolkit is up to date)")
@@ -85,7 +85,7 @@ def generate_report_summary(collector):
     summary_report.append(f'Expected test run duration from yml file|{collector.duration} sec')
     summary_report.append(f'Actual test run duration|{collector.actual_duration} sec')
 
-    if collector.app_type == bitbucket:
+    if collector.app_type == BITBUCKET:
         total_git_count = collector.results_log.actual_git_operations_count
         summary_report.append(f'Total Git operations count|{total_git_count}')
         summary_report.append(f'Total Git operations compliant|{git_compliant}')
@@ -95,7 +95,15 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    if collector.app_type.lower() == 'crowd':
+    if collector.app_type == BAMBOO:
+        summary_report.append(f'Number of plans with unexpected status|'
+                              f'{collector.post_run_collector.unexpected_status_plan_count}')
+        summary_report.append(f'Number of plans with queue more than 1 sec|'
+                              f'{collector.post_run_collector.get_plan_count_with_n_queue(n_sec=1)}')
+        summary_report.append(f'Number of plans with unexpected duration|'
+                              f'{collector.post_run_collector.unexpected_duration_plan_count}')
+
+    if collector.app_type == CROWD:
         summary_report.append(
             f'Crowd users directory synchronization time|{collector.crowd_sync_test["crowd_users_sync"]}')
         summary_report.append(
@@ -103,6 +111,9 @@ def generate_report_summary(collector):
 
     summary_report.append('\nAction|Success Rate|90th Percentile|Status')
     load_test_rates = collector.jmeter_test_rates or collector.locust_test_rates
+
+    if collector.app_type == BAMBOO:
+        load_test_rates = {**collector.jmeter_test_rates, **collector.locust_test_rates}
 
     for key, value in {**load_test_rates, **collector.selenium_test_rates}.items():
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
@@ -181,7 +192,7 @@ def generate_test_actions_by_type(test_actions, application):
     for test_action, value in test_actions.items():
         if test_action in application.selenium_default_actions:
             selenium_actions.setdefault(test_action, value)
-        elif application.type != 'bitbucket' and test_action in application.locust_default_actions:
+        elif application.type != BITBUCKET and test_action in application.locust_default_actions:
             locust_actions.setdefault(test_action, value)
         elif test_action in application.jmeter_default_actions:
             jmeter_actions.setdefault(test_action, value)
