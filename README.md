@@ -41,7 +41,7 @@ If a first part of ChromeDriver version does not match with a first part of your
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
 * XCode Command Line Tools
 * Google Chrome web browser
 ```
@@ -119,7 +119,7 @@ pip install -r requirements.txt
 
 ### Windows setup
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed:
 ```
 python --version or python3 --version
 pip --version
