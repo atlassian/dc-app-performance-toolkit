@@ -8,11 +8,13 @@ class PopupLocators:
     popup_2 = '.aui-inline-dialog-contents .cancel'
     popup_3 = '.dialog-close-button'
     popup_4 = '.aui-close-button'
+    popup_5 = '.aui-button aui-button-link'
+    popup_6 = '//button[contains(text(),"OK, got it")]'
 
 
 class UrlManager:
 
-    def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None):
+    def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None, insight_issues_id=None):
         self.host = JSM_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -25,7 +27,7 @@ class UrlManager:
         self.workload_report_params = f'/projects/{project_key}/reports/workload'
         self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
         self.view_insight_queue_params = f'{self.view_queue}/1102'
-        self.view_issue_with_insight_object_param = f'/browse/{project_key}-350034'
+        self.view_issue_with_insight_object_param = f'/browse/{insight_issues_id}'
         # with correct dataset need to be replaced with right variable(random issue with object)
 
     def login_url(self):
@@ -131,6 +133,7 @@ class InsightLocators:
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
     # insight_create_new_schema
+    pop_up_insight = (By.ID, "dialog-submit-button")
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
@@ -140,7 +143,7 @@ class InsightLocators:
     # insight_create_new_object
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     view_all_schemas_selector = (By.ID, "rlabs-manage-main")
-    random_insight_schema = (By.XPATH, "//a[contains(text(),'test chema')]")
+    random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
     object_name_field = (By.ID, "rlabs-insight-attribute-2")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     admin_menu_dropdown = (By.ID, "admin_menu")

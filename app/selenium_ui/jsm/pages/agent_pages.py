@@ -11,7 +11,8 @@ class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3)
+                                  PopupLocators.popup_3, PopupLocators.popup_4, PopupLocators.popup_5,
+                                  PopupLocators.popup_6)
 
 
 class Login(BasePage):
@@ -214,6 +215,7 @@ class Insight(BasePage):
 
     def create_new_schema(self):
         text = self.generate_random_string(10)
+        self.wait_until_visible(InsightLocators.pop_up_insight).click()
         self.wait_until_visible(InsightLocators.create_object_schemas).click()
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
@@ -223,7 +225,7 @@ class Insight(BasePage):
 
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
-        # for now clicking on schema named "test schema" need create dataset so we can click randomly
+        # for now clicking on schema named "test schema" need create dataset so we can click randomly  add all schemas
         self.wait_until_visible(InsightLocators.view_all_schemas_selector)
         self.wait_until_visible(InsightLocators.random_insight_schema)
         self.wait_until_clickable(InsightLocators.random_insight_schema).click()
@@ -233,7 +235,6 @@ class Insight(BasePage):
         self.get_element(InsightLocators.object_name_field).send_keys(text)
         self.wait_until_visible(InsightLocators.create_button)
         self.wait_until_visible(InsightLocators.create_button).click()
-        self.wait_until_visible(InsightLocators.pop_up_after_create_object)
         self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
 
 
@@ -259,9 +260,9 @@ class InsightActions(BasePage):
 
 class ViewIssueWithObject(BasePage):
 
-    def __init__(self, driver, project_key='AHSNDOOWEY'):
+    def __init__(self, driver,insight_issues_id=None):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(project_key=project_key)
+        url_manager = UrlManager(insight_issues_id=insight_issues_id)
         self.page_url = url_manager.view_issue_with_object()
 
     def view_issue_with_insight_custom_field(self):

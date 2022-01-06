@@ -1,9 +1,7 @@
-
 import random
 import string
 from concurrent.futures.thread import ThreadPoolExecutor
 from itertools import repeat
-
 
 import urllib3
 from util.common_util import print_timing
@@ -13,7 +11,7 @@ from util.api.jsm_clients import JsmRestClient
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
-    JSM_DATASET_CUSTOM_ISSUES
+    JSM_DATASET_CUSTOM_ISSUES, JSM_DATASET_INSIGHT_ISSUES
 
 MAX_WORKERS = None
 
@@ -32,6 +30,7 @@ SERVICE_DESKS_MEDIUM = "service_desks_medium"
 SERVICE_DESKS_SMALL = "service_desks_small"
 REQUEST_TYPES = "request_types"
 CUSTOM_ISSUES = "custom_issues"
+INSIGHT_ISSUES = "insight_issues"
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -388,11 +387,22 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
     return issues
 
 
+@print_timing("Preparing Insight issues")
+def __get_insight_issues(jira_api):
+    issues = []
+    custom_jql = "Insight is NOT EMPTY"
+    if custom_jql:
+        issues = jira_api.issues_search(
+            jql=custom_jql, max_results=500)
+    if not issues:
+        print(f"There are no issues found using JQL Insight is NOT EMPTY")
+    return issues
+
+
 @print_timing("Getting all service desks")
 def __get_all_service_desks_and_validate(jsm_client):
     service_desks = jsm_client.get_all_service_desks()
     if not service_desks:
-
         raise Exception('ERROR: There were no Jira Service Desks found')
     if len(service_desks) < 2:
         raise Exception('ERROR: At least 2 service desks are needed')
@@ -433,6 +443,7 @@ def __create_data_set(jira_client, jsm_client):
         jsm_client, jira_client, service_desks)
     dataset[REQUEST_TYPES] = __get_request_types(jsm_client, service_desks)
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
+    dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
 
     return dataset
 
@@ -450,6 +461,10 @@ def __write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
               in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
+    insight_issues = [f"{insight_issues['key']},{insight_issues['id']},{insight_issues['key'].split('-')[0]}"
+                      for insight_issues
+                      in datasets[INSIGHT_ISSUES]]
+    __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
 
 
 @print_timing('JSM full prepare data', sep='=')

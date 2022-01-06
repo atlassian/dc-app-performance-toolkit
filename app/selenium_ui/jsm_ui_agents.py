@@ -20,18 +20,18 @@ def test_0_selenium_agent_a_login(jsm_webdriver, jsm_datasets, jsm_screen_shots)
 def test_1_selenium_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.insight_main_page(jsm_webdriver, jsm_datasets)
 
-
-def test_1_selenium_insight_create_new_schema_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
-    modules_agents.insight_create_new_schema_object(jsm_webdriver, jsm_datasets)
-
-
-def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
-    modules_agents.insight_view_queue_insight_column(jsm_webdriver, jsm_datasets)
-
-
-def test_1_selenium_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):
-    modules_agents.insight_search_object_by_iql(jsm_webdriver, jsm_datasets)
-
+#
+# def test_1_selenium_insight_create_new_schema_object(jsm_webdriver, jsm_datasets, jira_screen_shots):  #and delete
+#     modules_agents.insight_create_new_schema_object(jsm_webdriver, jsm_datasets)
+#
+#
+# def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
+#     modules_agents.insight_view_queue_insight_column(jsm_webdriver, jsm_datasets)
+#
+#
+# def test_1_selenium_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):
+#     modules_agents.insight_search_object_by_iql(jsm_webdriver, jsm_datasets)
+#
 def test_1_selenium_view_issue_with_objects(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.view_issue_with_insight_objects(jsm_webdriver, jsm_datasets)
 
