@@ -133,9 +133,10 @@ class InsightLocators:
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
     # insight_create_new_schema
-    pop_up_insight = (By.ID, "dialog-submit-button")
+    dialog_window_1 = (By.ID, "dialog-submit-button")
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
+    dialog_window_2 = (By.XPATH, "//button[contains(text(),'OK, got it')]")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
     object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
@@ -151,16 +152,6 @@ class InsightLocators:
     custom_fields_settings = (By.XPATH, "//a[@id='view_custom_fields']")
     add_custom_field_button = (By.ID, "add_custom_fields")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
-    ###selectors_for_add_custom_field_configuration
-    # create_new_custom_field = (By.ID, "add_custom_fields")
-    # custom_type_field_search = (By.CLASS_NAME, "jira-field-search")
-    # custom_type_field_all = (By.CLASS_NAME, "item-button")
-    # custom_fields_next_button = (By.ID, "customfields-select-type-next")
-    # text_field_custom_field_name = (By.XPATH, "//input[@id='custom-field-name']")
-    # next_button_configure_custom_field = (By.XPATH, "//button[@id='customfields-configure-next']")
-    # options_text_field = (By.ID, "custom-field-options-input")
-    # add_custom_option_button = (By.ID, "custom-field-options-add")
-    # apply_custom_field_to_all_issues = (By.ID, "custom-field--contextglobal")
 
     # view_queue_insight_column
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")

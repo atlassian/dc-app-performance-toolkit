@@ -215,7 +215,8 @@ class Insight(BasePage):
 
     def create_new_schema(self):
         text = self.generate_random_string(10)
-        self.wait_until_visible(InsightLocators.pop_up_insight).click()
+        self.wait_until_visible(InsightLocators.dialog_window_1).click()
+        self.wait_until_visible(InsightLocators.dialog_window_2).click()
         self.wait_until_visible(InsightLocators.create_object_schemas).click()
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
