@@ -26,7 +26,7 @@ settings:
     view_job_configuration: 10
     view_build_summary: 10
     view_projects_list: 10
-    standalone_extension: 0            # By default disabled
+    standalone_extension: 1            # By default disabled
 
     number_of_agents: 50               # number of available remote agents
     parallel_plans_count: 40           # number of parallel plans execution
@@ -54,6 +54,12 @@ execution:
     concurrency: ${parallel_plans_count}
     hold-for: ${test_duration}
     ramp-up: ${default_dataset_plan_duration}
+  # Locust app-specific scenario
+  - scenario: locust_app_specific
+    executor: locust
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
   - scenario: selenium
     executor: selenium
     runner: pytest
@@ -63,6 +69,8 @@ scenarios:
     script: selenium_ui/bamboo_ui.py
   locust:
     script: locustio/bamboo/locustfile.py
+  locust_app_specific:
+    script: locustio/bamboo/locustfile_app_specific.py
   jmeter:
     script: jmeter/bamboo.jmx
     properties:
