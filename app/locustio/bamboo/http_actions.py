@@ -107,7 +107,7 @@ def locust_bamboo_login(locust):
     login_body['os_username'] = username
     login_body['os_password'] = password
 
-    # 10 dologin.action
+    # login
     r = locust.post('/userlogin.action',
                     login_body,
                     TEXT_HEADERS,

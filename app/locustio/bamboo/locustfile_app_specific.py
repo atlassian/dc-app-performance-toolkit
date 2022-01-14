@@ -13,7 +13,7 @@ class BambooBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         locust_bamboo_login(self)
 
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('standalone_extension_locust'))
     def custom_action(self):
         app_specific_action(self)
 

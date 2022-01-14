@@ -14,7 +14,7 @@ settings:
     load_executor: jmeter
     concurrency: 200                   # number of Bamboo users for Selenium actions
     test_duration: 45m
-    ramp-up: 3m                        # time to spin all concurrent threads
+    ramp-up: 5m                        # time to spin all concurrent threads
     total_actions_per_hour: 2000       # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
@@ -26,7 +26,8 @@ settings:
     view_job_configuration: 10
     view_build_summary: 10
     view_projects_list: 10
-    standalone_extension: 1            # By default disabled
+    standalone_extension: 0            # Standalone extension for JMeter. By default, disabled.
+    standalone_extension_locust: 1     # Standalone extension for Locust. By default, disabled.
 
     number_of_agents: 50               # number of available remote agents
     parallel_plans_count: 40           # number of parallel plans execution
@@ -39,7 +40,7 @@ services:
       - python util/data_preparation/bamboo_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl kpi-2.jtl
     post-process:
       - python util/analytics/analytics.py bamboo
       - python util/post_run/cleanup_results_dir.py
