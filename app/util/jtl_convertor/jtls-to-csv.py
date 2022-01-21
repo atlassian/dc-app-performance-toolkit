@@ -1,3 +1,5 @@
+import csv
+import json
 import os
 import sys
 import tempfile
@@ -5,9 +7,8 @@ import time
 from glob import glob
 from pathlib import Path
 from typing import IO, List, Set
-import csv
+
 import pandas
-import json
 
 from util.jtl_convertor import jtl_validator
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR, DEFAULT_TEST_ACTIONS
