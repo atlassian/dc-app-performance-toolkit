@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import time
+from glob import glob
 from pathlib import Path
 from typing import IO, List, Set
 import csv
@@ -115,6 +116,13 @@ def __validate_file_names(file_names: List[str]):
         file_names_set.add(file_name_without_extension)
 
 
+def __pathname_pattern_expansion(args: List[str]) -> list[str]:
+    file_names: List[str] = []
+    for arg in args:
+        file_names.extend([os.path.basename(x) for x in glob(str(ENV_TAURUS_ARTIFACT_DIR / arg))])
+    return file_names
+
+
 def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
     reader = csv.DictReader(input_jtl.open(mode='r'))
 
@@ -163,7 +171,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
 
 
 def main():
-    file_names = sys.argv[1:]
+    args = sys.argv[1:]
+    file_names = __pathname_pattern_expansion(args)
     __validate_file_names(file_names)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
