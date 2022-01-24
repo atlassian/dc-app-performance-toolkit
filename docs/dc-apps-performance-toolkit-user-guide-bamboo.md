@@ -504,10 +504,11 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
-1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+1. Make sure you have report folder with bamboo performance scenario results. 
+   Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach report folder to your DCHELP ticket.
+
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the 
