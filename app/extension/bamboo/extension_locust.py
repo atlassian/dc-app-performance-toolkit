@@ -15,7 +15,7 @@ def app_specific_action(locust):
     token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
     id = re.findall(id_pattern_example, content)    # get ID from response using regexp
 
-    logger.locust_info(f'token: {token}, id: {id}')  # log info for debug when verbose is true in confluence.yml file
+    logger.locust_info(f'token: {token}, id: {id}')  # log info for debug when verbose is true in bamboo.yml file
     if 'assertion string' not in content:
         logger.error(f"'assertion string' was not found in {content}")
     assert 'assertion string' in content  # assert specific string in response content
