@@ -34,8 +34,8 @@ class ConfluenceRestClient(RestClient):
             request = self.get(api_url, "Could not retrieve content")
 
             content.extend(request.json()['results'])
-            if len(content) < 0:
-                raise Exception(f"Content with type {type} is empty")
+            if len(content) == 0:
+                raise Exception(f"Content with type {type} is not found.")
 
             loop_count -= 1
             if loop_count == 1:
@@ -71,8 +71,8 @@ class ConfluenceRestClient(RestClient):
             request = self.get(api_url, "Could not retrieve content")
 
             content.extend(request.json()['results'])
-            if len(content) < 0:
-                raise Exception(f"Content with {cql} is empty")
+            if len(content) == 0:
+                raise Exception(f"Content with cql '{cql}' not found.")
 
             loop_count -= 1
             if loop_count == 1:
