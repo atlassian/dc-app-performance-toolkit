@@ -342,6 +342,18 @@ For example, for app-specific action development you could set percentage of `st
    `login_as_default_user_if_specific_user_was_loggedin` controllers.
 1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
+###  Example of Locust app-specific action development
+
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/bamboo/extension_locust.py`, 
+so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bamboo/extension_locust.py)
+2. In `dc-app-performance-toolkit/app/bamboo.yml` uncomment in `execution` section `scenario: locust_app_specific` to enable locust app-specific test execution.
+3. In `dc-app-performance-toolkit/app/bamboo.yml` set `standalone_extension_locust` to `1` - app-specific action will be executed by every virtual user 
+of `locust_app_specific` scenario. Default value is `0`, which means that `standalone_extension_locust` action will not be executed. 
+4. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
+5. Run toolkit with `bzt bamboo.yml` command to ensure that all Locust actions including `locust_app_specific_action` are successful. 
+Note, that `locust_app_specific_action` action execution will start in some time full after ramp period up is finished (in 5-6 min).
+
 ---
 
 ## <a id="executionhost"></a>4. Setting up an execution environment

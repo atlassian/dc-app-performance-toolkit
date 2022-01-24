@@ -9,9 +9,8 @@ class Login:
         'os_username': '',
         'os_password': '',
         'os_destination': '',
-        'user_role': '',
+        'save': 'Log in',
         'atl_token': '',
-        'login': 'Log in'
     }
 
 

@@ -106,6 +106,7 @@ class BambooSettings(BaseAppSettings):
         self.parallel_plans_count = self.env_settings['parallel_plans_count']
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
+        self.total_actions_per_hour = self.get_property('total_actions_per_hour')
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
