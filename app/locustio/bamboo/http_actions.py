@@ -1,11 +1,12 @@
 import random
 import time
+import uuid
 
-from locustio.bamboo.requests_params import bamboo_datasets
-from locustio.common_utils import init_logger, JSON_HEADERS
-from util.api.bamboo_clients import BambooClient
 from locust import events
 
+from locustio.bamboo.requests_params import bamboo_datasets, Login
+from locustio.common_utils import init_logger, JSON_HEADERS, TEXT_HEADERS, bamboo_measure
+from util.api.bamboo_clients import BambooClient
 from util.conf import BAMBOO_SETTINGS
 
 logger = init_logger(app_type='bamboo')
@@ -88,3 +89,36 @@ def run_build_plans(locust):
     logger.info(f'Total functions time: {total}. Expected full action time {action_time}. '
                 f'Plan {build_plan_id} is successfully started. Waiting {sleep_time}.\n')
     time.sleep(sleep_time)
+
+
+@bamboo_measure('locust_bamboo_login')
+def locust_bamboo_login(locust):
+    session_id = str(uuid.uuid4())
+    locust.cross_action_storage[session_id] = dict()
+    locust.session_data_storage = locust.cross_action_storage[session_id]
+    locust.session_data_storage['app'] = 'bamboo'
+
+    params = Login()
+    user = random.choice(bamboo_dataset["users"])
+    username = user[0]
+    password = user[1]
+
+    login_body = params.login_body
+    login_body['os_username'] = username
+    login_body['os_password'] = password
+
+    # login
+    r = locust.post('/userlogin.action',
+                    login_body,
+                    TEXT_HEADERS,
+                    catch_response=True)
+
+    content = r.content.decode('utf-8')
+
+    if 'Log Out' not in content:
+        logger.error(f'Login with {username}, {password} failed: {content}')
+    assert 'Log Out' in content, 'User authentication failed.'
+    logger.locust_info(f'User {username} is successfully logged in')
+
+    locust.session_data_storage['username'] = user[0]
+    locust.session_data_storage['password'] = user[1]

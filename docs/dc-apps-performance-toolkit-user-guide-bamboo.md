@@ -199,6 +199,7 @@ To start database:
 
 {{% note %}}
 After [Preloading your Bamboo deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
 {{% /note %}}
 
 ---
@@ -342,6 +343,18 @@ For example, for app-specific action development you could set percentage of `st
    `login_as_default_user_if_specific_user_was_loggedin` controllers.
 1. Run toolkit to ensure that all JMeter actions including `standalone_extension` are successful.
 
+###  Example of Locust app-specific action development
+
+1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/bamboo/extension_locust.py`, 
+so that test will call the endpoint with GET request, parse response use these data to call another endpoint with POST request and measure response time.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bamboo/extension_locust.py)
+2. In `dc-app-performance-toolkit/app/bamboo.yml` uncomment in `execution` section `scenario: locust_app_specific` to enable locust app-specific test execution.
+3. In `dc-app-performance-toolkit/app/bamboo.yml` set `standalone_extension_locust` to `1` - app-specific action will be executed by every virtual user 
+of `locust_app_specific` scenario. Default value is `0`, which means that `standalone_extension_locust` action will not be executed. 
+4. App-specific tests could be run (if needed) as a specific user. Use `@run_as_specific_user(username='specific_user_username', password='specific_user_password')` decorator for that.
+5. Run toolkit with `bzt bamboo.yml` command to ensure that all Locust actions including `locust_app_specific_action` are successful. 
+Note, that `locust_app_specific_action` action execution will start in some time full after ramp period up is finished (in 5-6 min).
+
 ---
 
 ## <a id="executionhost"></a>4. Setting up an execution environment
@@ -352,6 +365,11 @@ local machine eliminates network fluctuations and guarantees stable CPU and memo
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `bamboo.yml` configuration file. Set enterprise-scale Bamboo Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
     application_hostname: bamboo_host_name or public_ip   # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
@@ -505,8 +523,10 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have report folder with bamboo performance scenario results. 
-   Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach report folder to your DCHELP ticket.
+   Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach report folder to your DCHELP ticket.
+
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the 

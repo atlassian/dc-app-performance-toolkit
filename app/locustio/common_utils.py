@@ -57,6 +57,7 @@ JSON_HEADERS = {
 
 JIRA_API_URL = '/'
 CONFLUENCE_API_URL = '/'
+BAMBOO_API_URL = '/'
 JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
 CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
 
@@ -65,12 +66,14 @@ JSM = 'jsm'
 TYPE_AGENT = 'agent'
 TYPE_CUSTOMER = 'customer'
 CONFLUENCE = 'confluence'
+BAMBOO = 'bamboo'
 
 jira_action_time = 3600 / int((JIRA_SETTINGS.total_actions_per_hour) / int(JIRA_SETTINGS.concurrency))
 confluence_action_time = 3600 / int((CONFLUENCE_SETTINGS.total_actions_per_hour) / int(CONFLUENCE_SETTINGS.concurrency))
 jsm_agent_action_time = 3600 / int((JSM_SETTINGS.agents_total_actions_per_hr) / int(JSM_SETTINGS.agents_concurrency))
 jsm_customer_action_time = 3600 / int((JSM_SETTINGS.customers_total_actions_per_hr)
                                       / int(JSM_SETTINGS.customers_concurrency))
+bamboo_action_time = 3600 / int((BAMBOO_SETTINGS.total_actions_per_hour) / int(BAMBOO_SETTINGS.concurrency))
 
 
 class LocustConfig:
@@ -234,8 +237,11 @@ def bamboo_measure(interaction=None):
         def wrapper(*args, **kwargs):
             start = time.time()
             result = global_measure(func, start, interaction, *args, **kwargs)
-            total = time.time() - start
-            logger.info(f'action: {interaction}, action_execution_time: {total}.')
+            total = (time.time() - start)
+            if total < bamboo_action_time:
+                sleep = (bamboo_action_time - total)
+                logger.info(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
+                time.sleep(sleep)
             return result
         return wrapper
     return deco_wrapper
@@ -357,6 +363,9 @@ def run_as_specific_user(username=None, password=None):
                 elif app == CONFLUENCE:
                     url = CONFLUENCE_API_URL
                     token_pattern = CONFLUENCE_TOKEN_PATTERN
+                # Bamboo
+                elif app == BAMBOO:
+                    url = BAMBOO_API_URL
                 else:
                     raise Exception(f'The "{app}" application type is not known.')
 
