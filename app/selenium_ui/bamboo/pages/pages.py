@@ -2,19 +2,24 @@ from selenium_ui.base_page import BasePage
 
 from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators, AllProjectsLocators, AllBuildsLocators, \
     PlanConfigurationLocators, BuildActivityLocators, PlanSummaryLocators, PlanHistoryLocators, BuildSummaryLocators, \
-    BuildLogsLocators, JobConfigLocators, LogoutLocators
+    BuildLogsLocators, JobConfigLocators
 
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_page_url
+    page_loaded_selector = LoginPageLocators.login_page_content
 
-    def click_login_button(self):
+    def first_login_page(self):
         self.wait_until_visible(LoginPageLocators.login_button).click()
         self.wait_until_invisible(LoginPageLocators.login_button)
 
     def set_credentials(self, username, password):
         self.get_element(LoginPageLocators.login_username_field).send_keys(username)
         self.get_element(LoginPageLocators.login_password_field).send_keys(password)
+
+    def click_login_button(self):
+        self.wait_until_visible(LoginPageLocators.login_submit_button).click()
+        self.wait_until_invisible(LoginPageLocators.login_submit_button)
 
 
 class ProjectList(BasePage):
@@ -102,15 +107,5 @@ class JobConfiguration(BasePage):
 
 
 class Logout(BasePage):
-
-    def __init__(self, driver):
-        BasePage.__init__(self, driver)
-        log_out = UrlManager()
-        self.log_out_url = log_out.logout_url()
-
-    def log_out(self):
-
-        self.go_to_url(self.log_out_url)
-
-    def log_out_check(self):
-        self.wait_until_visible(LogoutLocators.log_in_button)
+    page_loaded_selector = LoginPageLocators.login_page_content
+    UrlManager().logout_url()

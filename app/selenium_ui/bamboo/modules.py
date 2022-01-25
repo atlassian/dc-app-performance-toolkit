@@ -25,9 +25,10 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            login_page.wait_for_page_loaded()
 
         sub_measure()
-
+        login_page.first_login_page()
         login_page.set_credentials(username=datasets['username'], password=datasets['password'])
         login_page.click_login_button()
 
@@ -130,8 +131,6 @@ def view_job_configuration(webdriver, datasets):
 def log_out(webdriver, datasets):
     @print_timing("selenium_log_out")
     def measure():
-        log_out_check = Logout(webdriver)
-        log_out_check.log_out()
-        log_out_check.log_out_check()
-
+        logout = Logout(webdriver)
+        logout.wait_for_page_loaded()
     measure()
