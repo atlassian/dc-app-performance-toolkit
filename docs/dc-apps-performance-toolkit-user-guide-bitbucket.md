@@ -154,7 +154,12 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 After creating the development environment Bitbucket Data Center, generate test dataset to run Data Center App Performance Toolkit:
 - Create at least one project
 - Create repository with some files in a project
-- Create a new branch from the repo, make and push changes to the branch and create a pull request
+- Create a couple of new branches from the repo, make and push changes to the branches and create a pull request
+
+{{% warning %}}
+To avoid merge conflicts with base performance scripts, do not create pull requests with `master` branch as target or
+source.
+{{% /warning %}}
 
 ---
 
