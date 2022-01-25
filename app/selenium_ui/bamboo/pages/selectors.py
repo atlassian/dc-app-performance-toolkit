@@ -89,4 +89,4 @@ class JobConfigLocators:
 
 
 class LogoutLocators:
-    logout = (By.XPATH, "//a[@href='/userLogout.action']")
+    log_in_button = (By.XPATH, "//a[@id='login']")

@@ -2,7 +2,7 @@ from selenium_ui.base_page import BasePage
 
 from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators, AllProjectsLocators, AllBuildsLocators, \
     PlanConfigurationLocators, BuildActivityLocators, PlanSummaryLocators, PlanHistoryLocators, BuildSummaryLocators, \
-    BuildLogsLocators, JobConfigLocators
+    BuildLogsLocators, JobConfigLocators, LogoutLocators
 
 
 class Login(BasePage):
@@ -102,4 +102,15 @@ class JobConfiguration(BasePage):
 
 
 class Logout(BasePage):
-    UrlManager().logout_url()
+
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        log_out = UrlManager()
+        self.log_out_url = log_out.logout_url()
+
+    def log_out(self):
+
+        self.go_to_url(self.log_out_url)
+
+    def log_out_check(self):
+        self.wait_until_visible(LogoutLocators.log_in_button)

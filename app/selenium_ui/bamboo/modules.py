@@ -130,6 +130,8 @@ def view_job_configuration(webdriver, datasets):
 def log_out(webdriver, datasets):
     @print_timing("selenium_log_out")
     def measure():
-        Logout(webdriver)
+        log_out_check = Logout(webdriver)
+        log_out_check.log_out()
+        log_out_check.log_out_check()
 
     measure()
