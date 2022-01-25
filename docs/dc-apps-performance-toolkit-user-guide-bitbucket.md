@@ -400,10 +400,6 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
     - **Confirm Password**: admin _(recommended)_
     Click **Go to Bitbucket**.
 
-{{% note %}}
-After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
-
 ---
 
 ### <a id="preloading"></a>6. Preloading your Bitbucket deployment with an enterprise-scale dataset
@@ -603,6 +599,11 @@ In case of any difficulties with Index generation, contact us for support in the
 {{% /note %}}
 
 ---
+{{% note %}}
+After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
@@ -610,6 +611,11 @@ For generating performance results suitable for Marketplace approval process use
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Bitbucket Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
        application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
