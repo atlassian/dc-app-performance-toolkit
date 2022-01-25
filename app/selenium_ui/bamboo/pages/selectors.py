@@ -90,4 +90,4 @@ class JobConfigLocators:
 
 class LogoutLocators:
     logout_url = UrlManager().logout_url()
-    login_button_link = (By.XPATH, "//a[@id='login']")
+    login_button_link = (By.ID, "login")
