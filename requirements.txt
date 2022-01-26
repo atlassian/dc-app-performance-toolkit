@@ -9,4 +9,3 @@ filelock==3.4.2
 packaging==21.3
 prettytable==3.0.0
 bzt==1.16.0
-molotov==1.3 # remove when bzt -> molotov -> aiomeasures(not exist anymore) dependency is fixed
