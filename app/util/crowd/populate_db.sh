@@ -84,13 +84,22 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and user permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
   exit 1
 fi
 echo "DB_HOST=${DB_HOST}"
+
+echo "Check database permissions for user ${CROWD_DB_USER}"
+PGPASSWORD=${CROWD_DB_PASS} createdb -U ${CROWD_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${CROWD_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${CROWD_DB_PASS} dropdb -U ${CROWD_DB_USER} -h ${DB_HOST} TEST
+fi
 
 echo "Check DB connection"
 PGPASSWORD=${CROWD_DB_PASS} pg_isready -U ${CROWD_DB_USER} -h ${DB_HOST}
