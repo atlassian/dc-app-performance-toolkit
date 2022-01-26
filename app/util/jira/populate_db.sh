@@ -163,7 +163,7 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -180,6 +180,15 @@ if [[ $? -ne 0 ]]; then
   echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
   echo "DB_HOST=${DB_HOST}"
   exit 1
+fi
+
+echo "Check database permissions for user ${JIRA_DB_USER}"
+PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${JIRA_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} TEST
 fi
 
 echo "Step3: Write jira.baseurl property to file"
