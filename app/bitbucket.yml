@@ -33,6 +33,9 @@ services:
     post-process:
       - python util/analytics/analytics.py bitbucket
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==3.141.0
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}

@@ -46,6 +46,9 @@ services:
     post-process:
       - python util/analytics/analytics.py bamboo
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==3.141.0
 execution:
   - scenario: jmeter
     executor: jmeter
