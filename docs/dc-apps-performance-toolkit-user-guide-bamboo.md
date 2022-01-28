@@ -207,7 +207,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
    ``` yaml
     application_hostname: bamboo_host_name or public_ip   # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
     application_protocol: http          # http or https
-    application_port: 8085              # 80, 443, 8080, 8085, etc
+    application_port: 80                # 80, 443, 8080, 8085, etc
     secure: True                        # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:                # e.g. /babmoo in case of url like http://localhost:8085/bamboo
     admin_login: admin
