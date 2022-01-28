@@ -9,7 +9,7 @@
 
 # 'environment_name' provides your environment a unique name within a single cloud provider account.
 # This value can not be altered after the configuration has been applied.
-# WARNING: use only lowercase letter, numbers and dash symbols
+# WARNING: use only lowercase letters, numbers and `-` dash symbol
 environment_name = "<environment>"
 
 # Cloud provider region that this configuration will deploy to, e.g. "us-east-2"
