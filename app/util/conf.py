@@ -2,7 +2,7 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
-TOOLKIT_VERSION = '6.0.1'
+TOOLKIT_VERSION = '6.1.0'
 UNSUPPORTED_VERSION = '4.1.0'
 
 
@@ -106,6 +106,7 @@ class BambooSettings(BaseAppSettings):
         self.parallel_plans_count = self.env_settings['parallel_plans_count']
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
+        self.total_actions_per_hour = self.get_property('total_actions_per_hour')
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)

@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-12-10"
+date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -178,10 +178,6 @@ After successfully deploying Crowd Data Center in AWS, you'll need to configure 
    Click **Continue**.
 1. On the **Integrated applications** page leave **Open ID server** unchecked and click **Continue**.
 
-{{% note %}}
-After [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
-
 ---
 
 ## <a id="preloading"></a>2. Preloading your Crowd deployment with an enterprise-scale dataset
@@ -287,6 +283,11 @@ We recommend that you only use this method if you are having problems with the [
 1. Click **Submit** and wait until the import is completed.
 
 ---
+{{% note %}}
+After [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
 
 ## <a id="appspecificaction"></a>3. App-specific actions development
 
@@ -315,6 +316,11 @@ For generating performance results suitable for Marketplace approval process use
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `crowd.yml` configuration file. Set enterprise-scale Crowd Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
     application_hostname: test_crowd_instance.atlassian.com    # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
@@ -584,8 +590,9 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

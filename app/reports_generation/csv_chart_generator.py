@@ -1,7 +1,8 @@
 import datetime
 from pathlib import Path
 
-from scripts import config_provider, csv_aggregator, chart_generator, summary_aggregator, results_archivator
+from scripts import (config_provider, csv_aggregator, chart_generator,
+                     summary_aggregator, results_archivator, judgement)
 
 
 def main():
@@ -13,6 +14,11 @@ def main():
     chart_generator_config = config_provider.get_chart_generator_config(config, agg_csv)
     chart_generator.perform_chart_creation(chart_generator_config, results_dir, scenario_status)
     results_archivator.archive_results(config, results_dir)
+
+    if config['judge']:
+        judgement_kwargs = judgement.__get_judgement_kwargs(config)
+        judgement_kwargs["output_dir"] = results_dir
+        judgement.judge(**judgement_kwargs)
 
 
 def __get_results_dir() -> Path:

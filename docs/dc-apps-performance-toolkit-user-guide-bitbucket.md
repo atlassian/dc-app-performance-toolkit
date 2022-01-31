@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-12-10"
+date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -69,7 +69,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Bitbucket Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.10`, `7.17.1` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.13`, `7.17.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -154,7 +154,12 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 After creating the development environment Bitbucket Data Center, generate test dataset to run Data Center App Performance Toolkit:
 - Create at least one project
 - Create repository with some files in a project
-- Create a new branch from the repo, make and push changes to the branch and create a pull request
+- Create a couple of new branches from the repo, make and push changes to the branches and create a pull request
+
+{{% warning %}}
+To avoid merge conflicts with base performance scripts, do not create pull requests with `master` branch as target or
+source.
+{{% /warning %}}
 
 ---
 
@@ -312,7 +317,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.10`, `7.17.1` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.13`, `7.17.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 
 **Cluster nodes**
@@ -399,10 +404,6 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
     - **Password**: admin _(recommended)_
     - **Confirm Password**: admin _(recommended)_
     Click **Go to Bitbucket**.
-
-{{% note %}}
-After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
 
 ---
 
@@ -603,6 +604,11 @@ In case of any difficulties with Index generation, contact us for support in the
 {{% /note %}}
 
 ---
+{{% note %}}
+After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
@@ -610,6 +616,11 @@ For generating performance results suitable for Marketplace approval process use
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Bitbucket Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
        application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
@@ -860,8 +871,9 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your DCHELP ticket.
 
 
 ## Support

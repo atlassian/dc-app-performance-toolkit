@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-12-10"
+date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
@@ -66,7 +66,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.13`, `4.20.1` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.16`, `4.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -543,7 +543,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value |
 | --------- | ----------------- |
 | Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.13`, `4.20.1` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.16`, `4.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -616,10 +616,6 @@ After successfully deploying Jira Service Management Data Center in AWS, you'll 
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
 1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, click **Create new project** to create a new project.
-
-{{% note %}}
-After [Preloading your Jira Service Management deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
 
 ---
 
@@ -796,6 +792,11 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 Jira Service Management will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
 ---
+{{% note %}}
+After [Preloading your Jira Service Management deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
@@ -803,6 +804,11 @@ For generating performance results suitable for Marketplace approval process use
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
        application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
@@ -1100,8 +1106,9 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

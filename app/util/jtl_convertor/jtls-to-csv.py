@@ -1,12 +1,14 @@
+import csv
+import json
 import os
 import sys
 import tempfile
 import time
+from glob import glob
 from pathlib import Path
 from typing import IO, List, Set
-import csv
+
 import pandas
-import json
 
 from util.jtl_convertor import jtl_validator
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR, DEFAULT_TEST_ACTIONS
@@ -115,10 +117,19 @@ def __validate_file_names(file_names: List[str]):
         file_names_set.add(file_name_without_extension)
 
 
-def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
-    reader = csv.DictReader(input_jtl.open(mode='r'))
+def __pathname_pattern_expansion(args: List[str]) -> list[str]:
+    file_names: List[str] = []
+    for arg in args:
+        file_names.extend([os.path.basename(x) for x in glob(str(ENV_TAURUS_ARTIFACT_DIR / arg))])
+    return file_names
 
-    jtl_list = [row for row in reader]
+
+def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
+    # TODO: If list is too big, read iteratively from CSV if possible
+    with input_jtl.open(mode='r') as f:
+        reader = csv.DictReader(f)
+        jtl_list = [row for row in reader]
+
     csv_list = []
 
     for jtl_sample in jtl_list:
@@ -163,7 +174,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
 
 
 def main():
-    file_names = sys.argv[1:]
+    args = sys.argv[1:]
+    file_names = __pathname_pattern_expansion(args)
     __validate_file_names(file_names)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
