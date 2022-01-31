@@ -18,7 +18,9 @@ region = "<region>"
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# WARNING: without a proper license agents would not be set up correctly
+# WARNING 1: without a proper enterprise-scale license agents would not be set up correctly
+# WARNING 2: if you don't have a valid developer license ask in your DCHELP ticket
+# WARNING 3: make sure license inserted below as a one-liner without any spaces or new line characters
 bamboo_license = "<license key>"
 
 # Bamboo system admin credentials
