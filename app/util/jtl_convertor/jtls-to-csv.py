@@ -117,7 +117,7 @@ def __validate_file_names(file_names: List[str]):
         file_names_set.add(file_name_without_extension)
 
 
-def __pathname_pattern_expansion(args: List[str]) -> list[str]:
+def __pathname_pattern_expansion(args: List[str]) -> List[str]:
     file_names: List[str] = []
     for arg in args:
         file_names.extend([os.path.basename(x) for x in glob(str(ENV_TAURUS_ARTIFACT_DIR / arg))])
