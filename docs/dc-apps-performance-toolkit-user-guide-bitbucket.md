@@ -4,11 +4,11 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-09-16"
+date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
-This document walks you through the process of testing your app on Bitbucket using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Bitbucket using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -69,7 +69,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Bitbucket Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.9`, `7.17.0` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.13`, `7.17.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -154,7 +154,12 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
 After creating the development environment Bitbucket Data Center, generate test dataset to run Data Center App Performance Toolkit:
 - Create at least one project
 - Create repository with some files in a project
-- Create a new branch from the repo, make and push changes to the branch and create a pull request
+- Create a couple of new branches from the repo, make and push changes to the branches and create a pull request
+
+{{% warning %}}
+To avoid merge conflicts with base performance scripts, do not create pull requests with `master` branch as target or
+source.
+{{% /warning %}}
 
 ---
 
@@ -223,8 +228,8 @@ You develop an app that adds some additional fields to specific types of Bitbuck
 1. Extend example of app-specific action in `dc-app-performance-toolkit/app/extension/bitbucket/extension_ui.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py)
 So, our test has to open app-specific issues and measure time to load of this app-specific issues.
-1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
-1. In `dc-app-performance-toolkit/app/selenium_ui/bitbucket-ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+1. If you need to run `app_specific_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/bitbucket/extension_ui.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_z_log_out` action.
+1. In `dc-app-performance-toolkit/app/selenium_ui/bitbucket_ui.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_custom_action(webdriver, datasets, screen_shots):
 #     app_specific_action(webdriver, datasets)
@@ -312,7 +317,7 @@ All important parameters are listed and described in this section. For all other
 
 | Parameter | Recommended Value |
 | --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.9`, `7.17.0` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `7.6.13`, `7.17.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 
 **Cluster nodes**
@@ -399,10 +404,6 @@ After successfully deploying Bitbucket Data Center in AWS, you'll need to config
     - **Password**: admin _(recommended)_
     - **Confirm Password**: admin _(recommended)_
     Click **Go to Bitbucket**.
-
-{{% note %}}
-After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
 
 ---
 
@@ -603,6 +604,11 @@ In case of any difficulties with Index generation, contact us for support in the
 {{% /note %}}
 
 ---
+{{% note %}}
+After [Preloading your Bitbucket deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
@@ -610,6 +616,11 @@ For generating performance results suitable for Marketplace approval process use
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Bitbucket Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
        application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
@@ -627,8 +638,8 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -860,8 +871,9 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your DCHELP ticket.
 
 
 ## Support

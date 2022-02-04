@@ -256,5 +256,40 @@
       "locust_customer_share_request_with_org:remove_org"
     ]
   },
-  "crowd": {"jmeter": ["jmeter_user_auth"], "selenium": [], "locust": []}
+  "crowd": {
+    "jmeter": [
+      "jmeter_user_auth"
+    ],
+    "selenium": [],
+    "locust": []
+  },
+  "bamboo": {
+    "jmeter": [
+      "jmeter_login_and_view_all_builds",
+      "jmeter_view_all_builds:open_all_builds_page",
+      "jmeter_view_build_summary:view_build_summary_results",
+      "jmeter_view_build_result:view_build_result",
+      "jmeter_view_build_result:view_job_result",
+      "jmeter_view_build_configuration:open_edit_build_page",
+      "jmeter_view_job_configuration:open_edit_job_page",
+      "jmeter_projects_list:open_all_projects_page"
+    ],
+    "selenium": [
+      "selenium_login:open_login_page",
+      "selenium_login",
+      "selenium_view_all_projects",
+      "selenium_view_all_builds",
+      "selenium_config_plan",
+      "selenium_view_build_activity",
+      "selenium_view_plan_summary",
+      "selenium_view_plan_history",
+      "selenium_view_build_summary",
+      "selenium_view_build_logs",
+      "selenium_view_job_configuration",
+      "selenium_log_out"
+    ],
+    "locust": [
+      "locust_run_build_plan"
+    ]
+  }
 }
