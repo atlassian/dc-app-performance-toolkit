@@ -1,10 +1,12 @@
 import random
-import string
+from multiprocessing.pool import ThreadPool
 
 import urllib3
 
-from util.conf import CONFLUENCE_SETTINGS
+from prepare_data_common import __generate_random_string, __write_to_file
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
+from util.common_util import print_timing
+from util.conf import CONFLUENCE_SETTINGS
 from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CUSTOM_PAGES
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -21,17 +23,23 @@ ENGLISH_US = 'en_US'
 ENGLISH_GB = 'en_GB'
 
 
-def generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
-
-
+@print_timing('Creating dataset started')
 def __create_data_set(rest_client, rpc_client):
     dataset = dict()
     dataset[USERS] = __get_users(rest_client, rpc_client, CONFLUENCE_SETTINGS.concurrency)
     perf_user = random.choice(dataset[USERS])['user']
     perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
-    dataset[PAGES] = __get_pages(perf_user_api, 5000)
-    dataset[BLOGS] = __get_blogs(perf_user_api, 5000)
+
+    pool = ThreadPool(processes=2)
+    async_pages = pool.apply_async(__get_pages, (perf_user_api, 5000))
+    async_blogs = pool.apply_async(__get_blogs, (perf_user_api, 5000))
+
+    async_pages.wait()
+    async_blogs.wait()
+
+    dataset[PAGES] = async_pages.get()
+    dataset[BLOGS] = async_blogs.get()
+
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
@@ -41,6 +49,7 @@ def __create_data_set(rest_client, rpc_client):
     return dataset
 
 
+@print_timing('Getting users')
 def __get_users(confluence_api, rpc_api, count):
     errors_count = 0
     cur_perf_users = confluence_api.get_users(DEFAULT_USER_PREFIX, count)
@@ -51,7 +60,7 @@ def __get_users(confluence_api, rpc_api, count):
         if errors_count >= ERROR_LIMIT:
             raise Exception(f'Maximum error limit reached {errors_count}/{ERROR_LIMIT}. '
                             f'Please check the errors in bzt.log')
-        username = f"{DEFAULT_USER_PREFIX}{generate_random_string(10)}"
+        username = f"{DEFAULT_USER_PREFIX}{__generate_random_string(10)}"
         try:
             user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
             print(f"User {user['user']['username']} is created, number of users to create is "
@@ -65,6 +74,7 @@ def __get_users(confluence_api, rpc_api, count):
     return cur_perf_users
 
 
+@print_timing('Getting pages')
 def __get_pages(confluence_api, count):
     pages = confluence_api.get_content_search(
         0, count, cql='type=page'
@@ -79,6 +89,7 @@ def __get_pages(confluence_api, count):
     return pages
 
 
+@print_timing('Getting custom pages')
 def __get_custom_pages(confluence_api, count, cql):
     pages = []
     if cql:
@@ -89,6 +100,7 @@ def __get_custom_pages(confluence_api, count, cql):
     return pages
 
 
+@print_timing('Getting blogs')
 def __get_blogs(confluence_api, count):
     blogs = confluence_api.get_content_search(
         0, count, cql='type=blogpost'
@@ -104,12 +116,7 @@ def __is_remote_api_enabled(confluence_api):
     return confluence_api.is_remote_api_enabled()
 
 
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
-
-
+@print_timing('Started writing data to files')
 def write_test_data_to_files(dataset):
     pages = [f"{page['id']},{page['space']['key']}" for page in dataset[PAGES]]
     __write_to_file(CONFLUENCE_PAGES, pages)
@@ -144,6 +151,7 @@ def __check_for_admin_permissions(confluence_api):
         raise SystemExit(f"The '{confluence_api.user}' user does not have admin permissions.")
 
 
+@print_timing('Confluence data preparation')
 def main():
     print("Started preparing data")
 

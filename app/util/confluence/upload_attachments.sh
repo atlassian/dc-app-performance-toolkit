@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.9)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.4.14 7.13.3)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
@@ -28,8 +28,17 @@ if [[ ! $(systemctl status confluence) ]]; then
  exit 1
 fi
 
+# Custom version check
+if [[ "$1" == "--custom" ]]; then
+  ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/$CONFLUENCE_VERSION/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
+  if curl --output /dev/null --silent --head --fail "$ATTACHMENTS_TAR_URL"; then
+    echo "Custom version $CONFLUENCE_VERSION dataset URL found: ${ATTACHMENTS_TAR_URL}"
+  else
+    echo "Error: there is no dataset for version $CONFLUENCE_VERSION"
+    exit 1
+  fi
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Peformance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your CONFLUENCE, use --force flag with version of dataset you want to apply:"
@@ -73,7 +82,7 @@ fi
 
 echo "Step1: Download msrcync"
 # https://github.com/jbd/msrsync
-cd ${TMP_DIR} || exit
+cd ${TMP_DIR} || exit 1
 if [[ -s msrsync ]]; then
   echo "msrsync already downloaded"
 else

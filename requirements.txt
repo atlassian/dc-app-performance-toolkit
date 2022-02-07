@@ -1,6 +1,11 @@
-matplotlib==3.4.2
-pandas==1.2.4
-importlib-metadata==4.5.0
-bzt==1.15.3
-locust==1.4.4
-filelock==3.0.12
+matplotlib==3.5.1
+pandas==1.4.0
+numpy==1.22.1
+scipy==1.7.3
+pytest==6.2.5
+locust==2.6.1
+selenium==3.141.0
+filelock==3.4.2
+packaging==21.3
+prettytable==3.0.0
+bzt==1.16.2

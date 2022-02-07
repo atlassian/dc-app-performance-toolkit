@@ -20,7 +20,7 @@ CONFLUENCE_DB_PASS="Password1!"
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(7.0.5 7.4.9)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.4.14 7.13.3)
 
 if [[ ! $(systemctl status confluence) ]]; then
   echo "The Confluence service was not found on this host." \
@@ -44,8 +44,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZE}/${DB_
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ "$1" == "--custom" ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$CONFLUENCE_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $CONFLUENCE_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $CONFLUENCE_VERSION"
+    exit 1
+  fi
 # Check if Confluence version is supported
-if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "Confluence Version: ${CONFLUENCE_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Confluence Versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Confluence, use --force flag with version of dataset you want to apply:"
@@ -53,8 +62,14 @@ if [[ ! "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${CONFLUENCE_VERSION} ]]; then
   echo "!!! Warning !!! This may break your Confluence instance. Also, note that downgrade is not supported by Confluence."
   # Check if --force flag is passed into command
   if [[ "$1" == "--force" ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z "$2" ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_CONFLUENCE_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Confluence version is in list of supported
-    if [[ "${SUPPORTED_CONFLUENCE_VERSIONS[*]}" =~ ${2} ]]; then
+    if [[ " ${SUPPORTED_CONFLUENCE_VERSIONS[@]} " =~ " ${2} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else

@@ -1,17 +1,14 @@
-import datetime
-import functools
 import random
-import string
 from concurrent.futures.thread import ThreadPoolExecutor
-from datetime import timedelta
 from itertools import repeat
-from timeit import default_timer as timer
 
 import urllib3
 
+from prepare_data_common import __write_to_file, __generate_random_string
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
+from util.common_util import print_timing
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
@@ -52,26 +49,6 @@ performance_customers_count = JSM_SETTINGS.customers_concurrency
 
 # TODO write here why do we need this.
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-def print_timing(message, sep='-'):
-    assert message is not None, "Message is not passed to print_timing decorator"
-
-    def deco_wrapper(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            start = timer()
-            print(sep * 20)
-            print(f'{message} started {datetime.datetime.now().strftime("%H:%M:%S")}')
-            result = func(*args, **kwargs)
-            end = timer()
-            print(f"{message} finished in {timedelta(seconds=end - start)}")
-            print(sep * 20)
-            return result
-
-        return wrapper
-
-    return deco_wrapper
 
 
 def __calculate_issues_per_project(projects_count):
@@ -348,16 +325,6 @@ def __get_requests(jira_api, service_desks, requests_without_distribution):
     return issues_list
 
 
-def __generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
-
-
 def __get_service_desk_reports(jsm_api, service_desk):
     service_desk_reports = jsm_api.get_service_desk_reports(project_key=service_desk['projectKey'])
     reports_ids = {}
@@ -404,7 +371,7 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
         )
     for issue in issues:
         expanded_issue = jsm_api.get_request(issue_id_or_key=issue['key'])
-        issue['service_desk_id'] = expanded_issue[0]['serviceDeskId']
+        issue['service_desk_id'] = expanded_issue['serviceDeskId']
     if not issues:
         print(f"There are no issues found using JQL {custom_jql}")
     return issues
