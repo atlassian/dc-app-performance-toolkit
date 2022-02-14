@@ -14,7 +14,8 @@ class PopupLocators:
 
 class UrlManager:
 
-    def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None, insight_issues_id=None):
+    def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None,
+                 insight_issues_id=None, schema_id=None):
         self.host = JSM_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -27,7 +28,8 @@ class UrlManager:
         self.workload_report_params = f'/projects/{project_key}/reports/workload'
         self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
         self.view_insight_queue_params = f'{self.view_queue}/1102'
-        self.view_issue_with_insight_object_param = f'/browse/{insight_issues_id}'
+        self.view_issue_with_insight_object_params = f'/browse/{insight_issues_id}'
+        self.view_insight_schema_params = f'/secure/ObjectSchema.jspa?id={schema_id}'
         # with correct dataset need to be replaced with right variable(random issue with object)
 
     def login_url(self):
@@ -61,7 +63,10 @@ class UrlManager:
         return f'{self.host}{self.view_insight_queue_params}'
 
     def view_issue_with_object(self):
-        return f'{self.host}{self.view_issue_with_insight_object_param}'
+        return f'{self.host}{self.view_issue_with_insight_object_params}'
+
+    def view_insight_schema(self):
+        return f'{self.host}{self.view_insight_schema_params}'
 
 
 class LoginPageLocators:
@@ -134,6 +139,7 @@ class InsightLocators:
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
     # insight_create_new_schema
     dialog_window_1 = (By.ID, "dialog-submit-button")
+    dialog_window_3 = (By.XPATH, "//a[contains(text(),'No, thanks')]")
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
     dialog_window_2 = (By.XPATH, "//button[contains(text(),'OK, got it')]")

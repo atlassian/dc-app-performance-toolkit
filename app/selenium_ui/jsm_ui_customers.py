@@ -3,12 +3,12 @@ from extension.jsm import extension_ui_customers  # noqa F401
 
 
 # this action should be the first one
-def test_0_selenium_customer_a_login(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.login(jsm_webdriver, jsm_datasets)
+# def test_0_selenium_customer_a_login(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     modules_customers.login(jsm_webdriver, jsm_datasets)
 
-
-def test_0_selenium_view_request_with_insight_field(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.view_request_with_insight(jsm_webdriver, jsm_datasets)
+#
+# def test_0_selenium_view_request_with_insight_field(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     modules_customers.view_request_with_insight(jsm_webdriver, jsm_datasets)
 
 
 # def test_1_selenium_customer_create_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):

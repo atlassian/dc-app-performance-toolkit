@@ -2,7 +2,8 @@ import random
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewQueue, Report, Insight, InsightActions, ViewIssueWithObject
+    ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightActions, \
+    ViewIssueWithObject
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -16,7 +17,8 @@ SERVICE_DESKS_LARGE = "service_desks_large"
 SERVICE_DESKS_SMALL = "service_desks_small"
 SERVICE_DESKS_MEDIUM = "service_desks_medium"
 CUSTOM_ISSUES = "custom_issues"
-# INSIGHT_ISSUES = "insight_issues"
+INSIGHT_ISSUES = "insight_issues"
+INSIGHT_SCHEMAS = "insight_schemas"
 
 
 def setup_run_data(datasets):
@@ -64,8 +66,9 @@ def setup_run_data(datasets):
             datasets['custom_issue_key'] = custom_issue[0]
             datasets['custom_issue_id'] = custom_issue[1]
 
-    # insight_issues_id = random.choice(datasets[INSIGHT_ISSUES])
-    # datasets["insight_issues_id"] = insight_issues_id[0]
+    if INSIGHT_SCHEMAS in datasets:
+        insight = random.choice(datasets[INSIGHT_SCHEMAS])
+        datasets['schema_id'] = insight[0]
 
 
 def login(webdriver, datasets):
@@ -241,7 +244,7 @@ def view_queues_small(webdriver, datasets):
 
 
 def insight_main_page(webdriver, datasets):
-    view_insight_main_page = Insight(webdriver)
+    view_insight_main_page = InsightLogin(webdriver)
 
     @print_timing("selenium_view_insight_main_page")
     def measure():
@@ -251,14 +254,24 @@ def insight_main_page(webdriver, datasets):
     measure()
 
 
-def insight_create_new_schema_object(webdriver, datasets): #add delete schema
-    insight_create_schema_object = Insight(webdriver)
+def insight_create_new_schema(webdriver, datasets):  # add delete schema
+    insight_create_schema = InsightNewSchema(webdriver)
     PopupManager(webdriver).dismiss_default_popup()
 
-    @print_timing('selenium_insight_create_new_schema_object')
+    @print_timing('selenium_insight_create_new_schema')
     def measure():
-        insight_create_schema_object.create_new_schema()
-        insight_create_schema_object.insight_create_new_objects()
+        insight_create_schema.create_new_schema()
+
+    measure()
+
+
+def insight_create_new_object(webdriver, datasets):
+    insight_new_object = InsightNewObject(webdriver, schema_id=datasets['schema_id'])
+
+    @print_timing('selenium_insight_create_new_object')
+    def measure():
+        insight_new_object.go_to()
+        insight_new_object.insight_create_new_objects()
 
     measure()
 
@@ -284,15 +297,15 @@ def insight_search_object_by_iql(webdriver, datasets):
     measure()
 
 
-# def view_issue_with_insight_objects(webdriver, datasets):
-#     view_issue_with_objects = ViewIssueWithObject(webdriver, insight_issues_id=datasets["insight_issues_id"])
-#
-#     @print_timing('selenium_view_issue_with_objects')
-#     def measure():
-#         view_issue_with_objects.go_to()
-#         view_issue_with_objects.view_issue_with_insight_custom_field()
-#
-#     measure()
+def view_issue_with_insight_objects(webdriver, datasets):
+    view_issue_with_objects = ViewIssueWithObject(webdriver, insight_issues_id=datasets["insight_issues_id"])
+
+    @print_timing('selenium_view_issue_with_objects')
+    def measure():
+        view_issue_with_objects.go_to()
+        view_issue_with_objects.view_issue_with_insight_custom_field()
+
+    measure()
 
 
 def logout(webdriver, datasets):

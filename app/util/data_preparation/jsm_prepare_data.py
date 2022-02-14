@@ -12,7 +12,7 @@ from util.common_util import print_timing
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
-    JSM_DATASET_CUSTOM_ISSUES, JSM_DATASET_INSIGHT_ISSUES
+    JSM_DATASET_CUSTOM_ISSUES, JSM_DATASET_INSIGHT_ISSUES, JSM_DATASET_INSIGHT_SCHEMAS
 
 MAX_WORKERS = None
 
@@ -32,6 +32,7 @@ SERVICE_DESKS_SMALL = "service_desks_small"
 REQUEST_TYPES = "request_types"
 CUSTOM_ISSUES = "custom_issues"
 INSIGHT_ISSUES = "insight_issues"
+INSIGHT_SCHEMAS = "insight_schemas"
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -363,6 +364,14 @@ def __get_request_types(jsm_api, service_desks):
     return [','.join(i) for i in request_types_list]
 
 
+@print_timing("Preparing Insight Schemas")
+def __get_insight_schemas(jsm_api):
+    insight_schemas = jsm_api.get_all_schemas()
+    if not insight_schemas:
+        print(f"There are no schemas")
+    return insight_schemas
+
+
 @print_timing("Preparing custom issues")
 def __get_custom_issues(jira_api, jsm_api, custom_jql):
     issues = []
@@ -435,6 +444,7 @@ def __create_data_set(jira_client, jsm_client):
     dataset[REQUEST_TYPES] = __get_request_types(jsm_client, service_desks)
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
     dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
+    dataset[INSIGHT_SCHEMAS] = __get_insight_schemas(jsm_client)
 
     return dataset
 
@@ -456,6 +466,10 @@ def __write_test_data_to_files(datasets):
                       for insight_issues
                       in datasets[INSIGHT_ISSUES]]
     __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
+    schema_id = [f"{schema_id['id']}"
+                      for schema_id
+                      in datasets[INSIGHT_SCHEMAS]]
+    __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schema_id)
 
 
 @print_timing('JSM full prepare data', sep='=')

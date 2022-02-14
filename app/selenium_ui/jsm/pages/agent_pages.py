@@ -199,8 +199,7 @@ class ViewQueue(BasePage):
             self.wait_until_present(ViewQueueLocators.queues_status, timeout=self.timeout)
 
 
-class Insight(BasePage):
-
+class InsightLogin(BasePage):
     dashboard_url = UrlManager().dashboard_url()
 
     def insight_schema(self):
@@ -213,23 +212,34 @@ class Insight(BasePage):
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
 
+
+class InsightNewSchema(BasePage):
+
     def create_new_schema(self):
         text = self.generate_random_string(10)
-        self.wait_until_visible(InsightLocators.dialog_window_1).click()
-        self.wait_until_visible(InsightLocators.dialog_window_2).click()
-        self.wait_until_visible(InsightLocators.create_object_schemas).click()
-        self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
-        self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
-        self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
-        self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
-        self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+        if not self.wait_until_visible(InsightLocators.dialog_window_1).click():
+        # self.wait_until_visible(InsightLocators.dialog_window_2).click()
+            self.wait_until_visible(InsightLocators.create_object_schemas).click()
+            self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
+            self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
+            self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
+            self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
+            self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+
+
+class InsightNewObject(BasePage):
+
+    def __init__(self, driver, schema_id=None):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(schema_id=schema_id)
+        self.page_url = url_manager.view_insight_schema()
 
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
         # for now clicking on schema named "test schema" need create dataset so we can click randomly  add all schemas
-        self.wait_until_visible(InsightLocators.view_all_schemas_selector)
-        self.wait_until_visible(InsightLocators.random_insight_schema)
-        self.wait_until_clickable(InsightLocators.random_insight_schema).click()
+        # self.wait_until_visible(InsightLocators.view_all_schemas_selector)
+        # self.wait_until_visible(InsightLocators.random_insight_schema)
+        # self.wait_until_clickable(InsightLocators.random_insight_schema).click()
         # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
         self.wait_until_visible(InsightLocators.object_name_field)
@@ -246,7 +256,8 @@ class InsightActions(BasePage):
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.view_insight_queue()
 
-    def view_random_queue_with_insight(self):  # for know we going to look only in one (not random queue), but with the dataset we will do random
+    def view_random_queue_with_insight(
+            self):  # for know we going to look only in one (not random queue), but with the dataset we will do random
         self.wait_until_visible(InsightLocators.view_queue_insight_column).click()
         self.wait_until_visible(InsightLocators.insight_column)
 
@@ -261,7 +272,7 @@ class InsightActions(BasePage):
 
 class ViewIssueWithObject(BasePage):
 
-    def __init__(self, driver,insight_issues_id=None):
+    def __init__(self, driver, insight_issues_id=None):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(insight_issues_id=insight_issues_id)
         self.page_url = url_manager.view_issue_with_object()
