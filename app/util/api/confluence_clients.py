@@ -124,6 +124,7 @@ class ConfluenceRestClient(RestClient):
 
         return search_results_list
 
+    @retry()
     def is_remote_api_enabled(self):
         api_url = f'{self.host}/rpc/xmlrpc'
         response = self.get(api_url, error_msg='Confluence Remote API (XML-RPC & SOAP) is disabled. '
