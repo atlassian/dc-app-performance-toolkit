@@ -466,10 +466,10 @@ def __write_test_data_to_files(datasets):
                       for insight_issues
                       in datasets[INSIGHT_ISSUES]]
     __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
-    schema_id = [f"{schema_id['id']}"
+    schemas_id = [f"{schema_id['id']}"
                       for schema_id
                       in datasets[INSIGHT_SCHEMAS]]
-    __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schema_id)
+    __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schemas_id)
 
 
 @print_timing('JSM full prepare data', sep='=')

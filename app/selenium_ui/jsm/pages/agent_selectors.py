@@ -151,7 +151,7 @@ class InsightLocators:
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     view_all_schemas_selector = (By.ID, "rlabs-manage-main")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
-    object_name_field = (By.ID, "rlabs-insight-attribute-2")
+    object_name_field = (By.CSS_SELECTOR, "#rlabs-insight-attribute")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     admin_menu_dropdown = (By.ID, "admin_menu")
     admin_menu_issue = (By.ID, "admin_issues_menu")

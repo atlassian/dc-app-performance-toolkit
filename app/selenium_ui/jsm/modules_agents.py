@@ -67,8 +67,8 @@ def setup_run_data(datasets):
             datasets['custom_issue_id'] = custom_issue[1]
 
     if INSIGHT_SCHEMAS in datasets:
-        insight = random.choice(datasets[INSIGHT_SCHEMAS])
-        datasets['schema_id'] = insight[0]
+        schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
+        datasets['schema_id'] = schema_id[0]
 
 
 def login(webdriver, datasets):

@@ -236,13 +236,8 @@ class InsightNewObject(BasePage):
 
     def insight_create_new_objects(self):
         text = self.generate_random_string(10)
-        # for now clicking on schema named "test schema" need create dataset so we can click randomly  add all schemas
-        # self.wait_until_visible(InsightLocators.view_all_schemas_selector)
-        # self.wait_until_visible(InsightLocators.random_insight_schema)
-        # self.wait_until_clickable(InsightLocators.random_insight_schema).click()
-        # depending on schema type  can be different type of objects need be double checked after dataset created
         self.wait_until_visible(InsightLocators.create_object_button).click()
-        self.wait_until_visible(InsightLocators.object_name_field)
+        self.get_elements(InsightLocators.object_name_field)
         self.get_element(InsightLocators.object_name_field).send_keys(text)
         self.wait_until_visible(InsightLocators.create_button)
         self.wait_until_visible(InsightLocators.create_button).click()
