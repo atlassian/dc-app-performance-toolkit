@@ -3,6 +3,7 @@ settings:
   artifacts-dir: results/jsm/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
+  check-updates: false    # disable bzt check for updates
   env:
     application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
