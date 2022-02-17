@@ -6,10 +6,9 @@ class PopupLocators:
     default_popup = '.aui-message .icon-close'
     popup_1 = 'form.tip-footer>.helptip-close'
     popup_2 = '.aui-inline-dialog-contents .cancel'
-    popup_3 = '.dialog-close-button'
-    popup_4 = '.aui-close-button'
-    popup_5 = '.aui-button aui-button-link'
-    popup_6 = '//button[contains(text(),"OK, got it")]'
+    popup_3 = '.aui-close-button'
+    popup_4 = '.aui-button aui-button-link'
+    popup_5 = '#dialog-submit-button'
 
 
 class UrlManager:
@@ -138,20 +137,22 @@ class InsightLocators:
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
     # insight_create_new_schema
-    dialog_window_1 = (By.ID, "dialog-submit-button")
-    dialog_window_3 = (By.XPATH, "//a[contains(text(),'No, thanks')]")
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
-    dialog_window_2 = (By.XPATH, "//button[contains(text(),'OK, got it')]")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
     object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
+    delete_schema = (By.ID, "object-schema-delete-")
+    delete_schema_id = (By.CLASS_NAME, "js-delete-objectschema")
+    object_count_selector = (By.XPATH, "//div[contains(text(),'Object Count')]")
+    delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
+    submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
     # insight_create_new_object
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     view_all_schemas_selector = (By.ID, "rlabs-manage-main")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
-    object_name_field = (By.CSS_SELECTOR, "#rlabs-insight-attribute")
+    object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     admin_menu_dropdown = (By.ID, "admin_menu")
     admin_menu_issue = (By.ID, "admin_issues_menu")

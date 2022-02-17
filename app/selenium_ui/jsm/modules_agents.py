@@ -260,6 +260,7 @@ def insight_create_new_schema(webdriver, datasets):  # add delete schema
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
+        PopupManager(webdriver).dismiss_default_popup()
         insight_create_schema.create_new_schema()
 
     measure()

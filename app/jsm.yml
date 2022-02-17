@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: jsm-4-LoadB-AIXQH8M8NY2-253934411.us-east-2.elb.amazonaws.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -18,7 +18,7 @@ settings:
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
-    WEBDRIVER_VISIBLE: False
+    WEBDRIVER_VISIBLE: True
     JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.

@@ -250,18 +250,6 @@ def view_dashboard(webdriver, datasets):
     measure()
 
 
-def insight_workflow(webdriver, datasets):
-    insight_workflow_flow = Insight(webdriver)
-
-
-    @print_timing("selenium_insight_workflow")
-    def measure():
-        insight_workflow_flow.insight_create_new_schema()
-        insight_workflow_flow.insight_create_new_objects()
-        # insight_workflow_flow.add_insight_custom_field()
-    measure()
-
-
 def log_out(webdriver, datasets):
     logout_page = Logout(webdriver)
 

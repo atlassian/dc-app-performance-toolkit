@@ -11,8 +11,8 @@ class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3, PopupLocators.popup_4, PopupLocators.popup_5,
-                                  PopupLocators.popup_6)
+                                  PopupLocators.popup_3, PopupLocators.popup_4,
+                                  PopupLocators.popup_5)
 
 
 class Login(BasePage):
@@ -217,14 +217,19 @@ class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
         text = self.generate_random_string(10)
-        if not self.wait_until_visible(InsightLocators.dialog_window_1).click():
-        # self.wait_until_visible(InsightLocators.dialog_window_2).click()
-            self.wait_until_visible(InsightLocators.create_object_schemas).click()
-            self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
-            self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
-            self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
-            self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
-            self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+        delete_schema_locator = InsightLocators.delete_schema[1]
+        self.wait_until_visible(InsightLocators.create_object_schemas).click()
+        self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
+        self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
+        self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
+        self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
+        self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+        self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
+        self.execute_js(f"document.getElementById('{delete_schema_locator}{text}').click()")
+        self.wait_until_visible(InsightLocators.delete_window_selector)
+        self.wait_until_clickable(InsightLocators.submit_delete_button).click()
+        self.wait_until_clickable(InsightLocators.submit_delete_button).click()
+        self.wait_until_invisible(InsightLocators.submit_delete_button)
 
 
 class InsightNewObject(BasePage):
@@ -235,10 +240,9 @@ class InsightNewObject(BasePage):
         self.page_url = url_manager.view_insight_schema()
 
     def insight_create_new_objects(self):
-        text = self.generate_random_string(10)
         self.wait_until_visible(InsightLocators.create_object_button).click()
-        self.get_elements(InsightLocators.object_name_field)
-        self.get_element(InsightLocators.object_name_field).send_keys(text)
+        self.wait_until_visible(InsightLocators.object_name_field)
+        self.get_element(InsightLocators.object_name_field).send_keys(self.generate_random_string(10))
         self.wait_until_visible(InsightLocators.create_button)
         self.wait_until_visible(InsightLocators.create_button).click()
         self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
