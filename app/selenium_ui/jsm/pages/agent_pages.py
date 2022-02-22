@@ -216,7 +216,7 @@ class InsightLogin(BasePage):
 class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
-        text = self.generate_random_string(10)
+        text = self.generate_random_string(15)
         delete_schema_locator = InsightLocators.delete_schema[1]
         if not self.get_elements(InsightLocators.insight_dialog_news):
             self.wait_until_visible(InsightLocators.create_object_schemas)
@@ -230,7 +230,6 @@ class InsightNewSchema(BasePage):
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightLocators.object_schemas_name_field)
         self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
-        self.execute_js(f"document.getElementById('{delete_schema_locator}{text}')")
         self.execute_js(f"document.getElementById('{delete_schema_locator}{text}').click()")
         self.wait_until_visible(InsightLocators.delete_window_selector)
         self.wait_until_clickable(InsightLocators.submit_delete_button).click()
