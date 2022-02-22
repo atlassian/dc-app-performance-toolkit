@@ -178,8 +178,8 @@ class ViewRequestWithInsight(BasePage):
         self.wait_until_visible(CustomerPortalSelectors.create_request_button)
 
     def check_insight_field(self):
-        self.wait_until_visible(InsightSelectors.insight_field_selector)
-        self.wait_until_clickable(InsightSelectors.insight_field_selector).click()
+        self.wait_until_visible(InsightSelectors.insight_field)
+        self.wait_until_clickable(InsightSelectors.insight_field_icon).click()
         self.wait_until_visible(InsightSelectors.insight_choose_object_window)
         self.wait_until_visible(InsightSelectors.select_object_button_insight)
         self.wait_until_clickable(InsightSelectors.select_object_button_insight).click()

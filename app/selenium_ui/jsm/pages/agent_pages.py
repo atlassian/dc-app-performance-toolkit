@@ -228,6 +228,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
         self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
+        self.wait_until_invisible(InsightLocators.object_schemas_name_field)
         self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
         self.execute_js(f"document.getElementById('{delete_schema_locator}{text}').click()")
         self.wait_until_visible(InsightLocators.delete_window_selector)
