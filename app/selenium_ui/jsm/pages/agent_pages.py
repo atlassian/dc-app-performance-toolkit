@@ -244,6 +244,10 @@ class InsightNewObject(BasePage):
         self.page_url = url_manager.view_insight_schema()
 
     def insight_create_new_objects(self):
+        if not self.get_elements(InsightLocators.insight_dialog_news):
+            self.wait_until_visible(InsightLocators.create_object_button)
+            if self.get_elements(InsightLocators.insight_dialog_news):
+                self.wait_until_clickable(InsightLocators.insight_dialog_news).click()
         self.wait_until_visible(InsightLocators.create_object_button).click()
         self.wait_until_visible(InsightLocators.object_name_field)
         self.get_element(InsightLocators.object_name_field).send_keys(self.generate_random_string(10))
