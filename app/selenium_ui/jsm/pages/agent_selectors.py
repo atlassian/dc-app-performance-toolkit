@@ -143,6 +143,7 @@ class InsightLocators:
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.CSS_SELECTOR, "#rlabs-insight-create-name")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
+    object_schemas_created = (By.CSS_SELECTOR, "a[id^='object-schema-delete-")
     delete_schema = (By.ID, "object-schema-delete-")
     object_count_selector = (By.XPATH, "//div[contains(text(),'Object Count')]")
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
