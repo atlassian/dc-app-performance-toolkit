@@ -62,7 +62,7 @@ class Dataset:
             self.dataset["service_desks_medium"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_M)
             self.dataset["custom_issues"] = self.__read_input_file(JSM_DATASET_CUSTOM_ISSUES)
             self.dataset["insight_schemas"] = self.__read_input_file(JSM_DATASET_INSIGHT_SCHEMAS)
-            self.dataset["insight_issue"] = self.__read_input_file(JSM_DATASET_INSIGHT_ISSUES)
+            self.dataset["insight_issues"] = self.__read_input_file(JSM_DATASET_INSIGHT_ISSUES)
         return self.dataset
 
     def confluence_dataset(self):

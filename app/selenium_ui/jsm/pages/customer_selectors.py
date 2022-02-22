@@ -42,14 +42,12 @@ class LoginPageLocators:
 
 
 class TopPanelSelectors:
-
     profile_icon = (By.XPATH, '//a[@href="#dropdown2-header"]')
     profile_button = (By.CSS_SELECTOR, 'a.js-profile')
     logout_button = (By.CSS_SELECTOR, 'a.js-logout')
 
 
 class CustomerPortalsSelectors:
-
     welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
     browse_portals_button = (By.CSS_SELECTOR, "button.cv-smart-portal-browse-portals")
     full_portals_list = OrderedDict({"4.13.0": (By.CSS_SELECTOR, "ul.cv-smart-portal-all-portals-list"),
@@ -89,10 +87,13 @@ class RequestSelectors:
                                        '#select2-drop>ul.select2-results>li>div>span.user-picker-display-name')
 
     share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
+    list_of_requests_types = (By.ID, "cv-request-content")
+
+
+class InsightSelectors:
     insight_field_selector = (By.CLASS_NAME, "js-rlabs-sd-customfield-object-picker")
     insight_choose_object_window = (By.ID, "rlabs-customfields-objectpicker-filter")
     select_object_button_insight = (By.XPATH, "//button[contains(text(),'Select')]")
-    list_of_requests_types = (By.ID, "cv-request-content")
 
 
 class RequestsSelectors:

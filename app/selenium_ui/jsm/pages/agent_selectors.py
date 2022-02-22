@@ -8,13 +8,15 @@ class PopupLocators:
     popup_2 = '.aui-inline-dialog-contents .cancel'
     popup_3 = '.aui-close-button'
     popup_4 = '.aui-button aui-button-link'
-    popup_5 = '#dialog-submit-button'
+    popup_5 = '.buttons-container > div > a'
+    popup_6 = '#dialog-submit-button'
+    popup_7 = '*[id^=dialog-submit-button]'
 
 
 class UrlManager:
 
     def __init__(self, project_key=None, request_key=None, queue_id=None, custom_report_id=None,
-                 insight_issues_id=None, schema_id=None):
+                 insight_issues=None, schema_id=None):
         self.host = JSM_SETTINGS.server_url
         self.login_params = '/login.jsp'
         self.logout_params = '/logoutconfirm.jsp'
@@ -27,7 +29,7 @@ class UrlManager:
         self.workload_report_params = f'/projects/{project_key}/reports/workload'
         self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
         self.view_insight_queue_params = f'{self.view_queue}/1102'
-        self.view_issue_with_insight_object_params = f'/browse/{insight_issues_id}'
+        self.view_issue_with_insight_object_params = f'/browse/{insight_issues}'
         self.view_insight_schema_params = f'/secure/ObjectSchema.jspa?id={schema_id}'
         # with correct dataset need to be replaced with right variable(random issue with object)
 
@@ -132,42 +134,40 @@ class ViewQueueLocators:
 
 
 class InsightLocators:
-    # insight_all_selectors
-    # insight_schema
+    # insight
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
+
     # insight_create_new_schema
+    insight_dialog_news = (By.ID, 'dialog-submit-button')
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     object_schemas_hr_schema = (By.CLASS_NAME, "rlabs-template-preview")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.ID, "rlabs-insight-create-name")
-    object_schemas_key_field = (By.ID, "rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
     delete_schema = (By.ID, "object-schema-delete-")
-    delete_schema_id = (By.CLASS_NAME, "js-delete-objectschema")
     object_count_selector = (By.XPATH, "//div[contains(text(),'Object Count')]")
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
+
     # insight_create_new_object
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     view_all_schemas_selector = (By.ID, "rlabs-manage-main")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
-    admin_menu_dropdown = (By.ID, "admin_menu")
-    admin_menu_issue = (By.ID, "admin_issues_menu")
-    custom_fields_settings = (By.XPATH, "//a[@id='view_custom_fields']")
-    add_custom_field_button = (By.ID, "add_custom_fields")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
 
     # view_queue_insight_column
+    view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
-    insight_column = (By.CLASS_NAME, "_3DjtzZ5cCJ")
 
     # search_insight_object_by_IQL
     search_object_by_iql = (By.ID, "rlabs_iam_search_lnk")
     search_object_text_field = (By.CSS_SELECTOR, "textarea[name='iql']")
     search_iql_button = (By.CLASS_NAME, "rIcon-search")
+    search_iql_success = (By.XPATH, "//thead/tr[1]")
 
-    # view_issue_with_object
+    # view_issue_with_insight_object
+    issue_title = (By.ID, "summary-val")
     custom_field_insight = (By.ID, "rowForcustomfield_10600")

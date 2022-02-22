@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocators, TopPanelSelectors, \
-    CustomerPortalsSelectors, CustomerPortalSelectors, RequestSelectors, RequestsSelectors
+    CustomerPortalsSelectors, CustomerPortalSelectors, RequestSelectors, RequestsSelectors, InsightSelectors
 
 
 class Login(BasePage):
@@ -165,7 +165,7 @@ class Requests(BasePage):
 
 
 class ViewRequestWithInsight(BasePage):
-    def __init__(self, driver, portal_id='86'):  #using specific project with added insight to it (will be changed for random when permissions and etc will be added)
+    def __init__(self, driver, portal_id):  #using specific project with added insight to it (will be changed for random when permissions and etc will be added)
         BasePage.__init__(self, driver)
         url_manager = UrlManager(portal_id=portal_id)
         self.page_url = url_manager.portal_url()
@@ -178,9 +178,10 @@ class ViewRequestWithInsight(BasePage):
         self.wait_until_visible(CustomerPortalSelectors.create_request_button)
 
     def check_insight_field(self):
-        self.wait_until_visible(RequestSelectors.insight_field_selector).click()
-        self.wait_until_visible(RequestSelectors.insight_choose_object_window)
-        self.wait_until_visible(RequestSelectors.select_object_button_insight)
-        self.wait_until_clickable(RequestSelectors.select_object_button_insight).click()
-        self.wait_until_invisible(RequestSelectors.insight_choose_object_window)
+        self.wait_until_visible(InsightSelectors.insight_field_selector)
+        self.wait_until_clickable(InsightSelectors.insight_field_selector).click()
+        self.wait_until_visible(InsightSelectors.insight_choose_object_window)
+        self.wait_until_visible(InsightSelectors.select_object_button_insight)
+        self.wait_until_clickable(InsightSelectors.select_object_button_insight).click()
+        self.wait_until_invisible(InsightSelectors.insight_choose_object_window)
 

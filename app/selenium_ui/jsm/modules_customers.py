@@ -168,7 +168,7 @@ def share_request_with_customer(webdriver, datasets):
 
 
 def view_request_with_insight(webdriver, datasets):
-    view_request_with_insight_field = ViewRequestWithInsight(webdriver)
+    view_request_with_insight_field = ViewRequestWithInsight(webdriver, portal_id=datasets['customer_service_desk_id'])
 
     @print_timing("selenium_view_request_with_insight_field")
     def measure():

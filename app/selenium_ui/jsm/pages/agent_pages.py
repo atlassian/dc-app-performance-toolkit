@@ -12,7 +12,7 @@ class PopupManager(BasePage):
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
                                   PopupLocators.popup_3, PopupLocators.popup_4,
-                                  PopupLocators.popup_5)
+                                  PopupLocators.popup_5, PopupLocators.popup_6, PopupLocators.popup_7)
 
 
 class Login(BasePage):
@@ -218,6 +218,10 @@ class InsightNewSchema(BasePage):
     def create_new_schema(self):
         text = self.generate_random_string(10)
         delete_schema_locator = InsightLocators.delete_schema[1]
+        if not self.get_elements(InsightLocators.insight_dialog_news):
+            self.wait_until_visible(InsightLocators.create_object_schemas)
+            if self.get_elements(InsightLocators.insight_dialog_news):
+                self.wait_until_clickable(InsightLocators.insight_dialog_news).click()
         self.wait_until_visible(InsightLocators.create_object_schemas).click()
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
@@ -248,34 +252,41 @@ class InsightNewObject(BasePage):
         self.wait_until_invisible(InsightLocators.pop_up_after_create_object)
 
 
-class InsightActions(BasePage):
+class InsightViewQueue(BasePage):
 
-    def __init__(self, driver, project_key='AHSNDOOWEY'):
+    def __init__(self, driver, project_key=None):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(project_key=project_key)
         self.page_url = url_manager.view_insight_queue()
 
-    def view_random_queue_with_insight(
-            self):  # for know we going to look only in one (not random queue), but with the dataset we will do random
-        self.wait_until_visible(InsightLocators.view_queue_insight_column).click()
-        self.wait_until_visible(InsightLocators.insight_column)
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(InsightLocators.view_queue_page)
+
+    def view_random_queue_with_insight(self):
+        self.wait_until_clickable(InsightLocators.view_queue_insight_column)
+
+
+class InsightSearchObjectIql(BasePage):
 
     def search_object_by_iql(self):
-        iql_attribute_search = 'Name >= t'
+        iql_attribute_search = f'Name >= {self.generate_random_string(2)}'
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.search_object_by_iql).click()
         self.wait_until_visible(InsightLocators.search_object_text_field)
         self.get_element(InsightLocators.search_object_text_field).send_keys(iql_attribute_search)
         self.wait_until_visible(InsightLocators.search_iql_button).click()
+        self.wait_until_visible(InsightLocators.search_iql_success)
 
 
 class ViewIssueWithObject(BasePage):
 
-    def __init__(self, driver, insight_issues_id=None):
+    def __init__(self, driver, insight_issues=None):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager(insight_issues_id=insight_issues_id)
+        url_manager = UrlManager(insight_issues=insight_issues)
         self.page_url = url_manager.view_issue_with_object()
 
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(InsightLocators.issue_title)
+
     def view_issue_with_insight_custom_field(self):
-        # will use a specific issue with an insight custom field , after dataset will be created will use random choice
         self.wait_until_visible(InsightLocators.custom_field_insight)

@@ -462,8 +462,8 @@ def __write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
               in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
-    insight_issues = [f"{insight_issues['key']},{insight_issues['id']},{insight_issues['key'].split('-')[0]}"
-                      for insight_issues
+    insight_issues = [f"{insight_issue['key']},{insight_issue['id']},{insight_issue['key'].split('-')[0]}"
+                      for insight_issue
                       in datasets[INSIGHT_ISSUES]]
     __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
     schemas_id = [f"{schema_id['id']}"
