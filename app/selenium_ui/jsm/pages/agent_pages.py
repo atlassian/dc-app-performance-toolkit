@@ -216,8 +216,8 @@ class InsightLogin(BasePage):
 class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
-        text = self.generate_random_string(15)
-        delete_schema_locator = InsightLocators.delete_schema[1]+f'{text}'
+        new_schema_name = self.generate_random_string(15)
+        delete_schema_locator = InsightLocators.delete_schema[1]+f'{new_schema_name}'
         if not self.get_elements(InsightLocators.insight_dialog_news):
             self.wait_until_visible(InsightLocators.create_object_schemas)
             if self.get_elements(InsightLocators.insight_dialog_news):
@@ -226,7 +226,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
         self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
         self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
-        self.get_element(InsightLocators.object_schemas_name_field).send_keys(text)
+        self.get_element(InsightLocators.object_schemas_name_field).send_keys(new_schema_name)
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightLocators.object_schemas_name_field)
         self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
