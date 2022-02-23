@@ -251,7 +251,7 @@ def insight_main_page(webdriver, datasets):
     @print_timing("selenium_view_insight_main_page")
     def measure():
         view_insight_main_page.insight_schema()
-        view_insight_main_page.login_2(username=datasets['agent_username'], password=datasets['agent_password'])
+        view_insight_main_page.submit_login(username=datasets['agent_username'], password=datasets['agent_password'])
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
@@ -263,9 +263,7 @@ def insight_create_new_schema(webdriver, datasets):  # add delete schema
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
-        PopupManager(webdriver).dismiss_default_popup()
         insight_create_schema.create_new_schema()
-        PopupManager(webdriver).dismiss_default_popup()
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
@@ -321,7 +319,6 @@ def view_issue_with_insight_objects(webdriver, datasets):
 
 def logout(webdriver, datasets):
     logout_page = Logout(webdriver)
-    PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing("selenium_agent_logout")
     def measure():

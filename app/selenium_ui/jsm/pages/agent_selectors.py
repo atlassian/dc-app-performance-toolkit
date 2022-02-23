@@ -139,7 +139,7 @@ class InsightLocators:
     # insight_create_new_schema
     insight_dialog_news = (By.ID, 'dialog-submit-button')
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
-    object_schemas_hr_schema = (By.XPATH, "//div[contains(text(),'Create Sample IT Asset Schema')]")
+    new_object_schema = (By.XPATH, "//div[contains(text(),'Create Sample IT Asset Schema')]")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.CSS_SELECTOR, "#rlabs-insight-create-name")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")

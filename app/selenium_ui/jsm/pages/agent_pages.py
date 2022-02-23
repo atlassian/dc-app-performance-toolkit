@@ -206,8 +206,8 @@ class InsightLogin(BasePage):
         self.wait_until_clickable(InsightLocators.insight_dropdown).click()
         self.wait_until_visible(InsightLocators.insight_object_schemas_button).click()
 
-    # #second login required to start working with insight for admin but not for other users
-    def login_2(self, username, password):
+    # #sumbit login required to start working with insight
+    def submit_login(self, username, password):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
@@ -223,8 +223,8 @@ class InsightNewSchema(BasePage):
             if self.get_elements(InsightLocators.insight_dialog_news):
                 self.wait_until_clickable(InsightLocators.insight_dialog_news).click()
         self.wait_until_visible(InsightLocators.create_object_schemas).click()
-        self.wait_until_visible(InsightLocators.object_schemas_hr_schema)
-        self.wait_until_visible(InsightLocators.object_schemas_hr_schema).click()
+        self.wait_until_visible(InsightLocators.new_object_schema)
+        self.wait_until_visible(InsightLocators.new_object_schema).click()
         self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
         self.get_element(InsightLocators.object_schemas_name_field).send_keys(new_schema_name)
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
@@ -269,7 +269,7 @@ class InsightViewQueue(BasePage):
         self.wait_until_visible(InsightLocators.view_queue_page)
 
     def view_random_queue_with_insight(self):
-        self.wait_until_clickable(InsightLocators.view_queue_insight_column)
+        self.wait_until_visible(InsightLocators.view_queue_insight_column)
 
 
 class InsightSearchObjectIql(BasePage):
