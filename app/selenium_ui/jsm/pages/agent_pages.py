@@ -228,9 +228,9 @@ class InsightNewSchema(BasePage):
         self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
         self.get_element(InsightLocators.object_schemas_name_field).send_keys(InsightNewSchema.new_schema_name)
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
-        self.wait_until_invisible(InsightLocators.object_schemas_name_field)
 
     def delete_new_schema(self):
+        self.wait_until_invisible(InsightLocators.object_schemas_name_field)
         self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
         self.get_elements(InsightLocators.object_schemas_created)
         self.execute_js(f"document.getElementById('{InsightNewSchema.delete_schema_locator}').click()")
