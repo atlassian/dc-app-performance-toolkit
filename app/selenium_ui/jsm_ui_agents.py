@@ -20,11 +20,15 @@ def test_1_selenium_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_s
     modules_agents.insight_main_page(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_create_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):  # and delete
+def test_1_selenium_insight_create_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.insight_create_new_schema(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_create_new_object(jsm_webdriver, jsm_datasets, jira_screen_shots):  # and delete
+def test_1_selenium_insight_delete_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
+    modules_agents.insight_delete_new_schema(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_insight_create_new_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.insight_create_new_object(jsm_webdriver, jsm_datasets)
 
 
@@ -48,6 +52,8 @@ def test_1_selenium_agent_view_queues_medium(jsm_webdriver, jsm_datasets, jsm_sc
 
 def test_1_selenium_agent_view_queues_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     modules_agents.view_queues_small(jsm_webdriver, jsm_datasets)
+
+
 # #
 
 """

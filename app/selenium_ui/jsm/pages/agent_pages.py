@@ -214,10 +214,10 @@ class InsightLogin(BasePage):
 
 
 class InsightNewSchema(BasePage):
+    new_schema_name = BasePage.generate_random_string(10)
+    delete_schema_locator = InsightLocators.delete_schema[1] + f'{new_schema_name}'
 
     def create_new_schema(self):
-        new_schema_name = self.generate_random_string(15)
-        delete_schema_locator = InsightLocators.delete_schema[1]+f'{new_schema_name}'
         if not self.get_elements(InsightLocators.insight_dialog_news):
             self.wait_until_visible(InsightLocators.create_object_schemas)
             if self.get_elements(InsightLocators.insight_dialog_news):
@@ -226,12 +226,14 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightLocators.new_object_schema)
         self.wait_until_visible(InsightLocators.new_object_schema).click()
         self.wait_until_clickable(InsightLocators.object_schemas_next_button).click()
-        self.get_element(InsightLocators.object_schemas_name_field).send_keys(new_schema_name)
+        self.get_element(InsightLocators.object_schemas_name_field).send_keys(InsightNewSchema.new_schema_name)
         self.wait_until_clickable(InsightLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightLocators.object_schemas_name_field)
+
+    def delete_new_schema(self):
         self.action_chains().move_to_element(self.get_element(InsightLocators.object_count_selector)).perform()
         self.get_elements(InsightLocators.object_schemas_created)
-        self.execute_js(f"document.getElementById('{delete_schema_locator}').click()")
+        self.execute_js(f"document.getElementById('{InsightNewSchema.delete_schema_locator}').click()")
         self.wait_until_visible(InsightLocators.delete_window_selector)
         self.wait_until_clickable(InsightLocators.submit_delete_button).click()
         self.wait_until_clickable(InsightLocators.submit_delete_button).click()
