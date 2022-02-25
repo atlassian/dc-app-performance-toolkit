@@ -150,6 +150,7 @@ class InsightLocators:
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
 
     # insight_create_new_object
+    new_schema_locator = (By.CSS_SELECTOR, "//a[contains(text(),'Insight Schema 1')]")
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")

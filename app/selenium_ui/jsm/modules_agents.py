@@ -258,12 +258,11 @@ def insight_main_page(webdriver, datasets):
 
 
 def insight_create_new_schema(webdriver, datasets):
-    insight_create_schema = InsightNewSchema(webdriver)
-    PopupManager(webdriver).dismiss_default_popup()
+    insight_create_schema = InsightNewSchema(webdriver)  # page переименовать
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
-        insight_create_schema.create_new_schema()
+        datasets['schema_name'] = insight_create_schema.create_new_schema()
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
@@ -274,7 +273,7 @@ def insight_delete_new_schema(webdriver, datasets):
 
     @print_timing('selenium_insight_delete_new_schema')
     def measure():
-        insight_delete_schema.delete_new_schema()
+        insight_delete_schema.delete_new_schema(datasets['schema_name'])
 
     measure()
 
