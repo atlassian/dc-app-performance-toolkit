@@ -55,12 +55,24 @@ def __get_crowd_dataset(file_name):
     return __get_crowd_datasets() / file_name
 
 
+def __get_bamboo_yml():
+    return Path(__file__).parents[1] / "bamboo.yml"
+
+
+def __get_bamboo_datasets():
+    return __get_datasets() / "bamboo"
+
+
 def __get_confluence_datasets():
     return __get_datasets() / "confluence"
 
 
 def __get_confluence_dataset(file_name):
     return __get_confluence_datasets() / file_name
+
+
+def __get_bamboo_dataset(file_name):
+    return __get_bamboo_datasets() / file_name
 
 
 def __get_bitbucket_dataset(file_name):
@@ -120,6 +132,11 @@ BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 CROWD_YML = __get_crowd_yml()
 CROWD_DATASETS = __get_crowd_datasets()
 CROWD_USERS = __get_crowd_dataset('users.csv')
+
+BAMBOO_YML = __get_bamboo_yml()
+BAMBOO_DATASETS = __get_bamboo_datasets()
+BAMBOO_BUILD_PLANS = __get_bamboo_dataset('build_plans.csv')
+BAMBOO_USERS = __get_bamboo_dataset('users.csv')
 
 
 DEFAULT_TEST_ACTIONS = __get_default_test_actions()

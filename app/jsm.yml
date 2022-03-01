@@ -11,7 +11,7 @@ settings:
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter
+    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
     concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
     concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
     test_duration: 45m
@@ -19,7 +19,7 @@ settings:
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.2.1
+    JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
@@ -49,13 +49,17 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/data_preparation/jsm_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi*.jtl selenium.jtl
     post-process:
       - python util/analytics/analytics.py jsm
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==3.141.0
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
@@ -150,7 +154,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
+      version: "97.0.4692.71" # Supports Chrome version 97. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
   - data-source: sample-labels
     module: junit-xml

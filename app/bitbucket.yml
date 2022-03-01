@@ -17,13 +17,14 @@ settings:
     ramp-up: 10m                    # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.2.1
+    JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/pre_run/git_client_check.py
       - python util/data_preparation/bitbucket_prepare_data.py
     shutdown:
@@ -32,6 +33,9 @@ services:
     post-process:
       - python util/analytics/analytics.py bitbucket
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==3.141.0
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
@@ -85,7 +89,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "91.0.4472.101" # Supports Chrome version 91. You can refer to http://chromedriver.chromium.org/downloads
+      version: "97.0.4692.71" # Supports Chrome version 97. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

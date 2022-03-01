@@ -1,7 +1,11 @@
 import os
 import re
-from datetime import datetime
+import time
+from datetime import datetime, timedelta
 import csv
+
+import pytz
+
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
 
 GIT_OPERATIONS = ['jmeter_clone_repo_via_http', 'jmeter_clone_repo_via_ssh',
@@ -154,3 +158,16 @@ class ResultsFileReader(BaseFileReader):
             if line['Label'] in GIT_OPERATIONS:
                 count = count + int(line['# Samples'])
         return count
+
+
+class LocustFileReader(BaseFileReader):
+
+    locust_log_name = 'locust.log'
+
+    def get_locust_log(self):
+        locust_log_path = f'{self.log_dir}/{self.locust_log_name}'
+        self.validate_file_exists(locust_log_path)
+        with open(locust_log_path) as log_file:
+            log_file = log_file.readlines()
+            self.validate_file_not_empty(log_file)
+            return log_file

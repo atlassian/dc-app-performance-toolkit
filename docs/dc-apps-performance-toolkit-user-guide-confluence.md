@@ -4,11 +4,11 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-06-16"
+date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
-This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Confluence using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -66,7 +66,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.3` and `7.4.14` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 
 **Cluster nodes**
@@ -150,6 +150,10 @@ After creating the development environment Confluence Data Center, generate test
 
 {{% warning %}}
 Make sure **English** language is selected as a default language on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Languages** page. Other languages are **not supported** by the toolkit.
+{{% /warning %}}
+
+{{% warning %}}
+Make sure **Remote API** is enabled on the **![cog icon](/platform/marketplace/images/cog.png) &gt; General configuration &gt; Further Configuration** page.
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
@@ -380,7 +384,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value |
 | --------- | ----------------- |
 | Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.4.9` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `7.0.5` Platform Release |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.3` and `7.4.14` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -461,10 +465,7 @@ After successfully deploying Confluence Data Center in AWS, you'll need to confi
 1. On the **Setup Successful** page, click on the **Start**.
 1. After going through the welcome setup, enter any **Space name** to create an initial space and click **Continue**.
 1. Enter the first page title and click **Publish**.
-
-{{% note %}}
-After [Preloading your Confluence deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
+---
 
 ### <a id="preloading"></a>6. Preloading your Confluence deployment with an enterprise-scale dataset
 
@@ -597,16 +598,39 @@ Do not close or interrupt the session. It will take some time to upload attachme
 
 For more information, go to [Re-indexing Confluence](https://confluence.atlassian.com/doc/content-index-administration-148844.html).
 
-{{% note %}}
-For Confluence 7, `populate_db.sh` script triggers index process automatically. So no need to start index manually once again, just wait until current index process is finished.
-{{% /note %}}
+Index process is triggered automatically after `polulate_db.sh` script execution.
 
-For Confluence 6:
+For Confluence **7.4.x**:
+
 1. Log in as a user with the **Confluence System Administrators** [global permission](https://confluence.atlassian.com/doc/global-permissions-overview-138709.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; General Configuration &gt; Content Indexing**.
-1. Click **Rebuild** and wait until re-indexing is completed.
+1. Wait until re-indexing is completed.
 
-Confluence will be unavailable for some time during the re-indexing process.
+For Confluence **7.13.x**:
+
+1. Using SSH, connect to the Confluence node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
+1. Download the [index-wait-till-finished.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/confluence/index-wait-till-finished.sh) script and make it executable:
+
+    ``` bash
+    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/confluence/index-wait-till-finished.sh && chmod +x index-wait-till-finished.sh
+    ```
+1. Run the script:
+
+    ``` bash
+    ./index-wait-till-finished.sh 2>&1 | tee -a index-wait-till-finished.log
+    ```
 
 ### <a id="index-snapshot"></a> Create Index Snapshot (~30 min)
 
@@ -637,12 +661,24 @@ For more information, go to [Administer your Data Center search index](https://c
     Snapshot was created successfully.
     ```
 
+---
+{{% note %}}
+After [Preloading your Confluence deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
+---
+
 ### <a id="executionhost"></a>7. Setting up an execution environment
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `confluence.yml` configuration file. Set enterprise-scale Confluence Data Center parameters:
+
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
 
    ``` yaml
        application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
@@ -660,8 +696,8 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -914,8 +950,9 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

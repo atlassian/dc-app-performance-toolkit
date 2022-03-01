@@ -17,7 +17,8 @@ CROWD_DB_USER="postgres"
 CROWD_DB_PASS="Password1!"
 
 # Crowd version variables
-SUPPORTED_CROWD_VERSIONS=(4.3.0)
+BASE_CROWD_VERSION=4.3.0
+SUPPORTED_CROWD_VERSIONS=(4.4.0)
 
 if [[ ! $(systemctl status crowd) ]]; then
   echo "The Crowd service was not found on this host." \
@@ -44,10 +45,10 @@ DB_DUMP_NAME="db.dump"
 if [[ ! "${SUPPORTED_CROWD_VERSIONS[*]}" =~ ${CROWD_VERSION} ]]; then
   echo "Crowd Version: ${CROWD_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Crowd Versions: ${SUPPORTED_CROWD_VERSIONS[*]}"
-  echo "!!! Warning !!! Dump from version ${SUPPORTED_CROWD_VERSIONS[0]} would be used"
+  echo "!!! Warning !!! Dump from version $BASE_CROWD_VERSION would be used"
 fi
 
-DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${SUPPORTED_CROWD_VERSIONS[0]}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$BASE_CROWD_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 echo "!!! Warning !!!"
 echo # move to a new line
@@ -109,7 +110,21 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step4: Download DB dump"
+echo "Step4: Write 'base.url' property to file"
+CROWD_BASE_URL_FILE="base_url"
+if [[ -s ${CROWD_BASE_URL_FILE} ]]; then
+  echo "File ${CROWD_BASE_URL_FILE} was found. Base url: $(cat ${CROWD_BASE_URL_FILE})."
+else
+  PGPASSWORD=${CROWD_DB_PASS} psql -h ${DB_HOST} -d ${CROWD_DB_NAME} -U ${CROWD_DB_USER} -Atc \
+  "select property_value from cwd_property where property_name='base.url';" > ${CROWD_BASE_URL_FILE}
+  if [[ ! -s ${CROWD_BASE_URL_FILE} ]]; then
+    echo "Failed to get Base URL value from database. Check DB configuration variables."
+    exit 1
+  fi
+  echo "$(cat ${CROWD_BASE_URL_FILE}) was written to the ${CROWD_BASE_URL_FILE} file."
+fi
+
+echo "Step5: Download DB dump"
 rm -rf ${DB_DUMP_NAME}
 ARTIFACT_SIZE_BYTES=$(curl -sI ${DB_DUMP_URL} | grep "Content-Length" | awk {'print $2'} | tr -d '[:space:]')
 ARTIFACT_SIZE_GB=$((${ARTIFACT_SIZE_BYTES}/1024/1024/1024))
@@ -129,7 +144,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step5: SQL Restore"
+echo "Step6: SQL Restore"
 echo "Drop DB"
 PGPASSWORD=${CROWD_DB_PASS} dropdb -U ${CROWD_DB_USER} -h ${DB_HOST} ${CROWD_DB_NAME}
 if [[ $? -ne 0 ]]; then
@@ -151,9 +166,27 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "Step6: Start Crowd"
+echo "Step7: Update 'base.url' property in database"
+if [[ -s ${CROWD_BASE_URL_FILE} ]]; then
+  BASE_URL=$(cat ${CROWD_BASE_URL_FILE})
+  if [[ $(PGPASSWORD=${CROWD_DB_PASS} psql -h ${DB_HOST} -d ${CROWD_DB_NAME} -U ${CROWD_DB_USER} -c \
+    "UPDATE cwd_property SET property_value = '${BASE_URL}' WHERE property_name = 'base.url';") != "UPDATE 1" ]]; then
+    echo "Couldn't update database 'base.url' property. Please check your database connection."
+    exit 1
+  else
+    echo "The database 'base.url' property was updated with ${BASE_URL}"
+  fi
+else
+  echo "The ${CROWD_BASE_URL_FILE} file doesn't exist or empty. Please check file existence or 'base.url' property in the database."
+  exit 1
+fi
+
+echo "Step8: Start Crowd"
 sudo systemctl start crowd
 rm -rf ${DB_DUMP_NAME}
+
+echo "Step9: Remove ${CROWD_BASE_URL_FILE} file"
+sudo rm ${CROWD_BASE_URL_FILE}
 
 echo "DCAPT util script execution is finished successfully."
 echo  # move to a new line
