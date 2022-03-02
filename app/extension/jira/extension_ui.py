@@ -34,10 +34,10 @@ def app_specific_action(webdriver, datasets):
 
     @print_timing("selenium_app_custom_action")
     def measure():
-        @print_timing("selenium_app_custom_action:open_jma")
+        @print_timing("selenium_app_custom_action:open_sma")
         def sub_measure():
-            page.go_to_url(f"{JIRA_SETTINGS.server_url}/projects/AABIS?selectedItem=tech.realigned.journeymap:sidebar-item#/")
-            page.wait_until_visible((By.ID, "storymap-wrapper"))  # Wait for you app-specific UI element by ID selector
+            page.go_to_url(f"{JIRA_SETTINGS.server_url}/projects/AABIS?selectedItem=tech.realigned.storymap:sidebar-item#/")
+            page.wait_until_visible((By.ID, "app"))  # Wait for you app-specific UI element by ID selector
         sub_measure()
     measure()
 
