@@ -131,11 +131,12 @@ class ViewQueueLocators:
     queue_is_empty = (By.CSS_SELECTOR, '.sd-queue-empty')
 
 
-class InsightLocators:
-    # insight
+class InsightMainPageLocators:
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
     insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
 
+
+class InsightNewSchemaLocators:
     # insight_create_new_schema
     insight_dialog_news = (By.ID, 'dialog-submit-button')
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
@@ -143,30 +144,37 @@ class InsightLocators:
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.CSS_SELECTOR, "#rlabs-insight-create-name")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
+
+
+class InsightDeleteSchemaLocators:
+    delete_page_selector = (By.XPATH, "//div[contains(text(),'Object Schema Name')]")
     object_schemas_created = (By.CSS_SELECTOR, "a[id^='object-schema-delete-")
     delete_schema = (By.ID, "object-schema-delete-")
-    object_count_selector = (By.XPATH, "//div[contains(text(),'Object Count')]")
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
 
-    # insight_create_new_object
-    new_schema_locator = (By.CSS_SELECTOR, "//a[contains(text(),'Insight Schema 1')]")
+
+class InsightNewObjectLocators:
     create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
     random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
 
-    # view_queue_insight_column
+
+class InsightViewQueueLocators:
     view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
 
-    # search_insight_object_by_IQL
+
+class InsightSearchObjectIql:
     search_object_by_iql = (By.ID, "rlabs_iam_search_lnk")
     search_object_text_field = (By.CSS_SELECTOR, "textarea[name='iql']")
     search_iql_button = (By.CLASS_NAME, "rIcon-search")
     search_iql_success = (By.XPATH, "//thead/tr[1]")
 
-    # view_issue_with_insight_object
+
+class InsightViewIssue:
+
     issue_title = (By.ID, "summary-val")
     custom_field_insight = (By.ID, "rowForcustomfield_10600")
