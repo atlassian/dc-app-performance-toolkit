@@ -4,7 +4,7 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: jsm-4-LoadB-PE17705X0WH-1191299691.us-east-2.elb.amazonaws.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: jsm-4-LoadB-1KG25VSVAARO9-1827648572.us-east-2.elb.amazonaws.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate

@@ -155,8 +155,7 @@ class InsightDeleteSchemaLocators:
 
 
 class InsightNewObjectLocators:
-    create_object_button = (By.XPATH, "//button[contains(text(),'Create Object')]")
-    random_insight_schema = (By.XPATH, "//a[contains(text(),'test schema')]")
+    create_object_button = (By.ID, "rlabs-create-object")
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")

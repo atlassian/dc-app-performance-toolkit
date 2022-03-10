@@ -3,7 +3,7 @@ import random
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
     ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightViewQueue, \
-    ViewIssueWithObject, InsightSearchObjectIql
+    ViewIssueWithObject, InsightSearchByIql
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -258,33 +258,34 @@ def insight_main_page(webdriver, datasets):
 
 
 def insight_create_new_schema(webdriver, datasets):
-    insight_create_schema = InsightNewSchema(webdriver)  # page переименовать
+    insight_create_schema_page = InsightNewSchema(webdriver)  # page переименовать
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
-        datasets['schema_name'] = insight_create_schema.create_new_schema()
+        datasets['schema_name'] = insight_create_schema_page.create_new_schema()
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def insight_delete_new_schema(webdriver, datasets):
-    insight_delete_schema = InsightNewSchema(webdriver)
+    insight_delete_schema_page = InsightNewSchema(webdriver)
 
     @print_timing('selenium_insight_delete_new_schema')
     def measure():
-        insight_delete_schema.delete_new_schema(datasets['schema_name'])
+        insight_delete_schema_page.delete_new_schema(datasets['schema_name'])
 
     measure()
 
 
 def insight_create_new_object(webdriver, datasets):
-    insight_new_object = InsightNewObject(webdriver, schema_id=datasets['schema_id'])
+    insight_new_object_page = InsightNewObject(webdriver, schema_id=datasets['schema_id'])
 
     @print_timing('selenium_insight_create_new_object')
     def measure():
-        insight_new_object.go_to()
-        insight_new_object.insight_create_new_objects()
+        insight_new_object_page.go_to()
+        insight_new_object_page.wait_for_page_loaded()
+        insight_new_object_page.insight_create_new_objects()
 
     measure()
 
@@ -303,25 +304,25 @@ def insight_view_queue_insight_column(webdriver, datasets):
 
 
 def insight_search_object_by_iql(webdriver, datasets):
-    search_object_by_iql = InsightSearchObjectIql(webdriver)
+    search_object_by_iql_page = InsightSearchByIql(webdriver)
     PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing('selenium_search_object_by_iql')
     def measure():
         PopupManager(webdriver).dismiss_default_popup()
-        search_object_by_iql.search_object_by_iql()
+        search_object_by_iql_page.search_object_by_iql()
 
     measure()
 
 
 def view_issue_with_insight_objects(webdriver, datasets):
-    view_issue_with_objects = ViewIssueWithObject(webdriver, insight_issues=datasets["issue_key"])
+    view_issue_with_objects_page = ViewIssueWithObject(webdriver, insight_issues=datasets["issue_key"])
 
     @print_timing('selenium_view_issue_with_objects')
     def measure():
-        view_issue_with_objects.go_to()
-        view_issue_with_objects.wait_for_page_loaded()
-        view_issue_with_objects.view_issue_with_insight_custom_field()
+        view_issue_with_objects_page.go_to()
+        view_issue_with_objects_page.wait_for_page_loaded()
+        view_issue_with_objects_page.view_issue_with_insight_custom_field()
 
     measure()
 
