@@ -28,8 +28,7 @@ class UrlManager:
         self.custom_report_params = f'/projects/{project_key}/reports/custom/{custom_report_id}'
         self.view_insight_queue_params = f'{self.view_queue}/1102'
         self.view_issue_with_insight_object_params = f'/browse/{insight_issues}'
-        self.view_insight_schema_params = f'/secure/ObjectSchema.jspa?id={schema_id}'
-        # with correct dataset need to be replaced with right variable(random issue with object)
+        self.view_insight_all_schemas_params = '/secure/ManageObjectSchema.jspa'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -64,8 +63,8 @@ class UrlManager:
     def view_issue_with_object(self):
         return f'{self.host}{self.view_issue_with_insight_object_params}'
 
-    def view_insight_schema(self):
-        return f'{self.host}{self.view_insight_schema_params}'
+    def view_insight_all_schemas(self):
+        return f'{self.host}{self.view_insight_all_schemas_params}'
 
 
 class LoginPageLocators:
@@ -145,13 +144,22 @@ class InsightNewSchemaLocators:
     object_schemas_name_field = (By.CSS_SELECTOR, "#rlabs-insight-create-name")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
 
+    @staticmethod
+    def get_new_object_schema_name_locator(name):
+        return By.XPATH, f"//a[contains(text(),'{name}')]"
+
 
 class InsightDeleteSchemaLocators:
-    delete_page_selector = (By.XPATH, "//div[contains(text(),'Object Schema Name')]")
-    object_schemas_created = (By.CSS_SELECTOR, "a[id^='object-schema-delete-")
-    delete_schema = (By.ID, "object-schema-delete-")
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
+    pop_up_after_delete_schema = (By.ID, "aui-flag-container")
+
+    @staticmethod
+    def new_object_schema_id_locator(schema_id):
+        return By.CSS_SELECTOR, f"a[aria-owns='rlabs-actions-{schema_id}"
+    @staticmethod
+    def new_object_schema_delete_button_locator(name):
+        return By.ID, f"object-schema-delete-{name}"
 
 
 class InsightNewObjectLocators:
@@ -174,6 +182,5 @@ class InsightSearchObjectIql:
 
 
 class InsightViewIssue:
-
     issue_title = (By.ID, "summary-val")
     custom_field_insight = (By.ID, "rowForcustomfield_10600")

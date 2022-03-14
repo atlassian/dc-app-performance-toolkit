@@ -233,26 +233,35 @@ class InsightNewSchema(BasePage):
 
         return new_schema_name
 
-    def delete_new_schema(self, schema_name):
-        delete_schema_locator = InsightDeleteSchemaLocators.delete_schema[1] + schema_name
-        self.wait_until_clickable(InsightMainPageLocators.insight_dropdown).click()
-        self.wait_until_visible(InsightMainPageLocators.insight_object_schemas_button).click()
+
+class InsightDeleteSchema(BasePage):
+
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager()
+        self.page_url = url_manager.view_insight_all_schemas()
+
+    def wait_for_page_loaded(self):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
-        self.wait_until_visible(InsightDeleteSchemaLocators.delete_page_selector)
-        self.get_element(InsightDeleteSchemaLocators.object_schemas_created)
-        self.execute_js(f"document.getElementById('{delete_schema_locator}').click()")
+
+    def delete_new_schema(self, schema_name):
+        new_schema_id = self.wait_until_visible(
+            InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).get_attribute('href').split('=')[1]
+        self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
+        self.wait_until_clickable(InsightDeleteSchemaLocators.new_object_schema_id_locator(new_schema_id)).click()
+        self.wait_until_clickable(InsightDeleteSchemaLocators.
+                                  new_object_schema_delete_button_locator(schema_name)).click()
         self.wait_until_visible(InsightDeleteSchemaLocators.delete_window_selector)
         self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
         self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
         self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button)
+        self.wait_until_visible(InsightDeleteSchemaLocators.pop_up_after_delete_schema)
 
 
 class InsightNewObject(BasePage):
 
-    def __init__(self, driver, schema_id=None):
-        BasePage.__init__(self, driver)
-        url_manager = UrlManager(schema_id=schema_id)
-        self.page_url = url_manager.view_insight_schema()
+    def go_to_new_schema(self, schema_name):
+        self.wait_until_clickable(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).click()
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(InsightNewObjectLocators.create_object_button)

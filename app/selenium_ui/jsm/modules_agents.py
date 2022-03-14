@@ -2,8 +2,8 @@ import random
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightViewQueue, \
-    ViewIssueWithObject, InsightSearchByIql
+    ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightDeleteSchema,\
+    InsightViewQueue, ViewIssueWithObject, InsightSearchByIql
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
 
@@ -268,24 +268,26 @@ def insight_create_new_schema(webdriver, datasets):
     PopupManager(webdriver).dismiss_default_popup()
 
 
-def insight_delete_new_schema(webdriver, datasets):
-    insight_delete_schema_page = InsightNewSchema(webdriver)
+def insight_create_new_object(webdriver, datasets):
+    insight_new_object_page = InsightNewObject(webdriver)
 
-    @print_timing('selenium_insight_delete_new_schema')
+    @print_timing('selenium_insight_create_new_object')
     def measure():
-        insight_delete_schema_page.delete_new_schema(datasets['schema_name'])
+        insight_new_object_page.go_to_new_schema(datasets['schema_name'])
+        insight_new_object_page.wait_for_page_loaded()
+        insight_new_object_page.insight_create_new_objects()
 
     measure()
 
 
-def insight_create_new_object(webdriver, datasets):
-    insight_new_object_page = InsightNewObject(webdriver, schema_id=datasets['schema_id'])
+def insight_delete_new_schema(webdriver, datasets):
+    insight_delete_schema_page = InsightDeleteSchema(webdriver)
 
-    @print_timing('selenium_insight_create_new_object')
+    @print_timing('selenium_insight_delete_new_schema')
     def measure():
-        insight_new_object_page.go_to()
-        insight_new_object_page.wait_for_page_loaded()
-        insight_new_object_page.insight_create_new_objects()
+        insight_delete_schema_page.go_to()
+        insight_delete_schema_page.wait_for_page_loaded()
+        insight_delete_schema_page.delete_new_schema(datasets['schema_name'])
 
     measure()
 

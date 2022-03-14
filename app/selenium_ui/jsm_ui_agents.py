@@ -24,12 +24,12 @@ def test_1_selenium_insight_create_new_schema(jsm_webdriver, jsm_datasets, jira_
     modules_agents.insight_create_new_schema(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_delete_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
-    modules_agents.insight_delete_new_schema(jsm_webdriver, jsm_datasets)
-
-
 def test_1_selenium_insight_create_new_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
     modules_agents.insight_create_new_object(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_insight_delete_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
+    modules_agents.insight_delete_new_schema(jsm_webdriver, jsm_datasets)
 
 
 def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
