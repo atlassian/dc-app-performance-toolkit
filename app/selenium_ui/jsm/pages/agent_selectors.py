@@ -146,7 +146,7 @@ class InsightNewSchemaLocators:
 
     @staticmethod
     def get_new_object_schema_name_locator(name):
-        return By.XPATH, f"//a[contains(text(),'{name}')]"
+        return (By.XPATH, f"//a[contains(text(),'{name}')]")
 
 
 class InsightDeleteSchemaLocators:
@@ -156,10 +156,11 @@ class InsightDeleteSchemaLocators:
 
     @staticmethod
     def new_object_schema_id_locator(schema_id):
-        return By.CSS_SELECTOR, f"a[aria-owns='rlabs-actions-{schema_id}"
+        return (By.CSS_SELECTOR, f"a[aria-owns='rlabs-actions-{schema_id}")
+
     @staticmethod
     def new_object_schema_delete_button_locator(name):
-        return By.ID, f"object-schema-delete-{name}"
+        return (By.ID, f"object-schema-delete-{name}")
 
 
 class InsightNewObjectLocators:
