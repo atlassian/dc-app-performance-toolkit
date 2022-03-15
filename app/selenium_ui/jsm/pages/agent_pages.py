@@ -260,10 +260,17 @@ class InsightDeleteSchema(BasePage):
 
 class InsightNewObject(BasePage):
 
-    def go_to_new_schema(self, schema_name):
-        self.wait_until_clickable(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).click()
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager()
+        self.page_url = url_manager.view_insight_all_schemas()
 
     def wait_for_page_loaded(self):
+        self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
+
+    def go_to_new_schema(self, schema_name):
+        self.wait_until_visible(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name))
+        self.wait_until_clickable(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).click()
         self.wait_until_visible(InsightNewObjectLocators.create_object_button)
 
     def insight_create_new_objects(self):
