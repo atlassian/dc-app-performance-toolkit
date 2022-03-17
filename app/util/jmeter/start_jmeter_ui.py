@@ -1,26 +1,37 @@
-import sys
-if sys.version_info < (3, 6):
-    raise SystemExit("ERROR: Script requires Python 3.6+. Current version: {}.\n"
-                     "Please make sure you use correct virtualenv.".format(sys.version_info[0:3]))
-
 import argparse
-from platform import system
 from pathlib import Path
+from platform import system
 from subprocess import run
+from sys import version_info
 
 import yaml
+
+SUPPORTED_PYTHON_VERSIONS = ["3.7", "3.8", "3.9"]
+
+python_full_version = '.'.join(map(str, version_info[0:3]))
+python_short_version = '.'.join(map(str, version_info[0:2]))
+print("Python version: {}".format(python_full_version))
+if python_short_version not in SUPPORTED_PYTHON_VERSIONS:
+    raise SystemExit("Python version {} is not supported. "
+                     "Supported versions: {}.".format(python_full_version, SUPPORTED_PYTHON_VERSIONS))
 
 JIRA = "jira"
 CONFLUENCE = "confluence"
 BITBUCKET = "bitbucket"
 JSM = "jsm"
+CROWD = "crowd"
+BAMBOO = "bamboo"
 APP_DIR = Path(__file__).resolve().parents[2]
 PROPERTIES = APP_DIR / "util" / "jmeter" / "jmeter.properties"
 JIRA_YML = APP_DIR / "jira.yml"
+CROWD_YML = APP_DIR / "crowd.yml"
 CONFLUENCE_YML = APP_DIR / "confluence.yml"
 BITBUCKET_YML = APP_DIR / "bitbucket.yml"
 JSM_YML = APP_DIR / "jsm.yml"
+BAMBOO_YML = APP_DIR / "bamboo.yml"
 JIRA_JMX = APP_DIR / "jmeter" / "jira.jmx"
+CROWD_JMX = APP_DIR / "jmeter" / "crowd.jmx"
+BAMBOO_JMX = APP_DIR / "jmeter" / "bamboo.jmx"
 CONFLUENCE_JMX = APP_DIR / "jmeter" / "confluence.jmx"
 BITBUCKET_JMX = APP_DIR / "jmeter" / "bitbucket.jmx"
 JSM_JMX_AGENTS = APP_DIR / "jmeter" / "jsm_agents.jmx"
@@ -30,7 +41,9 @@ WINDOWS = "Windows"
 DEFAULT_HOSTNAMES = ['test_jira_instance.atlassian.com',
                      'test_confluence_instance.atlassian.com',
                      'test_bitbucket_instance.atlassian.com',
-                     'test_jsm_instance.atlassian.com']
+                     'test_jsm_instance.atlassian.com',
+                     'test_crowd_instance.atlassian.com',
+                     'test-bamboo.atlassian.com']
 AGENTS = "agents"
 CUSTOMERS = "customers"
 
@@ -41,11 +54,11 @@ class StartJMeter:
         self.env_settings = dict()
         self.jmeter_properties = dict()
         parser = argparse.ArgumentParser(description='Edit yml config')
-        parser.add_argument('--app', type=str, help='e.g. --app jira/confluence/bitbucket/jsm')
+        parser.add_argument('--app', type=str, help='e.g. --app jira/confluence/bitbucket/jsm/bamboo')
         parser.add_argument('--type', type=str, help='jsm specific flag e.g. --type agents/customers')
         self.args = parser.parse_args()
         if not self.args.app:
-            raise SystemExit('Application type is not specified. e.g. --app jira/confluence/bitbucket/jsm')
+            raise SystemExit('Application type is not specified. e.g. --app jira/confluence/bitbucket/jsm/bamboo')
         if self.args.app == JIRA:
             self.yml = JIRA_YML
             self.jmx = JIRA_JMX
@@ -55,6 +68,12 @@ class StartJMeter:
         elif self.args.app == BITBUCKET:
             self.yml = BITBUCKET_YML
             self.jmx = BITBUCKET_JMX
+        elif self.args.app == CROWD:
+            self.yml = CROWD_YML
+            self.jmx = CROWD_JMX
+        elif self.args.app == BAMBOO:
+            self.yml = BAMBOO_YML
+            self.jmx = BAMBOO_JMX
         elif self.args.app == JSM:
             if not self.args.type:
                 raise SystemExit('JSM user type is not specified. e.g. --type agents/customers')

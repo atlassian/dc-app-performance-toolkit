@@ -1,5 +1,7 @@
-from util.api.abstract_clients import RestClient
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import RestClient
+from selenium_ui.conftest import retry
+
 BATCH_SIZE_USERS = 1000
 
 
@@ -77,13 +79,19 @@ class JsmRestClient(RestClient):
 
         return response.json()
 
-    def get_request(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, issue_id_or_key: str = ''):
+    def get_request(self, issue_id_or_key: str, auth: tuple = None):
+        api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}"
+        response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+        return response.json()
+
+    def get_requests(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, status: str = None):
         """
         Returns the customer request for a given request Id/key.
         :param issue_id_or_key:
         :param auth:
         :param start_at:
         :param max_results:
+        :param status:
         :return:
         """
         BATCH_REQUEST_SIZE = 100
@@ -93,20 +101,16 @@ class JsmRestClient(RestClient):
         max_results = BATCH_REQUEST_SIZE if max_results > BATCH_REQUEST_SIZE else max_results
         requests = []
 
+        init_url = self.host + "/rest/servicedeskapi/request"
         while loop_count > 0:
 
-            api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}?start={start_at}" \
-                                  f"&limit={max_results}" if issue_id_or_key else \
-                self.host + f"/rest/servicedeskapi/request?start={start_at}&limit={max_results}"
+            api_url = init_url + f"?start={start_at}&limit={max_results}"
+            if status:
+                api_url += f"&requestStatus={status}"
 
-            response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
-            if 'values' in response.json():
-                values = response.json()['values']
-                requests.extend(values)
-            else:
-                values = response.json()
-                requests.append(values)
-                break
+            response = self.get(api_url, f"Could not get customer requests ", auth=auth)
+            values = response.json()['values']
+            requests.extend(values)
 
             if 'isLastPage' in response.json() and response.json()['isLastPage']:
                 break
@@ -117,6 +121,7 @@ class JsmRestClient(RestClient):
                 max_results = last_loop_remainder
         return requests
 
+    @retry()
     def get_queue(self, service_desk_id: int, start: int = 0):
         """
         Returns the customer request for a given request Id/key.
@@ -128,6 +133,7 @@ class JsmRestClient(RestClient):
         response = self.get(api_url, f"Could not get queues for service desk {service_desk_id}")
         return response.json()['values']
 
+    @retry()
     def get_request_types(self, service_desk_id):
         """
         Returns all request types from a service desk, for a given service desk Id.
@@ -151,6 +157,7 @@ class JsmRestClient(RestClient):
                                      f"service desk id {service_desk_id} and request type is {request_type_id}")
         return response.json()['requestTypeFields']
 
+    @retry()
     def get_all_service_desks(self):
         """
         Returns all service desks in the Jira Service Desk application.
@@ -170,6 +177,7 @@ class JsmRestClient(RestClient):
                 start = start + limit
         return results
 
+    @retry()
     def get_servicedesk_info(self):
         """
         This resource represents the Jira Service Desk application.
@@ -179,6 +187,7 @@ class JsmRestClient(RestClient):
         response = self.get(api_url, "Could not get request Service desk info.")
         return response
 
+    @retry()
     def get_service_desk_reports(self, project_key: str = ''):
         api_url = self.host + f"/rest/servicedesk/1/{project_key}/webfragments/sections/sd-reports-nav-custom-section"
         payload = {
@@ -318,6 +327,33 @@ class JsmRestClient(RestClient):
         while not finished:
             api_url = self.host + f"/rest/servicedeskapi/organization?start={start}&limit={limit}"
             r = self.get(api_url, "Could not get all organisations", headers=jsm_headers, auth=auth).json()
+            results.extend(r['values'])
+            if r['isLastPage']:
+                finished = True
+            else:
+                start = start + limit
+
+        if max_count:
+            return results[:max_count]
+        return results
+
+    def get_all_users_in_organization(self, org_id: int, max_count: int = None):
+        """
+        Get all user in organization
+        :param org_id:
+        :param max_count:
+        :param auth:
+        :return:
+        """
+        jsm_headers = JSM_EXPERIMENTAL_HEADERS
+
+        start = 0
+        limit = 50
+        finished = False
+        results = []
+        while not finished:
+            api_url = self.host + f"/rest/servicedeskapi/organization/{org_id}/user?start={start}&limit={limit}"
+            r = self.get(api_url, "Could not get all organisations", headers=jsm_headers).json()
             results.extend(r['values'])
             if r['isLastPage']:
                 finished = True

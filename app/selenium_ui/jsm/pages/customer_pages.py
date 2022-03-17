@@ -1,5 +1,7 @@
 import random
 from datetime import datetime
+
+from packaging import version
 from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
@@ -9,13 +11,21 @@ from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocato
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
-    page_loaded_selector = LoginPageLocators.welcome_logged_in_page
+    page_loaded_selector = LoginPageLocators.login_submit_button
 
     def set_credentials(self, username, password):
         self.wait_until_visible(LoginPageLocators.login_field)
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
+
+    def is_logged_in(self):
+        elements = self.get_elements(CustomerPortalsSelectors.welcome_logged_in_page)
+        return True if elements else False
+
+    def get_app_version(self):
+        version_str = self.get_element(LoginPageLocators.app_version).get_attribute('content')
+        return version.parse(version_str)
 
 
 class TopPanel(BasePage):
@@ -30,11 +40,12 @@ class TopPanel(BasePage):
 
 
 class CustomerPortals(BasePage):
+    page_loaded_selector = CustomerPortalsSelectors.welcome_logged_in_page
 
     def browse_projects(self):
         self.wait_until_visible(CustomerPortalsSelectors.browse_portals_button)
         self.get_element(CustomerPortalsSelectors.browse_portals_button).click()
-        self.wait_until_visible(CustomerPortalsSelectors.full_portals_list)
+        self.wait_until_visible(self.get_selector(CustomerPortalsSelectors.full_portals_list))
 
     def open_random_portal(self):
         portals = self.get_elements(CustomerPortalsSelectors.portal_from_list)
@@ -66,8 +77,8 @@ class CustomerPortal(BasePage):
     def create_and_submit_request(self):
         self.get_element(CustomerPortalSelectors.summary_field).\
             send_keys(f'Selenium - {self.generate_random_string(5)}')
-        self.get_element(CustomerPortalSelectors.description_field).\
-            send_keys(f'Selenium - Description {self.generate_random_string(5)}')
+        selector = self.get_selector(CustomerPortalSelectors.description_field)
+        self.wait_until_visible(selector).send_keys(f'Selenium - Description {self.generate_random_string(5)}')
 
         # If required dropdown
         required_dropdown_elements = self.get_elements(CustomerPortalSelectors.required_dropdown_field)
@@ -87,7 +98,7 @@ class CustomerPortal(BasePage):
             self.get_element(CustomerPortalSelectors.required_calendar_input_field).send_keys(date_now)
 
         self.get_element(CustomerPortalSelectors.create_request_button).click()
-        self.wait_until_visible(CustomerPortalSelectors.comment_request_field)
+        self.wait_until_visible(self.get_selector(RequestSelectors.comment_request_field))
 
 
 class CustomerRequest(BasePage):
@@ -100,9 +111,8 @@ class CustomerRequest(BasePage):
     page_loaded_selector = RequestSelectors.request_option
 
     def comment_request(self):
-        self.wait_until_visible(RequestSelectors.comment_request_field)
-        self.get_element(RequestSelectors.comment_request_field).click()
-        self.get_element(RequestSelectors.comment_request_field).\
+        self.wait_until_visible(self.get_selector(RequestSelectors.comment_field_minimized)).click()
+        self.wait_until_visible(self.get_selector(RequestSelectors.comment_request_field)).\
             send_keys(f'Selenium comment - {self.generate_random_string(10)}')
         self.wait_until_clickable(RequestSelectors.add_comment_button)
         self.get_element(RequestSelectors.add_comment_button).click()

@@ -20,9 +20,15 @@ class Login(BasePage):
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
 
+    def is_first_login_second_page(self):
+        return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
+
     def first_login_setup(self):
         self.wait_until_visible(LoginPageLocators.continue_button).send_keys(Keys.ESCAPE)
         self.get_element(LoginPageLocators.continue_button).click()
+        self.first_login_second_page_setup()
+
+    def first_login_second_page_setup(self):
         self.wait_until_visible(LoginPageLocators.avatar_page_next_button).click()
         self.wait_until_visible(LoginPageLocators.explore_current_projects).click()
         self.go_to_url(DashboardLocators.dashboard_url)
@@ -32,6 +38,23 @@ class Login(BasePage):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()
+
+    def __get_footer_text(self):
+        return self.get_element(LoginPageLocators.footer).text
+
+    def get_app_version(self):
+        text = self.__get_footer_text()
+        return text.split('#')[0].replace('(v', '')
+
+    def get_node_id(self):
+        text = self.get_element(LoginPageLocators.footer).text
+        text_split = text.split(':')
+        if len(text_split) == 2:
+            return "SERVER"
+        elif len(text_split) == 3:
+            return text_split[2].replace(')', '')
+        else:
+            return f"Warning: failed to get the node information from '{text}'."
 
 
 class Logout(BasePage):
@@ -73,19 +96,37 @@ class ViewCustomerRequest(BasePage):
     def wait_for_page_loaded(self):
         self.wait_until_visible(ViewCustomerRequestLocators.bread_crumbs)
 
+    def check_comment_text_is_displayed(self, text, rte_status=None):
+        if self.get_elements(ViewCustomerRequestLocators.comment_text_field_RTE) or \
+                self.get_elements(ViewCustomerRequestLocators.comment_text_field):
+            if rte_status:
+                self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
+                if self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).text != text:
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
+                    self.return_to_parent_frame()
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+            elif self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).text != text:
+                self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
+                self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
-        self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea).click()
+        textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
+        textarea.click()
+        comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
 
         if rte_status:
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
-            self.get_element(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
+            self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
             self.return_to_parent_frame()
+            comment_button.click()
+            self.check_comment_text_is_displayed(comment_text, True)
         else:
-            self.get_element(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
-
-        self.get_element(ViewCustomerRequestLocators.comment_internally_btn).click()
-        self.wait_until_visible(ViewCustomerRequestLocators.comment_collapsed_textarea)
+            self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
+            comment_button.click()
+            self.check_comment_text_is_displayed(comment_text)
 
 
 class Report:
@@ -142,13 +183,15 @@ class ViewQueue(BasePage):
         self.page_url = url_manager.view_queue_all_open()
 
     def wait_for_page_loaded(self):
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        self.wait_until_any_ec_presented(
+            selectors=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
 
     def get_random_queue(self):
-        queues = self.get_elements(ViewQueueLocators.queues)
-        random_queue = random.choice([queue for queue in queues
-                                      if queue.text.partition('\n')[0] not in
-                                      ['All open', 'Recently resolved', 'Resolved past 7 days']
-                                      and queue.text.partition('\n')[2] != '0'])
-        random_queue.click()
-        self.wait_until_clickable(ViewQueueLocators.reporter)
+        if not self.get_elements(ViewQueueLocators.queue_is_empty):
+            queues = self.get_elements(ViewQueueLocators.queues)
+            random_queue = random.choice([queue for queue in queues
+                                          if queue.text.partition('\n')[0] not in
+                                          ['All open', 'Recently resolved', 'Resolved past 7 days']
+                                          and queue.text.partition('\n')[2] != '0'])
+            random_queue.click()
+            self.wait_until_present(ViewQueueLocators.queues_status, timeout=self.timeout)

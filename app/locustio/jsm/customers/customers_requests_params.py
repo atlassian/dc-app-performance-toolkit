@@ -1,4 +1,4 @@
-from locustio.common_utils import read_input_file
+from locustio.common_utils import read_input_file, BaseResource
 import json
 from util.project_paths import JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUEST_TYPES, JSM_DATASET_SERVICE_DESKS_S
 
@@ -12,23 +12,13 @@ def jsm_customer_datasets():
     return data_sets
 
 
-class BaseResource:
-    resources_file = 'locustio/jsm/customers/customers_resources.json'
-    action_name = ''
+class JsmCustomersResource(BaseResource):
 
-    def __init__(self):
-        self.resources_json = self.read_json()
-        self.resources_body = self.action_resources()
+    def __init__(self, resource_file='locustio/jsm/customers/customers_resources.json'):
+        super().__init__(resource_file)
+        
 
-    def read_json(self):
-        with open(self.resources_file, encoding='UTF-8') as f:
-            return json.load(f)
-
-    def action_resources(self):
-        return self.resources_json[self.action_name] if self.action_name in self.resources_json else dict()
-
-
-class Login(BaseResource):
+class Login(JsmCustomersResource):
     action_name = 'login_and_view_portals'
     login_body = {
         'os_username': '',
@@ -38,29 +28,29 @@ class Login(BaseResource):
     }
 
 
-class ViewPortal(BaseResource):
+class ViewPortal(JsmCustomersResource):
     action_name = 'view_portal'
 
 
-class ViewRequests(BaseResource):
+class ViewRequests(JsmCustomersResource):
     action_name = 'view_requests'
 
 
-class ViewRequest(BaseResource):
+class ViewRequest(JsmCustomersResource):
     action_name = 'view_request'
 
 
-class AddComment(BaseResource):
+class AddComment(JsmCustomersResource):
     action_name = 'add_comment'
 
 
-class ShareRequest(BaseResource):
+class ShareRequest(JsmCustomersResource):
     action_name = 'share_request'
 
 
-class ShareRequestOrg(BaseResource):
+class ShareRequestOrg(JsmCustomersResource):
     action_name = 'share_request_org'
 
 
-class CreateRequest(BaseResource):
+class CreateRequest(JsmCustomersResource):
     action_name = 'create_request'

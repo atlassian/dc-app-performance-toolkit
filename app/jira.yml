@@ -17,22 +17,22 @@ settings:
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.2.1
+    JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
-    search_jql: 13
-    view_issue: 43
-    view_project_summary: 4
-    view_dashboard: 12
-    edit_issue: 4
+    search_jql: 11
+    view_issue: 34
+    view_project_summary: 3
+    view_dashboard: 10
+    edit_issue: 5
     add_comment: 2
-    browse_projects: 4
-    view_scrum_board: 3
-    view_kanban_board: 3
+    browse_projects: 9
+    view_scrum_board: 8
+    view_kanban_board: 7
     view_backlog: 6
-    browse_boards: 2
+    browse_boards: 1
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
@@ -40,6 +40,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/data_preparation/jira_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
@@ -47,6 +48,9 @@ services:
     post-process:
       - python util/analytics/analytics.py jira
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==3.141.0
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -113,7 +117,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "88.0.4324.27" # Supports Chrome version 88. You can refer to http://chromedriver.chromium.org/downloads
+      version: "97.0.4692.71" # Supports Chrome version 97. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

@@ -11,9 +11,12 @@ Before run, you should edit `performance_profile.yml` or `scale_profile.yml` and
 
 **Configuration**
 - `column_name` - column name from results.csv used for aggregation
-- `run_name` - label for specific run
+- `runName` - label for specific run
+- `runType` - label for run type
 - `fullPath` -  the full path to result folder of specific run
 - `index_col` - index column
 - `title` - chart title (also this value is used to generate file name)
 - `image_height_px` - chart image height in pixels
 - `image_width_px` - chart image width in pixels
+- `check_actions_count` - [optional] check if actions count is the same for all runs. Default value is `true`
+- `judge` - [optional] compare results by measuring performance deviation of experiment version from baseline

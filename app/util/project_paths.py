@@ -43,12 +43,36 @@ def __get_bitbucket_datasets():
     return __get_datasets() / "bitbucket"
 
 
+def __get_crowd_yml():
+    return Path(__file__).parents[1] / "crowd.yml"
+
+
+def __get_crowd_datasets():
+    return __get_datasets() / "crowd"
+
+
+def __get_crowd_dataset(file_name):
+    return __get_crowd_datasets() / file_name
+
+
+def __get_bamboo_yml():
+    return Path(__file__).parents[1] / "bamboo.yml"
+
+
+def __get_bamboo_datasets():
+    return __get_datasets() / "bamboo"
+
+
 def __get_confluence_datasets():
     return __get_datasets() / "confluence"
 
 
 def __get_confluence_dataset(file_name):
     return __get_confluence_datasets() / file_name
+
+
+def __get_bamboo_dataset(file_name):
+    return __get_bamboo_datasets() / file_name
 
 
 def __get_bitbucket_dataset(file_name):
@@ -60,9 +84,13 @@ def __get_taurus_artifacts_dir():
         return Path(os.environ.get('TAURUS_ARTIFACTS_DIR'))
     else:
         results_dir_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        local_run_results = Path(f'results/{results_dir_name}_local')
+        local_run_results = Path(f'results/local/{results_dir_name}')
         local_run_results.mkdir(parents=True)
         return local_run_results
+
+
+def __get_default_test_actions():
+    return Path(__file__).parents[0] / "default_test_actions.json"
 
 
 JIRA_YML = __get_jira_yml()
@@ -101,4 +129,15 @@ BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
 
+CROWD_YML = __get_crowd_yml()
+CROWD_DATASETS = __get_crowd_datasets()
+CROWD_USERS = __get_crowd_dataset('users.csv')
+
+BAMBOO_YML = __get_bamboo_yml()
+BAMBOO_DATASETS = __get_bamboo_datasets()
+BAMBOO_BUILD_PLANS = __get_bamboo_dataset('build_plans.csv')
+BAMBOO_USERS = __get_bamboo_dataset('users.csv')
+
+
+DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()
