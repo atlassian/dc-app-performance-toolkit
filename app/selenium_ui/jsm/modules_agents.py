@@ -273,7 +273,7 @@ def insight_create_new_object(webdriver, datasets):
 
     @print_timing('selenium_insight_create_new_object')
     def measure():
-        insight_new_object_page.go_to()
+        # insight_new_object_page.go_to()
         insight_new_object_page.wait_for_page_loaded()
         insight_new_object_page.go_to_new_schema(datasets['schema_name'])
         insight_new_object_page.insight_create_new_objects()

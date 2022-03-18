@@ -227,6 +227,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema).click()
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_next_button).click()
         self.get_element(InsightNewSchemaLocators.object_schemas_name_field).send_keys(new_schema_name)
+        self.get_element(InsightNewSchemaLocators.object_schemas_key_field).send_keys(new_schema_name)
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightNewSchemaLocators.object_schemas_name_field)
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
@@ -245,6 +246,7 @@ class InsightNewObject(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
 
     def go_to_new_schema(self, schema_name):
+        self.get_element(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name))
         self.wait_until_visible(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name))
         self.wait_until_clickable(InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).click()
         self.wait_until_visible(InsightNewObjectLocators.create_object_button)

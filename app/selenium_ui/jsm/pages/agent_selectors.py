@@ -142,11 +142,12 @@ class InsightNewSchemaLocators:
     new_object_schema = (By.XPATH, "//div[contains(text(),'Create Sample IT Asset Schema')]")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
     object_schemas_name_field = (By.CSS_SELECTOR, "#rlabs-insight-create-name")
+    object_schemas_key_field = (By.CSS_SELECTOR, "#rlabs-insight-create-key")
     object_schemas_create_button = (By.XPATH, "//button[contains(text(),'Create')]")
 
     @staticmethod
     def get_new_object_schema_name_locator(name):
-        return (By.LINK_TEXT, f'{name}')
+        return By.XPATH, f"//a[contains(text(),'{name}')]"
 
 
 class InsightDeleteSchemaLocators:
