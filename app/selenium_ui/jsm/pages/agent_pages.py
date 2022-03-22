@@ -216,7 +216,7 @@ class InsightLogin(BasePage):
 class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
-        new_schema_name = f"Schema{self.generate_random_string(1)}"
+        new_schema_name = self.generate_random_string(5).strip()
         if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
             self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
             if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
