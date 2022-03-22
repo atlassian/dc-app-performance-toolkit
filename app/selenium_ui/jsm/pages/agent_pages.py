@@ -4,9 +4,8 @@ from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
     BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
-    ViewQueueLocators, InsightNewSchemaLocators, InsightViewQueueLocators, InsightViewIssue, \
-    InsightDeleteSchemaLocators, InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql, \
-    InsightMainPageLocators
+    ViewQueueLocators, InsightViewQueueLocators, InsightViewIssue, InsightDeleteSchemaLocators,\
+    InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql, InsightMainPageLocators
 
 
 class PopupManager(BasePage):
@@ -217,7 +216,7 @@ class InsightLogin(BasePage):
 class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
-        new_schema_name = self.generate_random_string(10)
+        new_schema_name = self.generate_random_string(5).rstrip()
         if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
             self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
             if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):

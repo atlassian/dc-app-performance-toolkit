@@ -147,7 +147,7 @@ class InsightNewSchemaLocators:
 
     @staticmethod
     def get_new_object_schema_name_locator(name):
-        return By.XPATH, f"//a[contains(text(),'{name}')]"
+        return (By.XPATH, f"//a[contains(text(),'{name}')]")
 
 
 class InsightDeleteSchemaLocators:
