@@ -136,7 +136,6 @@ class InsightMainPageLocators:
 
 
 class InsightNewSchemaLocators:
-    # insight_create_new_schema
     insight_dialog_news = (By.ID, 'dialog-submit-button')
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     new_object_schema = (By.XPATH, "//div[contains(text(),'Create Sample IT Asset Schema')]")
@@ -153,7 +152,7 @@ class InsightNewSchemaLocators:
 class InsightDeleteSchemaLocators:
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
-    pop_up_after_delete_schema = (By.ID, "aui-flag-container")
+    pop_up_after_schema_delete = (By.ID, "aui-flag-container")
 
     @staticmethod
     def new_object_schema_id_locator(schema_id):

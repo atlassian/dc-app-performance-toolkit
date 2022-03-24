@@ -365,9 +365,9 @@ class JsmRestClient(RestClient):
         return results
 
     def get_all_schemas(self):
-        objectschemas=[]
+        objectschemas = []
         api_url = self.host + "/rest/insight/1.0/objectschema/list?"
         r = self.get(api_url,
-                            f"Could not get objectSchemas id").json()
+                     f"Could not get objectSchemas id").json()
         objectschemas.extend(r['objectschemas'])
         return objectschemas

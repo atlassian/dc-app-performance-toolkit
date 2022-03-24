@@ -286,7 +286,6 @@ class InsightDeleteSchema(BasePage):
         self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
         self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
         self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button)
-        self.wait_until_visible(InsightDeleteSchemaLocators.pop_up_after_delete_schema)
 
 
 class InsightViewQueue(BasePage):
