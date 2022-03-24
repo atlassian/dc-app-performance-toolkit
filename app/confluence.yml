@@ -3,6 +3,7 @@ settings:
   artifacts-dir: results/confluence/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
+  check-updates: false    # disable bzt check for updates
   env:
     application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
@@ -113,7 +114,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "98.0.4758.80" # Supports Chrome version 98. You can refer to http://chromedriver.chromium.org/downloads
+      version: "98.0.4758.102" # Supports Chrome version 98. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
