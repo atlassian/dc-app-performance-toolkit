@@ -3,7 +3,7 @@ import urllib.parse
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Search, ProjectsList, \
-    BoardsList, Board, Dashboard, Logout, Insight
+    BoardsList, Board, Dashboard, Logout
 
 from util.api.jira_clients import JiraRestClient
 from util.conf import JIRA_SETTINGS

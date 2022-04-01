@@ -5,7 +5,7 @@ settings:
   verbose: false
   check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: jsm-4-LoadB-181VH1DK0OGOQ-1664481798.us-east-2.elb.amazonaws.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: jsm-4-loadb-16246ky6tjodw-393467337.us-east-2.elb.amazonaws.com   # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -24,9 +24,9 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
-    agent_browse_projects: 10
-    agent_view_request: 24
-    agent_add_comment: 26
+    agent_browse_projects: 5
+    agent_view_request: 14
+    agent_add_comment: 13
     agent_view_queues_small: 11
     agent_view_queues_medium: 9
     agent_view_report_workload_small: 4
@@ -35,6 +35,13 @@ settings:
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
     agent_standalone_extension: 0
+    insight_agent_main_page: 1
+    insight_agent_create_schema: 6
+    insight_agent_create_object: 2
+    insight_agent_delete_schema: 6
+    insight_agent_view_queue_insight_column: 6
+    insight_agent_view_issue_with_objects: 3
+    insight_agent_search_object_by_iql: 4
 
     customer_view_portal: 11
     customer_view_requests: 25
@@ -60,7 +67,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==3.141.0
+      - selenium==4.1.3
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
@@ -108,6 +115,13 @@ scenarios:
       perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
       perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
       perc_agent_view_customers: ${agent_view_customers}
+      perc_insight_agent_main_page: ${insight_agent_main_page}
+      perc_insight_agent_create_schema: ${insight_agent_create_schema}
+      perc_insight_agent_create_object: ${insight_agent_create_object}
+      perc_insight_agent_delete_schema: ${insight_agent_delete_schema}
+      perc_insight_agent_view_queue_insight_column: ${insight_agent_view_queue_insight_column}
+      perc_insight_agent_view_issue_with_objects: ${insight_agent_view_issue_with_objects}
+      perc_insight_agent_search_object_by_iql: ${insight_agent_search_object_by_iql}
       perc_agent_standalone_extension: ${agent_standalone_extension}
   jmeter_customers:
     script: jmeter/jsm_customers.jmx
