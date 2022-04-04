@@ -165,6 +165,7 @@ class Requests(BasePage):
 
 
 class ViewRequestWithInsight(BasePage):
+
     def __init__(self, driver, portal_id):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(portal_id=portal_id)
