@@ -226,7 +226,6 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema).click()
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_next_button).click()
         self.get_element(InsightNewSchemaLocators.object_schemas_name_field).send_keys(new_schema_name)
-        self.get_element(InsightNewSchemaLocators.object_schemas_key_field).send_keys(new_schema_name)
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightNewSchemaLocators.object_schemas_name_field)
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)

@@ -117,8 +117,8 @@ scenarios:
       perc_agent_view_customers: ${agent_view_customers}
       perc_insight_agent_main_page: ${insight_agent_main_page}
       perc_insight_agent_create_schema: ${insight_agent_create_schema}
-      perc_insight_agent_create_object: ${insight_agent_create_object}
-      perc_insight_agent_delete_schema: ${insight_agent_delete_schema}
+#      perc_insight_agent_create_object: ${insight_agent_create_object}
+#      perc_insight_agent_delete_schema: ${insight_agent_delete_schema}
       perc_insight_agent_view_queue_insight_column: ${insight_agent_view_queue_insight_column}
       perc_insight_agent_view_issue_with_objects: ${insight_agent_view_issue_with_objects}
       perc_insight_agent_search_object_by_iql: ${insight_agent_search_object_by_iql}
