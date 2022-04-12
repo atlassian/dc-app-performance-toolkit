@@ -53,6 +53,7 @@ class AnalyticsCollector:
         if self.app_type == JSM:
             self.concurrency_agents = self.conf.agents_concurrency
             self.concurrency_customers = self.conf.customers_concurrency
+            self.insight = self.conf.insight
         if self.app_type == CROWD:
             self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
             self.ramp_up = application.config.ramp_up
@@ -191,7 +192,8 @@ def send_analytics(collector: AnalyticsCollector):
                "selenium_test_rates": collector.selenium_test_rates,
                "jmeter_test_rates": collector.jmeter_test_rates,
                "locust_test_rates": collector.locust_test_rates,
-               "concurrency": collector.concurrency
+               "concurrency": collector.concurrency,
+               "insight": collector.insight
                }
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())

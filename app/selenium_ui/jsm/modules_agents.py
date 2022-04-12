@@ -66,11 +66,12 @@ def setup_run_data(datasets):
             datasets['custom_issue_key'] = custom_issue[0]
             datasets['custom_issue_id'] = custom_issue[1]
 
-    if INSIGHT_SCHEMAS in datasets:
-        schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
-        datasets['schema_id'] = schema_id[0]
-        insight_issues = random.choice(datasets[INSIGHT_ISSUES])
-        datasets['issue_key'] = insight_issues[0]
+    if INSIGHT_ISSUES in datasets:
+        if len(datasets[INSIGHT_SCHEMAS]) > 0:
+            schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
+            datasets['schema_id'] = schema_id[0]
+            insight_issues = random.choice(datasets[INSIGHT_ISSUES])
+            datasets['issue_key'] = insight_issues[0]
 
 
 def login(webdriver, datasets):
@@ -250,7 +251,7 @@ def insight_main_page(webdriver, datasets):
 
     @print_timing("selenium_view_insight_main_page")
     def measure():
-        view_insight_main_page.insight_schema()
+        view_insight_main_page.go_to()
         view_insight_main_page.submit_login(username=datasets['agent_username'], password=datasets['agent_password'])
 
     measure()
@@ -273,7 +274,6 @@ def insight_create_new_object(webdriver, datasets):
 
     @print_timing('selenium_insight_create_new_object')
     def measure():
-        # insight_new_object_page.go_to()
         insight_new_object_page.wait_for_page_loaded()
         insight_new_object_page.go_to_new_schema(datasets['schema_name'])
         insight_new_object_page.insight_create_new_objects()

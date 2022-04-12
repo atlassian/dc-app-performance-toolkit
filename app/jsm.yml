@@ -5,7 +5,7 @@ settings:
   verbose: false
   check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: jsm-4-loadb-16246ky6tjodw-393467337.us-east-2.elb.amazonaws.com   # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
+    application_hostname: jsm-4-loadb-17ptbcs1uuyq0-1422329747.us-east-2.elb.amazonaws.com   # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -19,10 +19,11 @@ settings:
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
+    insight: True                  # Set True to enable Insight specific tests
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
-    allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
     agent_browse_projects: 5
     agent_view_request: 14
@@ -35,13 +36,11 @@ settings:
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
     agent_standalone_extension: 0
-    insight_agent_main_page: 1
-    insight_agent_create_schema: 6
-    insight_agent_create_object: 2
-    insight_agent_delete_schema: 6
-    insight_agent_view_queue_insight_column: 6
-    insight_agent_view_issue_with_objects: 3
-    insight_agent_search_object_by_iql: 4
+    insight_agent_main_page: 6
+    insight_agent_create_schema: 9
+    insight_agent_view_queue_insight_column: 3
+    insight_agent_view_issue_with_objects: 8
+    insight_agent_search_object_by_iql: 3
 
     customer_view_portal: 11
     customer_view_requests: 25
@@ -49,7 +48,8 @@ settings:
     customer_add_comment: 24
     customer_share_request_with_customer: 5
     customer_share_request_with_org: 4
-    customer_create_request: 16
+    customer_create_request: 10
+    customer_view_request_with_insight_field: 6
     customer_standalone_extension: 0
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
@@ -99,6 +99,7 @@ scenarios:
   jmeter_agents:
     script: jmeter/jsm_agents.jmx
     properties:
+      insight: ${insight}
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
       application_port: ${application_port}
@@ -117,8 +118,6 @@ scenarios:
       perc_agent_view_customers: ${agent_view_customers}
       perc_insight_agent_main_page: ${insight_agent_main_page}
       perc_insight_agent_create_schema: ${insight_agent_create_schema}
-#      perc_insight_agent_create_object: ${insight_agent_create_object}
-#      perc_insight_agent_delete_schema: ${insight_agent_delete_schema}
       perc_insight_agent_view_queue_insight_column: ${insight_agent_view_queue_insight_column}
       perc_insight_agent_view_issue_with_objects: ${insight_agent_view_issue_with_objects}
       perc_insight_agent_search_object_by_iql: ${insight_agent_search_object_by_iql}
@@ -126,6 +125,7 @@ scenarios:
   jmeter_customers:
     script: jmeter/jsm_customers.jmx
     properties:
+      insight: ${insight}
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
       application_port: ${application_port}
@@ -139,6 +139,7 @@ scenarios:
       perc_customer_share_request_with_customer: ${customer_share_request_with_customer}
       perc_customer_share_request_with_org: ${customer_share_request_with_org}
       perc_customer_create_request: ${customer_create_request}
+      perc_customer_view_request_with_insight_field: ${customer_view_request_with_insight_field}
       perc_customer_standalone_extension: ${customer_standalone_extension}
 modules:
   consolidator:

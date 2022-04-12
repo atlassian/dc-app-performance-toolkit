@@ -4,7 +4,7 @@ from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
     BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
-    ViewQueueLocators, InsightViewQueueLocators, InsightViewIssue, InsightDeleteSchemaLocators,\
+    ViewQueueLocators, InsightViewQueueLocators, InsightViewIssue, InsightDeleteSchemaLocators, \
     InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql, InsightMainPageLocators
 
 
@@ -201,11 +201,11 @@ class ViewQueue(BasePage):
 
 
 class InsightLogin(BasePage):
-    dashboard_url = UrlManager().dashboard_url()
 
-    def insight_schema(self):
-        self.wait_until_clickable(InsightMainPageLocators.insight_dropdown).click()
-        self.wait_until_visible(InsightMainPageLocators.insight_object_schemas_button).click()
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager()
+        self.page_url = url_manager.view_insight_all_schemas()
 
     def submit_login(self, username, password):
         self.get_element(LoginPageLocators.login_field).send_keys(username)
@@ -216,7 +216,7 @@ class InsightLogin(BasePage):
 class InsightNewSchema(BasePage):
 
     def create_new_schema(self):
-        new_schema_name = self.generate_random_string(5).strip()
+        new_schema_name = self.generate_random_string(4).strip()
         if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
             self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
             if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
@@ -226,6 +226,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema).click()
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_next_button).click()
         self.get_element(InsightNewSchemaLocators.object_schemas_name_field).send_keys(new_schema_name)
+        self.get_element(InsightNewSchemaLocators.object_schemas_key_field).send_keys(new_schema_name)
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_create_button).click()
         self.wait_until_invisible(InsightNewSchemaLocators.object_schemas_name_field)
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
@@ -234,11 +235,6 @@ class InsightNewSchema(BasePage):
 
 
 class InsightNewObject(BasePage):
-
-    def __init__(self, driver):
-        BasePage.__init__(self, driver)
-        url_manager = UrlManager()
-        self.page_url = url_manager.view_insight_all_schemas()
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
@@ -274,7 +270,8 @@ class InsightDeleteSchema(BasePage):
 
     def delete_new_schema(self, schema_name):
         new_schema_id = self.wait_until_visible(
-            InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).get_attribute('href').split('=')[1]
+            InsightNewSchemaLocators.get_new_object_schema_name_locator(schema_name)).get_attribute('href').split('=')[
+            1]
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
         self.wait_until_visible(InsightDeleteSchemaLocators.new_object_schema_id_locator(new_schema_id))
         self.wait_until_clickable(InsightDeleteSchemaLocators.new_object_schema_id_locator(new_schema_id)).click()

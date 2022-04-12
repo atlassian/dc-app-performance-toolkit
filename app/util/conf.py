@@ -82,6 +82,7 @@ class JsmSettings(BaseAppSettings):
         self.concurrency = self.agents_concurrency + self.customers_concurrency
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
+        self.insight = self.get_property('insight')
 
 
 class CrowdSettings(BaseAppSettings):

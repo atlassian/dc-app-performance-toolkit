@@ -366,6 +366,8 @@ def __get_request_types(jsm_api, service_desks):
 
 @print_timing("Preparing Insight Schemas")
 def __get_insight_schemas(jsm_api):
+    if not JSM_SETTINGS.insight:
+        return print('There is no Insight data')
     insight_schemas = jsm_api.get_all_schemas()
     if not insight_schemas:
         print(f"There are no schemas")
@@ -389,6 +391,8 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
 
 @print_timing("Preparing Insight issues")
 def __get_insight_issues(jira_api):
+    if not JSM_SETTINGS.insight:
+        return print('There is no Insight data')
     issues = []
     custom_jql = "Insight is NOT EMPTY"
     if custom_jql:
@@ -462,13 +466,15 @@ def __write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
               in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
+    if not JSM_SETTINGS.insight:
+        return print('Set True in jsm.yml file to enable Insight data preparation')
     insight_issues = [f"{insight_issue['key']},{insight_issue['id']},{insight_issue['key'].split('-')[0]}"
                       for insight_issue
                       in datasets[INSIGHT_ISSUES]]
     __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
     schemas_id = [f"{schema_id['id']}"
-                      for schema_id
-                      in datasets[INSIGHT_SCHEMAS]]
+                  for schema_id
+                  in datasets[INSIGHT_SCHEMAS]]
     __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schemas_id)
 
 

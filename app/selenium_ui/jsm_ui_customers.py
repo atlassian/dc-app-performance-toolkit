@@ -1,5 +1,7 @@
 from selenium_ui.jsm import modules_customers
 from extension.jsm import extension_ui_customers  # noqa F401
+from util.conf import JSM_SETTINGS
+import pytest
 
 
 # this action should be the first one
@@ -31,10 +33,6 @@ def test_1_selenium_customer_add_comment(jsm_webdriver, jsm_datasets, jsm_screen
     modules_customers.add_comment(jsm_webdriver, jsm_datasets)
 
 
-def test_0_selenium_view_request_with_insight_field(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-    modules_customers.view_request_with_insight(jsm_webdriver, jsm_datasets)
-
-
 #
 # """
 # Add custom actions anywhere between login and log out action. Move this to a different line as needed.
@@ -43,6 +41,12 @@ def test_0_selenium_view_request_with_insight_field(jsm_webdriver, jsm_datasets,
 # """
 # # def test_1_selenium_customer_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
 # #     extension_ui_customers.app_specific_action(jsm_webdriver, jsm_datasets)
+
+
+def test_0_selenium_view_request_with_insight_field(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    if not JSM_SETTINGS.insight:
+        pytest.skip()
+    modules_customers.view_request_with_insight(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one
