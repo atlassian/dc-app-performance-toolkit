@@ -178,6 +178,7 @@ def view_queues_form_diff_projects_size(browse_queue_page, project_size):
     measure()
 
 
+
 def agent_browse_projects(webdriver, datasets):
     browse_projects_page = BrowseProjects(webdriver)
 
@@ -279,6 +280,7 @@ def insight_create_new_object(webdriver, datasets):
         insight_new_object_page.insight_create_new_objects()
 
     measure()
+    PopupManager(webdriver).dismiss_default_popup()
 
 
 def insight_delete_new_schema(webdriver, datasets):
