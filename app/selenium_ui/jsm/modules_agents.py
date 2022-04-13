@@ -264,10 +264,13 @@ def insight_create_new_schema(webdriver, datasets):
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
+        insight_create_schema_page.go_to()
+        insight_create_schema_page.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
         datasets['schema_name'] = insight_create_schema_page.create_new_schema()
 
     measure()
-    PopupManager(webdriver).dismiss_default_popup()
+    # PopupManager(webdriver).dismiss_default_popup()
 
 
 def insight_create_new_object(webdriver, datasets):

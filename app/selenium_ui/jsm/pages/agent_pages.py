@@ -215,6 +215,18 @@ class InsightLogin(BasePage):
 
 class InsightNewSchema(BasePage):
 
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager()
+        self.page_url = url_manager.view_insight_all_schemas()
+
+    def wait_for_page_loaded(self):
+        if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
+            self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
+            if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
+                self.wait_until_clickable(InsightNewSchemaLocators.insight_dialog_news).click()
+        self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
+
     def create_new_schema(self):
         new_schema_name = self.generate_random_string(4).strip()
         if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
