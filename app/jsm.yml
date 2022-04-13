@@ -36,11 +36,11 @@ settings:
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
     agent_standalone_extension: 0
-    insight_agent_main_page: 6
-    insight_agent_create_schema: 9
-    insight_agent_view_queue_insight_column: 3
+    insight_agent_main_page: 10
+    insight_agent_create_schema: 5
+    insight_agent_view_queue_insight_column: 4
     insight_agent_view_issue_with_objects: 8
-    insight_agent_search_object_by_iql: 3
+    insight_agent_search_object_by_iql: 2
 
     customer_view_portal: 11
     customer_view_requests: 25
