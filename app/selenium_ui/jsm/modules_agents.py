@@ -270,7 +270,6 @@ def insight_create_new_schema(webdriver, datasets):
         datasets['schema_name'] = insight_create_schema_page.create_new_schema()
 
     measure()
-    # PopupManager(webdriver).dismiss_default_popup()
 
 
 def insight_create_new_object(webdriver, datasets):
