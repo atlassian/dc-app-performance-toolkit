@@ -10,6 +10,10 @@ date: "2022-02-01"
 
 This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
+If your application provides for or using functionality of Insight ([What is Insight?](https://confluence.atlassian.com/servicemanagementserver/what-is-insight-1044784313.html))
+Please follow the steps in the guide below, to enable Insight specific tests.
+
+
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
 **[Development environment](#mainenvironmentdev)**: Jira Service Management Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Jira Data Center](https://aws.amazon.com/quickstart/architecture/jira/) with the parameters prescribed here.
@@ -298,6 +302,7 @@ Make sure **English (United States)** language is selected as a default language
     - `total_actions_per_hour_agents`: `500` - number of total JMeter/Locust actions per hour for agents scenario.
     - `total_actions_per_hour_customers`: `1500` - number of total JMeter/Locust actions per hour customers scenario.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
+    - `insight`: True or False. Default value is False.  Set True to enable Insight specific tests.
     
 1. Run bzt.
 
@@ -353,7 +358,7 @@ Next time when you run toolkit, custom dataset issues will be stored to the `dc-
 
 #### Example of app-specific Selenium action development with custom dataset  
 You develop an app that adds some additional fields to specific types of Jira Service Management requests. In this case, you should develop Selenium app-specific action:
-
+(If your app adds additional fields for Insight please follow example of app-specific Selenium with Insight)
 1. Create app-specific service desk requests with *AppRequest* anchor in summary: *AppRequest1*, *AppRequest2*, etc.
 1. Go to the search page of your Jira Service Management Data Center - `JSM_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppRequest*'`.
 1. Edit `dc-app-performance-toolkit/app/jsm.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppRequest*'`.
@@ -363,7 +368,7 @@ So, our test has to open app-specific requests in agent view and measure time to
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
 So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
-1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
+1. If you need to run `app_specific_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -377,6 +382,30 @@ So, our test has to open app-specific requests in portal view and measure time t
 ```
 
 1. Run toolkit with `bzt jsm.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
+
+#### Example of app-specific Selenium action development with Insight 
+You develop an app that adds some additional fields to Insight. In this case, you should develop Selenium app-specific action:
+ Extend example of app-specific action for agent in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_insight_agents.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_insight_agents.py)
+So, our test has to open random Object Schema in agent view and measure time to load main page with all Schema Objects.
+1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_insight_customers.py`.  
+[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_insight_customers.py)
+So, our test has to open random requests in portal view and measure time to load this request with insight field.
+1. If you need to run `insight_app_specific_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
+1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+``` python
+# def test_1_selenium_insight_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     extension_ui_insight_agents.insight_app_specific_action(jsm_webdriver, jsm_datasets)
+```
+
+1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_customers.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
+``` python
+# def test_1_selenium_insight_customer_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     extension_ui_insight_customers.insight_app_specific_action(jsm_webdriver, jsm_datasets)
+```
+
+1. Run toolkit with `bzt jsm.yml` command to ensure that all Selenium actions including `insight_app_specific_action` are successful.
+
 
 #### Example of app-specific Locust/JMeter action development
 
@@ -636,6 +665,9 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Screens | ~3000 |
 | Users | ~21 000 |
 | Workflows | ~700 |
+| Schemas | ~ 6 |
+| Object types | ~ 50 |
+| Schema objects | ~ 1 000 000 |
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -823,8 +855,10 @@ Instead, set those values directly in `.yml` file on execution environment insta
        concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
        test_duration: 45m
        ramp-up: 3m                               # time to spin all concurrent users
-       total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
+       total_actions_per_hour_agents: 5000       # number of total JMeter/Locust actions per hour
        total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
+       insight: False                            # Set True to enable Insight specific tests
+       
    ```  
 
 1. Push your changes to the forked repository.

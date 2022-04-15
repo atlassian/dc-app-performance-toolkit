@@ -333,4 +333,5 @@ class ViewIssueWithObject(BasePage):
         self.wait_until_visible(InsightViewIssue.issue_title)
 
     def view_issue_with_insight_custom_field(self):
-        self.wait_until_visible(InsightViewIssue.custom_field_insight)
+        self.wait_until_any_ec_presented(selectors=[InsightViewIssue.custom_field_insight,
+                                                    InsightViewIssue.custom_field_insight_small])

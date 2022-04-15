@@ -185,3 +185,4 @@ class InsightSearchObjectIql:
 class InsightViewIssue:
     issue_title = (By.ID, "summary-val")
     custom_field_insight = (By.ID, "rowForcustomfield_10600")
+    custom_field_insight_small = (By.ID, "rowForcustomfield_10200")

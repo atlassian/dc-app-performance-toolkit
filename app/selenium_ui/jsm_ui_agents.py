@@ -1,6 +1,6 @@
 from selenium_ui.jsm import modules_agents
 import pytest
-from extension.jsm import extension_ui_agents  # noqa F401
+from extension.jsm import extension_ui_agents, extension_ui_insight_agents  # noqa F401
 from util.conf import JSM_SETTINGS
 
 
@@ -80,6 +80,15 @@ def test_1_selenium_insight_view_issue_with_objects(jsm_webdriver, jsm_datasets,
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.view_issue_with_insight_objects(jsm_webdriver, jsm_datasets)
+
+
+"""
+Add Insight custom actions anywhere between login and log out action. Move this to a different line as needed.
+Write your custom selenium scripts in `app/extension/jsm/extension_ui_insight_agents.py`.
+Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
+"""
+# def test_1_selenium_insight_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+#     extension_ui_insight_agents.insight_app_specific_action(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one
