@@ -10042,7 +10042,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="agent_standalone_extension" enabled="false">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="agent_standalone_extension" enabled="true">
             <stringProp name="IfController.condition"></stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
