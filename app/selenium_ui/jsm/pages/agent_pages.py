@@ -312,10 +312,16 @@ class InsightViewQueue(BasePage):
 
 class InsightSearchByIql(BasePage):
 
+    def __init__(self, driver):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager()
+        self.page_url = url_manager.insight_search_by_iql_params()
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(InsightSearchObjectIql.search_object_text_field)
+
     def search_object_by_iql(self):
         iql_attribute_search = f'Name >= {self.generate_random_string(2)}'
-        self.wait_until_clickable(InsightMainPageLocators.insight_dropdown).click()
-        self.wait_until_visible(InsightSearchObjectIql.search_object_by_iql).click()
         self.wait_until_visible(InsightSearchObjectIql.search_object_text_field)
         self.get_element(InsightSearchObjectIql.search_object_text_field).send_keys(iql_attribute_search)
         self.wait_until_visible(InsightSearchObjectIql.search_iql_button).click()

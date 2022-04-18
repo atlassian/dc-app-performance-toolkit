@@ -312,10 +312,11 @@ def insight_view_queue_insight_column(webdriver, datasets):
 
 def insight_search_object_by_iql(webdriver, datasets):
     search_object_by_iql_page = InsightSearchByIql(webdriver)
-    PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing('selenium_search_object_by_iql')
     def measure():
+        search_object_by_iql_page.go_to()
+        search_object_by_iql_page.wait_for_page_loaded()
         PopupManager(webdriver).dismiss_default_popup()
         search_object_by_iql_page.search_object_by_iql()
 

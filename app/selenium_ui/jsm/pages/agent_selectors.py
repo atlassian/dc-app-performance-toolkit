@@ -29,6 +29,7 @@ class UrlManager:
         self.view_insight_queue_params = f'{self.view_queue}/1102'
         self.view_issue_with_insight_object_params = f'/browse/{insight_issues}'
         self.view_insight_all_schemas_params = '/secure/ManageObjectSchema.jspa'
+        self.insight_search_by_iql_params = f'/secure/insight/search?schema={schema_id}'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -65,6 +66,9 @@ class UrlManager:
 
     def view_insight_all_schemas(self):
         return f'{self.host}{self.view_insight_all_schemas_params}'
+
+    def insight_search_bu_iql(self):
+        return f'{self.host}{self.insight_search_by_iql_params}'
 
 
 class LoginPageLocators:
@@ -132,7 +136,6 @@ class ViewQueueLocators:
 
 class InsightMainPageLocators:
     insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
-    insight_object_schemas_button = (By.ID, "rlabs_insight_manage_class_models_lnk")
 
 
 class InsightNewSchemaLocators:
@@ -152,7 +155,6 @@ class InsightNewSchemaLocators:
 class InsightDeleteSchemaLocators:
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
-    pop_up_after_schema_delete = (By.ID, "aui-flag-container")
 
     @staticmethod
     def new_object_schema_id_locator(schema_id):
@@ -176,7 +178,6 @@ class InsightViewQueueLocators:
 
 
 class InsightSearchObjectIql:
-    search_object_by_iql = (By.ID, "rlabs_iam_search_lnk")
     search_object_text_field = (By.CSS_SELECTOR, "textarea[name='iql']")
     search_iql_button = (By.CLASS_NAME, "rIcon-search")
     search_iql_success = (By.XPATH, "//thead/tr[1]")
