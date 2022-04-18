@@ -312,10 +312,10 @@ class InsightViewQueue(BasePage):
 
 class InsightSearchByIql(BasePage):
 
-    def __init__(self, driver):
+    def __init__(self, driver, schema_id=None):
         BasePage.__init__(self, driver)
-        url_manager = UrlManager()
-        self.page_url = url_manager.insight_search_by_iql_params()
+        url_manager = UrlManager(schema_id=schema_id)
+        self.page_url = url_manager.insight_search_by_iql()
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(InsightSearchObjectIql.search_object_text_field)

@@ -311,7 +311,7 @@ def insight_view_queue_insight_column(webdriver, datasets):
 
 
 def insight_search_object_by_iql(webdriver, datasets):
-    search_object_by_iql_page = InsightSearchByIql(webdriver)
+    search_object_by_iql_page = InsightSearchByIql(webdriver, schema_id=datasets['schema_id'])
 
     @print_timing('selenium_search_object_by_iql')
     def measure():

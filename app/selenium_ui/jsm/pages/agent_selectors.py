@@ -67,7 +67,7 @@ class UrlManager:
     def view_insight_all_schemas(self):
         return f'{self.host}{self.view_insight_all_schemas_params}'
 
-    def insight_search_bu_iql(self):
+    def insight_search_by_iql(self):
         return f'{self.host}{self.insight_search_by_iql_params}'
 
 
