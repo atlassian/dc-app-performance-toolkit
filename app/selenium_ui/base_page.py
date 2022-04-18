@@ -5,7 +5,6 @@ from collections import OrderedDict
 from packaging import version
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -51,8 +50,7 @@ class BasePage:
 
     def get_elements(self, selector):
         by, locator = selector[0], selector[1]
-        elements = self.driver.find_elements(by, locator)
-        return elements
+        return self.driver.find_elements(by, locator)
 
     def element_exists(self, selector):
         by, locator = selector[0], selector[1]
@@ -63,8 +61,6 @@ class BasePage:
                                  time_out=timeout)
 
     def wait_until_visible(self, selector, timeout=timeout):
-        # el = self.driver.visibility_of_element_located(selector)
-        # print(el)
         return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), locator=selector,
                                  time_out=timeout)
 
