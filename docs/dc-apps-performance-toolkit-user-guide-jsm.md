@@ -8,10 +8,11 @@ date: "2022-02-01"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
-This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/):
 
-If your application provides for or using functionality of Insight ([What is Insight?](https://confluence.atlassian.com/servicemanagementserver/what-is-insight-1044784313.html))
-Please follow the steps in the guide below, to enable Insight specific tests.
+If your application relays or extends the functionality of **Insight** ([What is Insight?](https://confluence.atlassian.com/servicemanagementserver/what-is-insight-1044784313.html)):
+
+Please, make sure you have enabled Insight-specific tests in the `jsm.yml` file, by setting `True` value next to `insight` variable.
 
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
@@ -284,9 +285,9 @@ Make sure **English (United States)** language is selected as a default language
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
-1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
-1. Navigate to `dc-app-performance-toolkit/app` folder.
-1. Open the `jsm.yml` file and fill in the following variables:
+2. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
+3. Navigate to `dc-app-performance-toolkit/app` folder.
+4. Open the `jsm.yml` file and fill in the following variables:
     - `application_hostname`: your_dc_jsm_instance_hostname without protocol.
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
@@ -302,15 +303,18 @@ Make sure **English (United States)** language is selected as a default language
     - `total_actions_per_hour_agents`: `500` - number of total JMeter/Locust actions per hour for agents scenario.
     - `total_actions_per_hour_customers`: `1500` - number of total JMeter/Locust actions per hour customers scenario.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
-    - `insight`: True or False. Default value is False.  Set True to enable Insight specific tests.
+    - `insight`: True or False. Default value is False. Set True to enable Insight specific tests.
     
-1. Run bzt.
+
+5. In case your application relays or extends the functionality of **Insight**. Make sure to set `True` value next to `insight` variable.
+
+6. Run bzt.
 
     ``` bash
     bzt jsm.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
+7. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
 In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jsm/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
@@ -835,12 +839,15 @@ It's recommended to change default password from UI account page for security re
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
+2. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters
+3. In case your application relays or extends the functionality of **Insight**. Make sure to set `True` next to the `insight` variable.
 
 {{% warning %}}
 Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
 Instead, set those values directly in `.yml` file on execution environment instance.
 {{% /warning %}}
+
+In case your application relays or extends the functionality of **Insight**. Make sure to set `True` value next to the `insight` variable.
 
    ``` yaml
        application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost

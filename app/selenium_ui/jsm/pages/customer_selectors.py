@@ -91,8 +91,6 @@ class RequestSelectors:
 
 
 class InsightSelectors:
-    insight_field = (By.CSS_SELECTOR, "#customfield_10600-label")
-    insight_field_small = (By.CSS_SELECTOR, "#customfield_10200-label")
     insight_field_icon = (By.CLASS_NAME, "js-rlabs-sd-customfield-object-picker")
 
 

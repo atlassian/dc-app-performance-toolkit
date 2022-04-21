@@ -25,9 +25,9 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
-    agent_browse_projects: 5
-    agent_view_request: 14
-    agent_add_comment: 13
+    agent_browse_projects: 10
+    agent_view_request: 24
+    agent_add_comment: 26
     agent_view_queues_small: 11
     agent_view_queues_medium: 9
     agent_view_report_workload_small: 4
@@ -36,11 +36,11 @@ settings:
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
     agent_standalone_extension: 0
-    insight_agent_main_page: 10
-    insight_agent_create_schema: 5
-    insight_agent_view_queue_insight_column: 4
-    insight_agent_view_issue_with_objects: 8
-    insight_agent_search_object_by_iql: 2
+    agent_insight_main_page: 10
+    agent_insight_create_schema: 5
+    agent_insight_view_queue_insight_column: 4
+    agent_insight_view_issue_with_objects: 8
+    agent_insight_search_object_by_iql: 2
 
     customer_view_portal: 11
     customer_view_requests: 25
@@ -48,8 +48,8 @@ settings:
     customer_add_comment: 24
     customer_share_request_with_customer: 5
     customer_share_request_with_org: 4
-    customer_create_request: 10
-    customer_view_request_with_insight_field: 6
+    customer_create_request: 16
+    customer_insight_view_request: 6
     customer_standalone_extension: 0
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
@@ -116,11 +116,11 @@ scenarios:
       perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
       perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
       perc_agent_view_customers: ${agent_view_customers}
-      perc_insight_agent_main_page: ${insight_agent_main_page}
-      perc_insight_agent_create_schema: ${insight_agent_create_schema}
-      perc_insight_agent_view_queue_insight_column: ${insight_agent_view_queue_insight_column}
-      perc_insight_agent_view_issue_with_objects: ${insight_agent_view_issue_with_objects}
-      perc_insight_agent_search_object_by_iql: ${insight_agent_search_object_by_iql}
+      perc_agent_insight_main_page: ${agent_insight_main_page}
+      perc_agent_insight_create_schema: ${agent_insight_create_schema}
+      perc_agent_insight_view_queue_insight_column: ${agent_insight_view_queue_insight_column}
+      perc_agent_insight_view_issue_with_objects: ${agent_insight_view_issue_with_objects}
+      perc_agent_insight_search_object_by_iql: ${agent_insight_search_object_by_iql}
       perc_agent_standalone_extension: ${agent_standalone_extension}
   jmeter_customers:
     script: jmeter/jsm_customers.jmx
@@ -139,7 +139,7 @@ scenarios:
       perc_customer_share_request_with_customer: ${customer_share_request_with_customer}
       perc_customer_share_request_with_org: ${customer_share_request_with_org}
       perc_customer_create_request: ${customer_create_request}
-      perc_customer_view_request_with_insight_field: ${customer_view_request_with_insight_field}
+      perc_customer_insight_view_request: ${customer_insight_view_request}
       perc_customer_standalone_extension: ${customer_standalone_extension}
 modules:
   consolidator:

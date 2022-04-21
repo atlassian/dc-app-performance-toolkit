@@ -2,7 +2,7 @@ import random
 
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.agent_pages import Login, PopupManager, Logout, BrowseProjects, BrowseCustomers, \
-    ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightDeleteSchema,\
+    ViewCustomerRequest, ViewQueue, Report, InsightLogin, InsightNewSchema, InsightNewObject, InsightDeleteSchema, \
     InsightViewQueue, ViewIssueWithObject, InsightSearchByIql
 from util.api.jira_clients import JiraRestClient
 from util.conf import JSM_SETTINGS
@@ -66,12 +66,11 @@ def setup_run_data(datasets):
             datasets['custom_issue_key'] = custom_issue[0]
             datasets['custom_issue_id'] = custom_issue[1]
 
-    if INSIGHT_ISSUES in datasets:
-        if len(datasets[INSIGHT_SCHEMAS]) > 0:
-            schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
-            datasets['schema_id'] = schema_id[0]
-            insight_issues = random.choice(datasets[INSIGHT_ISSUES])
-            datasets['issue_key'] = insight_issues[0]
+    if JSM_SETTINGS.insight:
+        schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
+        datasets['schema_id'] = schema_id[0]
+        insight_issues = random.choice(datasets[INSIGHT_ISSUES])
+        datasets['issue_key'] = insight_issues[0]
 
 
 def login(webdriver, datasets):
@@ -178,7 +177,6 @@ def view_queues_form_diff_projects_size(browse_queue_page, project_size):
     measure()
 
 
-
 def agent_browse_projects(webdriver, datasets):
     browse_projects_page = BrowseProjects(webdriver)
 
@@ -260,7 +258,7 @@ def insight_main_page(webdriver, datasets):
 
 
 def insight_create_new_schema(webdriver, datasets):
-    insight_create_schema_page = InsightNewSchema(webdriver)  # page переименовать
+    insight_create_schema_page = InsightNewSchema(webdriver)
 
     @print_timing('selenium_insight_create_new_schema')
     def measure():
@@ -292,6 +290,7 @@ def insight_delete_new_schema(webdriver, datasets):
     def measure():
         insight_delete_schema_page.go_to()
         insight_delete_schema_page.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
         insight_delete_schema_page.delete_new_schema(datasets['schema_name'])
 
     measure()
@@ -337,6 +336,7 @@ def view_issue_with_insight_objects(webdriver, datasets):
 
 def logout(webdriver, datasets):
     logout_page = Logout(webdriver)
+    PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing("selenium_agent_logout")
     def measure():

@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
     BrowseProjectsLocators, BrowseCustomersLocators, ViewCustomerRequestLocators, UrlManager, ViewReportsLocators, \
     ViewQueueLocators, InsightViewQueueLocators, InsightViewIssue, InsightDeleteSchemaLocators, \
-    InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql, InsightMainPageLocators
+    InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql
 
 
 class PopupManager(BasePage):
@@ -221,21 +221,19 @@ class InsightNewSchema(BasePage):
         self.page_url = url_manager.view_insight_all_schemas()
 
     def wait_for_page_loaded(self):
-        if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-            self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
-            if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-                self.wait_until_clickable(InsightNewSchemaLocators.insight_dialog_news).click()
+        # `self.driver.find_elements` - used to catch pop_up window, which appears randomly for each user
+        self.wait_until_any_ec_presented((InsightNewSchemaLocators.submit_dialog_window,
+                                          InsightNewSchemaLocators.create_object_schemas))
+        if self.driver.find_elements(by=InsightNewSchemaLocators.submit_dialog_window[0],
+                                     value=InsightNewSchemaLocators.submit_dialog_window[1]):
+            self.wait_until_clickable(InsightNewSchemaLocators.submit_dialog_window).click()
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
 
     def create_new_schema(self):
         new_schema_name = self.generate_random_string(4).strip()
-        if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-            self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
-            if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-                self.wait_until_clickable(InsightNewSchemaLocators.insight_dialog_news).click()
-        self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas).click()
+        self.wait_until_clickable(InsightNewSchemaLocators.create_object_schemas).click()
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema)
-        self.wait_until_visible(InsightNewSchemaLocators.new_object_schema).click()
+        self.wait_until_clickable(InsightNewSchemaLocators.new_object_schema).click()
         self.wait_until_clickable(InsightNewSchemaLocators.object_schemas_next_button).click()
         self.get_element(InsightNewSchemaLocators.object_schemas_name_field).send_keys(new_schema_name)
         self.get_element(InsightNewSchemaLocators.object_schemas_key_field).send_keys(new_schema_name)
@@ -258,15 +256,16 @@ class InsightNewObject(BasePage):
         self.wait_until_visible(InsightNewObjectLocators.create_object_button)
 
     def insight_create_new_objects(self):
-        if not self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-            self.wait_until_visible(InsightNewObjectLocators.create_object_button)
-            if self.get_elements(InsightNewSchemaLocators.insight_dialog_news):
-                self.wait_until_clickable(InsightNewSchemaLocators.insight_dialog_news).click()
-        self.wait_until_visible(InsightNewObjectLocators.create_object_button).click()
+        self.wait_until_any_ec_presented((InsightNewSchemaLocators.submit_dialog_window,
+                                          InsightNewObjectLocators.create_object_button))
+        if self.driver.find_elements(by=InsightNewSchemaLocators.submit_dialog_window[0],
+                                     value=InsightNewSchemaLocators.submit_dialog_window[1]):
+            self.wait_until_clickable(InsightNewSchemaLocators.submit_dialog_window).click()
+        self.wait_until_clickable(InsightNewObjectLocators.create_object_button).click()
         self.wait_until_visible(InsightNewObjectLocators.object_name_field)
         self.get_element(InsightNewObjectLocators.object_name_field).send_keys(self.generate_random_string(10))
         self.wait_until_visible(InsightNewObjectLocators.create_button)
-        self.wait_until_visible(InsightNewObjectLocators.create_button).click()
+        self.wait_until_clickable(InsightNewObjectLocators.create_button).click()
         self.wait_until_invisible(InsightNewObjectLocators.pop_up_after_create_object)
 
 
@@ -278,7 +277,7 @@ class InsightDeleteSchema(BasePage):
         self.page_url = url_manager.view_insight_all_schemas()
 
     def wait_for_page_loaded(self):
-        self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
+        self.wait_until_visible(InsightDeleteSchemaLocators.schema_list)
 
     def delete_new_schema(self, schema_name):
         new_schema_id = self.wait_until_visible(
@@ -324,7 +323,7 @@ class InsightSearchByIql(BasePage):
         iql_attribute_search = f'Name >= {self.generate_random_string(2)}'
         self.wait_until_visible(InsightSearchObjectIql.search_object_text_field)
         self.get_element(InsightSearchObjectIql.search_object_text_field).send_keys(iql_attribute_search)
-        self.wait_until_visible(InsightSearchObjectIql.search_iql_button).click()
+        self.wait_until_clickable(InsightSearchObjectIql.search_iql_button).click()
         self.wait_until_visible(InsightSearchObjectIql.search_iql_success)
 
 
@@ -339,5 +338,4 @@ class ViewIssueWithObject(BasePage):
         self.wait_until_visible(InsightViewIssue.issue_title)
 
     def view_issue_with_insight_custom_field(self):
-        self.wait_until_any_ec_presented(selectors=[InsightViewIssue.custom_field_insight,
-                                                    InsightViewIssue.custom_field_insight_small])
+        self.wait_until_visible(InsightViewIssue.custom_field_insight)

@@ -134,12 +134,8 @@ class ViewQueueLocators:
     queue_is_empty = (By.CSS_SELECTOR, '.sd-queue-empty')
 
 
-class InsightMainPageLocators:
-    insight_dropdown = (By.ID, "rlabs_insight_topmenu_link")
-
-
 class InsightNewSchemaLocators:
-    insight_dialog_news = (By.ID, 'dialog-submit-button')
+    submit_dialog_window = (By.CSS_SELECTOR, '#dialog-submit-button')
     create_object_schemas = (By.XPATH, "//a[contains(text(),'Create Object Schema')]")
     new_object_schema = (By.XPATH, "//div[contains(text(),'Create Sample IT Asset Schema')]")
     object_schemas_next_button = (By.XPATH, "//button[contains(text(),'Next')]")
@@ -155,6 +151,7 @@ class InsightNewSchemaLocators:
 class InsightDeleteSchemaLocators:
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
+    schema_list = (By.ID, "rlabs-manage-main")
 
     @staticmethod
     def new_object_schema_id_locator(schema_id):
@@ -185,5 +182,4 @@ class InsightSearchObjectIql:
 
 class InsightViewIssue:
     issue_title = (By.ID, "summary-val")
-    custom_field_insight = (By.ID, "rowForcustomfield_10600")
-    custom_field_insight_small = (By.ID, "rowForcustomfield_10200")
+    custom_field_insight = (By.CSS_SELECTOR, '[title="Insight"]')

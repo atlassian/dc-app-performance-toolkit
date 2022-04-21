@@ -211,39 +211,39 @@
               <stringProp name="Argument.value">${__P(perc_agent_standalone_extension, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_main_page" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_main_page</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_main_page, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_main_page" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_main_page</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_main_page, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_create_schema" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_create_schema</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_create_schema, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_create_schema" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_create_schema</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_create_schema, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_create_object" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_create_object</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_create_object, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_create_object" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_create_object</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_create_object, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_delete_schema" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_delete_schema</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_delete_schema, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_delete_schema" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_delete_schema</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_delete_schema, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_view_queue_insight_column" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_view_queue_insight_column</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_view_queue_insight_column, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_view_queue_insight_column" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_view_queue_insight_column</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_view_queue_insight_column, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_view_issue_with_objects" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_view_issue_with_objects</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_view_issue_with_objects, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_view_issue_with_objects" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_view_issue_with_objects</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_view_issue_with_objects, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_insight_agent_search_object_by_iql" elementType="Argument">
-              <stringProp name="Argument.name">perc_insight_agent_search_object_by_iql</stringProp>
-              <stringProp name="Argument.value">${__P(perc_insight_agent_search_object_by_iql, 0)}</stringProp>
+            <elementProp name="perc_agent_insight_search_object_by_iql" elementType="Argument">
+              <stringProp name="Argument.name">perc_agent_insight_search_object_by_iql</stringProp>
+              <stringProp name="Argument.value">${__P(perc_agent_insight_search_object_by_iql, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -10514,11 +10514,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="insight_agent_main_page" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_insight_main_page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_insight_agent_main_page}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_agent_insight_main_page}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
@@ -10899,11 +10899,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="insight_agent_create_schema" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_insight_create_schema" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_insight_agent_create_schema}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_agent_insight_create_schema}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
@@ -12512,11 +12512,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="insight_agent_view_queue_insight_column" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_insight_view_queue_insight_column" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_insight_agent_view_queue_insight_column}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_agent_insight_view_queue_insight_column}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
@@ -13116,11 +13116,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="insight_agent_view_issue_with_objects" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_insight_view_issue_with_objects" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_insight_agent_view_issue_with_objects}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_agent_insight_view_issue_with_objects}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
@@ -13322,11 +13322,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="insight_agent_search_object_by_iql" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="agent_insight_search_object_by_iql" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_insight_agent_search_object_by_iql}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_agent_insight_search_object_by_iql}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">

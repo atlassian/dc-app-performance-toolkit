@@ -242,9 +242,9 @@ import org.apache.commons.io.FileUtils;
               <stringProp name="Argument.value">${__P(perc_customer_standalone_extension, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="perc_customer_view_request_with_insight_field" elementType="Argument">
-              <stringProp name="Argument.name">perc_customer_view_request_with_insight_field</stringProp>
-              <stringProp name="Argument.value">${__P(perc_customer_view_request_with_insight_field, 0)}</stringProp>
+            <elementProp name="perc_customer_insight_view_request" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_insight_view_request</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_insight_view_request, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -2768,11 +2768,11 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_view_request_with_insight_field" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_insight_view_request" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
-            <stringProp name="ThroughputController.percentThroughput">${perc_customer_view_request_with_insight_field}</stringProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_customer_insight_view_request}</stringProp>
           </ThroughputController>
           <hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">

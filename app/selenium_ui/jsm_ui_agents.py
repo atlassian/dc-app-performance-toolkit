@@ -1,6 +1,6 @@
 from selenium_ui.jsm import modules_agents
 import pytest
-from extension.jsm import extension_ui_agents, extension_ui_insight_agents  # noqa F401
+from extension.jsm import extension_ui_agents  # noqa F401
 from util.conf import JSM_SETTINGS
 
 
@@ -17,6 +17,38 @@ def test_1_selenium_agent_browse_projects(jsm_webdriver, jsm_datasets, jsm_scree
     modules_agents.agent_browse_projects(jsm_webdriver, jsm_datasets)
 
 
+def test_1_selenium_agent_view_customers(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.view_customers(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_view_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.view_request(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_view_report_workload_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    if is_dataset_small(jsm_datasets):
+        pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
+    modules_agents.view_report_workload_medium(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_view_report_created_vs_resolved_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    if is_dataset_small(jsm_datasets):
+        pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
+    modules_agents.view_report_created_vs_resolved_medium(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_view_report_workload_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.view_report_workload_small(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_view_report_created_vs_resolved_small(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.view_report_created_vs_resolved_small(jsm_webdriver, jsm_datasets)
+
+
+def test_1_selenium_agent_add_comment(jsm_webdriver, jsm_datasets, jsm_screen_shots):
+    modules_agents.add_comment(jsm_webdriver, jsm_datasets)
+
+
 def test_1_selenium_agent_view_queues_medium(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     if is_dataset_small(jsm_datasets):
         pytest.skip("Dataset does not have medium (10k-100k requests) service desk. Skipping action.")
@@ -27,17 +59,17 @@ def test_1_selenium_agent_view_queues_small(jsm_webdriver, jsm_datasets, jsm_scr
     modules_agents.view_queues_small(jsm_webdriver, jsm_datasets)
 
 
-#
-
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
 Write your custom selenium scripts in `app/extension/jsm/extension_ui_agents.py`.
 Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
 """
-
-
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
 #     extension_ui_agents.app_specific_action(jsm_webdriver, jsm_datasets)
+
+"""
+To enable specific test for Insight , set 'True' in the `jsm.yml` file, next to the `insight` variable.
+"""
 
 
 def test_1_selenium_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_shots):
@@ -80,15 +112,6 @@ def test_1_selenium_insight_view_issue_with_objects(jsm_webdriver, jsm_datasets,
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.view_issue_with_insight_objects(jsm_webdriver, jsm_datasets)
-
-
-"""
-Add Insight custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/jsm/extension_ui_insight_agents.py`.
-Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
-"""
-# def test_1_selenium_insight_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-#     extension_ui_insight_agents.insight_app_specific_action(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one

@@ -1,5 +1,5 @@
 from selenium_ui.jsm import modules_customers
-from extension.jsm import extension_ui_customers, extension_ui_insight_customers  # noqa F401
+from extension.jsm import extension_ui_customers  # noqa F401
 from util.conf import JSM_SETTINGS
 import pytest
 
@@ -43,20 +43,15 @@ Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
 # # def test_1_selenium_customer_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
 # #     extension_ui_customers.app_specific_action(jsm_webdriver, jsm_datasets)
 
+"""
+To enable specific test for Insight , set 'True' in the `jsm.yml` file, next to the `insight` variable.
+"""
+
 
 def test_0_selenium_customer_insight_view_request(jsm_webdriver, jsm_datasets, jsm_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_customers.view_request_with_insight(jsm_webdriver, jsm_datasets)
-
-
-"""
-Add Insight custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/jsm/extension_ui_insight_customers.py`.
-Refer to `app/selenium_ui/jsm/modules_customers.py` for examples.
-"""
-# def test_1_selenium_customer_insight_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-#     extension_ui_insight_customers.insight_app_specific_action(jsm_webdriver, jsm_datasets)
 
 
 # this action should be the last one
