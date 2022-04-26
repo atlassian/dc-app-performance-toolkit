@@ -221,7 +221,7 @@ We recommend that you only use this method if you are having problems with the [
 
     ``` bash
     JSM_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-servicedesk.version")
-    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JSM_VERSION}/small/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jsm/${JSM_VERSION}/small/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
@@ -729,7 +729,7 @@ We recommend that you only use this method if you are having problems with the [
 
     ``` bash
     JSM_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-servicedesk.version")
-    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JSM_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jsm/${JSM_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
