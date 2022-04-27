@@ -149,7 +149,7 @@ class AnalyticsCollector:
                         err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
                                        f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
 
-                if self.app_type == INSIGHT:
+                elif self.app_type == INSIGHT:
                     if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
                         err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
                                        f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
