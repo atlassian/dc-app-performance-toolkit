@@ -112,7 +112,11 @@ class AnalyticsCollector:
     def is_compliant(self):
         message = 'OK'
 
-        if self.app_type == JSM or INSIGHT:
+        if self.app_type == JSM:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
+                         self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
+        if self.app_type == INSIGHT:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
@@ -146,12 +150,12 @@ class AnalyticsCollector:
                                        f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
 
                 if self.app_type == INSIGHT:
-                    if self.concurrency_customers < MIN_DEFAULTS[JSM]['customer_concurrency']:
+                    if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
                         err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
-                                       f"required value {MIN_DEFAULTS[JSM]['customer_concurrency']}.")
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
                     if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
                         err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
-                                       f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['agent_concurrency']}.")
 
                 elif self.app_type == BAMBOO:
                     if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
