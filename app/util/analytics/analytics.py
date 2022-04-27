@@ -43,7 +43,6 @@ class AnalyticsCollector:
         self.os = get_os()
         self.duration = convert_to_sec(self.conf.duration)
         self.concurrency = self.conf.concurrency
-        self.insight = self.conf.insight
         self.actual_duration = bzt_log.actual_run_time
         self.test_actions_success_rate, self.test_actions_timing = self.results_log.all_tests_actions
 
