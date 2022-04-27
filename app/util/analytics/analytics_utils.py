@@ -95,7 +95,11 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    if collector.app_type == JSM or INSIGHT:
+    if collector.app_type == JSM:
+        insight = collector.insight
+        summary_report.append(f'Insight|{insight}')
+
+    if collector.app_type == INSIGHT:
         insight = collector.insight
         summary_report.append(f'Insight|{insight}')
 
