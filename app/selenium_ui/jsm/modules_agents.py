@@ -248,7 +248,7 @@ def view_queues_small(webdriver, datasets):
 def insight_main_page(webdriver, datasets):
     view_insight_main_page = InsightLogin(webdriver)
 
-    @print_timing("selenium_view_insight_main_page")
+    @print_timing("selenium_agent_insight_view_main_page")
     def measure():
         view_insight_main_page.go_to()
         view_insight_main_page.submit_login(username=datasets['agent_username'], password=datasets['agent_password'])
@@ -260,7 +260,7 @@ def insight_main_page(webdriver, datasets):
 def insight_create_new_schema(webdriver, datasets):
     insight_create_schema_page = InsightNewSchema(webdriver)
 
-    @print_timing('selenium_insight_create_new_schema')
+    @print_timing('selenium_agent_insight_create_new_schema')
     def measure():
         insight_create_schema_page.go_to()
         insight_create_schema_page.wait_for_page_loaded()
@@ -273,7 +273,7 @@ def insight_create_new_schema(webdriver, datasets):
 def insight_create_new_object(webdriver, datasets):
     insight_new_object_page = InsightNewObject(webdriver)
 
-    @print_timing('selenium_insight_create_new_object')
+    @print_timing('selenium_agent_insight_create_new_object')
     def measure():
         insight_new_object_page.wait_for_page_loaded()
         insight_new_object_page.go_to_new_schema(datasets['schema_name'])
@@ -286,7 +286,7 @@ def insight_create_new_object(webdriver, datasets):
 def insight_delete_new_schema(webdriver, datasets):
     insight_delete_schema_page = InsightDeleteSchema(webdriver)
 
-    @print_timing('selenium_insight_delete_new_schema')
+    @print_timing('selenium_agent_insight_delete_new_schema')
     def measure():
         insight_delete_schema_page.go_to()
         insight_delete_schema_page.wait_for_page_loaded()
@@ -299,7 +299,7 @@ def insight_delete_new_schema(webdriver, datasets):
 def insight_view_queue_insight_column(webdriver, datasets):
     insight_random_queue_page = InsightViewQueue(webdriver, project_key=datasets['random_project_key'])
 
-    @print_timing('selenium_view_queue_with_insight_column')
+    @print_timing('selenium_agent_insight_view_queue_with_insight_column')
     def measure():
         insight_random_queue_page.go_to()
         insight_random_queue_page.wait_for_page_loaded()
@@ -312,7 +312,7 @@ def insight_view_queue_insight_column(webdriver, datasets):
 def insight_search_object_by_iql(webdriver, datasets):
     search_object_by_iql_page = InsightSearchByIql(webdriver, schema_id=datasets['schema_id'])
 
-    @print_timing('selenium_search_object_by_iql')
+    @print_timing('selenium_agent_insight_search_object_by_iql')
     def measure():
         search_object_by_iql_page.go_to()
         search_object_by_iql_page.wait_for_page_loaded()
@@ -325,7 +325,7 @@ def insight_search_object_by_iql(webdriver, datasets):
 def view_issue_with_insight_objects(webdriver, datasets):
     view_issue_with_objects_page = ViewIssueWithObject(webdriver, insight_issues=datasets["issue_key"])
 
-    @print_timing('selenium_view_issue_with_objects')
+    @print_timing('selenium_agent_insight_view_issue_with_objects')
     def measure():
         view_issue_with_objects_page.go_to()
         view_issue_with_objects_page.wait_for_page_loaded()

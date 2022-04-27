@@ -68,47 +68,47 @@ Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
 #     extension_ui_agents.app_specific_action(jsm_webdriver, jsm_datasets)
 
 """
-To enable specific test for Insight , set 'True' in the `jsm.yml` file, next to the `insight` variable.
+To enable specific test for Insight below, set 'True' in the `jsm.yml` file, next to the `insight` variable.
 """
 
 
-def test_1_selenium_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_main_page(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_main_page(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_create_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_create_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_create_new_schema(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_create_new_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_create_new_object(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_create_new_object(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_delete_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_delete_new_schema(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_delete_new_schema(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_view_queue_with_insight_column(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_view_queue_insight_column(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_search_object_by_iql(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.insight_search_object_by_iql(jsm_webdriver, jsm_datasets)
 
 
-def test_1_selenium_insight_view_issue_with_objects(jsm_webdriver, jsm_datasets, jira_screen_shots):
+def test_1_selenium_agent_insight_view_issue_with_objects(jsm_webdriver, jsm_datasets, jira_screen_shots):
     if not JSM_SETTINGS.insight:
         pytest.skip()
     modules_agents.view_issue_with_insight_objects(jsm_webdriver, jsm_datasets)

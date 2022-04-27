@@ -10543,7 +10543,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_agent_main_page" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_main_page" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -10928,7 +10928,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_agent_create_schema:open_field" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_create_schema:open_field" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -10961,7 +10961,7 @@ if ( sleep_time &gt; 0 ) {
                 </HTTPSamplerProxy>
                 <hashTree/>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_agent_create_schema:create_schema" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_create_schema:create_schema" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -11020,7 +11020,7 @@ if ( sleep_time &gt; 0 ) {
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_agent_create_object" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_create_object" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -12065,7 +12065,7 @@ if ( sleep_time &gt; 0 ) {
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_agent_delete_schema" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_delete_schema" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -12541,7 +12541,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_view_queue_insight_column" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_view_queue_insight_column" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -13145,7 +13145,7 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_view_issue_with_objects" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_view_issue_with_objects" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -13351,9 +13351,8 @@ if ( sleep_time &gt; 0 ) {
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_insight_search_object_by_iql" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_search_object_by_iql" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
-                <stringProp name="TestPlan.comments">${perc_agent_view_issue_with_objects}</stringProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
               <hashTree>

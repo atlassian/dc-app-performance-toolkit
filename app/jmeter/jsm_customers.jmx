@@ -2797,7 +2797,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="IfController.evaluateAll">false</boolProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_view_request_with_insight_field" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_insight_view_request_with_insight_field" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>

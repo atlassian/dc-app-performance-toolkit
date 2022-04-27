@@ -8,7 +8,7 @@ import urllib3
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
 from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
-    CROWD, BAMBOO
+    CROWD, BAMBOO, INSIGHT
 from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
 from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
 from util.conf import TOOLKIT_VERSION
@@ -20,7 +20,8 @@ MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
                 CROWD: {'test_duration': 2700, 'concurrency': 1000},
-                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40}
+                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40},
+                INSIGHT: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
                 }
 CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
@@ -42,6 +43,7 @@ class AnalyticsCollector:
         self.os = get_os()
         self.duration = convert_to_sec(self.conf.duration)
         self.concurrency = self.conf.concurrency
+        self.insight = self.conf.insight
         self.actual_duration = bzt_log.actual_run_time
         self.test_actions_success_rate, self.test_actions_timing = self.results_log.all_tests_actions
 
@@ -52,8 +54,8 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
-        # JSM app type has additional concurrency fields: concurrency_agents, concurrency_customers
-        if self.app_type == JSM:
+        # JSM(INSIGHT) app type has additional concurrency fields: concurrency_agents, concurrency_customers
+        if self.app_type == JSM or INSIGHT:
             self.concurrency_agents = self.conf.agents_concurrency
             self.concurrency_customers = self.conf.customers_concurrency
             self.insight = self.conf.insight
@@ -107,7 +109,7 @@ class AnalyticsCollector:
     def is_compliant(self):
         message = 'OK'
 
-        if self.app_type == JSM:
+        if self.app_type == JSM or INSIGHT:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
@@ -132,7 +134,7 @@ class AnalyticsCollector:
                 err_msg.append(f"Test run duration {self.actual_duration} sec < than minimum test "
                                f"duration {MIN_DEFAULTS[self.app_type]['test_duration']} sec.")
 
-                if self.app_type == JSM:
+                if self.app_type == JSM or INSIGHT:
                     if self.concurrency_customers < MIN_DEFAULTS[JSM]['customer_concurrency']:
                         err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
                                        f"required value {MIN_DEFAULTS[JSM]['customer_concurrency']}.")
@@ -196,7 +198,6 @@ def send_analytics(collector: AnalyticsCollector):
                "jmeter_test_rates": collector.jmeter_test_rates,
                "locust_test_rates": collector.locust_test_rates,
                "concurrency": collector.concurrency,
-               "insight": collector.insight
                }
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
