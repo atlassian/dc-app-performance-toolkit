@@ -116,7 +116,7 @@ class AnalyticsCollector:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
-        if self.app_type == INSIGHT:
+        elif self.app_type == INSIGHT:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
