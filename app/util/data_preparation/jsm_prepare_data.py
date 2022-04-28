@@ -366,8 +366,6 @@ def __get_request_types(jsm_api, service_desks):
 
 @print_timing("Preparing Insight Schemas")
 def __get_insight_schemas(jsm_api):
-    if not JSM_SETTINGS.insight:
-        raise Exception('ERROR: Set True to enable Insight specific data for tests')
     insight_schemas = jsm_api.get_all_schemas()
     if not insight_schemas:
         raise Exception('ERROR: Jira Service Management instance does not have any Insight schemas')
@@ -391,8 +389,6 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
 
 @print_timing("Preparing Insight issues")
 def __get_insight_issues(jira_api):
-    if not JSM_SETTINGS.insight:
-        raise Exception('ERROR: Set True to enable Insight specific data for tests')
     issues = []
     custom_jql = "Insight is NOT EMPTY"
     if custom_jql:

@@ -362,7 +362,6 @@ Next time when you run toolkit, custom dataset issues will be stored to the `dc-
 
 #### Example of app-specific Selenium action development with custom dataset  
 You develop an app that adds some additional fields to specific types of Jira Service Management requests. In this case, you should develop Selenium app-specific action:
-(If your app adds additional fields for Insight please follow example of app-specific Selenium with Insight)
 1. Create app-specific service desk requests with *AppRequest* anchor in summary: *AppRequest1*, *AppRequest2*, etc.
 1. Go to the search page of your Jira Service Management Data Center - `JSM_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppRequest*'`.
 1. Edit `dc-app-performance-toolkit/app/jsm.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppRequest*'`.
@@ -386,30 +385,6 @@ So, our test has to open app-specific requests in portal view and measure time t
 ```
 
 1. Run toolkit with `bzt jsm.yml` command to ensure that all Selenium actions including `app_specific_action` are successful.
-
-#### Example of app-specific Selenium action development with Insight 
-You develop an app that adds some additional fields to Insight. In this case, you should develop Selenium app-specific action:
- Extend example of app-specific action for agent in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_insight_agents.py`.  
-[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_insight_agents.py)
-So, our test has to open random Object Schema in agent view and measure time to load main page with all Schema Objects.
-1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_insight_customers.py`.  
-[Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_insight_customers.py)
-So, our test has to open random requests in portal view and measure time to load this request with insight field.
-1. If you need to run `insight_app_specific_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
-1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
-``` python
-# def test_1_selenium_insight_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-#     extension_ui_insight_agents.insight_app_specific_action(jsm_webdriver, jsm_datasets)
-```
-
-1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_customers.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
-``` python
-# def test_1_selenium_insight_customer_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
-#     extension_ui_insight_customers.insight_app_specific_action(jsm_webdriver, jsm_datasets)
-```
-
-1. Run toolkit with `bzt jsm.yml` command to ensure that all Selenium actions including `insight_app_specific_action` are successful.
-
 
 #### Example of app-specific Locust/JMeter action development
 
@@ -846,8 +821,6 @@ For generating performance results suitable for Marketplace approval process use
 Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
 Instead, set those values directly in `.yml` file on execution environment instance.
 {{% /warning %}}
-
-In case your application relays or extends the functionality of **Insight**. Make sure to set `True` value next to the `insight` variable.
 
    ``` yaml
        application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
