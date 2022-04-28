@@ -644,9 +644,9 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Screens | ~3000 |
 | Users | ~21 000 |
 | Workflows | ~700 |
-| Schemas | ~ 6 |
-| Object types | ~ 50 |
-| Schema objects | ~ 1 000 000 |
+| Insight Schemas | ~ 6 |
+| Insight Object types | ~ 50 |
+| Insight Schema objects | ~ 1 000 000 |
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
