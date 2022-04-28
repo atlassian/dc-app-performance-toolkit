@@ -212,7 +212,7 @@ def send_analytics(collector: AnalyticsCollector):
                "selenium_test_rates": collector.selenium_test_rates,
                "jmeter_test_rates": collector.jmeter_test_rates,
                "locust_test_rates": collector.locust_test_rates,
-               "concurrency": collector.concurrency,
+               "concurrency": collector.concurrency
                }
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
