@@ -68,7 +68,7 @@ Refer to `app/selenium_ui/jsm/modules_agents.py` for examples.
 #     extension_ui_agents.app_specific_action(jsm_webdriver, jsm_datasets)
 
 """
-To enable specific test for Insight below, set 'True' in the `jsm.yml` file, next to the `insight` variable.
+To enable specific tests for Insight below, set 'True' next to `insight` variable (False by default) in  `app/jsm.yml`
 """
 
 
