@@ -12,7 +12,7 @@ This document walks you through the process of testing your app on Jira Service 
 
 If your application relays or extends the functionality of **Insight** ([What is Insight?](https://confluence.atlassian.com/servicemanagementserver/what-is-insight-1044784313.html)):
 
-Please, make sure you have enabled Insight-specific tests in the `jsm.yml` file, by setting `True` value next to `insight` variable.
+Please, make sure you have enabled Insight-specific tests in the `jsm.yml` file, by setting `True` value next to the `insight` variable.
 
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
