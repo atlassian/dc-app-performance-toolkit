@@ -7,7 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
-from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -94,6 +94,14 @@ def generate_report_summary(collector):
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
+
+    if collector.app_type == JSM:
+        insight = collector.insight
+        summary_report.append(f'Insight|{insight}')
+
+    if collector.app_type == INSIGHT:
+        insight = collector.insight
+        summary_report.append(f'Insight|{insight}')
 
     if collector.app_type == BAMBOO:
         summary_report.append(f'Number of plans with unexpected status|'

@@ -14,6 +14,7 @@ BITBUCKET = 'bitbucket'
 JSM = 'jsm'
 CROWD = 'crowd'
 BAMBOO = 'bamboo'
+INSIGHT = 'insight'
 
 DEFAULT_ACTIONS = 'util/default_test_actions.json'
 
@@ -180,15 +181,19 @@ class Bamboo(BaseApplication):
         return f"{self.__build_plans_count()} build plans"
 
 
+class Insight(Jsm):
+    type = INSIGHT
+
+
 class ApplicationSelector:
     APP_TYPE_MSG = ('ERROR: Please run util/analytics.py with application type as argument. '
-                    f'E.g. python util/analytics.py {JIRA}/{CONFLUENCE}/{BITBUCKET}/{JSM}/{BAMBOO}')
+                    f'E.g. python util/analytics.py {JIRA}/{CONFLUENCE}/{BITBUCKET}/{JSM}/{BAMBOO}/{INSIGHT}')
 
     def __init__(self, app_name):
         self.application_type = self.__get_application_type(app_name)
 
     def __get_application_type(self, app_name):
-        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET, JSM, CROWD, BAMBOO]:
+        if app_name.lower() not in [JIRA, CONFLUENCE, BITBUCKET, JSM, CROWD, BAMBOO, INSIGHT]:
             raise SystemExit(self.APP_TYPE_MSG)
         return app_name.lower()
 
@@ -201,7 +206,10 @@ class ApplicationSelector:
         if self.application_type == BITBUCKET:
             return Bitbucket(api_client=BitbucketRestClient, config_yml=BITBUCKET_SETTINGS)
         if self.application_type == JSM:
-            return Jsm(api_client=JiraRestClient, config_yml=JSM_SETTINGS)
+            if JSM_SETTINGS.insight:
+                return Insight(api_client=JiraRestClient, config_yml=JSM_SETTINGS)
+            else:
+                return Jsm(api_client=JiraRestClient, config_yml=JSM_SETTINGS)
         if self.application_type == CROWD:
             return Crowd(api_client=CrowdRestClient, config_yml=CROWD_SETTINGS)
         if self.application_type == BAMBOO:
