@@ -2793,8 +2793,9 @@ if ( sleep_time &gt; 0 ) {
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
               <stringProp name="TestPlan.comments"> Check if Insight enabled</stringProp>
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_insight_view_request_with_insight_field" enabled="true">
