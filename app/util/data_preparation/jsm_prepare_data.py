@@ -443,6 +443,8 @@ def __create_data_set(jira_client, jsm_client):
         jsm_client, jira_client, service_desks)
     dataset[REQUEST_TYPES] = __get_request_types(jsm_client, service_desks)
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
+    dataset[INSIGHT_ISSUES] = list()
+    dataset[INSIGHT_SCHEMAS] = list()
     if JSM_SETTINGS.insight:
         dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
         dataset[INSIGHT_SCHEMAS] = __get_insight_schemas(jsm_client)
@@ -463,15 +465,14 @@ def __write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
               in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
-    if JSM_SETTINGS.insight:
-        insight_issues = [f"{insight_issue['key']},{insight_issue['id']},{insight_issue['key'].split('-')[0]}"
-                          for insight_issue
-                          in datasets[INSIGHT_ISSUES]]
-        __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
-        schemas_id = [f"{schema_id['id']}"
-                      for schema_id
-                      in datasets[INSIGHT_SCHEMAS]]
-        __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schemas_id)
+    insight_issues = [f"{insight_issue['key']},{insight_issue['id']},{insight_issue['key'].split('-')[0]}"
+                      for insight_issue
+                      in datasets[INSIGHT_ISSUES]]
+    __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
+    schemas_id = [f"{schema_id['id']}"
+                  for schema_id
+                  in datasets[INSIGHT_SCHEMAS]]
+    __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schemas_id)
 
 
 @print_timing('JSM full prepare data', sep='=')

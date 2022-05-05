@@ -1033,23 +1033,23 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
             <boolProp name="independentListPerThread">true</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
-          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="insight_issues" enabled="true">
-            <stringProp name="filename">datasets/jsm/insight_issues.csv</stringProp>
-            <stringProp name="fileEncoding">UTF-8</stringProp>
-            <stringProp name="delimiter">,</stringProp>
-            <stringProp name="variableNames">insight_issue_key,insight_issue_id,insight_issue_name</stringProp>
-            <boolProp name="randomOrder">true</boolProp>
-            <boolProp name="ignoreFirstLine">false</boolProp>
-            <boolProp name="rewindOnTheEndOfList">true</boolProp>
-            <boolProp name="independentListPerThread">true</boolProp>
-          </com.blazemeter.jmeter.RandomCSVDataSetConfig>
-          <hashTree/>
           <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="m_projects" enabled="true">
             <stringProp name="filename">datasets/jsm/service_desks_medium.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="variableNames">m_service_desk_id,m_prj_id,m_prj_key,m_prj_total_req,m_prj_all_open_queue_id,m_created_vs_resolved_id,m_time_to_resolution_id</stringProp>
             <boolProp name="randomOrder">false</boolProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="rewindOnTheEndOfList">true</boolProp>
+            <boolProp name="independentListPerThread">true</boolProp>
+          </com.blazemeter.jmeter.RandomCSVDataSetConfig>
+          <hashTree/>
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="insight_issues" enabled="true">
+            <stringProp name="filename">datasets/jsm/insight_issues.csv</stringProp>
+            <stringProp name="fileEncoding">UTF-8</stringProp>
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="variableNames">insight_issue_key,insight_issue_id,insight_issue_name</stringProp>
+            <boolProp name="randomOrder">true</boolProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
             <boolProp name="rewindOnTheEndOfList">true</boolProp>
             <boolProp name="independentListPerThread">true</boolProp>
@@ -10538,9 +10538,10 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_main_page" enabled="true">
@@ -10923,9 +10924,10 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_create_schema:open_field" enabled="true">
@@ -12536,9 +12538,10 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_view_queue_insight_column" enabled="true">
@@ -13140,9 +13143,10 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_view_issue_with_objects" enabled="true">
@@ -13346,9 +13350,10 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
-              <stringProp name="IfController.condition">&quot;${insight}&quot; == &quot;True&quot;</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
               <stringProp name="TestPlan.comments">Check if Insight enabled</stringProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_agent_insight_search_object_by_iql" enabled="true">
