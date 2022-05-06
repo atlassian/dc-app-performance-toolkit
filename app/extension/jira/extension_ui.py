@@ -39,7 +39,6 @@ def app_specific_action(webdriver, datasets):
             page.go_to_url(f"{JIRA_SETTINGS.server_url}/browse/{issue_key}")
             page.wait_until_visible((By.ID, "summary-val"))  # Wait for summary field visible
             page.wait_until_visible((By.XPATH, '//*[@id="container-wrap"]/table[contains(@class,"sf-properties-panel")]'))  # Wait for you app-specific UI element by ID selector
-            print("found")
         sub_measure()
     measure()
 
