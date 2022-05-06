@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-02-01"
+date: "2022-05-06"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -63,10 +63,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended value |
-| --------- | ----------------- |
-| Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.16`, `8.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | Software                                                                                                                                                                                                |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.20`, `8.20.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -384,10 +384,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.16`, `8.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended Value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | Software                                                                                                                                                                                                |
+| Version | The Data Center App Performance Toolkit officially supports `8.13.20`, `8.20.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
