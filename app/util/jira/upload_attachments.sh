@@ -30,7 +30,7 @@ JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 # Jira/JSM supported versions
 
 
-SUPPORTED_JIRA_VERSIONS=(8.13.16 8.20.4)
+SUPPORTED_JIRA_VERSIONS=(8.13.20 8.20.8)
 SUPPORTED_JSM_VERSIONS=(4.13.20 4.20.8)
 
 
