@@ -389,11 +389,8 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
 
 @print_timing("Preparing Insight issues")
 def __get_insight_issues(jira_api):
-    issues = []
-    custom_jql = "Insight is NOT EMPTY"
-    if custom_jql:
-        issues = jira_api.issues_search(
-            jql=custom_jql, max_results=500)
+    jql = "Insight is NOT EMPTY"
+    issues = jira_api.issues_search(jql=jql, max_results=500)
     if not issues:
         raise Exception('ERROR: Jira Service Management instance does not have any Insight issues')
     return issues
