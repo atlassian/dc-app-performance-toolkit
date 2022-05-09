@@ -1,4 +1,5 @@
 matplotlib==3.5.2
+kiwisolver==1.4.2
 pandas==1.4.2
 numpy==1.22.3
 scipy==1.8.0
