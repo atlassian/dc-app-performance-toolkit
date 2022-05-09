@@ -4,7 +4,7 @@
 # bzt run: docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
 # interactive run: docker run -it --entrypoint="/bin/bash" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt
 
-FROM blazemeter/taurus:1.16.2
+FROM blazemeter/taurus:1.16.4
 
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 
