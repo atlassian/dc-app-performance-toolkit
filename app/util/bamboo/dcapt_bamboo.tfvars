@@ -55,8 +55,8 @@ db_allocated_storage = 100
 db_iops              = 1000
 
 # Helm chart version of Bamboo and Bamboo agent instances
-bamboo_helm_chart_version       = "1.0.0"
-bamboo_agent_helm_chart_version = "1.0.0"
+bamboo_helm_chart_version       = "1.3.0"
+bamboo_agent_helm_chart_version = "1.3.0"
 
 # Bamboo instance resource configuration
 bamboo_cpu = "4"

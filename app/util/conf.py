@@ -2,8 +2,8 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
-TOOLKIT_VERSION = '6.1.0'
-UNSUPPORTED_VERSION = '4.1.0'
+TOOLKIT_VERSION = '6.2.0'
+UNSUPPORTED_VERSION = '4.2.0'
 
 
 def read_yml_file(file):
@@ -82,6 +82,7 @@ class JsmSettings(BaseAppSettings):
         self.concurrency = self.agents_concurrency + self.customers_concurrency
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
+        self.insight = self.get_property('insight')
 
 
 class CrowdSettings(BaseAppSettings):

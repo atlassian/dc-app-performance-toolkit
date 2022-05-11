@@ -1,23 +1,27 @@
 import sys
-import requests
 import uuid
 from datetime import datetime, timezone
 
-from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
-    CROWD, BAMBOO
-from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
-from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
-from util.conf import TOOLKIT_VERSION
+import requests
+import urllib3
+
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
+from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
+    CROWD, BAMBOO, INSIGHT
+from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
+from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
+from util.conf import TOOLKIT_VERSION
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
                 JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
                 CROWD: {'test_duration': 2700, 'concurrency': 1000},
-                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40}
+                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40},
+                INSIGHT: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
                 }
 CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
@@ -49,10 +53,15 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
-        # JSM app type has additional concurrency fields: concurrency_agents, concurrency_customers
+        # JSM(INSIGHT) app type has additional concurrency fields: concurrency_agents, concurrency_customers
+        if self.app_type == INSIGHT:
+            self.concurrency_agents = self.conf.agents_concurrency
+            self.concurrency_customers = self.conf.customers_concurrency
+            self.insight = self.conf.insight
         if self.app_type == JSM:
             self.concurrency_agents = self.conf.agents_concurrency
             self.concurrency_customers = self.conf.customers_concurrency
+            self.insight = self.conf.insight
         if self.app_type == CROWD:
             self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
             self.ramp_up = application.config.ramp_up
@@ -107,6 +116,10 @@ class AnalyticsCollector:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
+        elif self.app_type == INSIGHT:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
+                         self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
         elif self.app_type == CROWD:
             rps_compliant = CROWD_RPS[self.nodes_count]
             total_actions_compliant = rps_compliant * 3600
@@ -135,6 +148,14 @@ class AnalyticsCollector:
                     if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
                         err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
                                        f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
+
+                elif self.app_type == INSIGHT:
+                    if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
+                        err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
+                    if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
+                        err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['agent_concurrency']}.")
 
                 elif self.app_type == BAMBOO:
                     if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:

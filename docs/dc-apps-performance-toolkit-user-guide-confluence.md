@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-02-01"
+date: "2022-05-06"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -63,10 +63,10 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended value |
-| --------- | ----------------- |
-| Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.3` and `7.4.14` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                         |
+| --------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Collaborative editing mode | synchrony-local                                                                                                                                                                                           |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.5` and `7.4.16` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 
 **Cluster nodes**
@@ -381,10 +381,10 @@ All important parameters are listed and described in this section. For all other
 
 **Confluence setup**
 
-| Parameter | Recommended value |
-| --------- | ----------------- |
-| Collaborative editing mode | synchrony-local |
-| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.3` and `7.4.14` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                         |
+| --------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Collaborative editing mode | synchrony-local                                                                                                                                                                                           |
+| Confluence Version | The Data Center App Performance Toolkit officially supports `7.13.5` and `7.4.16` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 

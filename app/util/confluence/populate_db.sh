@@ -20,7 +20,7 @@ CONFLUENCE_DB_PASS="Password1!"
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
 
 # Confluence version variables
-SUPPORTED_CONFLUENCE_VERSIONS=(7.4.14 7.13.3)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.4.16 7.13.5)
 
 if [[ ! $(systemctl status confluence) ]]; then
   echo "The Confluence service was not found on this host." \
@@ -118,7 +118,7 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and user permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -135,6 +135,15 @@ if [[ $? -ne 0 ]]; then
   echo "CONFLUENCE_DB_PASS=${CONFLUENCE_DB_PASS}"
   echo "DB_HOST=${DB_HOST}"
   exit 1
+fi
+
+echo "Check database permissions for user ${CONFLUENCE_DB_USER}"
+PGPASSWORD=${CONFLUENCE_DB_PASS} createdb -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${CONFLUENCE_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${CONFLUENCE_DB_PASS} dropdb -U ${CONFLUENCE_DB_USER} -h ${DB_HOST} TEST
 fi
 
 echo "Step3: Write confluence baseUrl to file"

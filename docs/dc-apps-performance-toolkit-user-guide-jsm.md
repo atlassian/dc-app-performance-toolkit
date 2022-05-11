@@ -4,11 +4,16 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-02-01"
+date: "2022-05-06"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
-This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/):
+
+If your application relays or extends the functionality of **Insight** ([What is Insight?](https://confluence.atlassian.com/servicemanagementserver/what-is-insight-1044784313.html)):
+
+Please, make sure you have enabled Insight-specific tests in the `jsm.yml` file, by setting `True` value next to the `insight` variable.
+
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -63,10 +68,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended value |
-| --------- | ----------------- |
-| Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.16`, `4.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | ServiceManagement                                                                                                                                                                                       |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.20`, `4.20.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -221,7 +226,7 @@ We recommend that you only use this method if you are having problems with the [
 
     ``` bash
     JSM_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-servicedesk.version")
-    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JSM_VERSION}/small/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jsm/${JSM_VERSION}/small/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
@@ -280,9 +285,9 @@ Make sure **English (United States)** language is selected as a default language
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
-1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
-1. Navigate to `dc-app-performance-toolkit/app` folder.
-1. Open the `jsm.yml` file and fill in the following variables:
+2. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
+3. Navigate to `dc-app-performance-toolkit/app` folder.
+4. Open the `jsm.yml` file and fill in the following variables:
     - `application_hostname`: your_dc_jsm_instance_hostname without protocol.
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
@@ -298,14 +303,18 @@ Make sure **English (United States)** language is selected as a default language
     - `total_actions_per_hour_agents`: `500` - number of total JMeter/Locust actions per hour for agents scenario.
     - `total_actions_per_hour_customers`: `1500` - number of total JMeter/Locust actions per hour customers scenario.
     - `WEBDRIVER_VISIBLE`: visibility of Chrome browser during selenium execution (False is by default).
+    - `insight`: True or False. Default value is False. Set True to enable Insight specific tests.
     
-1. Run bzt.
+
+5. In case your application relays or extends the functionality of **Insight**. Make sure to set `True` value next to `insight` variable.
+
+6. Run bzt.
 
     ``` bash
     bzt jsm.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
+7. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
 In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jsm/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
@@ -353,7 +362,6 @@ Next time when you run toolkit, custom dataset issues will be stored to the `dc-
 
 #### Example of app-specific Selenium action development with custom dataset  
 You develop an app that adds some additional fields to specific types of Jira Service Management requests. In this case, you should develop Selenium app-specific action:
-
 1. Create app-specific service desk requests with *AppRequest* anchor in summary: *AppRequest1*, *AppRequest2*, etc.
 1. Go to the search page of your Jira Service Management Data Center - `JSM_URL/issues/?jql=` and check if JQL is correct: `summary  ~ 'AppRequest*'`.
 1. Edit `dc-app-performance-toolkit/app/jsm.yml` configuration file and set `custom_dataset_query: summary  ~ 'AppRequest*'`.
@@ -363,7 +371,7 @@ So, our test has to open app-specific requests in agent view and measure time to
 1. Extend example of app-specific action for customer in `dc-app-performance-toolkit/app/extension/jsm/extension_ui_customers.py`.  
 [Code example.](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_customers.py)
 So, our test has to open app-specific requests in portal view and measure time to load of this app-specific request.
-1. If you need to run `app_speicifc_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
+1. If you need to run `app_specific_action` as specific user uncomment `app_specific_user_login` function in [code example](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/extension/jsm/extension_ui_agents.py). Note, that in this case `test_1_selenium_custom_action` should follow just before `test_2_selenium_agent_z_logout` or `test_2_selenium_customer_z_log_out` action.
 1. In `dc-app-performance-toolkit/app/selenium_ui/jsm_ui_agents.py`, review and uncomment the following block of code to make newly created app-specific actions executed:
 ``` python
 # def test_1_selenium_agent_custom_action(jsm_webdriver, jsm_datasets, jsm_screen_shots):
@@ -540,10 +548,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Jira Product | ServiceManagement |
-| Version | The Data Center App Performance Toolkit officially supports `4.13.16`, `4.20.4` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended Value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | ServiceManagement                                                                                                                                                                                       |
+| Version | The Data Center App Performance Toolkit officially supports `4.13.20`, `4.20.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -636,6 +644,9 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Screens | ~3000 |
 | Users | ~21 000 |
 | Workflows | ~700 |
+| Insight Schemas | ~ 6 |
+| Insight Object types | ~ 50 |
+| Insight Schema objects | ~ 1 000 000 |
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -729,7 +740,7 @@ We recommend that you only use this method if you are having problems with the [
 
     ``` bash
     JSM_VERSION=$(sudo su jira -c "cat /media/atl/jira/shared/jira-servicedesk.version")
-    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jira/${JSM_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
+    sudo su jira -c "wget https://centaurus-datasets.s3.amazonaws.com/jsm/${JSM_VERSION}/large/xml_backup.zip -O /media/atl/jira/shared/import/xml_backup.zip"
     ```
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Restore System.** from the menu.
@@ -803,7 +814,8 @@ It's recommended to change default password from UI account page for security re
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters:
+2. Clone the fork locally, then edit the `jsm.yml` configuration file. Set enterprise-scale Jira Service Management Data Center parameters
+3. In case your application relays or extends the functionality of **Insight**. Make sure to set `True` next to the `insight` variable.
 
 {{% warning %}}
 Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
@@ -823,8 +835,10 @@ Instead, set those values directly in `.yml` file on execution environment insta
        concurrency_customers: 150                # number of concurrent virtual customers for jmeter or locust scenario
        test_duration: 45m
        ramp-up: 3m                               # time to spin all concurrent users
-       total_actions_per_hour_agents: 5000      # number of total JMeter/Locust actions per hour
+       total_actions_per_hour_agents: 5000       # number of total JMeter/Locust actions per hour
        total_actions_per_hour_customers: 15000   # number of total JMeter/Locust actions per hour
+       insight: False                            # Set True to enable Insight specific tests
+       
    ```  
 
 1. Push your changes to the forked repository.
