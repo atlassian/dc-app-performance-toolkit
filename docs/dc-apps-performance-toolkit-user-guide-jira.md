@@ -866,8 +866,9 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     Index synchronizing time is about 5-10 minutes.
 
    {{% note %}}
-   Make sure **System** > **Clustering** page has expected number of nodes with node status `active` and application status `running`.
-   If index synchronization is failed by some reason (e.g. application status is `maintenance`), you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will be copied from one instance to another.
+   Make sure **System** > **Clustering** page has expected number of nodes with node status `ACTIVE` and application status `RUNNIG`.
+
+   If index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`), you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will be copied from one instance to another.
    {{% /note %}}
 
 
@@ -959,3 +960,4 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+
