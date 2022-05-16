@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-05-06"
+date: "2022-05-16"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -743,7 +743,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
 
 {{% note %}}
-Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~30 min.
+Jira 8 index time is about ~30 min.
 {{% /note %}}
 
 {{% note %}}
@@ -844,10 +844,10 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
 1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-1. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
+5. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
 
     ```bash
     ssh-add path_to_your_private_key_pem
@@ -857,25 +857,21 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     export SSH_OPTS2='-o ServerAliveCountMax=30'
     ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
-1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
+6. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
     ./index-sync.sh 2>&1 | tee -a index-sync.log
     ```
-    Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
-    ```bash
-    Index restore started
-    indexes - 60%
-    indexes - 80%
-    indexes - 100%
-    Index restore complete
-    ```
-{{% note %}}
-If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
-{{% /note %}}
+    Index synchronizing time is about 5-10 minutes.
 
-1. Run toolkit with docker from the execution environment instance:
+   {{% note %}}
+   Make sure **System** > **Clustering** page has expected number of nodes with node status `active` and application status `running`.
+   If index synchronization is failed by some reason (e.g. application status is `maintenance`), you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will be copied from one instance to another.
+   {{% /note %}}
+
+
+7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
