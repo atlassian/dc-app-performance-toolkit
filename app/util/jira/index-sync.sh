@@ -36,9 +36,5 @@ function find_word_in_log() {
         fi
 }
 
-find_word_in_log "Index restore started"
-find_word_in_log "indexes - 60%"
-find_word_in_log "indexes - 80%"
-find_word_in_log "indexes - 100%"
-find_word_in_log "Index restore complete"
+find_word_in_log "Index restore complete\|Done recovering indexes from snapshot found in shared home"
 echo "DCAPT util script execution is finished successfully."

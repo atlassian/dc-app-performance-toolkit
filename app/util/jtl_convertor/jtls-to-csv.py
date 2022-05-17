@@ -64,11 +64,11 @@ def __reset_file_stream(stream: IO) -> None:
 
 def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list) -> None:
     if not input_file_path.exists():
-        raise SystemExit(f'Input file {output_file_path} does not exist')
+        raise SystemExit(f'ERROR: Input file {output_file_path} does not exist')
     start = time.time()
     convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path, default_test_actions=default_test_actions)
     if not output_file_path.exists():
-        raise SystemExit(f'Something went wrong. Output file {output_file_path} does not exist')
+        raise SystemExit(f'ERROR: Something went wrong. Output file {output_file_path} does not exist')
 
     print(f'Created file {output_file_path}. Converted from jtl to csv in {time.time() - start} ')
 
@@ -99,7 +99,7 @@ def __create_results_csv(csv_list: List[Path], results_file_path: Path) -> None:
             __read_csv_without_first_line(results_file_stream, temp_csv_path)
 
     if not results_file_path.exists():
-        raise SystemExit(f'Something went wrong. Output file {results_file_path} does not exist')
+        raise SystemExit(f'ERROR: Something went wrong. Output file {results_file_path} does not exist')
     print(f'Created file {results_file_path}')
 
 
@@ -108,13 +108,21 @@ def __validate_file_names(file_names: List[str]):
 
     for file_name in file_names:
         if '.' not in file_name:
-            raise SystemExit(f'File name {file_name} does not have extension')
+            raise SystemExit(f'ERROR: File name {file_name} does not have extension')
 
         file_name_without_extension = __get_file_name_without_extension(file_name)
         if file_name_without_extension in file_names_set:
-            raise SystemExit(f'Duplicated file name {file_name_without_extension}')
+            raise SystemExit(f'ERROR: Duplicated file name {file_name_without_extension}')
 
         file_names_set.add(file_name_without_extension)
+
+
+def __validate_file_length(file_names: List[str]):
+    for file_name in file_names:
+        lines_count = sum(1 for _ in open(ENV_TAURUS_ARTIFACT_DIR / file_name))
+        if lines_count <= 1:
+            raise SystemExit(f'ERROR: File {ENV_TAURUS_ARTIFACT_DIR / file_name} does not have content.\n'
+                             f'See logs for detailed error: {ENV_TAURUS_ARTIFACT_DIR}')
 
 
 def __pathname_pattern_expansion(args: List[str]) -> List[str]:
@@ -177,6 +185,7 @@ def main():
     args = sys.argv[1:]
     file_names = __pathname_pattern_expansion(args)
     __validate_file_names(file_names)
+    __validate_file_length(file_names)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         temp_csv_list: List[Path] = []
