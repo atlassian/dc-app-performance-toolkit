@@ -9,4 +9,4 @@ selenium==4.1.3
 filelock==3.6.0
 packaging==21.3
 prettytable==3.2.0
-bzt==1.16.4
+bzt==1.16.3     # make sure Dockerfile bzt version is the same
