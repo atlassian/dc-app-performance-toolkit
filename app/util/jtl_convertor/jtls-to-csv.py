@@ -121,7 +121,8 @@ def __validate_file_length(file_names: List[str]):
     for file_name in file_names:
         lines_count = sum(1 for _ in open(ENV_TAURUS_ARTIFACT_DIR / file_name))
         if lines_count <= 1:
-            raise SystemExit(f'ERROR: File name {file_name} does not have content. Check logs folder.')
+            raise SystemExit(f'ERROR: File {ENV_TAURUS_ARTIFACT_DIR / file_name} does not have content.\n'
+                             f'See logs for detailed error: {ENV_TAURUS_ARTIFACT_DIR}')
 
 
 def __pathname_pattern_expansion(args: List[str]) -> List[str]:
