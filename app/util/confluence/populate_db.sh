@@ -14,7 +14,7 @@ CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 # DB admin user name, password and DB name
 CONFLUENCE_DB_NAME="confluence"
 CONFLUENCE_DB_USER="postgres"
-CONFLUENCE_DB_PASS="Password1!"
+CONFLUENCE_DB_PASS="zsG4HX36ga7bR"
 
 # Confluence DB requests
 SELECT_CONFLUENCE_SETTING_SQL="select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';"
@@ -28,7 +28,7 @@ if [[ ! $(systemctl status confluence) ]]; then
   exit 1
 fi
 
-CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
+CONFLUENCE_VERSION=7.13.5
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
   echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
   has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
@@ -127,7 +127,8 @@ fi
 echo "DB_HOST=${DB_HOST}"
 
 echo "Check DB connection"
-PGPASSWORD=${CONFLUENCE_DB_PASS} pg_isready -U ${CONFLUENCE_DB_USER} -h ${DB_HOST}
+#PGPASSWORD=${CONFLUENCE_DB_PASS} psql -U ${CONFLUENCE_DB_USER} -h ${DB_HOST}
+PGPASSWORD=`w`
 if [[ $? -ne 0 ]]; then
   echo "Connection to DB failed. Please check correctness of following variables:"
   echo "CONFLUENCE_DB_NAME=${CONFLUENCE_DB_NAME}"

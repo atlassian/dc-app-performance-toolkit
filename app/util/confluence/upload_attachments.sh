@@ -5,7 +5,7 @@
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 SUPPORTED_CONFLUENCE_VERSIONS=(7.4.14 7.13.3)
-CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
+CONFLUENCE_VERSION=7.13.5
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
          has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
@@ -19,7 +19,7 @@ ATTACHMENTS_DIR="attachments"
 DATASETS_SIZE="large"
 ATTACHMENTS_TAR_URL="${DATASETS_AWS_BUCKET}/${CONFLUENCE_VERSION}/${DATASETS_SIZE}/${ATTACHMENTS_TAR}"
 TMP_DIR="/tmp"
-EFS_DIR="/media/atl/confluence/shared-home"
+EFS_DIR="/var/atlassian/application-data/confluence/shared-home"
 ###################    End of variables section  ###################
 
 if [[ ! $(systemctl status confluence) ]]; then
