@@ -2,6 +2,7 @@ import atexit
 import csv
 import datetime
 import functools
+import json
 import os
 import sys
 import time
@@ -10,6 +11,7 @@ from datetime import timezone
 import filelock
 import pytest
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from time import sleep
@@ -118,7 +120,7 @@ def is_docker():
     )
 
 
-def print_timing(interaction=None):
+def print_timing(interaction=None, explicit_timing=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -147,7 +149,10 @@ def print_timing(interaction=None):
             with filelock.SoftFileLock(lockfile):
                 with open(selenium_results_file, "a+") as jtl_file:
                     timestamp = round(time.time() * 1000)
-                    jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    if explicit_timing:
+                        jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    else:
+                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
@@ -164,6 +169,8 @@ def print_timing(interaction=None):
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         if app_settings.webdriver_visible and is_docker():
             raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
@@ -175,7 +182,7 @@ def webdriver(app_settings):
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument('lang=en')
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(options=chrome_options, desired_capabilities=capabilities)
         driver.app_settings = app_settings
         return driver
 
@@ -203,6 +210,109 @@ def webdriver(app_settings):
             globals.driver = driver_init()
             print('reinit driver')
             return globals.driver
+
+
+def get_performance_logs(webdriver):
+    logs = webdriver.get_log("performance")
+    needed_logs = []
+    for entry in logs:
+        log = json.loads(entry["message"])["message"]
+        if log["method"] == "Network.requestWillBeSent" or \
+           log["method"] == "Network.responseReceived" or \
+           log["method"] == "Network.requestServedFromCache" or \
+           log["method"] == "Network.loadingFinished":
+            needed_logs.append(log)
+
+    sorted_requests = {}
+    for request in needed_logs:
+        request_id = request['params']['requestId']
+        if request_id not in sorted_requests:
+            sorted_requests[request_id] = []
+        if request_id in sorted_requests:
+            sorted_requests[request_id].append(request)
+
+    return sorted_requests
+
+
+def get_requests_by_url(requests, url_path):
+    filtered_requests = {}
+    for request_id, requests in requests.items():
+        for request in requests:
+            if request["method"] == 'Network.requestWillBeSent':
+                if url_path in request["params"]["request"]["url"]:
+                    filtered_requests[request_id] = requests
+    return filtered_requests
+
+
+def get_wait_browser_metrics(webdriver):
+    attempts = 20
+    max_wait_time = 10
+    sleep_time = float(max_wait_time / attempts)
+
+    for i in range(0, attempts):
+        requests = get_performance_logs(webdriver)
+        requests_bulk = get_requests_by_url(requests, 'bulk')
+        for request_id, request in requests_bulk.items():
+            if 'browser.metrics.navigation' in str(request):
+                return requests_bulk
+        print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
+        time.sleep(sleep_time)
+    return {}
+
+
+def measure_dom_requests(webdriver, interaction):
+    timing = webdriver.execute_script(
+        "return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;")
+    lockfile = f'{selenium_results_file}.lock'
+    error_msg = ''
+    success = True
+    with filelock.SoftFileLock(lockfile):
+        with open(selenium_results_file, "a+") as jtl_file:
+            timestamp = round(time.time() * 1000)
+            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+
+
+def measure_browser_navi_metrics(webdriver, dataset):
+    requests = get_wait_browser_metrics(webdriver)
+    mark = ''
+    metrics = []
+    for request_id, request in requests.items():
+        if 'browser.metrics.navigation' in str(request):
+            post_data_str = request[0]['params']['request']['postData']
+            post_data = eval(post_data_str)
+            for data in post_data:
+                if data['name'] == 'browser.metrics.navigation':
+                    key = data['properties']['key']
+                    ready_for_user = data['properties']['readyForUser']
+
+                    if 'page.view' in key:
+                        if 'pageID' in post_data_str:
+                            page_id = [v for d in post_data for v in d.values() if
+                                       d['name'] == 'confluence.viewpage.src.empty'][1]['pageID']
+
+                            for name, value in dataset.items():
+                                if value:
+                                    if page_id == value[0]:  # [page_id, project_id, template_id]
+                                        mark = f'-{name}-{value[2]}'
+                                        break
+                                    else:
+                                        mark = f'-create_page'
+
+                    ready_for_user_dict = {'key': f'{key}{mark}', 'ready_for_user': ready_for_user}
+                    metrics.append(ready_for_user_dict)
+
+    lockfile = f'{selenium_results_file}.lock'
+    error_msg = 'Success'
+    success = True
+    if metrics:
+        with filelock.SoftFileLock(lockfile):
+            with open(selenium_results_file, "a+") as jtl_file:
+                for metric in metrics:
+                    interaction = metric['key']
+                    ready_for_user_timing = metric['ready_for_user']
+                    timestamp = round(time.time() * 1000)
+                    jtl_file.write(f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success}")
 
 
 @pytest.fixture(scope="module")
