@@ -152,7 +152,7 @@ def create_confluence_page(webdriver, datasets):
     measure()
 
 
-def edit_confluence_page(webdriver, datasets):
+def edit_confluence_page_by_url(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
     datasets['edit_page'] = random_page
@@ -178,7 +178,7 @@ def edit_confluence_page(webdriver, datasets):
     measure()
 
 
-def edit_confluence_page_click_edit(webdriver, datasets):
+def edit_confluence_page_quick_edit(webdriver, datasets):
     random_page = datasets['edit_page']
     datasets['edit_page_click'] = random_page
     page = Page(webdriver, page_id=random_page[0])
@@ -206,7 +206,7 @@ def edit_confluence_page_click_edit(webdriver, datasets):
     measure()
 
 
-def create_comment(webdriver, datasets):
+def create_inline_comment(webdriver, datasets):
     page = random.choice(datasets[PAGES])
     page_id = page[0]
     datasets['create_comment_page'] = page
