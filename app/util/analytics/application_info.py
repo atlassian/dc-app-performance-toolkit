@@ -5,7 +5,6 @@ from util.api.confluence_clients import ConfluenceRestClient
 from util.api.bitbucket_clients import BitbucketRestClient
 from util.api.crowd_clients import CrowdRestClient
 from util.api.bamboo_clients import BambooClient
-from lxml import etree
 import json
 
 JIRA = 'jira'
@@ -30,6 +29,7 @@ class BaseApplication:
     version = None
     nodes_count = None
     dataset_information = None
+    processors = None
 
     def __init__(self, api_client, config_yml):
         self.client = api_client(host=config_yml.server_url,
@@ -64,7 +64,7 @@ class Jira(BaseApplication):
 
     @property
     def nodes_count(self):
-        return self.client.get_cluster_nodes_count(jira_version=self.version)
+        return self.client.get_nodes_count_via_rest()[0]
 
     def __issues_count(self):
         return self.client.get_total_issues_count()
@@ -72,6 +72,10 @@ class Jira(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
+
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
 
 
 class Confluence(BaseApplication):
@@ -83,16 +87,19 @@ class Confluence(BaseApplication):
 
     @property
     def nodes_count(self):
-        return self.client.get_confluence_nodes_count()
+        return self.client.get_confluence_nodes_count()[0]
 
     @property
     def dataset_information(self):
         return f"{self.client.get_total_pages_count()} pages"
 
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
+
 
 class Bitbucket(BaseApplication):
     type = BITBUCKET
-    bitbucket_repos_selector = "#content-bitbucket\.atst\.repositories-0>.field-group>.field-value"  # noqa W605
 
     @property
     def version(self):
@@ -104,13 +111,11 @@ class Bitbucket(BaseApplication):
 
     @property
     def dataset_information(self):
-        system_page_html = self.client.get_bitbucket_system_page()
-        if 'Repositories' in system_page_html:
-            dom = etree.HTML(system_page_html)
-            repos_count = dom.cssselect(self.bitbucket_repos_selector)[0].text
-            return f'{repos_count} repositories'
-        else:
-            return 'Could not parse number of Bitbucket repositories'
+        return self.client.get_bitbucket_dataset_information()
+
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
 
 
 class Jsm(BaseApplication):
@@ -123,9 +128,7 @@ class Jsm(BaseApplication):
 
     @property
     def nodes_count(self):
-        jira_server_info = self.client.get_server_info()
-        jira_server_version = jira_server_info.get('version', '')
-        return self.client.get_cluster_nodes_count(jira_version=jira_server_version)
+        return self.client.get_nodes_count_via_rest()[0]
 
     def __issues_count(self):
         return self.client.get_total_issues_count()
@@ -133,6 +136,10 @@ class Jsm(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
+
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
 
 
 class Crowd(BaseApplication):
@@ -179,6 +186,10 @@ class Bamboo(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__build_plans_count()} build plans"
+
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
 
 
 class Insight(Jsm):
