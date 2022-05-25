@@ -70,7 +70,7 @@ def zscale_view_test_cases_by_status_macro_in_page(webdriver, datasets):
 
     @print_timing("view_test_cases_by_status_action")
     def measure():
-        check_zscale_content(page, datasets)
+        check_zscale_content(page, zscale_specific_page_id)
 
     measure()
 
@@ -99,7 +99,7 @@ def zscale_view_test_cases_by_project_macro_in_page(webdriver, datasets):
 
     @print_timing("view_test_cases_by_project_action")
     def measure():
-        check_zscale_content(page, datasets)
+        check_zscale_content(page, zscale_specific_page_id)
 
     measure()
 
@@ -128,13 +128,12 @@ def zscale_view_test_cases_by_folder_macro_in_page(webdriver, datasets):
 
     @print_timing("view_test_cases_by_folder_action")
     def measure():
-        check_zscale_content(page, datasets)
+        check_zscale_content(page, zscale_specific_page_id)
 
     measure()
 
 
-def check_zscale_content(page, datasets):
-    zscale_specific_page_id = datasets['custom_page_id']
+def check_zscale_content(page, zscale_specific_page_id):
 
     page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={zscale_specific_page_id}")
 
