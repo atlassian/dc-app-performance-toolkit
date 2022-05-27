@@ -160,8 +160,8 @@ class BambooClient(RestClient):
 
     def get_available_processors(self):
         processors = None
-        page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content').content
-        tree = html.fromstring(page)
+        page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content')
+        tree = html.fromstring(page.content)
         try:
             processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
         except Exception as error:
