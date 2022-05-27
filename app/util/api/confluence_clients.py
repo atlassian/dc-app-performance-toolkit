@@ -137,15 +137,14 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
                             expected_status_codes=[200, 500])
         return 'Server' if response.status_code == 500 and 'NonClusterMonitoring' in response.text\
-            else len(response.json()), response.json()[0]['nodeId']
+            else [response.json()[0]['nodeId']]
 
     def get_available_processors(self):
-        node_id = self.get_confluence_nodes_count()[1]
+        node_id = self.get_confluence_nodes_count()[0]
         api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                   f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
         response = self.get(api_url, "Could not get Available Processors information")
-        responseData = response.json()
-        return responseData['data']['rows']['availableProcessors'][1]
+        return response.json()['data']['rows']['availableProcessors'][1]
 
     def get_total_pages_count(self):
         api_url = f"{self.host}/rest/api/search?cql=type=page"
@@ -159,8 +158,8 @@ class ConfluenceRestClient(RestClient):
 
     def get_locale(self):
         language = None
-        page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.").content
-        tree = html.fromstring(page)
+        page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.")
+        tree = html.fromstring(page.content)
         try:
             language = tree.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
         except Exception as error:

@@ -29,7 +29,6 @@ class BaseApplication:
     version = None
     nodes_count = None
     dataset_information = None
-    processors = None
 
     def __init__(self, api_client, config_yml):
         self.client = api_client(host=config_yml.server_url,
@@ -52,6 +51,10 @@ class BaseApplication:
     def locust_default_actions(self):
         return self.get_default_actions()['locust']
 
+    @property
+    def processors(self):
+        return self.client.get_available_processors()
+
 
 class Jira(BaseApplication):
     type = JIRA
@@ -64,7 +67,7 @@ class Jira(BaseApplication):
 
     @property
     def nodes_count(self):
-        return self.client.get_nodes_count_via_rest()[0]
+        return len(self.client.get_nodes())
 
     def __issues_count(self):
         return self.client.get_total_issues_count()
@@ -72,10 +75,6 @@ class Jira(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
-
-    @property
-    def processors(self):
-        return self.client.get_available_processors()
 
 
 class Confluence(BaseApplication):
@@ -87,15 +86,11 @@ class Confluence(BaseApplication):
 
     @property
     def nodes_count(self):
-        return self.client.get_confluence_nodes_count()[0]
+        return len(self.client.get_confluence_nodes_count())
 
     @property
     def dataset_information(self):
         return f"{self.client.get_total_pages_count()} pages"
-
-    @property
-    def processors(self):
-        return self.client.get_available_processors()
 
 
 class Bitbucket(BaseApplication):
@@ -113,10 +108,6 @@ class Bitbucket(BaseApplication):
     def dataset_information(self):
         return self.client.get_bitbucket_dataset_information()
 
-    @property
-    def processors(self):
-        return self.client.get_available_processors()
-
 
 class Jsm(BaseApplication):
     type = JSM
@@ -128,7 +119,7 @@ class Jsm(BaseApplication):
 
     @property
     def nodes_count(self):
-        return self.client.get_nodes_count_via_rest()[0]
+        return len(self.client.get_nodes())
 
     def __issues_count(self):
         return self.client.get_total_issues_count()
@@ -136,10 +127,6 @@ class Jsm(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
-
-    @property
-    def processors(self):
-        return self.client.get_available_processors()
 
 
 class Crowd(BaseApplication):
@@ -186,10 +173,6 @@ class Bamboo(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__build_plans_count()} build plans"
-
-    @property
-    def processors(self):
-        return self.client.get_available_processors()
 
 
 class Insight(Jsm):
