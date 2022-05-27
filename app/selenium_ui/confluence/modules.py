@@ -70,7 +70,7 @@ def view_page(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
     datasets['view_page'] = random_page
-    datasets['view_page_catche'] = random_page
+    datasets['view_page_cache'] = random_page
     page = Page(webdriver, page_id=page_id)
 
     def measure():
@@ -83,7 +83,7 @@ def view_page(webdriver, datasets):
 
 
 def view_page_from_cache(webdriver, datasets):
-    cached_page = datasets['view_page_catche']
+    cached_page = datasets['view_page_cache']
     page_id = cached_page[0]
     datasets['view_page'] = cached_page
     page = Page(webdriver, page_id=page_id)
