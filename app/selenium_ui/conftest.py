@@ -7,6 +7,7 @@ import os
 import sys
 import time
 from datetime import timezone
+import re
 
 import filelock
 import pytest
@@ -274,7 +275,6 @@ def measure_dom_requests(webdriver, interaction):
 
 def measure_browser_navi_metrics(webdriver, dataset):
     requests = get_wait_browser_metrics(webdriver)
-    mark = ''
     metrics = []
     for request_id, request in requests.items():
         if 'browser.metrics.navigation' in str(request):
@@ -284,11 +284,14 @@ def measure_browser_navi_metrics(webdriver, dataset):
                 if data['name'] == 'browser.metrics.navigation':
                     key = data['properties']['key']
                     ready_for_user = data['properties']['readyForUser']
-
+                    mark = ''
+                    if 'blogpost.view' in key:
+                        blogpost_template_id = dataset['view_blog'][2]
+                        mark = f'-view_blog-{blogpost_template_id}'
+                        print(f'BLOGPOST_FOUND {mark}')
                     if 'page.view' in key:
                         if 'pageID' in post_data_str:
-                            page_id = [v for d in post_data for v in d.values() if
-                                       d['name'] == 'confluence.viewpage.src.empty'][1]['pageID']
+                            page_id = re.search('"pageID":"(.+?)"', post_data_str).group(1)
 
                             for name, value in dataset.items():
                                 if value:
@@ -311,7 +314,8 @@ def measure_browser_navi_metrics(webdriver, dataset):
                     interaction = metric['key']
                     ready_for_user_timing = metric['ready_for_user']
                     timestamp = round(time.time() * 1000)
-                    jtl_file.write(f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    jtl_file.write(
+                        f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
                     print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success}")
 
 
