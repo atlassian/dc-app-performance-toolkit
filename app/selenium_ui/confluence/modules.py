@@ -82,7 +82,7 @@ def view_page(webdriver, datasets):
     measure()
 
 
-def view_pag_from_cache(webdriver, datasets):
+def view_page_from_cache(webdriver, datasets):
     cached_page = datasets['view_page_catche']
     page_id = cached_page[0]
     datasets['view_page'] = cached_page
@@ -230,6 +230,7 @@ def create_inline_comment(webdriver, datasets):
             page.wait_for_comment_field()
 
         sub_measure()
+
     measure()
 
 

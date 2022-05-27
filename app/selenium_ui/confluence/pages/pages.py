@@ -80,6 +80,9 @@ class Page(BasePage):
     def wait_for_comment_field(self):
         self.wait_until_visible(PageLocators.comment_text_field)
 
+    def click_edit(self):
+        self.wait_until_clickable(PageLocators.edit_page_button).click()
+
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url

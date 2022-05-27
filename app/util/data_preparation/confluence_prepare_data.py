@@ -25,7 +25,7 @@ DATASET_PAGES_TEMPLATES = {1: ['PAGE_1', 'PAGE_2'],
                            16: ['PAGE_16', 'PAGE_17', 'PAGE_18', 'PAGE_19', 'PAGE_20', 'PAGE_23', 'PAGE_24'],
                            21: ['PAGE_21', 'PAGE_22', 'PAGE_25', 'PAGE_26', 'PAGE_27', 'PAGE_28', 'PAGE_29', 'PAGE_30']
                            }
-DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'], #, 'BLOG_2'], # check with just one
+DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'], #, 'BLOG_2'], # TODO Investigate how to group similar blogs
                            3: ['BLOG_3'], #'BLOG_4', 'BLOG_5'],
                            6: ['BLOG_6'] # 'BLOG_7', 'BLOG_8', 'BLOG_9', 'BLOG_10']
 
@@ -153,7 +153,7 @@ def __get_blogs(confluence_api, count):
                                                f' and text ~ {mark}')
                 for blog in blogs:
                     blog['template_id'] = template_id
-                    total_blogs.extend(blogs)
+                total_blogs.extend(blogs)
     else:
         total_blogs = confluence_api.get_content_search(
             0, count, cql='type=blogpost'
@@ -217,7 +217,6 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password,
                                        verify=CONFLUENCE_SETTINGS.secure)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
-    pages = __get_blogs(rest_client, 100)
     __is_remote_api_enabled(rest_client)
     __check_for_admin_permissions(rest_client)
     __is_collaborative_editing_enabled(rest_client)
