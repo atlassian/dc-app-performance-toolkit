@@ -132,15 +132,17 @@ class ConfluenceRestClient(RestClient):
                                                'General Configuration - Further Configuration - Remote API')
         return response.status_code == 200
 
-    def get_confluence_nodes_count(self):
+    def get_confluence_nodes(self):
         api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
         response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
                             expected_status_codes=[200, 500])
-        return 'Server' if response.status_code == 500 and 'NonClusterMonitoring' in response.text\
-            else [response.json()[0]['nodeId']]
+        if response.status_code == 500 and 'NonClusterMonitoring' in response.text:
+            return 'Server'
+        nodes = [node['nodeId'] for node in response.json()]
+        return nodes
 
     def get_available_processors(self):
-        node_id = self.get_confluence_nodes_count()[0]
+        node_id = self.get_confluence_nodes()[0]
         api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                   f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
         response = self.get(api_url, "Could not get Available Processors information")

@@ -86,7 +86,7 @@ class Confluence(BaseApplication):
 
     @property
     def nodes_count(self):
-        return len(self.client.get_confluence_nodes_count())
+        return len(self.client.get_confluence_nodes())
 
     @property
     def dataset_information(self):
@@ -106,7 +106,7 @@ class Bitbucket(BaseApplication):
 
     @property
     def dataset_information(self):
-        return self.client.get_bitbucket_dataset_information()
+        return f'{self.client.get_bitbucket_repo_count()} repositories'
 
 
 class Jsm(BaseApplication):

@@ -162,7 +162,7 @@ class BitbucketRestClient(RestClient):
         response = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
         return response
 
-    def get_bitbucket_dataset_information(self):
+    def get_bitbucket_repo_count(self):
         repos_count = None
         page = self.get_bitbucket_system_page()
         tree = html.fromstring(page.content)
@@ -170,7 +170,7 @@ class BitbucketRestClient(RestClient):
             repos_count = tree.xpath('//*[@id="content-bitbucket.atst.repositories-0"]/div[1]/span/text()')[0]
         except Exception as error:
             print(f"Warning: Could not parse number of Bitbucket repositories: {error}")
-        return f'{repos_count} repositories'
+        return repos_count
 
     def get_available_processors(self):
         processors = None
