@@ -279,7 +279,7 @@ def measure_browser_navi_metrics(webdriver, dataset):
     for request_id, request in requests.items():
         if 'browser.metrics.navigation' in str(request):
             post_data_str = request[0]['params']['request']['postData']
-            post_data = eval(post_data_str)
+            post_data = eval(post_data_str.replace('true', 'True').replace('false', 'False'))
             for data in post_data:
                 if data['name'] == 'browser.metrics.navigation':
                     key = data['properties']['key']

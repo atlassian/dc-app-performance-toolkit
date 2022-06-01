@@ -18,12 +18,12 @@ BLOGS = "blogs"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
-DATASET_PAGES_TEMPLATES = {1: ['PAGE_1', 'PAGE_2'],
-                           3: ['PAGE_3', 'PAGE_4', 'PAGE_5', 'PAGE_6'],
-                           7: ['PAGE_7', 'PAGE_8', 'PAGE_9', 'PAGE_10', 'PAGE_11',
-                               'PAGE_12', 'PAGE_13', 'PAGE_14', 'PAGE_15'],
-                           16: ['PAGE_16', 'PAGE_17', 'PAGE_18', 'PAGE_19', 'PAGE_20', 'PAGE_23', 'PAGE_24'],
-                           21: ['PAGE_21', 'PAGE_22', 'PAGE_25', 'PAGE_26', 'PAGE_27', 'PAGE_28', 'PAGE_29', 'PAGE_30']
+DATASET_PAGES_TEMPLATES = {'big_attachments_1': ['PAGE_1', 'PAGE_2'],
+                           'small_attachments_3': ['PAGE_3', 'PAGE_4', 'PAGE_5', 'PAGE_6'],
+                           'small_text_7': ['PAGE_7', 'PAGE_8', 'PAGE_9', 'PAGE_10', 'PAGE_11',
+                                            'PAGE_12', 'PAGE_13', 'PAGE_14', 'PAGE_15'],
+                           'medium_text_16': ['PAGE_16', 'PAGE_17', 'PAGE_18', 'PAGE_19', 'PAGE_20', 'PAGE_23', 'PAGE_24'],
+                           'text_formatting_21': ['PAGE_21', 'PAGE_22', 'PAGE_25', 'PAGE_26', 'PAGE_27', 'PAGE_28', 'PAGE_29', 'PAGE_30']
                            }
 DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'], #, 'BLOG_2'], # TODO Investigate how to group similar blogs
                            3: ['BLOG_3'], #'BLOG_4', 'BLOG_5'],
