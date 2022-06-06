@@ -87,14 +87,10 @@ class ConfluenceRestClient(RestClient):
         return users_list
 
     def get_confluence_version(self):
-        version = ''
         api_url = f'{self.host}/rest/applinks/1.0/manifest'
         response = self.get(api_url, 'Could not get Confluence manifest')
-        tree = html.fromstring(response.content)
-        for child in tree:
-            if child.tag == 'version':
-                version = child.text
-        return version
+
+        return response.json()['version']
 
     def search(self, cql, cqlcontext=None, expand=None, start=0, limit=500):
         """
