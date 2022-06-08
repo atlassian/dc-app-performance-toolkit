@@ -11,3 +11,6 @@ outputs/
 *.pyc
 local_*.yml
 **jmeter.properties
+
+#
+app/pytests/deleteCreatedObjects
