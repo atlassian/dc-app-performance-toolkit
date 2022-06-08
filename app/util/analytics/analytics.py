@@ -1,24 +1,29 @@
 import sys
-import requests
 import uuid
 from datetime import datetime, timezone
 
-from util.analytics.application_info import ApplicationSelector, BaseApplication
-from util.analytics.log_reader import BztFileReader, ResultsFileReader
-from util.conf import TOOLKIT_VERSION
-from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
-    uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type
+import requests
+import urllib3
 
-JIRA = 'jira'
-CONFLUENCE = 'confluence'
-BITBUCKET = 'bitbucket'
-JSM = 'jsm'
+from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
+    uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
+from util.analytics.application_info import ApplicationSelector, BaseApplication, JIRA, CONFLUENCE, BITBUCKET, JSM, \
+    CROWD, BAMBOO, INSIGHT
+from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
+from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
+from util.conf import TOOLKIT_VERSION
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
                 BITBUCKET: {'test_duration': 3000, 'concurrency': 20, 'git_operations_per_hour': 14400},
-                JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
+                JSM: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50},
+                CROWD: {'test_duration': 2700, 'concurrency': 1000},
+                BAMBOO: {'test_duration': 2700, 'concurrency': 200, 'parallel_plans_count': 40},
+                INSIGHT: {'test_duration': 2700, 'customer_concurrency': 150, 'agent_concurrency': 50}
                 }
+CROWD_RPS = {'server': 50, 1: 50, 2: 100, 4: 200}  # Crowd requests per second for 1,2,4 nodes.
 
 BASE_URL = 'https://s7hdm2mnj1.execute-api.us-east-2.amazonaws.com/default/analytics_collector'
 SUCCESS_TEST_RATE = 95.00
@@ -48,10 +53,23 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
-        # JSM app type has additional concurrency fields: concurrency_agents, concurrency_customers
+        # JSM(INSIGHT) app type has additional concurrency fields: concurrency_agents, concurrency_customers
+        if self.app_type == INSIGHT:
+            self.concurrency_agents = self.conf.agents_concurrency
+            self.concurrency_customers = self.conf.customers_concurrency
+            self.insight = self.conf.insight
         if self.app_type == JSM:
             self.concurrency_agents = self.conf.agents_concurrency
             self.concurrency_customers = self.conf.customers_concurrency
+            self.insight = self.conf.insight
+        if self.app_type == CROWD:
+            self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
+            self.ramp_up = application.config.ramp_up
+            self.total_actions_per_hour = application.config.total_actions_per_hour
+        if self.app_type == BAMBOO:
+            self.parallel_plans_count = application.config.parallel_plans_count
+            self.locust_log = LocustFileReader()
+            self.post_run_collector = BambooPostRunCollector(self.locust_log)
 
     def is_analytics_enabled(self):
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
@@ -71,8 +89,10 @@ class AnalyticsCollector:
         if not load_test_rates:
             return False, f"Jmeter/Locust test results was not found."
 
-        if not self.selenium_test_rates:
-            return False, f"Selenium test results was not found."
+        # There are no selenium tests for Crowd
+        if self.app_type != CROWD:
+            if not self.selenium_test_rates:
+                return False, f"Selenium test results was not found."
 
         success = (is_all_tests_successful(load_test_rates) and
                    is_all_tests_successful(self.selenium_test_rates))
@@ -96,6 +116,21 @@ class AnalyticsCollector:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
                          self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
+        elif self.app_type == INSIGHT:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency_customers >= MIN_DEFAULTS[self.app_type]['customer_concurrency'] and
+                         self.concurrency_agents >= MIN_DEFAULTS[self.app_type]['agent_concurrency'])
+        elif self.app_type == CROWD:
+            rps_compliant = CROWD_RPS[self.nodes_count]
+            total_actions_compliant = rps_compliant * 3600
+            ramp_up_compliant = MIN_DEFAULTS[CROWD]['concurrency'] / rps_compliant
+            ramp_up = convert_to_sec(self.ramp_up)
+            compliant = (ramp_up >= ramp_up_compliant and self.total_actions_per_hour >= total_actions_compliant and
+                         self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'])
+        elif self.app_type == BAMBOO:
+            compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
+                         self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'] and
+                         self.parallel_plans_count >= MIN_DEFAULTS[self.app_type]['parallel_plans_count'])
         else:
             compliant = (self.actual_duration >= MIN_DEFAULTS[self.app_type]['test_duration'] and
                          self.concurrency >= MIN_DEFAULTS[self.app_type]['concurrency'])
@@ -113,6 +148,37 @@ class AnalyticsCollector:
                     if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
                         err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
                                        f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
+
+                elif self.app_type == INSIGHT:
+                    if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
+                        err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
+                    if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
+                        err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
+                                       f"required value {MIN_DEFAULTS[INSIGHT]['agent_concurrency']}.")
+
+                elif self.app_type == BAMBOO:
+                    if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
+                        err_msg.append(f"The actual test duration {self.actual_duration} is less than "
+                                       f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
+                    if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
+                        err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
+                                       f"than minimum concurrency "
+                                       f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
+                    if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
+                        err_msg.append(f"The parallel_plans_count {self.parallel_plans_count} is less "
+                                       f"than minimum parallel_plans_count value "
+                                       f"required {MIN_DEFAULTS[self.app_type]['parallel_plans_count']}")
+
+                elif self.app_type == CROWD:
+                    if ramp_up < ramp_up_compliant:
+                        err_msg.append(f"The run ramp-up {ramp_up} is less than minimum ramp-up "
+                                       f"required for the {self.nodes_count} nodes {ramp_up_compliant}")
+                    if self.total_actions_per_hour < total_actions_compliant:
+                        err_msg.append(f"The run total_actions_per_hour {self.total_actions_per_hour} is less "
+                                       f"than minimum total_actions_per_hour "
+                                       f"required for the {self.nodes_count} nodes {total_actions_compliant}")
+
                 else:
                     if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
                         err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "

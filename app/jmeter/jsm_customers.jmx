@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.2">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
-      <stringProp name="TestPlan.comments"></stringProp>
+      <stringProp name="TestPlan.comments">This test plan was created by the BlazeMeter converter v.3.1.23. Please contact support@blazemeter.com for further support.</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
@@ -32,6 +32,11 @@
           <elementProp name="application.postfix" elementType="Argument">
             <stringProp name="Argument.name">application.postfix</stringProp>
             <stringProp name="Argument.value">${__P(application_postfix, )}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="insight" elementType="Argument">
+            <stringProp name="Argument.name">insight</stringProp>
+            <stringProp name="Argument.value">${__P(insight, )}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -235,6 +240,11 @@ import org.apache.commons.io.FileUtils;
             <elementProp name="perc_customer_standalone_extension" elementType="Argument">
               <stringProp name="Argument.name">perc_customer_standalone_extension</stringProp>
               <stringProp name="Argument.value">${__P(perc_customer_standalone_extension, 0)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="perc_customer_insight_view_request" elementType="Argument">
+              <stringProp name="Argument.name">perc_customer_insight_view_request</stringProp>
+              <stringProp name="Argument.value">${__P(perc_customer_insight_view_request, 0)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -866,7 +876,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.page.view.requests.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10001},&quot;timeDelta&quot;:-688},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.allrequests&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10001},&quot;timeDelta&quot;:-672},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;265&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;ba5f75b5-0e2e-4e06-bc45-ddd1c9a03cc2&quot;,&quot;key&quot;:&quot;servicedesk.cv.all.requests&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;52132&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;262&quot;,&quot;resourceLoadedStart&quot;:200.1600000075996,&quot;threshold&quot;:&quot;1000&quot;,&quot;fetchStart&quot;:&quot;11&quot;,&quot;domainLookupStart&quot;:&quot;11&quot;,&quot;domainLookupEnd&quot;:&quot;11&quot;,&quot;connectStart&quot;:&quot;11&quot;,&quot;connectEnd&quot;:&quot;11&quot;,&quot;requestStart&quot;:&quot;18&quot;,&quot;responseStart&quot;:&quot;180&quot;,&quot;responseEnd&quot;:&quot;231&quot;,&quot;domLoading&quot;:&quot;189&quot;,&quot;domInteractive&quot;:&quot;265&quot;,&quot;domContentLoadedEventStart&quot;:&quot;265&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;265&quot;,&quot;domComplete&quot;:&quot;480&quot;,&quot;loadEventStart&quot;:&quot;480&quot;,&quot;loadEventEnd&quot;:&quot;482&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:2.25,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,5k,5s,5n,5m,5k,,5k,5k,5k\&quot;,\&quot;2,5k,5r,5n,5m,5k,,5k,5k,5k\&quot;,\&quot;3,6y,7g,71,70,6y,,6y,6y,6y\&quot;,\&quot;3,6y,7a,74,71,6y,,6y,6y,6y\&quot;,\&quot;4,7c,7c,,,7c,,7c,7c,7c\&quot;,\&quot;5,89,cd,cc,8a,89,,89,89,89\&quot;,\&quot;3,d7,d9,d8,d8,d7,,d7,d7,d7\&quot;,\&quot;5,dd,hg,hg,de,dd,,dd,dd,dd\&quot;,\&quot;5,o1,s5,s5,o6,o1,,o1,o1,o1\&quot;,\&quot;5,13f8,13jo,13jm,13fk,13f8,,13f8,13f8,13f8\&quot;,\&quot;2,13js,13nx,13nw,13jw,13js,,13js,13js,13js\&quot;,\&quot;3,13jt,13xq,13pw,13jy,13jt,,13jt,13jt,13jt\&quot;,\&quot;5,13y0,1479,1478,13y2,13y0,,13y0,13y0,13y0\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[402]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[409]&quot;,&quot;mark.@grammarly-extension:callExecuteContentScript&quot;:&quot;[41420]&quot;,&quot;mark.@grammarly-extension:initStart&quot;:&quot;[41718]&quot;,&quot;mark.@grammarly-extension:initEnd&quot;:&quot;[41735]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[402],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[409],\&quot;@grammarly-extension:callExecuteContentScript\&quot;:[41420],\&quot;@grammarly-extension:initStart\&quot;:[41718],\&quot;@grammarly-extension:initEnd\&quot;:[41735]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:2.25,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-655}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.page.view.requests.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10001},&quot;timeDelta&quot;:-688},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.allrequests&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10001},&quot;timeDelta&quot;:-672},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;265&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;ba5f75b5-0e2e-4e06-bc45-ddd1c9a03cc2&quot;,&quot;key&quot;:&quot;servicedesk.cv.all.requests&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;52132&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;262&quot;,&quot;resourceLoadedStart&quot;:200.1600000075996,&quot;threshold&quot;:&quot;1000&quot;,&quot;fetchStart&quot;:&quot;11&quot;,&quot;domainLookupStart&quot;:&quot;11&quot;,&quot;domainLookupEnd&quot;:&quot;11&quot;,&quot;connectStart&quot;:&quot;11&quot;,&quot;connectEnd&quot;:&quot;11&quot;,&quot;requestStart&quot;:&quot;18&quot;,&quot;responseStart&quot;:&quot;180&quot;,&quot;responseEnd&quot;:&quot;231&quot;,&quot;domLoading&quot;:&quot;189&quot;,&quot;domInteractive&quot;:&quot;265&quot;,&quot;domContentLoadedEventStart&quot;:&quot;265&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;265&quot;,&quot;domComplete&quot;:&quot;480&quot;,&quot;loadEventStart&quot;:&quot;480&quot;,&quot;loadEventEnd&quot;:&quot;482&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:2.25,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;&#x98; \&quot;:[\&quot;2,5k,5s,5n,5m,5k,,5k,5k,5k\&quot;,\&quot;2,5k,5r,5n,5m,5k,,5k,5k,5k\&quot;,\&quot;3,6y,7g,71,70,6y,,6y,6y,6y\&quot;,\&quot;3,6y,7a,74,71,6y,,6y,6y,6y\&quot;,\&quot;4,7c,7c,,,7c,,7c,7c,7c\&quot;,\&quot;5,89,cd,cc,8a,89,,89,89,89\&quot;,\&quot;3,d7,d9,d8,d8,d7,,d7,d7,d7\&quot;,\&quot;5,dd,hg,hg,de,dd,,dd,dd,dd\&quot;,\&quot;5,o1,s5,s5,o6,o1,,o1,o1,o1\&quot;,\&quot;5,13f8,13jo,13jm,13fk,13f8,,13f8,13f8,13f8\&quot;,\&quot;2,13js,13nx,13nw,13jw,13js,,13js,13js,13js\&quot;,\&quot;3,13jt,13xq,13pw,13jy,13jt,,13jt,13jt,13jt\&quot;,\&quot;5,13y0,1479,1478,13y2,13y0,,13y0,13y0,13y0\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[402]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[409]&quot;,&quot;mark.@grammarly-extension:callExecuteContentScript&quot;:&quot;[41420]&quot;,&quot;mark.@grammarly-extension:initStart&quot;:&quot;[41718]&quot;,&quot;mark.@grammarly-extension:initEnd&quot;:&quot;[41735]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[402],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[409],\&quot;@grammarly-extension:callExecuteContentScript\&quot;:[41420],\&quot;@grammarly-extension:initStart\&quot;:[41718],\&quot;@grammarly-extension:initEnd\&quot;:[41735]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:2.25,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-655}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -1038,7 +1048,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.requests.search.filter.changed&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2987},{&quot;name&quot;:&quot;servicedesk.page.view.requests.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2781},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.allrequests&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2768},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;eff25cfb-167f-44d9-95b6-07adc3ac84cf&quot;,&quot;key&quot;:&quot;servicedesk.cv.all.requests&quot;,&quot;readyForUser&quot;:&quot;221&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:7.7,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,3,55,54,g,3,,3,3,3\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:7.7,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-2747}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.requests.search.filter.changed&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2987},{&quot;name&quot;:&quot;servicedesk.page.view.requests.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2781},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.allrequests&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-2768},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;eff25cfb-167f-44d9-95b6-07adc3ac84cf&quot;,&quot;key&quot;:&quot;servicedesk.cv.all.requests&quot;,&quot;readyForUser&quot;:&quot;221&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:7.7,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;&#x98; \&quot;:[\&quot;5,3,55,54,g,3,,3,3,3\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:7.7,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-2747}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -1181,7 +1191,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.issue.opened&quot;,&quot;properties&quot;:{&quot;isIncident&quot;:false,&quot;issueId&quot;:10200,&quot;archived&quot;:false,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1821},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.requestDetails&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1811},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;eff25cfb-167f-44d9-95b6-07adc3ac84cf&quot;,&quot;key&quot;:&quot;servicedesk.cv.request.details&quot;,&quot;readyForUser&quot;:&quot;220&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,d,59,58,h,d,,d,d,d\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-1802}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.issue.opened&quot;,&quot;properties&quot;:{&quot;isIncident&quot;:false,&quot;issueId&quot;:10200,&quot;archived&quot;:false,&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1821},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.requestDetails&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10015},&quot;timeDelta&quot;:-1811},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;eff25cfb-167f-44d9-95b6-07adc3ac84cf&quot;,&quot;key&quot;:&quot;servicedesk.cv.request.details&quot;,&quot;readyForUser&quot;:&quot;220&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;&#x98; \&quot;:[\&quot;5,d,59,58,h,d,,d,d,d\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-1802}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -2020,7 +2030,7 @@ if ( sleep_time &gt; 0 ) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.smartportal.browse.popular.portals.portal.clicked&quot;,&quot;properties&quot;:{&quot;index&quot;:0,&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-1193},{&quot;name&quot;:&quot;servicedesk.page.view.portal.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-930},{&quot;name&quot;:&quot;servicedesk.page.view.customerview&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10188},&quot;timeDelta&quot;:-922},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;297&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;1288b6b6-dc3c-495f-b444-f68ec3b32cb3&quot;,&quot;key&quot;:&quot;servicedesk.cv.portal.landing&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;5549014&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;275&quot;,&quot;resourceLoadedStart&quot;:223.40000001713634,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;207&quot;,&quot;unloadEventEnd&quot;:&quot;207&quot;,&quot;fetchStart&quot;:&quot;2&quot;,&quot;domainLookupStart&quot;:&quot;2&quot;,&quot;domainLookupEnd&quot;:&quot;2&quot;,&quot;connectStart&quot;:&quot;2&quot;,&quot;connectEnd&quot;:&quot;2&quot;,&quot;requestStart&quot;:&quot;5&quot;,&quot;responseStart&quot;:&quot;198&quot;,&quot;responseEnd&quot;:&quot;269&quot;,&quot;domLoading&quot;:&quot;208&quot;,&quot;domInteractive&quot;:&quot;276&quot;,&quot;domContentLoadedEventStart&quot;:&quot;276&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;277&quot;,&quot;domComplete&quot;:&quot;737&quot;,&quot;loadEventStart&quot;:&quot;737&quot;,&quot;loadEventEnd&quot;:&quot;739&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,67,67,,,67,,67,67,67\&quot;,\&quot;2,67,b0,ax,6r,67,,67,67,67\&quot;,\&quot;3,75,7n,76,76,75,,75,75,75\&quot;,\&quot;3,75,di,cz,7p,75,,75,75,75\&quot;,\&quot;4,7r,7r,,,7r,,7r,7r,7r\&quot;,\&quot;5,8w,e6,e5,8x,8w,,8w,8w,8w\&quot;,\&quot;3,ev,k6,k4,ex,ev,,ev,ev,ev\&quot;,\&quot;5,ke,pq,pp,ki,ke,,ke,ke,ke\&quot;,\&quot;5,ow,u7,u7,oy,ow,,ow,ow,ow\&quot;,\&quot;5,2k3,2pa,2p9,2k9,2k3,,2k3,2k3,2k3\&quot;,\&quot;2,2pd,2ug,2ue,2pe,2pd,,2pd,2pd,2pd\&quot;,\&quot;3,2pd,393,2uf,2pf,2pd,,2pd,2pd,2pd\&quot;,\&quot;5,3a1,3hj,3hi,3a3,3a1,,3a1,3a1,3a1\&quot;,\&quot;4,3hw,3hw,,,3hw,,3hw,3hw,3hw\&quot;,\&quot;5,4p7,4uh,4uh,4p8,4p7,,4p7,4p7,4p7\&quot;,\&quot;5,zbw,zzm,zzm,zc2,zbw,,zbw,zbw,zbw\&quot;,\&quot;5,zzt,105d,105c,100a,zzt,,zzt,zzt,zzt\&quot;,\&quot;5,zzu,10e4,10b1,105n,105m,,105m,105m,105m,105k,zzu\&quot;,\&quot;2,105g,10an,10al,105i,105g,,105g,105g,105g\&quot;,\&quot;3,105h,10e0,109v,105j,105h,,105h,105h,105h\&quot;,\&quot;5,10ee,10mk,10mj,10eh,10ee,,10ee,10ee,10ee\&quot;,\&quot;4,10nf,10nf,,,10nf,,10nf,10nf,10nf\&quot;,\&quot;4,10nh,10sn,10sl,10nj,10nh,,10nh,10nh,10nh\&quot;,\&quot;5,13m7,13rb,13ra,13ma,13m7,,13m7,13m7,13m7\&quot;,\&quot;5,25qf3,25r6m,25r6l,25qf8,25qf3,,25qf3,25qf3,25qf3\&quot;,\&quot;4,25r6y,25r6y,,,25r6y,,25r6y,25r6y,25r6y\&quot;,\&quot;5,25tpb,25ug7,25ug6,25tpj,25tpb,,25tpb,25tpb,25tpb\&quot;,\&quot;4,25ugi,25ugi,,,25ugi,,25ugi,25ugi,25ugi\&quot;,\&quot;5,25v1h,25v5n,25v5m,25v1j,25v1h,,25v1h,25v1h,25v1h\&quot;,\&quot;4,25vby,25vby,,,25vby,,25vby,25vby,25vby\&quot;,\&quot;5,260by,260zn,260zl,260c0,260by,,260by,260by,260by\&quot;,\&quot;5,260zy,2622p,2619f,2614m,2614m,,2614m,2614m,2614m,2614k,260zy\&quot;,\&quot;5,2610g,2618i,2618g,2610i,2610g,,2610g,2610g,2610g\&quot;,\&quot;4,2619k,2619k,,,2619k,,2619k,2619k,2619k\&quot;,\&quot;4,2619m,2619o,2619n,2619n,2619m,,2619m,2619m,2619m\&quot;,\&quot;5,262vu,2630x,2630x,262vw,262vu,,262vu,262vu,262vu\&quot;,\&quot;4,26t4u,26t4u,,,26t4u,,26t4u,26t4u,26t4u\&quot;,\&quot;5,2xuud,2xv69,2xv68,2xuzn,2xuzn,,2xuuk,2xuuk,2xuuk\&quot;,\&quot;-1,2xuul,2xv3s,2xv3q,2xuzq,2xuzq,,2xuuo,2xuuo,2xuuo\&quot;,\&quot;4,2xv6p,2xv6p,,,2xv6p,,2xv6p,2xv6p,2xv6p\&quot;,\&quot;5,2xx2e,2xx6j,2xx6j,2xx2f,2xx2e,,2xx2e,2xx2e,2xx2e\&quot;,\&quot;5,2yw6f,2ywgd,2ywgc,2yw92,2yw6f,,2yw6f,2yw6f,2yw6f\&quot;,\&quot;4,2ywgp,2ywgp,,,2ywgp,,2ywgp,2ywgp,2ywgp\&quot;,\&quot;5,2yzsl,2yzxl,2yzxl,2yzsm,2yzsl,,2yzsl,2yzsl,2yzsl\&quot;,\&quot;5,2z5gk,2z5uh,2z5ug,2z5gn,2z5gk,,2z5gk,2z5gk,2z5gk\&quot;,\&quot;5,2z5up,2z6b5,2z662,2z60i,2z60h,,2z60h,2z60h,2z60h,2z60f,2z5up\&quot;,\&quot;5,2z5uu,2z639,2z638,2z5vg,2z5uu,,2z5uu,2z5uu,2z5uu\&quot;,\&quot;4,2z640,2z640,,,2z640,,2z640,2z640,2z640\&quot;,\&quot;4,2z642,2z687,2z685,2z644,2z642,,2z642,2z642,2z642\&quot;,\&quot;5,2z7o0,2z7sa,2z7s9,2z7o1,2z7o0,,2z7o0,2z7o0,2z7o0\&quot;,\&quot;5,38l0q,38lbu,38lbt,38l5p,38l5p,,38l0u,38l0u,38l0u\&quot;,\&quot;4,38lc5,38lc5,,,38lc5,,38lc5,38lc5,38lc5\&quot;,\&quot;5,38m3t,38m7z,38m7y,38m3u,38m3t,,38m3t,38m3t,38m3t\&quot;,\&quot;5,38pd7,38pht,38phr,38pde,38pd7,,38pd7,38pd7,38pd7\&quot;,\&quot;2,38phw,38pm6,38pm4,38phy,38phw,,38phw,38phw,38phw\&quot;,\&quot;3,38phx,38q9u,38ppl,38phy,38phx,,38phx,38phx,38phx\&quot;,\&quot;5,38qa2,38qgx,38qgw,38qa4,38qa2,,38qa2,38qa2,38qa2\&quot;,\&quot;4,38qhc,38qhc,,,38qhc,,38qhc,38qhc,38qhc\&quot;,\&quot;5,38qhl,38qx8,38qx7,38qhn,38qhl,,38qhl,38qhl,38qhl\&quot;,\&quot;5,38s0z,38s7i,38s7h,38s14,38s0z,,38s0z,38s0z,38s0z\&quot;,\&quot;4,38s80,38s80,,,38s80,,38s80,38s80,38s80\&quot;,\&quot;5,38tvc,38u26,38u25,38tvp,38tvc,,38tvc,38tvc,38tvc\&quot;,\&quot;5,38txz,38u24,38u24,38ty0,38txz,,38txz,38txz,38txz\&quot;,\&quot;4,38u2i,38u2i,,,38u2i,,38u2i,38u2i,38u2i\&quot;,\&quot;5,38xrd,38xxu,38xxt,38xrq,38xrd,,38xrd,38xrd,38xrd\&quot;,\&quot;5,38xx6,38y1c,38y1b,38xx7,38xx6,,38xx6,38xx6,38xx6\&quot;,\&quot;4,38xy8,38xy8,,,38xy8,,38xy8,38xy8,38xy8\&quot;,\&quot;5,38yxg,38z49,38z48,38yxk,38yxg,,38yxg,38yxg,38yxg\&quot;,\&quot;5,38z52,38zjn,38zjm,38z54,38z52,,38z52,38z52,38z52\&quot;,\&quot;4,38z54,38z54,,,38z54,,38z54,38z54,38z54\&quot;,\&quot;5,391wg,3920m,3920m,391wi,391wg,,391wg,391wg,391wg\&quot;,\&quot;5,39fu5,39g0i,39g0h,39fuf,39fu5,,39fu5,39fu5,39fu5\&quot;,\&quot;4,39g12,39g12,,,39g12,,39g12,39g12,39g12\&quot;,\&quot;5,39hh7,39hld,39hld,39hha,39hh7,,39hh7,39hh7,39hh7\&quot;,\&quot;5,39k5e,39kc4,39kc3,39k5q,39k5e,,39k5e,39k5e,39k5e\&quot;,\&quot;4,39kcl,39kcl,,,39kcl,,39kcl,39kcl,39kcl\&quot;,\&quot;5,39lge,39lkl,39lkk,39lgh,39lge,,39lge,39lge,39lge\&quot;,\&quot;5,39rpb,39s1s,39s1r,39rpe,39rpb,,39rpb,39rpb,39rpb\&quot;,\&quot;5,39s20,39sdn,39sav,39s6f,39s6e,,39s6e,39s6e,39s6e,39s6c,39s20\&quot;,\&quot;5,39s27,39sac,39sab,39s2i,39s27,,39s27,39s27,39s27\&quot;,\&quot;4,39sb5,39sb5,,,39sb5,,39sb5,39sb5,39sb5\&quot;,\&quot;4,39sb7,39sfd,39sfc,39sb9,39sb7,,39sb7,39sb7,39sb7\&quot;,\&quot;5,39tai,39tep,39teo,39taj,39tai,,39tai,39tai,39tai\&quot;,\&quot;5,3ans0,3anz7,3anz5,3ans9,3ans0,,3ans0,3ans0,3ans0\&quot;,\&quot;4,3anzr,3anzr,,,3anzr,,3anzr,3anzr,3anzr\&quot;,\&quot;5,3ao01,3aoep,3aoeo,3ao02,3ao01,,3ao01,3ao01,3ao01\&quot;,\&quot;5,3aqi8,3aqmz,3aqmy,3aqia,3aqi8,,3aqi8,3aqi8,3aqi8\&quot;,\&quot;5,3axfz,3axmn,3axmm,3axgh,3axfz,,3axfz,3axfz,3axfz\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[501]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[504]&quot;,&quot;mark.@grammarly-extension:callExecuteContentScript&quot;:&quot;[6613]&quot;,&quot;mark.@grammarly-extension:initStart&quot;:&quot;[6908]&quot;,&quot;mark.@grammarly-extension:initEnd&quot;:&quot;[6930]&quot;,&quot;mark.@grammarly-extension:gButtonShow&quot;:&quot;[7224,3637084,4992992,5455880,5490557]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[501],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[504],\&quot;@grammarly-extension:callExecuteContentScript\&quot;:[6613],\&quot;@grammarly-extension:initStart\&quot;:[6908],\&quot;@grammarly-extension:initEnd\&quot;:[6930],\&quot;@grammarly-extension:gButtonShow\&quot;:[7224,3637084,4992992,5455880,5490557]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-913}]</stringProp>
+                      <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.customerview.smartportal.browse.popular.portals.portal.clicked&quot;,&quot;properties&quot;:{&quot;index&quot;:0,&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-1193},{&quot;name&quot;:&quot;servicedesk.page.view.portal.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;},&quot;timeDelta&quot;:-930},{&quot;name&quot;:&quot;servicedesk.page.view.customerview&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.13.0&quot;,&quot;projectId&quot;:10188},&quot;timeDelta&quot;:-922},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;0&quot;,&quot;firstPaint&quot;:&quot;297&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;journeyId&quot;:&quot;1288b6b6-dc3c-495f-b444-f68ec3b32cb3&quot;,&quot;key&quot;:&quot;servicedesk.cv.portal.landing&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;5549014&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;275&quot;,&quot;resourceLoadedStart&quot;:223.40000001713634,&quot;threshold&quot;:&quot;1000&quot;,&quot;unloadEventStart&quot;:&quot;207&quot;,&quot;unloadEventEnd&quot;:&quot;207&quot;,&quot;fetchStart&quot;:&quot;2&quot;,&quot;domainLookupStart&quot;:&quot;2&quot;,&quot;domainLookupEnd&quot;:&quot;2&quot;,&quot;connectStart&quot;:&quot;2&quot;,&quot;connectEnd&quot;:&quot;2&quot;,&quot;requestStart&quot;:&quot;5&quot;,&quot;responseStart&quot;:&quot;198&quot;,&quot;responseEnd&quot;:&quot;269&quot;,&quot;domLoading&quot;:&quot;208&quot;,&quot;domInteractive&quot;:&quot;276&quot;,&quot;domContentLoadedEventStart&quot;:&quot;276&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;277&quot;,&quot;domComplete&quot;:&quot;737&quot;,&quot;loadEventStart&quot;:&quot;737&quot;,&quot;loadEventEnd&quot;:&quot;739&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;8c68d8036d917652ef7564456d59d80184b5a77e&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;&#x98; \&quot;:[\&quot;2,67,67,,,67,,67,67,67\&quot;,\&quot;2,67,b0,ax,6r,67,,67,67,67\&quot;,\&quot;3,75,7n,76,76,75,,75,75,75\&quot;,\&quot;3,75,di,cz,7p,75,,75,75,75\&quot;,\&quot;4,7r,7r,,,7r,,7r,7r,7r\&quot;,\&quot;5,8w,e6,e5,8x,8w,,8w,8w,8w\&quot;,\&quot;3,ev,k6,k4,ex,ev,,ev,ev,ev\&quot;,\&quot;5,ke,pq,pp,ki,ke,,ke,ke,ke\&quot;,\&quot;5,ow,u7,u7,oy,ow,,ow,ow,ow\&quot;,\&quot;5,2k3,2pa,2p9,2k9,2k3,,2k3,2k3,2k3\&quot;,\&quot;2,2pd,2ug,2ue,2pe,2pd,,2pd,2pd,2pd\&quot;,\&quot;3,2pd,393,2uf,2pf,2pd,,2pd,2pd,2pd\&quot;,\&quot;5,3a1,3hj,3hi,3a3,3a1,,3a1,3a1,3a1\&quot;,\&quot;4,3hw,3hw,,,3hw,,3hw,3hw,3hw\&quot;,\&quot;5,4p7,4uh,4uh,4p8,4p7,,4p7,4p7,4p7\&quot;,\&quot;5,zbw,zzm,zzm,zc2,zbw,,zbw,zbw,zbw\&quot;,\&quot;5,zzt,105d,105c,100a,zzt,,zzt,zzt,zzt\&quot;,\&quot;5,zzu,10e4,10b1,105n,105m,,105m,105m,105m,105k,zzu\&quot;,\&quot;2,105g,10an,10al,105i,105g,,105g,105g,105g\&quot;,\&quot;3,105h,10e0,109v,105j,105h,,105h,105h,105h\&quot;,\&quot;5,10ee,10mk,10mj,10eh,10ee,,10ee,10ee,10ee\&quot;,\&quot;4,10nf,10nf,,,10nf,,10nf,10nf,10nf\&quot;,\&quot;4,10nh,10sn,10sl,10nj,10nh,,10nh,10nh,10nh\&quot;,\&quot;5,13m7,13rb,13ra,13ma,13m7,,13m7,13m7,13m7\&quot;,\&quot;5,25qf3,25r6m,25r6l,25qf8,25qf3,,25qf3,25qf3,25qf3\&quot;,\&quot;4,25r6y,25r6y,,,25r6y,,25r6y,25r6y,25r6y\&quot;,\&quot;5,25tpb,25ug7,25ug6,25tpj,25tpb,,25tpb,25tpb,25tpb\&quot;,\&quot;4,25ugi,25ugi,,,25ugi,,25ugi,25ugi,25ugi\&quot;,\&quot;5,25v1h,25v5n,25v5m,25v1j,25v1h,,25v1h,25v1h,25v1h\&quot;,\&quot;4,25vby,25vby,,,25vby,,25vby,25vby,25vby\&quot;,\&quot;5,260by,260zn,260zl,260c0,260by,,260by,260by,260by\&quot;,\&quot;5,260zy,2622p,2619f,2614m,2614m,,2614m,2614m,2614m,2614k,260zy\&quot;,\&quot;5,2610g,2618i,2618g,2610i,2610g,,2610g,2610g,2610g\&quot;,\&quot;4,2619k,2619k,,,2619k,,2619k,2619k,2619k\&quot;,\&quot;4,2619m,2619o,2619n,2619n,2619m,,2619m,2619m,2619m\&quot;,\&quot;5,262vu,2630x,2630x,262vw,262vu,,262vu,262vu,262vu\&quot;,\&quot;4,26t4u,26t4u,,,26t4u,,26t4u,26t4u,26t4u\&quot;,\&quot;5,2xuud,2xv69,2xv68,2xuzn,2xuzn,,2xuuk,2xuuk,2xuuk\&quot;,\&quot;-1,2xuul,2xv3s,2xv3q,2xuzq,2xuzq,,2xuuo,2xuuo,2xuuo\&quot;,\&quot;4,2xv6p,2xv6p,,,2xv6p,,2xv6p,2xv6p,2xv6p\&quot;,\&quot;5,2xx2e,2xx6j,2xx6j,2xx2f,2xx2e,,2xx2e,2xx2e,2xx2e\&quot;,\&quot;5,2yw6f,2ywgd,2ywgc,2yw92,2yw6f,,2yw6f,2yw6f,2yw6f\&quot;,\&quot;4,2ywgp,2ywgp,,,2ywgp,,2ywgp,2ywgp,2ywgp\&quot;,\&quot;5,2yzsl,2yzxl,2yzxl,2yzsm,2yzsl,,2yzsl,2yzsl,2yzsl\&quot;,\&quot;5,2z5gk,2z5uh,2z5ug,2z5gn,2z5gk,,2z5gk,2z5gk,2z5gk\&quot;,\&quot;5,2z5up,2z6b5,2z662,2z60i,2z60h,,2z60h,2z60h,2z60h,2z60f,2z5up\&quot;,\&quot;5,2z5uu,2z639,2z638,2z5vg,2z5uu,,2z5uu,2z5uu,2z5uu\&quot;,\&quot;4,2z640,2z640,,,2z640,,2z640,2z640,2z640\&quot;,\&quot;4,2z642,2z687,2z685,2z644,2z642,,2z642,2z642,2z642\&quot;,\&quot;5,2z7o0,2z7sa,2z7s9,2z7o1,2z7o0,,2z7o0,2z7o0,2z7o0\&quot;,\&quot;5,38l0q,38lbu,38lbt,38l5p,38l5p,,38l0u,38l0u,38l0u\&quot;,\&quot;4,38lc5,38lc5,,,38lc5,,38lc5,38lc5,38lc5\&quot;,\&quot;5,38m3t,38m7z,38m7y,38m3u,38m3t,,38m3t,38m3t,38m3t\&quot;,\&quot;5,38pd7,38pht,38phr,38pde,38pd7,,38pd7,38pd7,38pd7\&quot;,\&quot;2,38phw,38pm6,38pm4,38phy,38phw,,38phw,38phw,38phw\&quot;,\&quot;3,38phx,38q9u,38ppl,38phy,38phx,,38phx,38phx,38phx\&quot;,\&quot;5,38qa2,38qgx,38qgw,38qa4,38qa2,,38qa2,38qa2,38qa2\&quot;,\&quot;4,38qhc,38qhc,,,38qhc,,38qhc,38qhc,38qhc\&quot;,\&quot;5,38qhl,38qx8,38qx7,38qhn,38qhl,,38qhl,38qhl,38qhl\&quot;,\&quot;5,38s0z,38s7i,38s7h,38s14,38s0z,,38s0z,38s0z,38s0z\&quot;,\&quot;4,38s80,38s80,,,38s80,,38s80,38s80,38s80\&quot;,\&quot;5,38tvc,38u26,38u25,38tvp,38tvc,,38tvc,38tvc,38tvc\&quot;,\&quot;5,38txz,38u24,38u24,38ty0,38txz,,38txz,38txz,38txz\&quot;,\&quot;4,38u2i,38u2i,,,38u2i,,38u2i,38u2i,38u2i\&quot;,\&quot;5,38xrd,38xxu,38xxt,38xrq,38xrd,,38xrd,38xrd,38xrd\&quot;,\&quot;5,38xx6,38y1c,38y1b,38xx7,38xx6,,38xx6,38xx6,38xx6\&quot;,\&quot;4,38xy8,38xy8,,,38xy8,,38xy8,38xy8,38xy8\&quot;,\&quot;5,38yxg,38z49,38z48,38yxk,38yxg,,38yxg,38yxg,38yxg\&quot;,\&quot;5,38z52,38zjn,38zjm,38z54,38z52,,38z52,38z52,38z52\&quot;,\&quot;4,38z54,38z54,,,38z54,,38z54,38z54,38z54\&quot;,\&quot;5,391wg,3920m,3920m,391wi,391wg,,391wg,391wg,391wg\&quot;,\&quot;5,39fu5,39g0i,39g0h,39fuf,39fu5,,39fu5,39fu5,39fu5\&quot;,\&quot;4,39g12,39g12,,,39g12,,39g12,39g12,39g12\&quot;,\&quot;5,39hh7,39hld,39hld,39hha,39hh7,,39hh7,39hh7,39hh7\&quot;,\&quot;5,39k5e,39kc4,39kc3,39k5q,39k5e,,39k5e,39k5e,39k5e\&quot;,\&quot;4,39kcl,39kcl,,,39kcl,,39kcl,39kcl,39kcl\&quot;,\&quot;5,39lge,39lkl,39lkk,39lgh,39lge,,39lge,39lge,39lge\&quot;,\&quot;5,39rpb,39s1s,39s1r,39rpe,39rpb,,39rpb,39rpb,39rpb\&quot;,\&quot;5,39s20,39sdn,39sav,39s6f,39s6e,,39s6e,39s6e,39s6e,39s6c,39s20\&quot;,\&quot;5,39s27,39sac,39sab,39s2i,39s27,,39s27,39s27,39s27\&quot;,\&quot;4,39sb5,39sb5,,,39sb5,,39sb5,39sb5,39sb5\&quot;,\&quot;4,39sb7,39sfd,39sfc,39sb9,39sb7,,39sb7,39sb7,39sb7\&quot;,\&quot;5,39tai,39tep,39teo,39taj,39tai,,39tai,39tai,39tai\&quot;,\&quot;5,3ans0,3anz7,3anz5,3ans9,3ans0,,3ans0,3ans0,3ans0\&quot;,\&quot;4,3anzr,3anzr,,,3anzr,,3anzr,3anzr,3anzr\&quot;,\&quot;5,3ao01,3aoep,3aoeo,3ao02,3ao01,,3ao01,3ao01,3ao01\&quot;,\&quot;5,3aqi8,3aqmz,3aqmy,3aqia,3aqi8,,3aqi8,3aqi8,3aqi8\&quot;,\&quot;5,3axfz,3axmn,3axmm,3axgh,3axfz,,3axfz,3axfz,3axfz\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[501]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[504]&quot;,&quot;mark.@grammarly-extension:callExecuteContentScript&quot;:&quot;[6613]&quot;,&quot;mark.@grammarly-extension:initStart&quot;:&quot;[6908]&quot;,&quot;mark.@grammarly-extension:initEnd&quot;:&quot;[6930]&quot;,&quot;mark.@grammarly-extension:gButtonShow&quot;:&quot;[7224,3637084,4992992,5455880,5490557]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[501],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[504],\&quot;@grammarly-extension:callExecuteContentScript\&quot;:[6613],\&quot;@grammarly-extension:initStart\&quot;:[6908],\&quot;@grammarly-extension:initEnd\&quot;:[6930],\&quot;@grammarly-extension:gButtonShow\&quot;:[7224,3637084,4992992,5455880,5490557]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-913}]</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -2723,6 +2733,558 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
 </stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223Timer guiclass="TestBeanGUI" testclass="JSR223Timer" testname="pacing timer" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">// concurrency
+def concurrency = ctx.getThreadGroup().getNumThreads()
+
+// Delays between each action in milli-seconds
+def delay_between_transactions = (1000 * 3600) / (vars.get(&quot;total_actions_per_hour_customers&quot;).toDouble() / concurrency.toDouble())
+
+//Sets the pacing length based on the last requests response time. x is the time in ms
+def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
+def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
+
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, total_actions_per_hour: &quot; + vars.get(&quot;total_actions_per_hour_customers&quot;) + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time)
+
+if ( sleep_time &gt; 0 ) {
+    return sleep_time
+} else {
+    return 0
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Timer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="customer_insight_view_request" enabled="true">
+            <intProp name="ThroughputController.style">1</intProp>
+            <boolProp name="ThroughputController.perThread">false</boolProp>
+            <intProp name="ThroughputController.maxThroughput">1</intProp>
+            <stringProp name="ThroughputController.percentThroughput">${perc_customer_insight_view_request}</stringProp>
+          </ThroughputController>
+          <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - start" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree>
+              <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Calculate loop start time" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;loop_start_time&quot;,String.valueOf(System.currentTimeMillis()));
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PreProcessor>
+              <hashTree/>
+            </hashTree>
+            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Insight check" enabled="true">
+              <stringProp name="TestPlan.comments"> Check if Insight enabled</stringProp>
+              <stringProp name="IfController.condition">${__groovy(&quot;${insight}&quot; == &quot;True&quot;)}</stringProp>
+              <boolProp name="IfController.evaluateAll">false</boolProp>
+              <boolProp name="IfController.useExpression">true</boolProp>
+            </IfController>
+            <hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_customer_insight_view_request_with_insight_field" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="617/servicedesk/customer/portal/${s_service_desk_id}" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments"/>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/portal/${s_service_desk_id}</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
+                        <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
+                        <stringProp name="Header.value">1</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+                    <stringProp name="RandomTimer.range">0.0</stringProp>
+                    <stringProp name="ConstantTimer.delay">0</stringProp>
+                    <stringProp name="TestPlan.comments">Recorded time was 0 milliseconds</stringProp>
+                  </UniformRandomTimer>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="618/rest/webResources/1.0/resources" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;browser-metrics-plugin.contrib&quot;],&quot;xc&quot;:[&quot;jira.webresources:almond&quot;,&quot;customerportal&quot;,&quot;com.atlassian.analytics.analytics-client:js-events&quot;,&quot;async-chunk-cv-landing-page&quot;],&quot;xr&quot;:[]}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="619/rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;servicedesk.page.view.customerview.session&quot;,&quot;properties&quot;:{&quot;count&quot;:1,&quot;path&quot;:&quot;cv.shared.portal&quot;,&quot;sdVersion&quot;:&quot;4.20.4&quot;},&quot;timeDelta&quot;:-579},{&quot;name&quot;:&quot;servicedesk.page.view.portal.global.title.announcement.view.none&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.20.4&quot;},&quot;timeDelta&quot;:-537},{&quot;name&quot;:&quot;servicedesk.page.view.customerview&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.20.4&quot;,&quot;projectId&quot;:10085},&quot;timeDelta&quot;:-521}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="620/rest/webResources/1.0/resources" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;com.atlassian.servicedesk.frontend-webpack-plugin:16&quot;],&quot;xc&quot;:[&quot;jira.webresources:almond&quot;,&quot;customerportal&quot;,&quot;com.atlassian.analytics.analytics-client:js-events&quot;,&quot;async-chunk-cv-landing-page&quot;,&quot;browser-metrics-plugin.contrib&quot;],&quot;xr&quot;:[]}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="621/rest/insight_servicedesk/1.0/servicedesk/portalconfig" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="requestTypeId" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.name">requestTypeId</stringProp>
+                        <stringProp name="Argument.value">${rt_id}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/insight_servicedesk/1.0/servicedesk/portalconfig</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json; charset=utf-8</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="custom_field" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">custom_field_id</stringProp>
+                    <stringProp name="RegexExtractor.regex">customFieldId&quot;:(.+?)\,&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="622/rest/servicedesk/1/customer/models" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;models&quot;:[&quot;user&quot;,&quot;organisations&quot;,&quot;sharedPortal&quot;,&quot;helpCenterBranding&quot;,&quot;portal&quot;,&quot;reqDetails&quot;,&quot;portalWebFragments&quot;],&quot;options&quot;:{&quot;portalId&quot;:&quot;${request_portal_id}&quot;,&quot;portal&quot;:{&quot;id&quot;:&quot;${request_portal_id}&quot;},&quot;reqDetails&quot;:{&quot;key&quot;:&quot;${request_key}&quot;},&quot;portalWebFragments&quot;:{&quot;portalPage&quot;:&quot;VIEW_REQUEST&quot;}}}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/servicedesk/1/customer/models</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="623/rest/insight_servicedesk/1.0/servicedesk/${custom_field_id}/${rt_id}" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="_" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.name">_</stringProp>
+                        <stringProp name="Argument.value">1649061328898</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/insight_servicedesk/1.0/servicedesk/${custom_field_id}/${rt_id}/defaultValue</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json; charset=utf-8</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="624/rest/webResources/1.0/resources" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;com.atlassian.servicedesk.frontend-webpack-plugin:298&quot;],&quot;xc&quot;:[&quot;jira.webresources:almond&quot;,&quot;customerportal&quot;,&quot;com.atlassian.analytics.analytics-client:js-events&quot;,&quot;async-chunk-cv-landing-page&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:16&quot;],&quot;xr&quot;:[]}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="625/rest/webResources/1.0/resources" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;com.atlassian.servicedesk.frontend-webpack-plugin:196&quot;],&quot;xc&quot;:[&quot;jira.webresources:almond&quot;,&quot;customerportal&quot;,&quot;com.atlassian.analytics.analytics-client:js-events&quot;,&quot;async-chunk-cv-landing-page&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:16&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:298&quot;],&quot;xr&quot;:[]}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="626/rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;fcp&quot;:375.10000002384186,&quot;ttfb&quot;:171.30000001192093,&quot;pageVisibility&quot;:&quot;visible&quot;,&quot;key&quot;:&quot;servicedesk.cv.portal.landing&quot;,&quot;isInitial&quot;:&quot;true&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userDeviceProcessors&quot;:8,&quot;apdex&quot;:&quot;0.5&quot;,&quot;firstPaint&quot;:&quot;375&quot;,&quot;journeyId&quot;:&quot;c579e7d3-7735-4d78-995f-3a692a2392df&quot;,&quot;navigationType&quot;:&quot;0&quot;,&quot;readyForUser&quot;:&quot;1394&quot;,&quot;redirectCount&quot;:&quot;0&quot;,&quot;resourceLoadedEnd&quot;:&quot;&quot;,&quot;resourceLoadedStart&quot;:&quot;&quot;,&quot;unloadEventStart&quot;:&quot;184&quot;,&quot;unloadEventEnd&quot;:&quot;184&quot;,&quot;fetchStart&quot;:&quot;9&quot;,&quot;domainLookupStart&quot;:&quot;9&quot;,&quot;domainLookupEnd&quot;:&quot;9&quot;,&quot;connectStart&quot;:&quot;9&quot;,&quot;connectEnd&quot;:&quot;9&quot;,&quot;requestStart&quot;:&quot;15&quot;,&quot;responseStart&quot;:&quot;171&quot;,&quot;responseEnd&quot;:&quot;219&quot;,&quot;domLoading&quot;:&quot;191&quot;,&quot;domInteractive&quot;:&quot;321&quot;,&quot;domContentLoadedEventStart&quot;:&quot;321&quot;,&quot;domContentLoadedEventEnd&quot;:&quot;322&quot;,&quot;domComplete&quot;:&quot;1709&quot;,&quot;loadEventStart&quot;:&quot;1709&quot;,&quot;loadEventEnd&quot;:&quot;1711&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;42b33f804c795808933ab726ed11383e751e0bd1&quot;,&quot;elementTimings&quot;:&quot;[]&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;2,5f,e2,9y,5t,5f,,5f,5f,5f\&quot;,\&quot;2,5f,a5,a4,62,5f,,5f,5f,5f\&quot;,\&quot;3,8o,ie,e9,a5,8o,,8o,8o,8o\&quot;,\&quot;3,8o,y2,dv,9t,9t,,8w,8w,8w\&quot;]}&quot;,&quot;mark.@grammarly-extension:checkScriptInitStart&quot;:&quot;[546]&quot;,&quot;mark.@grammarly-extension:checkScriptInitEnd&quot;:&quot;[552]&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{\&quot;@grammarly-extension:checkScriptInitStart\&quot;:[546],\&quot;@grammarly-extension:checkScriptInitEnd\&quot;:[552]},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-5155},{&quot;name&quot;:&quot;servicedesk.customerview.smartportal.single.portal.first.action.browse.requesttype&quot;,&quot;properties&quot;:{&quot;portalCardsViewFlagOn&quot;:true,&quot;sdVersion&quot;:&quot;4.20.4&quot;,&quot;projectId&quot;:10085},&quot;timeDelta&quot;:-2507},{&quot;name&quot;:&quot;servicedesk.customerview.smartportal.single.portal.browse.request.type.clicked&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.20.4&quot;,&quot;projectId&quot;:10085},&quot;timeDelta&quot;:-2507},{&quot;name&quot;:&quot;servicedesk.customerview.richeditor.rendered&quot;,&quot;properties&quot;:{&quot;isWysiwygEditorEnabled&quot;:true,&quot;sdVersion&quot;:&quot;4.20.4&quot;,&quot;projectId&quot;:10085},&quot;timeDelta&quot;:-1606},{&quot;name&quot;:&quot;servicedesk.page.view.customerview.createRequest&quot;,&quot;properties&quot;:{&quot;sdVersion&quot;:&quot;4.20.4&quot;,&quot;projectId&quot;:10085},&quot;timeDelta&quot;:-1599},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;pageVisibility&quot;:&quot;visible&quot;,&quot;key&quot;:&quot;servicedesk.cv.request.create&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userDeviceProcessors&quot;:8,&quot;apdex&quot;:&quot;1&quot;,&quot;journeyId&quot;:&quot;c579e7d3-7735-4d78-995f-3a692a2392df&quot;,&quot;readyForUser&quot;:&quot;902&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:10,&quot;rtt&quot;:50,&quot;applicationHash&quot;:&quot;42b33f804c795808933ab726ed11383e751e0bd1&quot;,&quot;elementTimings&quot;:&quot;[]&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,1,4i,4h,h,1,,1,1,1\&quot;,\&quot;-1,d,4l,4k,m,d,,d,d,d\&quot;,\&quot;5,3l,85,83,43,3l,,3l,3l,3l\&quot;,\&quot;2,4k,cv,8o,4n,4k,,4k,4k,4k\&quot;,\&quot;3,4l,hm,8r,4n,4l,,4l,4l,4l\&quot;,\&quot;5,ii,nn,nm,il,ii,,ii,ii,ii\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:10,&quot;connectionRTT&quot;:50},&quot;timeDelta&quot;:-1335}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="627/rest/webResources/1.0/resources" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;r&quot;:[],&quot;c&quot;:[&quot;com.atlassian.servicedesk.frontend-webpack-plugin:219&quot;],&quot;xc&quot;:[&quot;jira.webresources:almond&quot;,&quot;customerportal&quot;,&quot;com.atlassian.analytics.analytics-client:js-events&quot;,&quot;async-chunk-cv-landing-page&quot;,&quot;browser-metrics-plugin.contrib&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:16&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:298&quot;,&quot;com.atlassian.servicedesk.frontend-webpack-plugin:196&quot;],&quot;xr&quot;:[]}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/webResources/1.0/resources</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
             </hashTree>
             <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing - end" enabled="true">

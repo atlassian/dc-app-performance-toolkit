@@ -1,698 +1,90 @@
 {
   "login_and_view_dashboard": {
-    "110": {
-      "r": [],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "_super",
-        "atl.dashboard",
-        "jira.global",
-        "atl.general",
-        "jira.general"
-      ],
-      "xr": [
-        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
-        "com.atlassian.gadgets.dashboard:gadgets-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:adgs",
-        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
-        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
-        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
-        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs"
-      ]
-    },
-    "120": {
-      "r": [],
-      "c": [
-        "jira.webresources:mentions-feature"
-      ],
-      "xc": [
-        "_super",
-        "atl.dashboard",
-        "jira.global",
-        "atl.general",
-        "jira.general",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.dashboard",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
-        "com.atlassian.gadgets.dashboard:gadgets-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:adgs",
-        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
-        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
-        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
-        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "125": {
-      "r": [
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
-      ],
-      "c": [
-        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
-      ],
-      "xc": [
-        "_super",
-        "atl.dashboard",
-        "jira.global",
-        "atl.general",
-        "jira.general",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.dashboard",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements",
-        "com.atlassian.gadgets.dashboard:gadgets-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:adgs",
-        "com.atlassian.jira.jira-issue-nav-components:detailslayout-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:simpleissuelist-adgs",
-        "com.atlassian.jira.jira-issue-nav-plugin:adgs-styles",
-        "com.atlassian.jira.jira-issue-nav-components:orderby-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:pager-less-adgs",
-        "com.atlassian.jira.jira-issue-nav-components:issueviewer-adgs",
-        "com.atlassian.jira.gadgets:introduction-dashboard-item-resource-adgs",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "com.atlassian.jira.jira-postsetup-announcements-plugin:post-setup-announcements-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "130": {
-      "r": [],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "jira.webresources:almond",
-        "jira.webresources:aui-core-amd-shim",
-        "jira.webresources:jira-metadata",
-        "jira.webresources:jquery-livestamp",
-        "com.atlassian.auiplugin:ajs-underscorejs",
-        "com.atlassian.analytics.analytics-client:js-events",
-        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
-        "com.atlassian.gadgets.publisher:ajs-gadgets",
-        "com.atlassian.streams:streamsGadgetResources"
-      ],
-      "xr": [
-        "jira.webresources:icons",
-        "jira.webresources:list-styles",
-        "jira.webresources:inline-layer",
-        "jira.webresources:dropdown",
-        "com.atlassian.auiplugin:aui-lozenge",
-        "com.atlassian.auiplugin:aui-tipsy",
-        "com.atlassian.auiplugin:aui-tooltips",
-        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
-        "jira.webresources:frother-queryable-dropdown-select",
-        "jira.webresources:frother-singleselect",
-        "jira.webresources:frother-multiselect",
-        "jira.webresources:frother-checkbox-multiselect",
-        "jira.webresources:select-pickers",
-        "jira.webresources:autocomplete",
-        "com.atlassian.jira.gadgets:core-gadget-resources"
-      ]
-    }
+    "110": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.dashboard"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "115": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:8","jira.webresources:mentions-feature","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.dashboard","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "120": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-1044},{"name":"atst.healthcheck.sensors.page-protocols","properties":{"resourceProtocols":"http/1.1","navigationProtocol":"http/1.1","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"},"timeDelta":-685}],
+    "125": [{"name":"browser.metrics.navigation","properties":{"apdex":"0","firstPaint":"2331","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.dashboard","navigationType":"0","readyForUser":"6584","redirectCount":"1","resourceLoadedEnd":"1723","resourceLoadedStart":622.4300000176299,"threshold":"1000","unloadEventStart":"514","unloadEventEnd":"517","redirectStart":"5","redirectEnd":"341","fetchStart":"341","domainLookupStart":"341","domainLookupEnd":"341","connectStart":"341","connectEnd":"341","requestStart":"344","responseStart":"495","responseEnd":"620","domLoading":"527","domInteractive":"2427","domContentLoadedEventStart":"2428","domContentLoadedEventEnd":"2710","domComplete":"6612","loadEventStart":"6614","loadEventEnd":"6631","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"ea0357911b5724","effectiveType":"4g","downlink":5.9,"rtt":100,"serverDuration":"42","dbConnsTimeInMs":"6","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,ha,ps,l9,hl,ha,,ha,ha,ha\",\"2,hb,w6,ld,hr,hb,,hb,hb,hb\",\"2,hc,op,om,l5,l5,,hp,hp,hp\",\"3,hd,16t,pk,lg,lc,,hq,hq,hq\",\"3,hd,14k,pn,lg,lc,,hq,hq,hq\",\"3,he,te,tb,ps,he,,he,he,he\",\"3,hf,tv,tr,pz,hf,,hf,hf,hf\",\"3,hg,tu,tj,q0,hg,,hg,hg,hg\",\"3,hh,xa,x3,te,hh,,hh,hh,hh\",\"3,hh,xw,xn,tx,hh,,hh,hh,hh\",\"2,hi,pt,p4,lf,l9,,ia,ia,ia\",\"3,hj,xw,xs,u3,hj,,hj,hj,hj\",\"3,hk,1az,1ar,16v,hk,,hk,hk,hk\",\"3,l8,1bv,1bp,182,l8,,l8,l8,l8\",\"5,1kj,1of,1ob,1kn,1kj,,1kj,1kj,1kj\",\"4,1ns,1wm,1wj,1sy,1ns,,1ns,1ns,1ns\",\"5,20p,25i,25c,20v,20p,,20p,20p,20p\",\"-1,226,26m,26e,22o,226,,226,226,226\",\"5,232,26t,26r,236,232,,232,232,232\",\"3,24m,29b,294,25j,24m,,24m,24m,24m\",\"5,2r1,2v1,2uw,2ra,2r1,,2r1,2r1,2r1\",\"5,2s0,2yi,2x8,2t6,2s0,,2s0,2s0,2s0\",\"2,2zb,3ch,3bj,381,2zb,,2zb,2zb,2zb\",\"2,2zm,3cv,3bz,382,2zm,,2zm,2zm,2zm\",\"3,2zs,4kv,4km,4h4,2zs,,2zs,2zs,2zs\",\"3,2zv,4o3,4ny,4k6,2zv,,2zv,2zv,2zv\"]}","userTimingRaw":"{\"marks\":{},\"measures\":{}}","experiments":"[]","dbReadsTimeInMs":"","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":5.9,"connectionRTT":100},"timeDelta":-1602}]
+  },
+  "create_issue": {
+    "210": [{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-3120},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-2842},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-2495},{"name":"browser.metrics.navigation","properties":{"apdex":"1","isInitial":"false","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.dialog.open.create-issue-dialog","readyForUser":"897","threshold":"1000","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","effectiveType":"4g","downlink":1.45,"rtt":100,"applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"5,7,7w,7q,a,7,,7,7,7\"]}","userTimingRaw":"{\"marks\":{},\"measures\":{}}","experiments":"[]","connectionEffectiveType":"4g","connectionDownlink":1.45,"connectionRTT":100},"timeDelta":-1996},{"name":"issue.dnd.attachment.createissuedropzone.init","properties":{},"timeDelta":-1597},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-1593},{"name":"editor.instance.init","properties":{},"timeDelta":-1466},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-1466},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-1465},{"name":"editor.instance.init","properties":{},"timeDelta":-1326},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-1326},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-1326},{"name":"editor.instance.init","properties":{},"timeDelta":-1270},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-1270},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-1270},{"name":"editor.instance.perf.nodechange","properties":{"time":28.130000000353903},"timeDelta":-869},{"name":"editor.instance.perf.init","properties":{"time":1538.2599999997765},"timeDelta":-763},{"name":"editor.instance.init.perf","properties":{"time":140.08499999996275},"timeDelta":-763},{"name":"editor.instance.perf.init-bare","properties":{"time":1538.619999999646},"timeDelta":-763},{"name":"editor.instance.perf.nodechange","properties":{"time":4.289999999571592},"timeDelta":-736},{"name":"editor.instance.perf.nodechange","properties":{"time":2.3449999997392297},"timeDelta":-712},{"name":"editor.instance.perf.nodechange","properties":{"time":4.5750000001862645},"timeDelta":-677},{"name":"editor.instance.perf.init","properties":{"time":1653.3499999996275},"timeDelta":-648},{"name":"editor.instance.init.perf","properties":{"time":35.544999999925494},"timeDelta":-648},{"name":"editor.instance.perf.init-bare","properties":{"time":1653.5099999997765},"timeDelta":-648},{"name":"editor.instance.perf.nodechange","properties":{"time":15.514999999664724},"timeDelta":-616},{"name":"editor.instance.perf.nodechange","properties":{"time":1.4600000004284084},"timeDelta":-605},{"name":"editor.instance.perf.nodechange","properties":{"time":2.390000000130385},"timeDelta":-591},{"name":"editor.instance.perf.init","properties":{"time":1724.1399999996647},"timeDelta":-578},{"name":"editor.instance.init.perf","properties":{"time":16.674999999813735},"timeDelta":-578},{"name":"editor.instance.perf.init-bare","properties":{"time":1724.2199999997392},"timeDelta":-578},{"name":"editor.instance.perf.nodechange","properties":{"time":1.339999999385327},"timeDelta":-571},{"name":"editor.instance.perf.nodechange","properties":{"time":1.3500000000931323},"timeDelta":-557}],
+    "220": [{"name":"quick.create.fields","properties":{"atlassian.numCreates":1,"edit.form":false,"pid":"added","issuetype":"added","formToken":"added","resolution":"added","worklog_startDate":"added","worklog_adjustEstimate":"added","issuelinks":"added","issuelinks-linktype":"added","assignee":"added","summary":"added","priority":"added","customfield_10551":"added"},"timeDelta":-787},{"name":"quickeditform.submit.success","properties":{"allFieldsShown":true,"allFields":"[{\"id\":\"project\",\"required\":true},{\"id\":\"issuetype\",\"required\":true},{\"id\":\"components\",\"required\":false},{\"id\":\"versions\",\"required\":false},{\"id\":\"resolution\",\"required\":false},{\"id\":\"attachment\",\"required\":false},{\"id\":\"labels\",\"required\":false},{\"id\":\"worklog\",\"required\":false},{\"id\":\"issuelinks\",\"required\":false},{\"id\":\"fixVersions\",\"required\":false},{\"id\":\"assignee\",\"required\":false},{\"id\":\"environment\",\"required\":false},{\"id\":\"description\",\"required\":false},{\"id\":\"timetracking\",\"required\":false},{\"id\":\"summary\",\"required\":true},{\"id\":\"priority\",\"required\":false},{\"id\":\"duedate\",\"required\":false},{\"id\":\"customfield_10513\",\"required\":false},{\"id\":\"customfield_10551\",\"required\":false},{\"id\":\"customfield_10633\",\"required\":false},{\"id\":\"customfield_10694\",\"required\":false},{\"id\":\"customfield_10717\",\"required\":false}]","displayedFields":"[{\"id\":\"project\",\"required\":true},{\"id\":\"issuetype\",\"required\":true},{\"id\":\"components\",\"required\":false},{\"id\":\"versions\",\"required\":false},{\"id\":\"resolution\",\"required\":false},{\"id\":\"attachment\",\"required\":false},{\"id\":\"labels\",\"required\":false},{\"id\":\"worklog\",\"required\":false},{\"id\":\"issuelinks\",\"required\":false},{\"id\":\"fixVersions\",\"required\":false},{\"id\":\"assignee\",\"required\":false},{\"id\":\"environment\",\"required\":false},{\"id\":\"description\",\"required\":false},{\"id\":\"timetracking\",\"required\":false},{\"id\":\"summary\",\"required\":true},{\"id\":\"priority\",\"required\":false},{\"id\":\"duedate\",\"required\":false},{\"id\":\"customfield_10513\",\"required\":false},{\"id\":\"customfield_10551\",\"required\":false},{\"id\":\"customfield_10633\",\"required\":false},{\"id\":\"customfield_10694\",\"required\":false},{\"id\":\"customfield_10717\",\"required\":false}]"},"timeDelta":-786},{"name":"editor.instance.tab.timing.visual","properties":{"time":20977.28000000026},"timeDelta":-435},{"name":"editor.instance.tab.timing.visual","properties":{"time":20979.60499999998},"timeDelta":-433},{"name":"editor.instance.tab.timing.visual","properties":{"time":20982.985000000335},"timeDelta":-429},{"name":"editor.instance.destroy","properties":{},"timeDelta":-239},{"name":"bundled.editor.instance.destroy","properties":{},"timeDelta":-238},{"name":"editor.instance.destroy","properties":{},"timeDelta":-234},{"name":"bundled.editor.instance.destroy","properties":{},"timeDelta":-234},{"name":"editor.instance.destroy","properties":{},"timeDelta":-222},{"name":"bundled.editor.instance.destroy","properties":{},"timeDelta":-222}]
   },
   "search_jql": {
-    "305": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "_super",
-        "jira.view.issue",
-        "jira.navigator.kickass",
-        "viewissue.standalone",
-        "jira.navigator.simple",
-        "jira.navigator.advanced",
-        "atl.general",
-        "jira.general",
-        "jira.global"
-      ],
-      "xr": [
-        "jira.filter.deletion.warning:styles"
-      ]
-    },
-    "320": {
-      "r": [
-        "com.atlassian.jira.plugins.jira-editor-plugin:api",
-        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
-      ],
-      "c": [
-        "jira.webresources:mentions-feature",
-        "jira.rich.editor"
-      ],
-      "xc": [
-        "_super",
-        "jira.view.issue",
-        "jira.navigator.kickass",
-        "viewissue.standalone",
-        "jira.navigator.simple",
-        "jira.navigator.advanced",
-        "atl.general",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "jira.filter.deletion.warning:styles",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "330": {
-      "r": [
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
-      ],
-      "c": [
-      ],
-      "xc": [
-        "_super",
-        "jira.view.issue",
-        "jira.navigator.kickass",
-        "viewissue.standalone",
-        "jira.navigator.simple",
-        "jira.navigator.advanced",
-        "atl.general",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel",
-        "jira.rich.editor"
-      ],
-      "xr": [
-        "jira.filter.deletion.warning:styles",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init",
-        "com.atlassian.jira.plugins.jira-editor-plugin:tinymce",
-        "com.atlassian.jira.plugins.jira-editor-plugin:schema-builder",
-        "com.atlassian.jira.plugins.jira-editor-plugin:schema",
-        "com.atlassian.jira.plugins.jira-editor-plugin:i18n",
-        "com.atlassian.jira.plugins.jira-editor-plugin:wrm",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter-util",
-        "com.atlassian.jira.plugins.jira-editor-plugin:context-detector",
-        "com.atlassian.jira.plugins.jira-editor-plugin:context-manager",
-        "com.atlassian.jira.plugins.jira-editor-plugin:selection",
-        "com.atlassian.jira.plugins.jira-editor-plugin:instance",
-        "com.atlassian.jira.plugins.jira-editor-plugin:api",
-        "com.atlassian.jira.plugins.jira-editor-plugin:renderer",
-        "com.atlassian.jira.plugins.jira-editor-plugin:mentions",
-        "com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin",
-        "com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with",
-        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
-      ]
-    }
+    "305": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","jira.view.issue","viewissue.standalone","jira.navigator.kickass","jira.global","jira.navigator","atl.general","jira.navigator.simple","jira.navigator.advanced"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.filter.deletion.warning:styles"]},
+    "310": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","jira.view.issue","viewissue.standalone","jira.navigator.kickass","jira.global","jira.navigator","atl.general","jira.navigator.simple","jira.navigator.advanced"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.filter.deletion.warning:styles"]},
+    "315": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","jira.view.issue","viewissue.standalone","jira.navigator.kickass","jira.global","jira.navigator","atl.general","jira.navigator.simple","jira.navigator.advanced","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.atlassian.jira.plugins.jira-development-integration-plugin:7","jira.rich.editor.api","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.filter.deletion.warning:styles","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","jira.webresources:bigpipe-init"]},
+    "320": [{"name":"kickass.criteriaAutoUpdateEnabled","properties":{"enabled":true},"timeDelta":-1457},{"name":"kickass.issue-navigator.change-layout","properties":{"type":"split-view"},"timeDelta":-1024},{"name":"quicksearch.enabled","properties":{},"timeDelta":-960}],"325":[{"name":"devstatus.issue-navigator.dev-info.shown","properties":{},"timeDelta":-5328},{"name":"kickass.viewIssue","properties":{"issueId":205554,"loadedFromDom":false,"source":"jira.issuenav.global","projectId":10263,"projectType":"software","issueMatchesProjectContext":true},"timeDelta":-4688},{"name":"issue.dnd.attachment.attachmentsdropzone.init","properties":{},"timeDelta":-4341},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-4324},{"name":"browser.metrics.navigation","properties":{"apdex":"0","firstPaint":"2120","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.issue.nav-detail","navigationType":"0","readyForUser":"4725","redirectCount":"1","resourceLoadedEnd":"2488","resourceLoadedStart":564.7950000002311,"threshold":"1000","unloadEventStart":"450","unloadEventEnd":"450","redirectStart":"2","redirectEnd":"269","fetchStart":"269","domainLookupStart":"269","domainLookupEnd":"269","connectStart":"269","connectEnd":"269","requestStart":"272","responseStart":"421","responseEnd":"1790","domLoading":"482","domInteractive":"2494","domContentLoadedEventStart":"2494","domContentLoadedEventEnd":"3191","domComplete":"5769","loadEventStart":"5770","loadEventEnd":"5781","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"8c41587a7d6686","effectiveType":"4g","downlink":10,"rtt":50,"serverDuration":"1255","dbReadsTimeInMs":"875","dbConnsTimeInMs":"901","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,fo,ov,jo,fy,fo,,fo,fo,fo\",\"2,fp,vt,ns,jf,jf,,g0,g0,g0\",\"2,fq,ny,nn,jm,jl,,g6,g6,g6\",\"2,fq,nz,nv,jn,jm,,g6,g6,g6\",\"3,fr,19k,ru,o1,fr,,fr,fr,fr\",\"3,fr,17q,rr,o2,fr,,fr,fr,fr\",\"3,fs,s5,rl,o3,fs,,fs,fs,fs\",\"3,fs,sp,sj,ov,fs,,fs,fs,fs\",\"3,ft,w2,vv,s7,ft,,ft,ft,ft\",\"3,ft,wk,wd,sr,ft,,ft,ft,ft\",\"3,fu,zo,zn,w5,fu,,fu,fu,fu\",\"2,fu,nx,nl,jn,jm,,g6,g6,g6\",\"3,fv,zs,zq,w7,fv,,fv,fv,fv\",\"5,1h8,1l0,1ky,1hb,1h8,,1h8,1h8,1h8\",\"4,1kt,1rx,1rv,1o5,1kt,,1kt,1kt,1kt\",\"4,1ph,1t9,1t2,1pk,1ph,,1ph,1ph,1ph\",\"3,1s8,1vx,1vt,1sb,1s8,,1s8,1s8,1s8\",\"3,1t9,1x2,1x1,1ti,1t9,,1t9,1t9,1t9\",\"3,1t9,1x4,1x3,1tm,1t9,,1t9,1t9,1t9\",\"5,1w7,20d,20b,1wb,1w7,,1w7,1w7,1w7\",\"5,20v,24n,24l,20z,20v,,20v,20v,20v\",\"5,28z,2cx,2cs,296,28z,,28z,28z,28z\",\"5,2cy,2j6,2j2,2da,2cy,,2cy,2cy,2cy\",\"2,2hr,2ll,2lh,2hw,2hr,,2hr,2hr,2hr\",\"3,2ht,2t9,2ll,2i0,2ht,,2ht,2ht,2ht\",\"3,2hw,2pn,2lv,2i3,2hw,,2hw,2hw,2hw\",\"3,2i0,2m1,2lr,2i3,2i0,,2i0,2i0,2i0\",\"3,2i2,2mu,2ms,2jb,2i2,,2i2,2i2,2i2\",\"5,2n4,2rh,2re,2na,2n4,,2n4,2n4,2n4\",\"5,2ys,3ai,3a1,2yv,2ys,,2ys,2ys,2ys\",\"5,346,3eg,3ee,3ap,346,,346,346,346\",\"5,34g,3ia,3hv,3aq,34g,,34g,34g,34g\",\"5,3a5,3eg,3ea,3an,3a5,,3a5,3a5,3a5\"]}","userTimingRaw":"{\"marks\":{},\"measures\":{}}","experiments":"[]","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":10,"connectionRTT":50},"timeDelta":-3432}]
+  },
+  "view_issue": {
+    "405": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "410": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "415": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-1025},{"name":"jira.project.sidebar.issue.view.issue","properties":{"issueId":914565,"projectId":10448,"projectType":"software","issueMatchesProjectContext":true},"timeDelta":-902},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-697},{"name":"issue.dnd.attachment.attachmentsdropzone.init","properties":{},"timeDelta":-690},{"name":"atst.healthcheck.sensors.page-protocols","properties":{"resourceProtocols":"http/1.1","navigationProtocol":"http/1.1","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"},"timeDelta":-660},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-660}],
+    "420": {"r":[],"c":["jira.rich.editor.api","jira.rich.editor","jira.project.sidebar","jira.project.sidebar.software","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general","browser-metrics-plugin.contrib","atl.global","com.atlassian.jira.projects.sidebar.init","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "425": [{"name":"browser.metrics.navigation","properties":{"apdex":"0.5","firstPaint":"1285","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.project.issue.view-issue","navigationType":"1","readyForUser":"1993","redirectCount":"0","resourceLoadedEnd":"1029","resourceLoadedStart":294.43000000173924,"threshold":"1000","unloadEventStart":"188","unloadEventEnd":"190","fetchStart":"2","domainLookupStart":"2","domainLookupEnd":"2","connectStart":"2","connectEnd":"2","requestStart":"7","responseStart":"159","responseEnd":"239","domLoading":"224","domInteractive":"1793","domContentLoadedEventStart":"1793","domContentLoadedEventEnd":"2081","domComplete":"2995","loadEventStart":"2995","loadEventEnd":"3004","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"6280673a8e3ab6","effectiveType":"4g","downlink":10,"rtt":100,"serverDuration":"103","dbReadsTimeInMs":"14","dbConnsTimeInMs":"29","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,86,d8,cf,8s,86,,86,86,86\",\"2,87,da,cd,8t,87,,87,87,87\",\"2,87,cc,cb,8t,87,,87,87,87\",\"3,88,gf,cj,8t,88,,88,88,88\",\"3,88,qz,cm,8u,88,,88,88,88\",\"3,89,db,ci,8u,89,,89,89,89\",\"3,89,h6,gz,dc,89,,89,89,89\",\"3,8a,h7,h3,dd,8a,,8a,8a,8a\",\"3,8a,jm,ji,fy,8a,,8a,8a,8a\",\"3,8a,kb,k7,gh,8a,,8a,8a,8a\",\"2,8b,fy,fw,cc,8b,,8b,8b,8b\",\"3,8b,kt,ks,h8,8b,,8b,8b,8b\",\"2,8c,h7,gv,da,8c,,8c,8c,8c\",\"3,8c,l0,ku,h9,8c,,8c,8c,8c\",\"3,9j,os,oo,l3,9j,,9j,9j,9j\",\"3,9j,sl,sj,oy,9j,,9j,9j,9j\",\"5,kj,o9,o7,km,kj,,kj,kj,kj\",\"5,ua,y7,y5,uh,ua,,ua,ua,ua\",\"4,yb,1dr,1dl,19p,yb,,yb,yb,yb\",\"4,10a,141,13y,10e,10a,,10a,10a,10a\"]}","mark.bigPipe.sidebar-id.start":"[1700]","mark.bigPipe.sidebar-id.end":"[1704]","mark.bigPipe.activity-panel-pipe-id.start":"[1705]","mark.bigPipe.activity-panel-pipe-id.end":"[1709]","userTimingRaw":"{\"marks\":{\"bigPipe.sidebar-id.start\":[1700],\"bigPipe.sidebar-id.end\":[1704],\"bigPipe.activity-panel-pipe-id.start\":[1705],\"bigPipe.activity-panel-pipe-id.end\":[1709]},\"measures\":{}}","experiments":"[]","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":10,"connectionRTT":100},"timeDelta":-5035},{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-4563}]
   },
   "view_project_summary": {
-    "505": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "_super",
-        "com.atlassian.jira.project.summary.page",
-        "jira.project.sidebar",
-        "com.atlassian.jira.projects.sidebar.init",
-        "atl.general",
-        "jira.general",
-        "jira.global"
-      ],
-      "xr": [
-        "jira.webresources:calendar-lib",
-        "jira.webresources:autocomplete",
-        "jira.webresources:groupbrowser",
-        "jira.webresources:group-pickers",
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static"
-      ]
-    },
-    "510": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "jira.webresources:almond",
-        "jira.webresources:aui-core-amd-shim",
-        "jira.webresources:jira-metadata",
-        "jira.webresources:jquery-livestamp",
-        "com.atlassian.auiplugin:ajs-underscorejs",
-        "com.atlassian.analytics.analytics-client:js-events",
-        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
-        "com.atlassian.gadgets.publisher:ajs-gadgets",
-        "com.atlassian.streams:streamsGadgetResources"
-      ],
-      "xr": [
-        "jira.webresources:icons",
-        "jira.webresources:list-styles",
-        "jira.webresources:inline-layer",
-        "jira.webresources:dropdown",
-        "com.atlassian.auiplugin:aui-lozenge",
-        "com.atlassian.auiplugin:aui-tipsy",
-        "com.atlassian.auiplugin:aui-tooltips",
-        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
-        "jira.webresources:frother-queryable-dropdown-select",
-        "jira.webresources:frother-singleselect",
-        "jira.webresources:frother-multiselect",
-        "jira.webresources:frother-checkbox-multiselect",
-        "jira.webresources:select-pickers",
-        "jira.webresources:autocomplete",
-        "com.atlassian.jira.gadgets:core-gadget-resources"
-      ]
-    },
-    "520": {
-      "r": [
-      ],
-      "c": [
-        "jira.webresources:mentions-feature"
-      ],
-      "xc": [
-        "_super",
-        "com.atlassian.jira.project.summary.page",
-        "jira.project.sidebar",
-        "com.atlassian.jira.projects.sidebar.init",
-        "atl.general",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "jira.webresources:calendar-lib",
-        "jira.webresources:autocomplete",
-        "jira.webresources:groupbrowser",
-        "jira.webresources:group-pickers",
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar",
-        "jira.webresources:group-label-lozenge",
-        "jira.webresources:ie-imitation-placeholder",
-        "jira.webresources:jira-project-issuetype-fields",
-        "jira.webresources:jira-fields",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "530": {
-      "r": [
-      ],
-      "c": [
-        "jira.project.sidebar",
-        "jira.project.sidebar.software"
-      ],
-      "xc": [
-        "_super",
-        "com.atlassian.jira.project.summary.page",
-        "jira.project.sidebar",
-        "com.atlassian.jira.projects.sidebar.init",
-        "atl.general",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "jira.webresources:calendar-lib",
-        "jira.webresources:autocomplete",
-        "jira.webresources:groupbrowser",
-        "jira.webresources:group-pickers",
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar",
-        "jira.webresources:group-label-lozenge",
-        "jira.webresources:ie-imitation-placeholder",
-        "jira.webresources:jira-project-issuetype-fields",
-        "jira.webresources:jira-fields",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "545": {
-      "r": [
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
-      ],
-      "c": [
-      ],
-      "xc": [
-        "_super",
-        "com.atlassian.jira.project.summary.page",
-        "jira.project.sidebar",
-        "com.atlassian.jira.projects.sidebar.init",
-        "atl.general",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "jira.webresources:calendar-lib",
-        "jira.webresources:autocomplete",
-        "jira.webresources:groupbrowser",
-        "jira.webresources:group-pickers",
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar",
-        "jira.webresources:group-label-lozenge",
-        "jira.webresources:ie-imitation-placeholder",
-        "jira.webresources:jira-project-issuetype-fields",
-        "jira.webresources:jira-fields",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "555": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "jira.webresources:almond",
-        "jira.webresources:aui-core-amd-shim",
-        "jira.webresources:jira-metadata",
-        "jira.webresources:jquery-livestamp",
-        "com.atlassian.auiplugin:ajs-underscorejs",
-        "com.atlassian.analytics.analytics-client:js-events",
-        "com.atlassian.plugins.browser.metrics.browser-metrics-plugin:api",
-        "com.atlassian.gadgets.publisher:ajs-gadgets",
-        "com.atlassian.streams:streamsGadgetResources"
-      ],
-      "xr": [
-        "jira.webresources:icons",
-        "jira.webresources:list-styles",
-        "jira.webresources:inline-layer",
-        "jira.webresources:dropdown",
-        "com.atlassian.auiplugin:aui-lozenge",
-        "com.atlassian.auiplugin:aui-tipsy",
-        "com.atlassian.auiplugin:aui-tooltips",
-        "com.atlassian.plugins.issue-status-plugin:issue-status-resources",
-        "jira.webresources:frother-queryable-dropdown-select",
-        "jira.webresources:frother-singleselect",
-        "jira.webresources:frother-multiselect",
-        "jira.webresources:frother-checkbox-multiselect",
-        "jira.webresources:select-pickers",
-        "jira.webresources:autocomplete",
-        "com.atlassian.jira.gadgets:core-gadget-resources"
-      ]
-    }
-  },
-  "edit_issue": {
-    "705": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "_super",
-        "atl.general",
-        "jira.edit.issue",
-        "jira.general",
-        "jira.global"
-      ],
-      "xr": [
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static"
-      ]
-    },
-    "710": {
-      "r": [
-      ],
-      "c": [
-        "jira.webresources:mentions-feature"
-      ],
-      "xc": [
-        "_super",
-        "atl.general",
-        "jira.edit.issue",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "720": {
-      "r": [
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip",
-        "com.atlassian.jira.plugins.jira-editor-plugin:api",
-        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter"
-      ],
-      "c": [
-        "jira.rich.editor"
-      ],
-      "xc": [
-        "_super",
-        "atl.general",
-        "jira.edit.issue",
-        "jira.general",
-        "jira.global",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "com.atlassian.auiplugin:aui-labels",
-        "jira.webresources:global-static-adgs",
-        "jira.webresources:global-static",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "740": {
-      "r": [
-      ],
-      "c": [
-        "browser-metrics-plugin.contrib"
-      ],
-      "xc": [
-        "_super",
-        "project.issue.navigator",
-        "jira.view.issue",
-        "jira.global",
-        "atl.general",
-        "jira.general"
-      ],
-      "xr": [
-      ]
-    },
-    "745": {
-      "r": [
-      ],
-      "c": [
-        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
-      ],
-      "xc": [
-        "_super",
-        "project.issue.navigator",
-        "jira.view.issue",
-        "jira.global",
-        "atl.general",
-        "jira.general",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "com.atlassian.jira.projects.sidebar.init",
-        "jira.global.look-and-feel"
-      ],
-      "xr": [
-        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "765": {
-      "r": [
-        "com.atlassian.jira.plugins.jira-editor-plugin:api",
-        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter",
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"
-      ],
-      "c": [
-        "jira.webresources:mentions-feature",
-        "jira.rich.editor"
-      ],
-      "xc": [
-        "_super",
-        "project.issue.navigator",
-        "jira.view.issue",
-        "jira.global",
-        "atl.general",
-        "jira.general",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "com.atlassian.jira.projects.sidebar.init",
-        "jira.global.look-and-feel",
-        "com.atlassian.jira.plugins.jira-development-integration-plugin:0"
-      ],
-      "xr": [
-        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init"
-      ]
-    },
-    "775": {
-      "r": [
-      ],
-      "c": [
-        "jira.project.sidebar",
-        "jira.project.sidebar.software"
-      ],
-      "xc": [
-        "_super",
-        "project.issue.navigator",
-        "jira.view.issue",
-        "jira.global",
-        "atl.general",
-        "jira.general",
-        "browser-metrics-plugin.contrib",
-        "atl.global",
-        "com.atlassian.jira.projects.sidebar.init",
-        "jira.global.look-and-feel",
-        "com.atlassian.jira.plugins.jira-development-integration-plugin:0",
-        "jira.rich.editor"
-      ],
-      "xr": [
-        "com.atlassian.plugins.atlassian-chaperone:hotspot-tour",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component",
-        "com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib",
-        "jira.webresources:calendar-en",
-        "jira.webresources:calendar-localisation-moment",
-        "jira.webresources:bigpipe-js",
-        "jira.webresources:bigpipe-init",
-        "com.atlassian.jira.jira-header-plugin:newsletter-signup-tip",
-        "com.atlassian.jira.plugins.jira-editor-plugin:tinymce",
-        "com.atlassian.jira.plugins.jira-editor-plugin:schema-builder",
-        "com.atlassian.jira.plugins.jira-editor-plugin:schema",
-        "com.atlassian.jira.plugins.jira-editor-plugin:i18n",
-        "com.atlassian.jira.plugins.jira-editor-plugin:wrm",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter-util",
-        "com.atlassian.jira.plugins.jira-editor-plugin:context-detector",
-        "com.atlassian.jira.plugins.jira-editor-plugin:context-manager",
-        "com.atlassian.jira.plugins.jira-editor-plugin:selection",
-        "com.atlassian.jira.plugins.jira-editor-plugin:instance",
-        "com.atlassian.jira.plugins.jira-editor-plugin:api",
-        "com.atlassian.jira.plugins.jira-editor-plugin:renderer",
-        "com.atlassian.jira.plugins.jira-editor-plugin:mentions",
-        "com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin",
-        "com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with",
-        "com.atlassian.jira.plugins.jira-editor-plugin:resources",
-        "com.atlassian.jira.plugins.jira-editor-plugin:converter",
-        "com.atlassian.plugin.jslibs:underscore-1.8.3"
-      ]
-    }
+    "505": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","com.atlassian.jira.project.summary.page","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers"]},
+    "510": {"r":[],"c":["jira.webresources:mentions-feature","jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","com.atlassian.jira.project.summary.page","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "515": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-768},{"name":"jira.projects.summary.page.activity.stream.selected","properties":{},"timeDelta":-712},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-504},{"name":"atst.healthcheck.sensors.page-protocols","properties":{"resourceProtocols":"http/1.1","navigationProtocol":"http/1.1","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"},"timeDelta":-499}],
+    "520": [{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-5506}]
   },
   "view_dashboard": {
-    "605": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general"],"xr":[]},
-    "620": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":["jira.webresources:mentions-feature","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.general","browser-metrics-plugin.contrib","atl.global","jira.dashboard","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
-
+    "605": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.dashboard"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "610": {"r":[],"c":["browser-metrics-plugin.contrib","com.atlassian.jira.plugins.jira-development-integration-plugin:8"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.dashboard","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
+    "625": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","atl.dashboard","jira.global","atl.general","jira.dashboard","atl.global","jira.global.look-and-feel","com.atlassian.jira.plugins.jira-development-integration-plugin:8","browser-metrics-plugin.contrib"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "630": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-1003}],
+    "635": [{"name":"browser.metrics.navigation","properties":{"apdex":"0","firstPaint":"2911","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.dashboard","navigationType":"0","readyForUser":"6462","redirectCount":"0","resourceLoadedEnd":"2443","resourceLoadedStart":404.9200000008568,"threshold":"1000","unloadEventStart":"298","unloadEventEnd":"299","fetchStart":"1","domainLookupStart":"5","domainLookupEnd":"5","connectStart":"5","connectEnd":"126","requestStart":"126","responseStart":"273","responseEnd":"399","domLoading":"323","domInteractive":"2919","domContentLoadedEventStart":"2920","domContentLoadedEventEnd":"3212","domComplete":"6484","loadEventStart":"6485","loadEventEnd":"6492","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"7df18fb2e75e61","effectiveType":"4g","downlink":3.95,"rtt":100,"serverDuration":"39","dbConnsTimeInMs":"7","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,b8,it,fb,bm,b8,,b8,b8,b8\",\"2,ba,y3,fq,bx,ba,,ba,ba,ba\",\"2,bc,j0,iy,fh,fh,,by,by,by\",\"3,bd,1it,jn,fv,fq,,c7,c7,c7\",\"3,bd,1tc,jp,fv,fu,,c5,c5,c5\",\"3,be,mf,md,iv,be,,be,be,be\",\"3,be,rc,qd,j0,be,,be,be,be\",\"3,bf,nt,nn,jy,bf,,bf,bf,bf\",\"3,bf,r2,qi,mg,bf,,bf,bf,bf\",\"3,bf,ri,rf,nw,bf,,bf,bf,bf\",\"2,bg,jt,jl,fu,fq,,c7,c7,c7\",\"3,bg,v8,v5,ra,bg,,bg,bg,bg\",\"3,bi,1ng,1ne,1jy,bi,,bi,bi,bi\",\"3,bi,1vv,1vu,1sd,bi,,bi,bi,bi\",\"5,1s4,1w3,1w1,1sd,1s4,,1s4,1s4,1s4\",\"4,235,2bj,2bg,27v,235,,235,235,235\",\"5,27b,2bu,2bs,27v,27b,,27b,27b,27b\",\"5,2ec,2j7,2iz,2eo,2ec,,2ec,2ec,2ec\",\"-1,2fw,2kj,2k1,2g7,2fw,,2fw,2fw,2fw\",\"5,2gg,2ki,2kb,2gk,2gg,,2gg,2gg,2gg\",\"2,2iv,2n1,2my,2jc,2iv,,2iv,2iv,2iv\",\"3,2iy,2od,2o5,2km,2iy,,2iy,2iy,2iy\",\"3,2j0,2oc,2o9,2kn,2j0,,2j0,2j0,2j0\",\"5,2yt,36h,36d,2zi,2yt,,2yt,2yt,2yt\",\"5,32x,4ek,4ei,4ap,32x,,32x,32x,32x\",\"2,36v,3j4,3ii,3ew,36v,,36v,36v,36v\",\"3,36z,4so,4p3,4lj,36z,,36z,36z,36z\"]}","userTimingRaw":"{\"marks\":{},\"measures\":{}}","experiments":"[]","dbReadsTimeInMs":"","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":3.95,"connectionRTT":100},"timeDelta":-3952}]
+  },
+  "edit_issue": {
+    "705": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.global","jira.edit.issue"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "710": {"r":[],"c":["jira.webresources:mentions-feature","jira.rich.editor.api","jira.rich.editor"],"xc":["_super","atl.general","jira.global","jira.edit.issue","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "715": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-1399},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-1335},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-1190},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-1070},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-953},{"name":"issue.dnd.attachment.createissuedropzone.init","properties":{},"timeDelta":-493},{"name":"atst.healthcheck.sensors.page-protocols","properties":{"resourceProtocols":"http/1.1","navigationProtocol":"http/1.1","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"},"timeDelta":-455}],
+    "720": [{"name":"editor.instance.init","properties":{},"timeDelta":-4341},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-4341},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-4341},{"name":"editor.instance.init","properties":{},"timeDelta":-4300},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-4300},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-4300},{"name":"editor.instance.init","properties":{},"timeDelta":-4279},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-4279},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-4279},{"name":"editor.instance.init","properties":{},"timeDelta":-4263},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-4263},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-4263},{"name":"editor.instance.perf.nodechange","properties":{"time":6.994999999733409},"timeDelta":-3873},{"name":"editor.instance.perf.init","properties":{"time":2261.2850000004983},"timeDelta":-3840},{"name":"editor.instance.init.perf","properties":{"time":43.92999999981839},"timeDelta":-3840},{"name":"editor.instance.perf.init-bare","properties":{"time":2261.545000001206},"timeDelta":-3840},{"name":"editor.instance.perf.nodechange","properties":{"time":3.1249999992724042},"timeDelta":-3823},{"name":"editor.instance.perf.nodechange","properties":{"time":2.669999998033745},"timeDelta":-3816},{"name":"editor.instance.perf.nodechange","properties":{"time":3.8499999973282684},"timeDelta":-3796},{"name":"editor.instance.perf.init","properties":{"time":2313.545000000886},"timeDelta":-3788},{"name":"editor.instance.init.perf","properties":{"time":13.74999999825377},"timeDelta":-3788},{"name":"editor.instance.perf.init-bare","properties":{"time":2313.6799999992945},"timeDelta":-3788},{"name":"editor.instance.perf.nodechange","properties":{"time":1.874999998108251},"timeDelta":-3768},{"name":"editor.instance.perf.nodechange","properties":{"time":4.114999999728752},"timeDelta":-3761},{"name":"editor.instance.perf.nodechange","properties":{"time":6.1700000005657785},"timeDelta":-3735},{"name":"editor.instance.perf.init","properties":{"time":2386.3649999984773},"timeDelta":-3715},{"name":"editor.instance.init.perf","properties":{"time":27.78500000204076},"timeDelta":-3715},{"name":"editor.instance.perf.init-bare","properties":{"time":2386.5399999995134},"timeDelta":-3715},{"name":"editor.instance.perf.nodechange","properties":{"time":2.675000003364403},"timeDelta":-3700},{"name":"editor.instance.perf.nodechange","properties":{"time":5.284999999275897},"timeDelta":-3679},{"name":"editor.instance.perf.nodechange","properties":{"time":15.005000001110602},"timeDelta":-3652},{"name":"editor.instance.perf.init","properties":{"time":2462.8149999989546},"timeDelta":-3639},{"name":"editor.instance.init.perf","properties":{"time":30.36499999871012},"timeDelta":-3638},{"name":"editor.instance.perf.init-bare","properties":{"time":2462.9600000007486},"timeDelta":-3638},{"name":"editor.instance.perf.nodechange","properties":{"time":1.5500000008614734},"timeDelta":-3625},{"name":"editor.instance.perf.nodechange","properties":{"time":1.7299999999522697},"timeDelta":-3621}],
+    "735": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "740": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "755": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-994},{"name":"jira.project.sidebar.issue.view.issue","properties":{"issueId":914565,"projectId":10448,"projectType":"software","issueMatchesProjectContext":true},"timeDelta":-825},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-646},{"name":"issue.dnd.attachment.attachmentsdropzone.init","properties":{},"timeDelta":-640},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-617}],
+    "760": {"r":[],"c":["jira.rich.editor.api","jira.rich.editor","jira.project.sidebar","jira.project.sidebar.software","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general","browser-metrics-plugin.contrib","atl.global","com.atlassian.jira.projects.sidebar.init","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "770": [{"name":"browser.metrics.navigation","properties":{"apdex":"0.5","firstPaint":"2289","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.project.issue.view-issue","navigationType":"0","readyForUser":"3249","redirectCount":"1","resourceLoadedEnd":"1925","resourceLoadedStart":640.8699999992677,"threshold":"1000","unloadEventStart":"539","unloadEventEnd":"540","redirectStart":"91","redirectEnd":"350","fetchStart":"350","domainLookupStart":"350","domainLookupEnd":"350","connectStart":"350","connectEnd":"350","requestStart":"353","responseStart":"500","responseEnd":"597","domLoading":"605","domInteractive":"2884","domContentLoadedEventStart":"2884","domContentLoadedEventEnd":"3312","domComplete":"4483","loadEventStart":"4484","loadEventEnd":"4499","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"bcd0e1be057334","effectiveType":"4g","downlink":5.6,"rtt":100,"serverDuration":"115","dbReadsTimeInMs":"18","dbConnsTimeInMs":"32","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,hs,pl,lv,hw,hs,,hs,hs,hs\",\"2,ht,sy,ll,hz,ht,,ht,ht,ht\",\"2,ht,lk,lg,hz,ht,,ht,ht,ht\",\"3,hu,10w,ln,i0,hu,,hu,hu,hu\",\"3,hu,1hh,lo,i0,hu,,hu,hu,hu\",\"3,hu,lx,lr,i0,hu,,hu,hu,hu\",\"3,hv,ta,t2,pf,hv,,hv,hv,hv\",\"3,hv,th,te,pt,hv,,hv,hv,hv\",\"3,hw,tr,th,pw,hw,,hw,hw,hw\",\"3,hw,x8,wr,t1,hw,,hw,hw,hw\",\"2,hw,pd,p8,lk,hw,,hw,hw,hw\",\"3,hx,x6,wx,tb,hx,,hx,hx,hx\",\"2,hx,pt,pn,m0,hx,,hx,hx,hx\",\"3,hx,xn,xd,tq,hx,,hx,hx,hx\",\"3,kl,157,155,11o,kl,,kl,kl,kl\",\"3,km,1dw,1dp,1a6,km,,km,km,km\",\"5,1a2,1dx,1ds,1a5,1a2,,1a2,1a2,1a2\",\"5,1my,1qp,1qn,1n1,1my,,1my,1my,1my\",\"4,1px,249,246,20l,1px,,1px,1px,1px\",\"4,1ys,22v,22t,1yu,1ys,,1ys,1ys,1ys\"]}","mark.bigPipe.sidebar-id.start":"[2762]","mark.bigPipe.sidebar-id.end":"[2764]","mark.bigPipe.activity-panel-pipe-id.start":"[2765]","mark.bigPipe.activity-panel-pipe-id.end":"[2773]","userTimingRaw":"{\"marks\":{\"bigPipe.sidebar-id.start\":[2762],\"bigPipe.sidebar-id.end\":[2764],\"bigPipe.activity-panel-pipe-id.start\":[2765],\"bigPipe.activity-panel-pipe-id.end\":[2773]},\"measures\":{}}","experiments":"[]","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":5.6,"connectionRTT":100},"timeDelta":-4643},{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-4321}]
   },
   "add_comment": {
-    "805": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "810": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "820": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","atl.general","jira.edit.issue","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "805": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.global","jira.edit.issue"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "810": {"r":[],"c":["jira.webresources:mentions-feature","jira.rich.editor.api","jira.rich.editor"],"xc":["_super","atl.general","jira.global","jira.edit.issue","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "815": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-862},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-817},{"name":"issue.dnd.attachment.createissuedropzone.init","properties":{},"timeDelta":-493}],
+    "825": [{"name":"editor.instance.init","properties":{},"timeDelta":-4782},{"name":"bundled.editor.instance.init","properties":{},"timeDelta":-4781},{"name":"editor.instance.init.chrome","properties":{},"timeDelta":-4781},{"name":"editor.instance.perf.nodechange","properties":{"time":6.580000001122244},"timeDelta":-4290},{"name":"editor.instance.perf.init","properties":{"time":1666.175000005751},"timeDelta":-4253},{"name":"editor.instance.init.perf","properties":{"time":47.44500000379048},"timeDelta":-4253},{"name":"editor.instance.perf.init-bare","properties":{"time":1666.5150000044378},"timeDelta":-4253},{"name":"editor.instance.perf.nodechange","properties":{"time":2.3499999952036887},"timeDelta":-4230},{"name":"editor.instance.perf.nodechange","properties":{"time":1.6399999876739457},"timeDelta":-4224},{"name":"editor.instance.perf.nodechange","properties":{"time":1.6899999900488183},"timeDelta":-4134},{"name":"editor.instance.perf.nodechange","properties":{"time":2.2250000038184226},"timeDelta":-4128}],
+    "845": [{"name":"editor.instance.perf.nodechange","properties":{"time":1.8149999959859997},"timeDelta":-3280},{"name":"editor.instance.perf.nodechange","properties":{"time":0.910000002477318},"timeDelta":-3160},{"name":"editor.instance.perf.convert","properties":{"nodesCount":1,"time":5.629999999655411},"timeDelta":-2592},{"name":"editor.instance.perf.nodechange","properties":{"time":1.360000009299256},"timeDelta":-2587},{"name":"editor.instance.perf.convert","properties":{"nodesCount":1,"time":2.545000010286458},"timeDelta":-813},{"name":"editor.instance.perf.nodechange","properties":{"time":1.7099999968195334},"timeDelta":-390}],
+    "860": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "875": {"r":[],"c":["jira.webresources:mentions-feature","jira.rich.editor.api","jira.rich.editor","jira.project.sidebar","jira.project.sidebar.software","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","project.issue.navigator","jira.view.issue","jira.global","atl.general","browser-metrics-plugin.contrib","atl.global","com.atlassian.jira.projects.sidebar.init","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "880": [{"name":"jira.project.sidebar.issue.view.issue","properties":{"issueId":914565,"projectId":10448,"projectType":"software","issueMatchesProjectContext":true},"timeDelta":-1978},{"name":"jira.wikieditor.initialized","properties":{},"timeDelta":-1497},{"name":"quicksearch.enabled","properties":{},"timeDelta":-1063},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-650},{"name":"issue.dnd.attachment.attachmentsdropzone.init","properties":{},"timeDelta":-639}]
   },
   "browse_projects": {
-    "905": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.general","jira.global"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "910": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "920": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","atl.general","jira.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","jira.webresources:backbone-queryparams","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:navigation-utils","jira.webresources:pagination-view","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:ie-imitation-placeholder","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "905": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","atl.general","jira.global"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers"]},
+    "910": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","atl.general","jira.global","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","jira.webresources:calendar-lib","jira.webresources:autocomplete","jira.webresources:groupbrowser","jira.webresources:group-pickers","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.plugin.jslibs:backbone-1.3.3-factory","jira.webresources:backbone-1.3.3","com.atlassian.plugin.jslibs:backbone.paginator-2.0.2-factory","jira.webresources:backbone-paginator","com.atlassian.plugin.jslibs:backbone.radio-2.0.0-factory","jira.webresources:backbone.radio-2.0","com.atlassian.plugin.jslibs:marionette-4.1.2-factory","jira.webresources:marionette-4.1","com.atlassian.plugin.jslibs:marionette-1.6.1-factory","jira.webresources:marionette","jira.webresources:project-type-keys","com.atlassian.plugin.jslibs:marionette-3.1.0-factory","jira.webresources:marionette-3.1","jira.webresources:pagination-view","jira.webresources:navigation-utils","jira.webresources:empty-search-results","jira.webresources:browseprojects","jira.webresources:calendar","jira.webresources:group-label-lozenge","jira.webresources:jira-project-issuetype-fields","jira.webresources:jira-fields","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "915": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-955},{"name":"projects.browse.view","properties":{},"timeDelta":-940}]
   },
   "view_kanban_board": {
-    "1000": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts"],"xr":[]},
-    "1005": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
-    "1010": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "1015": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "1020": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "1025": {"r":["com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3"]},
-    "1030": {"r":[],"c":["jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","com.atlassian.jira.plugins.jira-editor-plugin:schema-builder","com.atlassian.jira.plugins.jira-editor-plugin:schema","com.atlassian.jira.plugins.jira-editor-plugin:i18n","com.atlassian.jira.plugins.jira-editor-plugin:wrm","com.atlassian.jira.plugins.jira-editor-plugin:converter-util","com.atlassian.jira.plugins.jira-editor-plugin:context-detector","com.atlassian.jira.plugins.jira-editor-plugin:context-manager","com.atlassian.jira.plugins.jira-editor-plugin:selection","com.atlassian.jira.plugins.jira-editor-plugin:instance","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:renderer","com.atlassian.jira.plugins.jira-editor-plugin:mentions","com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin","com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"]}
+    "1005": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:8"],"xc":["_super","gh-rapid-work","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "1015": {"r":["com.atlassian.whisper.atlassian-whisper-plugin:atlassian-whisper-hermes"],"c":["browser-metrics-plugin.contrib","jira.webresources:mentions-feature","jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-work","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts","com.atlassian.jira.plugins.jira-development-integration-plugin:8","gh-rapid-exception","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1025": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-646},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-502},{"name":"RapidBoard.show","timeDelta":-442}],
+    "1040": {"r":[],"c":["gh-rapid-work"],"xc":["_super","gh-rapid-work","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts","com.atlassian.jira.plugins.jira-development-integration-plugin:8","gh-rapid-exception","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.auiplugin:split_aui.component.message","com.atlassian.plugin.jslibs:moment-2.6.0","com.atlassian.whisper.atlassian-whisper-plugin:atlassian-whisper-messages","com.atlassian.whisper.atlassian-whisper-plugin:atlassian-whisper-hermes"]},
+    "1060": [{"name":"RapidBoard.show.kanban","properties":{"boardId":15},"timeDelta":-5067},{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-4750},{"name":"whisper.hermes.messages.load.success","properties":{"messageCount":1,"userLocale":"en_US","userLanguage":"en","invalidLanguageCount":0,"initTime":3168,"initState":"complete"},"timeDelta":-4633},{"name":"jira.project.sidebar.sprint.select","properties":{"sprintId":0,"initialLoad":true},"timeDelta":-4222},{"name":"jira-software.kanban.work.view","properties":{"boardId":15,"issuesCount":219,"isBacklogEnabled":false,"epicsPanelEnabled":true,"firstColumnIssueCount":219,"fastKanbanEnabled":true,"fastKanbanCutoff":"-2w","epicsCount":36},"timeDelta":-4057},{"name":"browser.metrics.navigation","properties":{"apdex":"0.5","firstPaint":"1878","isInitial":"true","journeyId":"68d353c0-5dc0-449b-a7ce-f348f8a8372b","key":"jira.agile.work","navigationType":"0","readyForUser":"3805","redirectCount":"0","resourceLoadedEnd":"1670","resourceLoadedStart":403.6950000008801,"threshold":"1000","unloadEventStart":"354","unloadEventEnd":"354","fetchStart":"2","domainLookupStart":"46","domainLookupEnd":"47","connectStart":"47","connectEnd":"170","requestStart":"171","responseStart":"347","responseEnd":"471","domLoading":"363","domInteractive":"1965","domContentLoadedEventStart":"1965","domContentLoadedEventEnd":"2074","domComplete":"2413","loadEventStart":"2414","loadEventEnd":"2419","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"ae4d2d5aebb38b","effectiveType":"4g","downlink":4.65,"rtt":150,"serverDuration":"69","dbReadsTimeInMs":"1","dbConnsTimeInMs":"28","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,b7,iu,f6,bj,b7,,b7,b7,b7\",\"2,b8,qu,gu,d4,b8,,b8,b8,b8\",\"2,b8,jy,ji,fk,fk,,c4,c4,c4\",\"2,b8,k1,js,fn,fm,,c2,c2,c2\",\"3,b9,11x,jm,fo,fo,,c5,c5,c5\",\"3,b9,121,np,iv,b9,,b9,b9,b9\",\"3,ba,om,o9,k7,ba,,ba,ba,ba\",\"3,ba,oj,o1,k9,ba,,ba,ba,ba\",\"3,bd,ol,o5,ka,bd,,bd,bd,bd\",\"3,be,tc,sz,ot,be,,be,be,be\",\"3,bf,td,t4,ov,bf,,bf,bf,bf\",\"2,bf,jw,jf,fo,fm,,c3,c3,c3\",\"3,bf,te,t9,ov,bf,,bf,bf,bf\",\"3,bg,163,162,12k,bg,,bg,bg,bg\",\"3,ej,1ae,1ac,16b,ej,,ej,ej,ej\",\"5,17q,1bv,1bt,17w,17q,,17q,17q,17q\",\"4,1eo,1k4,1k1,1gh,1eo,,1eo,1eo,1eo\",\"5,1ke,1oq,1om,1kl,1ke,,1ke,1ke,1ke\",\"2,1me,1qp,1ql,1mq,1me,,1me,1me,1me\",\"3,1mh,1qn,1qf,1mr,1mh,,1mh,1mh,1mh\",\"5,1rb,1vm,1vl,1rh,1rb,,1rb,1rb,1rb\",\"3,1vp,1zs,1zo,1w2,1vp,,1vp,1vp,1vp\",\"3,1vq,203,1zz,1w9,1vq,,1vq,1vq,1vq\",\"3,1vt,207,200,1wc,1vt,,1vt,1vt,1vt\",\"3,1vw,203,1zv,1wd,1vw,,1vw,1vw,1vw\",\"3,1w1,2am,204,1wg,1w1,,1w1,1w1,1w1\",\"5,1yr,22x,22q,1yu,1yr,,1yr,1yr,1yr\",\"5,221,25p,25n,226,221,,221,221,221\",\"5,23y,28n,28i,24v,23y,,23y,23y,23y\",\"5,2cw,2gu,2gr,2d2,2cw,,2cw,2cw,2cw\",\"5,2cy,2hb,2h6,2d3,2cy,,2cy,2cy,2cy\",\"5,2jl,2ng,2nf,2jv,2jl,,2jl,2jl,2jl\",\"5,2kx,2q9,2q4,2l1,2kx,,2kx,2kx,2kx\"]}","mark.bigPipe.sidebar-id.start":"[1930]","mark.bigPipe.sidebar-id.end":"[1935]","userTimingRaw":"{\"marks\":{\"bigPipe.sidebar-id.start\":[1930],\"bigPipe.sidebar-id.end\":[1935]},\"measures\":{}}","experiments":"[]","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":4.65,"connectionRTT":150},"timeDelta":-3990}]
+    },
+  "view_scrum_board": {
+    "1110": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-work","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "1115": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:8"],"xc":["_super","gh-rapid-work","jira.project.sidebar","atl.general","jira.global","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "1150": {"r":["com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"],"c":["jira.rich.editor"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3"]},
+    "1155": {"r":[],"c":["jira.project.sidebar","jira.project.sidebar.software"],"xc":["_super","gh-rapid-exception","greenhopper-rapid-non-gadget","atl.general","gh-rapid","jira.project.sidebar","com.atlassian.jira.projects.sidebar.init","jira.global","jira.general","gh-rapid-charts","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","com.atlassian.jira.plugins.jira-development-integration-plugin:0","jira.rich.editor"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init","com.atlassian.jira.jira-header-plugin:newsletter-signup-tip","com.atlassian.plugin.jslibs:underscore-1.8.3","com.atlassian.jira.plugins.jira-editor-plugin:tinymce","com.atlassian.jira.plugins.jira-editor-plugin:schema-builder","com.atlassian.jira.plugins.jira-editor-plugin:schema","com.atlassian.jira.plugins.jira-editor-plugin:i18n","com.atlassian.jira.plugins.jira-editor-plugin:wrm","com.atlassian.jira.plugins.jira-editor-plugin:converter-util","com.atlassian.jira.plugins.jira-editor-plugin:context-detector","com.atlassian.jira.plugins.jira-editor-plugin:context-manager","com.atlassian.jira.plugins.jira-editor-plugin:selection","com.atlassian.jira.plugins.jira-editor-plugin:instance","com.atlassian.jira.plugins.jira-editor-plugin:api","com.atlassian.jira.plugins.jira-editor-plugin:renderer","com.atlassian.jira.plugins.jira-editor-plugin:mentions","com.atlassian.jira.plugins.jira-editor-plugin:mentions-plugin","com.atlassian.jira.plugins.jira-editor-plugin:polyfil-string-ends-with","com.atlassian.jira.plugins.jira-editor-plugin:resources","com.atlassian.jira.plugins.jira-editor-plugin:converter"]},
+    "1165": [{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-4894},{"name":"jira.project.sidebar.sprint.select","properties":{"sprintId":"all","initialLoad":true},"timeDelta":-4783},{"name":"jira-software.scrum.work.view","properties":{"boardId":55,"issuesCount":103,"epicsCount":73},"timeDelta":-4684},{"name":"whisper.hermes.messages.load.success","properties":{"messageCount":1,"userLocale":"en_US","userLanguage":"en","invalidLanguageCount":0,"initTime":3728,"initState":"interactive"},"timeDelta":-4273},{"name":"browser.metrics.navigation","properties":{"apdex":"0.5","firstPaint":"1942","isInitial":"true","journeyId":"9fa2b66b-0b68-4611-8c52-ff43bca9d45d","key":"jira.agile.work","navigationType":"1","readyForUser":"3379","redirectCount":"0","resourceLoadedEnd":"1548","resourceLoadedStart":254.7550000017509,"threshold":"1000","unloadEventStart":"204","unloadEventEnd":"204","fetchStart":"6","domainLookupStart":"6","domainLookupEnd":"6","connectStart":"6","connectEnd":"6","requestStart":"19","responseStart":"188","responseEnd":"326","domLoading":"216","domInteractive":"2044","domContentLoadedEventStart":"2044","domContentLoadedEventEnd":"2193","domComplete":"4094","loadEventStart":"4095","loadEventEnd":"4100","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"d21da59bbbebbb","effectiveType":"4g","downlink":4.1,"rtt":100,"serverDuration":"64","dbConnsTimeInMs":"23","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,72,es,ba,7d,72,,72,72,72\",\"2,73,kw,d4,94,73,,73,73,73\",\"2,73,el,eg,ax,ax,,7h,7h,7h\",\"2,73,em,ek,ay,ax,,7h,7h,7h\",\"3,74,to,f0,be,bd,,7i,7i,7i\",\"3,74,170,ia,en,74,,74,74,74\",\"3,74,ie,i7,en,74,,74,74,74\",\"3,74,ig,ic,es,74,,74,74,74\",\"3,75,is,in,ez,75,,75,75,75\",\"3,75,mb,lz,ii,75,,75,75,75\",\"3,75,m7,m2,ii,75,,75,75,75\",\"2,76,ez,ex,bd,b9,,7h,7h,7h\",\"3,76,mi,me,is,76,,76,76,76\",\"3,76,127,126,ut,76,,76,76,76\",\"-1,9m,pg,pa,kx,9m,,9m,9m,9m\",\"3,9w,15y,15v,12a,9w,,9w,9w,9w\",\"5,10d,15b,159,10i,10d,,10d,10d,10d\",\"5,19o,1dz,1dx,19r,19o,,19o,19o,19o\",\"4,1go,1mf,1md,1i5,1go,,1go,1go,1go\",\"5,1ny,1s0,1rz,1o2,1ny,,1ny,1ny,1ny\",\"2,1po,1tg,1tf,1pq,1po,,1po,1po,1po\",\"3,1pp,1tg,1td,1pr,1pp,,1pp,1pp,1pp\",\"5,1ts,1xx,1xw,1tx,1ts,,1ts,1ts,1ts\",\"3,1y3,21t,21p,1y5,1y3,,1y3,1y3,1y3\",\"3,1y4,222,21v,1y8,1y4,,1y4,1y4,1y4\",\"3,1y5,21x,21r,1y8,1y5,,1y5,1y5,1y5\",\"3,1y7,221,21z,1ya,1y7,,1y7,1y7,1y7\",\"3,1y8,2ci,21x,1ya,1y8,,1y8,1y8,1y8\",\"5,25b,2b2,2ax,25r,25b,,25b,25b,25b\",\"5,2eq,2it,2is,2f2,2eq,,2eq,2eq,2eq\"]}","mark.bigPipe.sidebar-id.start":"[1993]","mark.bigPipe.sidebar-id.end":"[1995]","userTimingRaw":"{\"marks\":{\"bigPipe.sidebar-id.start\":[1993],\"bigPipe.sidebar-id.end\":[1995]},\"measures\":{}}","experiments":"[]","dbReadsTimeInMs":"","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":4.1,"connectionRTT":100},"timeDelta":-3830}]
+  },
+  "view_backlog": {
+    "1210": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-plan","jira.project.sidebar","jira.global","atl.general","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "1215": {"r":[],"c":["com.atlassian.jira.plugins.jira-development-integration-plugin:8","browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-plan","jira.project.sidebar","jira.global","atl.general","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts","gh-rapid-exception","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-localisation-moment"]},
+    "1255": {"r":["com.atlassian.whisper.atlassian-whisper-plugin:atlassian-whisper-hermes"],"c":["jira.project.sidebar","jira.project.sidebar.software","gh-rapid-plan"],"xc":["_super","gh-rapid-plan","jira.project.sidebar","jira.global","atl.general","com.atlassian.jira.projects.sidebar.init","greenhopper-rapid-non-gadget","gh-rapid-charts","gh-rapid-exception","atl.global","jira.global.look-and-feel","com.atlassian.jira.plugins.jira-development-integration-plugin:8","browser-metrics-plugin.contrib"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1260": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-804},{"name":"RapidBoard.show","timeDelta":-782},{"name":"RapidBoard.show.scrum","properties":{"boardId":55},"timeDelta":-716},{"name":"bigpipe.sidebar.render.success","properties":{},"timeDelta":-519},{"name":"atst.healthcheck.sensors.page-protocols","properties":{"resourceProtocols":"http/1.1","navigationProtocol":"http/1.1","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"},"timeDelta":-503}],
+    "1265": [{"name":"jira.project.centric.navigation.sidebar.load.project","properties":{},"timeDelta":-5560},{"name":"jira-software.scrum.plan.view","properties":{"boardType":"scrum","backlogIssueCount":265,"boardId":55,"sprintsOnBoard":2,"activeSprints":2,"futureSprints":0,"totalIssueCount":310,"epicsCount":-1},"timeDelta":-5196},{"name":"browser.metrics.navigation","properties":{"apdex":"0","firstPaint":"2136","isInitial":"true","journeyId":"9fa2b66b-0b68-4611-8c52-ff43bca9d45d","key":"jira.agile.plan","navigationType":"0","readyForUser":"4169","redirectCount":"0","resourceLoadedEnd":"1769","resourceLoadedStart":437.9400000034366,"threshold":"1000","unloadEventStart":"360","unloadEventEnd":"361","fetchStart":"4","domainLookupStart":"50","domainLookupEnd":"50","connectStart":"50","connectEnd":"173","requestStart":"174","responseStart":"338","responseEnd":"472","domLoading":"389","domInteractive":"2331","domContentLoadedEventStart":"2331","domContentLoadedEventEnd":"2587","domComplete":"3057","loadEventStart":"3057","loadEventEnd":"3071","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36","correlationId":"f6c8b8956c584e","effectiveType":"4g","downlink":3.3,"rtt":100,"serverDuration":"58","dbConnsTimeInMs":"19","applicationHash":"e00b0abe8f1b188f0bb304a4c3b424f1180ba767","resourceTiming":"{\"â \":[\"2,c5,kg,gy,d6,c5,,c5,c5,c5\",\"2,c6,on,h6,d9,c6,,c6,c6,c6\",\"2,c6,kb,k4,gn,gm,,d7,d7,d7\",\"2,c6,k9,k6,gn,gm,,d7,d7,d7\",\"3,c7,z7,kt,h9,gx,,d9,d9,d8\",\"3,c7,18u,o1,ke,c7,,c7,c7,c7\",\"3,c8,o6,nw,kf,c8,,c8,c8,c8\",\"3,c9,o3,nz,kg,c9,,c9,c9,c9\",\"3,cb,o4,o2,kh,cb,,cb,cb,cb\",\"3,cc,rv,rs,o7,cc,,cc,cc,cc\",\"3,cd,s8,s2,od,cd,,cd,cd,cd\",\"2,ce,ka,k7,go,go,,d8,d8,d8\",\"3,ce,s9,s7,og,ce,,ce,ce,ce\",\"3,cf,146,140,103,cf,,cf,cf,cf\",\"-1,fu,tt,tq,op,fu,,fu,fu,fu\",\"3,g3,1d5,1cx,19d,g3,,g3,g3,g3\",\"5,193,1d7,1d3,19c,193,,193,193,193\",\"4,1ko,1re,1rc,1nv,1ko,,1ko,1ko,1ko\",\"5,1mz,1r3,1r1,1nc,1mz,,1mz,1mz,1mz\",\"5,1ya,22h,22f,1yj,1ya,,1ya,1ya,1ya\",\"2,20s,24r,24n,212,20s,,20s,20s,20s\",\"3,212,250,24y,21b,212,,212,212,212\",\"3,217,258,253,21e,217,,217,217,217\",\"5,2c7,2gg,2gd,2ci,2c7,,2c7,2c7,2c7\",\"3,2h9,2l2,2ky,2hf,2h9,,2h9,2h9,2h9\",\"3,2hb,2lh,2l8,2hm,2hb,,2hb,2hb,2hb\",\"3,2hd,2le,2l4,2ho,2hd,,2hd,2hd,2hd\",\"3,2hf,2lt,2l6,2ho,2hf,,2hf,2hf,2hf\",\"5,2ic,2my,2mw,2je,2ic,,2ic,2ic,2ic\",\"5,2od,2s9,2s6,2oh,2od,,2od,2od,2od\"]}","mark.bigPipe.sidebar-id.start":"[2251]","mark.bigPipe.sidebar-id.end":"[2257]","userTimingRaw":"{\"marks\":{\"bigPipe.sidebar-id.start\":[2251],\"bigPipe.sidebar-id.end\":[2257]},\"measures\":{}}","experiments":"[]","dbReadsTimeInMs":"","serverHeadDuration":"undefined","connectionEffectiveType":"4g","connectionDownlink":3.3,"connectionRTT":100},"timeDelta":-4821},{"name":"whisper.hermes.messages.load.success","properties":{"messageCount":1,"userLocale":"en_US","userLanguage":"en","invalidLanguageCount":0,"initTime":4422,"initState":"complete"},"timeDelta":-4593}]
   },
   "browse_boards": {
-    "1205": {"r":[],"c":["com.pyxis.greenhopper.jira:gh-rapid-inline-editable"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static"]},
-    "1210": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment"]},
-    "1215": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
-    "1225": {"r":["com.atlassian.jira.jira-header-plugin:newsletter-signup-tip"],"c":[],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","jira.general","com.pyxis.greenhopper.jira:gh-rapid-inline-editable","atl.global","jira.global.look-and-feel","browser-metrics-plugin.contrib"],"xr":["com.atlassian.auiplugin:aui-labels","jira.webresources:global-static-adgs","jira.webresources:global-static","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-en","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]}
+    "1305": {"r":[],"c":["browser-metrics-plugin.contrib"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component"]},
+    "1315": {"r":[],"c":["jira.webresources:mentions-feature"],"xc":["_super","gh-rapid-exception","gh-manage-boards","jira.global","atl.general","greenhopper-rapid-non-gadget","browser-metrics-plugin.contrib","atl.global","jira.global.look-and-feel"],"xr":["com.atlassian.jira.jira-tzdetect-plugin:tzdetect-banner-component","com.atlassian.jira.jira-tzdetect-plugin:tzdetect-lib","jira.webresources:calendar-localisation-moment","jira.webresources:bigpipe-js","jira.webresources:bigpipe-init"]},
+    "1320": [{"name":"quicksearch.enabled","properties":{},"timeDelta":-1025}]
   }
-
 }

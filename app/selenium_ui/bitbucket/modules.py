@@ -27,7 +27,6 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
-            webdriver.app_version = login_page.get_app_major_version()
             if login_page.is_logged_in():
                 login_page.delete_all_cookies()
                 login_page.go_to()

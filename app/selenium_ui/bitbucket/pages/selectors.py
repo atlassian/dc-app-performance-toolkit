@@ -85,15 +85,16 @@ class PopupLocators:
     popup_1 = '.css-1it7f5o'
     popup_2 = 'button.aui-button-link.feature-discovery-close'
     popup_3 = '.css-15p34h1'
+    popup_4 = '.css-1dqf51u'
 
 
 class LoginPageLocators:
     login_params = UrlManager().login_params
     login_url = UrlManager().login_url()
 
-    submit_button = {'6': (By.ID, "submit"), '7': (By.ID, "submit")}
-    username_textfield = {'6': (By.ID, "j_username"), '7': (By.ID, "j_username")}
-    password_textfield = {'6': (By.ID, "j_password"), '7': (By.ID, "j_password")}
+    submit_button = (By.ID, "submit")
+    username_textfield = (By.ID, "j_username")
+    password_textfield = (By.ID, "j_password")
     application_version = (By.ID, 'product-version')
     node_id = (By.CLASS_NAME, 'footer-body')
 
@@ -106,35 +107,33 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_params = UrlManager().get_started_params
     get_started_url = UrlManager().get_started_url()
-    user_profile_icon = {'6': (By.ID, 'current-user'), '7': (By.ID, 'current-user')}
+    user_profile_icon = (By.ID, 'current-user')
 
 
 class DashboardLocators:
     dashboard_params = UrlManager().dashboard_params
     dashboard_url = UrlManager().dashboard_url()
 
-    dashboard_presence = {'6': (By.CLASS_NAME, 'dashboard-your-work'), '7': (By.CLASS_NAME, 'dashboard-your-work')}
+    dashboard_presence = (By.TAG_NAME, 'h2')
 
 
 class ProjectsLocators:
     projects_params = UrlManager().projects_params
     project_url = UrlManager().projects_url()
 
-    projects_list = {'6': (By.ID, "projects-container"), '7': (By.ID, "projects-container")}
+    projects_list = (By.ID, "projects-container")
 
 
 class ProjectLocators:
 
-    repositories_container = {'6': (By.ID, "repositories-container"), '7': (By.ID, "repositories-container")}
-    repository_name = {'6': (By.CSS_SELECTOR, "span.repository-name"), '7': (By.CSS_SELECTOR, "span.repository-name")}
+    repositories_container = (By.ID, "repositories-container")
+    repository_name = (By.CSS_SELECTOR, "span.repository-name")
 
 
 class RepoNavigationPanelLocators:
 
-    navigation_panel = {'6': (By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner'),
-                        '7': (By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')}
-    clone_repo_button = {'6': (By.CSS_SELECTOR, '.clone-repo>#clone-repo-button'),
-                         '7': (By.CSS_SELECTOR, '.clone-repo>#clone-repo-button')}
+    navigation_panel = (By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')
+    clone_repo_button = (By.CSS_SELECTOR, '.clone-repo>#clone-repo-button')
 
     fork_repo_button = (By.CSS_SELECTOR, 'span.icon-fork')
 
@@ -143,7 +142,7 @@ class RepoNavigationPanelLocators:
 
 class RepoLocators:
 
-    pull_requests_list = {'6': (By.ID, 'pull-requests-content'), '7': (By.ID, 'pull-requests-content')}
+    pull_requests_list = (By.ID, 'pull-requests-content')
     repo_fork_sync = (By.ID, "enable-ref-syncing")
     fork_name_field = (By.ID, 'name')
     fork_repo_submit_button = (By.ID, "fork-repo-submit")
@@ -171,31 +170,25 @@ class RepoLocators:
 
 class PullRequestLocator:
 
-    tab_panel = {'6': (By.CSS_SELECTOR, 'ul.tabs-menu'), '7': (By.CSS_SELECTOR, 'ul.tabs-menu')}
+    tab_panel = (By.CSS_SELECTOR, 'ul.tabs-menu')
 
-    commit_files = {'6': (By.CSS_SELECTOR, '.commit-files>.file-tree-container'),
-                    '7': (By.CSS_SELECTOR, '.changes-sidebar>.changes-scope-content')}
-    diff_code_lines = {'6': (By.CLASS_NAME, 'CodeMirror-code'),
-                       '7': (By.CLASS_NAME, "diff-segment")}
+    commit_files = (By.CSS_SELECTOR, '.changes-sidebar>.changes-scope-content')
+    diff_code_lines = (By.CLASS_NAME, "diff-segment")
 
     commit_message_label = (By.CSS_SELECTOR, 'tr>th.message')
-    inline_comment_button = {'6': (By.CSS_SELECTOR, "button.add-comment-trigger>span.aui-iconfont-add-comment"),
-                             '7': (By.CSS_SELECTOR, ".diff-line-comment-trigger")}
-    comment_text_area = {'6': (By.CSS_SELECTOR, "textarea.text"), '7': (By.CLASS_NAME, "comment-editor-wrapper")}
-    text_area = {'6': (By.CSS_SELECTOR, 'textarea.text'), '7': (By.CLASS_NAME, 'CodeMirror-code')}
-    comment_button = {'6': (By.CSS_SELECTOR, "div.comment-form-footer>div.buttons>button:nth-child(1)"),
-                      '7': (By.CSS_SELECTOR, "div.editor-controls>button:nth-child(1)")}
-    pull_request_activity_content = {'6': (By.CSS_SELECTOR, ".pull-request-activity-content"),
-                                     '7': (By.CSS_SELECTOR, ".pull-request-activities")}
+    inline_comment_button = (By.CSS_SELECTOR, ".diff-line-comment-trigger")
+    comment_text_area = (By.CLASS_NAME, "comment-editor-wrapper")
+    text_area = (By.CLASS_NAME, 'CodeMirror-code')
+    comment_button = (By.CSS_SELECTOR, "div.editor-controls>button:nth-child(1)")
+    pull_request_activity_content = (By.CSS_SELECTOR, ".pull-request-activities")
 
     pull_request_page_merge_button = (By.CLASS_NAME, 'merge-button')
 
     merge_spinner = (By.CSS_SELECTOR, "aui-spinner[size='small']")
-    diagram_selector = {'6': (By.CSS_SELECTOR, 'div.diagram-image'), '7': (By.CLASS_NAME, 'branches-diagram')}
-    pull_request_modal_merge_button = {'6': (By.CSS_SELECTOR, 'button.confirm-button'),
-                                       '7': (By.CSS_SELECTOR, "button[type='submit']")}
-    del_branch_checkbox_selector = {'6': (By.CSS_SELECTOR, 'span.pull-request-cleanup-checkbox-wrapper'),
-                                    '7': (By.NAME, 'deleteSourceRef')}
+    diagram_selector = (By.CLASS_NAME, 'branches-diagram')
+    merge_diagram_selector = (By.CLASS_NAME, "merge-diagram")
+    pull_request_modal_merge_button = (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")
+    del_branch_checkbox_selector = (By.NAME, 'deleteSourceRef')
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
 
 
@@ -209,7 +202,7 @@ class BranchesLocator:
     search_branch_textfield = (By.ID, 'paged-table-input-for-branch-list')
     search_branch_action = (By.CSS_SELECTOR, '.branch-actions-column>button')
     search_action_delete_branch = (By.CSS_SELECTOR, 'li>a.delete-branch')
-    delete_branch_diaglog_submit = (By.ID, 'delete-branch-dialog-submit')
+    delete_branch_dialog_submit = (By.ID, 'delete-branch-dialog-submit')
 
 
 class RepositorySettingsLocator:
@@ -224,4 +217,4 @@ class UserSettingsLocator:
 
 
 class RepoCommitsLocator:
-    repo_commits_graph = (By.CSS_SELECTOR, 'svg.commit-graph')
+    repo_commits_graph = (By.ID, 'commits-table')

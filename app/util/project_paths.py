@@ -43,12 +43,36 @@ def __get_bitbucket_datasets():
     return __get_datasets() / "bitbucket"
 
 
+def __get_crowd_yml():
+    return Path(__file__).parents[1] / "crowd.yml"
+
+
+def __get_crowd_datasets():
+    return __get_datasets() / "crowd"
+
+
+def __get_crowd_dataset(file_name):
+    return __get_crowd_datasets() / file_name
+
+
+def __get_bamboo_yml():
+    return Path(__file__).parents[1] / "bamboo.yml"
+
+
+def __get_bamboo_datasets():
+    return __get_datasets() / "bamboo"
+
+
 def __get_confluence_datasets():
     return __get_datasets() / "confluence"
 
 
 def __get_confluence_dataset(file_name):
     return __get_confluence_datasets() / file_name
+
+
+def __get_bamboo_dataset(file_name):
+    return __get_bamboo_datasets() / file_name
 
 
 def __get_bitbucket_dataset(file_name):
@@ -89,6 +113,8 @@ JSM_DATASET_SERVICE_DESKS_M = __get_jsm_dataset('service_desks_medium.csv')
 JSM_DATASET_SERVICE_DESKS_S = __get_jsm_dataset('service_desks_small.csv')
 JSM_DATASET_REQUEST_TYPES = __get_jsm_dataset('request_types.csv')
 JSM_DATASET_CUSTOM_ISSUES = __get_jsm_dataset('custom-issues.csv')
+JSM_DATASET_INSIGHT_ISSUES = __get_jsm_dataset('insight_issues.csv')
+JSM_DATASET_INSIGHT_SCHEMAS = __get_jsm_dataset('insight_schemas.csv')
 
 CONFLUENCE_YML = __get_confluence_yml()
 CONFLUENCE_DATASETS = __get_confluence_datasets()
@@ -104,6 +130,16 @@ BITBUCKET_USERS = __get_bitbucket_dataset('users.csv')
 BITBUCKET_PROJECTS = __get_bitbucket_dataset('projects.csv')
 BITBUCKET_REPOS = __get_bitbucket_dataset('repos.csv')
 BITBUCKET_PRS = __get_bitbucket_dataset('pull_requests.csv')
+
+CROWD_YML = __get_crowd_yml()
+CROWD_DATASETS = __get_crowd_datasets()
+CROWD_USERS = __get_crowd_dataset('users.csv')
+
+BAMBOO_YML = __get_bamboo_yml()
+BAMBOO_DATASETS = __get_bamboo_datasets()
+BAMBOO_BUILD_PLANS = __get_bamboo_dataset('build_plans.csv')
+BAMBOO_USERS = __get_bamboo_dataset('users.csv')
+
 
 DEFAULT_TEST_ACTIONS = __get_default_test_actions()
 ENV_TAURUS_ARTIFACT_DIR = __get_taurus_artifacts_dir()

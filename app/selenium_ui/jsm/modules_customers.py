@@ -1,6 +1,6 @@
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
-    Requests
+    Requests, ViewRequestWithInsight
 import random
 
 REQUESTS = "requests"
@@ -58,6 +58,7 @@ def login(webdriver, datasets):
         @print_timing("selenium_customer_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            webdriver.app_version = login_page.get_app_version()
             if login_page.is_logged_in():
                 login_page.delete_all_cookies()
                 login_page.go_to()
@@ -163,6 +164,18 @@ def share_request_with_customer(webdriver, datasets):
         def sub_measure():
             customer_request.share_request()
         sub_measure()
+    measure()
+
+
+def view_request_with_insight(webdriver, datasets):
+    view_request_with_insight_field = ViewRequestWithInsight(webdriver, portal_id=datasets['customer_service_desk_id'])
+
+    @print_timing("selenium_customer_insight_view_request_with_insight_field")
+    def measure():
+        view_request_with_insight_field.go_to()
+        view_request_with_insight_field.choose_request_type()
+        view_request_with_insight_field.check_insight_field()
+
     measure()
 
 

@@ -1,4 +1,5 @@
 import xmlrpc.client
+from selenium_ui.conftest import retry
 
 from util.api.abstract_clients import RestClient, Client
 from lxml import html
@@ -33,8 +34,8 @@ class ConfluenceRestClient(RestClient):
             request = self.get(api_url, "Could not retrieve content")
 
             content.extend(request.json()['results'])
-            if len(content) < 0:
-                raise Exception(f"Content with type {type} is empty")
+            if len(content) == 0:
+                raise Exception(f"Content with type {type} is not found.")
 
             loop_count -= 1
             if loop_count == 1:
@@ -44,6 +45,7 @@ class ConfluenceRestClient(RestClient):
 
         return content
 
+    @retry()
     def get_content_search(self, start=0, limit=100, cql=None, expand="space"):
         """
         Fetch a list of content using the Confluence Query Language (CQL).
@@ -69,8 +71,8 @@ class ConfluenceRestClient(RestClient):
             request = self.get(api_url, "Could not retrieve content")
 
             content.extend(request.json()['results'])
-            if len(content) < 0:
-                raise Exception(f"Content with {cql} is empty")
+            if len(content) == 0:
+                raise Exception(f"Content with cql '{cql}' not found.")
 
             loop_count -= 1
             if loop_count == 1:
@@ -122,6 +124,7 @@ class ConfluenceRestClient(RestClient):
 
         return search_results_list
 
+    @retry()
     def is_remote_api_enabled(self):
         api_url = f'{self.host}/rpc/xmlrpc'
         response = self.get(api_url, error_msg='Confluence Remote API (XML-RPC & SOAP) is disabled. '

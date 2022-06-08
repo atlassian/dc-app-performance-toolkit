@@ -3,6 +3,7 @@ settings:
   artifacts-dir: results/bitbucket/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
+  check-updates: false    # disable bzt check for updates
   env:
     application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
     application_protocol: http      # http or https
@@ -17,13 +18,14 @@ settings:
     ramp-up: 10m                    # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.2.1
+    JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/pre_run/git_client_check.py
       - python util/data_preparation/bitbucket_prepare_data.py
     shutdown:
@@ -32,6 +34,9 @@ services:
     post-process:
       - python util/analytics/analytics.py bitbucket
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==4.1.3
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
@@ -85,7 +90,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "90.0.4430.24" # Supports Chrome version 90. You can refer to http://chromedriver.chromium.org/downloads
+      version: "101.0.4951.41" # Supports Chrome version 101. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

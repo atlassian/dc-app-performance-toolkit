@@ -1,5 +1,6 @@
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.abstract_clients import RestClient
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_USERS = 1000
 
@@ -80,7 +81,8 @@ class JsmRestClient(RestClient):
 
     def get_request(self, issue_id_or_key: str, auth: tuple = None):
         api_url = self.host + f"/rest/servicedeskapi/request/{issue_id_or_key}"
-        return self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+        response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
+        return response.json()
 
     def get_requests(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, status: str = None):
         """
@@ -119,6 +121,7 @@ class JsmRestClient(RestClient):
                 max_results = last_loop_remainder
         return requests
 
+    @retry()
     def get_queue(self, service_desk_id: int, start: int = 0):
         """
         Returns the customer request for a given request Id/key.
@@ -130,6 +133,7 @@ class JsmRestClient(RestClient):
         response = self.get(api_url, f"Could not get queues for service desk {service_desk_id}")
         return response.json()['values']
 
+    @retry()
     def get_request_types(self, service_desk_id):
         """
         Returns all request types from a service desk, for a given service desk Id.
@@ -153,6 +157,7 @@ class JsmRestClient(RestClient):
                                      f"service desk id {service_desk_id} and request type is {request_type_id}")
         return response.json()['requestTypeFields']
 
+    @retry()
     def get_all_service_desks(self):
         """
         Returns all service desks in the Jira Service Desk application.
@@ -172,6 +177,7 @@ class JsmRestClient(RestClient):
                 start = start + limit
         return results
 
+    @retry()
     def get_servicedesk_info(self):
         """
         This resource represents the Jira Service Desk application.
@@ -181,6 +187,7 @@ class JsmRestClient(RestClient):
         response = self.get(api_url, "Could not get request Service desk info.")
         return response
 
+    @retry()
     def get_service_desk_reports(self, project_key: str = ''):
         api_url = self.host + f"/rest/servicedesk/1/{project_key}/webfragments/sections/sd-reports-nav-custom-section"
         payload = {
@@ -356,3 +363,11 @@ class JsmRestClient(RestClient):
         if max_count:
             return results[:max_count]
         return results
+
+    def get_all_schemas(self):
+        objectschemas = []
+        api_url = self.host + "/rest/insight/1.0/objectschema/list?"
+        r = self.get(api_url,
+                     f"Could not get objectSchemas id").json()
+        objectschemas.extend(r['objectschemas'])
+        return objectschemas

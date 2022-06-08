@@ -49,8 +49,14 @@ class Login(BasePage):
         return text.split('#')[0].replace('(v', '')
 
     def get_node_id(self):
-        text = self.__get_footer_text()
-        return text.split(':')[-1].replace(')', '')
+        text = self.get_element(LoginPageLocators.footer).text
+        text_split = text.split(':')
+        if len(text_split) == 2:
+            return "SERVER"
+        elif len(text_split) == 3:
+            return text_split[2].replace(')', '')
+        else:
+            return f"Warning: failed to get the node information from '{text}'."
 
 
 class Logout(BasePage):
@@ -157,6 +163,19 @@ class Issue(BasePage):
         if 'Epic' in issue_types:
             if issue_types['Epic']:
 
+        issue_types = {}
+        data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
+                                      .get_attribute('data-suggestions'))
+        for data in data_suggestions:
+            # 'Please select' is label in items list where all issue types are presented (not for current project)
+            if 'Please select' not in str(data):
+                items = data['items']
+                for label in items:
+                    if label['label'] not in issue_types:
+                        issue_types[label['label']] = label['selected']
+        if 'Epic' in issue_types:
+            if issue_types['Epic']:
+
                 @retry(delay=0.25, backoff=1.5)
                 def choose_non_epic_issue_type():
                     # Do in case of 'Epic' issue type is selected
@@ -168,6 +187,7 @@ class Issue(BasePage):
                         rnd_issue_type_el = random.choice(filtered_issue_elements)
                         self.action_chains().move_to_element(rnd_issue_type_el).click(rnd_issue_type_el).perform()
                     self.wait_until_invisible(IssueLocators.issue_ready_to_save_spinner)
+
                 choose_non_epic_issue_type()
 
     def submit_issue(self):
@@ -205,7 +225,7 @@ class ProjectsList(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_any_ec_presented(
-            selector_names=[ProjectLocators.projects_list, ProjectLocators.projects_not_found])
+            selectors=[ProjectLocators.projects_list, ProjectLocators.projects_not_found])
 
 
 class BoardsList(BasePage):
@@ -221,9 +241,9 @@ class Search(BasePage):
         self.page_url = url_manager.jql_search_url()
 
     def wait_for_page_loaded(self):
-        self.wait_until_any_ec_presented(selector_names=[SearchLocators.search_issue_table,
-                                                         SearchLocators.search_issue_content,
-                                                         SearchLocators.search_no_issue_found])
+        self.wait_until_any_ec_presented(selectors=[SearchLocators.search_issue_table,
+                                                    SearchLocators.search_issue_content,
+                                                    SearchLocators.search_no_issue_found])
 
 
 class Board(BasePage):

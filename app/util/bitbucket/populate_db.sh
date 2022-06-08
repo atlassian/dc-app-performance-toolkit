@@ -3,6 +3,22 @@
 ###################    Check if NFS exists        ###################
 pgrep nfsd > /dev/null && echo "NFS found" || { echo NFS process was not found. This script is intended to run only on the Bitbucket NFS Server machine. && exit 1; }
 
+# Read command line arguments
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --small) small=1 ;;
+  --custom) custom=1 ;;
+  --force)
+   if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+     force=1
+     version=${2}
+     shift
+   else
+     force=1
+   fi
+   ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
 ###################    Variables section         ###################
 # Command to install psql client for Amazon Linux 2.
 # In case of different distributive, please adjust accordingly or install manually.
@@ -23,7 +39,7 @@ BITBUCKET_DB_PASS="Password1!"
 BITBUCKET_AUTO_DECLINE_VERSION="7.7.0"
 
 # BITBUCKET version variables
-SUPPORTED_BITBUCKET_VERSIONS=(6.10.9 7.0.5 7.6.4)
+SUPPORTED_BITBUCKET_VERSIONS=(7.6.14 7.17.6)
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then
   echo The $BITBUCKET_VERSION_FILE file does not exists or emtpy. Please check if BITBUCKET_VERSION_FILE variable \
@@ -33,25 +49,44 @@ fi
 echo "Bitbucket version: ${BITBUCKET_VERSION}"
 
 # Datasets AWS bucket and db dump name
-DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
+
 DATASETS_SIZE="large"
+if [[ ${small} == 1 ]]; then
+  DATASETS_SIZE="small"
+fi
+DATASETS_AWS_BUCKET="https://centaurus-datasets.s3.amazonaws.com/bitbucket"
 DB_DUMP_NAME="db.dump"
 DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${BITBUCKET_VERSION}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ ${custom} == 1 ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$BITBUCKET_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $BITBUCKET_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $BITBUCKET_VERSION"
+    exit 1
+  fi
 # Check if Bitbucket version is supported
-if [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${BITBUCKET_VERSION} ]]; then
   echo "Bitbucket Version: ${BITBUCKET_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Bitbucket Versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Bitbucket, use --force flag with version of dataset you want to apply:"
   echo "e.g. ./populate_db.sh --force 6.10.0"
   echo "!!! Warning !!! This may break your Bitbucket instance. Also, note that downgrade is not supported by Bitbucket."
   # Check if --force flag is passed into command
-  if [[ "$1" == "--force" ]]; then
+  if [[ ${force} == 1 ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z ${version} ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_BITBUCKET_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Bitbucket version is in list of supported
-    if [[ "${SUPPORTED_BITBUCKET_VERSIONS[*]}" =~ ${2} ]]; then
-      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$2/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+    if [[ " ${SUPPORTED_BITBUCKET_VERSIONS[@]} " =~ " ${version} " ]]; then
+      DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
     else
       LAST_DATASET_VERSION=${SUPPORTED_BITBUCKET_VERSIONS[${#SUPPORTED_BITBUCKET_VERSIONS[@]}-1]}
@@ -99,13 +134,22 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
   exit 1
 fi
 echo "DB_HOST=${DB_HOST}"
+
+echo "Check database permissions for user ${BITBUCKET_DB_USER}"
+PGPASSWORD=${BITBUCKET_DB_PASS} createdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${BITBUCKET_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${BITBUCKET_DB_PASS} dropdb -U ${BITBUCKET_DB_USER} -h ${DB_HOST} TEST
+fi
 
 PGPASSWORD=${BITBUCKET_DB_PASS} pg_isready -U ${BITBUCKET_DB_USER} -h ${DB_HOST}
 if [[ $? -ne 0 ]]; then

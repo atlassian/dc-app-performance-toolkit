@@ -4,6 +4,7 @@
 while [[ "$#" -gt 0 ]]; do case $1 in
   --jsm) jsm=1 ;;
   --small) small=1 ;;
+  --custom) custom=1 ;;
   --force)
    if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
@@ -44,8 +45,11 @@ JIRA_DB_USER="postgres"
 JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
-SUPPORTED_JIRA_VERSIONS=(8.5.12 8.13.4)
-SUPPORTED_JSM_VERSIONS=(4.5.12 4.13.4)
+
+
+SUPPORTED_JIRA_VERSIONS=(8.13.20 8.20.8)
+SUPPORTED_JSM_VERSIONS=(4.13.20 4.20.8)
+
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -80,8 +84,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ ${custom} == 1 ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$JIRA_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $JIRA_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $JIRA_VERSION"
+    exit 1
+  fi
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
@@ -89,8 +102,14 @@ if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "!!! Warning !!! This may break your Jira instance."
   # Check if --force flag is passed into command
   if [[ ${force} == 1 ]]; then
+    # Check if version was specified after --force flag
+    if [[ -z ${version} ]]; then
+      echo "Error: --force flag requires version after it."
+      echo "Specify one of these versions: ${SUPPORTED_VERSIONS[*]}"
+      exit 1
+    fi
     # Check if passed Jira version is in list of supported
-    if [[ "${SUPPORTED_VERSIONS[*]}" =~ ${version} ]]; then
+    if [[ " ${SUPPORTED_VERSIONS[@]} " =~ " ${version} " ]]; then
       DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${version}/${DATASETS_SIZE}/${DB_DUMP_NAME}"
       echo "Force mode. Dataset URL: ${DB_DUMP_URL}"
       # If there is no DOWNGRADE_OPT - set it
@@ -146,7 +165,7 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and user permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -163,6 +182,15 @@ if [[ $? -ne 0 ]]; then
   echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
   echo "DB_HOST=${DB_HOST}"
   exit 1
+fi
+
+echo "Check database permissions for user ${JIRA_DB_USER}"
+PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${JIRA_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} TEST
 fi
 
 echo "Step3: Write jira.baseurl property to file"
