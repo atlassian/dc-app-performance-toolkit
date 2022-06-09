@@ -159,13 +159,33 @@ class BitbucketRestClient(RestClient):
         headers = LOGIN_POST_HEADERS
         headers['Origin'] = self.host
         session.post(url, data=body, headers=headers)
-        r = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
-        return r.content.decode('utf-8')
+        response = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
+        return response
+
+    def get_bitbucket_repo_count(self):
+        repos_count = None
+        page = self.get_bitbucket_system_page()
+        tree = html.fromstring(page.content)
+        try:
+            repos_count = tree.xpath('//*[@id="content-bitbucket.atst.repositories-0"]/div[1]/span/text()')[0]
+        except Exception as error:
+            print(f"Warning: Could not parse number of Bitbucket repositories: {error}")
+        return repos_count
+
+    def get_available_processors(self):
+        processors = None
+        page = self.get_bitbucket_system_page()
+        tree = html.fromstring(page.content)
+        try:
+            processors = tree.xpath('//*[@id="content-stp.properties.os-0"]/div[4]/span/text()')[0]
+        except Exception as error:
+            print(f"Warning: Could not parse number of Bitbucket available processors: {error}")
+        return processors
 
     def get_locale(self):
         language = None
-        page = self.get(f'{self.host}/dashboard', "Could not get page content.", headers=LOGIN_POST_HEADERS).content
-        tree = html.fromstring(page)
+        page = self.get(f'{self.host}/dashboard', "Could not get page content.", headers=LOGIN_POST_HEADERS)
+        tree = html.fromstring(page.content)
         try:
             language = tree.xpath('//html/@lang')[0]
         except Exception as error:
