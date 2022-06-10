@@ -1,7 +1,7 @@
 import xmlrpc.client
 from selenium_ui.conftest import retry
 
-from util.api.abstract_clients import RestClient, Client
+from util.api.abstract_clients import RestClient, Client, LOGIN_POST_HEADERS
 from lxml import html
 
 BATCH_SIZE_SEARCH = 500
@@ -169,6 +169,37 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, error_msg='Could not get group members')
         groups = [group['name'] for group in response.json()['results']]
         return groups
+    def get_system_info_page(self):
+        session = self._session
+        login_url = f'{self.host}/dologin.action'
+        auth_url = f'{self.host}/doauthenticate.action'
+        login_body = {
+            'login': 'Log in',
+            'os_destination': '',
+            'os_password': self.password,
+            'os_username': self.user
+        }
+        auth_body = {
+            'atl_token': '',
+            'destination': '/admin/systeminfo.action',
+            'authenticate': 'Confirm',
+            'password': self.password
+        }
+        headers = LOGIN_POST_HEADERS
+        headers['Origin'] = self.host
+
+        session.post(url=login_url, data=login_body, headers=headers)
+        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
+        system_info_html = auth_request.content.decode("utf-8")
+        return system_info_html
+
+    def get_deployment_type(self):
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        confluence_system_page = self.get_system_info_page()
+        deployment = confluence_system_page.count(html_pattern)
+        if deployment >= 1:
+            return 'terraform'
+        return 'other'
 
 
 class ConfluenceRpcClient(Client):
