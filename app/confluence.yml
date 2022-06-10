@@ -60,6 +60,22 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
 scenarios:
   selenium:
     script: selenium_ui/confluence_ui.py
