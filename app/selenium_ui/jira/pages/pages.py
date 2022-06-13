@@ -150,18 +150,6 @@ class Issue(BasePage):
     def set_issue_type(self):
         def __filer_epic(element):
             return "epic" not in element.get_attribute("class").lower()
-        issue_types = {}
-        data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
-                                      .get_attribute('data-suggestions'))
-        for data in data_suggestions:
-            # 'Please select' is label in items list where all issue types are presented (not for current project)
-            if 'Please select' not in str(data):
-                items = data['items']
-                for label in items:
-                    if label['label'] not in issue_types:
-                        issue_types[label['label']] = label['selected']
-        if 'Epic' in issue_types:
-            if issue_types['Epic']:
 
         issue_types = {}
         data_suggestions = json.loads(self.get_element(IssueLocators.issue_types_options)
