@@ -199,8 +199,7 @@ class BitbucketRestClient(RestClient):
 
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
-        bitbucket_system_page = self.get_bitbucket_system_page()
-        deployment = bitbucket_system_page.count(html_pattern)
-        if deployment >= 1:
+        bitbucket_system_page = self.get_bitbucket_system_page().content.decode("utf-8")
+        if bitbucket_system_page.count(html_pattern):
             return 'terraform'
         return 'other'

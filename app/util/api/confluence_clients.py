@@ -169,35 +169,24 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, error_msg='Could not get group members')
         groups = [group['name'] for group in response.json()['results']]
         return groups
+
     def get_system_info_page(self):
-        session = self._session
         login_url = f'{self.host}/dologin.action'
         auth_url = f'{self.host}/doauthenticate.action'
-        login_body = {
-            'login': 'Log in',
-            'os_destination': '',
-            'os_password': self.password,
-            'os_username': self.user
-        }
         auth_body = {
             'atl_token': '',
             'destination': '/admin/systeminfo.action',
             'authenticate': 'Confirm',
             'password': self.password
         }
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-
-        session.post(url=login_url, data=login_body, headers=headers)
-        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
-        system_info_html = auth_request.content.decode("utf-8")
-        return system_info_html
+        self._session.post(url=login_url, auth=self.base_auth, headers=LOGIN_POST_HEADERS)
+        system_info_html = self._session.post(url=auth_url, data=auth_body, headers=LOGIN_POST_HEADERS)
+        return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         confluence_system_page = self.get_system_info_page()
-        deployment = confluence_system_page.count(html_pattern)
-        if deployment >= 1:
+        if confluence_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
 

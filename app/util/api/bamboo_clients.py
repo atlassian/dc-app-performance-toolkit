@@ -173,11 +173,8 @@ class BambooClient(RestClient):
         return len(r.json()["nodeStatuses"])
 
     def get_deployment_type(self):
-        session = self._session
-        auth_request = session.get(f'{self.host}/admin/systemInfo.action')
-        system_info_html = auth_request.content.decode("utf-8")
+        bamboo_system_info_html = self._session.get(f'{self.host}/admin/systemInfo.action').content.decode("utf-8")
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
-        deployment = system_info_html.count(html_pattern)
-        if deployment >= 1:
+        if bamboo_system_info_html.count(html_pattern):
             return 'terraform'
         return 'other'

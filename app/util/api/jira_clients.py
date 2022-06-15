@@ -181,28 +181,16 @@ class JiraRestClient(RestClient):
         return nodes
 
     def get_system_info_page(self):
-        session = self._session
         login_url = f'{self.host}/login.jsp'
         auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
-        login_body = {
-            'atl_token': '',
-            'os_destination': '/secure/admin/ViewSystemInfo.jspa',
-            'os_password': self.password,
-            'os_username': self.user,
-            'user_role': 'ADMIN'
-        }
         auth_body = {
             'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-
-        session.post(url=login_url, data=login_body, headers=headers)
-        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
-        system_info_html = auth_request.content.decode("utf-8")
-        return system_info_html
+        self._session.post(url=login_url, auth=self.base_auth, headers=LOGIN_POST_HEADERS)
+        system_info_html = self._session.post(url=auth_url, data=auth_body, headers=LOGIN_POST_HEADERS)
+        return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):
         node_id = self.get_nodes()[0]
@@ -247,7 +235,6 @@ class JiraRestClient(RestClient):
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         jira_system_page = self.get_system_info_page()
-        deployment = jira_system_page.count(html_pattern)
-        if deployment >= 1:
+        if jira_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
