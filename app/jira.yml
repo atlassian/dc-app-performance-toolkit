@@ -40,6 +40,7 @@ settings:
 services:
   - module: shellexec
     prepare:
+      - pip install pytest-parallel # DM Dag
       - python util/pre_run/environment_checker.py
       - python util/pre_run/check_for_updates.py
       - python util/data_preparation/jira_prepare_data.py
@@ -62,7 +63,15 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
+  - scenario: pytest-run
+    executor: pytest
+    runner: pytest
+    hold-for: ${test_duration}
+    ramp-up: 3m
 scenarios:
+  pytest-run:
+    additional-args: --workers 8 --tests-per-worker 25
+    script: pytests/
   selenium:
     script: selenium_ui/jira_ui.py
   locust:
