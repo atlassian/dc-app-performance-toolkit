@@ -1,6 +1,6 @@
 from selenium.common.exceptions import WebDriverException
 
-from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000

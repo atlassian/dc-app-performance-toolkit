@@ -1,7 +1,7 @@
 import xmlrpc.client
 from selenium_ui.conftest import retry
 
-from util.api.abstract_clients import RestClient, Client, LOGIN_POST_HEADERS
+from util.api.abstract_clients import RestClient, Client
 from lxml import html
 
 BATCH_SIZE_SEARCH = 500
