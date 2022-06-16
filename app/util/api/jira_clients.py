@@ -188,8 +188,8 @@ class JiraRestClient(RestClient):
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        self._session.post(url=login_url, auth=self.base_auth, headers=LOGIN_POST_HEADERS)
-        system_info_html = self._session.post(url=auth_url, data=auth_body, headers=LOGIN_POST_HEADERS)
+        self.post(login_url, error_msg='Could not login in')
+        system_info_html = self._session.post(auth_url, data=auth_body)
         return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):

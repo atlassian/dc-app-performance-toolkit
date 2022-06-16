@@ -174,13 +174,12 @@ class ConfluenceRestClient(RestClient):
         login_url = f'{self.host}/dologin.action'
         auth_url = f'{self.host}/doauthenticate.action'
         auth_body = {
-            'atl_token': '',
             'destination': '/admin/systeminfo.action',
             'authenticate': 'Confirm',
             'password': self.password
         }
-        self._session.post(url=login_url, auth=self.base_auth, headers=LOGIN_POST_HEADERS)
-        system_info_html = self._session.post(url=auth_url, data=auth_body, headers=LOGIN_POST_HEADERS)
+        self.post(url=login_url, error_msg='Could not get login in')
+        system_info_html = self._session.post(url=auth_url, data=auth_body)
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
