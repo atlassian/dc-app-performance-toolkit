@@ -85,7 +85,7 @@ def judgement_test_measuring(dataframe_baseline: pandas.DataFrame, dataframe_tes
                              measurement_by_column: str, tolerances: ActionTolerance):
     judgement_results = []
 
-    for group in dataframe_baseline.groups:
+    for group in sorted(dataframe_baseline.groups):
         tolerance = tolerances.get_tolerance_range(action=group)
         if tolerance is None:
             continue
