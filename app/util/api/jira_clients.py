@@ -214,7 +214,7 @@ class JiraRestClient(RestClient):
             if proc:
                 return proc
         except Exception as e:
-            print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
             return '-'
 
     def get_locale(self):
