@@ -209,7 +209,13 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                   f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
         response = self.get(api_url, "Could not get Available Processors information")
-        return response.json()['data']['rows']['availableProcessors'][1]
+        try:
+            proc = response.json()['data']['rows']['availableProcessors'][1]
+            if proc:
+                return proc
+        except Exception as e:
+            print(f"Warning: failed to get RTE status. Returned default value: True. Error: {e}")
+            return '-'
 
     def get_locale(self):
         api_url = f'{self.host}/rest/api/2/myself'
