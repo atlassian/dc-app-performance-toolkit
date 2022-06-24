@@ -177,10 +177,8 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
         if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
             return 'Server'
-        for node in response.json():
-            if node['alive']:
-                nodes = [node['nodeId'] for node in response.json() if node['state'] == 'ACTIVE']
-                return nodes
+        nodes = [node['nodeId'] for node in response.json() if node['state'] == "ACTIVE" and node['alive']]
+        return nodes
 
     def get_system_info_page(self):
         session = self._session
@@ -215,7 +213,7 @@ class JiraRestClient(RestClient):
             processors = response.json()['data']['rows']['availableProcessors'][1]
         except Exception as e:
             print(f"Warning: Could not get Available Processors information. Error: {e}")
-            return ''
+            return 'N/A'
         return processors
 
     def get_locale(self):
