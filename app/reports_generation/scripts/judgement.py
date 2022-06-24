@@ -130,8 +130,8 @@ def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str):
     # gather all needed dataframes with specific fields
     df_baseline = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
                                              os.path.join(baseline_result_dir, 'selenium*.jtl')], fields)
-    df_tested = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
-                                           os.path.join(baseline_result_dir, 'selenium*.jtl')], fields)
+    df_tested = group_dataframe_by_action([os.path.join(tested_result_dir, 'kpi*.jtl'),
+                                           os.path.join(tested_result_dir, 'selenium*.jtl')], fields)
     results = judgement_test_measuring(df_baseline, df_tested,
                                        measurement_by_column='elapsed',
                                        tolerances=action_tolerances)
