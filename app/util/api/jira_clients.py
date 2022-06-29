@@ -205,11 +205,11 @@ class JiraRestClient(RestClient):
         return system_info_html
 
     def get_available_processors(self):
-        node_id = self.get_nodes()[0]
-        api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
-                  f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
-        response = self.get(api_url, "Could not get Available Processors information")
         try:
+            node_id = self.get_nodes()[0]
+            api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
+                      f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
+            response = self.get(api_url, "Could not get Available Processors information")
             processors = response.json()['data']['rows']['availableProcessors'][1]
         except Exception as e:
             print(f"Warning: Could not get Available Processors information. Error: {e}")
