@@ -53,6 +53,8 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
+        if self.app_type != CROWD:
+            self.processors = application.processors
         # JSM(INSIGHT) app type has additional concurrency fields: concurrency_agents, concurrency_customers
         if self.app_type == INSIGHT:
             self.concurrency_agents = self.conf.agents_concurrency

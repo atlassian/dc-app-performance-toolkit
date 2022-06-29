@@ -172,14 +172,13 @@ class JiraRestClient(RestClient):
 
         return response.json()
 
-    def get_nodes_count_via_rest(self):
-        # Works for Jira version >= 8.1.0
+    def get_nodes(self):
         api_url = f'{self.host}/rest/api/2/cluster/nodes'
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
         if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
             return 'Server'
-        nodes = [1 if node['state'] == "ACTIVE" and node['alive'] else 0 for node in response.json()]
-        return nodes.count(1)
+        nodes = [node['nodeId'] if node['state'] == "ACTIVE" and node['alive'] else 0 for node in response.json()]
+        return nodes
 
     def get_system_info_page(self):
         session = self._session
@@ -205,16 +204,12 @@ class JiraRestClient(RestClient):
         system_info_html = auth_request.content.decode("utf-8")
         return system_info_html
 
-    def get_cluster_nodes_count(self, jira_version):
-        html_pattern = '<td><strong>Nodestate:</strong></td><td>Active</td>'
-        if jira_version >= '8.1.0':
-            return self.get_nodes_count_via_rest()
-        else:
-            jira_system_page = self.get_system_info_page()
-            nodes_count = jira_system_page.replace(' ', '').replace('\n', '').count(html_pattern)
-            if nodes_count == 0:
-                return 'Server'
-            return nodes_count
+    def get_available_processors(self):
+        node_id = self.get_nodes()[0]
+        api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
+                  f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
+        response = self.get(api_url, "Could not get Available Processors information")
+        return response.json()['data']['rows']['availableProcessors'][1]
 
     def get_locale(self):
         api_url = f'{self.host}/rest/api/2/myself'

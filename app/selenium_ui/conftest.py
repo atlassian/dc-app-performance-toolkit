@@ -157,6 +157,7 @@ def print_timing(interaction=None):
                 raise Exception(error_msg, full_exception)
 
         return wrapper
+
     return deco_wrapper
 
 
@@ -177,29 +178,6 @@ def webdriver(app_settings):
         driver = Chrome(options=chrome_options)
         driver.app_settings = app_settings
         return driver
-    # First time driver init
-    if not globals.driver:
-        driver = driver_init()
-        print('first driver inits')
-
-        def driver_quit():
-            driver.quit()
-        globals.driver = driver
-        atexit.register(driver_quit)
-        return driver
-    else:
-        try:
-            # check if driver is not broken
-            globals.driver_title = globals.driver.title
-            print('get driver from global')
-            globals.driver.delete_all_cookies()
-            print('clear browser cookies')
-            return globals.driver
-        except WebDriverException:
-            # re-init driver if it broken
-            globals.driver = driver_init()
-            print('reinit driver')
-            return globals.driver
 
     # First time driver init
     if not globals.driver:
@@ -370,4 +348,5 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
                     return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
 
         return f_retry
+
     return deco_retry

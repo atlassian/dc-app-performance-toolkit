@@ -5,18 +5,18 @@ settings:
   verbose: false
   check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: localhost    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: REPLACE.WITH.ACTUAL.JIRA.HOSTNAME    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http      # http or https
-    application_port: 8080            # 80, 443, 8080, 2990, etc
+    application_port: 80            # 80, 443, 8080, 2990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:            # e.g. /jira in case of url like http://localhost:2990/jira
     admin_login: admin
-    admin_password: admin
+    admin_password: admin    # NOTE Password changed after populating with BIG dataset
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
+    concurrency: 200 #2                # number of concurrent virtual users for jmeter or locust scenario
+    test_duration: 45m #5m
+    ramp-up: 3m #3s                     # time to spin all concurrent users
+    total_actions_per_hour: 54500 #5450   # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.4.2
     LANGUAGE: en_US.utf8
@@ -40,13 +40,13 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - pip install pytest-parallel # DM Dag
+      - pip install pytest-parallel # DM-NOTE added
       - python util/pre_run/environment_checker.py
       - python util/pre_run/check_for_updates.py
       - python util/data_preparation/jira_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl selenium.jtl pytests_run.jtl # DM-NOTE added pytests_run.jtl
     post-process:
       - python util/analytics/analytics.py jira
       - python util/post_run/cleanup_results_dir.py
@@ -63,13 +63,13 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
-  - scenario: pytest-run
+  - scenario: pytest-run # DM-NOTE Added pytests lines scenario...ramp-up
     executor: pytest
     runner: pytest
     hold-for: ${test_duration}
     ramp-up: 3m
 scenarios:
-  pytest-run:
+  pytest-run: # DM-NOTE Added pytests (3 lines)
     additional-args: --workers 8 --tests-per-worker 25
     script: pytests/
   selenium:
@@ -127,7 +127,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "101.0.4951.41" # Supports Chrome version 101. You can refer to http://chromedriver.chromium.org/downloads
+      version: "102.0.5005.61" # Supports Chrome version 102. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

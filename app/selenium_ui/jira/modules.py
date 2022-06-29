@@ -55,6 +55,7 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+
         sub_measure()
 
         @print_timing("selenium_login:login_and_view_dashboard")
@@ -81,6 +82,7 @@ def view_issue(webdriver, datasets):
     def measure():
         issue_page.go_to()
         issue_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -91,6 +93,7 @@ def view_project_summary(webdriver, datasets):
     def measure():
         project_page.go_to()
         project_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -132,6 +135,7 @@ def search_jql(webdriver, datasets):
     def measure():
         search_page.go_to()
         search_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -187,6 +191,7 @@ def browse_projects_list(webdriver, datasets):
         projects_list_page = ProjectsList(webdriver, projects_list_pages=datasets['project_pages_count'])
         projects_list_page.go_to()
         projects_list_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -196,6 +201,7 @@ def browse_boards_list(webdriver, datasets):
         boards_list_page = BoardsList(webdriver)
         boards_list_page.go_to()
         boards_list_page.wait_for_page_loaded()
+
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
@@ -207,6 +213,7 @@ def view_backlog_for_scrum_board(webdriver, datasets):
     def measure():
         scrum_board_page.go_to_backlog()
         scrum_board_page.wait_for_scrum_board_backlog()
+
     measure()
 
 
@@ -217,6 +224,7 @@ def view_scrum_board(webdriver, datasets):
     def measure():
         scrum_board_page.go_to()
         scrum_board_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -227,6 +235,7 @@ def view_kanban_board(webdriver, datasets):
     def measure():
         kanban_board_page.go_to()
         kanban_board_page.wait_for_page_loaded()
+
     measure()
 
 
@@ -237,6 +246,7 @@ def view_dashboard(webdriver, datasets):
     def measure():
         dashboard_page.go_to()
         dashboard_page.wait_dashboard_presented()
+
     measure()
 
 
@@ -248,4 +258,5 @@ def log_out(webdriver, datasets):
         logout_page.go_to()
         logout_page.click_logout()
         logout_page.wait_for_page_loaded()
+
     measure()

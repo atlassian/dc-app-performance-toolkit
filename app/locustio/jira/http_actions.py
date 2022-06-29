@@ -230,6 +230,7 @@ def create_issue(locust):
         assert '"id":"project","label":"Project"' in content, params.err_message_create_issue
         issue_key = fetch_by_re(params.create_issue_key_pattern, content)
         logger.locust_info(f"{params.action_name}: Issue {issue_key} was successfully created")
+
     create_issue_submit_form()
 
 
@@ -453,6 +454,7 @@ def edit_issue(locust):
                     f'&comment=""&commentLevel=""&atl_token={atl_token}&Update=Update'
         locust.session_data_storage['edit_issue_body'] = edit_body
         locust.session_data_storage['atl_token'] = atl_token
+
     edit_issue_open_editor()
 
     @jira_measure('locust_edit_issue:save_edit')

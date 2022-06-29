@@ -1,3 +1,5 @@
+from lxml import html
+
 from util.api.abstract_clients import RestClient
 from selenium_ui.conftest import retry
 
@@ -155,6 +157,16 @@ class BambooClient(RestClient):
     def get_server_info(self):
         r = self.get(f'{self.host}/rest/applinks/1.0/manifest', error_msg="Could not get Bamboo server info")
         return r.json()
+
+    def get_available_processors(self):
+        processors = None
+        page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content')
+        tree = html.fromstring(page.content)
+        try:
+            processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
+        except Exception as error:
+            print(f"Warning: Could not parse number of Bamboo available processors: {error}")
+        return processors
 
     def get_nodes_count(self):
         r = self.get(f'{self.host}/rest/api/latest/server/nodes', error_msg="Could not get Bamboo nodes count")
