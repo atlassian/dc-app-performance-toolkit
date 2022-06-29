@@ -138,11 +138,16 @@ class ConfluenceRestClient(RestClient):
         return nodes
 
     def get_available_processors(self):
-        node_id = self.get_confluence_nodes()[0]
-        api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
-                  f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
-        response = self.get(api_url, "Could not get Available Processors information")
-        return response.json()['data']['rows']['availableProcessors'][1]
+        try:
+            node_id = self.get_confluence_nodes()[0]
+            api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
+                      f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
+            response = self.get(api_url, "Could not get Available Processors information")
+            processors = response.json()['data']['rows']['availableProcessors'][1]
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
+        return processors
 
     def get_total_pages_count(self):
         api_url = f"{self.host}/rest/api/search?cql=type=page"

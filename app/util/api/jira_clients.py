@@ -177,7 +177,7 @@ class JiraRestClient(RestClient):
         response = self.get(api_url, 'Could not get Jira nodes count', expected_status_codes=[200, 405])
         if response.status_code == 405 and 'This Jira instance is not clustered' in response.text:
             return 'Server'
-        nodes = [node['nodeId'] if node['state'] == "ACTIVE" and node['alive'] else 0 for node in response.json()]
+        nodes = [node['nodeId'] for node in response.json() if node['state'] == "ACTIVE" and node['alive']]
         return nodes
 
     def get_system_info_page(self):
@@ -205,11 +205,16 @@ class JiraRestClient(RestClient):
         return system_info_html
 
     def get_available_processors(self):
-        node_id = self.get_nodes()[0]
-        api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
-                  f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
-        response = self.get(api_url, "Could not get Available Processors information")
-        return response.json()['data']['rows']['availableProcessors'][1]
+        try:
+            node_id = self.get_nodes()[0]
+            api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
+                      f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
+            response = self.get(api_url, "Could not get Available Processors information")
+            processors = response.json()['data']['rows']['availableProcessors'][1]
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
+        return processors
 
     def get_locale(self):
         api_url = f'{self.host}/rest/api/2/myself'
