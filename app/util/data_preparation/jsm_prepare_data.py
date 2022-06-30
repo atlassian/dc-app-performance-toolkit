@@ -407,6 +407,18 @@ def __get_all_service_desks_and_validate(jsm_client):
     return service_desks
 
 
+@print_timing("Getting all service desks")
+def __get_all_service_desks_without_insight(jira_api, jsm_client):
+    issues = jira_api.issues_search(jql='Insight is not Empty', max_results=10000)
+    projects = __get_all_service_desks_and_validate(jsm_client)
+    project_keys_with_insight_issues = [f"{service_desk_issues['key'].split('-')[0]}"
+                                        for service_desk_issues
+                                        in issues]
+    service_desks = [service_desk for service_desk in projects if service_desk["projectKey"]
+                     not in project_keys_with_insight_issues]
+    return service_desks
+
+
 @print_timing("Searching issues by project keys")
 def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
     organizations = jsm_client.get_all_organizations()
@@ -429,8 +441,13 @@ def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
 
 
 def __create_data_set(jira_client, jsm_client):
-    service_desks = __get_all_service_desks_and_validate(jsm_client)
     dataset = dict()
+    if JSM_SETTINGS.insight:
+        service_desks = __get_all_service_desks_and_validate(jsm_client)
+        dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
+        dataset[INSIGHT_SCHEMAS] = __get_insight_schemas(jsm_client)
+    else:
+        service_desks = __get_all_service_desks_without_insight(jira_client, jsm_client)
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
     issues = __get_issues_by_project_keys(jira_client, jsm_client,
@@ -442,10 +459,6 @@ def __create_data_set(jira_client, jsm_client):
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
     dataset[INSIGHT_ISSUES] = list()
     dataset[INSIGHT_SCHEMAS] = list()
-    if JSM_SETTINGS.insight:
-        dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
-        dataset[INSIGHT_SCHEMAS] = __get_insight_schemas(jsm_client)
-
     return dataset
 
 
