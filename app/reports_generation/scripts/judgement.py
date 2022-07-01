@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from decimal import Decimal, getcontext
 from statistics import median
 import typing
+import warnings
 
 import pandas
 from prettytable import PrettyTable
@@ -92,7 +93,18 @@ def judgement_test_measuring(dataframe_baseline: pandas.DataFrame, dataframe_tes
         tolerance = Decimal(tolerance)
 
         sample_base = dataframe_baseline.get_group(group)[measurement_by_column]
-        sample_tested = dataframe_tested.get_group(group)[measurement_by_column]
+        try:
+            sample_tested = dataframe_tested.get_group(group)[measurement_by_column]
+        except KeyError as e:
+            judgement_results.append(
+                JudgementResult(action=group, passed=False,
+                                failure_reason=f"No action in experiment dataframe: {e}", p_value=None,
+                                baseline_size=len(sample_base), tested_size=0,
+                                tolerance=float(round(tolerance, 2)))
+            )
+            warnings.warn(f"There is no action in experiment run. Error {e}")
+            continue
+
         try:
             test_passed, p_value = mannwhitney_test(sample_base, sample_tested, tolerance)
             # TODO: later we may define many failure reasons
@@ -109,8 +121,12 @@ def judgement_test_measuring(dataframe_baseline: pandas.DataFrame, dataframe_tes
                                f'Check results for this group.',
                 p_value=None, tolerance=float(tolerances.get_tolerance_range(action=group)))
             )
-            print(f" No tolerance found for action {group}. Action timelines is {sample_base.values}")
+            print(f"No tolerance found for action {group}. Action timelines is {sample_base.values}")
 
+    absent_actions_in_baseline = set(dataframe_tested.groups) - set(dataframe_baseline.groups)
+    if absent_actions_in_baseline:
+        warnings.warn(f"There are also actions absent in baseline run, but present in experiment: "
+                      f"{absent_actions_in_baseline}.")
     return judgement_results
 
 
