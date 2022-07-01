@@ -398,17 +398,24 @@ def __get_insight_issues(jira_api):
 
 @print_timing("Getting all service desks")
 def __get_all_service_desks_without_insight_and_validate(jira_api, jsm_client):
-    issues = jira_api.issues_search(jql='Insight is not Empty', max_results=10000)
-    service_desks = jsm_client.get_all_service_desks()
-    if not service_desks:
+    all_service_desks = jsm_client.get_all_service_desks()
+    issues_with_insight = jira_api.issues_search(jql='Insight is not Empty', max_results=10000)
+    project_keys_with_insight = [f"{service_desk_issues['key'].split('-')[0]}"
+                                 for service_desk_issues
+                                 in issues_with_insight]
+    if JSM_SETTINGS.insight:
+        # service desks with only with insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         in project_keys_with_insight]
+    else:
+        # without insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         not in project_keys_with_insight]
+    if not all_service_desks:
         raise Exception('ERROR: There were no Jira Service Desks found')
-    if len(service_desks) < 2:
+    if len(all_service_desks) < 2:
         raise Exception('ERROR: At least 2 service desks are needed')
-    service_desks_filtered = [service_desk for service_desk in service_desks if service_desk["projectKey"]
-                              not in [f"{service_desk_issues['key'].split('-')[0]}"
-                                      for service_desk_issues
-                                      in issues]]
-    return service_desks_filtered
+    return service_desks
 
 
 @print_timing("Searching issues by project keys")
