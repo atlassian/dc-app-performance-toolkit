@@ -397,7 +397,7 @@ def __get_insight_issues(jira_api):
 
 
 @print_timing("Getting all service desks")
-def __get_all_service_desks_without_insight_and_validate(jira_api, jsm_client):
+def __get_all_service_desks_and_validate(jira_api, jsm_client):
     all_service_desks = jsm_client.get_all_service_desks()
     issues_with_insight = jira_api.issues_search(jql='Insight is not Empty', max_results=10000)
     project_keys_with_insight = [f"{service_desk_issues['key'].split('-')[0]}"
@@ -440,7 +440,7 @@ def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
 
 
 def __create_data_set(jira_client, jsm_client):
-    service_desks = __get_all_service_desks_without_insight_and_validate(jira_client, jsm_client)
+    service_desks = __get_all_service_desks_and_validate(jira_client, jsm_client)
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
