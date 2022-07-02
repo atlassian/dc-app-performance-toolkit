@@ -404,7 +404,7 @@ def __get_all_service_desks_without_insight_and_validate(jira_api, jsm_client):
                                  for service_desk_issues
                                  in issues_with_insight]
     if JSM_SETTINGS.insight:
-        # service desks with only with insight issues
+        # service desks with insight issues
         service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
                          in project_keys_with_insight]
     else:
