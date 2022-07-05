@@ -411,9 +411,11 @@ def __get_all_service_desks_and_validate(jira_api, jsm_client):
         # without insight issues
         service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
                          not in project_keys_with_insight]
-    if not all_service_desks:
+    if not service_desks:
         raise Exception('ERROR: There were no Jira Service Desks found')
-    if len(all_service_desks) < 2:
+    if len(service_desks) < 2:
+        if JSM_SETTINGS.insight:
+            raise Exception('ERROR: At least 2 service desks with Insight issues are needed')
         raise Exception('ERROR: At least 2 service desks are needed')
     return service_desks
 
