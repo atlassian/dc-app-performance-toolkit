@@ -129,7 +129,6 @@ class ViewReportsLocators:
 
 
 class ViewQueueLocators:
-    queues = (By.CSS_SELECTOR, "#pinnednav-opts-sd-queues-nav li")
     queues_status = (By.XPATH, "//span[contains(text(),'Status')]")
     queue_is_empty = (By.CSS_SELECTOR, '.sd-queue-empty')
 

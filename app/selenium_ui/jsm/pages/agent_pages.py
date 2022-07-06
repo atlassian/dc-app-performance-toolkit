@@ -189,16 +189,6 @@ class ViewQueue(BasePage):
         self.wait_until_any_ec_presented(
             selectors=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
 
-    def get_random_queue(self):
-        if not self.get_elements(ViewQueueLocators.queue_is_empty):
-            queues = self.get_elements(ViewQueueLocators.queues)
-            random_queue = random.choice([queue for queue in queues
-                                          if queue.text.partition('\n')[0] not in
-                                          ['All open', 'Recently resolved', 'Resolved past 7 days']
-                                          and queue.text.partition('\n')[2] != '0'])
-            random_queue.click()
-            self.wait_until_present(ViewQueueLocators.queues_status, timeout=self.timeout)
-
 
 class InsightLogin(BasePage):
 
