@@ -417,6 +417,7 @@ def __get_all_service_desks_and_validate(jira_api, jsm_client):
         if JSM_SETTINGS.insight:
             raise Exception('ERROR: At least 2 service desks with Insight issues are needed')
         raise Exception('ERROR: At least 2 service desks are needed')
+    return service_desks
 
 
 @print_timing("Searching issues by project keys")
