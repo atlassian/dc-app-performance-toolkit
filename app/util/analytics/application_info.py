@@ -55,6 +55,10 @@ class BaseApplication:
     def processors(self):
         return self.client.get_available_processors()
 
+    @property
+    def deployment(self):
+        return self.client.get_deployment_type()
+
 
 class Jira(BaseApplication):
     type = JIRA
