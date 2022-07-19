@@ -172,3 +172,9 @@ class BambooClient(RestClient):
         r = self.get(f'{self.host}/rest/api/latest/server/nodes', error_msg="Could not get Bamboo nodes count")
         return len(r.json()["nodeStatuses"])
 
+    def get_deployment_type(self):
+        bamboo_system_info_html = self._session.get(f'{self.host}/admin/systemInfo.action').content.decode("utf-8")
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        if bamboo_system_info_html.count(html_pattern):
+            return 'terraform'
+        return 'other'

@@ -175,6 +175,25 @@ class ConfluenceRestClient(RestClient):
         groups = [group['name'] for group in response.json()['results']]
         return groups
 
+    def get_system_info_page(self):
+        login_url = f'{self.host}/dologin.action'
+        auth_url = f'{self.host}/doauthenticate.action'
+        auth_body = {
+            'destination': '/admin/systeminfo.action',
+            'authenticate': 'Confirm',
+            'password': self.password
+        }
+        self.post(url=login_url, error_msg='Could not get login in')
+        system_info_html = self._session.post(url=auth_url, data=auth_body)
+        return system_info_html.content.decode("utf-8")
+
+    def get_deployment_type(self):
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        confluence_system_page = self.get_system_info_page()
+        if confluence_system_page.count(html_pattern):
+            return 'terraform'
+        return 'other'
+
 
 class ConfluenceRpcClient(Client):
 

@@ -196,3 +196,10 @@ class BitbucketRestClient(RestClient):
         api_url = f'{self.host}/rest/api/1.0/admin/permissions/users?filter={user}'
         response = self.get(api_url, "Could not get user global permissions")
         return response.json()
+
+    def get_deployment_type(self):
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        bitbucket_system_page = self.get_bitbucket_system_page().content.decode("utf-8")
+        if bitbucket_system_page.count(html_pattern):
+            return 'terraform'
+        return 'other'

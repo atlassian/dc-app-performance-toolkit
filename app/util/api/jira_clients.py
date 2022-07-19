@@ -1,6 +1,6 @@
 from selenium.common.exceptions import WebDriverException
 
-from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS, JSM_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
@@ -181,28 +181,16 @@ class JiraRestClient(RestClient):
         return nodes
 
     def get_system_info_page(self):
-        session = self._session
         login_url = f'{self.host}/login.jsp'
         auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
-        login_body = {
-            'atl_token': '',
-            'os_destination': '/secure/admin/ViewSystemInfo.jspa',
-            'os_password': self.password,
-            'os_username': self.user,
-            'user_role': 'ADMIN'
-        }
         auth_body = {
             'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-
-        session.post(url=login_url, data=login_body, headers=headers)
-        auth_request = session.post(url=auth_url, data=auth_body, headers=headers)
-        system_info_html = auth_request.content.decode("utf-8")
-        return system_info_html
+        self.post(login_url, error_msg='Could not login in')
+        system_info_html = self._session.post(auth_url, data=auth_body)
+        return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):
         try:
@@ -248,3 +236,10 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
         service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
         return service_desk_info.json()
+
+    def get_deployment_type(self):
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        jira_system_page = self.get_system_info_page()
+        if jira_system_page.count(html_pattern):
+            return 'terraform'
+        return 'other'
