@@ -168,12 +168,6 @@ def view_queues_form_diff_projects_size(browse_queue_page, project_size):
 
         sub_measure()
 
-        @print_timing(f'selenium_agent_view_queues_{project_size}_project:random_choice_queue')
-        def sub_measure():
-            browse_queue_page.get_random_queue()
-
-        sub_measure()
-
     measure()
 
 
