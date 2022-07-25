@@ -109,7 +109,7 @@ if [[ ${FREE_SPACE_GB} -lt ${REQUIRED_SPACE_GB} ]]; then
    exit 1
 fi;
 
-sudo su -c "time wget -qO- ${ATTACHMENTS_TAR_URL} -P ${NFS_DIR} | tar -xz --checkpoint=.10000 -C ${NFS_DIR}/${ATTACHMENT_DIR_DATA} --strip-components 1"
+sudo su bitbucket -c "time wget -qO- ${ATTACHMENTS_TAR_URL} -P ${NFS_DIR} | tar -xz --checkpoint=.10000 -C ${NFS_DIR}/${ATTACHMENT_DIR_DATA} --strip-components 1"
 if [[ $? -ne 0 ]]; then
   echo "Untar failed!"
   exit 1
