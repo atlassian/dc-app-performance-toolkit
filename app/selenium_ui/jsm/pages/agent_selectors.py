@@ -116,7 +116,6 @@ class ViewCustomerRequestLocators:
     comment_tab = (By.XPATH, '//*[@id="comment-tabpanel"]/a')
 
 
-
 class ViewReportsLocators:
     custom_report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
     team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")
