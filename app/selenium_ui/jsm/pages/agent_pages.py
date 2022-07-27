@@ -112,6 +112,7 @@ class ViewCustomerRequest(BasePage):
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
+        self.wait_until_visible(ViewCustomerRequestLocators.comment_tab)
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
