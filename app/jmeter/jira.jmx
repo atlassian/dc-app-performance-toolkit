@@ -1077,6 +1077,10 @@ JMeterUtils.setProperty(&quot;c_AtlToken&quot; + user_counter, atl_token)
                       <stringProp name="Header.name">Accept</stringProp>
                       <stringProp name="Header.value">*/*</stringProp>
                     </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                      <stringProp name="Header.value">no-check</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
@@ -6905,7 +6909,7 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-kanban&quot;}&#xd;
 </stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
@@ -7713,7 +7717,7 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-scrum&quot;}&#xd;
 </stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
@@ -8724,7 +8728,7 @@ if ( sleep_time &gt; 0 ) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-${x_project_plan}&quot;}&#xd;
+                        <stringProp name="Argument.value">{&quot;id&quot;:&quot;com.pyxis.greenhopper.jira:project-sidebar-work-scrum&quot;}&#xd;
 </stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
