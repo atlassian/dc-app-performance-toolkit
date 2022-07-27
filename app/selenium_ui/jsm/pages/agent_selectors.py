@@ -113,6 +113,7 @@ class ViewCustomerRequestLocators:
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
     comment_tinymce_field = (By.ID, "tinymce")
     comment_internally_btn = (By.XPATH, "//button[contains(text(),'Comment internally')]")
+    comment_tab = (By.XPATH, '//*[@id="comment-tabpanel"]/a')
 
 
 class ViewReportsLocators:
