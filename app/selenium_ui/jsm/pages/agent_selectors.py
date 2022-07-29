@@ -113,7 +113,7 @@ class ViewCustomerRequestLocators:
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
     comment_tinymce_field = (By.ID, "tinymce")
     comment_internally_btn = (By.XPATH, "//button[contains(text(),'Comment internally')]")
-    queue_selector = (By.CSS_SELECTOR, 'span.aui-icon.aui-icon-large.sd-sidebar-icon.icon-sidebar-customers')
+    customers_sidebar_selector = (By.CSS_SELECTOR, 'span.aui-icon.aui-icon-large.sd-sidebar-icon.icon-sidebar-customers')
 
 
 class ViewReportsLocators:
