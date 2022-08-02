@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-05-10"
+date: "2022-07-25"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -36,9 +36,7 @@ specifically for performance testing during the DC app review process.
 
 1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
    section of the official documentation.
-2. Set up [Terraform](https://www.terraform.io/), [Helm](https://helm.sh/), [AWS CLI](https://aws.amazon.com/cli/)
-   and [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl) as per
-   [Environment setup guide](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
+2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
 3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
 4. Clone the project repo:
    ```bash

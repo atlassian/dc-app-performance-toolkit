@@ -1,5 +1,3 @@
-import random
-
 from selenium_ui.base_page import BasePage
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocators, DashboardLocators, LogoutLocators, \
@@ -114,6 +112,7 @@ class ViewCustomerRequest(BasePage):
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
+        self.wait_until_visible(ViewCustomerRequestLocators.customers_sidebar_selector)
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
@@ -188,16 +187,6 @@ class ViewQueue(BasePage):
     def wait_for_page_loaded(self):
         self.wait_until_any_ec_presented(
             selectors=[ViewQueueLocators.queues_status, ViewQueueLocators.queue_is_empty], timeout=self.timeout)
-
-    def get_random_queue(self):
-        if not self.get_elements(ViewQueueLocators.queue_is_empty):
-            queues = self.get_elements(ViewQueueLocators.queues)
-            random_queue = random.choice([queue for queue in queues
-                                          if queue.text.partition('\n')[0] not in
-                                          ['All open', 'Recently resolved', 'Resolved past 7 days']
-                                          and queue.text.partition('\n')[2] != '0'])
-            random_queue.click()
-            self.wait_until_present(ViewQueueLocators.queues_status, timeout=self.timeout)
 
 
 class InsightLogin(BasePage):

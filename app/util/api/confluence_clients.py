@@ -138,11 +138,16 @@ class ConfluenceRestClient(RestClient):
         return nodes
 
     def get_available_processors(self):
-        node_id = self.get_confluence_nodes()[0]
-        api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
-                  f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
-        response = self.get(api_url, "Could not get Available Processors information")
-        return response.json()['data']['rows']['availableProcessors'][1]
+        try:
+            node_id = self.get_confluence_nodes()[0]
+            api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
+                      f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
+            response = self.get(api_url, "Could not get Available Processors information")
+            processors = response.json()['data']['rows']['availableProcessors'][1]
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
+        return processors
 
     def get_total_pages_count(self):
         api_url = f"{self.host}/rest/api/search?cql=type=page"
@@ -169,6 +174,25 @@ class ConfluenceRestClient(RestClient):
         response = self.get(api_url, error_msg='Could not get group members')
         groups = [group['name'] for group in response.json()['results']]
         return groups
+
+    def get_system_info_page(self):
+        login_url = f'{self.host}/dologin.action'
+        auth_url = f'{self.host}/doauthenticate.action'
+        auth_body = {
+            'destination': '/admin/systeminfo.action',
+            'authenticate': 'Confirm',
+            'password': self.password
+        }
+        self.post(url=login_url, error_msg='Could not get login in')
+        system_info_html = self._session.post(url=auth_url, data=auth_body)
+        return system_info_html.content.decode("utf-8")
+
+    def get_deployment_type(self):
+        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        confluence_system_page = self.get_system_info_page()
+        if confluence_system_page.count(html_pattern):
+            return 'terraform'
+        return 'other'
 
 
 class ConfluenceRpcClient(Client):

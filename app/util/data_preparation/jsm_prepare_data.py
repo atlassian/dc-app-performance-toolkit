@@ -397,13 +397,31 @@ def __get_insight_issues(jira_api):
 
 
 @print_timing("Getting all service desks")
-def __get_all_service_desks_and_validate(jsm_client):
-    service_desks = jsm_client.get_all_service_desks()
-    if not service_desks:
+def __get_all_service_desks_and_validate(jira_api, jsm_client):
+    all_service_desks = jsm_client.get_all_service_desks()
+    if not all_service_desks:
         raise Exception('ERROR: There were no Jira Service Desks found')
-    if len(service_desks) < 2:
-        raise Exception('ERROR: At least 2 service desks are needed')
+    try:
+        issues_with_insight = jira_api.issues_search(jql='Insight is not EMPTY', max_results=10000)
+    except Exception as e:
+        print(f'There were no Insight issues found. {e}')
 
+        issues_with_insight = []
+    project_keys_with_insight = [f"{service_desk_issues['key'].split('-')[0]}"
+                                 for service_desk_issues
+                                 in issues_with_insight]
+    if JSM_SETTINGS.insight:
+        # service desks with insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         in project_keys_with_insight]
+    else:
+        # without insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         not in project_keys_with_insight]
+    if len(service_desks) < 2:
+        if JSM_SETTINGS.insight:
+            raise Exception('ERROR: At least 2 service desks with Insight issues are needed')
+        raise Exception('ERROR: At least 2 service desks are needed')
     return service_desks
 
 
@@ -429,7 +447,7 @@ def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
 
 
 def __create_data_set(jira_client, jsm_client):
-    service_desks = __get_all_service_desks_and_validate(jsm_client)
+    service_desks = __get_all_service_desks_and_validate(jira_client, jsm_client)
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
