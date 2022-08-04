@@ -203,3 +203,6 @@ class BitbucketRestClient(RestClient):
         if bitbucket_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    def get_application_properties(self):
+        return self.session.get(url=f"{self.host}/rest/api/1.0/application-properties").json()
