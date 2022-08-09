@@ -33,11 +33,8 @@ DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
 # Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
-CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
 JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
-SHUT_DOWN_TOMCAT="${JIRA_CURRENT_DIR}/bin/shutdown.sh"
 
 # DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
@@ -46,10 +43,8 @@ JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
 
-
-SUPPORTED_JIRA_VERSIONS=(8.13.20 8.20.8)
-SUPPORTED_JSM_VERSIONS=(4.13.20 4.20.8)
-
+SUPPORTED_JIRA_VERSIONS=(8.20.10 9.0.0)
+SUPPORTED_JSM_VERSIONS=(4.20.10 5.0.0)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -224,39 +219,10 @@ if [[ -s ${JIRA_LICENSE_FILE} ]]; then
 fi
 
 echo "Step5: Stop Jira"
-if [[ ${jsm} == 1 ]]; then
-  sudo systemctl stop jira
-else
-  CATALINA_PID=$(pgrep -f "catalina")
-  echo "CATALINA_PID=${CATALINA_PID}"
-  if [[ -z ${CATALINA_PID} ]]; then
-    echo "Jira is not running"
-    sudo su -c "rm -rf ${CATALINA_PID_FILE}"
-  else
-    echo "Stopping Jira"
-    if [[ ! -f "${CATALINA_PID_FILE}" ]]; then
-      echo "File created: ${CATALINA_PID_FILE}"
-      sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
-    fi
-    sudo su -c "${SHUT_DOWN_TOMCAT}"
-    COUNTER=0
-    TIMEOUT=5
-    ATTEMPTS=30
-    while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
-      if [[ -z $(pgrep -f "catalina") ]]; then
-        echo Jira is stopped
-        break
-      fi
-      echo "Waiting for Jira stop, attempt ${COUNTER}/${ATTEMPTS} at waiting ${TIMEOUT} seconds."
-      sleep ${TIMEOUT}
-      let COUNTER++
-    done
-    if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
-      echo "Jira stop was not finished in $ATTEMPTS attempts with $TIMEOUT sec timeout."
-      echo "Try to rerun script."
-      exit 1
-    fi
-  fi
+sudo systemctl stop jira
+if [[ $? -ne 0 ]]; then
+  echo "Jira did not stop. Please try to rerun script."
+  exit 1
 fi
 
 echo "Step6: Download database dump"
@@ -344,11 +310,8 @@ else
 fi
 
 echo "Step10: Start Jira"
-if [[ ${jsm} == 1 ]]; then
   sudo systemctl start jira
-else
-  sudo su jira -c "${START_JIRA}"
-fi
+
 rm -rf ${DB_DUMP_NAME}
 
 echo "Step11: Remove ${JIRA_BASE_URL_FILE} file"

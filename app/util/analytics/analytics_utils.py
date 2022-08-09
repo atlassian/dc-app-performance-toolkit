@@ -81,6 +81,9 @@ def generate_report_summary(collector):
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')
+    if not collector.app_type == CROWD:
+        summary_report.append(f'Available Processors|{collector.processors}')
+        summary_report.append(f'Deployment|{collector.deployment}')
     summary_report.append(f'Concurrency|{collector.concurrency}')
     summary_report.append(f'Expected test run duration from yml file|{collector.duration} sec')
     summary_report.append(f'Actual test run duration|{collector.actual_duration} sec')

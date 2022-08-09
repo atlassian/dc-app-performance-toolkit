@@ -53,6 +53,9 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
+        if self.app_type != CROWD:
+            self.processors = application.processors
+            self.deployment = application.deployment
         # JSM(INSIGHT) app type has additional concurrency fields: concurrency_agents, concurrency_customers
         if self.app_type == INSIGHT:
             self.concurrency_agents = self.conf.agents_concurrency
@@ -66,6 +69,7 @@ class AnalyticsCollector:
             self.crowd_sync_test = get_crowd_sync_test_results(bzt_log)
             self.ramp_up = application.config.ramp_up
             self.total_actions_per_hour = application.config.total_actions_per_hour
+            self.deployment = 'other'
         if self.app_type == BAMBOO:
             self.parallel_plans_count = application.config.parallel_plans_count
             self.locust_log = LocustFileReader()
@@ -212,7 +216,8 @@ def send_analytics(collector: AnalyticsCollector):
                "selenium_test_rates": collector.selenium_test_rates,
                "jmeter_test_rates": collector.jmeter_test_rates,
                "locust_test_rates": collector.locust_test_rates,
-               "concurrency": collector.concurrency
+               "concurrency": collector.concurrency,
+               "deployment": collector.deployment
                }
     r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
     print(r.json())
