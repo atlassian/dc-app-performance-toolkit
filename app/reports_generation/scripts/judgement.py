@@ -136,12 +136,22 @@ def group_dataframe_by_action(filepaths: list, fields=None):
     return group_data_by_column(raw_dataframe, columns=('label',))
 
 
-def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str):
-    action_tolerances = get_tolerances(tested_result_dir)
+def save_judgement_results(results, output_dir, baseline_dirname, tested_dirname):
+    results_representation = [judgement_result.values() for judgement_result in results]
+    judgement_table = PrettyTable(results[0].head())
+    judgement_table.add_rows(results_representation)
+    print("Results of judgement")
+    print(judgement_table)
+    # saving results
+    judgement_filename = os.path.join(
+        output_dir,
+        f'judged_baseline_{baseline_dirname}_experiment_{tested_dirname}.csv')
+    save_results([results[0].head()] + results_representation,
+                 filepath=os.path.join(output_dir, judgement_filename))
 
-    # jmeter actions test
-    # df_jmeter_baseline = group_dataframe_by_action(os.path.join(baseline_result_dir, 'kpi*.jtl'))
-    # df_selenium_baseline = group_dataframe_by_action(os.path.join(baseline_result_dir, 'selenium*.jtl'))
+
+def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str, output_dir: str):
+    action_tolerances = get_tolerances(tested_result_dir)
     fields = ('label', 'elapsed', )
     # gather all needed dataframes with specific fields
     df_baseline = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
@@ -151,23 +161,22 @@ def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str):
     results = judgement_test_measuring(df_baseline, df_tested,
                                        measurement_by_column='elapsed',
                                        tolerances=action_tolerances)
+    success_status = all(result.passed for result in results)
 
-    results_representation = [judgement_result.values() for judgement_result in results]
-    judgement_table = PrettyTable(results[0].head())
-    judgement_table.add_rows(results_representation)
-    print("Results of judgement")
-    print(judgement_table)
-    return [results[0].head()] + results_representation
+    save_judgement_results(results, output_dir,
+                           baseline_dirname=os.path.basename(baseline_result_dir),
+                           tested_dirname=os.path.basename(tested_result_dir))
+    return success_status
 
 
 def judge(baseline_dir, tested_dirs, output_dir):
+    judgement_succeeded = True
     for directory in tested_dirs:
-        results = judge_baseline_and_tested(baseline_dir, directory)
-        judgement_filename = os.path.join(
-            output_dir,
-            f'judged_baseline_{os.path.basename(baseline_dir)}_experiment_{os.path.basename(directory)}.csv')
-        save_results(results,
-                     filepath=os.path.join(output_dir, judgement_filename))
+        success = judge_baseline_and_tested(baseline_dir, directory, output_dir=output_dir)
+        if not success:
+            judgement_succeeded = False
+    if not judgement_succeeded:
+        raise SystemExit("Judgement has failed. Check judgement table above.")
 
 
 def __get_judgement_kwargs(config):

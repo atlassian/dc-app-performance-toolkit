@@ -72,22 +72,6 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
-  - scenario: selenium
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
-  - scenario: selenium
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
-  - scenario: selenium
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
-  - scenario: selenium
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
 scenarios:
   selenium:
     script: selenium_ui/confluence_ui.py
@@ -114,6 +98,7 @@ scenarios:
       perc_like_page: ${like_page}
       perc_quick_edit_page: ${quick_edit_page}
       perc_standalone_extension: ${standalone_extension}
+
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
@@ -143,7 +128,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "103.0.5060.53" # Supports Chrome version 103. You can refer to http://chromedriver.chromium.org/downloads
+      version: "103.0.5060.134" # Supports Chrome version 103. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
