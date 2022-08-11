@@ -261,7 +261,10 @@ def get_wait_browser_metrics(webdriver):
     return {}
 
 
-def measure_dom_requests(webdriver, interaction):
+def measure_dom_requests(webdriver, interaction, description=''):
+    if CONFLUENCE_SETTINGS.extended_metrics:
+        if description:
+            interaction = f"{interaction}-{description}"
     timing = webdriver.execute_script(
         "return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;")
     lockfile = f'{selenium_results_file}.lock'
@@ -285,21 +288,22 @@ def measure_browser_navi_metrics(webdriver, dataset):
                     key = data['properties']['key']
                     ready_for_user = data['properties']['readyForUser']
                     mark = ''
-                    if 'blogpost.view' in key:
-                        blogpost_template_id = dataset['view_blog'][2]
-                        mark = f'-view_blog-{blogpost_template_id}'
-                        print(f'BLOGPOST_FOUND {mark}')
-                    if 'page.view' in key:
-                        if 'pageID' in post_data_str:
-                            page_id = re.search('"pageID":"(.+?)"', post_data_str).group(1)
+                    if CONFLUENCE_SETTINGS.extended_metrics:
+                        if 'blogpost.view' in key:
+                            blogpost_template_id = dataset['view_blog'][2]
+                            mark = f'-view_blog-{blogpost_template_id}'
+                            print(f'BLOGPOST_FOUND {mark}')
+                        if 'page.view' in key:
+                            if 'pageID' in post_data_str:
+                                page_id = re.search('"pageID":"(.+?)"', post_data_str).group(1)
 
-                            for name, value in dataset.items():
-                                if value:
-                                    if page_id == value[0]:  # [page_id, project_id, template_id]
-                                        mark = f'-{name}-{value[2]}'
-                                        break
-                                    else:
-                                        mark = f'-create_page'
+                                for name, value in dataset.items():
+                                    if value:
+                                        if page_id == value[0]:  # [page_id, project_id, template_id]
+                                            mark = f'-{name}-{value[2]}'
+                                            break
+                                        else:
+                                            mark = f'-create_page'
 
                     ready_for_user_dict = {'key': f'{key}{mark}', 'ready_for_user': ready_for_user}
                     metrics.append(ready_for_user_dict)

@@ -69,6 +69,7 @@ def login(webdriver, datasets):
 def view_page(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
+    page_description = random_page[2]
     datasets['view_page'] = random_page
     datasets['view_page_cache'] = random_page
     page = Page(webdriver, page_id=page_id)
@@ -76,7 +77,7 @@ def view_page(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction=f"selenium_view_page-{random_page[2]}")
+        measure_dom_requests(webdriver, interaction=f"selenium_view_page", description=page_description)
         measure_browser_navi_metrics(webdriver, datasets)
 
     measure()
@@ -85,13 +86,15 @@ def view_page(webdriver, datasets):
 def view_page_from_cache(webdriver, datasets):
     cached_page = datasets['view_page_cache']
     page_id = cached_page[0]
+    page_description = cached_page[2]
     datasets['view_page'] = cached_page
+
     page = Page(webdriver, page_id=page_id)
 
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction=f"selenium_view_page_from_cache-{cached_page[2]}")
+        measure_dom_requests(webdriver, interaction=f"selenium_view_page_from_cache", description=page_description)
         measure_browser_navi_metrics(webdriver, datasets)
 
     measure()
@@ -100,14 +103,14 @@ def view_page_from_cache(webdriver, datasets):
 def view_blog(webdriver, datasets):
     random_blog = random.choice(datasets[BLOGS])
     blog_id = random_blog[0]
-
+    blog_description = random_blog[2]
     blog = Page(webdriver, page_id=blog_id)
     datasets['view_blog'] = random_blog
 
     def measure():
         blog.go_to()
         blog.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction=f"selenium_view_blog-{random_blog[2]}")
+        measure_dom_requests(webdriver, interaction=f"selenium_view_blog", description=blog_description)
         measure_browser_navi_metrics(webdriver, datasets)
 
     measure()
@@ -155,6 +158,7 @@ def create_confluence_page(webdriver, datasets):
 def edit_confluence_page_by_url(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
+    page_description = random_page[2]
     datasets['edit_page'] = random_page
     edit_page = Editor(webdriver, page_id=page_id)
 
@@ -163,7 +167,8 @@ def edit_confluence_page_by_url(webdriver, datasets):
         def sub_measure():
             edit_page.go_to()
             edit_page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor-{random_page[2]}")
+            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
+                                 description=page_description)
             measure_browser_navi_metrics(webdriver, datasets)
 
         sub_measure()
@@ -172,7 +177,8 @@ def edit_confluence_page_by_url(webdriver, datasets):
 
         def sub_measure():
             edit_page.save_edited_page()
-            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page-{random_page[2]}")
+            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
+                                 description=page_description)
             measure_browser_navi_metrics(webdriver, datasets)
         sub_measure()
     measure()
@@ -180,6 +186,7 @@ def edit_confluence_page_by_url(webdriver, datasets):
 
 def edit_confluence_page_quick_edit(webdriver, datasets):
     random_page = datasets['edit_page']
+    page_description = random_page[2]
     datasets['edit_page_click'] = random_page
     page = Page(webdriver, page_id=random_page[0])
     edit_page = Editor(webdriver, page_id=random_page[0])
@@ -191,7 +198,8 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
             page.wait_for_page_loaded()
             page.click_edit()
             edit_page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor-{random_page[2]}")
+            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
+                                 description=page_description)
             measure_browser_navi_metrics(webdriver, datasets)
 
         sub_measure()
@@ -200,7 +208,8 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
 
         def sub_measure():
             edit_page.save_edited_page()
-            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page-{random_page[2]}")
+            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
+                                 description=page_description)
             measure_browser_navi_metrics(webdriver, datasets)
         sub_measure()
     measure()
