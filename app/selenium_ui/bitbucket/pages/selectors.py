@@ -87,6 +87,7 @@ class PopupLocators:
     popup_3 = '.css-15p34h1'
     popup_4 = '.css-1dqf51u'
     popup_5 = '.css-1kflcxk'
+    popup_6 = '.css-1gh2dqy'
 
 
 class LoginPageLocators:
