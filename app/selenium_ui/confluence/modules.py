@@ -1,7 +1,5 @@
 import random
 from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, measure_dom_requests
-import json
-import time
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
