@@ -137,7 +137,8 @@ def generate_report_summary(collector):
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
         summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
-    max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
+    max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates,
+                                          **collector.app_specific_rates}.keys(), key=len))
     offset_1st = max(max_summary_report_str_len + 5, 50)
 
     pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)

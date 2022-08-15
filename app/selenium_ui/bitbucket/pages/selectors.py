@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from selenium.webdriver.common.by import By
 from util.conf import BITBUCKET_SETTINGS
 
@@ -86,6 +88,8 @@ class PopupLocators:
     popup_2 = 'button.aui-button-link.feature-discovery-close'
     popup_3 = '.css-15p34h1'
     popup_4 = '.css-1dqf51u'
+    popup_5 = '.css-1kflcxk'
+    popup_6 = '.css-1gh2dqy'
 
 
 class LoginPageLocators:
@@ -162,10 +166,14 @@ class RepoLocators:
     pr_destination_branch_name = (By.ID, 'targetBranchDialog-search-input')
     pr_destination_branch_spinner = (By.CSS_SELECTOR, '#targetBranchDialog>div.results>div.spinner-wrapper')
 
-    pr_continue_button = (By.ID, 'show-create-pr-button')
-    pr_description_field = (By.CSS_SELECTOR, 'textarea#pull-request-description')
-    pr_title_field = (By.ID, 'title')
-    pr_submit_button = (By.ID, 'submit-form')
+    pr_continue_button = OrderedDict({"7.0.0": (By.ID, "show-create-pr-button"),
+                                      "8.0.0": (By.CSS_SELECTOR, "button.continue-button")})
+    pr_description_field = OrderedDict({"7.0.0": (By.CSS_SELECTOR, "textarea#pull-request-description"),
+                                        "8.0.0": (By.CSS_SELECTOR, "div.editor-wrapper")})
+    pr_title_field = OrderedDict({"7.0.0": (By.ID, "title"),
+                                  "8.0.0": (By.ID, "pull-request-title")})
+    pr_submit_button = OrderedDict({"7.0.0": (By.ID, "submit-form"),
+                                    "8.0.0": (By.CSS_SELECTOR, "button.create-button")})
 
 
 class PullRequestLocator:

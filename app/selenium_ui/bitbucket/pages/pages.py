@@ -1,3 +1,4 @@
+from packaging import version
 from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
@@ -93,7 +94,8 @@ class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3, PopupLocators.popup_4)
+                                  PopupLocators.popup_3, PopupLocators.popup_4, PopupLocators.popup_5,
+                                  PopupLocators.popup_6)
 
 
 class Repository(BasePage):
@@ -133,6 +135,9 @@ class RepoPullRequests(BasePage):
     def create_new_pull_request(self, from_branch, to_branch):
         self.go_to_url(url=self.url_manager.create_pull_request_url(from_branch=from_branch,
                                                                     to_branch=to_branch))
+        if self.app_version > version.parse("8.0.0"):
+            self.wait_until_clickable(self.get_selector(RepoLocators.pr_continue_button))
+            self.wait_until_visible(self.get_selector(RepoLocators.pr_continue_button)).click()
         self.submit_pull_request()
 
     def set_pull_request_source_branch(self, source_branch):
@@ -157,15 +162,15 @@ class RepoPullRequests(BasePage):
         self.wait_until_invisible(RepoLocators.pr_destination_branch_spinner)
         destination_branch_name_field.send_keys(Keys.ENTER)
         self.wait_until_invisible(RepoLocators.pr_branches_dropdown)
-        self.wait_until_clickable(RepoLocators.pr_continue_button)
-        self.wait_until_visible(RepoLocators.pr_continue_button).click()
+        self.wait_until_clickable(self.get_selector(RepoLocators.pr_continue_button))
+        self.wait_until_visible(self.get_selector(RepoLocators.pr_continue_button)).click()
 
     def submit_pull_request(self):
-        self.wait_until_visible(RepoLocators.pr_description_field)
-        title = self.get_element(RepoLocators.pr_title_field)
+        self.wait_until_visible(self.get_selector(RepoLocators.pr_description_field))
+        title = self.get_element(self.get_selector(RepoLocators.pr_title_field))
         title.clear()
         title.send_keys('Selenium test pull request')
-        self.wait_until_visible(RepoLocators.pr_submit_button).click()
+        self.wait_until_visible(self.get_selector(RepoLocators.pr_submit_button)).click()
         self.wait_until_visible(PullRequestLocator.pull_request_activity_content)
         self.wait_until_clickable(PullRequestLocator.pull_request_page_merge_button)
 
