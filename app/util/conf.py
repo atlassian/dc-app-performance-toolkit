@@ -58,6 +58,7 @@ class ConfluenceSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.extended_metrics = self.get_property('extended_metrics')
 
 
 class BitbucketSettings(BaseAppSettings):
