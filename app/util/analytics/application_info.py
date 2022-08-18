@@ -6,6 +6,7 @@ from util.api.bitbucket_clients import BitbucketRestClient
 from util.api.crowd_clients import CrowdRestClient
 from util.api.bamboo_clients import BambooClient
 import json
+from lxml import html
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -59,6 +60,10 @@ class BaseApplication:
     def deployment(self):
         return self.client.get_deployment_type()
 
+    @property
+    def java_version(self):
+        return None  # TODO: Add Java version to results_summary.log for all supported products
+
 
 class Jira(BaseApplication):
     type = JIRA
@@ -95,6 +100,14 @@ class Confluence(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.client.get_total_pages_count()} pages"
+
+    @property
+    def java_version(self):
+        full_system_info = self.client.get_system_info_page()
+        java_versions_parsed = html.fromstring(full_system_info).xpath('//*[contains(@id, "java.version")]')
+        if java_versions_parsed:
+            return java_versions_parsed[0].text
+        return None
 
 
 class Bitbucket(BaseApplication):
