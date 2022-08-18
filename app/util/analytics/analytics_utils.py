@@ -7,7 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
-from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM, CONFLUENCE
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -92,6 +92,9 @@ def generate_report_summary(collector):
         total_git_count = collector.results_log.actual_git_operations_count
         summary_report.append(f'Total Git operations count|{total_git_count}')
         summary_report.append(f'Total Git operations compliant|{git_compliant}')
+
+    if collector.app_type == CONFLUENCE:
+        summary_report.append(f'Java version|{collector.java_version}')
 
     summary_report.append(f'Finished|{finished}')
     summary_report.append(f'Compliant|{compliant}')
