@@ -26,10 +26,8 @@ def login(webdriver, datasets):
     client = BitbucketRestClient(
         BITBUCKET_SETTINGS.server_url,
         BITBUCKET_SETTINGS.admin_login,
-        BITBUCKET_SETTINGS.admin_password,
-        verify=BITBUCKET_SETTINGS.secure,
-    )
-    webdriver.app_version = version.parse(client.get_application_properties()["version"])
+        BITBUCKET_SETTINGS.admin_password)
+    webdriver.app_version = version.parse(client.get_bitbucket_version())
     login_page = LoginPage(webdriver)
 
     @print_timing("selenium_login")
