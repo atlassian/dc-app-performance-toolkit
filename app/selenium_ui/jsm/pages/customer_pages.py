@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocators, TopPanelSelectors, \
-    CustomerPortalsSelectors, CustomerPortalSelectors, RequestSelectors, RequestsSelectors
+    CustomerPortalsSelectors, CustomerPortalSelectors, RequestSelectors, RequestsSelectors, InsightSelectors
 
 
 class Login(BasePage):
@@ -162,3 +162,21 @@ class Requests(BasePage):
         self.page_url = url_manager.all_requests_url() if all_requests else url_manager.my_requests_url()
 
     page_loaded_selector = RequestsSelectors.requests_label
+
+
+class ViewRequestWithInsight(BasePage):
+
+    def __init__(self, driver, portal_id):
+        BasePage.__init__(self, driver)
+        url_manager = UrlManager(portal_id=portal_id)
+        self.page_url = url_manager.portal_url()
+
+    def choose_request_type(self):
+        self.wait_until_visible(RequestSelectors.list_of_requests_types)
+        request_types = self.get_elements(CustomerPortalSelectors.request_type)
+        request_type = request_types[1]
+        request_type.click()
+        self.wait_until_visible(CustomerPortalSelectors.create_request_button)
+
+    def check_insight_field(self):
+        self.wait_until_visible(InsightSelectors.insight_field_icon)

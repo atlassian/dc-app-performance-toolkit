@@ -7,7 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
-from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -81,6 +81,9 @@ def generate_report_summary(collector):
     summary_report.append(f'Application|{collector.app_type} {collector.application_version}')
     summary_report.append(f'Dataset info|{collector.dataset_information}')
     summary_report.append(f'Application nodes count|{collector.nodes_count}')
+    if not collector.app_type == CROWD:
+        summary_report.append(f'Available Processors|{collector.processors}')
+        summary_report.append(f'Deployment|{collector.deployment}')
     summary_report.append(f'Concurrency|{collector.concurrency}')
     summary_report.append(f'Expected test run duration from yml file|{collector.duration} sec')
     summary_report.append(f'Actual test run duration|{collector.actual_duration} sec')
@@ -94,6 +97,14 @@ def generate_report_summary(collector):
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
+
+    if collector.app_type == JSM:
+        insight = collector.insight
+        summary_report.append(f'Insight|{insight}')
+
+    if collector.app_type == INSIGHT:
+        insight = collector.insight
+        summary_report.append(f'Insight|{insight}')
 
     if collector.app_type == BAMBOO:
         summary_report.append(f'Number of plans with unexpected status|'
