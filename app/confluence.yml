@@ -114,7 +114,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "105.0.5195.52" # Supports Chrome version 105. You can refer to http://chromedriver.chromium.org/downloads
+      version: "106.0.5249.61" # Supports Chrome version 106. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
