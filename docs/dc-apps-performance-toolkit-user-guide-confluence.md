@@ -276,9 +276,9 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Users | ~5 000 |
 
 {{% warning %}}
-It is recommended to terminate development environment before creating an enterprise-scale environment.
+It is recommended to terminate a development environment before creating an enterprise-scale environment.
 Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
-If you want to keep development environment up, read [How do I deal with pre-existing state in multiple environment?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#:~:text=How%20do%20I%20deal%20with%20pre%2Dexisting%20state%20in%20multiple%20environment%3F)
+If you want to keep a development environment up, read [How do I deal with a pre-existing state in multiple environments?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#:~:text=How%20do%20I%20deal%20with%20pre%2Dexisting%20state%20in%20multiple%20environment%3F)
 {{% /warning %}}
 
 Below process describes how to install enterprise-scale Confluence DC with "large" dataset included: 
@@ -563,7 +563,7 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 1. Once completed, in the `./reports` folder, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 {{% warning %}}
-It is recommended to terminate enterprise-scale environment after completing all tests.
+It is recommended to terminate an enterprise-scale environment after completing all tests.
 Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
 {{% /warning %}}
 
