@@ -246,25 +246,17 @@ def get_requests_by_url(requests, url_path):
     return filtered_requests
 
 
-def get_wait_browser_metrics(webdriver, expected_metrics) -> dict:
-    """ Get expected metrics from api requests. """
-
+def get_wait_browser_metrics(webdriver, expected_metrics):
     attempts = 20
     sleep_time = 0.5
     data = {}
-    metrics = expected_metrics[:]
 
     for i in range(attempts):
         requests = get_performance_logs(webdriver)
         requests_bulk = get_requests_by_url(requests, 'bulk')
         data.update(requests_bulk)
 
-        for request_id, request in data.items():
-            for metric in metrics:
-                if metric in str(request):
-                    metrics.remove(metric)
-
-        if not metrics:
+        if all([metric in str(data) for metric in expected_metrics]):
             return data
 
         print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
