@@ -64,7 +64,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
 3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
 4. Clone the project repo:
    ```bash
-   git clone -b 2.0.4 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.0.5 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt_small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt_small.tfvars) file to the `data-center-terraform` folder.
 6. Set **required** variables in `dcapt_small.tfvars` file:
@@ -275,6 +275,12 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Spaces  | ~5 000 |
 | Users | ~5 000 |
 
+{{% warning %}}
+It is recommended to terminate development environment before creating an enterprise-scale environment.
+Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
+If you want to keep development environment up, read [How do I deal with pre-existing state in multiple environment?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#:~:text=How%20do%20I%20deal%20with%20pre%2Dexisting%20state%20in%20multiple%20environment%3F)
+{{% /warning %}}
+
 Below process describes how to install enterprise-scale Confluence DC with "large" dataset included: 
 
 1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
@@ -283,7 +289,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
 3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
 4. Clone the project repo:
    ```bash
-   git clone -b 2.0.4 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.0.5 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
 6. Set **required** variables in `dcapt_small.tfvars` file:
@@ -557,7 +563,8 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 1. Once completed, in the `./reports` folder, you will be able to review action timings on Confluence Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 {{% warning %}}
-After completing all your tests, delete your Confluence Data Center stacks.
+It is recommended to terminate enterprise-scale environment after completing all tests.
+Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
 {{% /warning %}}
 
 #### Attaching testing results to DCHELP ticket
@@ -572,4 +579,6 @@ Do not forget to attach performance testing results to your DCHELP ticket.
 2. Attach two reports folders to your DCHELP ticket.
 
 ## <a id="support"></a> Support
+See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page
+for Terraform related questions.
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
