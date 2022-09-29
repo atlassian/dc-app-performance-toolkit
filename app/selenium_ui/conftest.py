@@ -246,19 +246,30 @@ def get_requests_by_url(requests, url_path):
     return filtered_requests
 
 
-def get_wait_browser_metrics(webdriver):
-    attempts = 20
-    max_wait_time = 10
-    sleep_time = float(max_wait_time / attempts)
+def get_wait_browser_metrics(webdriver, expected_metrics) -> dict:
+    """ Get expected metrics from api requests. """
 
-    for i in range(0, attempts):
+    attempts = 20
+    sleep_time = 0.5
+    data = {}
+    metrics = expected_metrics[:]
+
+    for i in range(attempts):
         requests = get_performance_logs(webdriver)
         requests_bulk = get_requests_by_url(requests, 'bulk')
-        for request_id, request in requests_bulk.items():
-            if 'browser.metrics.navigation' in str(request):
-                return requests_bulk
+        data.update(requests_bulk)
+
+        for request_id, request in data.items():
+            for metric in metrics:
+                if metric in str(request):
+                    metrics.remove(metric)
+
+        if not metrics:
+            return data
+
         print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
         time.sleep(sleep_time)
+
     return {}
 
 
@@ -277,8 +288,8 @@ def measure_dom_requests(webdriver, interaction, description=''):
             jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
 
-def measure_browser_navi_metrics(webdriver, dataset):
-    requests = get_wait_browser_metrics(webdriver)
+def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
+    requests = get_wait_browser_metrics(webdriver, expected_metrics)
     metrics = []
     for request_id, request in requests.items():
         if 'browser.metrics.navigation' in str(request):

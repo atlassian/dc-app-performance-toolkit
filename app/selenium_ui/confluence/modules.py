@@ -3,6 +3,7 @@ from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, mea
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
+from util.confluence.browser_metrics import metrics
 
 USERS = "users"
 PAGES = "pages"
@@ -57,7 +58,7 @@ def login(webdriver, datasets):
             all_updates_page = AllUpdates(webdriver)
             all_updates_page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
-            measure_browser_navi_metrics(webdriver, datasets)
+            measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_login'])
         sub_measure()
 
     measure()
@@ -76,7 +77,7 @@ def view_page(webdriver, datasets):
         page.go_to()
         page.wait_for_page_loaded()
         measure_dom_requests(webdriver, interaction=f"selenium_view_page", description=page_description)
-        measure_browser_navi_metrics(webdriver, datasets)
+        measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_view_page'])
 
     measure()
 
@@ -93,7 +94,7 @@ def view_page_from_cache(webdriver, datasets):
         page.go_to()
         page.wait_for_page_loaded()
         measure_dom_requests(webdriver, interaction=f"selenium_view_page_from_cache", description=page_description)
-        measure_browser_navi_metrics(webdriver, datasets)
+        measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_view_page_from_cache'])
 
     measure()
 
@@ -109,7 +110,7 @@ def view_blog(webdriver, datasets):
         blog.go_to()
         blog.wait_for_page_loaded()
         measure_dom_requests(webdriver, interaction=f"selenium_view_blog", description=blog_description)
-        measure_browser_navi_metrics(webdriver, datasets)
+        measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_view_blog'])
 
     measure()
 
@@ -121,7 +122,7 @@ def view_dashboard(webdriver, datasets):
         dashboard_page.go_to()
         dashboard_page.wait_for_page_loaded()
         measure_dom_requests(webdriver, interaction="selenium_view_dashboard")
-        measure_browser_navi_metrics(webdriver, datasets)
+        measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_view_dashboard'])
     measure()
 
 
@@ -135,7 +136,7 @@ def create_confluence_page(webdriver, datasets):
             PopupManager(webdriver).dismiss_default_popup()
             create_page.wait_for_create_page_open()
             measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
-            measure_browser_navi_metrics(webdriver, datasets)
+            measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_create_page'])
         sub_measure()
 
         PopupManager(webdriver).dismiss_default_popup()
@@ -148,7 +149,6 @@ def create_confluence_page(webdriver, datasets):
             page = Page(webdriver)
             page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction="selenium_create_page:save_created_page")
-            measure_browser_navi_metrics(webdriver, datasets)
         sub_measure()
     measure()
 
@@ -167,7 +167,7 @@ def edit_confluence_page_by_url(webdriver, datasets):
             edit_page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
                                  description=page_description)
-            measure_browser_navi_metrics(webdriver, datasets)
+            measure_browser_navi_metrics(webdriver, datasets, expected_metrics=metrics['selenium_edit_page_by_url'])
 
         sub_measure()
 
@@ -177,7 +177,6 @@ def edit_confluence_page_by_url(webdriver, datasets):
             edit_page.save_edited_page()
             measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
                                  description=page_description)
-            measure_browser_navi_metrics(webdriver, datasets)
         sub_measure()
     measure()
 
@@ -198,7 +197,8 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
             edit_page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
                                  description=page_description)
-            measure_browser_navi_metrics(webdriver, datasets)
+            measure_browser_navi_metrics(webdriver, datasets,
+                                         expected_metrics=metrics['selenium_quick_edit_page_click'])
 
         sub_measure()
 
@@ -208,7 +208,6 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
             edit_page.save_edited_page()
             measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
                                  description=page_description)
-            measure_browser_navi_metrics(webdriver, datasets)
         sub_measure()
     measure()
 
