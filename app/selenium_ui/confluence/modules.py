@@ -192,6 +192,7 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
 
         def sub_measure():
             page.go_to()
+            page.check_resources_loaded()
             page.wait_for_page_loaded()
             page.click_edit()
             edit_page.wait_for_page_loaded()

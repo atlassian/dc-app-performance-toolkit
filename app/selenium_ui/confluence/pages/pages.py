@@ -1,3 +1,5 @@
+import time
+
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
@@ -82,6 +84,19 @@ class Page(BasePage):
 
     def click_edit(self):
         self.wait_until_clickable(PageLocators.edit_page_button).click()
+
+    def check_resources_loaded(self):
+        attempts = 3
+        for i in range(attempts):
+            time.sleep(1)
+            loaded = self.execute_js("return require('confluence-editor-loader/editor-loader').resourcesLoaded();")
+            attempts -= 1
+
+            if loaded:
+                break
+
+            if not loaded and attempts == 0:
+                print('Resources not loaded. quick-view metrics will be missing.')
 
 
 class Dashboard(BasePage):
