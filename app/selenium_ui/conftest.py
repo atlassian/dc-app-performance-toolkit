@@ -247,7 +247,7 @@ def get_requests_by_url(requests, url_path):
 
 
 def get_wait_browser_metrics(webdriver, expected_metrics):
-    attempts = 20
+    attempts = 15
     sleep_time = 0.5
     data = {}
 
@@ -262,6 +262,7 @@ def get_wait_browser_metrics(webdriver, expected_metrics):
         print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
         time.sleep(sleep_time)
 
+    print(f"WARNING: {expected_metrics} metrics not found.")
     return {}
 
 
