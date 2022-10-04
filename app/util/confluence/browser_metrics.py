@@ -1,5 +1,5 @@
 
-metrics = {
+browser_metrics = {
     "selenium_login": ["confluence.dashboard.view"],
     "selenium_view_blog": ["confluence.blogpost.view"],
     "selenium_view_dashboard": ["confluence.dashboard.view"],
