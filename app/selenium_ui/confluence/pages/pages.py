@@ -85,18 +85,19 @@ class Page(BasePage):
     def click_edit(self):
         self.wait_until_clickable(PageLocators.edit_page_button).click()
 
-    def check_resources_loaded(self):
-        attempts = 3
-        for i in range(attempts):
-            time.sleep(1)
+    def wait_for_resources_loaded(self):
+        sleep_time = 0.1
+        attempts = 30
+        total_sleep = 0
+
+        for _ in range(attempts):
             loaded = self.execute_js("return require('confluence-editor-loader/editor-loader').resourcesLoaded();")
-            attempts -= 1
-
             if loaded:
-                break
-
-            if not loaded and attempts == 0:
-                print('Resources not loaded. quick-view metrics will be missing.')
+                return
+            time.sleep(sleep_time)
+            total_sleep += sleep_time
+            print(f'Total sleep time: {total_sleep}')
+        print('confluence-editor-loader resource could not be loaded')
 
 
 class Dashboard(BasePage):
