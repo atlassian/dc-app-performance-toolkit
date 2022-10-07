@@ -31,9 +31,7 @@ whitelist_cidr = ["0.0.0.0/0"]
 #domain = "<example.com>"
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
-resource_tags = {
-  Name           : "dcapt-testing-small"
-}
+resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
 instance_types     = ["t3.xlarge"]
@@ -130,7 +128,7 @@ jira_db_master_password     = "Password1!"
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.4.0"
+confluence_helm_chart_version = "1.5.1"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully

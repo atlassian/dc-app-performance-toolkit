@@ -31,9 +31,7 @@ whitelist_cidr = ["0.0.0.0/0"]
 #domain = "<example.com>"
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
-resource_tags = {
-  Name           : "dcapt-testing"
-}
+resource_tags = {Name: "dcapt-testing"}
 
 # Instance types that is preferred for EKS node group.
 instance_types     = ["m5.2xlarge"]
@@ -44,7 +42,7 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 4
+max_cluster_capacity = 5
 
 ################################################################################
 # Jira Settings
@@ -130,7 +128,7 @@ jira_db_master_password     = "Password1!"
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.4.0"
+confluence_helm_chart_version = "1.5.1"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
@@ -172,7 +170,10 @@ confluence_shared_home_size = "100Gi"
 # To restore shared home dataset, you can provide EBS snapshot ID of the shared home volume.
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
-confluence_shared_home_snapshot_id = "snap-0f4d035bf0e01b7d9"
+# 7.19.2
+confluence_shared_home_snapshot_id = "snap-09eee6eb52bbe19d9"
+# 7.13.7
+# confluence_shared_home_snapshot_id = "snap-0f4d035bf0e01b7d9"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -193,7 +194,11 @@ confluence_db_name = "confluence"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-confluence_db_snapshot_id = "conflunce-large-k8s"
+# 7.19.2
+confluence_db_snapshot_id = "confluence-k8s-large-7-19"    # 7.19.2
+# 7.13.2
+# confluence_db_snapshot_id = "conflunce-large-k8s"    # 7.13.7
+
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
 confluence_db_snapshot_build_number = "8703"
