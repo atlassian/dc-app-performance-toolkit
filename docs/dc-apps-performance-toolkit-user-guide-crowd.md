@@ -97,9 +97,9 @@ All important parameters are listed and described in this section. For all other
 
 **Crowd setup**
 
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `4.4.0` |
+| Parameter | Recommended Value                                                   |
+| --------- |---------------------------------------------------------------------|
+| Version | The Data Center App Performance Toolkit officially supports `5.0.2` |
 
 **Cluster nodes**
 
