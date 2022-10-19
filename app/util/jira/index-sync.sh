@@ -50,7 +50,12 @@ function find_correct_snapshot() {
               echo "Current size of the snapshot file: ${SNAPSHOT_SIZE}"
               if sudo su -c "test -f ${SNAPSHOT} && [ ${SNAPSHOT_SIZE} -gt ${MIN_SNAPSHOT_SIZE} ]"; then
                 break
+                echo # New line
+                echo "Snapshot was created successfully."
               else
+                echo "Waiting for Snapshot generation, attempt ${COUNTER}/${ATTEMPTS} at waiting ${SLEEP_TIME} seconds."
+                echo # New line
+                echo # New line
                 sleep ${SLEEP_TIME}
                 let COUNTER=$COUNTER+1
               fi
