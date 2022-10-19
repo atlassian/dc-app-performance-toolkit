@@ -646,6 +646,18 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
 ---
+
+#### <a id="indexrecovery"></a> Index Recovery (~15 min)
+
+1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+3. In the **Index Recovery** click **Edit Settings**
+4. Set the recovery index schedule to 5min ahead of the current time
+5. Wait ~10min until the index snapshot is created
+
+Jira will be unavailable for some time during the index recovery process.
+
+---
 {{% note %}}
 After [Preloading your Jira deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 It's recommended to change default password from UI account page for security reasons.
