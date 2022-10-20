@@ -66,10 +66,10 @@ All important parameters are listed and described in this section. For all other
 
 **Bitbucket setup**
 
-| Parameter | Recommended value                                                                                                                                                                                                                     |
-| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Bitbucket Product | Software                                                                                                                                                                                                                              |
-| Version | The Data Center App Performance Toolkit officially supports `7.17.6`, `7.21.3` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.2` platform release. |
+| Parameter | Recommended value                                                                                                                                                                                                                      |
+| --------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bitbucket Product | Software                                                                                                                                                                                                                               |
+| Version | The Data Center App Performance Toolkit officially supports `7.17.11`, `7.21.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.4` platform release. |
 
 
 **Cluster nodes**
@@ -316,9 +316,9 @@ All important parameters are listed and described in this section. For all other
 
 **Bitbucket setup**
 
-| Parameter | Recommended Value                                                                                                                                                                                                                     |
-| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Version | The Data Center App Performance Toolkit officially supports `7.17.6`, `7.21.3` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.2` platform release. |
+| Parameter | Recommended Value                                                                                                                                                                                                                      |
+| --------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Version | The Data Center App Performance Toolkit officially supports `7.17.11`, `7.21.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.4` platform release. |
 
 
 **Cluster nodes**
