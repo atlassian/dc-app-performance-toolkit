@@ -661,7 +661,7 @@ Jira will be unavailable for some time during the re-indexing process. When fini
     export SSH_OPTS2='-o ServerAliveCountMax=30'
     ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
     ```
-2. Once you're in the second node, run command corresponding to your Jira version:
+2. Once you're in the node, run command corresponding to your Jira version:
    
    
    **Jira 9.0.0**
