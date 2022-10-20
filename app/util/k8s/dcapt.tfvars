@@ -202,18 +202,21 @@ confluence_db_name = "confluence"
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 # 7.19.2
-confluence_db_snapshot_id = "confluence-k8s-large-7-19"    # 7.19.2
-# 7.13.2
-# confluence_db_snapshot_id = "confluence-large-k8s-dbname-fix"    # 7.13.7
+confluence_db_snapshot_id = "confluence-k8s-large-7-19"
+# 7.13.7
+# confluence_db_snapshot_id = "confluence-large-k8s-dbname-fix"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-confluence_db_snapshot_build_number = "8703"
+# 7.19.2
+confluence_db_snapshot_build_number = "8804"
+# 7.13.7
+# confluence_db_snapshot_build_number = "8703"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
-confluence_db_master_username = "postgres"
+confluence_db_master_username = "atlconfluence"
 confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
