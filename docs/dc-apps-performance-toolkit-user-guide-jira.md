@@ -649,11 +649,40 @@ Jira will be unavailable for some time during the re-indexing process. When fini
 
 #### <a id="indexrecovery"></a> Index Recovery (~15 min)
 
-1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-3. In the **Index Recovery** click **Edit Settings**
-4. Set the recovery index schedule to 5min ahead of the current time
-5. Wait ~10min until the index snapshot is created
+1. Using SSH, connect to the Jira node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+2. Once you're in the second node, run command corresponding to your Jira version:
+   
+   
+   **Jira 9.0.0**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/caches/indexesV2/snapshots/IndexSnapshot*" | tail -1
+   ```
+   **Jira 8.20.13**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/export/indexsnapshots/IndexSnapshot*" | tail -1
+   ```
+   
+4. The snapshot size and name will be shown in the console output.
+
+{{% note %}}
+If your snapshot is less than 6.6 GB, please continue through this part of the guide. Otherwise, you can immediately proceed to step **Setting up an execution environment**
+{{% note %}}
+5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+7. In the **Index Recovery** click **Edit Settings**
+8. Set the recovery index schedule to 5min ahead of the current time
+9. Wait ~10min until the index snapshot is created
 
 Jira will be unavailable for some time during the index recovery process.
 

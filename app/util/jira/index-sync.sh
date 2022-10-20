@@ -1,8 +1,15 @@
 #!/bin/bash
-
+# Read command line argument
+while [[ "$#" -gt 0 ]]; do case $1 in
+  --jsm) jsm=1 ;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+###################    Variables section         ###################
 SEARCH_LOG="/var/atlassian/application-data/jira/log/*.log"
 TIMEOUT=300
-MIN_SNAPSHOT_SIZE=7140000
+MIN_SNAPSHOT_SIZE=6890000
+# Jira version variable
+JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 
 if [ "$(sudo su jira -c "ls -l ""$SEARCH_LOG"" 2>/dev/null | wc -l")" -gt 0 ]
 then
@@ -38,20 +45,27 @@ function find_word_in_log() {
 }
 # Check if is correct index snapshot for Jira DC is generated
 function find_correct_snapshot() {
-        SLEEP_TIME=100
+        JIRA_VERSION=$(sudo su jira -c "cat ${JIRA_VERSION_FILE}" | cut -c1)
+        SLEEP_TIME=30
         ATTEMPTS=$((TIMEOUT / SLEEP_TIME))
         while [ ${COUNTER} -lt ${ATTEMPTS} ];do
             # Get the latest snapshot from the index-snapshots folder
-            SNAPSHOT=$(sudo su -c "ls -tr /media/atl/jira/shared/export/indexsnapshots/IndexSnapshot*" 2>/dev/null | tail -1)
+            # shellcheck disable=SC2031
+            if [[ ${JIRA_VERSION} == 8 ]]; then
+              SNAPSHOT=$(sudo su -c "ls -tr /media/atl/jira/shared/export/indexsnapshots/IndexSnapshot*" 2>/dev/null | tail -1)
+            elif [[ ${JIRA_VERSION} == 9 ]]; then
+              SNAPSHOT=$(sudo su -c "ls -tr /media/atl/jira/shared/caches/indexesV2/snapshots/IndexSnapshot*" 2>/dev/null | tail -1)
+            fi
             if  sudo su -c "test -z ${SNAPSHOT}"; then
-              echo "There is no snapshot file yet in /media/atl/jira/shared/export/indexsnapshots/ folder."
+              echo "There is no snapshot file yet"
+              sleep ${SLEEP_TIME}
+              let COUNTER=$COUNTER+1
             else
               SNAPSHOT_SIZE=$(sudo su -c "du -s ${SNAPSHOT}" | cut -f1)
               echo "Current size of the snapshot file: ${SNAPSHOT_SIZE}"
               if sudo su -c "test -f ${SNAPSHOT} && [ ${SNAPSHOT_SIZE} -gt ${MIN_SNAPSHOT_SIZE} ]"; then
-                break
-                echo # New line
                 echo "Snapshot was created successfully."
+                break
               else
                 echo "Waiting for Snapshot generation, attempt ${COUNTER}/${ATTEMPTS} at waiting ${SLEEP_TIME} seconds."
                 echo # New line
@@ -69,7 +83,7 @@ function find_correct_snapshot() {
                 2. Go to Jira System settings
                 3. Indexing page
                 4. Make sure you have index on this node or run re-index (~30min)
-                5. Set the recovery index schedule to 5min ahead of the current time
+                5. Set the recovery index schedule to 5min ahead of the current server time
                 6. Wait 10min until the index snapshot is created
                 7. After scaling new nodes will get an index recovered from the index snapshot"
           exit 1
@@ -77,6 +91,8 @@ function find_correct_snapshot() {
 }
 
 find_word_in_log "Index restore complete\|Done recovering indexes from snapshot found in shared home"
-find_correct_snapshot
+if [[ -z "$jsm" ]]; then
+  find_correct_snapshot
+fi
 
 echo "DCAPT util script execution is finished successfully."

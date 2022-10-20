@@ -1023,7 +1023,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
 
     ```bash
     wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh 2>&1 | tee -a index-sync.log
+    ./index-sync.sh --jsm 2>&1 | tee -a index-sync.log
     ```
     Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
     ```bash
