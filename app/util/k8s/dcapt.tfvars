@@ -156,6 +156,13 @@ confluence_mem      = "20Gi"
 confluence_min_heap = "12288m"
 confluence_max_heap = "12288m"
 
+# Synchrony instance resource configuration
+synchrony_cpu       = "2"
+synchrony_mem       = "2.5Gi"
+synchrony_min_heap  = "1024m"
+synchrony_max_heap  = "2048m"
+synchrony_stack_size = "2048k"
+
 # Storage
 confluence_local_home_size  = "200Gi"
 confluence_shared_home_size = "100Gi"
@@ -173,7 +180,7 @@ confluence_shared_home_size = "100Gi"
 # 7.19.2
 confluence_shared_home_snapshot_id = "snap-09eee6eb52bbe19d9"
 # 7.13.7
-# confluence_shared_home_snapshot_id = "snap-0f4d035bf0e01b7d9"
+# confluence_shared_home_snapshot_id = "snap-0e0c51df935ad8040"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -195,18 +202,21 @@ confluence_db_name = "confluence"
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 # 7.19.2
-confluence_db_snapshot_id = "confluence-k8s-large-7-19"    # 7.19.2
-# 7.13.2
-# confluence_db_snapshot_id = "conflunce-large-k8s"    # 7.13.7
+confluence_db_snapshot_id = "confluence-k8s-large-7-19"
+# 7.13.7
+# confluence_db_snapshot_id = "confluence-large-k8s-dbname-fix"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-confluence_db_snapshot_build_number = "8703"
+# 7.19.2
+confluence_db_snapshot_build_number = "8804"
+# 7.13.7
+# confluence_db_snapshot_build_number = "8703"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
-confluence_db_master_username = "postgres"
+confluence_db_master_username = "atlconfluence"
 confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
