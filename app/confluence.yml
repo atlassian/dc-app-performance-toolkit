@@ -22,6 +22,7 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
+    extended_metrics: False
     view_page: 46
     view_dashboard: 8
     view_blog: 10
@@ -84,7 +85,9 @@ scenarios:
       perc_view_attachment: ${view_attachment}
       perc_upload_attachment: ${upload_attachment}
       perc_like_page: ${like_page}
+      perc_quick_edit_page: ${quick_edit_page}
       perc_standalone_extension: ${standalone_extension}
+
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling

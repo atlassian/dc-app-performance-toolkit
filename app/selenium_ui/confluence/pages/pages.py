@@ -1,3 +1,5 @@
+import time
+
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
@@ -79,6 +81,20 @@ class Page(BasePage):
 
     def wait_for_comment_field(self):
         self.wait_until_visible(PageLocators.comment_text_field)
+
+    def click_edit(self):
+        self.wait_until_clickable(PageLocators.edit_page_button).click()
+
+    def wait_for_resources_loaded(self, timeout=5):
+        start_time = time.time()
+        print(f'Waiting for resources to be loaded: {timeout} s.')
+        while time.time() - start_time < timeout:
+            loaded = self.execute_js("return require('confluence-editor-loader/editor-loader').resourcesLoaded();")
+            if loaded:
+                print(f'Resources are loaded after {time.time() - start_time} s.')
+                break
+        else:
+            print(f'WARNING: confluence-editor-loader resources were not loaded in {timeout} s')
 
 
 class Dashboard(BasePage):
