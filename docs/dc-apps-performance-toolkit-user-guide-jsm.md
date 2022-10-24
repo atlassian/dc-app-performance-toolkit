@@ -800,6 +800,8 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 1. Attach the screenshot to your DCHELP ticket.
 
+Jira Service Management will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
+
 ---
 
 #### <a id="indexrecovery"></a> Index Recovery (~15 min)
