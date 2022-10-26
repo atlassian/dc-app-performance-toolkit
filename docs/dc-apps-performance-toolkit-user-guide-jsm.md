@@ -804,13 +804,13 @@ Jira Service Management will be unavailable for some time during the re-indexing
 
 ---
 
-#### <a id="indexrecovery"></a> Index Recovery (~15 min)
+#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira Service Management versions below 5.1.0) 
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-3. In the **Index Recovery** click **Edit Settings**
-4. Set the recovery index schedule to 5min ahead of the current server time
-5. Wait ~10min until the index snapshot is created
+3. In the **Index Recovery** click **Edit Settings**.
+4. Set the recovery index schedule to 5min ahead of the current server time.
+5. Wait ~10min until the index snapshot is created.
 
 Jira Service Management will be unavailable for some time during the index recovery process.
 
@@ -841,7 +841,7 @@ Jira Service Management will be unavailable for some time during the index recov
 8. The snapshot size and name will be shown in the console output.
 
 {{% note %}}
-Please note that the snapshot size must be around 2.1 GB or larger.
+Please note that the snapshot size must be around 2GB or larger.
 {{% note %}}
 
 ---
@@ -1052,7 +1052,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
 1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
 5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
-6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. (To make sure that Jira index successfully synchronized to the second node)
+6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira Service Management index successfully synchronized to the second node.
 7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
