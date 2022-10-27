@@ -804,7 +804,7 @@ Jira Service Management will be unavailable for some time during the re-indexing
 
 ---
 
-#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira Service Management versions below 5.1.0) 
+#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for JSM versions 5.0.x and below. For JSM 5.1.0+ skip this step.) 
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
@@ -842,7 +842,7 @@ Jira Service Management will be unavailable for some time during the index recov
 
 {{% note %}}
 Please note that the snapshot size must be around 2GB or larger.
-{{% note %}}
+{{% /note %}}
 
 ---
 {{% note %}}
@@ -1048,11 +1048,19 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Jira Service Management DC **with** app-specific actions:
 
 1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
 5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
 6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira Service Management index successfully synchronized to the second node.
+
+{{% warning %}}
+In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
+   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
+   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
+   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
+{{% /warning %}}
+   
 7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
@@ -1060,13 +1068,6 @@ To receive scalability benchmark results for two-node Jira Service Management DC
    docker pull atlassian/dcapt
    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
-   
-   {{% /warning %}}
-   In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
-   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
-   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
-   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
-   {{% /warning %}}
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.

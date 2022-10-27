@@ -647,7 +647,7 @@ Jira will be unavailable for some time during the re-indexing process. When fini
 
 ---
 
-#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira versions below 9.1.0)
+#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira versions 9.0.x and below. For Jira 9.1.0+ skip this step.)
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
@@ -685,7 +685,7 @@ Jira will be unavailable for some time during the index recovery process.
 
 {{% note %}}
 Please note that the snapshot size must be around 6GB or larger.
-{{% note %}}
+{{% /note %}}
 
 ---
 {{% note %}}
@@ -891,6 +891,14 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
 5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
 6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira index successfully synchronized to the second node.
+   
+{{% warning %}}
+In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
+   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
+   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
+   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
+{{% /warning %}}
+   
 7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
@@ -899,13 +907,6 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
 
-
-   {{% /warning %}}
-In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
-   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
-   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
-   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
-   {{% /warning %}}
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
