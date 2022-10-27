@@ -180,7 +180,7 @@ confluence_shared_home_size = "100Gi"
 # 7.19.2
 confluence_shared_home_snapshot_id = "snap-09eee6eb52bbe19d9"
 # 7.13.7
-# confluence_shared_home_snapshot_id = "snap-0e0c51df935ad8040"
+# confluence_shared_home_snapshot_id = "snap-09bd0af374ab96888"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -204,7 +204,7 @@ confluence_db_name = "confluence"
 # 7.19.2
 confluence_db_snapshot_id = "confluence-k8s-large-7-19"
 # 7.13.7
-# confluence_db_snapshot_id = "confluence-large-k8s-dbname-fix"
+# confluence_db_snapshot_id = "conf-indexsnap-test"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
