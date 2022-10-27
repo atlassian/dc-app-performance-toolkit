@@ -646,6 +646,48 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
 ---
+
+#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira versions 9.0.x and below. For Jira 9.1.0+ skip this step.)
+
+1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+3. In the **Index Recovery** click **Edit Settings**.
+4. Set the recovery index schedule to 5min ahead of the current server time.
+5. Wait ~10min until the index snapshot is created.
+
+Jira will be unavailable for some time during the index recovery process.
+
+6. Using SSH, connect to the Jira node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+7. Once you're in the node, run command corresponding to your Jira version:
+    
+
+   **Jira 9**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/caches/indexesV2/snapshots/IndexSnapshot*" | tail -1
+   ```
+   **Jira 8**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/export/indexsnapshots/IndexSnapshot*" | tail -1
+   ```
+   
+8. The snapshot size and name will be shown in the console output.
+
+{{% note %}}
+Please note that the snapshot size must be around 6GB or larger.
+{{% /note %}}
+
+---
 {{% note %}}
 After [Preloading your Jira deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
 It's recommended to change default password from UI account page for security reasons.
@@ -847,31 +889,16 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 2. On the **Update** tab, select **Use current template**, and then click **Next**.
 3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-5. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
-
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-6. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
-
-    ```bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh 2>&1 | tee -a index-sync.log
-    ```
-    Index synchronizing time is about 5-10 minutes.
-
-   {{% note %}}
-   Make sure **System** > **Clustering** page has expected number of nodes with node status `ACTIVE` and application status `RUNNIG`.
-
-   If index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`), you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will be copied from one instance to another.
-   {{% /note %}}
-
-
+5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
+6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira index successfully synchronized to the second node.
+   
+{{% warning %}}
+In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
+   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
+   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
+   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
+{{% /warning %}}
+   
 7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
@@ -879,6 +906,7 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
    docker pull atlassian/dcapt
    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
+
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
