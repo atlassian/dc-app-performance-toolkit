@@ -1,37 +1,104 @@
 confluence:
-  jmeter_comment_page: 0.03
-  jmeter_create_and_edit_page:create_page: 0.03
-  jmeter_create_and_edit_page:create_page_editor: 0.03
-  jmeter_create_and_edit_page:edit_page: 0.03
-  jmeter_create_and_edit_page:open_editor: 0.03
+  confluence.blogpost.view-view_blog-1: 0.01
+  confluence.blogpost.view-view_blog-3: 0.07
+  confluence.blogpost.view-view_blog-6: 0.03
+  confluence.dashboard.view: 0.04
+  confluence.page.create.collaborative.view: 0.05
+  confluence.page.create.collaborative.view.connected: 0.01
+  confluence.page.edit.collaborative.view: 0.05
+  confluence.page.edit.collaborative.view.connected: 0.01
+  confluence.page.view: 0.01
+  confluence.page.view-create_page: 0.07
+  confluence.page.view-edit_page-big_attachments_1: 0.01
+  confluence.page.view-edit_page-medium_text_16: 0.06
+  confluence.page.view-edit_page-small_attachments_3: 0.03
+  confluence.page.view-edit_page-small_text_7: 0.07
+  confluence.page.view-edit_page-text_formatting_21: 0.07
+  confluence.page.view-view_page-big_attachments_1: 0.02
+  confluence.page.view-view_page-medium_text_16: 0.06
+  confluence.page.view-view_page-small_attachments_3: 0.02
+  confluence.page.view-view_page-small_text_7: 0.03
+  confluence.page.view-view_page-text_formatting_21: 0.07
+
+  jmeter_comment_page: 0.02
+  jmeter_create_and_edit_page:create_page: 0.02
+  jmeter_create_and_edit_page:create_page_editor: 0.01
+  jmeter_create_and_edit_page:edit_page: 0.01
+  jmeter_create_and_edit_page:open_editor: 0.01
   jmeter_create_blog:blog_editor: 0.03
-  jmeter_create_blog:feel_and_publish: 0.03
+  jmeter_create_blog:feel_and_publish: 0.01
   jmeter_like_page: 0.03
-  jmeter_login_and_view_dashboard: 0.03
-  jmeter_search_cql:recently_viewed: 0.03
+  jmeter_login_and_view_dashboard: 0.01
+  jmeter_search_cql:recently_viewed: 0.01
   jmeter_search_cql:search_results: 0.03
-  jmeter_upload_attachment: 0.03
+  jmeter_upload_attachment: 0.04
   jmeter_view_attachment: 0.03
   jmeter_view_blog: 0.03
   jmeter_view_dashboard: 0.03
-  jmeter_view_page:open_page: 0.03
+  jmeter_view_page:open_page: 0.02
 
-  selenium_create_comment: 0.03
-  selenium_create_comment:save_comment: 0.03
-  selenium_create_comment:write_comment: 0.05
-  selenium_create_page: 0.05
-  selenium_create_page:open_create_page_editor: 0.01
-  selenium_create_page:save_created_page: 0.03
-  selenium_edit_page: 0.03
-  selenium_edit_page:open_create_page_editor: 0.03
-  selenium_edit_page:save_edited_page: 0.03
-  selenium_log_out: 0.03
-  selenium_login: 0.03
+  selenium_create_comment: 0.04
+  selenium_create_comment:save_comment: 0.05
+  selenium_create_comment:write_comment: 0.01
+  selenium_create_page:open_create_page_editor: 0.07
+  selenium_create_page:save_created_page: 0.05
+  selenium_edit_page:open_create_page_editor-big_attachments_1: 0.01
+  selenium_edit_page:open_create_page_editor-medium_text_16: 0.02
+  selenium_edit_page:open_create_page_editor-small_attachments_3: 0.01
+  selenium_edit_page:open_create_page_editor-small_text_7: 0.03
+  selenium_edit_page:open_create_page_editor-text_formatting_21: 0.02
+  selenium_edit_page:save_edited_page-big_attachments_1: 0.01
+  selenium_edit_page:save_edited_page-medium_text_16: 0.03
+  selenium_edit_page:save_edited_page-small_attachments_3: 0.01
+  selenium_edit_page:save_edited_page-small_text_7: 0.01
+  selenium_edit_page:save_edited_page-text_formatting_21: 0.02
+  selenium_edit_page_by_url:open_create_page_editor-big_attachments_1: 0.01
+  selenium_edit_page_by_url:open_create_page_editor-medium_text_16: 0.04
+  selenium_edit_page_by_url:open_create_page_editor-small_attachments_3: 0.03
+  selenium_edit_page_by_url:open_create_page_editor-small_text_7: 0.06
+  selenium_edit_page_by_url:open_create_page_editor-text_formatting_21: 0.07
+  selenium_edit_page_by_url:save_edited_page-big_attachments_1: 0.01
+  selenium_edit_page_by_url:save_edited_page-medium_text_16: 0.03
+  selenium_edit_page_by_url:save_edited_page-small_attachments_3: 0.01
+  selenium_edit_page_by_url:save_edited_page-small_text_7: 0.05
+  selenium_edit_page_by_url:save_edited_page-text_formatting_21: 0.05
+  selenium_edit_page_click:open_create_page_editor-big_attachments_1: 0.03
+  selenium_edit_page_click:open_create_page_editor-medium_text_16: 0.01
+  selenium_edit_page_click:open_create_page_editor-small_attachments_3: 0.01
+  selenium_edit_page_click:open_create_page_editor-small_text_7: 0.01
+  selenium_edit_page_click:open_create_page_editor-text_formatting_21: 0.01
+  selenium_edit_page_click:save_edited_page-big_attachments_1: 0.01
+  selenium_edit_page_click:save_edited_page-medium_text_16: 0.01
+  selenium_edit_page_click:save_edited_page-small_attachments_3: 0.01
+  selenium_edit_page_click:save_edited_page-small_text_7: 0.01
+  selenium_edit_page_click:save_edited_page-text_formatting_21: 0.01
+  selenium_log_out: 0.05
   selenium_login:login_and_view_dashboard: 0.03
-  selenium_login:open_login_page: 0.03
-  selenium_view_blog: 0.03
-  selenium_view_dashboard: 0.01
-  selenium_view_page: 0.03
+  selenium_login:open_login_page: 0.05
+  selenium_quick_edit_page_click:open_create_page_editor-big_attachments_1: 0.01
+  selenium_quick_edit_page_click:open_create_page_editor-medium_text_16: 0.03
+  selenium_quick_edit_page_click:open_create_page_editor-small_attachments_3: 0.01
+  selenium_quick_edit_page_click:open_create_page_editor-small_text_7: 0.06
+  selenium_quick_edit_page_click:open_create_page_editor-text_formatting_21: 0.06
+  selenium_quick_edit_page_click:save_edited_page-big_attachments_1: 0.01
+  selenium_quick_edit_page_click:save_edited_page-medium_text_16: 0.05
+  selenium_quick_edit_page_click:save_edited_page-small_attachments_3: 0.01
+  selenium_quick_edit_page_click:save_edited_page-small_text_7: 0.06
+  selenium_quick_edit_page_click:save_edited_page-text_formatting_21: 0.04
+  selenium_view_blog-1: 0.07
+  selenium_view_blog-3: 0.07
+  selenium_view_blog-6: 0.09
+  selenium_view_dashboard: 0.02
+  selenium_view_page-big_attachments_1: 0.08
+  selenium_view_page-medium_text_16: 0.07
+  selenium_view_page-small_attachments_3: 0.03
+  selenium_view_page-small_text_7: 0.01
+  selenium_view_page-text_formatting_21: 0.01
+  selenium_view_page_from_cache-big_attachments_1: 0.04
+  selenium_view_page_from_cache-medium_text_16: 0.05
+  selenium_view_page_from_cache-small_attachments_3: 0.01
+  selenium_view_page_from_cache-small_text_7: 0.04
+  selenium_view_page_from_cache-text_formatting_21: 0.08
 
 jira:
   jmeter_add_comment:open_comment: 0.09
