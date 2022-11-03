@@ -61,6 +61,12 @@ jira_replica_count = 1
 # can be dataset restoration, resource requirements, number of replicas and others.
 jira_installation_timeout = 20
 
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value
+#jira_termination_grace_period = 0
+
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
 jira_version_tag = "jira-version"
@@ -233,6 +239,12 @@ bitbucket_replica_count = 1
 # can be dataset restoration, resource requirements, number of replicas and others.
 bitbucket_installation_timeout = 20
 
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value
+# confluence_termination_grace_period = 0
+
 # By default, Bitbucket will use the version defined in the Bitbucket Helm chart:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bitbucket/Chart.yaml
 # If you wish to override the version, uncomment the following line and set the bitbucket_version_tag to any of the versions published for Bitbucket on Docker Hub: https://hub.docker.com/r/atlassian/bitbucket/tags
@@ -400,3 +412,10 @@ bamboo_db_name                 = "bamboo"
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
 bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
+
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value.
+# This will apply to both Bamboo server and agent pods.
+#bamboo_termination_grace_period = 0
