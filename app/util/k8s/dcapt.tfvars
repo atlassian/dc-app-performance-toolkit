@@ -140,6 +140,12 @@ confluence_replica_count = 1
 # can be dataset restoration, resource requirements, number of replicas and others.
 confluence_installation_timeout = 20
 
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
+# if you encounter such an issue.
+confluence_termination_grace_period = 0
+
 # By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the confluence_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
 confluence_version_tag = "7.19.2"
