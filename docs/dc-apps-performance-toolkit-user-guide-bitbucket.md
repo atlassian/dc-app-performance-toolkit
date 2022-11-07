@@ -790,10 +790,20 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
 1. In the AWS console, go to **CloudFormation > Stack details > Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run toolkit with docker from the execution environment instance:
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next > Next > Update stack** and wait until stack is updated.
+
+{{% warning %}}
+In case if you got error during update - `BastionPrivIp cannot be updated`.
+Please use those steps for a workaround:
+1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
+2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
+3. Enter `2` in the **Desired capacity**,**Minimum capacity** and **Maximum capacity** fields.
+4. Scroll down, click **Update** button and wait until stack is updated. 
+{{% /warning %}}
+
+5. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit

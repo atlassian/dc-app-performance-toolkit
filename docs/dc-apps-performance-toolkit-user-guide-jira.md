@@ -889,6 +889,16 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 2. On the **Update** tab, select **Use current template**, and then click **Next**.
 3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
 4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
+
+{{% warning %}}
+In case if you got error during update - `BastionPrivIp cannot be updated`.
+Please use those steps for a workaround:
+1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
+2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
+3. Enter `2` in the **Desired capacity**,**Minimum capacity** and **Maximum capacity** fields.
+4. Scroll down, click **Update** button and wait until stack is updated. 
+{{% /warning %}}
+
 5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
 6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira index successfully synchronized to the second node.
    
