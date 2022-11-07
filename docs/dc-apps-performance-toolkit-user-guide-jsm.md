@@ -1057,7 +1057,7 @@ In case if you got error during update - `BastionPrivIp cannot be updated`.
 Please use those steps for a workaround:
 1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
 2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
-3. Enter `2` in the **Desired capacity**,**Minimum capacity** and **Maximum capacity** fields.
+3. Enter `2` in the **Desired capacity**, **Minimum capacity** and **Maximum capacity** fields.
 4. Scroll down, click **Update** button and wait until stack is updated. 
 {{% /warning %}}
 
