@@ -42,7 +42,7 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 5
+max_cluster_capacity = 4
 
 ################################################################################
 # Jira Settings
@@ -144,7 +144,7 @@ confluence_replica_count = 1
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
-confluence_installation_timeout = 20
+confluence_installation_timeout = 25
 
 # Termination grace period
 # Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
