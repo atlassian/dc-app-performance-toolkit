@@ -75,6 +75,10 @@ class Page(BasePage):
         url_manager = UrlManager(page_id=page_id)
         self.page_url = url_manager.page_url()
 
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(self.page_loaded_selector)
+        self.wait_for_js_statemant(key='document.readyState', value='complete')
+
     def click_add_comment(self):
         css_selector = PageLocators.comment_text_field[1]
         self.execute_js(f"document.querySelector('{css_selector}').click()")
