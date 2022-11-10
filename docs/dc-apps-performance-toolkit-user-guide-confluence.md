@@ -64,7 +64,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
 3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
 4. Clone the project repo:
    ```bash
-   git clone -b 2.0.5 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt_small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt_small.tfvars) file to the `data-center-terraform` folder.
 6. Set **required** variables in `dcapt_small.tfvars` file:
@@ -72,7 +72,6 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
 7. Optional variables to override:
-   - `region` - AWS region for deployment. Default value: `us-east-2`
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~20 min):
    ```bash
@@ -289,7 +288,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
 3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
 4. Clone the project repo:
    ```bash
-   git clone -b 2.0.5 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
 6. Set **required** variables in `dcapt_small.tfvars` file:
@@ -297,7 +296,6 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
 7. Optional variables to override:
-    - `region` - AWS region for deployment. Default value: `us-east-2`
     - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~40min):
     ```bash
