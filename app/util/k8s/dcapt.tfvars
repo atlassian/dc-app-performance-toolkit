@@ -190,16 +190,16 @@ confluence_shared_home_size = "100Gi"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 # 7.19.2
-confluence_shared_home_snapshot_id = "snap-09eee6eb52bbe19d9"
+confluence_shared_home_snapshot_id = "snap-0b0101e17d318658e"
 # 7.13.7
-# confluence_shared_home_snapshot_id = "snap-09bd0af374ab96888"
+# confluence_shared_home_snapshot_id = "snap-0f89356e59f45801f"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-confluence_db_major_engine_version = "10"
+confluence_db_major_engine_version = "11"
 confluence_db_instance_class       = "db.m5.xlarge"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
@@ -214,9 +214,9 @@ confluence_db_name = "confluence"
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 # 7.19.2
-confluence_db_snapshot_id = "confluence-k8s-large-7-19"
+confluence_db_snapshot_id = "confluence-719-large-k8s-psql11"
 # 7.13.7
-# confluence_db_snapshot_id = "conf-indexsnap-test"
+# confluence_db_snapshot_id = "confluence-large-k8s-psql11"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
