@@ -57,19 +57,19 @@ class BasePage:
         by, locator = selector[0], selector[1]
         return True if self.driver.find_elements(by, locator) else False
 
-    def wait_for_js_statemant(self, key, value, timeout=timeout):
+    def wait_for_js_statemant(self, key, value, exception_msg=None, timeout=timeout):
         start_time = time.time()
         print(f'Waiting for {key} is equal to {value}: {timeout} s.')
-        last_js_value = None
+        js_current_value = None
+        exception_msg = exception_msg if exception_msg else f'{key} is not equal to {value} for {timeout} s. ' \
+                                                            f'Current {key} value is {js_current_value}'
         while time.time() - start_time < timeout:
             js_current_value = self.execute_js(f'return {key}')
-            last_js_value = js_current_value
             if js_current_value == value:
                 print(f'{key} == {value} after {time.time() - start_time} s.')
                 break
         else:
-            raise SystemExit(f'{key} is not equal to {value} for {timeout} s. Current {key} value is {last_js_value}')
-
+            raise SystemExit(f'{exception_msg}')
 
     def wait_until_invisible(self, selector, timeout=timeout):
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector), locator=selector,
