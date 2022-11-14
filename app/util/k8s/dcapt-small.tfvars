@@ -189,7 +189,7 @@ confluence_nfs_limits_memory   = "2Gi"
 # To restore shared home dataset, you can provide EBS snapshot ID of the shared home volume.
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
-confluence_shared_home_snapshot_id = "snap-09e40ce861dc7d1fb"
+confluence_shared_home_snapshot_id = "snap-0ada4ce7541fc7ca0"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -210,7 +210,7 @@ confluence_db_name = "confluence"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-confluence_db_snapshot_id = "confluence-small-k8s-psql11"
+confluence_db_snapshot_id = "dcapt-confluence-small-7-x-x"
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
 confluence_db_snapshot_build_number = "8703"
