@@ -51,11 +51,9 @@ specifically for performance testing during the DC app review process.
    - `products` - `bamboo`
    - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
 7. Start the installation (~40min):
-
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
-
 8. Copy product URL from the console output.
 
 ---

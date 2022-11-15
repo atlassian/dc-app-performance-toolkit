@@ -70,18 +70,18 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ``` bash
    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars
     ```
-7. Set **required** variables in `dcapt-small.tfvars` file:
+6. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-small`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
    - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
-8. Optional variables to override:
+7. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-9. Start the installation (~20 min):
+8. Start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt_small.tfvars
    ```
-10. Copy product URL from the console output.
+9. Copy product URL from the console output.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
