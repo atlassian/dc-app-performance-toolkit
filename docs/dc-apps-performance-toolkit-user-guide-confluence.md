@@ -67,18 +67,21 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
-6. Set **required** variables in `dcapt-small.tfvars` file:
+   ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars
+    ```
+7. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-small`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
    - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
-7. Optional variables to override:
+8. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-8. Start the installation (~20 min):
+9. Start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt_small.tfvars
    ```
-9. Copy product URL from the console output.
+10. Copy product URL from the console output.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -292,6 +295,9 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
+      ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
+    ```
 6. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-large`
    - `products` - `confluence`
@@ -567,16 +573,16 @@ It is recommended to terminate an enterprise-scale environment after completing 
 Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
 See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page
