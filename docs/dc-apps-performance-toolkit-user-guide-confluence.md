@@ -81,7 +81,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ```bash
    ./install.sh -c dcapt-small.tfvars
    ```
-9. Copy product URL from the console output. Product url should look like `http://a257b24-20458.us-east-2.elb.amazonaws.com/confluence`.
+9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence``.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -309,7 +309,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
     ```bash
     ./install.sh -c dcapt.tfvars
     ```
-9. Copy product URL from the console output. Product url should look like `http://a257b24-20458.us-east-2.elb.amazonaws.com/confluence`.
+9. Copy product URL from the console output. Product url should look like ``http://a1234-54321.us-east-2.elb.amazonaws.com/confluence``.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
