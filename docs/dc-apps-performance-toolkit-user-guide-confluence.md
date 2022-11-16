@@ -81,7 +81,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ```bash
    ./install.sh -c dcapt-small.tfvars
    ```
-9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence``.
+9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -107,7 +107,7 @@ Make sure **Remote API** is enabled on the **![cog icon](/platform/marketplace/i
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 1990 or your instance-specific port.
     - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
-    - `application_postfix`: /confluence - default postfix value for TerraForm deployment url like http://a257bf-2007458.us-east-2.elb.amazonaws.com/confluence
+    - `application_postfix`: /confluence - default postfix value for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
@@ -309,7 +309,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
     ```bash
     ./install.sh -c dcapt.tfvars
     ```
-9. Copy product URL from the console output. Product url should look like ``http://a1234-54321.us-east-2.elb.amazonaws.com/confluence``.
+9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -339,7 +339,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
        application_protocol: http        # http or https
        application_port: 80              # 80, 443, 8080, 2990, etc
        secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-       application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like http://a257bf-2007458.us-east-2.elb.amazonaws.com/confluence
+       application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`
        admin_login: admin
        admin_password: admin
        load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
