@@ -54,7 +54,7 @@ specifically for performance testing during the DC app review process.
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
-8. Copy product URL from the console output.
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
 
 ---
 
