@@ -4,12 +4,18 @@ import requests
 from datetime import timedelta
 from timeit import default_timer as timer
 from packaging import version
-from util.conf import TOOLKIT_VERSION
+from util.conf import TOOLKIT_VERSION, UNSUPPORTED_VERSION
 
 CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
 
 
 def get_latest_version(supported=True):
+    """
+    Get the latest version of DCAPT from the master branch from GIT repo
+
+    :param supported: True or False
+    :return: latest version of DCAPT from the master branch
+    """
     VERSION_STR = "TOOLKIT_VERSION" if supported else "UNSUPPORTED_VERSION"
     try:
         r = requests.get(CONF_URL)
@@ -26,13 +32,22 @@ def get_latest_version(supported=True):
 
 
 def get_unsupported_version():
+    """
+    Get the unsupported version of DCAPT from the master branch from GIT repo
 
+    :return: unsupported version of DCAPT from the master branch
+    """
     unsupported_version_str = get_latest_version(supported=False)
 
     return unsupported_version_str
 
 
 def get_current_version():
+    """
+    Get the current version of DCAPT from the repo from which tests were running
+
+    :return: current version of DCAPT from the repo from which tests were running
+    """
     return version.parse(TOOLKIT_VERSION)
 
 

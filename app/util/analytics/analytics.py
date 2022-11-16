@@ -1,6 +1,5 @@
 import sys
 import uuid
-from datetime import datetime, timezone
 
 import requests
 import urllib3
@@ -78,14 +77,17 @@ class AnalyticsCollector:
             self.java_version = application.java_version
 
     def is_analytics_enabled(self):
+        """
+        Check if is analytics is enabled in *.yml file
+        """
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
 
-    def set_date_timestamp(self):
-        utc_now = datetime.utcnow()
-        self.time_stamp = int(round(utc_now.timestamp() * 1000))
-        self.date = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat('T', 'seconds')
-
     def is_success(self):
+        """
+        Verify the run result summary (minimum success rate 95% for tests).
+
+        :return: "OK" message if all tests >=95% success, otherwise "Error" with an explanatory message.
+        """
         message = 'OK'
         load_test_rates = dict()
         if self.conf.load_executor == 'jmeter':
@@ -108,6 +110,11 @@ class AnalyticsCollector:
         return success, message
 
     def is_finished(self):
+        """
+        Verify that the required duration matches the defaults requirements.
+
+        :return: "OK" message if the run duration is correct, otherwise "Error" with an explanatory message.
+        """
         message = 'OK'
         finished = self.actual_duration >= self.duration
         if not finished:
@@ -116,6 +123,11 @@ class AnalyticsCollector:
         return finished, message
 
     def is_compliant(self):
+        """
+        Check if the values meet the default minimum requirements for each product.
+
+        :return: "OK" message if the result compliant, otherwise "Failed" with an explanatory message.
+        """
         message = 'OK'
 
         if self.app_type == JSM:
@@ -193,7 +205,11 @@ class AnalyticsCollector:
         return compliant, message
 
     def is_git_operations_compliant(self):
-        # calculate expected git operations for a particular test duration
+        """
+        Calculate expected git operations for a given test duration (BITBUCKET)
+
+        :return: "OK" message if the result matches the requirements, or an error message otherwise.
+        """
         message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
         git_operations_compliant = self.results_log.actual_git_operations_count >= expected_get_operations_count
@@ -204,6 +220,12 @@ class AnalyticsCollector:
 
 
 def send_analytics(collector: AnalyticsCollector):
+    """
+    Sending Analytics data to AWS
+
+    :param collector: Collecting all the data from the run
+    :return: None (Data of the results been sent to AWS)
+    """
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,
                "user_id": uniq_user_id(collector.conf.server_url),

@@ -37,6 +37,11 @@ class BaseApplication:
         self.config = config_yml
 
     def get_default_actions(self):
+        """
+        Getting our default actions jmeter/locust and selenium from "default_test_actions.json" file
+
+        :return: default actions of the product in test
+        """
         actions_json = read_json_file(DEFAULT_ACTIONS)
         return actions_json[self.type]
 
