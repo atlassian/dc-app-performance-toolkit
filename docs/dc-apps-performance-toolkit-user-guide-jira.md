@@ -131,7 +131,7 @@ After successfully deploying the Jira Data Center on AWS, configure it as follow
 1. On the next page, fill in the **Your License Key** field in one of the following ways:
     - Using your existing license
     - Generating a Jira trial license
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your DCHELP ticket.
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your ECOHELP ticket.
 
     Then select **Next**.
 1. On the **Set up administrator account** page, fill in the following fields:
@@ -453,7 +453,7 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
 1. On the next page, populate the **Your License Key** field by either:
     - Using your existing license, or
     - Generating a Jira trial license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your ECOHELP ticket.
     Click **Next**.
 1. On the **Set up administrator account** page, populate the following fields:
     - **Full name**: any full name of the admin user
@@ -646,7 +646,7 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DCHELP ticket.
+1. Attach the screenshot to your ECOHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
@@ -805,7 +805,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DCHELP ticket.
+1. Attach the screenshot to your ECOHELP ticket.
 
 **Performance results generation with the app installed:**
 
@@ -990,16 +990,16 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 After completing all your tests, delete your Jira Data Center stacks.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
