@@ -43,17 +43,18 @@ specifically for performance testing during the DC app review process.
    git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
+      ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
+    ```
 6. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-bamboo`
    - `products` - `bamboo`
    - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
 7. Start the installation (~40min):
-
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
-
-8. Copy product URL from the console output.
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
 
 ---
 
@@ -352,17 +353,22 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to 
    see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend 
    taking a look into the app implementation to understand the root cause of this delta.
-   
-#### Attaching testing results to DCHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+It is recommended to terminate an enterprise-scale environment after completing all tests.
+Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
+{{% /warning %}}
+   
+#### Attaching testing results to ECOHELP ticket
+
+{{% warning %}}
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have report folder with bamboo performance scenario results. 
    Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach report folder to your DCHELP ticket.
+2. Attach report folder to your ECOHELP ticket.
 
 
 ## <a id="support"></a> Support
