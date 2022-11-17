@@ -29,8 +29,8 @@ JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
 
 # Jira/JSM supported versions
 
-SUPPORTED_JIRA_VERSIONS=(8.20.10 9.0.0)
-SUPPORTED_JSM_VERSIONS=(4.20.10 5.0.0)
+SUPPORTED_JIRA_VERSIONS=(8.20.13 9.1.0)
+SUPPORTED_JSM_VERSIONS=(4.20.13 5.1.0)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 if [[ ${jsm} == 1 ]]; then

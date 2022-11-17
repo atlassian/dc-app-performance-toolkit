@@ -74,6 +74,8 @@ class AnalyticsCollector:
             self.parallel_plans_count = application.config.parallel_plans_count
             self.locust_log = LocustFileReader()
             self.post_run_collector = BambooPostRunCollector(self.locust_log)
+        if self.app_type == CONFLUENCE:
+            self.java_version = application.java_version
 
     def is_analytics_enabled(self):
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
@@ -145,48 +147,48 @@ class AnalyticsCollector:
                 err_msg.append(f"Test run duration {self.actual_duration} sec < than minimum test "
                                f"duration {MIN_DEFAULTS[self.app_type]['test_duration']} sec.")
 
-                if self.app_type == JSM:
-                    if self.concurrency_customers < MIN_DEFAULTS[JSM]['customer_concurrency']:
-                        err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
-                                       f"required value {MIN_DEFAULTS[JSM]['customer_concurrency']}.")
-                    if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
-                        err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
-                                       f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
+            if self.app_type == JSM:
+                if self.concurrency_customers < MIN_DEFAULTS[JSM]['customer_concurrency']:
+                    err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
+                                   f"required value {MIN_DEFAULTS[JSM]['customer_concurrency']}.")
+                if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
+                    err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
+                                   f"required value {MIN_DEFAULTS[JSM]['agent_concurrency']}.")
 
-                elif self.app_type == INSIGHT:
-                    if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
-                        err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
-                                       f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
-                    if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
-                        err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
-                                       f"required value {MIN_DEFAULTS[INSIGHT]['agent_concurrency']}.")
+            elif self.app_type == INSIGHT:
+                if self.concurrency_customers < MIN_DEFAULTS[INSIGHT]['customer_concurrency']:
+                    err_msg.append(f"The concurrency_customers = {self.concurrency_customers} is less than "
+                                   f"required value {MIN_DEFAULTS[INSIGHT]['customer_concurrency']}.")
+                if self.concurrency_agents < MIN_DEFAULTS[JSM]['agent_concurrency']:
+                    err_msg.append(f"The concurrency_agents = {self.concurrency_agents} is less than "
+                                   f"required value {MIN_DEFAULTS[INSIGHT]['agent_concurrency']}.")
 
-                elif self.app_type == BAMBOO:
-                    if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
-                        err_msg.append(f"The actual test duration {self.actual_duration} is less than "
-                                       f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
-                    if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
-                        err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
-                                       f"than minimum concurrency "
-                                       f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
-                    if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
-                        err_msg.append(f"The parallel_plans_count {self.parallel_plans_count} is less "
-                                       f"than minimum parallel_plans_count value "
-                                       f"required {MIN_DEFAULTS[self.app_type]['parallel_plans_count']}")
+            elif self.app_type == BAMBOO:
+                if self.actual_duration < MIN_DEFAULTS[self.app_type]['test_duration']:
+                    err_msg.append(f"The actual test duration {self.actual_duration} is less than "
+                                   f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
+                if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
+                    err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
+                                   f"than minimum concurrency "
+                                   f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
+                if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
+                    err_msg.append(f"The parallel_plans_count {self.parallel_plans_count} is less "
+                                   f"than minimum parallel_plans_count value "
+                                   f"required {MIN_DEFAULTS[self.app_type]['parallel_plans_count']}")
 
-                elif self.app_type == CROWD:
-                    if ramp_up < ramp_up_compliant:
-                        err_msg.append(f"The run ramp-up {ramp_up} is less than minimum ramp-up "
-                                       f"required for the {self.nodes_count} nodes {ramp_up_compliant}")
-                    if self.total_actions_per_hour < total_actions_compliant:
-                        err_msg.append(f"The run total_actions_per_hour {self.total_actions_per_hour} is less "
-                                       f"than minimum total_actions_per_hour "
-                                       f"required for the {self.nodes_count} nodes {total_actions_compliant}")
+            elif self.app_type == CROWD:
+                if ramp_up < ramp_up_compliant:
+                    err_msg.append(f"The run ramp-up {ramp_up} is less than minimum ramp-up "
+                                   f"required for the {self.nodes_count} nodes {ramp_up_compliant}")
+                if self.total_actions_per_hour < total_actions_compliant:
+                    err_msg.append(f"The run total_actions_per_hour {self.total_actions_per_hour} is less "
+                                   f"than minimum total_actions_per_hour "
+                                   f"required for the {self.nodes_count} nodes {total_actions_compliant}")
 
-                else:
-                    if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
-                        err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
-                                       f"concurrency {MIN_DEFAULTS[self.app_type]['concurrency']}.")
+            else:
+                if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
+                    err_msg.append(f"Test run concurrency {self.concurrency} < than minimum test "
+                                   f"concurrency {MIN_DEFAULTS[self.app_type]['concurrency']}.")
             message = ' '.join(err_msg)
         return compliant, message
 

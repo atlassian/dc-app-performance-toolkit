@@ -7,7 +7,7 @@ import socket
 
 from datetime import datetime, timezone
 from util.common_util import get_current_version, get_latest_version
-from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM
+from util.analytics.application_info import BITBUCKET, BAMBOO, CROWD, INSIGHT, JSM, CONFLUENCE
 
 latest_version = get_latest_version()
 current_version = get_current_version()
@@ -93,6 +93,9 @@ def generate_report_summary(collector):
         summary_report.append(f'Total Git operations count|{total_git_count}')
         summary_report.append(f'Total Git operations compliant|{git_compliant}')
 
+    if collector.app_type == CONFLUENCE:
+        summary_report.append(f'Java version|{collector.java_version}')
+
     summary_report.append(f'Finished|{finished}')
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
@@ -137,7 +140,8 @@ def generate_report_summary(collector):
         status = 'OK' if value >= SUCCESS_TEST_RATE else 'Fail'
         summary_report.append(f'{key}|{value}|{collector.test_actions_timing[key]}|{status}|{APP_SPECIFIC_TAG}')
 
-    max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates}.keys(), key=len))
+    max_summary_report_str_len = len(max({**load_test_rates, **collector.selenium_test_rates,
+                                          **collector.app_specific_rates}.keys(), key=len))
     offset_1st = max(max_summary_report_str_len + 5, 50)
 
     pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)

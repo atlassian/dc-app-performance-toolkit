@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-07-25"
+date: "2022-11-14"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -66,10 +66,11 @@ All important parameters are listed and described in this section. For all other
 
 **Bitbucket setup**
 
-| Parameter | Recommended value                                                                                                                                                                                       |
-| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Bitbucket Product | Software                                                                                                                                                                                                |
-| Version | The Data Center App Performance Toolkit officially supports `7.6.14`, `7.17.6` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                                                      |
+| --------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bitbucket Product | Software                                                                                                                                                                                                                               |
+| Version | The Data Center App Performance Toolkit officially supports `7.17.11`, `7.21.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.4` platform release. |
+
 
 **Cluster nodes**
 
@@ -315,9 +316,9 @@ All important parameters are listed and described in this section. For all other
 
 **Bitbucket setup**
 
-| Parameter | Recommended Value                                                                                                                                                                                       |
-| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Version | The Data Center App Performance Toolkit officially supports `7.6.14`, `7.17.6` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended Value                                                                                                                                                                                                                      |
+| --------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Version | The Data Center App Performance Toolkit officially supports `7.17.11`, `7.21.5` ([Long Term Support releases](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) and `8.0.4` platform release. |
 
 
 **Cluster nodes**
@@ -789,10 +790,20 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Bitbucket DC with app-specific actions:
 
 1. In the AWS console, go to **CloudFormation > Stack details > Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next > Next > Update stack** and wait until stack is updated.
-1. Run toolkit with docker from the execution environment instance:
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next > Next > Update stack** and wait until stack is updated.
+
+{{% warning %}}
+In case if you got error during update - `BastionPrivIp cannot be updated`.
+Please use those steps for a workaround:
+1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
+2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
+3. Enter `2` in the **Desired capacity**, **Minimum capacity** and **Maximum capacity** fields.
+4. Scroll down, click **Update** button and wait until stack is updated. 
+{{% /warning %}}
+
+5. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -864,16 +875,16 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 After completing all your tests, delete your Bitbucket Data Center stacks.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach two reports folders to your ECOHELP ticket.
 
 
 ## Support

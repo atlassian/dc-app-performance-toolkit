@@ -30,7 +30,7 @@ settings:
     # ramp-up: 5s                     # time to spin all concurrent threads
     # total_actions_per_hour: 720000  # number of total JMeter actions per hour
 
-    JMETER_VERSION: 5.4.2
+    JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
     allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:

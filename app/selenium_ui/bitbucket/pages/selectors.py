@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from selenium.webdriver.common.by import By
 from util.conf import BITBUCKET_SETTINGS
 
@@ -17,8 +19,6 @@ class UrlManager:
         self.pull_request_params_diff = f'{self.repo_params}/pull-requests/{pull_request_key}/diff'
         self.pull_request_params_commits = f'{self.repo_params}/pull-requests/{pull_request_key}/commits'
         self.branches_params = f'{self.repo_params}/branches'
-        self.fork_repo_params = f'/users/{self.user}/repos/{self.repo_slug}/settings'
-        self.user_settings_params = f'/users/{self.user}'
         self.repo_commits_params = f'{self.repo_params}/commits'
         self.login_params = '/login?next=/getting-started'
         self.logout_params = '/j_atl_security_logout'
@@ -55,12 +55,6 @@ class UrlManager:
     def pull_request_commits(self):
         return f"{self.host}{self.pull_request_params_commits}"
 
-    def fork_repo_url(self):
-        return f"{self.host}{self.fork_repo_params}"
-
-    def user_settings_url(self):
-        return f"{self.host}{self.user_settings_params}"
-
     def commits_url(self):
         return f"{self.host}{self.repo_commits_params}"
 
@@ -86,12 +80,11 @@ class PopupLocators:
     popup_2 = 'button.aui-button-link.feature-discovery-close'
     popup_3 = '.css-15p34h1'
     popup_4 = '.css-1dqf51u'
+    popup_5 = '.css-1kflcxk'
+    popup_6 = '.css-1gh2dqy'
 
 
 class LoginPageLocators:
-    login_params = UrlManager().login_params
-    login_url = UrlManager().login_url()
-
     submit_button = (By.ID, "submit")
     username_textfield = (By.ID, "j_username")
     password_textfield = (By.ID, "j_password")
@@ -100,32 +93,25 @@ class LoginPageLocators:
 
 
 class LogoutPageLocators:
-    logout_params = UrlManager().logout_params
     logout_url = UrlManager().logout_url()
 
 
 class GetStartedLocators:
-    get_started_params = UrlManager().get_started_params
     get_started_url = UrlManager().get_started_url()
     user_profile_icon = (By.ID, 'current-user')
 
 
 class DashboardLocators:
-    dashboard_params = UrlManager().dashboard_params
     dashboard_url = UrlManager().dashboard_url()
-
     dashboard_presence = (By.TAG_NAME, 'h2')
 
 
 class ProjectsLocators:
-    projects_params = UrlManager().projects_params
     project_url = UrlManager().projects_url()
-
     projects_list = (By.ID, "projects-container")
 
 
 class ProjectLocators:
-
     repositories_container = (By.ID, "repositories-container")
     repository_name = (By.CSS_SELECTOR, "span.repository-name")
 
@@ -133,44 +119,23 @@ class ProjectLocators:
 class RepoNavigationPanelLocators:
 
     navigation_panel = (By.CSS_SELECTOR, '.aui-navgroup-vertical>.aui-navgroup-inner')
-    clone_repo_button = (By.CSS_SELECTOR, '.clone-repo>#clone-repo-button')
-
-    fork_repo_button = (By.CSS_SELECTOR, 'span.icon-fork')
-
-    create_pull_request_button = (By.CSS_SELECTOR, '.aui-sidebar-group.sidebar-navigation>ul>li:nth-child(4)')
 
 
 class RepoLocators:
 
     pull_requests_list = (By.ID, 'pull-requests-content')
-    repo_fork_sync = (By.ID, "enable-ref-syncing")
-    fork_name_field = (By.ID, 'name')
-    fork_repo_submit_button = (By.ID, "fork-repo-submit")
-    create_pull_request_button = (By.ID, 'empty-list-create-pr-button')
-    new_pull_request_branch_compare_window = (By.ID, 'branch-compare')
 
-    pr_source_branch_field = (By.ID, 'sourceBranch')
-    pr_branches_dropdown = (By.CSS_SELECTOR, 'ul.results-list')
-    pr_source_branch_name = (By.ID, 'sourceBranchDialog-search-input')
-    pr_source_branch_spinner = (By.CSS_SELECTOR, '#sourceBranchDialog>div.results>div.spinner-wrapper')
-
-    pr_destination_repo_field = (By.ID, 'targetRepo')
-    pr_destination_first_repo_dropdown = (By.CSS_SELECTOR, 'div#targetRepoDialog>div>ul.results-list>li:nth-child(1)')
-
-    pr_destination_branch_field = (By.ID, 'targetBranch')
-    pr_destination_branch_dropdown = (By.ID, 'targetBranchDialog')
-    pr_destination_branch_name = (By.ID, 'targetBranchDialog-search-input')
-    pr_destination_branch_spinner = (By.CSS_SELECTOR, '#targetBranchDialog>div.results>div.spinner-wrapper')
-
-    pr_continue_button = (By.ID, 'show-create-pr-button')
-    pr_description_field = (By.CSS_SELECTOR, 'textarea#pull-request-description')
-    pr_title_field = (By.ID, 'title')
-    pr_submit_button = (By.ID, 'submit-form')
+    pr_continue_button = OrderedDict({"7.0.0": (By.ID, "show-create-pr-button"),
+                                      "8.0.0": (By.CSS_SELECTOR, "button.continue-button")})
+    pr_description_field = OrderedDict({"7.0.0": (By.CSS_SELECTOR, "textarea#pull-request-description"),
+                                        "8.0.0": (By.CSS_SELECTOR, "div.editor-wrapper")})
+    pr_title_field = OrderedDict({"7.0.0": (By.ID, "title"),
+                                  "8.0.0": (By.ID, "pull-request-title")})
+    pr_submit_button = OrderedDict({"7.0.0": (By.ID, "submit-form"),
+                                    "8.0.0": (By.CSS_SELECTOR, "button.create-button")})
 
 
 class PullRequestLocator:
-
-    tab_panel = (By.CSS_SELECTOR, 'ul.tabs-menu')
 
     commit_files = (By.CSS_SELECTOR, '.changes-sidebar>.changes-scope-content')
     diff_code_lines = (By.CLASS_NAME, "diff-segment")
@@ -184,7 +149,6 @@ class PullRequestLocator:
 
     pull_request_page_merge_button = (By.CLASS_NAME, 'merge-button')
 
-    merge_spinner = (By.CSS_SELECTOR, "aui-spinner[size='small']")
     diagram_selector = (By.CLASS_NAME, 'branches-diagram')
     merge_diagram_selector = (By.CLASS_NAME, "merge-diagram")
     pull_request_modal_merge_button = (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")
@@ -201,19 +165,7 @@ class BranchesLocator:
     new_branch_submit_button = (By.ID, "create-branch-submit")
     search_branch_textfield = (By.ID, 'paged-table-input-for-branch-list')
     search_branch_action = (By.CSS_SELECTOR, '.branch-actions-column>button')
-    search_action_delete_branch = (By.CSS_SELECTOR, 'li>a.delete-branch')
     delete_branch_dialog_submit = (By.ID, 'delete-branch-dialog-submit')
-
-
-class RepositorySettingsLocator:
-    repository_settings_menu = (By.CSS_SELECTOR, 'div.aui-page-panel-nav')
-    delete_repository_button = (By.ID, 'repository-settings-delete-button')
-    delete_repository_modal_text_field = (By.ID, 'confirmRepoName')
-    delete_repository_modal_submit_button = (By.ID, 'delete-repository-dialog-submit')
-
-
-class UserSettingsLocator:
-    user_role_label = (By.CSS_SELECTOR, 'div.user-detail.username')
 
 
 class RepoCommitsLocator:
