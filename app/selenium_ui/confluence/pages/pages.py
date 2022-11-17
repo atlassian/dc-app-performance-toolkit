@@ -77,7 +77,7 @@ class Page(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(self.page_loaded_selector)
-        self.wait_for_js_statemant(key='document.readyState', value='complete',
+        self.wait_for_js_statement(key='document.readyState', value='complete',
                                    exception_msg=f"Page {self.page_url} could not be loaded. Please check the UI.")
 
     def click_add_comment(self):
