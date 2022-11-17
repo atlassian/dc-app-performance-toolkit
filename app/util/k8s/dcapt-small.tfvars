@@ -67,7 +67,7 @@ confluence_shared_home_snapshot_id = "snap-0ada4ce7541fc7ca0"
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
-confluence_db_snapshot_id = "dcapt-confluence-small-7-x-x"
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-x-x"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
