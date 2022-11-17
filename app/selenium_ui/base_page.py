@@ -57,7 +57,7 @@ class BasePage:
         by, locator = selector[0], selector[1]
         return True if self.driver.find_elements(by, locator) else False
 
-    def wait_for_js_statemant(self, key, value, exception_msg=None, timeout=timeout):
+    def wait_for_js_statement(self, key, value, exception_msg=None, timeout=timeout):
         start_time = time.time()
         print(f'Waiting for {key} is equal to {value}: {timeout} s.')
         js_current_value = None
