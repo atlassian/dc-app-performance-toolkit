@@ -1,5 +1,6 @@
 """Module with all custom exceptions"""
 
+
 class WebDriverExceptionPostpone(Exception):
     """
     Class is created to postpone an exception raised from webdriver to first webdriver.get method. Thanks to that BZT
