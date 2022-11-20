@@ -60,9 +60,8 @@ class BasePage:
     def wait_for_js_statement(self, key, value, exception_msg=None, timeout=timeout):
         start_time = time.time()
         print(f'Waiting for {key} is equal to {value}: {timeout} s.')
-        js_current_value = None
-        exception_msg = exception_msg if exception_msg else f'{key} is not equal to {value} for {timeout} s. ' \
-                                                            f'Current {key} value is {js_current_value}'
+        exception_msg = exception_msg if exception_msg else f'{key} is not equal to {value} for {timeout} s. '
+
         while time.time() - start_time < timeout:
             js_current_value = self.execute_js(f'return {key}')
             if js_current_value == value:
