@@ -4,7 +4,7 @@ import requests
 from datetime import timedelta
 from timeit import default_timer as timer
 from packaging import version
-from util.conf import TOOLKIT_VERSION, UNSUPPORTED_VERSION
+from util.conf import TOOLKIT_VERSION
 
 CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/conf.py"
 
