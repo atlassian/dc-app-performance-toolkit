@@ -6,14 +6,13 @@
 
 FROM blazemeter/taurus:1.16.18
 
-ENV APT_INSTALL="apt-get -y install --no-install-recommends"
-
-RUN apt-get -y update \
+ENV APT_INSTALL="apt -y install --no-install-recommends"
+RUN apt -y update \
   && $APT_INSTALL vim git openssh-server python3.9-dev python3-pip wget \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
   && python -m pip install --upgrade pip \
   && python -m pip install --upgrade setuptools \
-  && apt-get clean
+  && apt clean
 
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
   && $APT_INSTALL ./google-chrome-stable_current_amd64.deb \
