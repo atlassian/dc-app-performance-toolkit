@@ -8,7 +8,7 @@ FROM blazemeter/taurus:1.16.18
 
 ENV APT_INSTALL="apt -y install --no-install-recommends"
 RUN apt -y update \
-  && $APT_INSTALL vim git openssh-server python3.9-dev python3-pip wget \
+  && $APT_INSTALL vim git python3.9-dev python3-pip wget \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
   && python -m pip install --upgrade pip \
   && python -m pip install --upgrade setuptools \
