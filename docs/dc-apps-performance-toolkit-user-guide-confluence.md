@@ -66,18 +66,22 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ```bash
    git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
-5. Copy [`dcapt_small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt_small.tfvars) file to the `data-center-terraform` folder.
-6. Set **required** variables in `dcapt_small.tfvars` file:
+5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
+   ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars
+    ```
+6. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-small`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
+   - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
 7. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~20 min):
    ```bash
-   ./install.sh -c dcapt_small.tfvars
+   ./install.sh -c dcapt-small.tfvars
    ```
-9. Copy product URL from the console output.
+9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -103,7 +107,7 @@ Make sure **Remote API** is enabled on the **![cog icon](/platform/marketplace/i
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 1990 or your instance-specific port.
     - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
-    - `application_postfix`: it is empty by default; e.g., /confluence for url like this http://localhost:1990/confluence.
+    - `application_postfix`: /confluence - default postfix value for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
@@ -291,17 +295,21 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    git clone -b 2.1.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
-6. Set **required** variables in `dcapt_small.tfvars` file:
+      ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
+    ```
+6. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-large`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
+   - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
 7. Optional variables to override:
     - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars
     ```
-9. Copy product URL from the console output.
+9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -328,17 +336,17 @@ Instead, set those values directly in `.yml` file on execution environment insta
 
    ``` yaml
        application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
-       application_protocol: http      # http or https
-       application_port: 80            # 80, 443, 8080, 2990, etc
-       secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-       application_postfix:            # e.g. /confluence in case of url like http://localhost:2990/confluence
+       application_protocol: http        # http or https
+       application_port: 80              # 80, 443, 8080, 2990, etc
+       secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`
        admin_login: admin
        admin_password: admin
-       load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-       concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+       load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
+       concurrency: 200                  # number of concurrent virtual users for jmeter or locust scenario
        test_duration: 45m
-       ramp-up: 5m                     # time to spin all concurrent users
-       total_actions_per_hour: 20000   # number of total JMeter/Locust actions per hour.
+       ramp-up: 5m                       # time to spin all concurrent users
+       total_actions_per_hour: 20000     # number of total JMeter/Locust actions per hour.
    ```  
 
 1. Push your changes to the forked repository.
@@ -565,16 +573,16 @@ It is recommended to terminate an enterprise-scale environment after completing 
 Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
 See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page
