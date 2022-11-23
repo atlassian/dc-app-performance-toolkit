@@ -1,11 +1,11 @@
-import urllib3
+import warnings
 
 from prepare_data_common import __write_to_file
 from util.api.crowd_clients import CrowdRestClient
 from util.conf import CROWD_SETTINGS
 from util.project_paths import CROWD_USERS
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
 USERS = "users"

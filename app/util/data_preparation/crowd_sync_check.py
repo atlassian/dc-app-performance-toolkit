@@ -1,4 +1,4 @@
-import urllib3
+import warnings
 from timeit import default_timer as timer
 import functools
 from datetime import timedelta
@@ -7,7 +7,7 @@ from util.conf import CROWD_SETTINGS
 from util.api.crowd_clients import CrowdRestClient
 
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
 def print_timing(message):
