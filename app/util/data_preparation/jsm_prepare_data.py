@@ -1,9 +1,8 @@
 import random
-import warnings
 
 from concurrent.futures.thread import ThreadPoolExecutor
 from itertools import repeat
-from prepare_data_common import __write_to_file, __generate_random_string
+from prepare_data_common import __write_to_file, __generate_random_string, __warnings_filter
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
@@ -13,7 +12,7 @@ from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DA
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
     JSM_DATASET_CUSTOM_ISSUES, JSM_DATASET_INSIGHT_ISSUES, JSM_DATASET_INSIGHT_SCHEMAS
 
-warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+__warnings_filter()
 
 MAX_WORKERS = None
 
@@ -50,7 +49,6 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
 performance_agents_count = JSM_SETTINGS.agents_concurrency
 performance_customers_count = JSM_SETTINGS.customers_concurrency
 
-# TODO write here why do we need this.
 
 def __calculate_issues_per_project(projects_count):
     calculated_issues_per_project_count = {}

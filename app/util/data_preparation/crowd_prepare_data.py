@@ -1,11 +1,9 @@
-import warnings
-
-from prepare_data_common import __write_to_file
+from prepare_data_common import __write_to_file, __warnings_filter
 from util.api.crowd_clients import CrowdRestClient
 from util.conf import CROWD_SETTINGS
 from util.project_paths import CROWD_USERS
 
-warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+__warnings_filter()
 
 
 USERS = "users"

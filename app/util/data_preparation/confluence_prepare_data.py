@@ -1,14 +1,13 @@
 import random
-import warnings
 
 from multiprocessing.pool import ThreadPool
-from prepare_data_common import __generate_random_string, __write_to_file
+from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.common_util import print_timing
 from util.conf import CONFLUENCE_SETTINGS
 from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CUSTOM_PAGES
 
-warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+__warnings_filter()
 
 USERS = "users"
 PAGES = "pages"
