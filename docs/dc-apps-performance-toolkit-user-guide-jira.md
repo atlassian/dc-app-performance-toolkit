@@ -4,11 +4,16 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2021-11-17"
+date: "2022-11-14"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
-This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/).
+This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
+
+{{% note %}}
+Data Center App Performance Toolkit is focused on applications performance testing for Marketplace approval process.
+For Jira DataCenter functional testing consider [JPT](http://go.atlassian.com/jpt).
+{{% /note %}}
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
@@ -63,10 +68,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended value |
-| --------- | ----------------- |
-| Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.13`, `8.20.1` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                      |
+| --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | Software                                                                                                                                                                                               |
+| Version | The Data Center App Performance Toolkit officially supports `8.20.13`, `9.1.0` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -126,7 +131,7 @@ After successfully deploying the Jira Data Center on AWS, configure it as follow
 1. On the next page, fill in the **Your License Key** field in one of the following ways:
     - Using your existing license
     - Generating a Jira trial license
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your DCHELP ticket.
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for the licenses in your ECOHELP ticket.
 
     Then select **Next**.
 1. On the **Set up administrator account** page, fill in the following fields:
@@ -384,10 +389,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Jira Product | Software |
-| Version | The Data Center App Performance Toolkit officially supports `8.13.13`, `8.20.1` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended Value                                                                                                                                                                                      |
+| --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | Software                                                                                                                                                                                               |
+| Version | The Data Center App Performance Toolkit officially supports `8.20.13`, `9.1.0` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -448,7 +453,7 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
 1. On the next page, populate the **Your License Key** field by either:
     - Using your existing license, or
     - Generating a Jira trial license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your DCHELP ticket.
+    - Contacting Atlassian to be provided two time-bomb licenses for testing. Ask for it in your ECOHELP ticket.
     Click **Next**.
 1. On the **Set up administrator account** page, populate the following fields:
     - **Full name**: any full name of the admin user
@@ -460,10 +465,6 @@ After successfully deploying Jira Data Center in AWS, you'll need to configure i
 1. On the **Set up email notifications** page, configure your email notifications, and then click **Finish**.
 1. On the first page of the welcome setup select **English (United States)** language. Other languages are not supported by the toolkit.
 1. After going through the welcome setup, click **Create new project** to create a new project.
-
-{{% note %}}
-After [Preloading your Jira deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-{{% /note %}}
 
 ---
 
@@ -645,10 +646,57 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DCHELP ticket.
+1. Attach the screenshot to your ECOHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
+---
+
+#### <a id="indexrecovery"></a> Index Recovery (~15 min, only for Jira versions 9.0.x and below. For Jira 9.1.0+ skip this step.)
+
+1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
+2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+3. In the **Index Recovery** click **Edit Settings**.
+4. Set the recovery index schedule to 5min ahead of the current server time.
+5. Wait ~10min until the index snapshot is created.
+
+Jira will be unavailable for some time during the index recovery process.
+
+6. Using SSH, connect to the Jira node via the Bastion instance:
+
+    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
+    
+    ```bash
+    ssh-add path_to_your_private_key_pem
+    export BASTION_IP=bastion_instance_public_ip
+    export NODE_IP=node_private_ip
+    export SSH_OPTS1='-o ServerAliveInterval=60'
+    export SSH_OPTS2='-o ServerAliveCountMax=30'
+    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
+    ```
+7. Once you're in the node, run command corresponding to your Jira version:
+    
+
+   **Jira 9**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/caches/indexesV2/snapshots/IndexSnapshot*" | tail -1
+   ```
+   **Jira 8**
+   ```bash
+    sudo su -c "du -sh  /media/atl/jira/shared/export/indexsnapshots/IndexSnapshot*" | tail -1
+   ```
+   
+8. The snapshot size and name will be shown in the console output.
+
+{{% note %}}
+Please note that the snapshot size must be around 6GB or larger.
+{{% /note %}}
+
+---
+{{% note %}}
+After [Preloading your Jira deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
+It's recommended to change default password from UI account page for security reasons.
+{{% /note %}}
 ---
 
 ### <a id="executionhost"></a>7. Setting up an execution environment
@@ -658,6 +706,11 @@ For generating performance results suitable for Marketplace approval process use
 1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
 1. Clone the fork locally, then edit the `jira.yml` configuration file. Set enterprise-scale Jira Data Center parameters:
 
+{{% warning %}}
+Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
+Instead, set those values directly in `.yml` file on execution environment instance.
+{{% /warning %}}
+   
    ``` yaml
        application_hostname: test_jira_instance.atlassian.com   # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
        application_protocol: http      # http or https
@@ -674,8 +727,8 @@ For generating performance results suitable for Marketplace approval process use
    ```  
 
 1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html). 
-   * OS: select from Quick Start `Ubuntu Server 18.04 LTS`.
+1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -737,7 +790,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
 
 {{% note %}}
-Jira 7 index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~100 min, Jira 8 index time is about ~30 min.
+Jira 8 index time is about ~30 min.
 {{% /note %}}
 
 {{% note %}}
@@ -752,7 +805,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 1. Select the **Full re-index** option.
 1. Click **Re-Index** and wait until re-indexing is completed.
 1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your DCHELP ticket.
+1. Attach the screenshot to your ECOHELP ticket.
 
 **Performance results generation with the app installed:**
 
@@ -838,44 +891,37 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
 1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-1. Make sure that Jira index successfully synchronized to the second node. To do that, use SSH to connect to the second node via Bastion (where `NODE_IP` is the IP of the second node):
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
 
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-1. Once you're in the second node, download the [index-sync.sh](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh) file. Then, make it executable and run it:
+{{% warning %}}
+In case if you got error during update - `BastionPrivIp cannot be updated`.
+Please use those steps for a workaround:
+1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
+2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
+3. Enter `2` in the **Desired capacity**, **Minimum capacity** and **Maximum capacity** fields.
+4. Scroll down, click **Update** button and wait until stack is updated. 
+{{% /warning %}}
 
-    ```bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/jira/index-sync.sh && chmod +x index-sync.sh
-    ./index-sync.sh 2>&1 | tee -a index-sync.log
-    ```
-    Index synchronizing time is about 5-10 minutes. When index synchronizing is successfully completed, the following lines will be displayed in console output:
-    ```bash
-    Index restore started
-    indexes - 60%
-    indexes - 80%
-    indexes - 100%
-    Index restore complete
-    ```
-{{% note %}}
-If index synchronization is failed by some reason, you can manually copy index from the first node. To do it, login to the second node (use private browser window and check footer information to see which node is current), go to **System** > **Indexing**. In the **Copy the Search Index from another node**, choose the source node (first node) and the target node (current node). The index will copied from one instance to another.
-{{% /note %}}
-
-1. Run toolkit with docker from the execution environment instance:
+5. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html). 
+6. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Clustering** and check there is expected number of nodes with node status `ACTIVE` and application status `RUNNING`. To make sure that Jira index successfully synchronized to the second node.
+   
+{{% warning %}}
+In case if index synchronization is failed by some reason (e.g. application status is `MAINTENANCE`) follow those steps:
+   1. Get back and go through  **[Index Recovery steps](#indexrecovery)**. 
+   2. Proceed to AWS console, go to EC2 > Instances > Select problematic node > Instances state >Terminate instance.
+   3. Wait until the new node will be recreated by ASG, the index should be picked up by a new node automatically.
+{{% /warning %}}
+   
+7. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
    docker pull atlassian/dcapt
    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
    ```
+
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -944,15 +990,17 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 After completing all your tests, delete your Jira Data Center stacks.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
-   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives.
-1. Attach two reports folders to your DCHELP ticket.
+   Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
+   should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
+2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+

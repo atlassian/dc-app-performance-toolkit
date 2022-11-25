@@ -5,19 +5,22 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.13`, `8.20.1`
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.20.13` and `9.1.0` platform release
 
 * Supported Jira Service Management versions: 
-    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.13`, `4.20.1`
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.20.13` and `5.1.0` platform release
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.13.2`, `7.4.13` 
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.19.2`, `7.13.7` 
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.10`, `7.17.1`  
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.21.5`, `7.17.11`, and `8.0.4` platform release.
 
 * Supported Crowd versions:
-    * Crowd [Long Term Support release](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `4.4.0`
+    * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `5.0.2`
+  
+* Supported Bamboo versions:
+    * Bamboo [release notes](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `8.1.3`
   
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
@@ -25,8 +28,8 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.7-3.8 and pip
-* JDK 8
+* Python 3.8 or 3.9 and pip
+* JDK 11
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
 
@@ -38,7 +41,7 @@ If a first part of ChromeDriver version does not match with a first part of your
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
 * XCode Command Line Tools
 * Google Chrome web browser
 ```
@@ -63,7 +66,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p python3
+virtualenv venv -p full_path_to_python # e.g. use `which python3.9` to find the path
 ```
 3. Activate virtual env:
 ```
@@ -78,8 +81,8 @@ pip install -r requirements.txt
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
-* Python developer package (e.g. `python3.8-dev` package for Python3.8)
+* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
+* Python developer package (e.g. `python3.9-dev` package for Python3.9)
 * Google Chrome web browser
 ```
 python3 --version
@@ -92,11 +95,11 @@ git --version
 ```
 We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
 
-## Example setup for clean Ubuntu 18.04
+## Example setup for clean Ubuntu 20.04
 JDK setup (if missing):
 ```
 sudo apt-get update
-sudo apt-get install -y openjdk-8-jre-headless
+sudo apt-get install -y openjdk-11-jre-headless
 ```
 Chrome setup (if missing):
 ```
@@ -107,16 +110,16 @@ sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
 Python and virtualenv setup:
 ```
 sudo apt-get update
-sudo apt-get -y install python3.8-dev python3-pip virtualenv
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
-virtualenv venv -p python
+sudo apt-get -y install python3.9-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
+virtualenv venv -p /usr/bin/python
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ### Windows setup
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed:
 ```
 python --version or python3 --version
 pip --version
@@ -146,7 +149,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p python
+virtualenv venv -p full_path_to_python # e.g. use `where python` to find the path to correct python
 ```
 3. Activate virtual env:
 ```

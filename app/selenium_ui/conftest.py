@@ -2,24 +2,28 @@ import atexit
 import csv
 import datetime
 import functools
+import json
 import os
 import sys
 import time
 from datetime import timezone
+import re
 
 import filelock
 import pytest
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 
-from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
+from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
-    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES,\
+    JSM_DATASET_INSIGHT_SCHEMAS, JSM_DATASET_INSIGHT_ISSUES, BAMBOO_USERS, BAMBOO_BUILD_PLANS
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -60,6 +64,8 @@ class Dataset:
             self.dataset["service_desks_small"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_S)
             self.dataset["service_desks_medium"] = self.__read_input_file(JSM_DATASET_SERVICE_DESKS_M)
             self.dataset["custom_issues"] = self.__read_input_file(JSM_DATASET_CUSTOM_ISSUES)
+            self.dataset["insight_schemas"] = self.__read_input_file(JSM_DATASET_INSIGHT_SCHEMAS)
+            self.dataset["insight_issues"] = self.__read_input_file(JSM_DATASET_INSIGHT_ISSUES)
         return self.dataset
 
     def confluence_dataset(self):
@@ -76,6 +82,13 @@ class Dataset:
             self.dataset["users"] = self.__read_input_file(BITBUCKET_USERS)
             self.dataset["repos"] = self.__read_input_file(BITBUCKET_REPOS)
             self.dataset["pull_requests"] = self.__read_input_file(BITBUCKET_PRS)
+        return self.dataset
+
+    def bamboo_dataset(self):
+        if not self.dataset:
+            self.dataset["users"] = self.__read_input_file(BAMBOO_USERS)
+            self.dataset["build_plans"] = self.__read_input_file(BAMBOO_BUILD_PLANS)
+
         return self.dataset
 
     @staticmethod
@@ -108,7 +121,7 @@ def is_docker():
     )
 
 
-def print_timing(interaction=None):
+def print_timing(interaction=None, explicit_timing=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -137,7 +150,11 @@ def print_timing(interaction=None):
             with filelock.SoftFileLock(lockfile):
                 with open(selenium_results_file, "a+") as jtl_file:
                     timestamp = round(time.time() * 1000)
-                    jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    if explicit_timing:
+                        jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
+                                       f",{success},0,0,0,0,,0\n")
+                    else:
+                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
@@ -147,12 +164,15 @@ def print_timing(interaction=None):
                 raise Exception(error_msg, full_exception)
 
         return wrapper
+
     return deco_wrapper
 
 
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         if app_settings.webdriver_visible and is_docker():
             raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
@@ -164,9 +184,10 @@ def webdriver(app_settings):
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument('lang=en')
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-        driver = Chrome(options=chrome_options)
+        driver = Chrome(options=chrome_options, desired_capabilities=capabilities)
         driver.app_settings = app_settings
         return driver
+
     # First time driver init
     if not globals.driver:
         driver = driver_init()
@@ -174,6 +195,7 @@ def webdriver(app_settings):
 
         def driver_quit():
             driver.quit()
+
         globals.driver = driver
         atexit.register(driver_quit)
         return driver
@@ -190,6 +212,118 @@ def webdriver(app_settings):
             globals.driver = driver_init()
             print('reinit driver')
             return globals.driver
+
+
+def get_performance_logs(webdriver):
+    logs = webdriver.get_log("performance")
+    needed_logs = []
+    for entry in logs:
+        log = json.loads(entry["message"])["message"]
+        if log["method"] == "Network.requestWillBeSent" or \
+           log["method"] == "Network.responseReceived" or \
+           log["method"] == "Network.requestServedFromCache" or \
+           log["method"] == "Network.loadingFinished":
+            needed_logs.append(log)
+
+    sorted_requests = {}
+    for request in needed_logs:
+        request_id = request['params']['requestId']
+        if request_id not in sorted_requests:
+            sorted_requests[request_id] = []
+        if request_id in sorted_requests:
+            sorted_requests[request_id].append(request)
+
+    return sorted_requests
+
+
+def get_requests_by_url(requests, url_path):
+    filtered_requests = {}
+    for request_id, requests in requests.items():
+        for request in requests:
+            if request["method"] == 'Network.requestWillBeSent':
+                if url_path in request["params"]["request"]["url"]:
+                    filtered_requests[request_id] = requests
+    return filtered_requests
+
+
+def get_wait_browser_metrics(webdriver, expected_metrics):
+    attempts = 15
+    sleep_time = 0.5
+    data = {}
+
+    for i in range(attempts):
+        requests = get_performance_logs(webdriver)
+        requests_bulk = get_requests_by_url(requests, 'bulk')
+        data.update(requests_bulk)
+
+        if all([metric in str(data) for metric in expected_metrics]):
+            return data
+
+        print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
+        time.sleep(sleep_time)
+
+    return {}
+
+
+def measure_dom_requests(webdriver, interaction, description=''):
+    if CONFLUENCE_SETTINGS.extended_metrics:
+        if description:
+            interaction = f"{interaction}-{description}"
+    timing = webdriver.execute_script(
+        "return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;")
+    lockfile = f'{selenium_results_file}.lock'
+    error_msg = ''
+    success = True
+    with filelock.SoftFileLock(lockfile):
+        with open(selenium_results_file, "a+") as jtl_file:
+            timestamp = round(time.time() * 1000)
+            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+
+
+def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
+    requests = get_wait_browser_metrics(webdriver, expected_metrics)
+    metrics = []
+    for request_id, request in requests.items():
+        if 'browser.metrics.navigation' in str(request):
+            post_data_str = request[0]['params']['request']['postData']
+            post_data = eval(post_data_str.replace('true', 'True').replace('false', 'False'))
+            for data in post_data:
+                if data['name'] == 'browser.metrics.navigation':
+                    key = data['properties']['key']
+                    ready_for_user = data['properties']['readyForUser']
+                    mark = ''
+                    if 'blogpost.view' in key:
+                        blogpost_template_id = dataset['view_blog'][2]
+                        mark = f'-view_blog-{blogpost_template_id}'
+                        print(f'BLOGPOST_FOUND {mark}')
+                    if 'page.view' in key:
+                        if 'pageID' in post_data_str:
+                            page_id = re.search('"pageID":"(.+?)"', post_data_str).group(1)
+
+                            for name, value in dataset.items():
+                                if value:
+                                    if page_id == value[0]:  # [page_id, project_id, template_id]
+                                        mark = f'-{name}-{value[2]}'
+                                        break
+                                    else:
+                                        mark = f'-create_page'
+
+                    ready_for_user_dict = {'key': f'{key}{mark}', 'ready_for_user': ready_for_user}
+                    metrics.append(ready_for_user_dict)
+
+    lockfile = f'{selenium_results_file}.lock'
+    error_msg = 'Success'
+    success = True
+    if metrics:
+        with filelock.SoftFileLock(lockfile):
+            with open(selenium_results_file, "a+") as jtl_file:
+                for metric in metrics:
+                    interaction = metric['key']
+                    ready_for_user_timing = metric['ready_for_user']
+                    timestamp = round(time.time() * 1000)
+                    jtl_file.write(
+                        f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                    print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success}")
 
 
 @pytest.fixture(scope="module")
@@ -210,6 +344,11 @@ def confluence_webdriver():
 @pytest.fixture(scope="module")
 def bitbucket_webdriver():
     return webdriver(app_settings=BITBUCKET_SETTINGS)
+
+
+@pytest.fixture(scope="module")
+def bamboo_webdriver():
+    return webdriver(app_settings=BAMBOO_SETTINGS)
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -243,6 +382,12 @@ def confluence_screen_shots(request, confluence_webdriver):
 def bitbucket_screen_shots(request, bitbucket_webdriver):
     yield
     get_screen_shots(request, bitbucket_webdriver)
+
+
+@pytest.fixture
+def bamboo_screen_shots(request, bamboo_webdriver):
+    yield
+    get_screen_shots(request, bamboo_webdriver)
 
 
 def get_screen_shots(request, webdriver):
@@ -293,6 +438,11 @@ def bitbucket_datasets():
     return application_dataset.bitbucket_dataset()
 
 
+@pytest.fixture(scope="module")
+def bamboo_datasets():
+    return application_dataset.bamboo_dataset()
+
+
 def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
     """
     Retry "tries" times, with initial "delay", increasing delay "delay*backoff" each time.
@@ -319,4 +469,5 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
                     return f(*args, **kwargs)  # extra try, to avoid except-raise syntax
 
         return f_retry
+
     return deco_retry

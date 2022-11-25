@@ -3,6 +3,7 @@ settings:
   artifacts-dir: results/jsm/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
+  check-updates: false    # disable bzt check for updates
   env:
     application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
     application_protocol: http      # http or https
@@ -18,8 +19,9 @@ settings:
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
+    insight: False                  # Set True to enable Insight specific tests
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.2.1
+    JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors
@@ -34,6 +36,11 @@ settings:
     agent_view_report_created_vs_resolved_medium: 2
     agent_view_customers: 6
     agent_standalone_extension: 0
+    agent_insight_main_page: 10
+    agent_insight_create_schema: 5
+    agent_insight_view_queue_insight_column: 4
+    agent_insight_view_issue_with_objects: 8
+    agent_insight_search_object_by_iql: 2
 
     customer_view_portal: 11
     customer_view_requests: 25
@@ -42,6 +49,7 @@ settings:
     customer_share_request_with_customer: 5
     customer_share_request_with_org: 4
     customer_create_request: 16
+    customer_insight_view_request: 6
     customer_standalone_extension: 0
 
     custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
@@ -53,10 +61,13 @@ services:
       - python util/data_preparation/jsm_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl kpi-1.jtl selenium.jtl
+      - python util/jtl_convertor/jtls-to-csv.py kpi*.jtl selenium.jtl
     post-process:
       - python util/analytics/analytics.py jsm
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==4.1.3
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
@@ -88,6 +99,7 @@ scenarios:
   jmeter_agents:
     script: jmeter/jsm_agents.jmx
     properties:
+      insight: ${insight}
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
       application_port: ${application_port}
@@ -104,10 +116,16 @@ scenarios:
       perc_agent_view_report_created_vs_resolved_small: ${agent_view_report_created_vs_resolved_small}
       perc_agent_view_report_created_vs_resolved_medium: ${agent_view_report_created_vs_resolved_medium}
       perc_agent_view_customers: ${agent_view_customers}
+      perc_agent_insight_main_page: ${agent_insight_main_page}
+      perc_agent_insight_create_schema: ${agent_insight_create_schema}
+      perc_agent_insight_view_queue_insight_column: ${agent_insight_view_queue_insight_column}
+      perc_agent_insight_view_issue_with_objects: ${agent_insight_view_issue_with_objects}
+      perc_agent_insight_search_object_by_iql: ${agent_insight_search_object_by_iql}
       perc_agent_standalone_extension: ${agent_standalone_extension}
   jmeter_customers:
     script: jmeter/jsm_customers.jmx
     properties:
+      insight: ${insight}
       application_hostname: ${application_hostname}
       application_protocol: ${application_protocol}
       application_port: ${application_port}
@@ -121,6 +139,7 @@ scenarios:
       perc_customer_share_request_with_customer: ${customer_share_request_with_customer}
       perc_customer_share_request_with_org: ${customer_share_request_with_org}
       perc_customer_create_request: ${customer_create_request}
+      perc_customer_insight_view_request: ${customer_insight_view_request}
       perc_customer_standalone_extension: ${customer_standalone_extension}
 modules:
   consolidator:
@@ -151,7 +170,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "95.0.4638.69" # Supports Chrome version 95. You can refer to http://chromedriver.chromium.org/downloads
+      version: "107.0.5304.62" # Supports Chrome version 107. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
   - data-source: sample-labels
     module: junit-xml

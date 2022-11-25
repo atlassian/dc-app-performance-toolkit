@@ -1,11 +1,9 @@
 import urllib3
-import random
-import string
 
-from util.conf import CROWD_SETTINGS
+from prepare_data_common import __write_to_file
 from util.api.crowd_clients import CrowdRestClient
+from util.conf import CROWD_SETTINGS
 from util.project_paths import CROWD_USERS
-
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -17,10 +15,6 @@ USER_SEARCH_CQL = f'name={DEFAULT_USER_PREFIX}*'
 ERROR_LIMIT = 10
 
 USERS_COUNT = 100000
-
-
-def generate_random_string(length=20):
-    return "".join([random.choice(string.ascii_lowercase) for _ in range(length)])
 
 
 def __get_users(crowd_api, count):
@@ -46,12 +40,6 @@ def write_test_data_to_files(dataset):
 
     users = [f"{user},{DEFAULT_USER_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(CROWD_USERS, users)
-
-
-def __write_to_file(file_path, items):
-    with open(file_path, 'w') as f:
-        for item in items:
-            f.write(f"{item}\n")
 
 
 def main():

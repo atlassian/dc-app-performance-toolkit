@@ -363,3 +363,11 @@ class JsmRestClient(RestClient):
         if max_count:
             return results[:max_count]
         return results
+
+    def get_all_schemas(self):
+        objectschemas = []
+        api_url = self.host + "/rest/insight/1.0/objectschema/list?"
+        r = self.get(api_url,
+                     f"Could not get objectSchemas id").json()
+        objectschemas.extend(r['objectschemas'])
+        return objectschemas
