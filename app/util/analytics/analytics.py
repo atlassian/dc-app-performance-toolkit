@@ -84,9 +84,10 @@ class AnalyticsCollector:
 
     def is_success(self):
         """
-        Verify the run result summary (minimum success rate 95% for tests).
+        Verify that tests are found and the success rate of the test actions of the run(minimum success rate 95% for
+        tests).
 
-        :return: "OK" message if all tests >=95% success, otherwise "Error" with an explanatory message.
+        :return: "OK" message if all tests >=95% success, otherwise "FAIL" with an explanatory message.
         """
         message = 'OK'
         load_test_rates = dict()
@@ -111,9 +112,10 @@ class AnalyticsCollector:
 
     def is_finished(self):
         """
-        Verify that the required duration matches the defaults requirements.
+        Verify that the required duration matches the default requirements for each product
+        (e.g. of default duration Confluence 45m, Bitbucket 50m)
 
-        :return: "OK" message if the run duration is correct, otherwise "Error" with an explanatory message.
+        :return: "OK" message if the run duration is correct, otherwise "FAIL" with an explanatory message.
         """
         message = 'OK'
         finished = self.actual_duration >= self.duration
@@ -124,9 +126,10 @@ class AnalyticsCollector:
 
     def is_compliant(self):
         """
-        Check if the values meet the default minimum requirements for each product.
+        Check if the values (duration/concurrency etc.) set up for the run (in *.yml)
+        meet the default minimum requirements for each product.
 
-        :return: "OK" message if the result compliant, otherwise "Failed" with an explanatory message.
+        :return: "OK" message if the result compliant, otherwise "FAIL" with an explanatory message.
         """
         message = 'OK'
 
@@ -206,9 +209,9 @@ class AnalyticsCollector:
 
     def is_git_operations_compliant(self):
         """
-        Calculate expected git operations for a given test duration (BITBUCKET)
+        Calculate expected git operations for a given test duration (only for BITBUCKET)
 
-        :return: "OK" message if the result matches the requirements, or an error message otherwise.
+        :return: "OK" message if the result matches the requirements, or "FAIL" message otherwise with explanation.
         """
         message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
@@ -221,10 +224,9 @@ class AnalyticsCollector:
 
 def send_analytics(collector: AnalyticsCollector):
     """
-    Sending Analytics data to AWS
+    Send Analytics data to AWS
 
     :param collector: Collecting all the data from the run
-    :return: None (Data of the results been sent to AWS)
     """
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,

@@ -49,10 +49,10 @@ def write_to_file(content, file):
 
 def generate_report_summary(collector):
     """
-    Generates a file with all necessary metrics for each product.
+    Generates and writes to the file (results_summary.log) all necessary metrics of the run (duration/concurrency etc.)
 
-    :param collector: AnalyticsCollector -  Collecting all the data from the run
-    :return: results_summary.log file with all necessary metrics
+    :param collector: Collecting all the data from the run
+    :return: results_summary.log
     """
     git_compliant = None
 
@@ -168,10 +168,10 @@ def get_os():
 
 def uniq_user_id(server_url: str):
     """
-    Creating unique user id by secure hash
+    Create a user ID for the run, encoded with a secure hash
 
-    :param server_url: url to the instance on which tests were running
-    :return:  secure hash user id
+    :param server_url: URL to the product instance on which tests were running
+    :return:  user ID
     """
     if is_docker():
         user_info = server_url
@@ -221,8 +221,8 @@ def generate_test_actions_by_type(test_actions, application):
     Disunion of test actions by type.
 
     :param test_actions: all test actions used in test
-    :param application: application used for run
-    :return: Separated test types
+    :param application: Product used for the run (e.g. Confluence)
+    :return: Separated test types (locus/jmeter and selenium)
     """
     selenium_actions = {}
     jmeter_actions = {}

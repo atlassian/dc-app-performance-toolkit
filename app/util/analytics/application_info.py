@@ -38,9 +38,9 @@ class BaseApplication:
 
     def get_default_actions(self):
         """
-        Getting our default actions jmeter/locust and selenium from "default_test_actions.json" file
+        Open and read "default_test_actions.json" file to get default actions of the product (e.g. Jira) in test
 
-        :return: default actions of the product in test
+        :return: default actions of the product (e.g. Jira) in test
         """
         actions_json = read_json_file(DEFAULT_ACTIONS)
         return actions_json[self.type]
