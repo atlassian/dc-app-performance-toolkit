@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="15" failures="0" name="ut.com.xpandit.raven.service.impl.IssueDataSetTest" time="0.163" errors="0" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_65\jre\bin"/>
+    <property name="java.vm.version" value="25.65-b01"/>
+    <property name="user.country.format" value="PT"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Projects\xray"/>
+    <property name="java.runtime.version" value="1.8.0_65-b17"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_65\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\NMMS~1.XPA\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="C:\Applications\Atlassian\atlassian-plugin-sdk-6.2.2\apache-maven-3.2.1\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_65\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\jdk1.8.0_65\bin;C:\Windows;C:\Windows\system32;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\OpenVPN\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 &amp; MySQL Utilities 1.5\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 &amp; MySQL Utilities 1.5\Doctrine extensions for PHP\;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Maven\apache-maven-3.3.3\bin;C:\Applications\Terminal Apps;C:\Program Files\MySQL\MySQL Server 5.6\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\Skype\Phone\;C:\Ruby\bin;C:\Applications\Ruby22\bin;C:\Applications\Atlassian\atlassian-plugin-sdk-6.2.2\bin;C:\Users\nmms.XPAND\AppData\Local\Microsoft\WindowsApps;."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="user.home" value="C:\Users\nmms.XPAND"/>
+    <property name="user.timezone" value="Europe/London"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="nmms"/>
+    <property name="java.class.path" value="C:\Applications\Atlassian\atlassian-plugin-sdk-6.2.2\apache-maven-3.2.1\bin\..\boot\plexus-classworlds-2.5.1.jar"/>
+    <property name="org.slf4j.simpleLogger.defaultLogLevel" value="info"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_65\jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package -gs C:\Applications\Atlassian\atlassian-plugin-sdk-6.2.2\apache-maven-3.2.1/conf/settings.xml"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="user.language.format" value="pt"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_65"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_65\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_65\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_65\jre\classes"/>
+    <property name="sun.stderr.encoding" value="cp850"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="C:\Applications\Atlassian\atlassian-plugin-sdk-6.2.2\apache-maven-3.2.1\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.stdout.encoding" value="cp850"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidLimitOverflowOption_returnsExpectedSubset" time="0.114">
+        <failure type="junit.framework.AssertionFailedError"
+                 message="Should not have any errors. [Perforce client error:, 	Connect to server failed; ">
+			<![CDATA[
+            junit.framework.AssertionFailedError: Should not have any errors. [Perforce client error:, Connect to server
+            failed; check $P4PORT., TCP connect to keg failed., keg: host unknown.] expected:<0> but was:<4>
+            at junit.framework.Assert.fail(Assert.java:47)
+            at junit.framework.Assert.failNotEquals(Assert.java:282)
+            at junit.framework.Assert.assertEquals(Assert.java:64)
+            at junit.framework.Assert.assertEquals(Assert.java:201)
+            at  com.atlassian.bamboo.repository.perforce.PerforceSyncCommandTest.testUsingPerforceWhenNoFilesHaveChanged(PerforceSyncCommandTest.java:60)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at junit.framework.TestCase.runTest(TestCase.java:154)
+            at junit.framework.TestCase.runBare(TestCase.java:127)
+            at junit.framework.TestResult$1.protect(TestResult.java:106)
+            at junit.framework.TestResult.runProtected(TestResult.java:124)
+            at junit.framework.TestResult.run(TestResult.java:109)
+            at junit.framework.TestCase.run(TestCase.java:118)
+            at junit.framework.TestSuite.runTest(TestSuite.java:208)
+            at junit.framework.TestSuite.run(TestSuite.java:203)
+            at sun.reflect.GeneratedMethodAccessor17.invoke(Unknown Source)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.apache.maven.surefire.battery.JUnitBattery.executeJUnit(JUnitBattery.java:242)
+            at org.apache.maven.surefire.battery.JUnitBattery.execute(JUnitBattery.java:216)
+            at org.apache.maven.surefire.Surefire.executeBattery(Surefire.java:215)
+            at org.apache.maven.surefire.Surefire.run(Surefire.java:163)
+            at org.apache.maven.surefire.Surefire.run(Surefire.java:87)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.apache.maven.surefire.SurefireBooter.runTestsInProcess(SurefireBooter.java:313)
+            at org.apache.maven.surefire.SurefireBooter.run(SurefireBooter.java:221)
+            at org.apache.maven.test.SurefirePlugin.execute(SurefirePlugin.java:371)
+            at org.apache.maven.plugin.DefaultPluginManager.executeMojo(DefaultPluginManager.java:412)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(DefaultLifecycleExecutor.java:534)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalWithLifecycle(DefaultLifecycleExecutor.java:475)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(DefaultLifecycleExecutor.java:454)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHandleFailures(DefaultLifecycleExecutor.java:306)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegments(DefaultLifecycleExecutor.java:273)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:140)
+            at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:322)
+            at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:115)
+            at org.apache.maven.cli.MavenCli.main(MavenCli.java:256)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+            at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+            at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+            at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+			]]>
+        </failure>
+  </testcase>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withNullOptionsAndValidIssue_throwsIllegalArgumentException" time="0.002"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidEmptyOptions_returnsAllIssues" time="0.002"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidGlobalSearchOptions_returnsExpectedTests" time="0.016"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndInvalidColumnSearchOption_returnsAllTests" time="0.007"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidLimitUnderOption_returnsExpectedSubset" time="0.001"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidGlobalSearchOptionThatMachesIssueKey_returnsExpectedTestWithMatchedKey" time="0.006"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidSummaryColumnAscSortOption_returnsExpectedIssuesInAscOrder" time="0.006"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidSummaryColumnDescSortOption_returnsExpectedIssuesInDescOrder" time="0.002"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidGlobalSearchOptionThatMatchesAllElements_returnsAllTests" time="0.001"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidColumnSearchOptionThatMatchesOneElement_returnsOneTest" time="0.002"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidColumnSearchOptionThatMatchesNoIssue_returnsEmptyList" time="0.001"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidGlobalSearchOptionThatMachesNoIssue_returnsEmptyList" time="0.001">
+        <failure type="junit.framework.AssertionFailedError"
+                 message="Should not have any errors. [Perforce client error:, 	Connect to server failed; ">
+			<![CDATA[
+            junit.framework.AssertionFailedError: Should not have any errors. [Perforce client error:, Connect to server
+            failed; check $P4PORT., TCP connect to keg failed., keg: host unknown.] expected:<0> but was:<4>
+            at junit.framework.Assert.fail(Assert.java:47)
+            at junit.framework.Assert.failNotEquals(Assert.java:282)
+            at junit.framework.Assert.assertEquals(Assert.java:64)
+            at junit.framework.Assert.assertEquals(Assert.java:201)
+            at  com.atlassian.bamboo.repository.perforce.PerforceSyncCommandTest.testUsingPerforceWhenNoFilesHaveChanged(PerforceSyncCommandTest.java:60)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at junit.framework.TestCase.runTest(TestCase.java:154)
+            at junit.framework.TestCase.runBare(TestCase.java:127)
+            at junit.framework.TestResult$1.protect(TestResult.java:106)
+            at junit.framework.TestResult.runProtected(TestResult.java:124)
+            at junit.framework.TestResult.run(TestResult.java:109)
+            at junit.framework.TestCase.run(TestCase.java:118)
+            at junit.framework.TestSuite.runTest(TestSuite.java:208)
+            at junit.framework.TestSuite.run(TestSuite.java:203)
+            at sun.reflect.GeneratedMethodAccessor17.invoke(Unknown Source)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.apache.maven.surefire.battery.JUnitBattery.executeJUnit(JUnitBattery.java:242)
+            at org.apache.maven.surefire.battery.JUnitBattery.execute(JUnitBattery.java:216)
+            at org.apache.maven.surefire.Surefire.executeBattery(Surefire.java:215)
+            at org.apache.maven.surefire.Surefire.run(Surefire.java:163)
+            at org.apache.maven.surefire.Surefire.run(Surefire.java:87)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.apache.maven.surefire.SurefireBooter.runTestsInProcess(SurefireBooter.java:313)
+            at org.apache.maven.surefire.SurefireBooter.run(SurefireBooter.java:221)
+            at org.apache.maven.test.SurefirePlugin.execute(SurefirePlugin.java:371)
+            at org.apache.maven.plugin.DefaultPluginManager.executeMojo(DefaultPluginManager.java:412)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(DefaultLifecycleExecutor.java:534)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalWithLifecycle(DefaultLifecycleExecutor.java:475)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(DefaultLifecycleExecutor.java:454)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHandleFailures(DefaultLifecycleExecutor.java:306)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegments(DefaultLifecycleExecutor.java:273)
+            at org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:140)
+            at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:322)
+            at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:115)
+            at org.apache.maven.cli.MavenCli.main(MavenCli.java:256)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+            at java.lang.reflect.Method.invoke(Method.java:585)
+            at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+            at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+            at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+            at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+			]]>
+        </failure>
+  </testcase>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidKeyColumnDescSortOption_returnsExpectedIssuesInDescOrder" time="0.001"/>
+  <testcase classname="ut.com.xpandit.raven.service.impl.IssueDataSetTest" name="testApplyOptions_withValidIssueAndValidKeyColumnAscSortOption_returnsExpectedIssuesInAscOrder" time="0.001"/>
+</testsuite>
