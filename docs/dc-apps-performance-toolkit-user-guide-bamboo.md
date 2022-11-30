@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-11-14"
+date: "2022-11-30"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -50,11 +50,17 @@ specifically for performance testing during the DC app review process.
    - `environment_name` - any name for you environment, e.g. `dcapt-bamboo`
    - `products` - `bamboo`
    - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
+   - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Start the installation (~40min):
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
+
+{{% note %}}
+New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+{{% /note %}}
 
 ---
 
