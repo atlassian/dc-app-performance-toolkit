@@ -1,13 +1,12 @@
-import urllib3
-from timeit import default_timer as timer
 import functools
-from datetime import timedelta
 
+from timeit import default_timer as timer
+from prepare_data_common import __warnings_filter
+from datetime import timedelta
 from util.conf import CROWD_SETTINGS
 from util.api.crowd_clients import CrowdRestClient
 
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 
 def print_timing(message):
@@ -19,9 +18,11 @@ def print_timing(message):
             start = timer()
             result = func(*args, **kwargs)
             end = timer()
-            print(f"{message}: {timedelta(seconds=end-start)} seconds")
+            print(f"{message}: {timedelta(seconds=end - start)} seconds")
             return result
+
         return wrapper
+
     return deco_wrapper
 
 
