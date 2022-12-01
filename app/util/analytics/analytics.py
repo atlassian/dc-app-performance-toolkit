@@ -78,7 +78,7 @@ class AnalyticsCollector:
 
     def is_analytics_enabled(self):
         """
-        Check if is analytics is enabled in *.yml file
+        Check if analytics is enabled in *.yml file
         """
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
 
@@ -87,7 +87,7 @@ class AnalyticsCollector:
         Verify that tests are found and the success rate of the test actions of the run(minimum success rate 95% for
         tests).
 
-        :return: "OK" message if all tests >=95% success, otherwise "FAIL" with an explanatory message.
+        :return: True with “OK” message if all tests >=95% success, otherwise False with an explanatory message.
         """
         message = 'OK'
         load_test_rates = dict()
@@ -115,7 +115,7 @@ class AnalyticsCollector:
         Verify that the required duration matches the default requirements for each product
         (e.g. of default duration Confluence 45m, Bitbucket 50m)
 
-        :return: "OK" message if the run duration is correct, otherwise "FAIL" with an explanatory message.
+        :return: True with "OK" message if the run duration is correct, otherwise False with an explanatory message.
         """
         message = 'OK'
         finished = self.actual_duration >= self.duration
@@ -129,7 +129,7 @@ class AnalyticsCollector:
         Check if the values (duration/concurrency etc.) set up for the run (in *.yml)
         meet the default minimum requirements for each product.
 
-        :return: "OK" message if the result compliant, otherwise "FAIL" with an explanatory message.
+        :return: True with "OK" message if the result compliant, otherwise False with an explanatory message.
         """
         message = 'OK'
 
@@ -211,7 +211,8 @@ class AnalyticsCollector:
         """
         Calculate expected git operations for a given test duration (only for BITBUCKET)
 
-        :return: "OK" message if the result matches the requirements, or "FAIL" message otherwise with explanation.
+        :return: True with "OK" message if the result matches the requirements,
+                 otherwise False with an explanatory message.
         """
         message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
