@@ -12,6 +12,8 @@ CONF_URL = "https://raw.githubusercontent.com/atlassian/dc-app-performance-toolk
 def get_latest_version(supported=True):
     """
     Get the latest version of DCAPT from the master branch in GIT repository
+    :param supported - version is supported
+    :return: latest version
     """
     VERSION_STR = "TOOLKIT_VERSION" if supported else "UNSUPPORTED_VERSION"
     try:
@@ -30,7 +32,7 @@ def get_latest_version(supported=True):
 
 def get_unsupported_version():
     """
-    Get the unsupported version of DCAPT from the master branch in GIT repository
+    :return: unsupported version
     """
     unsupported_version_str = get_latest_version(supported=False)
 
@@ -39,7 +41,7 @@ def get_unsupported_version():
 
 def get_current_version():
     """
-    Get the current version of DCAPT from the local repository on which tests were running
+    :return: local DCAPT version
     """
     return version.parse(TOOLKIT_VERSION)
 

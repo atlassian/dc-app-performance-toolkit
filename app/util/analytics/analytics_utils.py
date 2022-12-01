@@ -52,7 +52,7 @@ def generate_report_summary(collector):
     Generates and writes to the file (results_summary.log) all necessary metrics of the run (duration/concurrency etc.)
 
     :param collector: Collecting all the data from the run
-    :return: results_summary.log
+    :return: None
     """
     git_compliant = None
 
