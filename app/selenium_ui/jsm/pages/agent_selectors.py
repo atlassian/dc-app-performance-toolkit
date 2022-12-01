@@ -9,6 +9,7 @@ class PopupLocators:
     popup_3 = '.aui-close-button'
     popup_4 = '.aui-button aui-button-link'
     popup_5 = '.buttons-container > div > a'
+    popup_6 = '.css-19r5em7'
 
 
 class UrlManager:
