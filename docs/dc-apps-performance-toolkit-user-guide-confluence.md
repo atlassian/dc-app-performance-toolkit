@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-11-14"
+date: "2022-11-30"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -74,7 +74,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-small`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
-   - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
+   - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~20 min):
@@ -82,6 +82,11 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ./install.sh -c dcapt-small.tfvars
    ```
 9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
+
+{{% note %}}
+New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+{{% /note %}}
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -302,7 +307,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    - `environment_name` - any name for you environment, e.g. `dcapt-confluence-large`
    - `products` - `confluence`
    - `confluence_license` - one-liner of valid confluence license without spaces and new line symbols
-   - `region` - AWS region for deployment. **We recommend to use `us-east-2` - set as default**
+   - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
     - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. Start the installation (~40min):
@@ -310,6 +315,11 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
     ./install.sh -c dcapt.tfvars
     ```
 9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
+
+{{% note %}}
+New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+Use this server id for generation `BX02-9YO1-IN86-LO5G`.
+{{% /note %}}
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
