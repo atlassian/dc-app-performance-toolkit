@@ -78,7 +78,7 @@ class AnalyticsCollector:
 
     def is_analytics_enabled(self):
         """
-        Check if analytics is enabled in *.yml file
+        Check if analytics is enabled in *.yml file.
         """
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
 
@@ -113,7 +113,7 @@ class AnalyticsCollector:
     def is_finished(self):
         """
         Verify that the required duration matches the default requirements for each product
-        (e.g. of default duration Confluence 45m, Bitbucket 50m)
+        (e.g. of default duration Confluence 45m, Bitbucket 50m).
 
         :return: True with "OK" message if the run duration is correct, otherwise False with an explanatory message.
         """
@@ -209,7 +209,7 @@ class AnalyticsCollector:
 
     def is_git_operations_compliant(self):
         """
-        Calculate expected git operations for a given test duration (only for BITBUCKET)
+        Calculate expected git operations for a given test duration (only for BITBUCKET).
 
         :return: True with "OK" message if the result matches the requirements,
                  otherwise False with an explanatory message.
@@ -225,9 +225,9 @@ class AnalyticsCollector:
 
 def send_analytics(collector: AnalyticsCollector):
     """
-    Send Analytics data to AWS
+    Send Analytics data to AWS.
 
-    :param collector: Collecting all the data from the run
+    :param collector: Collecting all the data from the run.
     """
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,
