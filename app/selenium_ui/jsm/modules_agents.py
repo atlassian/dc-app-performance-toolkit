@@ -217,6 +217,7 @@ def add_comment(webdriver, datasets):
 
         @print_timing('selenium_agent_add_comment:add comment')
         def sub_measure():
+            PopupManager(webdriver).dismiss_default_popup()
             customer_request_page.add_request_comment(rte_status)
 
         sub_measure()
