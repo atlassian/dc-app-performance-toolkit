@@ -2,7 +2,7 @@ import sys
 import uuid
 
 import requests
-import urllib3
+from util.data_preparation.prepare_data_common import __warnings_filter
 
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
@@ -12,7 +12,7 @@ from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
 from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
 from util.conf import TOOLKIT_VERSION
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
