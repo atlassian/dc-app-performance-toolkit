@@ -82,7 +82,7 @@ Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
 * [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
-* Python developer package (e.g. `python3.10-dev` package for Python3.10)
+* Python developer package (e.g. `python3.9-dev` package for Python3.9)
 * Google Chrome web browser
 ```
 python3 --version
@@ -110,8 +110,8 @@ sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
 Python and virtualenv setup:
 ```
 sudo apt-get update
-sudo apt-get -y install python3.10-dev python3-pip virtualenv
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+sudo apt-get -y install python3.9-dev python3-pip virtualenv
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
 virtualenv venv -p /usr/bin/python
 source venv/bin/activate
 pip install -r requirements.txt
