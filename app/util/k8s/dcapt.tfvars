@@ -83,7 +83,7 @@ confluence_db_snapshot_build_number = "8804"
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.1"
+confluence_helm_chart_version = "1.7.1"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
