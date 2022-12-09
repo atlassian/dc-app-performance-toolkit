@@ -74,7 +74,7 @@ confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-c
 confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.1"
+confluence_helm_chart_version = "1.7.1"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
