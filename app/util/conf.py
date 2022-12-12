@@ -2,8 +2,8 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
-TOOLKIT_VERSION = '6.0.1'
-UNSUPPORTED_VERSION = '4.1.0'
+TOOLKIT_VERSION = '7.0.0'
+UNSUPPORTED_VERSION = '5.1.0'
 
 
 def read_yml_file(file):
@@ -58,6 +58,7 @@ class ConfluenceSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.extended_metrics = self.get_property('extended_metrics')
 
 
 class BitbucketSettings(BaseAppSettings):
@@ -82,6 +83,7 @@ class JsmSettings(BaseAppSettings):
         self.concurrency = self.agents_concurrency + self.customers_concurrency
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
+        self.insight = self.get_property('insight')
 
 
 class CrowdSettings(BaseAppSettings):
@@ -106,6 +108,7 @@ class BambooSettings(BaseAppSettings):
         self.parallel_plans_count = self.env_settings['parallel_plans_count']
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
+        self.total_actions_per_hour = self.get_property('total_actions_per_hour')
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)

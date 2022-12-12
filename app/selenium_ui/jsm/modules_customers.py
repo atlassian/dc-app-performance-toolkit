@@ -1,6 +1,6 @@
 from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
-    Requests
+    Requests, ViewRequestWithInsight
 import random
 
 REQUESTS = "requests"
@@ -164,6 +164,18 @@ def share_request_with_customer(webdriver, datasets):
         def sub_measure():
             customer_request.share_request()
         sub_measure()
+    measure()
+
+
+def view_request_with_insight(webdriver, datasets):
+    view_request_with_insight_field = ViewRequestWithInsight(webdriver, portal_id=datasets['customer_service_desk_id'])
+
+    @print_timing("selenium_customer_insight_view_request_with_insight_field")
+    def measure():
+        view_request_with_insight_field.go_to()
+        view_request_with_insight_field.choose_request_type()
+        view_request_with_insight_field.check_insight_field()
+
     measure()
 
 
