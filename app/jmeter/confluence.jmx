@@ -899,7 +899,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_page: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_page action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -1077,7 +1077,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_dashboard: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_dashboard action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -1383,7 +1383,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_blog: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_blog action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -1583,7 +1583,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_search_cql: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_search_cql action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -2192,7 +2192,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_create_blog: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_create_blog action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3812,7 +3812,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_create_and_edit_page: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_create_and_edit_page action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -3953,7 +3953,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_comment_page: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_comment_page action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -4462,7 +4462,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_attachment: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_view_attachment action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -4883,7 +4883,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_upload_attachment: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_upload_attachment action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -5117,7 +5117,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_like_page: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_like_page action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
@@ -5563,7 +5563,7 @@ def start_time = Long.valueOf(vars.get(&quot;loop_start_time&quot;))
 def sleep_time = (delay_between_transactions - (System.currentTimeMillis() - start_time)) as int
 def action_time = delay_between_transactions - sleep_time as int
 
-log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_standalone_extension: &quot; + action_time)
+log.info(&quot;concurrency: &quot; + concurrency + &quot;, delay_between_transactions: &quot; + delay_between_transactions + &quot;, thread_sleep: &quot; + sleep_time + &quot;, jmeter_standalone_extension action_time: &quot; + action_time)
 
 if ( sleep_time &gt; 0 ) {
     return sleep_time
