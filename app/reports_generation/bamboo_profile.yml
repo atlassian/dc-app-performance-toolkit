@@ -1,0 +1,22 @@
+# Defines which column from test runs is used for aggregated report. Default is "90% Line"
+column_name: "90% Line"
+runs:
+  # fullPath should contain a full path to the directory with run results.
+  # E.g. /home/$USER/dc-app-performance-toolkit/app/results/bamboo/2021-11-00_17-41-08
+  - runName: "without app"
+    runType: "baseline"
+    fullPath: ""
+  - runName: "with app"
+    runType: "experiment"
+    fullPath: ""
+  - runName: "with app and app-specific actions"
+    runType: "experiment"
+    fullPath: ""
+
+# Chart generation config
+index_col: "Action"
+title: "DCAPT Performance Testing for Bamboo"
+image_height_px: 1000
+image_width_px: 1600
+check_actions_count: false
+judge: false

@@ -4,6 +4,7 @@
 while [[ "$#" -gt 0 ]]; do case $1 in
   --jsm) jsm=1 ;;
   --small) small=1 ;;
+  --custom) custom=1 ;;
   --force)
    if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
      force=1
@@ -32,11 +33,8 @@ DB_CONFIG="/var/atlassian/application-data/jira/dbconfig.xml"
 
 # Depending on Jira installation directory
 JIRA_CURRENT_DIR="/opt/atlassian/jira-software/current"
-START_JIRA="${JIRA_CURRENT_DIR}/bin/start-jira.sh"
-CATALINA_PID_FILE="${JIRA_CURRENT_DIR}/work/catalina.pid"
 JIRA_SETENV_FILE="${JIRA_CURRENT_DIR}/bin/setenv.sh"
 JIRA_VERSION_FILE="/media/atl/jira/shared/jira-software.version"
-SHUT_DOWN_TOMCAT="${JIRA_CURRENT_DIR}/bin/shutdown.sh"
 
 # DB admin user name, password and DB name
 JIRA_DB_NAME="jira"
@@ -45,8 +43,8 @@ JIRA_DB_PASS="Password1!"
 
 # Jira/JSM supported versions
 
-SUPPORTED_JIRA_VERSIONS=(8.13.13 8.20.1)
-SUPPORTED_JSM_VERSIONS=(4.13.13 4.20.1)
+SUPPORTED_JIRA_VERSIONS=(8.20.13 9.1.0)
+SUPPORTED_JSM_VERSIONS=(4.20.13 5.1.0)
 
 SUPPORTED_VERSIONS=("${SUPPORTED_JIRA_VERSIONS[@]}")
 # JSM section
@@ -81,8 +79,17 @@ DB_DUMP_URL="${DATASETS_AWS_BUCKET}/${JIRA_VERSION}/${DATASETS_SIZE}/${DB_DUMP_N
 
 ###################    End of variables section  ###################
 
+# Custom version check
+if [[ ${custom} == 1 ]]; then
+  DB_DUMP_URL="${DATASETS_AWS_BUCKET}/$JIRA_VERSION/${DATASETS_SIZE}/${DB_DUMP_NAME}"
+  if curl --output /dev/null --silent --head --fail "$DB_DUMP_URL"; then
+    echo "Custom version $JIRA_VERSION dataset URL found: ${DB_DUMP_URL}"
+  else
+    echo "Error: there is no dataset for version $JIRA_VERSION"
+    exit 1
+  fi
 # Check if Jira version is supported
-if [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
+elif [[ ! "${SUPPORTED_VERSIONS[*]}" =~ ${JIRA_VERSION} ]]; then
   echo "Jira Version: ${JIRA_VERSION} is not officially supported by Data Center App Performance Toolkit."
   echo "Supported Jira Versions: ${SUPPORTED_VERSIONS[*]}"
   echo "If you want to force apply an existing datasets to your Jira, use --force flag with version of dataset you want to apply:"
@@ -153,7 +160,7 @@ else
 fi
 echo "Current PostgreSQL version is $(psql -V)"
 
-echo "Step2: Get DB Host and check DB connection"
+echo "Step2: Get DB Host, check DB connection and user permissions"
 DB_HOST=$(sudo su -c "cat ${DB_CONFIG} | grep 'jdbc:postgresql' | cut -d'/' -f3 | cut -d':' -f1")
 if [[ -z ${DB_HOST} ]]; then
   echo "DataBase URL was not found in ${DB_CONFIG}"
@@ -170,6 +177,15 @@ if [[ $? -ne 0 ]]; then
   echo "JIRA_DB_PASS=${JIRA_DB_PASS}"
   echo "DB_HOST=${DB_HOST}"
   exit 1
+fi
+
+echo "Check database permissions for user ${JIRA_DB_USER}"
+PGPASSWORD=${JIRA_DB_PASS} createdb -U ${JIRA_DB_USER} -h ${DB_HOST} -T template0 -E "UNICODE" -l "C" TEST
+if [[ $? -ne 0 ]]; then
+  echo "User ${JIRA_DB_USER} doesn't have permission to create database."
+  exit 1
+else
+  PGPASSWORD=${JIRA_DB_PASS} dropdb -U ${JIRA_DB_USER} -h ${DB_HOST} TEST
 fi
 
 echo "Step3: Write jira.baseurl property to file"
@@ -203,39 +219,10 @@ if [[ -s ${JIRA_LICENSE_FILE} ]]; then
 fi
 
 echo "Step5: Stop Jira"
-if [[ ${jsm} == 1 ]]; then
-  sudo systemctl stop jira
-else
-  CATALINA_PID=$(pgrep -f "catalina")
-  echo "CATALINA_PID=${CATALINA_PID}"
-  if [[ -z ${CATALINA_PID} ]]; then
-    echo "Jira is not running"
-    sudo su -c "rm -rf ${CATALINA_PID_FILE}"
-  else
-    echo "Stopping Jira"
-    if [[ ! -f "${CATALINA_PID_FILE}" ]]; then
-      echo "File created: ${CATALINA_PID_FILE}"
-      sudo su -c "echo ${CATALINA_PID} > ${CATALINA_PID_FILE}"
-    fi
-    sudo su -c "${SHUT_DOWN_TOMCAT}"
-    COUNTER=0
-    TIMEOUT=5
-    ATTEMPTS=30
-    while [[ "${COUNTER}" -lt "${ATTEMPTS}" ]]; do
-      if [[ -z $(pgrep -f "catalina") ]]; then
-        echo Jira is stopped
-        break
-      fi
-      echo "Waiting for Jira stop, attempt ${COUNTER}/${ATTEMPTS} at waiting ${TIMEOUT} seconds."
-      sleep ${TIMEOUT}
-      let COUNTER++
-    done
-    if [ ${COUNTER} -eq ${ATTEMPTS} ]; then
-      echo "Jira stop was not finished in $ATTEMPTS attempts with $TIMEOUT sec timeout."
-      echo "Try to rerun script."
-      exit 1
-    fi
-  fi
+sudo systemctl stop jira
+if [[ $? -ne 0 ]]; then
+  echo "Jira did not stop. Please try to rerun script."
+  exit 1
 fi
 
 echo "Step6: Download database dump"
@@ -323,11 +310,8 @@ else
 fi
 
 echo "Step10: Start Jira"
-if [[ ${jsm} == 1 ]]; then
   sudo systemctl start jira
-else
-  sudo su jira -c "${START_JIRA}"
-fi
+
 rm -rf ${DB_DUMP_NAME}
 
 echo "Step11: Remove ${JIRA_BASE_URL_FILE} file"

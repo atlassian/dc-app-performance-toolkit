@@ -1,0 +1,14 @@
+.gradle/
+.idea/
+.DS_Store
+**/*.iml
+out
+build
+**/build/
+**/node_modules
+**/target/
+**/*.bak
+__pycache__/
+# Bamboo Spec Ignored Files
+.credentials
+

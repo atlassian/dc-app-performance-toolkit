@@ -68,11 +68,25 @@ In [bitbucket.yml](../../app/bitbucket.yml) file, set the `WEBDRIVER_VISIBLE: Tr
 1. Activate virualenv for the Performance Toolkit.
 1. Navigate to the selenium folder using the `cd app/selenium_ui` command. 
 1. In [bitbucket.yml](../../app/bitbucket.yml) file, set the `WEBDRIVER_VISIBLE: True`.
-1. Run all Selenium PyTest tests with the `pytest bitbucket-ui.py` command.
+1. Run all Selenium PyTest tests with the `pytest bitbucket_ui.py` command.
 1. To run one Selenium PyTest test (e.g., `test_1_selenium_view_dashboard`), execute the first login test and the required one with this command:
 
-`pytest bitbucket-ui.py::test_0_selenium_a_login bitbucket-ui.py::test_1_selenium_view_dashboard`.
+`pytest bitbucket_ui.py::test_0_selenium_a_login bitbucket_ui.py::test_1_selenium_view_dashboard`.
 
 
 ### Comparing different runs
 Navigate to the `reports_generation` folder and follow README.md instructions to generate side-by-side comparison charts.
+
+### Run prepare data script locally
+1. Activate virualenv for the Performance Toolkit.
+2. Navigate to the `app` folder.
+3. Set PYTHONPATH as full path to `app` folder with command:
+    ```bash
+    export PYTHONPATH=`pwd`    # for mac or linux
+    set PYTHONPATH=%cd%        # for windows
+    ```
+   
+4. Run prepare data script:
+    ```bash
+    python util/data_preparation/bitbucket_prepare_data.py
+    ```

@@ -57,57 +57,63 @@ class BasePage:
         return True if self.driver.find_elements(by, locator) else False
 
     def wait_until_invisible(self, selector, timeout=timeout):
-        return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector), time_out=timeout)
+        return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector), locator=selector,
+                                 time_out=timeout)
 
     def wait_until_visible(self, selector, timeout=timeout):
-        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), time_out=timeout)
+        return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), locator=selector,
+                                 time_out=timeout)
 
     def wait_until_available_to_switch(self, selector):
         return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
+                                 locator=selector,
                                  time_out=self.timeout)
 
     def wait_until_present(self, selector, timeout=timeout):
-        return self.__wait_until(expected_condition=ec.presence_of_element_located(selector), time_out=timeout)
+        return self.__wait_until(expected_condition=ec.presence_of_element_located(selector), locator=selector,
+                                 time_out=timeout)
 
     def wait_until_clickable(self, selector, timeout=timeout):
-        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), time_out=timeout)
+        return self.__wait_until(expected_condition=ec.element_to_be_clickable(selector), locator=selector,
+                                 time_out=timeout)
 
     def wait_until_any_element_visible(self, selector, timeout=timeout):
         return self.__wait_until(expected_condition=ec.visibility_of_any_elements_located(selector),
+                                 locator=selector,
                                  time_out=timeout)
 
     def wait_until_any_ec_presented(self, selectors, timeout=timeout):
         any_ec = AnyEc()
         any_ec.ecs = tuple(ec.presence_of_element_located(selector) for selector in selectors)
-        return self.__wait_until(expected_condition=any_ec, time_out=timeout)
+        return self.__wait_until(expected_condition=any_ec, locator=selectors, time_out=timeout)
 
     def wait_until_any_ec_text_presented_in_el(self, selector_text_list, timeout=timeout):
         any_ec = AnyEc()
         any_ec.ecs = tuple(ec.text_to_be_present_in_element(locator=selector_text[0], text_=selector_text[1]) for
                            selector_text in selector_text_list)
-        return self.__wait_until(expected_condition=any_ec, time_out=timeout)
+        return self.__wait_until(expected_condition=any_ec, locator=selector_text_list, time_out=timeout)
 
-    def __wait_until(self, expected_condition, time_out=timeout):
+    def __wait_until(self, expected_condition, locator, time_out=timeout):
         message = f"Error in wait_until: "
         ec_type = type(expected_condition)
         if ec_type == AnyEc:
             conditions_text = ""
             for ecs in expected_condition.ecs:
-                conditions_text = conditions_text + " " + f"Condition: {str(ecs)} Locator: {ecs.locator}\n"
+                conditions_text = conditions_text + " " + f"Condition: {str(ecs)} Locator: {locator}\n"
 
             message += f"Timed out after {time_out} sec waiting for one of the conditions: \n{conditions_text}"
 
         elif ec_type == ec.invisibility_of_element_located:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {expected_condition.target}")
+                        f"Locator: {locator}")
 
         elif ec_type == ec.frame_to_be_available_and_switch_to_it:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {expected_condition.frame_locator}")
+                        f"Locator: {locator}")
 
         else:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {expected_condition.locator}")
+                        f"Locator: {locator}")
 
         return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
 
