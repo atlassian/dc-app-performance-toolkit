@@ -81,12 +81,6 @@ confluence_helm_chart_version = "1.7.1"
 # can be dataset restoration, resource requirements, number of replicas and others.
 confluence_installation_timeout = 20
 
-# Termination grace period
-# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue.
-confluence_termination_grace_period = 0
-
 # Confluence instance resource configuration
 confluence_cpu      = "900m"
 confluence_mem      = "6Gi"
