@@ -177,7 +177,7 @@ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bi
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-4"
 
 # Helm chart version of Bitbucket
-bitbucket_helm_chart_version = "<helm_chart_version>"
+#bitbucket_helm_chart_version = "<helm_chart_version>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
