@@ -83,7 +83,7 @@ confluence_db_snapshot_build_number = "8804"
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.7.1"
+# confluence_helm_chart_version = "<helm_chart_version>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
@@ -147,8 +147,8 @@ bamboo_version_tag       = "8.1.3"
 bamboo_agent_version_tag = "8.1.3"
 
 # Helm chart version of Bamboo and Bamboo agent instances
-bamboo_helm_chart_version       = "1.5.0"
-bamboo_agent_helm_chart_version = "1.5.0"
+# bamboo_helm_chart_version       = "<helm_chart_version>"
+# bamboo_agent_helm_chart_version = "<helm_chart_version>"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.
