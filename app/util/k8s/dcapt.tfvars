@@ -83,18 +83,12 @@ confluence_db_snapshot_build_number = "8804"
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.1"
+# confluence_helm_chart_version = "<helm_chart_version>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
 confluence_installation_timeout = 25
-
-# Termination grace period
-# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
-# Termination grace period is 0 by default. You can override it if for some reason you need a different value
-confluence_termination_grace_period = 0
 
 # Confluence instance resource configuration
 confluence_cpu      = "4"
@@ -153,8 +147,8 @@ bamboo_version_tag       = "8.1.3"
 bamboo_agent_version_tag = "8.1.3"
 
 # Helm chart version of Bamboo and Bamboo agent instances
-bamboo_helm_chart_version       = "1.5.0"
-bamboo_agent_helm_chart_version = "1.5.0"
+# bamboo_helm_chart_version       = "<helm_chart_version>"
+# bamboo_agent_helm_chart_version = "<helm_chart_version>"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.
@@ -216,10 +210,3 @@ bamboo_db_name                 = "bamboo"
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
 bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
-
-# Termination grace period
-# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
-# Termination grace period is 0 by default. You can override it if for some reason you need a different value.
-# This will apply to both Bamboo server and agent pods.
-bamboo_termination_grace_period = 0

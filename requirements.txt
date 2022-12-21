@@ -1,12 +1,11 @@
-matplotlib==3.5.2
-kiwisolver==1.4.4
-pandas==1.4.3
-numpy==1.23.2
-scipy==1.9.0
-pytest==7.1.2
-locust==2.11.0
-selenium==4.4.3
+matplotlib==3.6.2
+pandas==1.5.1
+numpy==1.23.5
+scipy==1.9.3
+pytest==7.2.0
+locust==2.13.0
+selenium==4.5.0
 filelock==3.8.0
 packaging==21.3
-prettytable==3.3.0
-bzt==1.16.3     # make sure Dockerfile bzt version is the same
+prettytable==3.5.0
+bzt==1.16.19

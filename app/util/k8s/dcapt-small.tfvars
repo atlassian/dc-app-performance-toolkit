@@ -74,18 +74,12 @@ confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-c
 confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.1"
+confluence_helm_chart_version = "1.7.1"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
 confluence_installation_timeout = 20
-
-# Termination grace period
-# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue.
-confluence_termination_grace_period = 0
 
 # Confluence instance resource configuration
 confluence_cpu      = "900m"
@@ -94,7 +88,7 @@ confluence_min_heap = "2048m"
 confluence_max_heap = "2048m"
 
 # Synchrony instance resource configuration
-synchrony_cpu       = "2"
+synchrony_cpu       = "1"
 synchrony_mem       = "2.5Gi"
 synchrony_min_heap  = "1024m"
 synchrony_max_heap  = "2048m"

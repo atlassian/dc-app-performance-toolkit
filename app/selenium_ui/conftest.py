@@ -18,6 +18,7 @@ from selenium.webdriver.chrome.options import Options
 from time import sleep
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
+from util.exceptions import WebDriverExceptionPostpone
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
@@ -189,29 +190,33 @@ def webdriver(app_settings):
         return driver
 
     # First time driver init
-    if not globals.driver:
-        driver = driver_init()
-        print('first driver inits')
+    try:
+        if not globals.driver:
+            driver = driver_init()
+            print('first driver inits')
 
-        def driver_quit():
-            driver.quit()
+            def driver_quit():
+                driver.quit()
 
-        globals.driver = driver
-        atexit.register(driver_quit)
-        return driver
-    else:
-        try:
-            # check if driver is not broken
-            globals.driver_title = globals.driver.title
-            print('get driver from global')
-            globals.driver.delete_all_cookies()
-            print('clear browser cookies')
-            return globals.driver
-        except WebDriverException:
-            # re-init driver if it broken
-            globals.driver = driver_init()
-            print('reinit driver')
-            return globals.driver
+            globals.driver = driver
+            atexit.register(driver_quit)
+            return driver
+        else:
+            try:
+                # check if driver is not broken
+                globals.driver_title = globals.driver.title
+                print('get driver from global')
+                globals.driver.delete_all_cookies()
+                print('clear browser cookies')
+                return globals.driver
+            except WebDriverException:
+                # re-init driver if it broken
+                globals.driver = driver_init()
+                print('reinit driver')
+                return globals.driver
+
+    except Exception as err:
+        return WebDriverExceptionPostpone(str(err))
 
 
 def get_performance_logs(webdriver):
