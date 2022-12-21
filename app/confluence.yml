@@ -122,4 +122,4 @@ reporting:
   module: junit-xml
 - module: passfail
   criteria:
-  - failures>50% over 300s, stop as failed
+  - failures>50% within 300s, stop as failed
