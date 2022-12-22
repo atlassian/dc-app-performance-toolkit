@@ -17,7 +17,7 @@ environment_name = "dcapt-product-small"
 # Supported products: confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["confluence"]
+products = ["product-to-deploy"]
 
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
