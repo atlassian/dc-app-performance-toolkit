@@ -28,8 +28,10 @@ whitelist_cidr = ["0.0.0.0/0"]
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing"}
 
-# Instance types that is preferred for EKS node group. Do not change default values.
-# For Bitbucket please use ["m5.4xlarge"] instance type
+# Instance types that is preferred for EKS node group.
+# Confluence, Bamboo - use default value
+# Bitbucket - ["m5.4xlarge"]
+# ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
 instance_disk_size = 100
 
@@ -38,7 +40,7 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 4 # In case you installing Bitbucket use 3
+max_cluster_capacity = 4
 
 ################################################################################
 # Confluence Settings
@@ -147,28 +149,28 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.17.11"
+bitbucket_version_tag = "7.21.5"
 
 # Shared home restore configuration.
 # Make sure confluence version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.17.11 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0c3e69219e85fb4e1"
 # 7.21.5 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
+bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
 # 8.0.4 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-0fd26f4ce87e99573"
+# 7.17.11 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0c3e69219e85fb4e1"
 
 # Database restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
-# 7.17.11 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-11"
 # 7.21.5 DCAPT large dataset RDS snapshot
-# bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-5"
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-5"
 # 8.0.4 DCAPT large dataset RDS snapshot
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-4"
+# 7.17.11 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-11"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"

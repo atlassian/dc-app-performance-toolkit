@@ -30,8 +30,10 @@ whitelist_cidr = ["0.0.0.0/0"]
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing-small"}
 
-# Instance types that is preferred for EKS node group. Do not change default values.
-# For Bitbucket please use ["t3.2xlarge"] instance type
+# Instance types that is preferred for EKS node group.
+# Confluence - use default value
+# Bitbucket - ["t3.2xlarge"]
+# ! REQUIRED !
 instance_types     = ["t3.xlarge"]
 instance_disk_size = 100
 
@@ -75,7 +77,7 @@ confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-c
 confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.7.1"
+#confluence_helm_chart_version = "<helm_chart_version>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
@@ -145,31 +147,31 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.17.11"
+bitbucket_version_tag = "7.21.5"
 
 # Shared home restore configuration.
 # Make sure confluence version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.17.11 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0c19f13de8365992f"
 # 7.21.5 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-03f6e5418622e1962"
+bitbucket_shared_home_snapshot_id = "snap-03f6e5418622e1962"
 # 8.0.4 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-06174375e49694005"
+# 7.17.11 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0c19f13de8365992f"
 
 # Database restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
-# 7.17.11 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-11"
 # 7.21.5 DCAPT large dataset RDS snapshot
-# bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-5"
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-5"
 # 8.0.4 DCAPT large dataset RDS snapshot
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-0-4"
+# 7.17.11 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-11"
 
 # Helm chart version of Bitbucket
-bitbucket_helm_chart_version = "<helm_chart_version>"
+#bitbucket_helm_chart_version = "<helm_chart_version>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
