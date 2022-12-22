@@ -6,7 +6,7 @@ from sys import version_info
 
 import yaml
 
-SUPPORTED_PYTHON_VERSIONS = ["3.8", "3.9", "3.10"]
+SUPPORTED_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
 
 python_full_version = '.'.join(map(str, version_info[0:3]))
 python_short_version = '.'.join(map(str, version_info[0:2]))
