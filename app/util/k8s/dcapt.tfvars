@@ -12,7 +12,7 @@
 # ! REQUIRED !
 environment_name = "dcapt-product"
 
-# Supported products: confluence and bamboo.
+# Supported products: confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
@@ -28,7 +28,10 @@ whitelist_cidr = ["0.0.0.0/0"]
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing"}
 
-# Instance types that is preferred for EKS node group. Do not change default values.
+# Instance types that is preferred for EKS node group.
+# Confluence, Bamboo - use default value
+# Bitbucket - ["m5.4xlarge"]
+# ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
 instance_disk_size = 100
 
@@ -128,6 +131,109 @@ confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
+
+################################################################################
+# Bitbucket Settings
+################################################################################
+
+# Bitbucket license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
+# Please make sure valid bitbucket license is used without spaces and new line symbols.
+# ! REQUIRED !
+bitbucket_license = "bitbucket-license"
+
+# Number of Bitbucket application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
+# installed and configured.
+bitbucket_replica_count = 1
+
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "7.21.5"
+
+# Shared home restore configuration.
+# Make sure confluence version set in `bitbucket_version_tag` match the snapshot version.
+#
+# 7.21.5 DCAPT large dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
+# 8.0.4 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0fd26f4ce87e99573"
+# 7.17.11 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0c3e69219e85fb4e1"
+
+# Database restore configuration.
+# Make sure confluence version set in `confluence_version_tag` match the snapshot version.
+# Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
+#
+# 7.21.5 DCAPT large dataset RDS snapshot
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-5"
+# 8.0.4 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-4"
+# 7.17.11 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-11"
+
+# Helm chart version of Bitbucket
+#bitbucket_helm_chart_version = "<helm_chart_version>"
+
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+bitbucket_installation_timeout = 30
+
+# Bitbucket system admin credentials
+# To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
+#
+# To avoid storing password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`
+# (i.e. `TF_VAR_bitbucket_admin_password`) and keep `bitbucket_admin_password` commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment `bitbucket_admin_password` and supply system admin password here
+#
+bitbucket_admin_username      = "admin"
+bitbucket_admin_password      = "admin"
+bitbucket_admin_display_name  = "admin"
+bitbucket_admin_email_address = "admin@example.com"
+
+# Bitbucket instance resource configuration
+bitbucket_cpu      = "4"
+bitbucket_mem      = "16Gi"
+bitbucket_min_heap = "2048m"
+bitbucket_max_heap = "4096m"
+
+# Storage
+bitbucket_local_home_size  = "1000Gi"
+bitbucket_shared_home_size = "1000Gi"
+
+# Bitbucket NFS instance resource configuration
+bitbucket_nfs_requests_cpu    = "2"
+bitbucket_nfs_requests_memory = "8Gi"
+bitbucket_nfs_limits_cpu      = "3"
+bitbucket_nfs_limits_memory   = "10Gi"
+
+# Elasticsearch resource configuration for Bitbucket
+bitbucket_elasticsearch_requests_cpu    = "1.5"
+bitbucket_elasticsearch_requests_memory = "4Gi"
+bitbucket_elasticsearch_limits_cpu      = "2"
+bitbucket_elasticsearch_limits_memory   = "5Gi"
+bitbucket_elasticsearch_storage         = "1000"
+bitbucket_elasticsearch_replicas        = "2"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+bitbucket_db_major_engine_version = "11"
+bitbucket_db_instance_class       = "db.m4.large"
+bitbucket_db_allocated_storage    = 100
+bitbucket_db_iops                 = 1000
+# If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
+# Set `null` if the snapshot does not have a default db name.
+bitbucket_db_name = "bitbucket"
+
+# The master user credential for the database instance.
+# If username is not provided, it'll be default to "postgres".
+# If password is not provided, a random password will be generated.
+bitbucket_db_master_username = "atlbitbucket"
+bitbucket_db_master_password = "Password1!"
 
 ################################################################################
 # Bamboo Settings
