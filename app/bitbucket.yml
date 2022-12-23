@@ -9,7 +9,7 @@ settings:
     application_protocol: http        # http or https
     application_port: 80              # 80, 443, 8080, 7990 etc
     secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:  /bitbucket  # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
+    application_postfix:  /bitbucket  # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
     load_executor: jmeter             # only jmeter executor is supported
