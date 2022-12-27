@@ -10907,7 +10907,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:-1,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Acorn Computers&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:-1,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SamsungElectronics&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_MITS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:-1,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SYSGO&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_DigitalEquipmentCorporation,TandemComputers,Compaq,Hewlett-Packard&quot;,&quot;rank&quot;:1}]}]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:45001,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Acorn Computers&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45002,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SamsungElectronics&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_MITS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45003,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SYSGO&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_DigitalEquipmentCorporation,TandemComputers,Compaq,Hewlett-Packard&quot;,&quot;rank&quot;:1}]}]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -10916,7 +10916,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset?entityId=2075280type=TEST</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset?entityId=2075280&amp;type=TEST</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
