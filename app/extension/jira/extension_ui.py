@@ -7,8 +7,6 @@ from selenium_ui.conftest import print_timing
 from selenium_ui.jira.pages.pages import Login
 from util.conf import JIRA_SETTINGS
 
-def app_single_action(webdriver, datasets):
-issue_page = Issue(webdriver, issue_key=datasets['issue_key'])
 
 def app_single_action(webdriver, datasets):
     issue_page = Issue(webdriver, issue_key=datasets['issue_key'])
