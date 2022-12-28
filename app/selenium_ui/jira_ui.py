@@ -64,12 +64,6 @@ Refer to `app/selenium_ui/jira/modules.py` for examples.
 def test_1_selenium_xporter_single_export_dialog(jira_webdriver, jira_datasets, jira_screen_shots):
     extension_ui.app_single_action(jira_webdriver, jira_datasets)
 
-def test_1_selenium_xporter_bulk_export_dialog(jira_webdriver, jira_datasets, jira_screen_shots):
-    extension_ui.app_bulk_action(jira_webdriver, jira_datasets)
-
-def test_1_selenium_xporter_xlsx_current_fields_export(jira_webdriver, jira_datasets, jira_screen_shots):
-    extension_ui.app_xlsx_current_fields_action(jira_webdriver, jira_datasets)
-
 # this action should be the last one
 def test_2_selenium_z_log_out(jira_webdriver, jira_datasets, jira_screen_shots):
     modules.log_out(jira_webdriver, jira_datasets)
