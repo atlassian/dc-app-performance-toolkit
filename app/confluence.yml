@@ -24,16 +24,15 @@ settings:
     # Action percentage for JMeter and Locust load executors
     extended_metrics: False
     view_page: 35
-    view_dashboard: 8
-    view_blog: 10
-    search_cql: 9
-    create_blog: 3
-    create_and_edit_page: 7
-    comment_page: 6
-    view_attachment: 4
-    upload_attachment: 5
-    like_page: 2
-    quick_edit_page: 11
+    view_dashboard: 9
+    view_blog: 13
+    search_cql: 10
+    create_blog: 4
+    create_and_edit_page: 8
+    comment_page: 7
+    view_attachment: 5
+    upload_attachment: 6
+    like_page: 3
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
@@ -86,7 +85,6 @@ scenarios:
       perc_view_attachment: ${view_attachment}
       perc_upload_attachment: ${upload_attachment}
       perc_like_page: ${like_page}
-      perc_quick_edit_page: ${quick_edit_page}
       perc_standalone_extension: ${standalone_extension}
 
 modules:
@@ -122,3 +120,6 @@ modules:
 reporting:
 - data-source: sample-labels
   module: junit-xml
+- module: passfail
+  criteria:
+  - failures>50% within 300s, stop as failed
