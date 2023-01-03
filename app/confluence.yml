@@ -120,3 +120,6 @@ modules:
 reporting:
 - data-source: sample-labels
   module: junit-xml
+- module: passfail
+  criteria:
+  - failures>50% within 300s, stop as failed
