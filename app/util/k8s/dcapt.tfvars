@@ -152,7 +152,7 @@ bitbucket_replica_count = 1
 bitbucket_version_tag = "7.21.5"
 
 # Shared home restore configuration.
-# Make sure confluence version set in `bitbucket_version_tag` match the snapshot version.
+# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.5 DCAPT large dataset EBS snapshot
 bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
@@ -162,8 +162,7 @@ bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
 #bitbucket_shared_home_snapshot_id = "snap-0c3e69219e85fb4e1"
 
 # Database restore configuration.
-# Make sure confluence version set in `confluence_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
+# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.5 DCAPT large dataset RDS snapshot
  bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-5"
