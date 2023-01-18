@@ -155,28 +155,27 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.5"
+bitbucket_version_tag = "7.21.7"
 
 # Shared home restore configuration.
-# Make sure confluence version set in `bitbucket_version_tag` match the snapshot version.
+# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.5 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-01d3e7127b170b739"
-# 8.0.4 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0fd26f4ce87e99573"
-# 7.17.11 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0c3e69219e85fb4e1"
+# 7.21.7 DCAPT large dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-0f7780c62a76f5ea0"
+# 8.0.5 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-038caf77059e580e5"
+# 7.17.13 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-068dc6b69b67ee535"
 
 # Database restore configuration.
-# Make sure confluence version set in `confluence_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
+# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.5 DCAPT large dataset RDS snapshot
- bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-5"
-# 8.0.4 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-4"
-# 7.17.11 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-11"
+# 7.21.7 DCAPT large dataset RDS snapshot
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-x"
+# 8.0.5 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-x"
+# 7.17.13 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-x"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -227,8 +226,8 @@ bitbucket_elasticsearch_replicas        = "2"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bitbucket_db_major_engine_version = "11"
-bitbucket_db_instance_class       = "db.m4.large"
+bitbucket_db_major_engine_version = "14"
+bitbucket_db_instance_class       = "db.m5.large"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 # If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
