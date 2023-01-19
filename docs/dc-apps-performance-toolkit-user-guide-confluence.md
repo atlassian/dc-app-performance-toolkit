@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-12-21"
+date: "2023-01-19"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -12,13 +12,13 @@ This document walks you through the process of testing your app on Confluence us
 
 In this document, we cover the use of the Data Center App Performance Toolkit on two types of environments:
 
-**[Development environment](#mainenvironmentdev)**: Confluence Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions). We recommend you use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) with the parameters prescribed here.
+**[Development environment](#mainenvironmentdev)**: Confluence Data Center environment for a test run of Data Center App Performance Toolkit and development of [app-specific actions](#appspecificactions).
 
 1. [Set up a development environment Confluence Data Center on AWS](#devinstancesetup).
 2. [Run toolkit on the development environment locally](#devtestscenario).
 3. [Develop and test app-specific actions locally](#devappaction).
 
-**[Enterprise-scale environment](#mainenvironmententerprise)**: Confluence Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Confluence Data Center](https://aws.amazon.com/quickstart/architecture/confluence/) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Confluence Data Center.
+**[Enterprise-scale environment](#mainenvironmententerprise)**: Confluence Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process.
 
 4. [Set up an enterprise-scale environment Confluence Data Center on AWS](#instancesetup).
 5. [Set up an execution environment for the toolkit](#executionhost).
