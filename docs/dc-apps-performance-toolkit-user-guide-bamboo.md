@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-12-21"
+date: "2023-01-19"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -43,7 +43,7 @@ specifically for performance testing during the DC app review process.
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.2.3 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.3.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
       ``` bash

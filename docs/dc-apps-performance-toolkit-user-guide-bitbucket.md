@@ -171,7 +171,7 @@ Do not proceed with the next step until you have all actions 95+% success rate. 
 
 ---
 
-### <a id="devappaction"></a>4. Develop and test app-specific action locally
+### <a id="devappaction"></a>3. Develop and test app-specific action locally
 Data Center App Performance Toolkit has its own set of default test actions for Bitbucket Data Center: JMeter and Selenium for load and UI tests respectively.     
 
 **App-specific action** - action (performance test) you have to develop to cover main use cases of your application. Performance test should focus on the common usage of your application and not to cover all possible functionality of your app. For example, application setup screen or other one-time use cases are out of scope of performance testing.
@@ -205,7 +205,7 @@ So, our test has to open app-specific issues and measure time to load of this ap
 
 After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
 
-### <a id="instancesetup"></a>5. Setting up Bitbucket Data Center enterprise-scale environment with "large" dataset
+### <a id="instancesetup"></a>4. Setting up Bitbucket Data Center enterprise-scale environment with "large" dataset
 
 We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
 how to deploy a Bitbucket Data Center environment and AWS on k8s.
@@ -288,7 +288,7 @@ Terminate cluster when it is not used for performance results generation.
 
 ---
 
-### <a id="executionhost"></a>6. Setting up an execution environment
+### <a id="executionhost"></a>5. Setting up an execution environment
 
 For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
 
@@ -312,7 +312,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
        concurrency: 20                   # number of concurrent virtual users for jmeter scenario
        test_duration: 50m
        ramp-up: 10m                      # time to spin all concurrent users
-       total_actions_per_hour: 32700
+       total_actions_per_hour: 32700     # number of total JMeter actions per hour
    ```  
 
 1. Push your changes to the forked repository.
@@ -337,7 +337,7 @@ You'll need to run the toolkit for each [test scenario](#testscenario) in the ne
 
 ---
 
-### <a id="testscenario"></a>7. Running the test scenarios from execution environment against enterprise-scale Bitbucket Data Center
+### <a id="testscenario"></a>6. Running the test scenarios from execution environment against enterprise-scale Bitbucket Data Center
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -350,7 +350,7 @@ Each scenario will involve multiple test runs. The following subsections explain
 
 This scenario helps to identify basic performance issues without a need to spin up a multi-node Bitbucket DC. Make sure the app does not have any performance impact when it is not exercised.
 
-##### <a id="regressionrun1"></a> Run 1 (~50 min)
+##### <a id="regressionrun1"></a> Run 1 (~1 hour)
 
 To receive performance baseline results **without** an app installed:
 
@@ -374,7 +374,7 @@ To receive performance baseline results **without** an app installed:
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
-##### <a id="regressionrun2"></a> Run 2 (~50 min)
+##### <a id="regressionrun2"></a> Run 2 (~1 hour)
 
 To receive performance results with an app installed:
 
@@ -431,7 +431,7 @@ The purpose of scalability testing is to reflect the impact on the customer expe
 For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Bitbucket DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Bitbucket DC app in a cluster.
 
 
-##### <a id="run3"></a> Run 3 (~50 min)
+##### <a id="run3"></a> Run 3 (~1 hour)
 
 To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions:
 
@@ -451,7 +451,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 {{% /note %}}
 
 
-##### <a id="run4"></a> Run 4 (~50 min)
+##### <a id="run4"></a> Run 4 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
 Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
@@ -479,7 +479,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 {{% /note %}}
 
 
-##### <a id="run5"></a> Run 5 (~50 min)
+##### <a id="run5"></a> Run 5 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
 Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
