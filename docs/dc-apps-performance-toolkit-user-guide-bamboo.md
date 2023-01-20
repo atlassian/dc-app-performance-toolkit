@@ -54,7 +54,7 @@ specifically for performance testing during the DC app review process.
    - `products` - `bamboo`
    - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-7. Start the installation (~40min):
+7. From local terminal (Git bash terminal for Windows) start the installation (~40min):
    ```bash
    ./install.sh -c dcapt.tfvars
    ```

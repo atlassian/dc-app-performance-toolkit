@@ -105,7 +105,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-8. Start the installation (~20 min):
+8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt-small.tfvars
    ```
@@ -341,7 +341,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
     - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-8. Start the installation (~40min):
+8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars
     ```
@@ -537,7 +537,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
 
 1. Navigate to `data-center-terraform` folder.
 2. Open `dcapt.tfvars` file and set `confluence_replica_count` value to `2`.
-3. Start scaling (~20 min):
+3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
