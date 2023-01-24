@@ -65,7 +65,7 @@ confluence_version_tag = "7.19.2"
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 #
 # 8.0.0 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-017809ad2330588a2"
+# confluence_shared_home_snapshot_id = "snap-04f4088d5834a9f50"
 # 7.19.2 DCAPT large dataset EBS snapshot
 confluence_shared_home_snapshot_id = "snap-017809ad2330588a2"
 # 7.13.7 DCAPT large dataset EBS snapshot
@@ -76,7 +76,7 @@ confluence_shared_home_snapshot_id = "snap-017809ad2330588a2"
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
 # 8.0.0 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x"
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed"
 # 7.19.2 DCAPT large dataset RDS snapshot
 confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-x"
 # 7.13.7 DCAPT large dataset RDS snapshot

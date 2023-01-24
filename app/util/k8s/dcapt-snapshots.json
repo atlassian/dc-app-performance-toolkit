@@ -59,6 +59,36 @@
           "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-7-x-x"
         }
       }
+    },
+    "8.0.x": {
+      "ebs": {
+        "large": {
+            "us-east-1":"",
+            "us-east-2":"snap-04f4088d5834a9f50",
+            "us-west-1":"",
+            "us-west-2":""
+          },
+        "small": {
+            "us-east-1":"",
+            "us-east-2":"",
+            "us-west-1":"",
+            "us-west-2":""
+          }
+      },
+      "rds": {
+        "large": {
+          "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
+          "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
+          "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
+          "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed"
+        },
+        "small": {
+          "us-east-1": "",
+          "us-east-2": "",
+          "us-west-1": "",
+          "us-west-2": ""
+        }
+      }
     }
   }
 }
