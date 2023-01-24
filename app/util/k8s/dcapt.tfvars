@@ -163,7 +163,7 @@ bitbucket_version_tag = "7.21.7"
 # 7.21.7 DCAPT large dataset EBS snapshot
 bitbucket_shared_home_snapshot_id = "snap-0f7780c62a76f5ea0"
 # 8.0.5 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-038caf77059e580e5"
+#bitbucket_shared_home_snapshot_id = "snap-053b73fd8765b8cd0"
 # 7.17.13 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-068dc6b69b67ee535"
 
