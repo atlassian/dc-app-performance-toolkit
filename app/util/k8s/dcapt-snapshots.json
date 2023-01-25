@@ -78,7 +78,7 @@
       "rds": {
         "large": {
           "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
-          "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
+          "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed-backup",
           "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed",
           "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed"
         },
