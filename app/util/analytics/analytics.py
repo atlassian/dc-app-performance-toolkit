@@ -183,7 +183,7 @@ class AnalyticsCollector:
                     err_msg.append(f"The actual test duration {self.actual_duration} is less than "
                                    f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
                 if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
-                    err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
+                    err_msg.append(f"The run concurrency {self.concurrency} is less "
                                    f"than minimum concurrency "
                                    f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
                 if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
