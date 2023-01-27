@@ -64,16 +64,23 @@ confluence_replica_count = 1
 confluence_version_tag = "7.19.2"
 
 # Shared home restore configuration.
-#
-confluence_shared_home_snapshot_id = "snap-0ada4ce7541fc7ca0"
+# 8.x.x
+# confluence_shared_home_snapshot_id = "snap-0be9055e5b42333fd"
+# 7.x.x
+confluence_shared_home_snapshot_id = "snap-0237a9f4c1a332dc6"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-#
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-x-x"
+# 8.x.x
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:dcapt-confluence-small-8-0-x-psql14"
+# 7.x.x
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-x-psql14"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
+# 8.x.x
+# confluence_db_snapshot_build_number = "9002"
+# 7.x.x
 confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
@@ -112,7 +119,7 @@ confluence_nfs_limits_memory   = "2Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-confluence_db_major_engine_version = "11"
+confluence_db_major_engine_version = "14"
 confluence_db_instance_class       = "db.t3.medium"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
