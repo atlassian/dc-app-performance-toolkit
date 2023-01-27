@@ -64,8 +64,10 @@ confluence_version_tag = "7.19.2"
 # Shared home restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 #
+# 8.0.0 DCAPT large dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-04f4088d5834a9f50"
 # 7.19.2 DCAPT large dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-017809ad2330588a2"
+confluence_shared_home_snapshot_id = "snap-074d8504e562d79f3"
 # 7.13.7 DCAPT large dataset EBS snapshot
 # confluence_shared_home_snapshot_id = "snap-0ae77fcd4fd5a5914"
 
@@ -73,13 +75,17 @@ confluence_shared_home_snapshot_id = "snap-017809ad2330588a2"
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
+# 8.0.0 DCAPT large dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-0-x-full-indexed"
 # 7.19.2 DCAPT large dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-x"
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-x-full-indexed"
 # 7.13.7 DCAPT large dataset RDS snapshot
 # confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-13-x"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
+# 8.0.0
+# confluence_db_snapshot_build_number = "9002"
 # 7.19.2
 confluence_db_snapshot_build_number = "8804"
 # 7.13.7

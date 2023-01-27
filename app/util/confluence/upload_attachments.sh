@@ -4,7 +4,7 @@
 ###################    Variables section         ###################
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
-SUPPORTED_CONFLUENCE_VERSIONS=(7.13.7 7.19.2)
+SUPPORTED_CONFLUENCE_VERSIONS=(7.13.7 7.19.2 8.0.0)
 CONFLUENCE_VERSION=$(sudo su confluence -c "cat ${CONFLUENCE_VERSION_FILE}")
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
