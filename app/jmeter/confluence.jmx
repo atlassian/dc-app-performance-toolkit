@@ -5332,7 +5332,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
     &quot;copyPages&quot;: true,&#xd;
     &quot;newName&quot;: &quot;${target_space_name}&quot;,&#xd;
     &quot;newKey&quot;: &quot;${target_space_key}&quot;,&#xd;
-    &quot;oldKey&quot;: &quot;ds&quot;&#xd;
+    &quot;oldKey&quot;: &quot;${space_key}&quot;&#xd;
 }</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
