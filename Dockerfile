@@ -4,7 +4,7 @@
 # bzt run: docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
 # interactive run: docker run -it --entrypoint="/bin/bash" -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt
 
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 

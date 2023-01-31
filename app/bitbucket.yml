@@ -6,21 +6,21 @@ settings:
   check-updates: false    # disable bzt check for updates
   env:
     application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 7990 etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /bitbucket in case of url like http://localhost:7990/bitbucket
+    application_protocol: http        # http or https
+    application_port: 80              # 80, 443, 8080, 7990 etc
+    secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix:  /bitbucket  # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter           # only jmeter executor is supported
-    concurrency: 20                 # number of concurrent virtual users for jmeter scenario
+    load_executor: jmeter             # only jmeter executor is supported
+    concurrency: 20                   # number of concurrent virtual users for jmeter scenario
     test_duration: 50m
-    ramp-up: 10m                    # time to spin all concurrent users
+    ramp-up: 10m                      # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
     prepare:
@@ -90,7 +90,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "108.0.5359.71" # Supports Chrome version 108. You can refer to http://chromedriver.chromium.org/downloads
+      version: "109.0.5414.74" # Supports Chrome version 109. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

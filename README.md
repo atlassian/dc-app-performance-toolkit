@@ -11,10 +11,10 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.20.15` and `5.4.0`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.19.2`, `7.13.7` 
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.19.2`, `7.13.7`  and `8.0.0` platform release
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.21.5`, `7.17.11`, and `8.0.4` platform release.
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.21.7`, `7.17.13`, and `8.0.5` platform release.
 
 * Supported Crowd versions:
     * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `5.0.2`
@@ -28,7 +28,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.8, 3.9 or 3.10 and pip
+* Python 3.8, 3.9, 3.10 or 3.11 and pip
 * JDK 11
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
@@ -66,7 +66,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p full_path_to_python # e.g. use `which python3.10` to find the path
+virtualenv venv -p full_path_to_python # e.g. use `which python3.11` to find the path
 ```
 3. Activate virtual env:
 ```

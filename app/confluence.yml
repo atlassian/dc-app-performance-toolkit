@@ -115,7 +115,10 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "108.0.5359.71" # Supports Chrome version 108. You can refer to http://chromedriver.chromium.org/downloads
+      version: "109.0.5414.74" # Supports Chrome version 109. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
+- module: passfail
+  criteria:
+  - failures>50% within 300s, stop as failed
