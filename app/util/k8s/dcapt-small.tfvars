@@ -184,6 +184,12 @@ bitbucket_shared_home_snapshot_id = "snap-014e88755f53c2284"
 # can be dataset restoration, resource requirements, number of replicas and others.
 bitbucket_installation_timeout = 30
 
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
+# if you encounter such an issue
+bitbucket_termination_grace_period = 0
+
 # Bitbucket system admin credentials
 # To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
 #
