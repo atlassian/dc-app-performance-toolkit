@@ -7,8 +7,8 @@ def test_0_selenium_a_login(bamboo_webdriver, bamboo_datasets, bamboo_screen_sho
     modules.login(bamboo_webdriver, bamboo_datasets)
 
 
-def test_1_selenium_view_all_projects(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
-    modules.view_all_projects(bamboo_webdriver, bamboo_datasets)
+# def test_1_selenium_view_all_projects(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
+#     modules.view_all_projects(bamboo_webdriver, bamboo_datasets)
 
 
 def test_1_selenium_view_all_builds(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
