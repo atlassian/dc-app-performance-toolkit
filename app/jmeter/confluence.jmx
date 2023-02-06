@@ -5166,12 +5166,12 @@ if ( sleep_time &gt; 0 ) {
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="app_specific_username" elementType="Argument">
                     <stringProp name="Argument.name">app_specific_username</stringProp>
-                    <stringProp name="Argument.value">${__P(admin_login, admin)</stringProp>
+                    <stringProp name="Argument.value">${__P(admin_login, admin)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="app_specific_password" elementType="Argument">
                     <stringProp name="Argument.name">app_specific_password</stringProp>
-                    <stringProp name="Argument.value">${__P(admin_password, admin)</stringProp>
+                    <stringProp name="Argument.value">${__P(admin_password, admin)}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
