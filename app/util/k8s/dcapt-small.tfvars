@@ -161,7 +161,7 @@ bitbucket_version_tag = "7.21.7"
 #
 # 7.21.7 DCAPT small dataset EBS snapshot
 bitbucket_shared_home_snapshot_id = "snap-014e88755f53c2284"
-# 8.0.5 DCAPT small dataset EBS snapshot
+# 8.8.0 DCAPT small dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-04f8cce571e8ff53b"
 # 7.17.13 DCAPT small dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-0291604b41056ad4e"
@@ -171,8 +171,8 @@ bitbucket_shared_home_snapshot_id = "snap-014e88755f53c2284"
 #
 # 7.21.7 DCAPT small dataset RDS snapshot
  bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-x"
-# 8.0.5 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-0-x"
+# 8.8.0 DCAPT small dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-8-x"
 # 7.17.13 DCAPT small dataset RDS snapshot
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-x"
 
