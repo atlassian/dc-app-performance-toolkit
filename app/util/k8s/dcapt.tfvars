@@ -162,7 +162,7 @@ bitbucket_version_tag = "7.21.7"
 #
 # 7.21.7 DCAPT large dataset EBS snapshot
 bitbucket_shared_home_snapshot_id = "snap-0f7780c62a76f5ea0"
-# 8.0.5 DCAPT large dataset EBS snapshot
+# 8.8.0 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-053b73fd8765b8cd0"
 # 7.17.13 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-068dc6b69b67ee535"
@@ -172,8 +172,8 @@ bitbucket_shared_home_snapshot_id = "snap-0f7780c62a76f5ea0"
 #
 # 7.21.7 DCAPT large dataset RDS snapshot
  bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-x"
-# 8.0.5 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-0-x"
+# 8.8.0 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-8-x"
 # 7.17.13 DCAPT large dataset RDS snapshot
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-x"
 
@@ -294,8 +294,8 @@ bamboo_admin_email_address = "admin@example.com"
 # Bamboo instance resource configuration
 bamboo_cpu      = "4"
 bamboo_mem      = "16Gi"
-bamboo_min_heap = "256m"
-bamboo_max_heap = "512m"
+bamboo_min_heap = "2048m"
+bamboo_max_heap = "4096m"
 
 # Bamboo Agent instance resource configuration
 bamboo_agent_cpu = "200m"

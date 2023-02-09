@@ -92,7 +92,7 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.3.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
    ``` bash
@@ -252,7 +252,7 @@ Below process describes how to install enterprise-scale Bitbucket DC with "large
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.3.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
       ``` bash
