@@ -61,26 +61,32 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.2"
+confluence_version_tag = "7.19.5"
 
 # Shared home restore configuration.
-# 8.x.x
-# confluence_shared_home_snapshot_id = "snap-0be9055e5b42333fd"
-# 7.x.x
-confluence_shared_home_snapshot_id = "snap-0237a9f4c1a332dc6"
+# 8.0.3 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-095426a567b696a48"
+# 7.19.5 DCAPT small dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-031972bc32cc7809a"
+# 7.13.7 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-0b5f813fea1774368"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-# 8.x.x
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:dcapt-confluence-small-8-0-x-psql14"
-# 7.x.x
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-x-psql14"
+# 8.0.3 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-0-3"
+# 7.19.5 DCAPT small dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-5"
+# 7.13.7 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-7"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.x.x
+# 8.0.3
 # confluence_db_snapshot_build_number = "9002"
-# 7.x.x
+# 7.19.5
+confluence_db_snapshot_build_number = "8804"
+# 7.13.7
 confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
@@ -130,7 +136,7 @@ confluence_db_name = "confluence"
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
-confluence_db_master_username = "postgres"
+confluence_db_master_username = "atlconfluence"
 confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
