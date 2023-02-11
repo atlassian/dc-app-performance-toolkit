@@ -87,7 +87,7 @@ confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-c
 # 7.19.5
 confluence_db_snapshot_build_number = "8804"
 # 7.13.7
-confluence_db_snapshot_build_number = "8703"
+#confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
