@@ -2,7 +2,7 @@
 column_name: "90% Line"
 runs:
   # fullPath should contain a full path to the directory with run results.
-  # E.g. /home/$USER/dc-app-performance-toolkit/bamboo/results/2021-11-00_17-41-08
+  # E.g. /home/$USER/dc-app-performance-toolkit/app/results/bamboo/2021-11-00_17-41-08
   - runName: "without app"
     runType: "baseline"
     fullPath: ""

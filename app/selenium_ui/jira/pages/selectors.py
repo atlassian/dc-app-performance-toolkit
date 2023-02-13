@@ -65,7 +65,6 @@ class UrlManager:
 
 
 class LoginPageLocators:
-
     login_url = UrlManager().login_url()
     login_params = UrlManager().login_params
 
@@ -81,21 +80,18 @@ class LoginPageLocators:
 
 
 class LogoutLocators:
-
     logout_url = UrlManager().logout_url()
     logout_submit_button = (By.ID, "confirm-logout-submit")
     login_button_link = (By.CLASS_NAME, "login-link")
 
 
 class DashboardLocators:
-
     dashboard_url = UrlManager().dashboard_url()
     dashboard_params = UrlManager().dashboard_params
     dashboard_window = (By.CLASS_NAME, "page-type-dashboard")
 
 
 class IssueLocators:
-
     issue_title = (By.ID, "summary-val")
 
     create_issue_button = (By.ID, "create_link")
@@ -125,7 +121,6 @@ class IssueLocators:
 
 
 class ProjectLocators:
-
     project_summary_property_column = (By.CLASS_NAME, 'project-meta-column')
 
     # projects list locators
@@ -134,7 +129,6 @@ class ProjectLocators:
 
 
 class SearchLocators:
-
     search_issue_table = (By.ID, "issuetable")
     search_issue_content = (By.ID, "issue-content")
     search_no_issue_found = (By.CLASS_NAME, "no-results-message")

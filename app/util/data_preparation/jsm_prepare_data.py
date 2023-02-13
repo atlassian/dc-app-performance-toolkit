@@ -1,10 +1,8 @@
 import random
+
 from concurrent.futures.thread import ThreadPoolExecutor
 from itertools import repeat
-
-import urllib3
-
-from prepare_data_common import __write_to_file, __generate_random_string
+from prepare_data_common import __write_to_file, __generate_random_string, __warnings_filter
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
 from util.api.jira_clients import JiraRestClient
 from util.api.jsm_clients import JsmRestClient
@@ -12,7 +10,9 @@ from util.common_util import print_timing
 from util.conf import JSM_SETTINGS
 from util.project_paths import JSM_DATASET_AGENTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_REQUESTS, \
     JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_REQUEST_TYPES, \
-    JSM_DATASET_CUSTOM_ISSUES
+    JSM_DATASET_CUSTOM_ISSUES, JSM_DATASET_INSIGHT_ISSUES, JSM_DATASET_INSIGHT_SCHEMAS
+
+__warnings_filter()
 
 MAX_WORKERS = None
 
@@ -31,6 +31,8 @@ SERVICE_DESKS_MEDIUM = "service_desks_medium"
 SERVICE_DESKS_SMALL = "service_desks_small"
 REQUEST_TYPES = "request_types"
 CUSTOM_ISSUES = "custom_issues"
+INSIGHT_ISSUES = "insight_issues"
+INSIGHT_SCHEMAS = "insight_schemas"
 # Issues to retrieve per project in percentage. E.g. retrieve 35% of issues from first project, 20% from second, etc.
 # Retrieving 5% of all issues from projects 10-last project.
 PROJECTS_ISSUES_PERC = {1: 35, 2: 20, 3: 15, 4: 5, 5: 5, 6: 5, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -46,9 +48,6 @@ REQUEST_TYPES_NAMES = ['Technical support', 'Licensing and billing questions', '
 
 performance_agents_count = JSM_SETTINGS.agents_concurrency
 performance_customers_count = JSM_SETTINGS.customers_concurrency
-
-# TODO write here why do we need this.
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def __calculate_issues_per_project(projects_count):
@@ -362,6 +361,14 @@ def __get_request_types(jsm_api, service_desks):
     return [','.join(i) for i in request_types_list]
 
 
+@print_timing("Preparing Insight Schemas")
+def __get_insight_schemas(jsm_api):
+    insight_schemas = jsm_api.get_all_schemas()
+    if not insight_schemas:
+        raise Exception('ERROR: Jira Service Management instance does not have any Insight schemas')
+    return insight_schemas
+
+
 @print_timing("Preparing custom issues")
 def __get_custom_issues(jira_api, jsm_api, custom_jql):
     issues = []
@@ -377,15 +384,41 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
     return issues
 
 
+@print_timing("Preparing Insight issues")
+def __get_insight_issues(jira_api):
+    jql = "Insight is NOT EMPTY"
+    issues = jira_api.issues_search(jql=jql, max_results=500)
+    if not issues:
+        raise Exception('ERROR: Jira Service Management instance does not have any Insight issues')
+    return issues
+
+
 @print_timing("Getting all service desks")
-def __get_all_service_desks_and_validate(jsm_client):
-    service_desks = jsm_client.get_all_service_desks()
-    if not service_desks:
-
+def __get_all_service_desks_and_validate(jira_api, jsm_client):
+    all_service_desks = jsm_client.get_all_service_desks()
+    if not all_service_desks:
         raise Exception('ERROR: There were no Jira Service Desks found')
-    if len(service_desks) < 2:
-        raise Exception('ERROR: At least 2 service desks are needed')
+    try:
+        issues_with_insight = jira_api.issues_search(jql='Insight is not EMPTY', max_results=10000)
+    except Exception as e:
+        print(f'There were no Insight issues found. {e}')
 
+        issues_with_insight = []
+    project_keys_with_insight = [f"{service_desk_issues['key'].split('-')[0]}"
+                                 for service_desk_issues
+                                 in issues_with_insight]
+    if JSM_SETTINGS.insight:
+        # service desks with insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         in project_keys_with_insight]
+    else:
+        # without insight issues
+        service_desks = [service_desk for service_desk in all_service_desks if service_desk["projectKey"]
+                         not in project_keys_with_insight]
+    if len(service_desks) < 2:
+        if JSM_SETTINGS.insight:
+            raise Exception('ERROR: At least 2 service desks with Insight issues are needed')
+        raise Exception('ERROR: At least 2 service desks are needed')
     return service_desks
 
 
@@ -411,7 +444,7 @@ def __get_issues_by_project_keys(jira_client, jsm_client, project_keys):
 
 
 def __create_data_set(jira_client, jsm_client):
-    service_desks = __get_all_service_desks_and_validate(jsm_client)
+    service_desks = __get_all_service_desks_and_validate(jira_client, jsm_client)
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
     dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
@@ -422,6 +455,11 @@ def __create_data_set(jira_client, jsm_client):
         jsm_client, jira_client, service_desks)
     dataset[REQUEST_TYPES] = __get_request_types(jsm_client, service_desks)
     dataset[CUSTOM_ISSUES] = __get_custom_issues(jira_client, jsm_client, JSM_SETTINGS.custom_dataset_query)
+    dataset[INSIGHT_ISSUES] = list()
+    dataset[INSIGHT_SCHEMAS] = list()
+    if JSM_SETTINGS.insight:
+        dataset[INSIGHT_ISSUES] = __get_insight_issues(jira_client)
+        dataset[INSIGHT_SCHEMAS] = __get_insight_schemas(jsm_client)
 
     return dataset
 
@@ -439,6 +477,14 @@ def __write_test_data_to_files(datasets):
     issues = [f"{issue['key']},{issue['id']},{issue['key'].split('-')[0]},{issue['service_desk_id']}" for issue
               in datasets[CUSTOM_ISSUES]]
     __write_to_file(JSM_DATASET_CUSTOM_ISSUES, issues)
+    insight_issues = [f"{insight_issue['key']},{insight_issue['id']},{insight_issue['key'].split('-')[0]}"
+                      for insight_issue
+                      in datasets[INSIGHT_ISSUES]]
+    __write_to_file(JSM_DATASET_INSIGHT_ISSUES, insight_issues)
+    schemas_id = [f"{schema_id['id']}"
+                  for schema_id
+                  in datasets[INSIGHT_SCHEMAS]]
+    __write_to_file(JSM_DATASET_INSIGHT_SCHEMAS, schemas_id)
 
 
 @print_timing('JSM full prepare data', sep='=')
