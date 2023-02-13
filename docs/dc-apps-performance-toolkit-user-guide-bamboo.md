@@ -59,6 +59,7 @@ specifically for performance testing during the DC app review process.
    ./install.sh -c dcapt.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
+9. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
 
 {{% note %}}
 New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
