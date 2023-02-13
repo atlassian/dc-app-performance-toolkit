@@ -86,7 +86,6 @@ scenarios:
       perc_upload_attachment: ${upload_attachment}
       perc_like_page: ${like_page}
       perc_standalone_extension: ${standalone_extension}
-
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
