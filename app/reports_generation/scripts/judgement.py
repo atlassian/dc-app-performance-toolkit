@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from decimal import Decimal, getcontext
 from statistics import median
 import typing
+import warnings
 
 import pandas
 from prettytable import PrettyTable
@@ -85,14 +86,25 @@ def judgement_test_measuring(dataframe_baseline: pandas.DataFrame, dataframe_tes
                              measurement_by_column: str, tolerances: ActionTolerance):
     judgement_results = []
 
-    for group in dataframe_baseline.groups:
+    for group in sorted(dataframe_baseline.groups):
         tolerance = tolerances.get_tolerance_range(action=group)
         if tolerance is None:
             continue
         tolerance = Decimal(tolerance)
 
         sample_base = dataframe_baseline.get_group(group)[measurement_by_column]
-        sample_tested = dataframe_tested.get_group(group)[measurement_by_column]
+        try:
+            sample_tested = dataframe_tested.get_group(group)[measurement_by_column]
+        except KeyError as e:
+            judgement_results.append(
+                JudgementResult(action=group, passed=False,
+                                failure_reason=f"No action in experiment dataframe: {e}", p_value=None,
+                                baseline_size=len(sample_base), tested_size=0,
+                                tolerance=float(round(tolerance, 2)))
+            )
+            warnings.warn(f"There is no action in experiment run. Error {e}")
+            continue
+
         try:
             test_passed, p_value = mannwhitney_test(sample_base, sample_tested, tolerance)
             # TODO: later we may define many failure reasons
@@ -109,8 +121,12 @@ def judgement_test_measuring(dataframe_baseline: pandas.DataFrame, dataframe_tes
                                f'Check results for this group.',
                 p_value=None, tolerance=float(tolerances.get_tolerance_range(action=group)))
             )
-            print(f" No tolerance found for action {group}. Action timelines is {sample_base.values}")
+            print(f"No tolerance found for action {group}. Action timelines is {sample_base.values}")
 
+    absent_actions_in_baseline = set(dataframe_tested.groups) - set(dataframe_baseline.groups)
+    if absent_actions_in_baseline:
+        warnings.warn(f"There are also actions absent in baseline run, but present in experiment: "
+                      f"{absent_actions_in_baseline}.")
     return judgement_results
 
 
@@ -120,38 +136,47 @@ def group_dataframe_by_action(filepaths: list, fields=None):
     return group_data_by_column(raw_dataframe, columns=('label',))
 
 
-def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str):
-    action_tolerances = get_tolerances(tested_result_dir)
-
-    # jmeter actions test
-    # df_jmeter_baseline = group_dataframe_by_action(os.path.join(baseline_result_dir, 'kpi*.jtl'))
-    # df_selenium_baseline = group_dataframe_by_action(os.path.join(baseline_result_dir, 'selenium*.jtl'))
-    fields = ('label', 'elapsed', )
-    # gather all needed dataframes with specific fields
-    df_baseline = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
-                                             os.path.join(baseline_result_dir, 'selenium*.jtl')], fields)
-    df_tested = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
-                                           os.path.join(baseline_result_dir, 'selenium*.jtl')], fields)
-    results = judgement_test_measuring(df_baseline, df_tested,
-                                       measurement_by_column='elapsed',
-                                       tolerances=action_tolerances)
-
+def save_judgement_results(results, output_dir, baseline_dirname, tested_dirname):
     results_representation = [judgement_result.values() for judgement_result in results]
     judgement_table = PrettyTable(results[0].head())
     judgement_table.add_rows(results_representation)
     print("Results of judgement")
     print(judgement_table)
-    return [results[0].head()] + results_representation
+    # saving results
+    judgement_filename = os.path.join(
+        output_dir,
+        f'judged_baseline_{baseline_dirname}_experiment_{tested_dirname}.csv')
+    save_results([results[0].head()] + results_representation,
+                 filepath=os.path.join(output_dir, judgement_filename))
+
+
+def judge_baseline_and_tested(baseline_result_dir: str, tested_result_dir: str, output_dir: str):
+    action_tolerances = get_tolerances(tested_result_dir)
+    fields = ('label', 'elapsed', )
+    # gather all needed dataframes with specific fields
+    df_baseline = group_dataframe_by_action([os.path.join(baseline_result_dir, 'kpi*.jtl'),
+                                             os.path.join(baseline_result_dir, 'selenium*.jtl')], fields)
+    df_tested = group_dataframe_by_action([os.path.join(tested_result_dir, 'kpi*.jtl'),
+                                           os.path.join(tested_result_dir, 'selenium*.jtl')], fields)
+    results = judgement_test_measuring(df_baseline, df_tested,
+                                       measurement_by_column='elapsed',
+                                       tolerances=action_tolerances)
+    success_status = all(result.passed for result in results)
+
+    save_judgement_results(results, output_dir,
+                           baseline_dirname=os.path.basename(baseline_result_dir),
+                           tested_dirname=os.path.basename(tested_result_dir))
+    return success_status
 
 
 def judge(baseline_dir, tested_dirs, output_dir):
+    judgement_succeeded = True
     for directory in tested_dirs:
-        results = judge_baseline_and_tested(baseline_dir, directory)
-        judgement_filename = os.path.join(
-            output_dir,
-            f'judged_baseline_{os.path.basename(baseline_dir)}_experiment_{os.path.basename(directory)}.csv')
-        save_results(results,
-                     filepath=os.path.join(output_dir, judgement_filename))
+        success = judge_baseline_and_tested(baseline_dir, directory, output_dir=output_dir)
+        if not success:
+            judgement_succeeded = False
+    if not judgement_succeeded:
+        raise SystemExit("Judgement has failed. Check judgement table above.")
 
 
 def __get_judgement_kwargs(config):
