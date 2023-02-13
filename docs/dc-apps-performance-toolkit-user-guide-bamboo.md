@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-12-21"
+date: "2023-02-13"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -43,7 +43,7 @@ specifically for performance testing during the DC app review process.
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.2.3 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
       ``` bash
@@ -54,11 +54,12 @@ specifically for performance testing during the DC app review process.
    - `products` - `bamboo`
    - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-7. Start the installation (~40min):
+7. From local terminal (Git bash terminal for Windows) start the installation (~40min):
    ```bash
    ./install.sh -c dcapt.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
+9. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
 
 {{% note %}}
 New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).

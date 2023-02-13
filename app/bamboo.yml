@@ -9,7 +9,7 @@ settings:
     application_protocol: http         # http or https
     application_port: 80               # 80, 443, 8085, etc
     secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:               # e.g. /bamboo in case of url like http://localhost/bamboo
+    application_postfix: /bamboo       # e.g. /bamboo in case of url like http://localhost/bamboo
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
@@ -123,7 +123,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "108.0.5359.71" # Supports Chrome version 108. You can refer to http://chromedriver.chromium.org/downloads
+      version: "110.0.5481.77" # Supports Chrome version 110. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
