@@ -69,7 +69,7 @@ confluence_version_tag = "7.19.5"
 # 7.19.5 DCAPT small dataset EBS snapshot
 confluence_shared_home_snapshot_id = "snap-031972bc32cc7809a"
 # 7.13.7 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-0b5f813fea1774368"
+# confluence_shared_home_snapshot_id = "snap-04043f67beead6c43"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
@@ -87,7 +87,7 @@ confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-c
 # 7.19.5
 confluence_db_snapshot_build_number = "8804"
 # 7.13.7
-#confluence_db_snapshot_build_number = "8703"
+# confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
