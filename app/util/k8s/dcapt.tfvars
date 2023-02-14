@@ -271,6 +271,12 @@ bamboo_agent_version_tag = "9.2.1"
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.
 number_of_bamboo_agents = 50
 
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
+# if you encounter such an issue
+bamboo_termination_grace_period = 0
+
 # Bamboo system admin credentials
 # To pre-seed Bamboo with the system admin information, uncomment the following settings and supply the system admin information:
 #
