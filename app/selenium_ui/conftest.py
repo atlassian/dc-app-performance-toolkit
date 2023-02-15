@@ -317,7 +317,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
             if 'page.view' in key:
                 if 'pageID' in post_data_str:
                     page_id = re.search(r'"pageID":"(.+?)"', post_data_str).group(1)
-                    mark = get_mark_from_dataset(page_id, dataset) or f'-create_page'
+                    mark = get_mark_from_dataset(page_id, dataset) or '-create_page'
                 elif 'pageID' in str(requests):
                     page_ids = re.findall(r'"pageID":"(.+?)"', str(requests))
                     print('Cannot find pageID in post data string, searching in request body')
