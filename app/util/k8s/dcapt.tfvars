@@ -12,7 +12,7 @@
 # ! REQUIRED !
 environment_name = "dcapt-product"
 
-# Supported products: confluence, bitbucket and bamboo.
+# Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
