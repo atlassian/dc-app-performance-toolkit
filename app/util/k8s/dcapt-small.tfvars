@@ -14,7 +14,7 @@
 # ! REQUIRED !
 environment_name = "dcapt-product-small"
 
-# Supported products: confluence and bitbucket
+# Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
@@ -65,24 +65,28 @@ jira_image_repository = "atlassian/jira-software"
 # ! REQUIRED !
 jira_license = "jira-license"
 
-# Number of Jira application nodes
+# Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
 # installed and configured.
 jira_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+#
+# Jira version
 jira_version_tag = "8.20.17"
+# JSM version
+# jira_version_tag = "4.20.17"
 
 # Shared home restore configuration.
-# Make sure confluence version set in `jira_version_tag` match the snapshot version.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
-# 8.20.17 DCAPT small dataset EBS snapshot
+# Jira 8.20.17 DCAPT small dataset EBS snapshot
 jira_shared_home_snapshot_id = "snap-061dd4ee49c8732e3"
-# 9.4.2 DCAPT small dataset EBS snapshot
+# Jira 9.4.2 DCAPT small dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-072246cd3207c3bd4"
 
 # Database restore configuration.
-# Make sure Jira version set in `jira_version_tag` match the snapshot version.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
 #
 # 8.20.17 DCAPT small dataset RDS snapshot
@@ -98,14 +102,14 @@ jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-sm
 # can be dataset restoration, resource requirements, number of replicas and others.
 jira_installation_timeout = 20
 
-# Jira instance resource configuration
+# Jira/JSM instance resource configuration
 jira_cpu                 = "1500m"
 jira_mem                 = "11Gi"
 jira_min_heap            = "4096m"
 jira_max_heap            = "4096m"
 jira_reserved_code_cache = "2048m"
 
-# Jira NFS instance resource configuration
+# Jira/JSM NFS instance resource configuration
 jira_nfs_requests_cpu    = "500m"
 jira_nfs_requests_memory = "1Gi"
 jira_nfs_limits_cpu      = "1"

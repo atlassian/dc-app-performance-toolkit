@@ -63,29 +63,33 @@ jira_image_repository = "atlassian/jira-software"
 # ! REQUIRED !
 jira_license = "jira-license"
 
-# Number of Jira application nodes
+# Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
 # installed and configured.
 jira_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+#
+# Jira version
 jira_version_tag = "8.20.17"
+# JSM version
+# jira_version_tag = "4.20.17"
 
 # Shared home restore configuration.
-# Make sure confluence version set in `jira_version_tag` match the snapshot version.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
-# 8.20.17 DCAPT large dataset EBS snapshot
+# Jira 8.20.17 DCAPT large dataset EBS snapshot
 jira_shared_home_snapshot_id = "snap-01f6e23bce22a4bec"
-# 9.4.2 DCAPT large dataset EBS snapshot
+# Jira 9.4.2 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-084488e5e88105ef9"
 
 # Database restore configuration.
-# Make sure Jira version set in `jira_version_tag` match the snapshot version.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
 #
-# 8.20.17 DCAPT large dataset RDS snapshot
+# Jira 8.20.17 DCAPT large dataset RDS snapshot
 jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-17"
-# 9.4.2 DCAPT large dataset RDS snapshot
+# Jira 9.4.2 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-2"
 
 # Helm chart version of Jira
@@ -96,7 +100,7 @@ jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-
 # can be dataset restoration, resource requirements, number of replicas and others.
 jira_installation_timeout = 25
 
-# Jira instance resource configuration
+# Jira/JSM instance resource configuration
 jira_cpu                 = "6"
 jira_mem                 = "24Gi"
 jira_min_heap            = "12288m"
