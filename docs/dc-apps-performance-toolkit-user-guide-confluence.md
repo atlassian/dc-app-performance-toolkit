@@ -626,6 +626,12 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
-See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page
-for Terraform related questions.
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+See  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page for Terraform-related questions. 
+If the installation script fails due to failure when installing Helm release or any other reason. 
+Please run the following script below to collect the logs and attach the archive with your support request:
+```
+scripts/collect_k8s_logs.sh atlas-YOUR_ENVIRONMENT_NAME-cluster us-east-2 /path/to/local/directory
+```
+Cluster name and region may differ (look at environment name and region in your `dcapt.tfvars`). The last argument is a destination path for a folder with logs that the script will produce.
+
+In case of the above problem or any other technical questions or issues with the DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
