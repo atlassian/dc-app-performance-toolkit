@@ -13,7 +13,7 @@ class UrlManager:
     def __init__(self, issue_key=None, issue_id=None, project_key=None, jql=None, projects_list_page=None,
                  board_id=None):
         self.host = JIRA_SETTINGS.server_url
-        self.login_params = '/login.jsp'
+        self.login_params = '/plugins/servlet/secsignid'
         self.logout_params = '/logoutconfirm.jsp'
         self.dashboard_params = '/secure/Dashboard.jspa'
         self.issue_params = f"/browse/{issue_key}"
@@ -74,7 +74,7 @@ class LoginPageLocators:
     explore_current_projects = (By.CSS_SELECTOR, "a[data-step-key='browseprojects']")
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
-    login_submit_button = (By.ID, 'login-form-submit')
+    login_submit_button = (By.ID, 'standard-login-button')
     system_dashboard = (By.ID, "dashboard")
     footer = (By.ID, 'footer-build-information')
 
