@@ -29,7 +29,7 @@ whitelist_cidr = ["0.0.0.0/0"]
 resource_tags = {Name: "dcapt-testing"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence, Bamboo - use default value
+# Confluence, Bamboo, Jira - use default value
 # Bitbucket - ["m5.4xlarge"]
 # ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
@@ -82,6 +82,10 @@ jira_version_tag = "8.20.17"
 jira_shared_home_snapshot_id = "snap-01f6e23bce22a4bec"
 # Jira 9.4.2 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-084488e5e88105ef9"
+# JSM 4.20.17 DCAPT large dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0c24799776a729681"
+# JSM 5.4.2 DCAPT large dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0ffaf58184466c550"
 
 # Database restore configuration.
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
@@ -91,6 +95,10 @@ jira_shared_home_snapshot_id = "snap-01f6e23bce22a4bec"
 jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-17"
 # Jira 9.4.2 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-2"
+# JSM 4.20.17 DCAPT large dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-x"
+# JSM 5.4.2 DCAPT large dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-x"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
