@@ -5658,7 +5658,7 @@ if ( sleep_time &gt; 0 ) {
                     </HeaderManager>
                     <hashTree/>
                   </hashTree>
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="534 /rest/servicedesk/1/servicedesk/PTFYXPYYLJ/queues/poll" enabled="true">
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="534 /rest/servicedesk/1/servicedesk/${m_prj_key}/queues/poll" enabled="true">
                     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                       <collectionProp name="Arguments.arguments">
                         <elementProp name="projectStateHash" elementType="HTTPArgument">
