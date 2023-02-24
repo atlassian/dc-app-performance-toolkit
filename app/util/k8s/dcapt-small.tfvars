@@ -31,7 +31,7 @@ whitelist_cidr = ["0.0.0.0/0"]
 resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence - use default value
+# Confluence, Jira  - use default value
 # Bitbucket - ["t3.2xlarge"]
 # ! REQUIRED !
 instance_types     = ["t3.xlarge"]
