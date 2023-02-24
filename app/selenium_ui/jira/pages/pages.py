@@ -37,7 +37,6 @@ class Login(BasePage):
         self.wait_until_visible(DashboardLocators.dashboard_window)
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_field).clear()
         self.get_element(LoginPageLocators.login_field).send_keys(username)
         self.get_element(LoginPageLocators.password_field).send_keys(password)
         self.get_element(LoginPageLocators.login_submit_button).click()

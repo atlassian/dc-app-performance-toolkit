@@ -298,7 +298,7 @@ props.put(&quot;project_pages&quot;, String.valueOf(pages));</stringProp>
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">${application.postfix}/plugins/servlet/secsignid</stringProp>
+            <stringProp name="HTTPSampler.path">${application.postfix}/login.jsp</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>

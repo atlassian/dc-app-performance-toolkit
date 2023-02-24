@@ -40,6 +40,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/check_for_updates.py
       - python util/data_preparation/confluence_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
@@ -47,6 +48,9 @@ services:
     post-process:
       - python util/analytics/analytics.py confluence
       - python util/post_run/cleanup_results_dir.py
+  - module: pip-install
+    packages:
+      - selenium==4.1.3
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -111,7 +115,10 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "89.0.4389.23" # Supports Chrome version 89. You can refer to http://chromedriver.chromium.org/downloads
+      version: "110.0.5481.77" # Supports Chrome version 110. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
+- module: passfail
+  criteria:
+  - failures>25% over 300s, stop as failed
