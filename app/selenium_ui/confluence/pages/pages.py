@@ -11,6 +11,7 @@ class Login(BasePage):
     page_loaded_selector = LoginPageLocators.login_button
 
     def set_credentials(self, username, password):
+        self.get_element(LoginPageLocators.login_username_field).clear();
         self.get_element(LoginPageLocators.login_username_field).send_keys(username)
         self.get_element(LoginPageLocators.login_password_field).send_keys(password)
 
@@ -51,7 +52,7 @@ class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
     def wait_for_logout(self):
-        self.wait_until_visible(LogoutLocators.logout_msg)
+        self.wait_until_visible(LoginPageLocators.login_button)
 
 
 class AllUpdates(BasePage):
