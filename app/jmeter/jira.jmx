@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -9312,98 +9312,844 @@ if (response_data.name != vars.get(&quot;app_specific_username&quot;)) {
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /app/get_endpoing" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments"/>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/app/get_endpoint</stringProp>
-                <stringProp name="HTTPSampler.method">GET</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create_issue_requirement" enabled="true"/>
               <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_id" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">app_id</stringProp>
-                  <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;(.+?)&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="app_token" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">app_token</stringProp>
-                  <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after GET request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="261585815">asserttion string</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /secure/QuickCreateIssue!default.jspa?decorator=none" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments"/>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/secure/QuickCreateIssue!default.jspa?decorator=none</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                        <stringProp name="Header.value">no-check</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_atl_token" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_atl_token</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;atl_token&quot;:&quot;(.+?)&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_form_token" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_form_token</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;formToken&quot;:&quot;(.+?)&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_type" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_issue_type</stringProp>
+                    <stringProp name="RegexExtractor.regex">{&amp;quot;label&amp;quot;:&amp;quot;Story&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;([0-9]*)&amp;quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_resolution_done" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_resolution_done</stringProp>
+                    <stringProp name="RegexExtractor.regex">&lt;option value=\\&quot;([0-9]*)\\&quot;&gt;\\n            Done\\n</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_fields_to_retain -  default" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_fields_to_retain</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;([a-z]*)&quot;,&quot;label&quot;:&quot;[A-Za-z0-9\- ]*&quot;,&quot;required&quot;:(false|true),</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_custom_fields_to_retain" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_custom_fields_to_retain</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;customfield_([0-9]*)&quot;,&quot;label&quot;:&quot;[A-Za-z0-9\- ]*&quot;,&quot;required&quot;:(false|true),</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="205 /rest/quickedit/1.0/userpreferences/create" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;useQuickForm&quot;:false,&quot;fields&quot;:[&quot;summary&quot;,&quot;description&quot;,&quot;priority&quot;,&quot;versions&quot;,&quot;components&quot;],&quot;showWelcomeScreen&quot;:true}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/quickedit/1.0/userpreferences/create</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="210 /rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-3120},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-2842},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-2495},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;68d353c0-5dc0-449b-a7ce-f348f8a8372b&quot;,&quot;key&quot;:&quot;jira.dialog.open.create-issue-dialog&quot;,&quot;readyForUser&quot;:&quot;897&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:1.45,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;e00b0abe8f1b188f0bb304a4c3b424f1180ba767&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,7,7w,7q,a,7,,7,7,7\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:1.45,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-1996},{&quot;name&quot;:&quot;issue.dnd.attachment.createissuedropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1597},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1593},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1466},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1466},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1465},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:28.130000000353903},&quot;timeDelta&quot;:-869},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1538.2599999997765},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:140.08499999996275},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1538.619999999646},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.289999999571592},&quot;timeDelta&quot;:-736},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:2.3449999997392297},&quot;timeDelta&quot;:-712},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.5750000001862645},&quot;timeDelta&quot;:-677},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1653.3499999996275},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:35.544999999925494},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1653.5099999997765},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:15.514999999664724},&quot;timeDelta&quot;:-616},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.4600000004284084},&quot;timeDelta&quot;:-605},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:2.390000000130385},&quot;timeDelta&quot;:-591},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1724.1399999996647},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:16.674999999813735},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1724.2199999997392},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.339999999385327},&quot;timeDelta&quot;:-571},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.3500000000931323},&quot;timeDelta&quot;:-557}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="215 /secure/QuickCreateIssue.jspa?decorator=none" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">${p_request_body}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/secure/QuickCreateIssue.jspa?decorator=none</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="create-issue pre-processor" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">def generator = { String alphabet, int n -&gt;
+    new Random().with {
+        (1..n).collect { alphabet[nextInt(alphabet.length())] }.join()
+    }
+}
+
+// static
+def pid = 10500
+def issuetype = vars.get(&quot;x_issue_type&quot;)
+def atl_token = vars.get(&quot;x_atl_token&quot;)
+def formToken = vars.get(&quot;x_form_token&quot;)
+def summary = &quot;Summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 5).join(), 20)
+def duedate = &quot;&quot;
+def reporter = vars.get(&quot;username&quot;)
+def environment = &quot;Environment - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 5).join(), 20)
+def description = &quot;Description - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 500);
+def timetracking_originalestimate = &quot;&quot;
+def timetracking_remainingestimate = &quot;&quot;
+def isCreateIssue = &quot;true&quot;
+def hasWorkStarted = &quot;&quot;
+def resolution = vars.get(&quot;x_resolution_done&quot;)
+
+def request_body = &quot;pid=&quot; + pid + &quot;&amp;issuetype=&quot; + issuetype + &quot;&amp;atl_token=&quot; + atl_token + &quot;&amp;formToken=&quot; + formToken + &quot;&amp;summary=&quot; + summary + &quot;&amp;duedate=&quot; + duedate + &quot;&amp;reporter=&quot; + reporter + &quot;&amp;environment=&quot; + environment + &quot;&amp;description=&quot; + description + &quot;&amp;timetracking_originalestimate=&quot; + timetracking_originalestimate + &quot;&amp;timetracking_remainingestimate=&quot; + timetracking_remainingestimate + &quot;&amp;isCreateIssue=&quot; + isCreateIssue + &quot;&amp;hasWorkStarted=&quot; + hasWorkStarted + &quot;&amp;resolution=&quot; + resolution
+
+// dynamic (generic fields)
+def fields_to_retain = &quot;&quot;
+def fields_to_retain_total = vars.get(&quot;x_fields_to_retain_matchNr&quot;).toInteger();
+counter = 1;
+if (fields_to_retain_total &gt; 0) {
+    while (counter &lt;= fields_to_retain_total) {
+        fields_to_retain = fields_to_retain + &quot;fieldsToRetain=&quot; + vars.get(&quot;x_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
+        counter = counter + 1;
+    }
+    fields_to_retain = fields_to_retain.substring(0, fields_to_retain.length() - 1)
+}
+
+// dynamic (custom fields)
+def custom_fields_to_retain = &quot;&quot;
+def custom_fields_to_retain_total = vars.get(&quot;x_custom_fields_to_retain_matchNr&quot;).toInteger();
+counter = 1;
+if (custom_fields_to_retain_total &gt; 0) {
+    while (counter &lt;= custom_fields_to_retain_total) {
+        custom_fields_to_retain = custom_fields_to_retain + &quot;fieldsToRetain=customfield_&quot; + vars.get(&quot;x_custom_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
+        counter = counter + 1;
+    }
+    custom_fields_to_retain = custom_fields_to_retain.substring(0, custom_fields_to_retain.length() - 1)
+}
+
+
+// request
+request_body = request_body + &quot;&amp;&quot; + custom_fields_to_retain + &quot;&amp;&quot; + fields_to_retain
+vars.put(&quot;p_request_body&quot;, request_body.toString())
+</stringProp>
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="220 /rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;quick.create.fields&quot;,&quot;properties&quot;:{&quot;atlassian.numCreates&quot;:1,&quot;edit.form&quot;:false,&quot;pid&quot;:&quot;added&quot;,&quot;issuetype&quot;:&quot;added&quot;,&quot;formToken&quot;:&quot;added&quot;,&quot;resolution&quot;:&quot;added&quot;,&quot;worklog_startDate&quot;:&quot;added&quot;,&quot;worklog_adjustEstimate&quot;:&quot;added&quot;,&quot;issuelinks&quot;:&quot;added&quot;,&quot;issuelinks-linktype&quot;:&quot;added&quot;,&quot;assignee&quot;:&quot;added&quot;,&quot;summary&quot;:&quot;added&quot;,&quot;priority&quot;:&quot;added&quot;,&quot;customfield_10551&quot;:&quot;added&quot;},&quot;timeDelta&quot;:-787},{&quot;name&quot;:&quot;quickeditform.submit.success&quot;,&quot;properties&quot;:{&quot;allFieldsShown&quot;:true,&quot;allFields&quot;:&quot;[{\&quot;id\&quot;:\&quot;project\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;issuetype\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;components\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;versions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;resolution\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;attachment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;labels\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;worklog\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;issuelinks\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;fixVersions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;assignee\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;environment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;description\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;timetracking\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;summary\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;priority\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;duedate\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10513\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10551\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10633\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10694\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10717\&quot;,\&quot;required\&quot;:false}]&quot;,&quot;displayedFields&quot;:&quot;[{\&quot;id\&quot;:\&quot;project\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;issuetype\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;components\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;versions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;resolution\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;attachment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;labels\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;worklog\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;issuelinks\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;fixVersions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;assignee\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;environment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;description\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;timetracking\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;summary\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;priority\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;duedate\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10513\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10551\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10633\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10694\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10717\&quot;,\&quot;required\&quot;:false}]&quot;},&quot;timeDelta&quot;:-786},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20977.28000000026},&quot;timeDelta&quot;:-435},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20979.60499999998},&quot;timeDelta&quot;:-433},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20982.985000000335},&quot;timeDelta&quot;:-429},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-239},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-238},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-234},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-234},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-222},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-222}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /app/post_endpoing" enabled="true">
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="id" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">${app_id}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">id</stringProp>
-                    </elementProp>
-                    <elementProp name="token" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">${app_token}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">token</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/app/post_endpoint</stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              </HTTPSamplerProxy>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create_defect" enabled="true"/>
               <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertion after POST request" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-787535121">assertion string</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 /secure/QuickCreateIssue!default.jspa?decorator=none" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments"/>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/secure/QuickCreateIssue!default.jspa?decorator=none</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                        <stringProp name="Header.value">no-check</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_atl_token" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_atl_token</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;atl_token&quot;:&quot;(.+?)&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_form_token" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_form_token</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;formToken&quot;:&quot;(.+?)&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_type" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_issue_type</stringProp>
+                    <stringProp name="RegexExtractor.regex">{&amp;quot;label&amp;quot;:&amp;quot;Bug&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;([0-9]*)&amp;quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_resolution_done" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_resolution_done</stringProp>
+                    <stringProp name="RegexExtractor.regex">&lt;option value=\\&quot;([0-9]*)\\&quot;&gt;\\n            Done\\n</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_fields_to_retain -  default" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_fields_to_retain</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;([a-z]*)&quot;,&quot;label&quot;:&quot;[A-Za-z0-9\- ]*&quot;,&quot;required&quot;:(false|true),</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_custom_fields_to_retain" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_custom_fields_to_retain</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;customfield_([0-9]*)&quot;,&quot;label&quot;:&quot;[A-Za-z0-9\- ]*&quot;,&quot;required&quot;:(false|true),</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                    <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="205 /rest/quickedit/1.0/userpreferences/create" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&quot;useQuickForm&quot;:false,&quot;fields&quot;:[&quot;summary&quot;,&quot;description&quot;,&quot;priority&quot;,&quot;versions&quot;,&quot;components&quot;],&quot;showWelcomeScreen&quot;:true}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/quickedit/1.0/userpreferences/create</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="210 /rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-3120},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-2842},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-2495},{&quot;name&quot;:&quot;browser.metrics.navigation&quot;,&quot;properties&quot;:{&quot;apdex&quot;:&quot;1&quot;,&quot;isInitial&quot;:&quot;false&quot;,&quot;journeyId&quot;:&quot;68d353c0-5dc0-449b-a7ce-f348f8a8372b&quot;,&quot;key&quot;:&quot;jira.dialog.open.create-issue-dialog&quot;,&quot;readyForUser&quot;:&quot;897&quot;,&quot;threshold&quot;:&quot;1000&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36&quot;,&quot;effectiveType&quot;:&quot;4g&quot;,&quot;downlink&quot;:1.45,&quot;rtt&quot;:100,&quot;applicationHash&quot;:&quot;e00b0abe8f1b188f0bb304a4c3b424f1180ba767&quot;,&quot;resourceTiming&quot;:&quot;{\&quot;â&#x98; \&quot;:[\&quot;5,7,7w,7q,a,7,,7,7,7\&quot;]}&quot;,&quot;userTimingRaw&quot;:&quot;{\&quot;marks\&quot;:{},\&quot;measures\&quot;:{}}&quot;,&quot;experiments&quot;:&quot;[]&quot;,&quot;connectionEffectiveType&quot;:&quot;4g&quot;,&quot;connectionDownlink&quot;:1.45,&quot;connectionRTT&quot;:100},&quot;timeDelta&quot;:-1996},{&quot;name&quot;:&quot;issue.dnd.attachment.createissuedropzone.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1597},{&quot;name&quot;:&quot;jira.wikieditor.initialized&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1593},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1466},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1466},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1465},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1326},{&quot;name&quot;:&quot;editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;bundled.editor.instance.init&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;editor.instance.init.chrome&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-1270},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:28.130000000353903},&quot;timeDelta&quot;:-869},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1538.2599999997765},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:140.08499999996275},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1538.619999999646},&quot;timeDelta&quot;:-763},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.289999999571592},&quot;timeDelta&quot;:-736},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:2.3449999997392297},&quot;timeDelta&quot;:-712},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:4.5750000001862645},&quot;timeDelta&quot;:-677},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1653.3499999996275},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:35.544999999925494},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1653.5099999997765},&quot;timeDelta&quot;:-648},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:15.514999999664724},&quot;timeDelta&quot;:-616},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.4600000004284084},&quot;timeDelta&quot;:-605},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:2.390000000130385},&quot;timeDelta&quot;:-591},{&quot;name&quot;:&quot;editor.instance.perf.init&quot;,&quot;properties&quot;:{&quot;time&quot;:1724.1399999996647},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.init.perf&quot;,&quot;properties&quot;:{&quot;time&quot;:16.674999999813735},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.perf.init-bare&quot;,&quot;properties&quot;:{&quot;time&quot;:1724.2199999997392},&quot;timeDelta&quot;:-578},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.339999999385327},&quot;timeDelta&quot;:-571},{&quot;name&quot;:&quot;editor.instance.perf.nodechange&quot;,&quot;properties&quot;:{&quot;time&quot;:1.3500000000931323},&quot;timeDelta&quot;:-557}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="215 /secure/QuickCreateIssue.jspa?decorator=none" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">${p_request_body}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/secure/QuickCreateIssue.jspa?decorator=none</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="create-issue pre-processor" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">def generator = { String alphabet, int n -&gt;
+    new Random().with {
+        (1..n).collect { alphabet[nextInt(alphabet.length())] }.join()
+    }
+}
+
+// static
+def pid = 10500
+def issuetype = vars.get(&quot;x_issue_type&quot;)
+def atl_token = vars.get(&quot;x_atl_token&quot;)
+def formToken = vars.get(&quot;x_form_token&quot;)
+def summary = &quot;Summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 5).join(), 20)
+def duedate = &quot;&quot;
+def reporter = vars.get(&quot;username&quot;)
+def environment = &quot;Environment - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 5).join(), 20)
+def description = &quot;Description - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 500);
+def timetracking_originalestimate = &quot;&quot;
+def timetracking_remainingestimate = &quot;&quot;
+def isCreateIssue = &quot;true&quot;
+def hasWorkStarted = &quot;&quot;
+def resolution = vars.get(&quot;x_resolution_done&quot;)
+
+def request_body = &quot;pid=&quot; + pid + &quot;&amp;issuetype=&quot; + issuetype + &quot;&amp;atl_token=&quot; + atl_token + &quot;&amp;formToken=&quot; + formToken + &quot;&amp;summary=&quot; + summary + &quot;&amp;duedate=&quot; + duedate + &quot;&amp;reporter=&quot; + reporter + &quot;&amp;environment=&quot; + environment + &quot;&amp;description=&quot; + description + &quot;&amp;timetracking_originalestimate=&quot; + timetracking_originalestimate + &quot;&amp;timetracking_remainingestimate=&quot; + timetracking_remainingestimate + &quot;&amp;isCreateIssue=&quot; + isCreateIssue + &quot;&amp;hasWorkStarted=&quot; + hasWorkStarted + &quot;&amp;resolution=&quot; + resolution
+
+// dynamic (generic fields)
+def fields_to_retain = &quot;&quot;
+def fields_to_retain_total = vars.get(&quot;x_fields_to_retain_matchNr&quot;).toInteger();
+counter = 1;
+if (fields_to_retain_total &gt; 0) {
+    while (counter &lt;= fields_to_retain_total) {
+        fields_to_retain = fields_to_retain + &quot;fieldsToRetain=&quot; + vars.get(&quot;x_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
+        counter = counter + 1;
+    }
+    fields_to_retain = fields_to_retain.substring(0, fields_to_retain.length() - 1)
+}
+
+// dynamic (custom fields)
+def custom_fields_to_retain = &quot;&quot;
+def custom_fields_to_retain_total = vars.get(&quot;x_custom_fields_to_retain_matchNr&quot;).toInteger();
+counter = 1;
+if (custom_fields_to_retain_total &gt; 0) {
+    while (counter &lt;= custom_fields_to_retain_total) {
+        custom_fields_to_retain = custom_fields_to_retain + &quot;fieldsToRetain=customfield_&quot; + vars.get(&quot;x_custom_fields_to_retain_&quot; + counter) + &quot;&amp;&quot;;
+        counter = counter + 1;
+    }
+    custom_fields_to_retain = custom_fields_to_retain.substring(0, custom_fields_to_retain.length() - 1)
+}
+
+
+// request
+request_body = request_body + &quot;&amp;&quot; + custom_fields_to_retain + &quot;&amp;&quot; + fields_to_retain
+vars.put(&quot;p_request_body&quot;, request_body.toString())
+</stringProp>
+                  </JSR223PreProcessor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1794770517">&quot;id&quot;:&quot;project&quot;,&quot;label&quot;:&quot;Project&quot;</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_key" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">x_issue_key</stringProp>
+                    <stringProp name="RegexExtractor.regex">&quot;issueKey&quot;:&quot;(.+?)&quot;</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="220 /rest/analytics/1.0/publish/bulk" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">[{&quot;name&quot;:&quot;quick.create.fields&quot;,&quot;properties&quot;:{&quot;atlassian.numCreates&quot;:1,&quot;edit.form&quot;:false,&quot;pid&quot;:&quot;added&quot;,&quot;issuetype&quot;:&quot;added&quot;,&quot;formToken&quot;:&quot;added&quot;,&quot;resolution&quot;:&quot;added&quot;,&quot;worklog_startDate&quot;:&quot;added&quot;,&quot;worklog_adjustEstimate&quot;:&quot;added&quot;,&quot;issuelinks&quot;:&quot;added&quot;,&quot;issuelinks-linktype&quot;:&quot;added&quot;,&quot;assignee&quot;:&quot;added&quot;,&quot;summary&quot;:&quot;added&quot;,&quot;priority&quot;:&quot;added&quot;,&quot;customfield_10551&quot;:&quot;added&quot;},&quot;timeDelta&quot;:-787},{&quot;name&quot;:&quot;quickeditform.submit.success&quot;,&quot;properties&quot;:{&quot;allFieldsShown&quot;:true,&quot;allFields&quot;:&quot;[{\&quot;id\&quot;:\&quot;project\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;issuetype\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;components\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;versions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;resolution\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;attachment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;labels\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;worklog\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;issuelinks\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;fixVersions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;assignee\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;environment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;description\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;timetracking\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;summary\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;priority\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;duedate\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10513\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10551\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10633\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10694\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10717\&quot;,\&quot;required\&quot;:false}]&quot;,&quot;displayedFields&quot;:&quot;[{\&quot;id\&quot;:\&quot;project\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;issuetype\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;components\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;versions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;resolution\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;attachment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;labels\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;worklog\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;issuelinks\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;fixVersions\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;assignee\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;environment\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;description\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;timetracking\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;summary\&quot;,\&quot;required\&quot;:true},{\&quot;id\&quot;:\&quot;priority\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;duedate\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10513\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10551\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10633\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10694\&quot;,\&quot;required\&quot;:false},{\&quot;id\&quot;:\&quot;customfield_10717\&quot;,\&quot;required\&quot;:false}]&quot;},&quot;timeDelta&quot;:-786},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20977.28000000026},&quot;timeDelta&quot;:-435},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20979.60499999998},&quot;timeDelta&quot;:-433},{&quot;name&quot;:&quot;editor.instance.tab.timing.visual&quot;,&quot;properties&quot;:{&quot;time&quot;:20982.985000000335},&quot;timeDelta&quot;:-429},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-239},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-238},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-234},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-234},{&quot;name&quot;:&quot;editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-222},{&quot;name&quot;:&quot;bundled.editor.instance.destroy&quot;,&quot;properties&quot;:{},&quot;timeDelta&quot;:-222}]</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/analytics/1.0/publish/bulk</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">application/json, text/javascript, */*; q=0.01</stringProp>
+                      </elementProp>
+                      <elementProp name="Content-Type" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="add attachment" enabled="true">
+                  <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+                    <collectionProp name="HTTPFileArgs.files">
+                      <elementProp name="performance_profile.png" elementType="HTTPFileArg">
+                        <stringProp name="File.path">performance_profile.png</stringProp>
+                        <stringProp name="File.paramname">file</stringProp>
+                        <stringProp name="File.mimetype">image/png</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments"/>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/latest/issue/${x_issue_key}/attachments</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="Accept-Language" elementType="Header">
+                        <stringProp name="Header.name">Accept-Language</stringProp>
+                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                      </elementProp>
+                      <elementProp name="X-AUSERNAME" elementType="Header">
+                        <stringProp name="Header.name">X-AUSERNAME</stringProp>
+                        <stringProp name="Header.value">admin</stringProp>
+                      </elementProp>
+                      <elementProp name="X-Requested-With" elementType="Header">
+                        <stringProp name="Header.name">X-Requested-With</stringProp>
+                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept-Encoding" elementType="Header">
+                        <stringProp name="Header.name">Accept-Encoding</stringProp>
+                        <stringProp name="Header.value">gzip, deflate</stringProp>
+                      </elementProp>
+                      <elementProp name="Accept" elementType="Header">
+                        <stringProp name="Header.name">Accept</stringProp>
+                        <stringProp name="Header.value">*/*</stringProp>
+                      </elementProp>
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                        <stringProp name="Header.value">no-check</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="49586">200</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">8</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
             </hashTree>
             <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login_as_default_user_if_specific_user_was_loggedin " enabled="true">
