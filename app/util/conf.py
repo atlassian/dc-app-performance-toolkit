@@ -59,6 +59,7 @@ class ConfluenceSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
         self.extended_metrics = self.get_property('extended_metrics')
+        self.zdu = self.get_property('zdu')
 
 
 class BitbucketSettings(BaseAppSettings):
