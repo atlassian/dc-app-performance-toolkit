@@ -126,7 +126,7 @@ def is_docker():
     )
 
 
-def print_timing(interaction=None, explicit_timing=None):
+def print_timing(interaction=None, explicit_timing=None, node_ip=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -159,6 +159,9 @@ def print_timing(interaction=None, explicit_timing=None):
                         jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
                                        f",{success},0,0,0,0,,0\n")
                     else:
+                        if CONFLUENCE_SETTINGS.zdu and node_ip:
+                            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success}"
+                                           f",0,0,0,0,{node_ip},0\n")
                         jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
@@ -352,7 +355,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                 node_ip = webdriver.node_ip if CONFLUENCE_SETTINGS.zdu else ""
                 jtl_file.write(
                     f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
-                print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success}{node_ip}")
+                print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},{node_ip}")
 
 
 @pytest.fixture(scope="module")
