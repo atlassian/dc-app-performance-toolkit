@@ -159,10 +159,9 @@ def print_timing(interaction=None, explicit_timing=None, node_ip=None):
                         jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
                                        f",{success},0,0,0,0,,0\n")
                     else:
-                        if CONFLUENCE_SETTINGS.zdu and node_ip:
-                            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success}"
-                                           f",0,0,0,0,{node_ip},0\n")
-                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                        node = node_ip or ""
+                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg}"
+                                       f",,{success},0,0,0,0,{node},0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
