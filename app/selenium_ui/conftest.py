@@ -2,6 +2,7 @@ import atexit
 import csv
 import datetime
 import functools
+import http
 import json
 import os
 import sys
@@ -12,12 +13,14 @@ from pprint import pprint
 
 import filelock
 import pytest
+import requests
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 
+from selenium_ui.confluence.pages.selectors import UrlManager
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.exceptions import WebDriverExceptionPostpone
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -498,6 +501,41 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
         return f_retry
 
     return deco_retry
+
+
+@pytest.fixture(scope="module", autouse=True)
+def zdu_nodes_info(confluence_webdriver, tmp_path_factory):
+    if not CONFLUENCE_SETTINGS.zdu:
+        return
+
+    def get_cluster_info() -> dict:
+        resp = requests.get(
+            f'{CONFLUENCE_SETTINGS.protocol}://{CONFLUENCE_SETTINGS.hostname}/rest/zdu/cluster',
+            auth=(CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
+        )
+        if resp.status_code != http.HTTPStatus.OK:
+            raise SystemExit("Cannot get cluster info. Aborting!")
+        cluster_info = resp.json()
+        return {node["id"]: node["ipAddress"] for node in cluster_info["nodes"]}
+
+    root_tmp_dir = tmp_path_factory.getbasetemp().parent
+    fn = root_tmp_dir / "nodes_info.json"
+    with filelock.FileLock(str(fn) + ".lock"):
+        if fn.is_file():
+            nodes_info = json.loads(fn.read_text())
+        else:
+            nodes_info = get_cluster_info()
+            fn.write_text(json.dumps(nodes_info))
+    pprint(f"Nodes map: {nodes_info}")
+
+    r = requests.get(UrlManager().login_url())
+    if r.status_code != http.HTTPStatus.OK:
+        raise SystemExit("Couldn't retrieve node id form login page. Aborting!")
+    r = re.search(r"node:.(.*)\)", r.text)
+    if not r:
+        raise SystemExit("Couldn't retrieve node id form login page. Aborting!")
+    node_id = r.group(1)
+    confluence_webdriver.node_ip = nodes_info[node_id]
 
 
 def get_node_ip(webdriver) -> str:
