@@ -2,7 +2,6 @@ import atexit
 import csv
 import datetime
 import functools
-import http
 import json
 import os
 import sys
@@ -13,14 +12,12 @@ from pprint import pprint
 
 import filelock
 import pytest
-import requests
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 
-from selenium_ui.confluence.pages.selectors import UrlManager
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.exceptions import WebDriverExceptionPostpone
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
