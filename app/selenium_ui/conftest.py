@@ -502,6 +502,4 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
 
 def get_node_ip(webdriver) -> str:
     """function used to get node_ip in case of running with ZDU=True"""
-    if not hasattr(webdriver, "node_ip"):
-        return ""
-    return webdriver.node_ip
+    return getattr(webdriver, "node_ip", "")
