@@ -123,7 +123,7 @@ def is_docker():
     )
 
 
-def print_timing(interaction=None, explicit_timing=None, node_ip=None):
+def print_timing(interaction=None, explicit_timing=None, node_ip=""):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
@@ -156,9 +156,8 @@ def print_timing(interaction=None, explicit_timing=None, node_ip=None):
                         jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
                                        f",{success},0,0,0,0,,0\n")
                     else:
-                        node = node_ip or ""
                         jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg}"
-                                       f",,{success},0,0,0,0,{node},0\n")
+                                       f",,{success},0,0,0,0,{node_ip},0\n")
 
             print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
 
@@ -285,7 +284,7 @@ def measure_dom_requests(webdriver, interaction, description=''):
     with filelock.SoftFileLock(lockfile):
         with open(selenium_results_file, "a+") as jtl_file:
             timestamp = round(time.time() * 1000)
-            node_ip = webdriver.node_ip if CONFLUENCE_SETTINGS.zdu else ""
+            node_ip = get_node_ip(webdriver)
             jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
 
 
@@ -348,7 +347,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                 interaction = metric['key']
                 ready_for_user_timing = metric['ready_for_user']
                 timestamp = round(time.time() * 1000)
-                node_ip = webdriver.node_ip if CONFLUENCE_SETTINGS.zdu else ""
+                node_ip = get_node_ip(webdriver)
                 jtl_file.write(
                     f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
                 print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},{node_ip}")
@@ -499,3 +498,10 @@ def retry(tries=4, delay=0.5, backoff=2, retry_exception=None):
         return f_retry
 
     return deco_retry
+
+
+def get_node_ip(webdriver) -> str:
+    """function used to get node_ip in case of running with ZDU=True"""
+    if not hasattr(webdriver, "node_ip"):
+        return ""
+    return webdriver.node_ip

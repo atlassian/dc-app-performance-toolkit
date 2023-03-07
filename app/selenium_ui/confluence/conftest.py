@@ -1,6 +1,7 @@
 import http
 import json
 import re
+from pprint import pprint
 
 import filelock
 import pytest
@@ -34,6 +35,7 @@ def zdu_nodes_info(confluence_webdriver, tmp_path_factory):
         else:
             nodes_info = get_cluster_info()
             fn.write_text(json.dumps(nodes_info))
+    pprint(f"Nodes map: {nodes_info}")
 
     r = requests.get(UrlManager().login_url())
     if r.status_code != http.HTTPStatus.OK:

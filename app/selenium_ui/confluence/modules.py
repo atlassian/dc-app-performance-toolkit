@@ -1,5 +1,5 @@
 import random
-from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, measure_dom_requests
+from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, measure_dom_requests, get_node_ip
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
@@ -240,20 +240,20 @@ def create_inline_comment(webdriver, datasets):
     datasets['create_comment_page'] = page
     page = Page(webdriver, page_id=page_id)
 
-    @print_timing("selenium_create_comment", node_ip=webdriver.node_ip)
+    @print_timing("selenium_create_comment", node_ip=get_node_ip(webdriver))
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
         edit_comment = Editor(webdriver)
 
-        @print_timing("selenium_create_comment:write_comment", node_ip=webdriver.node_ip)
+        @print_timing("selenium_create_comment:write_comment", node_ip=get_node_ip(webdriver))
         def sub_measure():
             page.click_add_comment()
             edit_comment.write_content(text='This is selenium comment')
 
         sub_measure()
 
-        @print_timing("selenium_create_comment:save_comment", node_ip=webdriver.node_ip)
+        @print_timing("selenium_create_comment:save_comment", node_ip=get_node_ip(webdriver))
         def sub_measure():
             edit_comment.click_submit()
             page.wait_for_comment_field()
@@ -264,7 +264,7 @@ def create_inline_comment(webdriver, datasets):
 
 
 def log_out(webdriver, datasets):
-    @print_timing("selenium_log_out", node_ip=webdriver.node_ip)
+    @print_timing("selenium_log_out", node_ip=get_node_ip(webdriver))
     def measure():
         logout_page = Logout(webdriver)
         logout_page.go_to()
