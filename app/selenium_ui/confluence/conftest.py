@@ -14,7 +14,6 @@ from selenium_ui.confluence.pages.selectors import UrlManager
 @pytest.fixture(scope="module", autouse=True)
 def zdu_nodes_info(confluence_webdriver, tmp_path_factory):
     if not CONFLUENCE_SETTINGS.zdu:
-        confluence_webdriver.node_ip = None
         return
 
     def get_cluster_info() -> dict:
