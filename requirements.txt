@@ -8,5 +8,4 @@ selenium==4.8.0
 filelock==3.9.0
 packaging==23.0
 prettytable==3.6.0
-requests==2.28.2
 bzt==1.16.19
