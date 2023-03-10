@@ -163,8 +163,6 @@ def print_timing(interaction=None, explicit_timing=None):
                         jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg}"
                                        f",,{success},0,0,0,0,{node_ip},0\n")
 
-            print(f"{timestamp},{timing},{interaction},{error_msg},{success},{node_ip}")
-
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
                     globals.login_failed = True
