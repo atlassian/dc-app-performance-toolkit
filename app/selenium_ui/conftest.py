@@ -132,7 +132,7 @@ def print_timing(interaction=None, explicit_timing=None):
             if LOGIN_ACTION_NAME in interaction:
                 globals.login_failed = False
             if globals.login_failed:
-                pytest.skip(f"login is failed")
+                pytest.skip("login is failed")
             node_ip = ""
             start = time.time()
             error_msg = 'Success'
@@ -163,7 +163,7 @@ def print_timing(interaction=None, explicit_timing=None):
                         jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg}"
                                        f",,{success},0,0,0,0,{node_ip},0\n")
 
-            print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
+            print(f"{timestamp},{timing},{interaction},{error_msg},{success},{node_ip}")
 
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
@@ -288,7 +288,9 @@ def measure_dom_requests(webdriver, interaction, description=''):
     with filelock.SoftFileLock(lockfile):
         with open(selenium_results_file, "a+") as jtl_file:
             timestamp = round(time.time() * 1000)
-            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
+            jtl_file.write(
+                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n"
+            )
             print(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
 
 
