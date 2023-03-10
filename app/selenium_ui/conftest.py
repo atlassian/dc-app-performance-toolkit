@@ -138,7 +138,7 @@ def print_timing(interaction=None, explicit_timing=None):
             error_msg = 'Success'
             full_exception = ''
             if args:
-                driver = [arg for arg in args if "webdriver" in arg]
+                driver = [arg for arg in args if isinstance(arg, Chrome)]
                 node_ip = "" if not driver else getattr(driver[0], "node_ip", "")
             try:
                 func(*args, **kwargs)
