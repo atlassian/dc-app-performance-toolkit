@@ -248,36 +248,35 @@ def create_inline_comment(webdriver, datasets):
     page_id = page[0]
     datasets['create_comment_page'] = page
     page = Page(webdriver, page_id=page_id)
-    node_ip = webdriver.node_ip
 
-    @print_timing("selenium_create_comment", node_ip=node_ip)
-    def measure():
+    @print_timing("selenium_create_comment")
+    def measure(webdriver):
         page.go_to()
         page.wait_for_page_loaded()
         edit_comment = Editor(webdriver)
 
-        @print_timing("selenium_create_comment:write_comment", node_ip=node_ip)
-        def sub_measure():
+        @print_timing("selenium_create_comment:write_comment")
+        def sub_measure(webdriver):
             page.click_add_comment()
             edit_comment.write_content(text='This is selenium comment')
 
-        sub_measure()
+        sub_measure(webdriver)
 
-        @print_timing("selenium_create_comment:save_comment", node_ip=node_ip)
-        def sub_measure():
+        @print_timing("selenium_create_comment:save_comment")
+        def sub_measure(webdriver):
             edit_comment.click_submit()
             page.wait_for_comment_field()
 
-        sub_measure()
+        sub_measure(webdriver)
 
-    measure()
+    measure(webdriver)
 
 
 def log_out(webdriver, datasets):
-    @print_timing("selenium_log_out", node_ip=webdriver.node_ip)
-    def measure():
+    @print_timing("selenium_log_out")
+    def measure(webdriver):
         logout_page = Logout(webdriver)
         logout_page.go_to()
         logout_page.wait_for_logout()
 
-    measure()
+    measure(webdriver)

@@ -123,21 +123,25 @@ def is_docker():
     )
 
 
-def print_timing(interaction=None, explicit_timing=None, node_ip=""):
+def print_timing(interaction=None, explicit_timing=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
     def deco_wrapper(func):
         @functools.wraps(func)
-        def wrapper():
+        def wrapper(*args, **kwargs):
             if LOGIN_ACTION_NAME in interaction:
                 globals.login_failed = False
             if globals.login_failed:
                 pytest.skip(f"login is failed")
+            node_ip = ""
             start = time.time()
             error_msg = 'Success'
             full_exception = ''
+            if args:
+                driver = [arg for arg in args if "webdriver" in arg]
+                node_ip = "" if not driver else getattr(driver[0], "node_ip", "")
             try:
-                func()
+                func(*args, **kwargs)
                 success = True
             except Exception:
                 success = False
