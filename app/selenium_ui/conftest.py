@@ -128,16 +128,20 @@ def print_timing(interaction=None, explicit_timing=None):
 
     def deco_wrapper(func):
         @functools.wraps(func)
-        def wrapper():
+        def wrapper(*args, **kwargs):
             if LOGIN_ACTION_NAME in interaction:
                 globals.login_failed = False
             if globals.login_failed:
-                pytest.skip(f"login is failed")
+                pytest.skip("login is failed")
+            node_ip = ""
             start = time.time()
             error_msg = 'Success'
             full_exception = ''
+            if args:
+                driver = [arg for arg in args if isinstance(arg, Chrome)]
+                node_ip = "" if not driver else getattr(driver[0], "node_ip", "")
             try:
-                func()
+                func(*args, **kwargs)
                 success = True
             except Exception:
                 success = False
@@ -156,9 +160,10 @@ def print_timing(interaction=None, explicit_timing=None):
                         jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
                                        f",{success},0,0,0,0,,0\n")
                     else:
-                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+                        jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg}"
+                                       f",,{success},0,0,0,0,{node_ip},0\n")
 
-            print(f"{timestamp},{timing},{interaction},{error_msg},{success}")
+            print(f"{timestamp},{timing},{interaction},{error_msg},{success},{node_ip}")
 
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
@@ -283,7 +288,9 @@ def measure_dom_requests(webdriver, interaction, description=''):
     with filelock.SoftFileLock(lockfile):
         with open(selenium_results_file, "a+") as jtl_file:
             timestamp = round(time.time() * 1000)
-            jtl_file.write(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
+            jtl_file.write(
+                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
+            print(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
 
 
 def get_mark_from_dataset(page_id: str, dataset: dict) -> str:
@@ -345,9 +352,10 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                 interaction = metric['key']
                 ready_for_user_timing = metric['ready_for_user']
                 timestamp = round(time.time() * 1000)
+                node_ip = webdriver.node_ip
                 jtl_file.write(
-                    f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,,0\n")
-                print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success}")
+                    f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
+                print(f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},{node_ip}")
 
 
 @pytest.fixture(scope="module")
