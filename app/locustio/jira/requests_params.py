@@ -20,7 +20,7 @@ def jira_datasets():
 
 
 class JiraResource(BaseResource):
-    
+
     def __init__(self, resource_file='locustio/jira/resources.json'):
         super().__init__(resource_file)
 
@@ -28,10 +28,12 @@ class JiraResource(BaseResource):
 class Login(JiraResource):
     action_name = 'login_and_view_dashboard'
     atl_token_pattern = r'name="atlassian-token" content="(.+?)">'
+
     login_body = {
         'os_username': '',
         'os_password': '',
         'os_destination': '',
+        'os_cookie': True,
         'user_role': '',
         'atl_token': '',
         'login': 'Log in'
@@ -162,5 +164,4 @@ class ViewBoard(JiraResource):
 
 
 class BrowseBoards(JiraResource):
-
     action_name = 'browse_boards'

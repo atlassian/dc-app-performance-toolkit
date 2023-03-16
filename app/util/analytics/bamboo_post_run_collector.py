@@ -6,7 +6,7 @@ from util.api.bamboo_clients import BambooClient
 from util.conf import BAMBOO_SETTINGS
 from multiprocessing import cpu_count
 
-pool = ThreadPool(processes=cpu_count() * 3)
+pool = ThreadPool(processes=min(cpu_count() * 3, 12))
 
 
 class BambooPostRunCollector:

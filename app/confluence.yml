@@ -3,34 +3,36 @@ settings:
   artifacts-dir: results/confluence/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
+  check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 1990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /confluence in case of url like http://localhost:1990/confluence
+    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol, port and postfix e.g. test-confluence.atlassian.com or localhost
+    application_protocol: http        # http or https
+    application_port: 80              # 80, 443, 8080, 1990, etc
+    secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+    load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
+    concurrency: 200                  # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 5m                     # time to spin all concurrent users
+    ramp-up: 5m                       # time to spin all concurrent users
     total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.2
+    JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
-    view_page: 46
-    view_dashboard: 8
-    view_blog: 10
-    search_cql: 9
-    create_blog: 3
-    create_and_edit_page: 7
-    comment_page: 6
-    view_attachment: 4
-    upload_attachment: 5
-    like_page: 2
+    extended_metrics: False
+    view_page: 35
+    view_dashboard: 9
+    view_blog: 13
+    search_cql: 10
+    create_blog: 4
+    create_and_edit_page: 8
+    comment_page: 7
+    view_attachment: 5
+    upload_attachment: 6
+    like_page: 3
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
@@ -48,7 +50,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==3.141.0
+      - selenium==4.1.3
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -113,7 +115,10 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "97.0.4692.71" # Supports Chrome version 97. You can refer to http://chromedriver.chromium.org/downloads
+      version: "110.0.5481.77" # Supports Chrome version 110. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
+- module: passfail
+  criteria:
+  - failures>25% over 300s, stop as failed

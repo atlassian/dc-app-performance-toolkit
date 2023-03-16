@@ -132,9 +132,12 @@ class ResultsFileReader(BaseFileReader):
 
     def get_results_log(self):
         lines = []
-        with open(self.results_log_path, 'r') as res_file:
-            for line in csv.DictReader(res_file):
-                lines.append(line)
+        if os.path.exists(self.results_log_path) and os.path.getsize(self.results_log_path) > 0:
+            with open(self.results_log_path, 'r') as res_file:
+                for line in csv.DictReader(res_file):
+                    lines.append(line)
+        else:
+            raise SystemExit(f"ERROR: file {self.results_log_path} does not exist or empty.")
         headers_list = list(lines[0].keys())
         self.validate_headers(headers_list, self.header_validation)
         self.validate_file_not_empty(lines)

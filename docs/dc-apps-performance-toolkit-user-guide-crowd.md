@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-02-01"
+date: "2022-02-13"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -97,9 +97,9 @@ All important parameters are listed and described in this section. For all other
 
 **Crowd setup**
 
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Version | The Data Center App Performance Toolkit officially supports `4.4.0` |
+| Parameter | Recommended Value                                                   |
+| --------- |---------------------------------------------------------------------|
+| Version | The Data Center App Performance Toolkit officially supports `5.0.2` |
 
 **Cluster nodes**
 
@@ -479,10 +479,20 @@ The same article has instructions on how to increase limit if needed.
 To receive scalability benchmark results for two-node Crowd DC **with** app-specific actions:
 
 1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-1. On the **Update** tab, select **Use current template**, and then click **Next**.
-1. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-1. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
+2. On the **Update** tab, select **Use current template**, and then click **Next**.
+3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
+4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
+
+{{% warning %}}
+In case if you got error during update - `BastionPrivIp cannot be updated`.
+Please use those steps for a workaround:
+1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
+2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
+3. Enter `2` in the **Desired capacity**, **Minimum capacity** and **Maximum capacity** fields.
+4. Scroll down, click **Update** button and wait until stack is updated. 
+{{% /warning %}}
+
+5. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
    # 1 node scenario parameters
    # ramp-up: 20s                    # time to spin all concurrent threads
@@ -496,7 +506,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    # ramp-up: 5s                     # time to spin all concurrent threads
    # total_actions_per_hour: 720000  # number of total JMeter actions per hour
    ```
-1. Run toolkit with docker from the execution environment instance:
+6. Run toolkit with docker from the execution environment instance:
 
    ``` bash
    cd dc-app-performance-toolkit
@@ -583,16 +593,16 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 After completing all your tests, delete your Crowd Data Center stacks.
 {{% /warning %}}
 
-#### Attaching testing results to DCHELP ticket
+#### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your DCHELP ticket.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
    Each folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach two reports folders to your DCHELP ticket.
+2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
