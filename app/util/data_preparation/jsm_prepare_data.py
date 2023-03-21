@@ -154,7 +154,7 @@ def __get_customers(jira_client, jsm_client, servicedesks):
             created_agents.append(agent)
             request_types = __get_request_types(jsm_client, servicedesks)
             if not request_types:
-                raise Exception(f"No request types found for service desk ")
+                raise Exception("No request types found for service desk")
             random_request_type = random.choice(request_types).split(",")
             service_desk_id = random_request_type[1]
             request_type_id = random_request_type[2]
