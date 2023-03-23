@@ -2,16 +2,16 @@
   "jira": {
     "versions": [
       {
-        "version": "9.4.2",
+        "version": "9.4.4",
         "data": [
           {
             "type": "rds",
             "size": "large",
             "snapshots": [
-              { "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-2",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-2",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-9-4-2",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-9-4-2"
+              { "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-4",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-9-4-4",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-9-4-4"
               }
             ]
           },
@@ -19,10 +19,10 @@
             "type": "rds",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-2",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-2",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-small-9-4-2",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-small-9-4-2"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-4",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-4",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-small-9-4-4",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-small-9-4-4"
             }
             ]
           },
@@ -30,10 +30,10 @@
             "type": "ebs",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "snap-0678a4eb0fd04fa4f",
-                "us-east-2": "snap-084488e5e88105ef9",
-                "us-west-1": "snap-0e3232c0daa62c38d",
-                "us-west-2": "snap-0aac54d62f0eebed9"
+                "us-east-1": "snap-091ba08c88939b9ee",
+                "us-east-2": "snap-0ae3cf75516d1ce0c",
+                "us-west-1": "snap-0b0a56544aa563bfb",
+                "us-west-2": "snap-01239ac7e74a76540"
         }
             ]
           },
@@ -41,26 +41,26 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-0f9fa4dc489347117",
-                "us-east-2": "snap-072246cd3207c3bd4",
-                "us-west-1": "snap-0df9d73915c8192c5",
-                "us-west-2": "snap-01884912758755325"
+                "us-east-1": "snap-0b213c43b0b3adb89",
+                "us-east-2": "snap-0ad0c33d363c47a28",
+                "us-west-1": "snap-0cbc5a91be9b0b85f",
+                "us-west-2": "snap-03f52412ceca519ef"
             }
             ]
           }
         ]
       },
       {
-        "version": "8.20.17",
+        "version": "8.20.20",
         "data": [
           {
             "type": "rds",
             "size": "large",
             "snapshots": [ {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-8-20-17",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-17",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-8-20-17",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-8-20-17"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-8-20-20",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-8-20-20",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-8-20-20"
         }
             ]
           },
@@ -68,10 +68,10 @@
             "type": "rds",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-8-20-17",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-17",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-small-8-20-17",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-small-8-20-17"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-8-20-20",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-20",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-small-8-20-20",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-small-8-20-20"
         }
             ]
           },
@@ -79,10 +79,10 @@
             "type": "ebs",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "snap-028e18f3d109989c5",
-                "us-east-2": "snap-01f6e23bce22a4bec",
-                "us-west-1": "snap-0c79f7a90faba0767",
-                "us-west-2": "snap-09fb4ffe119c18cca"
+                "us-east-1": "snap-09742194b8e2e9fc4",
+                "us-east-2": "snap-001cb5a5d63b1a016",
+                "us-west-1": "snap-0c948786425c40777",
+                "us-west-2": "snap-0dd30eba407771519"
         }
             ]
           },
@@ -90,10 +90,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-0dd91e477dd3198a0",
-                "us-east-2": "snap-061dd4ee49c8732e3",
-                "us-west-1": "snap-0705047c5557f5951",
-                "us-west-2": "snap-07e81c0202645b8e5"
+                "us-east-1": "snap-09b8838642ed4a79d",
+                "us-east-2": "snap-055e0657b8d1e0472",
+                "us-west-1": "snap-0ef1dde94bb4de677",
+                "us-west-2": "snap-081438bb412db7ed9"
         }
             ]
           }
@@ -104,16 +104,16 @@
   "jsm": {
     "versions": [
       {
-        "version": "5.4.2",
+        "version": "5.4.4",
         "data": [
           {
             "type": "rds",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-5-4-2",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-2",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-5-4-2",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-5-4-2"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-5-4-4",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-4",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-5-4-4",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-5-4-4"
         }
             ]
           },
@@ -121,10 +121,10 @@
             "type": "rds",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-5-4-2",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-2",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-5-4-2",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-5-4-2"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-5-4-4",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-4",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-5-4-4",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-5-4-4"
         }
             ]
           },
@@ -132,10 +132,10 @@
             "type": "ebs",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "snap-053ee6cdf9b6e1632",
-                "us-east-2": "snap-0ffaf58184466c550",
-                "us-west-1": "snap-0193367a1083509a2",
-                "us-west-2": "snap-03072ee90cc3ae7c6"
+                "us-east-1": "snap-0c88e24729381bfc4",
+                "us-east-2": "snap-01ffbdc7ce1be745f",
+                "us-west-1": "snap-06f4f944d4416b8b4",
+                "us-west-2": "snap-062f840fda4092c17"
         }
             ]
           },
@@ -143,26 +143,26 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-0d3e76fe2cf5b3a9a",
-                "us-east-2": "snap-03d122aa967760da3",
-                "us-west-1": "snap-056e9c19ae5a4990c",
-                "us-west-2": "snap-0797d5618e216d1df"
+                "us-east-1": "snap-0a76044703434ed42",
+                "us-east-2": "snap-045402ed4f2702994",
+                "us-west-1": "snap-08d7c1f9c471699d2",
+                "us-west-2": "snap-02675262150659216"
         }
             ]
           }
         ]
       },
       {
-        "version": "4.20.17",
+        "version": "4.20.20",
         "data": [
           {
             "type": "rds",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-4-20-17",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-17",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-4-20-17",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-4-20-17"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-4-20-20",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-20",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-4-20-20",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-4-20-20"
         }
             ]
           },
@@ -170,10 +170,10 @@
             "type": "rds",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-4-20-17",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-17",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-4-20-17",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-4-20-17"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-4-20-20",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-20",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-4-20-20",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-4-20-20"
         }
             ]
           },
@@ -181,10 +181,10 @@
             "type": "ebs",
             "size": "large",
             "snapshots": [{
-                "us-east-1": "snap-07bdb05f1dd09c641",
-                "us-east-2": "snap-0c24799776a729681",
-                "us-west-1": "snap-0af301ded7d3909cf",
-                "us-west-2": "snap-06d1b8387f6e3ffd0"
+                "us-east-1": "snap-02f2ee59a9436dfc4",
+                "us-east-2": "snap-012d40647b2ffa6eb",
+                "us-west-1": "snap-043f84e2d1a2faab9",
+                "us-west-2": "snap-072b6f3ff252d4835"
         }
             ]
           },
@@ -192,10 +192,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-04df3637ede9082bd",
-                "us-east-2": "snap-000aedb9bb56c4d9d",
-                "us-west-1": "snap-0f9cc9be75cbc6ca9",
-                "us-west-2": "snap-033f28e1886e6919c"
+                "us-east-1": "snap-035ad8d41f4f6ca46",
+                "us-east-2": "snap-0565b9bc27f03de7f",
+                "us-west-1": "snap-08d7c1f9c471699d2",
+                "us-west-2": "snap-011d64299e948592f"
         }
             ]
           }
