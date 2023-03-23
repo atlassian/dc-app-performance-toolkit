@@ -165,32 +165,32 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.5"
+confluence_version_tag = "7.19.6"
 
 # Shared home restore configuration.
-# 8.0.3 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-095426a567b696a48"
-# 7.19.5 DCAPT small dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-031972bc32cc7809a"
-# 7.13.7 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-04043f67beead6c43"
+# 8.1.1 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-045d6d37f3a2cc0fe"
+# 7.19.6 DCAPT small dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-0bd39fad8547092d8"
+# 7.13.14 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-02fef11a859635f8a"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-# 8.0.3 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-0-3"
-# 7.19.5 DCAPT small dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-5"
-# 7.13.7 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-7"
+# 8.1.1 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-1-1"
+# 7.19.6 DCAPT small dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-6"
+# 7.13.14 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-14"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.0.3
-# confluence_db_snapshot_build_number = "9002"
-# 7.19.5
+# 8.1.1
+# confluence_db_snapshot_build_number = "9003"
+# 7.19.6
 confluence_db_snapshot_build_number = "8804"
-# 7.13.7
+# 7.13.14
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
