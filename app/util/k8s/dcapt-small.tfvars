@@ -97,9 +97,9 @@ jira_shared_home_snapshot_id = "snap-055e0657b8d1e0472"
 jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-20"
 # Jira 9.4.4 DCAPT small dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-4"
-# JSM 4.20.17 DCAPT small dataset RDS snapshot
+# JSM 4.20.20 DCAPT small dataset RDS snapshot
 #jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-20"
-# JSM 5.4.2 DCAPT small dataset RDS snapshot
+# JSM 5.4.4 DCAPT small dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-4"
 
 # Helm chart version of Jira
