@@ -253,27 +253,27 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.7"
+bitbucket_version_tag = "7.21.10"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.7 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0f7780c62a76f5ea0"
-# 8.8.0 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-053b73fd8765b8cd0"
-# 7.17.13 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-068dc6b69b67ee535"
+# 7.21.10 DCAPT large dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-016d7203c884070d2"
+# 8.8.2 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-00017faa33090335f"
+# 7.17.15 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0629fbebab529dc8b"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.7 DCAPT large dataset RDS snapshot
- bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-x"
-# 8.8.0 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-8-x"
-# 7.17.13 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-x"
+# 7.21.10 DCAPT large dataset RDS snapshot
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-10"
+# 8.8.2 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-8-2"
+# 7.17.15 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-15"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
