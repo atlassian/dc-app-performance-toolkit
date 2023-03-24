@@ -263,7 +263,7 @@ bitbucket_shared_home_snapshot_id = "snap-016d7203c884070d2"
 # 8.8.2 DCAPT large dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-00017faa33090335f"
 # 7.17.15 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0629fbebab529dc8b"
+#bitbucket_shared_home_snapshot_id = "snap-001e6d0beec6e4236"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
