@@ -39,6 +39,12 @@ It'll also provide you with a lightweight and less expensive environment for dev
 Once you're ready to generate test results for the Marketplace Data Center Apps Approval process,
 run the toolkit in an **enterprise-scale environment**.
 
+---
+
+{{% note %}}
+DCAPT has fully transitioned to Terraform deployment. If you still wish to use CloudFormation deployment, refer to the [Jira Service Management Data Center app testing [CloudFormation]](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jsm-cf/)
+{{% /note %}}
+
 ### <a id="devinstancesetup"></a>1. Setting up Jira Service Management Data Center development environment
 
 We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
@@ -501,8 +507,9 @@ If you are submitting a Jira Service Management app, you are required to conduct
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 
 {{% note %}}
-Jira index time is about ~30 min. In case index time taking much longer , uninstall your app and re-run re-index.
-**Take a screenshot of the acknowledgment screen** displaying the re-index time without app.
+JSM 4.20 index time is about ~30-50 min, JSM 5.4 ~110-130 min.  
+In case index time taking much longer , uninstall your app and re-run re-index.
+ **Take a screenshot of the acknowledgment screen** displaying the re-index time without app.
 {{% /note %}}
 
 7. Attach the screenshot(s) to your ECOHELP ticket.

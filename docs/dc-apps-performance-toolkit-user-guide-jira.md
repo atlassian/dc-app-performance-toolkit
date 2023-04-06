@@ -1,12 +1,12 @@
 ---
-title: "Data Center App Performance Toolkit User Guide For Jira (Terraform deployment)"
+title: "Data Center App Performance Toolkit User Guide For Jira"
 platform: platform
 product: marketplace
 category: devguide
 subcategory: build
 date: "2023-02-27"
 ---
-# Data Center App Performance Toolkit User Guide For Jira (Terraform deployment)
+# Data Center App Performance Toolkit User Guide For Jira
 
 This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
@@ -37,6 +37,12 @@ Running the tests in a development environment helps familiarize you with the to
 It'll also provide you with a lightweight and less expensive environment for developing app-specific actions.
 Once you're ready to generate test results for the Marketplace Data Center Apps Approval process,
 run the toolkit in an **enterprise-scale environment**.
+
+---
+
+{{% note %}}
+DCAPT has fully transitioned to Terraform deployment. If you still wish to use CloudFormation deployment, refer to the [Jira Data Center app testing [CloudFormation]](/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira-cf/)
+{{% /note %}}
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
 
@@ -459,8 +465,9 @@ If you are submitting a Jira app, you are required to conduct a Lucene Index tim
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 
 {{% note %}}
-Jira index time is about ~30 min. In case index time taking much longer , uninstall your app and re-run re-index.
-**Take a screenshot of the acknowledgment screen** displaying the re-index time without app.
+Jira 8.20 index time is about ~30-50 min, Jira 9.4 ~110-130 min.  
+In case index time taking much longer , uninstall your app and re-run re-index.
+ **Take a screenshot of the acknowledgment screen** displaying the re-index time without app.
 {{% /note %}}
 
 7. Attach the screenshot(s) to your ECOHELP ticket.
