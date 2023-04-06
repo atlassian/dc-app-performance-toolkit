@@ -1,12 +1,12 @@
 ---
-title: "Data Center App Performance Toolkit User Guide For Jira  (CloudFormation deployment)"
+title: "Data Center App Performance Toolkit User Guide For Jira (CloudFormation deployment)"
 platform: platform
 product: marketplace
 category: devguide
 subcategory: build
 date: "2022-02-13"
 ---
-# Data Center App Performance Toolkit User Guide For Jira  (CloudFormation deployment)
+# Data Center App Performance Toolkit User Guide For Jira (CloudFormation deployment)
 
 This document walks you through the process of testing your app on Jira using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/).
 
@@ -644,7 +644,7 @@ For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 3. Select the **Full re-index** option.
-4. Click **Re-Index** and wait until re-indexing is completed. 
+4. Click **Re-Index** and wait until re-indexing is completed.
 5. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 6. Attach the screenshot to your ECOHELP ticket.
 
