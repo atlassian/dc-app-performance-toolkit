@@ -268,7 +268,9 @@ We recommend that you only use this method if you are having problems with the [
 #### Re-indexing development environment Jira Service Management Data Center
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
-
+{{% note %}}
+The re-index time for JSM 4.20.x is about ~30-50 minutes, while for JSM 5.4.x it can take significantly longer at around 110-130 minutes. This increase in re-index time is due to a known issue which affects Jira 5.4.x, and you can find more information about it in this ticket: [Re-Index: JSM 5.4.x](https://jira.atlassian.com/browse/JRASERVER-74787).
+{{% /note %}}
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 1. Select the **Full re-index** option.
@@ -789,9 +791,13 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-#### <a id="reindexing"></a> Re-indexing Jira Service Management Data Center (~30 min)
+#### <a id="reindexing"></a> Re-indexing Jira Service Management Data Center
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
+{{% note %}}
+The re-index time for JSM 4.20.x is about ~30-50 minutes, while for JSM 5.4.x it can take significantly longer at around 110-130 minutes. This increase in re-index time is due to a known issue which affects Jira 5.4.x, and you can find more information about it in this ticket: [Re-Index: JSM 5.4.x](https://jira.atlassian.com/browse/JRASERVER-74787).
+{{% /note %}}
+
 
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
 1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
@@ -947,7 +953,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 If you are submitting a Jira Service Management app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
 
 {{% note %}}
-Index time for 1M issues on a User Guide [recommended configuration](#quick-start-parameters) is about ~30 min.
+The re-index time for JSM 4.20.x is about ~30-50 minutes, while for JSM 5.4.x it can take significantly longer at around 110-130 minutes. This increase in re-index time is due to a known issue which affects Jira 5.4.x, and you can find more information about it in this ticket: [Re-Index: JSM 5.4.x](https://jira.atlassian.com/browse/JRASERVER-74787).
 {{% /note %}}
 
 {{% note %}}
