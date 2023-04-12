@@ -637,16 +637,20 @@ Populate DB and restore attachments scripts could be run in parallel in separate
 Do not close or interrupt the session. It will take about two hours to upload attachments to Elastic File Storage (EFS).
 {{% /note %}}
 
-#### <a id="reindexing"></a> Re-indexing Jira Data Center (~30 min)
+#### <a id="reindexing"></a> Re-indexing Jira Data Center 
 
 For more information, go to [Re-indexing Jira](https://confluence.atlassian.com/adminjiraserver/search-indexing-938847710.html).
 
+{{% note %}}
+The re-index time for Jira 8.20.x is about ~30-50 minutes, while for Jira 9.4.x it can take significantly longer at around 110-130 minutes. This increase in re-index time is due to a known issue which affects Jira 9.4.x, and you can find more information about it in this ticket: [Re-Index: Jira 9.4.x](https://jira.atlassian.com/browse/JRASERVER-74787).
+{{% /note %}}
+
 1. Log in as a user with the **Jira System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-1. Select the **Full re-index** option.
-1. Click **Re-Index** and wait until re-indexing is completed.
-1. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
-1. Attach the screenshot to your ECOHELP ticket.
+2. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+3. Select the **Full re-index** option.
+4. Click **Re-Index** and wait until re-indexing is completed.
+5. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+6. Attach the screenshot to your ECOHELP ticket.
 
 Jira will be unavailable for some time during the re-indexing process. When finished, the **Acknowledge** button will be available on the re-indexing page.
 
