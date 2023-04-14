@@ -1,8 +1,12 @@
 import random
-from selenium_ui.conftest import print_timing
+
+from packaging import version
 
 from selenium_ui.bitbucket.pages.pages import LoginPage, GetStarted, Dashboard, Projects, Project, Repository, \
     RepoNavigationPanel, PopupManager, RepoPullRequests, PullRequest, RepositoryBranches, RepositoryCommits, LogoutPage
+from selenium_ui.conftest import print_timing
+from util.api.bitbucket_clients import BitbucketRestClient
+from util.conf import BITBUCKET_SETTINGS
 
 
 def setup_run_data(datasets):
@@ -19,6 +23,11 @@ def setup_run_data(datasets):
 
 def login(webdriver, datasets):
     setup_run_data(datasets)
+    client = BitbucketRestClient(
+        BITBUCKET_SETTINGS.server_url,
+        BITBUCKET_SETTINGS.admin_login,
+        BITBUCKET_SETTINGS.admin_password)
+    webdriver.app_version = version.parse(client.get_bitbucket_version())
     login_page = LoginPage(webdriver)
 
     @print_timing("selenium_login")

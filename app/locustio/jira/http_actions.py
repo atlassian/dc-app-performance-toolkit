@@ -167,7 +167,9 @@ def create_issue(locust):
         raise_if_login_failed(locust)
 
         # 200 /secure/QuickCreateIssue!default.jspa?decorator=none
-        r = locust.post('/secure/QuickCreateIssue!default.jspa?decorator=none', ADMIN_HEADERS, catch_response=True)
+        r = locust.post(f'/secure/QuickCreateIssue!default.jspa?',
+                        json={'atl_token': locust.session_data_storage["token"]},
+                        headers=ADMIN_HEADERS, catch_response=True)
 
         content = r.content.decode('utf-8')
         atl_token = fetch_by_re(params.atl_token_pattern, content)
@@ -193,7 +195,7 @@ def create_issue(locust):
         # 205 /rest/quickedit/1.0/userpreferences/create
         locust.post('/rest/quickedit/1.0/userpreferences/create',
                     json=params.user_preferences_payload,
-                    headers=ADMIN_HEADERS,
+                    headers=RESOURCE_HEADERS,
                     catch_response=True)
 
         # 210 /rest/analytics/1.0/publish/bulk
@@ -513,6 +515,7 @@ def edit_issue(locust):
                     json=params.resources_body.get("770"),
                     headers=RESOURCE_HEADERS,
                     catch_response=True)
+
     edit_issue_save_edit()
 
 
@@ -749,7 +752,6 @@ def view_backlog(locust):
 
 @jira_measure('locust_browse_boards')
 def browse_boards(locust):
-
     raise_if_login_failed(locust)
     params = BrowseBoards()
 
@@ -860,7 +862,6 @@ def kanban_board(locust, board_id):
 
 
 def scrum_board(locust, board_id):
-
     params = ViewBoard(action_name='view_scrum_board')
 
     # 1100 /secure/RapidBoard.jspa
@@ -951,7 +952,6 @@ def scrum_board(locust, board_id):
 
 
 def backlog_board(locust, board_id):
-
     params = ViewBoard(action_name='view_backlog')
 
     # 1200 /secure/RapidBoard.jspa

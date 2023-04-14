@@ -1,15 +1,13 @@
 import random
 import string
 
-import urllib3
-
-from prepare_data_common import __generate_random_string, __write_to_file
+from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
 from util.api.jira_clients import JiraRestClient
 from util.conf import JIRA_SETTINGS
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS, JIRA_DATASET_CUSTOM_ISSUES
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
