@@ -17,9 +17,10 @@ FAIL_FAST_FLAG=true
 
 while [ ${COUNTER} -lt ${ATTEMPTS} ];do
   # Get the latest snapshot from the index-snapshots folder
-  SNAPSHOT=$(sudo su -c "ls -tr /media/atl/confluence/shared-home/index-snapshots/IndexSnapshot_main_index_*zip" 2>/dev/null | tail -1)
+  # todo check if dirs in lines 21 and 23 are right
+  SNAPSHOT=$(sudo su -c "ls -tr /var/atlassian/application-data/confluence/shared-home/index-snapshots/IndexSnapshot_main_index_*zip" 2>/dev/null | tail -1)
   if  sudo su -c "test -z ${SNAPSHOT}"; then
-    echo "There is no snapshot file yet in /media/atl/confluence/shared-home/index-snapshots/ folder."
+    echo "There is no snapshot file yet in /var/atlassian/application-data/confluence/shared-home/index-snapshots/ folder."
   else
     SNAPSHOT_SIZE=$(sudo su -c "du -s ${SNAPSHOT}" | cut -f1)
     echo "Snapshot file found. Current size: ${SNAPSHOT_SIZE}"

@@ -4,10 +4,10 @@ runs:
   # fullPath should contain a full path to the directory with run results. E.g. /home/$USER/dc-app-performance-toolkit/jira/results/2019-08-06_17-41-08
   - runName: "without app"
     runType: "baseline"
-    fullPath: ""
+    fullPath: "/Users/marcin.muszynski/PycharmProjects/zephyr-scale-dc-app-performance-toolkit/app/results/confluence/2022-05-26_10-03-29_1_node_no_app"
   - runName: "with app"
     runType: "experiment"
-    fullPath: ""
+    fullPath: "/Users/marcin.muszynski/PycharmProjects/zephyr-scale-dc-app-performance-toolkit/app/results/confluence/2022-05-26_11-20-28_1_node_with_app"
 
 # Chart generation config
 index_col: "Action"

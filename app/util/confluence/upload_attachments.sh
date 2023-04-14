@@ -5,7 +5,8 @@
 # Confluence version variables
 CONFLUENCE_VERSION_FILE="/media/atl/confluence/shared-home/confluence.version"
 SUPPORTED_CONFLUENCE_VERSIONS=(7.4.14 7.13.3)
-CONFLUENCE_VERSION=7.13.5
+### todo confluence version might change
+CONFLUENCE_VERSION=7.4.16
 if [[ -z "$CONFLUENCE_VERSION" ]]; then
         echo The $CONFLUENCE_VERSION_FILE file does not exists or emtpy. Please check if CONFLUENCE_VERSION_FILE variable \
          has a valid file path of the Confluence version file or set your Cluster CONFLUENCE_VERSION explicitly.
