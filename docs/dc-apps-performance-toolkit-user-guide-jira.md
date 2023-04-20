@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-02-27"
+date: "2023-04-20"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -95,7 +95,12 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    ```bash
    ./install.sh -c dcapt-small.tfvars
    ```
-9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
+9. Re-index:    
+   - Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
+   - Select the **Full re-index** option. 
+   - Click **Re-Index** and wait until re-indexing is completed (~2s).
+
+10. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
 
 {{% note %}}
 New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
