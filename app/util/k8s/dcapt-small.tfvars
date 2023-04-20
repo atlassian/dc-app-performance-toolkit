@@ -93,7 +93,7 @@ jira_version_tag = "8.20.20"
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
 # Jira 8.20.20 DCAPT small dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-055e0657b8d1e0472"
+jira_shared_home_snapshot_id = "snap-0351f7762a1699d27"
 # Jira 9.4.4 DCAPT small dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-0ad0c33d363c47a28"
 # JSM 4.20.20 DCAPT small dataset EBS snapshot
@@ -181,11 +181,11 @@ confluence_version_tag = "7.19.6"
 
 # Shared home restore configuration.
 # 8.1.1 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-045d6d37f3a2cc0fe"
+# confluence_shared_home_snapshot_id = "snap-00b5fda281c2e52f4"
 # 7.19.6 DCAPT small dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-0bd39fad8547092d8"
+confluence_shared_home_snapshot_id = "snap-062f7120e8f21970a"
 # 7.13.14 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-02fef11a859635f8a"
+# confluence_shared_home_snapshot_id = "snap-0fc8de44395b91431"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.

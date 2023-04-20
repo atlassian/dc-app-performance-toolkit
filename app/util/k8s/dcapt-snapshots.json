@@ -90,10 +90,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-09b8838642ed4a79d",
-                "us-east-2": "snap-055e0657b8d1e0472",
-                "us-west-1": "snap-0ef1dde94bb4de677",
-                "us-west-2": "snap-081438bb412db7ed9"
+                "us-east-1": "snap-03519a278adb0d25d",
+                "us-east-2": "snap-0351f7762a1699d27",
+                "us-west-1": "snap-0d62f875b6c7bd324",
+                "us-west-2": "snap-0a239c40a0c277d63"
         }
             ]
           }
@@ -246,10 +246,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-0af9e8be14cac32cc",
-                "us-east-2": "snap-0bd39fad8547092d8",
-                "us-west-1": "snap-0032a1f93cda16dc8",
-                "us-west-2": "snap-03a136f3fb7d0c403"
+                "us-east-1": "snap-0011bbaf6ad3a3030",
+                "us-east-2": "snap-062f7120e8f21970a",
+                "us-west-1": "snap-0445bd112eb0ca7e3",
+                "us-west-2": "snap-0410d6d30cbf2083b"
         }
             ]
           }
@@ -295,10 +295,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-0cac3f72606935566",
-                "us-east-2": "snap-02fef11a859635f8a",
-                "us-west-1": "snap-08090b36e4c2063ea",
-                "us-west-2": "snap-03d0d63897a656e45"
+                "us-east-1": "snap-0943b293e3f5400c1",
+                "us-east-2": "snap-0fc8de44395b91431",
+                "us-west-1": "snap-09441747f19eeeca7",
+                "us-west-2": "snap-0cdd1e643df21e5df"
         }
             ]
           }
@@ -344,10 +344,10 @@
             "type": "ebs",
             "size": "small",
             "snapshots": [{
-                "us-east-1": "snap-04331fbdd86df0daf",
-                "us-east-2": "snap-045d6d37f3a2cc0fe",
-                "us-west-1": "snap-090da7266b7942f87",
-                "us-west-2": "snap-05f9f5a005e1e04b2"
+                "us-east-1": "snap-04aaf480387c7b9ac",
+                "us-east-2": "snap-00b5fda281c2e52f4",
+                "us-west-1": "snap-07a9590673d46ea44",
+                "us-west-2": "snap-0471f1d3f94ecdb70"
         }
             ]
           }
@@ -484,10 +484,10 @@
             "type": "ebs",
             "size": "large",
             "snapshots": [{
-                "us-east-1":"snap-04b89f03b9ead9cdf",
-                "us-east-2":"snap-00017faa33090335f",
-                "us-west-1":"snap-06d4f1c2500c6be07",
-                "us-west-2":"snap-055ad92cd59a4117c"
+                "us-east-1":"snap-0c26ee8c669bc74e6",
+                "us-east-2":"snap-095626e10873de7c4",
+                "us-west-1":"snap-052d8e78df7d2042c",
+                "us-west-2":"snap-0e3f3cf55c6c5abab"
           }
             ]
           },
