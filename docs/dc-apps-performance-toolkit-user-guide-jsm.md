@@ -1,12 +1,12 @@
 ---
-title: "Data Center App Performance Toolkit User Guide For Jira Service Management (Terraform deployment)"
+title: "Data Center App Performance Toolkit User Guide For Jira Service Management"
 platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2022-02-27"
+date: "2023-04-20"
 ---
-# Data Center App Performance Toolkit User Guide For Jira Service Management (Terraform deployment)
+# Data Center App Performance Toolkit User Guide For Jira Service Management
 
 This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/):
 
