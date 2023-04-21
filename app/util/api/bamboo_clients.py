@@ -34,38 +34,6 @@ class BambooClient(RestClient):
 
         return content
 
-    def get_build_plans_results(self, build_plan_id, start=0, max_result=100):
-        loop_count = max_result // BATCH_SIZE_SEARCH + 1
-        content = list()
-        last_loop_remainder = max_result % BATCH_SIZE_SEARCH
-        max_result = BATCH_SIZE_SEARCH if max_result > BATCH_SIZE_SEARCH else max_result
-
-        while loop_count > 0:
-            if not max_result:
-                break
-            api_url = (
-                    self.host + f'/rest/api/latest/result/{build_plan_id}?start-index={start}'
-                                f'&max-result={max_result}'
-            )
-            request = self.get(api_url, "Could not retrieve build plans result")
-            if request.json()['results']['start-index'] != start:
-                break
-            content.extend(request.json()['results']['result'])
-
-            loop_count -= 1
-            if loop_count == 1:
-                max_result = last_loop_remainder
-
-            start += len(request.json()['results']['result'])
-
-        return content
-
-    def get_build_plan_results(self, build_run_id):
-        request = self.get(f'{self.host}/rest/api/latest/result/{build_run_id}',
-                           "Could not retrieve build plan result")
-
-        return request.json()
-
     @retry()
     def get_build_job_results(self, build_job_id):
         request = self.get(f'{self.host}/rest/api/latest/result/{build_job_id}',
@@ -129,23 +97,6 @@ class BambooClient(RestClient):
                    "passwordConfirm": password}
         self.post(api_url, body=payload, error_msg="Could not create user")
         return {'name': name}
-
-    def start_build_plan(self, plan_key):
-        api_url = f'{self.host}/rest/api/latest/queue/{plan_key}'
-        r = self.post(api_url, error_msg=f"Could not start the plan {plan_key}")
-        return r.json()
-
-    def get_build_plan_status(self, plan_key):
-        api_url = f'{self.host}/rest/api/latest/plan/{plan_key}'
-        r = self.get(api_url, error_msg=f"Could not get plan {plan_key} status")
-        return r.json()
-
-    def get_build_results(self, plan_key, run_number: int = None):
-        api_url = f'{self.host}/rest/api/latest/result/{plan_key}'
-        if run_number:
-            api_url = f'{self.host}/rest/api/latest/result/{plan_key}-{run_number}'
-        r = self.get(api_url, error_msg=f"Could not get plan {plan_key} results")
-        return r.json()
 
     def get_remote_agents(self, online=True):
         api_url = f'{self.host}/rest/api/latest/agent/remote'

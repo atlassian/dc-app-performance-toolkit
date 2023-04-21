@@ -76,16 +76,6 @@ class BitbucketRestClient(RestClient):
                                  batch_size=BATCH_SIZE_USERS,
                                  max_results=max_results)
 
-    def get_repos(self, max_results=500):
-        return self.get_entities(entity_name='repos',
-                                 batch_size=BATCH_SIZE_REPOS,
-                                 max_results=max_results)
-
-    def get_project_repos(self, project_key):
-        api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos'
-        response = self.get(api_url, f'Could not get repos of project {project_key}')
-        return response.json()
-
     def get_pull_request(self, project_key, repo_key):
         api_url = f'{self.host}/rest/api/1.0/projects/{project_key}/repos/{repo_key}/pull-requests'
         response = self.get(api_url, 'Could not retrieve pull requests list')

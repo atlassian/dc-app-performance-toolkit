@@ -1,33 +1,10 @@
-from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
+from util.api.abstract_clients import RestClient
 
 
 BATCH_SIZE_USERS = 1000
 
 
 class CrowdRestClient(RestClient):
-
-    def add_user(self,
-                 name: str,
-                 password: str,
-                 first_name: str,
-                 last_name: str,
-                 display_name: str = None,
-                 email: str = None,
-                 active: bool = True):
-        api_url = self.host + "/rest/usermanagement/1/user"
-        payload = {
-            "name": name,
-            "password": {"value": password},
-            "active": active,
-            "first-name": first_name,
-            "last-name": last_name,
-            "display-name": display_name or f"{first_name} {last_name}",
-            "email": email or name + '@localdomain.com'
-        }
-
-        response = self.post(api_url, "Could not create crowd user", body=payload)
-
-        return response.json()
 
     def search(self, entity_type: str = "user", start_index: int = 0, max_results: int = 1000, restriction: str = '',
                expand: str = 'user'):
@@ -75,12 +52,6 @@ class CrowdRestClient(RestClient):
         print("")  # new line
         users = [user for loop_users in loop_users_list for user in loop_users]
         return users
-
-    def group_members(self, group_name: str, start_index: int = 0, max_results: int = 1000):
-        api_url = self.host + f"/rest/usermanagement/1/group/user/direct" \
-                              f"?groupname={group_name}&start-index={start_index}&max-results={max_results}"
-        r = self.get(api_url, "Group members call failed")
-        return r.json()
 
     def get_group_membership(self):
         api_url = self.host + '/rest/usermanagement/1/group/membership'

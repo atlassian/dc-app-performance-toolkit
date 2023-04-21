@@ -25,8 +25,8 @@ DATASET_PAGES_TEMPLATES = {'big_attachments_1': ['PAGE_1', 'PAGE_2'],
                            'text_formatting_21': ['PAGE_21', 'PAGE_22', 'PAGE_25', 'PAGE_26', 'PAGE_27', 'PAGE_28',
                                                   'PAGE_29', 'PAGE_30']
                            }
-DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'],  #, 'BLOG_2'], # TODO Investigate how to group similar blogs
-                           3: ['BLOG_3'],  #'BLOG_4', 'BLOG_5'],
+DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'],  # , 'BLOG_2'], # TODO Investigate how to group similar blogs
+                           3: ['BLOG_3'],  # 'BLOG_4', 'BLOG_5'],
                            6: ['BLOG_6']  # 'BLOG_7', 'BLOG_8', 'BLOG_9', 'BLOG_10']
 
                            }
