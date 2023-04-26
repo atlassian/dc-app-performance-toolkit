@@ -345,7 +345,6 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    - `products` - `jira`
    - `jira_license` - one-liner of valid jira license without spaces and new line symbols
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-   - `instance_types` - `["m5.4xlarge"]` 
 7. Optional variables to override:
     - `jira_version_tag` - Jira version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
