@@ -93,7 +93,7 @@ jira_version_tag = "9.4.4"
 # Jira 9.4.4 DCAPT large dataset EBS snapshot
  jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
 # Jira 8.20.20 DCAPT large dataset EBS snapshot
-#jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
+# jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
 # JSM 5.4.4 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-01ffbdc7ce1be745f"
 # JSM 4.20.20 DCAPT large dataset EBS snapshot
@@ -106,7 +106,7 @@ jira_version_tag = "9.4.4"
 # Jira 9.4.4 DCAPT large dataset RDS snapshot
  jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
 # Jira 8.20.20 DCAPT large dataset RDS snapshot
-#jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
 # JSM 5.4.4 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-20"
 # JSM 4.20.20 DCAPT large dataset RDS snapshot
