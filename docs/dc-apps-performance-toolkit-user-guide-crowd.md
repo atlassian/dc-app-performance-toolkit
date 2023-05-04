@@ -275,7 +275,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 {{% /note %}}
 
 
-##### <a id="run4"></a> Run 4 (~1 hour)
+##### <a id="run4"></a> Run 4 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
 Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
@@ -319,7 +319,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 {{% /note %}}
 
 
-##### <a id="run5"></a> Run 5 (~1 hour)
+##### <a id="run5"></a> Run 5 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
 Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
