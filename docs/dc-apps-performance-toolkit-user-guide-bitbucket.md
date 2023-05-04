@@ -105,6 +105,7 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
    - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt-small.tfvars
@@ -262,6 +263,7 @@ Below process describes how to install enterprise-scale Bitbucket DC with "large
    - `instance_types` - `["m5.4xlarge"]` 
 7. Optional variables to override:
     - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+    - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars

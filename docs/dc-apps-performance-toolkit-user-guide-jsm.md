@@ -92,7 +92,8 @@ Below process describes how to install low-tier Jira Service Management DC with 
    - `jira_license` - one-liner of valid Jira Service Management license without spaces and new line symbols.
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
-   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
+   - Make sure that the Jira Service Management version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt-small.tfvars
@@ -378,7 +379,8 @@ Below process describes how to install enterprise-scale Jira Service Management 
    - `jira_license` - one-liner of valid Jira Service Management license without spaces and new line symbols.
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
-    - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
+   - Make sure that the Jira Service Management version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars
