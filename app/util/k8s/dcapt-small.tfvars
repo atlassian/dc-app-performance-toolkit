@@ -276,27 +276,27 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.10"
+bitbucket_version_tag = "7.21.11"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.10 DCAPT small dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0505439b4ecfadf75"
-# 8.8.2 DCAPT small dataset EBS snapshot
+# 7.21.11 DCAPT small dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
+# 8.8.3 DCAPT small dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-059a11340cca3af6b"
-# 7.17.15 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0e54d66956c46718f"
+# 7.17.16 DCAPT small dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0c945dbcbd3e4ebff"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.10 DCAPT small dataset RDS snapshot
- bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-10"
-# 8.8.2 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-8-2"
-# 7.17.15 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-15"
+# 7.21.11 DCAPT small dataset RDS snapshot
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-11"
+# 8.8.3 DCAPT small dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-8-3"
+# 7.17.16 DCAPT small dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-16"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"

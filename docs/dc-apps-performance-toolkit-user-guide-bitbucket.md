@@ -35,29 +35,6 @@ run the toolkit in an **enterprise-scale environment**.
 
 ---
 
-{{% note %}}
-In case you are in the middle of Bitbucket DC app performance testing with the CloudFormation deployment option,
-the process can be continued after switching to the `7.1.0` DCAPT version.
-{{% /note %}}
-
-* Checkout release `7.1.0` of the `dc-app-performance-toolkit` repository:
-
-   ```
-   git checkout release-7.1.0
-   ```
-* Use the docker container with the `7.1.0` release tag to run performance tests from docker:
-
-   ```
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt:7.1.0
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt:7.1.0 bitbucket.yml
-   ```
-* The corresponding version of the user guide could be found in the `dc-app-performance-toolkit/docs` folder or by this 
-[link](https://github.com/atlassian/dc-app-performance-toolkit/blob/release-7.1.0/docs/dc-apps-performance-toolkit-user-guide-bitbucket.md).
-* If specific version of the Bitbucket DC is required, please contact support in the [community Slack](http://bit.ly/dcapt_slack).
-
----
-
 ### <a id="devinstancesetup"></a>1. Setting up Bitbucket Data Center development environment
 
 We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
