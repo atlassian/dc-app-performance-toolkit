@@ -472,7 +472,11 @@ This increase in re-index time is due to a known issue which affects Jira 9.4.x,
 2. Setup app license.
 3. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 4. Select the **Full re-index** option.
-5. Click **Re-Index** and wait until re-indexing is completed.
+5. Click **Re-Index** and wait until re-indexing is completed. 
+{{% note %}}
+Jira will be temporarily unavailable during the re-indexing process. Once the process is complete, the system will be fully accessible and operational once again.
+{{% /note %}}
+
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 7. Attach the screenshot(s) to your ECOHELP ticket.
 
