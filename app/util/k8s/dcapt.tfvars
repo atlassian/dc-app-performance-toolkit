@@ -378,7 +378,7 @@ crowd_version_tag = "5.0.2"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #
-# Crowd 5.1.2 DCAPT large dataset EBS snapshot
+# Crowd 5.0.2 DCAPT large dataset EBS snapshot
 crowd_shared_home_snapshot_id = "snap-066f59b50a742d9bf"
 
 # Database restore configuration
@@ -387,7 +387,7 @@ crowd_shared_home_snapshot_id = "snap-066f59b50a742d9bf"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
 #
-# Crowd 5.1.2 DCAPT large dataset RDS snapshot
+# Crowd 5.0.2 DCAPT large dataset RDS snapshot
 crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-0-2"
 crowd_db_snapshot_build_number = "1790"
 
