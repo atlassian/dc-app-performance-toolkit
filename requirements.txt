@@ -8,4 +8,7 @@ selenium==4.8.3
 filelock==3.10.7
 packaging==23.0
 prettytable==3.6.0
+textual==0.23.0
+paramiko==3.1.0
+pyperclip==1.8.2
 bzt==1.16.21
