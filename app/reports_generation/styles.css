@@ -1,0 +1,130 @@
+Button {
+    margin-right: 1;
+}
+
+Configuration {
+    height: 17;
+}
+
+TabbedContent {
+    height: 0.3fr;
+}
+
+TabPane {
+    height: 1fr;
+    margin-bottom: 2;
+}
+
+.config-field {
+    height: 3;
+    margin: 0;
+    padding: 0;
+}
+
+.config-label {
+    content-align: center middle;
+    height: 3;
+    min-width: 15;
+}
+
+.run-config {
+    height: 3;
+}
+
+.run-label {
+    content-align: center middle;
+    height: 3;
+}
+
+.run-path-label {
+    width: 1fr;
+    content-align: left middle;
+}
+
+#perf-component {
+    height: 12;
+}
+
+#scale-component {
+    height: 15;
+}
+
+#bamboo-component {
+    height: 15;
+}
+
+.nav-button {
+    width: 1fr;
+}
+
+.nav-buttons {
+    height: 3;
+}
+
+.center {
+    padding-left: 0;
+    width: 1fr;
+    content-align-horizontal: center;
+}
+
+.config-input {
+    height: 3;
+    width: 1fr;
+}
+
+.item-dir {
+    text-style: bold;
+    color: lightskyblue;
+}
+
+#connect-btn {
+    height: 3;
+}
+
+.filler {
+height: 100%;
+}
+
+.file-button {
+    margin: 1;
+}
+
+.--highlight {
+    background: dimgrey;
+}
+
+.checkbox {
+    margin-bottom: 1;
+}
+
+.report-button {
+    margin-right: 2;
+    margin-left: 2;
+    width: 1fr;
+}
+
+.hidden {
+    display: None;
+}
+
+.show-hide-btn {
+    height: 3;
+    max-width: 15;
+}
+
+.no-right-margin {
+    margin-right: 0;
+}
+
+.download-stop-btn {
+    min-width: 8;
+    max-width: 8;
+    margin-left: 1;
+    margin-right: 1;
+    margin-top: 4;
+}
+
+#logger {
+    padding-top: 1;
+    max-height: 5;
+}
