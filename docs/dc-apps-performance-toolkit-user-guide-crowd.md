@@ -15,172 +15,55 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 **Enterprise-scale environment**: Crowd Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Crowd Data Center.
 
 1. [Set up an enterprise-scale environment Crowd Data Center on AWS](#instancesetup).
-2. [Load an enterprise-scale dataset on your Crowd Data Center deployment](#preloading).
-3. [App-specific actions development](#appspecificaction).   
-4. [Set up an execution environment for the toolkit](#executionhost).
-5. [Running the test scenarios from execution environment against enterprise-scale Crowd Data Center](#testscenario).
+2. [App-specific actions development](#appspecificaction).   
+3. [Set up an execution environment for the toolkit](#executionhost).
+4. [Running the test scenarios from execution environment against enterprise-scale Crowd Data Center](#testscenario).
 
 ---
 
-## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Crowd Data Center on AWS
+## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Crowd Data Center on k8s
 
-We recommend that you use the [AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd) (**How to deploy** tab) to deploy a Crowd Data Center enterprise-scale environment. This Quick Start will allow you to deploy Crowd Data Center with a new [Atlassian Standard Infrastructure](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/) (ASI) or into an existing one.
+We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
+how to deploy a Crowd Data Center environment and AWS on k8s. 
 
-The ASI is a Virtual Private Cloud (VPC) consisting of subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components required by all Atlassian applications, and then deploys Crowd into this new VPC. Deploying Crowd with a new ASI takes around 50 minutes. With an existing one, it'll take around 30 minutes.
+#### Setup Crowd Data Center with an enterprise-scale dataset on k8s
 
-#### Using the AWS Quick Start for Crowd
+Below process describes how to install Crowd DC with an enterprise-scale dataset included. This configuration was created
+specifically for performance testing during the DC app review process.
 
-If you are a new user, perform an end-to-end deployment. This involves deploying Crowd into a _new_ ASI:
-
-Navigate to **[AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd/) &gt; How to deploy** tab **&gt; Deploy into a new ASI** link.
-
-If you have already deployed the ASI separately by using the [ASI Quick Start](https://aws.amazon.com/quickstart/architecture/atlassian-standard-infrastructure/)ASI Quick Start or by deploying another Atlassian product (Jira, Bitbucket, Confluence or Crowd Data Center development environment) with ASI, deploy Crowd into your existing ASI:
-
-Navigate to **[AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd) &gt; How to deploy** tab **&gt; Deploy into your existing ASI** link.
-
-{{% note %}}
-You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional price for using this Quick Start. For more information, go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
-{{% /note %}}
-
-To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
-
-#### AWS cost estimation
-[AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
-Monthly charges will be based on your actual usage of AWS services and may vary from the estimates the Calculator has provided.
-
-*The prices below are approximate and may vary depending on such factors like region, instance type, deployment type of DB, and other.  
-
-
-| Stack | Estimated hourly cost ($) |
-| ----- | ------------------------- |
-| One Node Crowd DC | 0.4 - 0.6
-| Two Nodes Crowd DC | 0.6 - 0.8
-| Four Nodes Crowd DC | 0.9 - 1.4
-
-#### Stop cluster nodes
-
-To reduce AWS infrastructure costs you could stop cluster nodes when the cluster is standing idle.  
-Cluster node might be stopped by using [Suspending and Resuming Scaling Processes](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html).
-
-To stop one node within the cluster, follow the instructions below:
-
-1. In the AWS console, go to **Services** > **EC2** > **Auto Scaling Groups** and open the necessary group to which belongs the node you want to stop.
-1. Click **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and add `HealthCheck` to the `Suspended Processes`. Amazon EC2 Auto Scaling stops marking instances unhealthy as a result of EC2 and Elastic Load Balancing health checks.
-1. Go to EC2 **Instances**, select instance, click **Instance state** > **Stop instance**.
-
-To return node into a working state follow the instructions:  
-
-1. Go to EC2 **Instances**, select instance, click **Instance state** > **Start instance**, wait a few minutes for node to become available.
-1. Go to EC2 **Auto Scaling Groups** and open the necessary group to which belongs the node you want to start.
-1. Press **Edit** (in case you have New EC2 experience UI mode enabled, press `Edit` on `Advanced configuration`) and remove `HealthCheck` from `Suspended Processes` of Auto Scaling Group.
-
-#### Stop database
-
-To reduce AWS infrastructure costs database could be stopped when the cluster is standing idle.
-Keep in mind that database would be **automatically started** in **7** days.
-
-To stop database:
-
-1. In the AWS console, go to **Services** > **RDS** > **Databases**.
-1. Select cluster database.
-1. Click on **Actions** > **Stop**.
-
-To start database:
-
-1. In the AWS console, go to **Services** > **RDS** > **Databases**.
-1. Select cluster database.
-1. Click on **Actions** > **Start**.
-
-#### <a id="quick-start-parameters"></a> Quick Start parameters
-
-All important parameters are listed and described in this section. For all other remaining parameters, we recommend using the Quick Start defaults.
-
-**Crowd setup**
-
-| Parameter | Recommended Value                                                   |
-| --------- |---------------------------------------------------------------------|
-| Version | The Data Center App Performance Toolkit officially supports `5.0.2` |
-
-**Cluster nodes**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Cluster node instance type | [c5.xlarge](https://aws.amazon.com/ec2/instance-types/c5/)
-| Maximum number of cluster nodes | 1 |
-| Minimum number of cluster nodes | 1 |
-| Cluster node instance volume size | 100 |
-
-**Database**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| The database engine to deploy with | PostgresSQL |
-| The database engine version to use | 11 |
-| Database instance class | [db.m5.large](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary) |
-| RDS Provisioned IOPS | 1000 |
-| Master (admin) password | Password1! |
-| Enable RDS Multi-AZ deployment | false |
-| Application user database password | Password1! |
-| Database storage | 200 |
+1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
+   section of the official documentation.
+2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
+3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+   {{% warning %}}
+   Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
+   {{% /warning %}}
+4. Clone the project repo:
+   ```bash
+   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   ```
+5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
+      ``` bash
+   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
+    ```
+6. Set **required** variables in `dcapt.tfvars` file:
+   - `environment_name` - any name for you environment, e.g. `dcapt-crowd`
+   - `products` - `crowd`
+   - `crowd_license` - one-liner of valid crowd license without spaces and new line symbols
+   - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
+   - `instance_types` - `["c5.xlarge"]`
+7. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+   ```bash
+   ./install.sh -c dcapt.tfvars
+   ```
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
 {{% note %}}
-The **Master (admin) password** will be used later when restoring the SQL database dataset. If password value is not set to default, you'll need to change `DB_PASS` value manually in the restore database dump script (later in [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading)).
+New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
 {{% /note %}}
-
-**Networking (for new ASI)**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Trusted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Availability Zones | _Select two availability zones in your region_ |
-| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Make instance internet facing | true |
-| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
-
-**Networking (for existing ASI)**
-
-| Parameter | Recommended Value |
-| --------- | ----------------- |
-| Make instance internet facing | true |
-| Permitted IP range | 0.0.0.0/0 _(for public access) or your own trusted IP range_ |
-| Key Name | _The EC2 Key Pair to allow SSH access. See [Amazon EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) for more info._ |
-
-#### Running the setup wizard
-
-After successfully deploying Crowd Data Center in AWS, you'll need to configure it:
-
-1. In the AWS console, go to **Services** > **CloudFormation** > **Stack** > **Stack details** > **Select your stack**.
-1. On the **Outputs** tab, copy the value of the **LoadBalancerURL** key.
-1. Open **LoadBalancerURL** in your browser. This will take you to the Crowd setup wizard.
-1. On the **License** page, populate the **License Key** field by either:
-    - Using your existing license, or
-    - Generating a Crowd trial license, or
-    - Contacting Atlassian to be provided two time-bomb licenses for testing.  
-    Click **Continue**.
-1. On the **Crowd installation** page choose **New Installation** and click **Continue**.
-1. On the **Database configuration** page, leave all fields default and click **Continue**.
-1. On the **Options** page, populate the following fields:
-    - **Deployment title**: any instance title
-    - **Session timeout**: 30 _(recommended)_. The number of minutes a session lasts before expiring. Must be greater than 0.
-    - **Base Url**: review and confirm the Crowd instance base url.  
-    Click **Continue**.
-1. On the **Internal directory** page, populate the following fields and press **Continue**:
-    - **Name**: a short, recognisable name that characterises this user directory.
-    - **Password encryption**: chose **ATLASSIAN-SECURITY** from the dropdown list _(recommended)_  
-   Click **Continue**.
-1. On the **Default administrator** page, fill the following fields:
-    - **Email Address**: email address of the admin user
-    - **Username**: admin _(recommended)_
-    - **Password**: admin _(recommended)_
-    - **Confirm Password**: admin _(recommended)_
-    - **First name**: admin user first name
-    - **Last name**: admin user last name  
-   Click **Continue**.
-1. On the **Integrated applications** page leave **Open ID server** unchecked and click **Continue**.
 
 ---
-
-## <a id="preloading"></a>2. Preloading your Crowd deployment with an enterprise-scale dataset
 
 Data dimensions and values for an enterprise-scale dataset are listed and described in the following table.
 
@@ -192,101 +75,24 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
+---
 
-#### Pre-loading the dataset:
+#### Troubleshooting
+See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page.
 
-[Importing the main dataset](#importingdataset). To help you out, we provide an enterprise-scale dataset you can import either via the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script or restore from xml backup file.
+#### Terminate Crowd Data Center
 
-The following subsections explain dataset import process in greater detail.
-
-#### <a id="importingdataset"></a> Importing the main dataset
-
-You can load this dataset directly into the database (via a [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script), or import it via XML.  
-
-##### Option 1 (recommended): Loading the dataset via populate_db.sh script (~15 minutes)
-
-
-To populate the database with SQL:
-
-1. In the AWS console, go to **Services** > **EC2** > **Instances**.
-1. On the **Description** tab, do the following:
-    - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of the Crowd node instance.
-1. Using SSH, connect to the Crowd node via the Bastion instance:
-
-    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
-    
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script and make it executable:
-
-    ``` bash
-    wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/crowd/populate_db.sh && chmod +x populate_db.sh
-    ```
-1. Review the following `Variables section` of the script:
-
-    ``` bash
-    DB_CONFIG="/usr/lib/systemd/system/crowd.service"
-    CROWD_DB_NAME="crowd"
-    CROWD_DB_USER="postgres"
-    CROWD_DB_PASSWORD="Password1!"
-    ```
-1. Run the script:
-
-    ``` bash
-    ./populate_db.sh 2>&1 | tee -a populate_db.log
-    ```
-
-{{% note %}}
-Do not close or interrupt the session. It will take about an hour to restore SQL database. When SQL restoring is finished, an admin user will have `admin`/`admin` credentials.
-
-In case of a failure, check the `Variables` section and run the script one more time.
-{{% /note %}}
-
-##### Option 2: Loading the dataset through XML import (~30 minutes)
-
-We recommend that you only use this method if you are having problems with the [populate_db.sh](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/crowd/populate_db.sh) script.
-
-1. In the AWS console, go to **Services** > **EC2** > **Instances**.
-1. On the **Description** tab, do the following:
-    - Copy the _Public IP_ of the Bastion instance.
-    - Copy the _Private IP_ of the Crowd node instance.
-1. Using SSH, connect to the Crowd node via the Bastion instance:
-
-    For Linux or MacOS run following commands in terminal (for Windows use [Git Bash](https://git-scm.com/downloads) terminal):
-    
-    ```bash
-    ssh-add path_to_your_private_key_pem
-    export BASTION_IP=bastion_instance_public_ip
-    export NODE_IP=node_private_ip
-    export SSH_OPTS1='-o ServerAliveInterval=60'
-    export SSH_OPTS2='-o ServerAliveCountMax=30'
-    ssh ${SSH_OPTS1} ${SSH_OPTS2} -o "proxycommand ssh -W %h:%p ${SSH_OPTS1} ${SSH_OPTS2} ec2-user@${BASTION_IP}" ec2-user@${NODE_IP}
-    ```
-    For more information, go to [Connecting your nodes over SSH](https://confluence.atlassian.com/adminjiraserver/administering-jira-data-center-on-aws-938846969.html#AdministeringJiraDataCenteronAWS-ConnectingtoyournodesoverSSH).
-1. Download the db.xml file corresponding to your Crowd version.
-
-    ``` bash
-    CROWD_VERSION=$(sudo su crowd -c "cat /media/atl/crowd/shared/crowd.version")
-    sudo su crowd -c "wget https://centaurus-datasets.s3.amazonaws.com/crowd/${CROWD_VERSION}/large/db.xml -O /media/atl/crowd/shared/db.xml"
-    ```
-1. Log in as a user with the **Crowd System Administrators** [global permission](https://confluence.atlassian.com/adminjiraserver/managing-global-permissions-938847142.html).
-1. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; Restore.** from the menu.
-1. Populate the **Restore file path** field with `/media/atl/crowd/shared/db.xml`.
-1. Click **Submit** and wait until the import is completed.
+Follow steps described on [Uninstallation and cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) page.
 
 ---
+
 {{% note %}}
-After [Preloading your Crowd deployment with an enterprise-scale dataset](#preloading), the admin user will have `admin`/`admin` credentials.
-It's recommended to change default password from UI account page for security reasons.
+You are responsible for the cost of the AWS services running during the reference deployment. For more information, 
+go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
 {{% /note %}}
+
+To reduce costs, we recommend you to keep your deployment up and running only during the performance runs.
+
 ---
 
 ## <a id="appspecificaction"></a>3. App-specific actions development
@@ -327,7 +133,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 4990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /crowd in case of url like http://localhost:4990/crowd
+    application_postfix: /crowd     # Default postfix value for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`
     admin_login: admin
     admin_password: admin
     application_name: crowd
@@ -478,19 +284,13 @@ The same article has instructions on how to increase limit if needed.
 
 To receive scalability benchmark results for two-node Crowd DC **with** app-specific actions:
 
-1. In the AWS console, go to **CloudFormation** > **Stack details** > **Select your stack**.
-2. On the **Update** tab, select **Use current template**, and then click **Next**.
-3. Enter `2` in the **Maximum number of cluster nodes** and the **Minimum number of cluster nodes** fields.
-4. Click **Next** > **Next** > **Update stack** and wait until stack is updated.
-
-{{% warning %}}
-In case if you got error during update - `BastionPrivIp cannot be updated`.
-Please use those steps for a workaround:
-1. In the AWS console, go to **EC2** > **Auto Scailng** > **Auto Scaling Groups**.
-2. On the **Auto Scaling Groups** page, select **your stack ASG** and click **Edit**
-3. Enter `2` in the **Desired capacity**, **Minimum capacity** and **Maximum capacity** fields.
-4. Scroll down, click **Update** button and wait until stack is updated. 
-{{% /warning %}}
+1. Navigate to `data-center-terraform` folder.
+2. Open `dcapt.tfvars` file and set `crowd_replica_count` value to `2`.
+3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
+   ```bash
+   ./install.sh -c dcapt.tfvars
+   ```
+4. Use SSH to connect to execution environment.
 
 5. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
@@ -605,4 +405,9 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
+
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
+For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
+
+In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
