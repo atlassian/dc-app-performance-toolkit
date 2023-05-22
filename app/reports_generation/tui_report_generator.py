@@ -123,8 +123,7 @@ class Configuration(Static):
                 Input(Config.toolkit_path, id="toolkit-path-input", classes="config-input"),
                 Button("Set from local", id="set-toolkit-btn", classes="right-side-btn"),
                 classes="config-field",
-            ),
-            Horizontal(Button("Save", id="save-btn"), Button("Load", id="load-btn")),
+            )
         )
 
     def on_button_pressed(self, event: Button.Pressed):
@@ -489,12 +488,13 @@ class FileBrowser(Static):
         self.list_view.append(
             ListItem(RichLabel(".."), name=f"d:{Path(self.path_label.value).parent.as_posix()}", classes="item-dir")
         )
-        for entry in sorted(entries, key=str.casefold):
-            path = Path(entry[2:]).name
-            if entry.startswith("d"):
-                self.list_view.append(ListItem(RichLabel(str(path)), name=entry, classes="item-dir"))
-            else:
-                self.list_view.append(ListItem(RichLabel(str(path)), name=entry))
+        if entries:
+            for entry in sorted(entries, key=str.casefold):
+                path = Path(entry[2:]).name
+                if entry.startswith("d"):
+                    self.list_view.append(ListItem(RichLabel(str(path)), name=entry, classes="item-dir"))
+                else:
+                    self.list_view.append(ListItem(RichLabel(str(path)), name=entry))
 
     def get_entries(self, path):
         raise NotImplementedError()
@@ -522,7 +522,7 @@ class FileBrowser(Static):
         elif event.key == "backspace":
             self.open_path()
         else:
-            if event.character and re.match(r"[A-Za-z\d\-._]", event.character):
+            if event.character and re.match(r"[A-Za-z\d\-._+]", event.character):
                 for i, item in enumerate(self.list_view.children):
                     if item.children[0].value.lower().startswith(event.character) and i > self.list_view.index:
                         self.list_view.index = i
@@ -571,10 +571,11 @@ class RemoteFileBrowser(FileBrowser):
         self.path_label = RichLabel(Config.remote_path, id="remote-path-label", classes="file-list-label")
         self.download_btn = Button("Download", id="download-btn", classes="file-button")
         self.stop_btn = Button("Stop", id="stop-btn", classes="file-button hidden")
+        self.ssh_client = RemoteSsh()
+        self.fill_list(self.get_entries(Config.remote_path))
         super().__init__(*args, **kwargs)
 
     def compose(self) -> ComposeResult:
-        self.fill_list(self.get_entries(Config.remote_path))
         yield Vertical(
             self.title_label,
             self.path_label,
@@ -587,18 +588,16 @@ class RemoteFileBrowser(FileBrowser):
 
     def get_entries(self, path):
         try:
-            return list_results(RemoteSsh().sftp_client, path)
+            return list_results(self.ssh_client.sftp_client, path)
         except FileNotFoundError as err:
-            Logger.error(err)
-            Logger.error("Check if SSH key path is correct")
-        except paramiko.ssh_exception.AuthenticationException as err:
-            Logger.error(err)
-            Logger.error("Check if your username is correct.")
-        except socket.gaierror as err:
-            Logger.error(err)
-            Logger.error("Check if your hostname is correct.")
-        except Exception as err:
-            Logger.error(str(err))
+            Logger.warning(f"{err} - {self.path_label.value}")
+            self.path_label.value = f"/home/{Config.username}"
+            try:
+                return list_results(self.ssh_client.sftp_client, self.path_label.value)
+            except FileNotFoundError as err:
+                Logger.warning(f"{err} - {self.path_label.value}")
+                self.path_label.value = "/"
+                return list_results(self.ssh_client.sftp_client, self.path_label.value)
 
     def open_path(self):
         super().open_path()
@@ -692,7 +691,6 @@ class DownloadComponent(Static):
     def __init__(self, *args, **kwargs):
         self.connect_btn = Button("Connect", id="connect-btn", classes="center")
         self.disconnect_btn = Button("Disconnect", id="disconnect-btn", classes="center hidden")
-        self.remote_file_explorer = RemoteFileBrowser(id="rfb")
         self.filler = Container(classes="filler")
         super().__init__(*args, **kwargs)
 
@@ -715,36 +713,42 @@ class DownloadComponent(Static):
         )
 
     def on_button_pressed(self, event):
-        if event.button.id == "connect-btn":
-            self.connect_btn.add_class("hidden")
-            self.disconnect_btn.remove_class("hidden")
-            self.mount(RemoteFileBrowser(id="rfb"), after=self.disconnect_btn)
-        elif event.button.id == "disconnect-btn":
-            RemoteSsh.disconnect()
+        try:
+            if event.button.id == "connect-btn":
+                self.connect_btn.add_class("hidden")
+                self.disconnect_btn.remove_class("hidden")
+                self.remote_file_browser = RemoteFileBrowser(id="rfb")
+                self.mount(self.remote_file_browser, after=self.disconnect_btn)
+            elif event.button.id == "disconnect-btn":
+                self.remote_file_browser.ssh_client.disconnect()
+                self.disconnect_btn.add_class("hidden")
+                self.connect_btn.remove_class("hidden")
+                self.remote_file_browser.remove()
+            elif event.button.id == "change-download-btn":
+                self.add_class("hidden")
+                self.mount(
+                    LocalFileBrowser(
+                        path=Config.download_path,
+                        title="Download path",
+                        caller=self,
+                        field_to_set=self.query_one("#download-path-label"),
+                        only_dirs=True,
+                    ),
+                    after=self,
+                )
+            elif event.button.id == "download-btn":
+                self.post_message(
+                    self.Download(
+                        self.query_one("#remote").highlighted_child.name[2:],
+                        self.query_one("#download-path-label").value,
+                    )
+                )
+            elif event.button.id == "stop-btn":
+                self.post_message(self.Download("", "", stop=True))
+        except Exception as err:
+            Logger.error(err)
             self.disconnect_btn.add_class("hidden")
             self.connect_btn.remove_class("hidden")
-            self.query_one("#rfb").remove()
-        elif event.button.id == "change-download-btn":
-            self.add_class("hidden")
-            self.mount(
-                LocalFileBrowser(
-                    path=Config.download_path,
-                    title="Download path",
-                    caller=self,
-                    field_to_set=self.query_one("#download-path-label"),
-                    only_dirs=True,
-                ),
-                after=self,
-            )
-        elif event.button.id == "download-btn":
-            self.post_message(
-                self.Download(
-                    self.query_one("#remote").highlighted_child.name[2:],
-                    self.query_one("#download-path-label").value,
-                )
-            )
-        elif event.button.id == "stop-btn":
-            self.post_message(self.Download("", "", stop=True))
 
 
 class ChartGenerator(App):
@@ -812,16 +816,6 @@ class ChartGenerator(App):
                 ),
                 before=self.query_one("#main-configuration"),
             )
-        elif message.button_id == "save-btn":
-            Config.username = self.query_one("#username-input").value
-            Config.host = self.query_one("#host-input").value
-            Config.ssh_key_path = self.query_one("#ssh-key-path-input").value
-            Config.toolkit_path = self.query_one("#toolkit-path-input").value
-            Config.save()
-            Logger.info("Configuration saved")
-        elif message.button_id == "load-btn":
-            Config.load()
-            Logger.info("Configuration loaded")
 
     def on_button_pressed(self, event):
         if event.button.id == "next-tab-btn":
@@ -862,24 +856,31 @@ class ChartGenerator(App):
         self.query_one("#download-btn").add_class("hidden")
         self.query_one("#stop-btn").remove_class("hidden")
 
-    def on_file_browser_enter(self, message):
-        if message.path.startswith("f"):
-            return
-        path = Path(message.path_label.value)
-        message.path_label.value = path.parent.as_posix() if message.path == ".." else message.path
-        self.fill_remote_list() if message.list_view.id == "#remote" else self.fill_local_list(
-            message.list_view, message.path_label
-        )
-        for i, item in enumerate(message.list_view.children):
-            if Path(item.name[2:]).name == path.name:
-                message.list_view.index = i
-                message.list_view.scroll_to(0, i - message.list_view.size.height / 2)
+    # def on_file_browser_enter(self, message):
+    #     if message.path.startswith("f"):
+    #         return
+    #     path = Path(message.path_label.value)
+    #     message.path_label.value = path.parent.as_posix() if message.path == ".." else message.path
+    #     self.fill_remote_list() if message.list_view.id == "#remote" else self.fill_local_list(
+    #         message.list_view, message.path_label
+    #     )
+    #     for i, item in enumerate(message.list_view.children):
+    #         if Path(item.name[2:]).name == path.name:
+    #             message.list_view.index = i
+    #             message.list_view.scroll_to(0, i - message.list_view.size.height / 2)
 
-    def on_browser_container_show_remote(self):
-        self.fill_remote_list()
+    def on_input_changed(self, message):
+        if message.input.id == "username-input":
+            Config.username = message.value
+        if message.input.id == "host-input":
+            Config.host = message.value
+        if message.input.id == "ssh-key-path-input":
+            Config.ssh_key_path = message.value
+        if message.input.id == "toolkit-path-input":
+            Config.toolkit_path = message.value
+        Config.save()
 
-    def download_dir(self, remotedir, localdir, call_depth=0):
-        sftp = RemoteSsh.sftp_client
+    def download_dir(self, sftp, remotedir, localdir, call_depth=0):
         self.logger.info(f"Start downloading {remotedir}")
         for entry in sftp.listdir_attr(remotedir):
             if self.stop_event.is_set():
@@ -914,27 +915,22 @@ class RemoteSsh:
     ssh_key = None
     ssh_client = None
     sftp_client = None
-    connected = False
 
     def __init__(self):
-        if not RemoteSsh.connected or RemoteSsh.ssh_key != Config.ssh_key_path or RemoteSsh.host != Config.host:
-            RemoteSsh.connected = False
-            RemoteSsh.host = Config.host
-            RemoteSsh.ssh_key = Config.ssh_key_path
-            RemoteSsh.ssh_client = paramiko.SSHClient()
-            RemoteSsh.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            RemoteSsh.ssh_client.connect(
+            self.host = Config.host
+            self.ssh_key = Config.ssh_key_path
+            self.ssh_client = paramiko.SSHClient()
+            self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.ssh_client.connect(
                 hostname=Config.host,
                 username=Config.username,
                 key_filename=Config.ssh_key_path,
             )
-            RemoteSsh.sftp_client = RemoteSsh.ssh_client.open_sftp()
-            RemoteSsh.connected = True
+            self.sftp_client = self.ssh_client.open_sftp()
+            self.connected = True
 
-    @classmethod
-    def disconnect(cls):
-        cls.ssh_client.close()
-        cls.connected = False
+    def disconnect(self):
+        self.ssh_client.close()
 
 
 def list_local_dir(local_path):
