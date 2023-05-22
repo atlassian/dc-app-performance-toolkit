@@ -589,16 +589,16 @@ class RemoteFileBrowser(FileBrowser):
         try:
             return list_results(RemoteSsh().sftp_client, path)
         except FileNotFoundError as err:
-            self.logger.error(err)
-            self.logger.error("Check if SSH key path is correct")
+            Logger.error(err)
+            Logger.error("Check if SSH key path is correct")
         except paramiko.ssh_exception.AuthenticationException as err:
-            self.logger.error(err)
-            self.logger.error("Check if your username is correct.")
+            Logger.error(err)
+            Logger.error("Check if your username is correct.")
         except socket.gaierror as err:
-            self.logger.error(err)
-            self.logger.error("Check if your hostname is correct.")
+            Logger.error(err)
+            Logger.error("Check if your hostname is correct.")
         except Exception as err:
-            self.logger.error(str(err))
+            Logger.error(str(err))
 
     def open_path(self):
         super().open_path()
