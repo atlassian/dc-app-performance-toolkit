@@ -883,7 +883,7 @@ class ChartGenerator(App):
         self.logger.info(f"Start downloading {remotedir}")
         for entry in sftp.listdir_attr(remotedir):
             if self.stop_event.is_set():
-                self.logger.info(f"Downloading stopped")
+                self.logger.info("Downloading stopped")
                 break
             remotepath = remotedir + "/" + entry.filename
             localpath = os.path.join(localdir, entry.filename)
@@ -904,7 +904,7 @@ class ChartGenerator(App):
                 except Exception as err:
                     self.logger.error(str(err))
         if call_depth == 0 and not self.stop_event.is_set():
-            self.logger.info(f"FINISHED")
+            self.logger.info("FINISHED")
             self.query_one("#stop-btn").add_class("hidden")
             self.query_one("#download-btn").remove_class("hidden")
 
