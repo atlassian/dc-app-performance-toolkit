@@ -134,6 +134,30 @@ class Configuration(Static):
 class ReportComponent(Static):
     last_report_path = None
 
+    class GenerateReport(Message):
+        def __init__(self, message, parent):
+            self.message = message
+            self. parent = parent
+            super().__init__()
+
+    def generate_report(self, report):
+        try:
+            sys.argv.insert(1, str(report))
+            csv_chart_generator.main()
+            report_path = max(
+                (Path(Config.toolkit_path).absolute() / "app" / "results" / "reports").glob("*"),
+                key=lambda x: x.stat().st_ctime,
+            )
+            self.last_report_path = str(report_path)
+            Logger.info(f"Report generated to {report_path}")
+        except FileNotFoundError as err:
+            Logger.error(str(err))
+            Logger.error("Check if toolkit path is correct")
+        except Exception as err:
+            Logger.error(str(err))
+        finally:
+            sys.argv.pop(1)
+
     def set_runs_in_yml(self, yml_file, run_1_path, run_2_path, run_3_path=None):
         lines = []
         path_indexes = []
@@ -227,11 +251,7 @@ class PerformanceReportComponent(ReportComponent):
                 self.path_1_label.value,
                 self.path_2_label.value,
             )
-            self.post_message(
-                ReportComponent.GenerateReport(
-                    Path(Config.toolkit_path) / "app" / "reports_generation" / "performance_profile.yml", self
-                )
-            )
+            self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "performance_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-perf-report-btn":
             pyperclip.copy(self.last_report_path)
@@ -326,11 +346,7 @@ class ScaleReportComponent(ReportComponent):
                 self.path_2_label.value,
                 self.path_3_label.value,
             )
-            self.post_message(
-                ReportComponent.GenerateReport(
-                    Path(Config.toolkit_path) / "app" / "reports_generation" / "scale_profile.yml", self
-                )
-            )
+            self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "scale_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-scale-report-btn":
             pyperclip.copy(self.last_report_path)
@@ -425,11 +441,7 @@ class BambooReportComponent(ReportComponent):
                 self.path_2_label.value,
                 self.path_3_label.value,
             )
-            self.post_message(
-                ReportComponent.GenerateReport(
-                    Path(Config.toolkit_path) / "app" / "reports_generation" / "bamboo_profile.yml", self
-                )
-            )
+            self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "bamboo_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-bamboo-report-btn":
             pyperclip.copy(self.last_report_path)
