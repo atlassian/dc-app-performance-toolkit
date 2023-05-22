@@ -134,12 +134,6 @@ class Configuration(Static):
 class ReportComponent(Static):
     last_report_path = None
 
-    class GenerateReport(Message):
-        def __init__(self, message, parent):
-            self.message = message
-            self. parent = parent
-            super().__init__()
-
     def generate_report(self, report):
         try:
             sys.argv.insert(1, str(report))
@@ -846,24 +840,6 @@ class ChartGenerator(App):
                 tabbed_content.active = "configuration-tab"
             elif tabbed_content.active == "generate-report-tab":
                 tabbed_content.active = "download-tab"
-
-    def on_report_component_generate_report(self, message):
-        try:
-            sys.argv.insert(1, str(message.report))
-            csv_chart_generator.main()
-            report_path = max(
-                (Path(Config.toolkit_path).absolute() / "app" / "results" / "reports").glob("*"),
-                key=lambda x: x.stat().st_ctime,
-            )
-            message.parent.last_report_path = str(report_path)
-            self.logger.info(f"Report generated to {report_path}")
-        except FileNotFoundError as err:
-            self.logger.error(str(err))
-            self.logger.error("Check if toolkit path is correct")
-        except Exception as err:
-            self.logger.error(str(err))
-        finally:
-            sys.argv.pop(1)
 
     def on_download_component_download(self, message):
         if message.stop:
