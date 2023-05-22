@@ -510,7 +510,6 @@ class FileBrowser(Static):
         if self.list_view.highlighted_child.name.startswith("d"):
             name_to_center = Path(self.path_label.value).name if self.list_view.index == 0 else ".."
             path_to_open = self.list_view.highlighted_child.name[2:]
-            Logger.info(name_to_center)
             self.path_label.value = path_to_open
             self.fill_list(self.get_entries(path_to_open))
             self.center_list(name_to_center)
@@ -590,7 +589,7 @@ class RemoteFileBrowser(FileBrowser):
         try:
             return list_results(self.ssh_client.sftp_client, path)
         except FileNotFoundError as err:
-            Logger.warning(f"{err} - {self.path_label.value}")
+            Logger.warning(f"{err} - {path}")
             self.path_label.value = f"/home/{Config.username}"
             try:
                 return list_results(self.ssh_client.sftp_client, self.path_label.value)
