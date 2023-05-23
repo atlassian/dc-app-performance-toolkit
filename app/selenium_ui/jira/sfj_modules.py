@@ -9,6 +9,7 @@ from selenium_ui.jira.sfj_pages.SkillsetField import SkillsetField
 from selenium_ui.jira.sfj_pages.ExpertFinder import ExpertFinder
 from selenium_ui.jira.sfj_pages.AssignmentsDashboard import AssignmentsDashboard
 from selenium_ui.jira.sfj_pages.Inspector import Inspector
+from selenium_ui.jira.sfj_pages.RiskAnalysis import RiskAnalysis
 from selenium_ui.jira.pages.pages import Issue
 
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, LogoutLocators
@@ -69,9 +70,32 @@ def open_inspector(webdriver, datasets):
 
 def inspector_select_user(webdriver, datasets):
     page = Inspector(webdriver)
+
+    open_inspector(webdriver, datasets)
     
     @print_timing("selenium_inspector_select_user")
     def measure():
         page.select_user()
+
+    measure()
+
+
+def open_risk_analysis(webdriver, datasets):
+    page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
+    
+    @print_timing("selenium_open_risk_analysis")
+    def measure():
+        page.open_risk_analysis()
+
+    measure()
+
+def run_risk_analysis(webdriver, datasets):
+    page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
+    
+    open_risk_analysis(webdriver, datasets)
+    
+    @print_timing("selenium_run_risk_analysis")
+    def measure():
+        page.run_risk_analysis()
 
     measure()

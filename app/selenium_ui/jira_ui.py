@@ -79,6 +79,11 @@ def test_1_selenium_open_inspector(jira_webdriver, jira_datasets, jira_screen_sh
 def test_1_selenium_inspector_select_user(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.inspector_select_user(jira_webdriver, jira_datasets)
 
+def test_1_selenium_open_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.open_risk_analysis(jira_webdriver, jira_datasets)
+def test_1_selenium_run_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.run_risk_analysis(jira_webdriver, jira_datasets)
+
 # def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
 #     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
 

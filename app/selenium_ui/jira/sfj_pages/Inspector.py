@@ -38,7 +38,6 @@ class Inspector(BasePage):
         ])
         
     def select_user(self):
-        self.go_to_url(f'{JIRA_SETTINGS.server_url}{self.urls["entry"]}')
         self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['user-selector'])).click()
 
         self.wait_until_any_ec_presented(selectors=[
