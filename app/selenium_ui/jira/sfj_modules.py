@@ -7,6 +7,7 @@ from util.conf import JIRA_SETTINGS
 
 from selenium_ui.jira.sfj_pages.SkillsetField import SkillsetField
 from selenium_ui.jira.sfj_pages.ExpertFinder import ExpertFinder
+from selenium_ui.jira.sfj_pages.AssignmentsDashboard import AssignmentsDashboard
 from selenium_ui.jira.pages.pages import Issue
 
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, LogoutLocators
@@ -44,5 +45,14 @@ def open_expert_finder(webdriver, datasets):
     @print_timing("selenium_open_expert_finder")
     def measure():
         page.open_expert_finder()
+
+    measure()
+
+def open_assignments_dashboard(webdriver, datasets):
+    page = AssignmentsDashboard(webdriver)
+    
+    @print_timing("selenium_open_assignments_dashboard")
+    def measure():
+        page.open_assignments_dashboard()
 
     measure()
