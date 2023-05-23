@@ -21,6 +21,8 @@ from textual.widgets import (Button, Header, Input, Label, ListItem, ListView,
 
 import csv_chart_generator
 
+copy_list = []
+
 
 class Config:
     username = None
@@ -248,7 +250,12 @@ class PerformanceReportComponent(ReportComponent):
             self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "performance_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-perf-report-btn":
-            pyperclip.copy(self.last_report_path)
+            try:
+                pyperclip.copy(self.last_report_path)
+            except pyperclip.PyperclipException as err:
+                Logger.warning(err)
+                Logger.warning("Report path will be printed after closing the app to let you copy path manually.")
+                copy_list.append(self.last_report_path)
 
 
 class ScaleReportComponent(ReportComponent):
@@ -343,7 +350,12 @@ class ScaleReportComponent(ReportComponent):
             self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "scale_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-scale-report-btn":
-            pyperclip.copy(self.last_report_path)
+            try:
+                pyperclip.copy(self.last_report_path)
+            except pyperclip.PyperclipException as err:
+                Logger.warning(err)
+                Logger.warning("Report path will be printed after closing the app to let you copy path manually.")
+                copy_list.append(self.last_report_path)
 
 
 class BambooReportComponent(ReportComponent):
@@ -438,7 +450,12 @@ class BambooReportComponent(ReportComponent):
             self.generate_report(Path(Config.toolkit_path) / "app" / "reports_generation" / "bamboo_profile.yml")
             self.copy_button.styles.display = "block"
         elif event.button.id == "copy-bamboo-report-btn":
-            pyperclip.copy(self.last_report_path)
+            try:
+                pyperclip.copy(self.last_report_path)
+            except pyperclip.PyperclipException as err:
+                Logger.warning(err)
+                Logger.warning("Report path will be printed after closing the app to let you copy path manually.")
+                copy_list.append(self.last_report_path)
 
 
 class Logger:
