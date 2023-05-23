@@ -766,7 +766,7 @@ class ChartGenerator(App):
         with TabbedContent(initial="configuration-tab"):
             with TabPane("Configuration", id="configuration-tab"):
                 yield Configuration(id="main-configuration", classes="config")
-            with TabPane("Download reports", id="download-tab"):
+            with TabPane("Download test results", id="download-tab"):
                 yield DownloadComponent(id="download-component")
             with TabPane("Generate report", id="generate-report-tab"):
                 with TabbedContent(initial="performance-tab"):
