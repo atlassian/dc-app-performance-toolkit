@@ -1,7 +1,6 @@
 import json
 import os
 import re
-import socket
 import sys
 import threading
 from datetime import datetime, timedelta
@@ -54,7 +53,9 @@ class Config:
             Config.remote_path = Config.data.get("remote-path") or "/home/ubuntu"
             Config.local_path = str(Path(Config.data.get("local-path") or Path(__file__).parent).absolute())
             Config.reports_path = str(Path(Config.data.get("reports-path") or Path(__file__).parent).absolute())
-            Config.download_path = str(Path(Config.data.get("download-path") or Path(__file__).parent / "results").absolute())
+            Config.download_path = str(
+                Path(Config.data.get("download-path") or Path(__file__).parent / "results").absolute()
+            )
             Config.copy_report_path = Config.data.get("copy-report-path") and True
 
     @staticmethod
@@ -123,7 +124,7 @@ class Configuration(Static):
                 Input(Config.toolkit_path, id="toolkit-path-input", classes="config-input"),
                 Button("Set from local", id="set-toolkit-btn", classes="right-side-btn"),
                 classes="config-field",
-            )
+            ),
         )
 
     def on_button_pressed(self, event: Button.Pressed):
@@ -916,17 +917,17 @@ class RemoteSsh:
     sftp_client = None
 
     def __init__(self):
-            self.host = Config.host
-            self.ssh_key = Config.ssh_key_path
-            self.ssh_client = paramiko.SSHClient()
-            self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh_client.connect(
-                hostname=Config.host,
-                username=Config.username,
-                key_filename=Config.ssh_key_path,
-            )
-            self.sftp_client = self.ssh_client.open_sftp()
-            self.connected = True
+        self.host = Config.host
+        self.ssh_key = Config.ssh_key_path
+        self.ssh_client = paramiko.SSHClient()
+        self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.ssh_client.connect(
+            hostname=Config.host,
+            username=Config.username,
+            key_filename=Config.ssh_key_path,
+        )
+        self.sftp_client = self.ssh_client.open_sftp()
+        self.connected = True
 
     def disconnect(self):
         self.ssh_client.close()
