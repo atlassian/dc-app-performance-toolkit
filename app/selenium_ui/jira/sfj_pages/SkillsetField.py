@@ -15,35 +15,25 @@ class SkillsetField(Issue):
 
         self.selectors = {
             "skillset_view": (By.CSS_SELECTOR, ".skillset-root > .skillset-view"),
+            "skillset_view_skills": (By.CSS_SELECTOR, ".skillset-root > .skillset-view span"),
             "skillset_edit": (By.CSS_SELECTOR, ".skillset-root > .skillset-edit"),
             "skillset_edit_categories": (By.CSS_SELECTOR, ".skillset-root > .skillset-edit .category"),
             "skillset_edit_skills": (By.CSS_SELECTOR, ".skillset-root > .skillset-edit .skill")
         }
 
     def view_skillset(self):
-        self.edit_skillset();
-        
-        @print_timing("selenium_view_skillset")
-        def measure():
-            self.wait_until_visible(self.selectors['skillset_view'])
-
-        measure()
+        self.wait_until_visible(self.selectors['skillset_view_skills'])
 
     def edit_skillset(self):
-        self.go_to_edit_issue()
         self.wait_until_clickable(self.selectors['skillset_edit_categories'])
 
-        @print_timing("selenium_edit_skillset")
-        def measure():
-            categories = self.get_elements(self.selectors['skillset_edit_categories'])
-            for category in categories:
-                category.click()
-                
-            skills = self.get_elements(self.selectors['skillset_edit_skills'])
-            for skill in skills:
-                skill.click()
+        categories = self.get_elements(self.selectors['skillset_edit_categories'])
+        for category in categories:
+            category.click()
+            
+        skills = self.get_elements(self.selectors['skillset_edit_skills'])
+        for skill in skills:
+            skill.click()
 
-            self.edit_issue_submit()
-            self.wait_for_issue_title()
-
-        measure()
+        self.edit_issue_submit()
+        self.wait_for_issue_title()
