@@ -1,4 +1,5 @@
 from selenium_ui.jira import modules
+from selenium_ui.jira import sfj_modules
 from extension.jira import extension_ui  # noqa F401
 
 
@@ -61,6 +62,11 @@ Write your custom selenium scripts in `app/extension/jira/extension_ui.py`.
 Refer to `app/selenium_ui/jira/modules.py` for examples.
 """
 
+def test_1_selenium_edit_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.edit_skillset(jira_webdriver, jira_datasets)
+
+def test_1_selenium_view_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.view_skillset(jira_webdriver, jira_datasets)
 
 # def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
 #     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
