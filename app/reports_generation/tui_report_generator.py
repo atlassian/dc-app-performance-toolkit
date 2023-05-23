@@ -56,7 +56,7 @@ class Config:
             Config.local_path = str(Path(Config.data.get("local-path") or Path(__file__).parent).absolute())
             Config.reports_path = str(Path(Config.data.get("reports-path") or Path(__file__).parent).absolute())
             Config.download_path = str(
-                Path(Config.data.get("download-path") or Path(__file__).parent / "results").absolute()
+                Path(Config.data.get("download-path") or Path(__file__).parent.parent / "results").absolute()
             )
             Config.copy_report_path = Config.data.get("copy-report-path") and True
 
