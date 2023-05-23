@@ -1003,3 +1003,5 @@ if __name__ == "__main__":
     Config.load()
     app = ChartGenerator()
     app.run()
+    for el in copy_list:
+        print(el)
