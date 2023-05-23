@@ -8,6 +8,7 @@ from util.conf import JIRA_SETTINGS
 from selenium_ui.jira.sfj_pages.SkillsetField import SkillsetField
 from selenium_ui.jira.sfj_pages.ExpertFinder import ExpertFinder
 from selenium_ui.jira.sfj_pages.AssignmentsDashboard import AssignmentsDashboard
+from selenium_ui.jira.sfj_pages.Inspector import Inspector
 from selenium_ui.jira.pages.pages import Issue
 
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, LogoutLocators
@@ -54,5 +55,23 @@ def open_assignments_dashboard(webdriver, datasets):
     @print_timing("selenium_open_assignments_dashboard")
     def measure():
         page.open_assignments_dashboard()
+
+    measure()
+
+def open_inspector(webdriver, datasets):
+    page = Inspector(webdriver)
+    
+    @print_timing("selenium_open_inspector")
+    def measure():
+        page.open_inspector()
+
+    measure()
+
+def inspector_select_user(webdriver, datasets):
+    page = Inspector(webdriver)
+    
+    @print_timing("selenium_inspector_select_user")
+    def measure():
+        page.select_user()
 
     measure()
