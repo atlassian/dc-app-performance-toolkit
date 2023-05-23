@@ -699,7 +699,8 @@ class LocalFileBrowser(FileBrowser):
 
 class DownloadComponent(Static):
     class Download(Message):
-        def __init__(self, source, dest, stop=False):
+        def __init__(self, sftp, source, dest, stop=False):
+            self.sftp = sftp
             self.source = source
             self.dest = dest
             self.stop = stop
@@ -754,14 +755,27 @@ class DownloadComponent(Static):
                     after=self,
                 )
             elif event.button.id == "download-btn":
-                self.post_message(
-                    self.Download(
-                        self.query_one("#remote").highlighted_child.name[2:],
-                        self.query_one("#download-path-label").value,
+                if (
+                    self.remote_file_browser.list_view.index != 0
+                    and self.remote_file_browser.list_view.highlighted_child.name.startswith("d")
+                ):
+                    self.post_message(
+                        self.Download(
+                            self.remote_file_browser.ssh_client.sftp_client,
+                            self.remote_file_browser.list_view.highlighted_child.name[2:],
+                            self.query_one("#download-path-label").value,
+                        )
                     )
-                )
+                else:
+                    self.post_message(
+                        self.Download(
+                            self.remote_file_browser.ssh_client.sftp_client,
+                            self.remote_file_browser.path_label.value,
+                            self.query_one("#download-path-label").value,
+                        )
+                    )
             elif event.button.id == "stop-btn":
-                self.post_message(self.Download("", "", stop=True))
+                self.post_message(self.Download(self.remote_file_browser.ssh_client.sftp_client, "", "", stop=True))
         except Exception as err:
             Logger.error(err)
             self.disconnect_btn.add_class("hidden")
@@ -859,32 +873,13 @@ class ChartGenerator(App):
             self.query_one("#stop-btn").add_class("hidden")
             self.query_one("#download-btn").remove_class("hidden")
             return
-        remote_dir = message.source
-        local_dir = str(Path(message.dest) / Path(message.source).name)
-        try:
-            os.mkdir(local_dir)
-        except OSError as err:
-            self.logger.warning(err)
-        except Exception as err:
-            self.logger.error(err)
         self.stop_event = threading.Event()
-        self.download_thread = threading.Thread(target=self.download_dir, args=(remote_dir, local_dir))
+        self.download_thread = threading.Thread(
+            target=self.download_dir, args=(message.sftp, message.source, message.dest)
+        )
         self.download_thread.start()
         self.query_one("#download-btn").add_class("hidden")
         self.query_one("#stop-btn").remove_class("hidden")
-
-    # def on_file_browser_enter(self, message):
-    #     if message.path.startswith("f"):
-    #         return
-    #     path = Path(message.path_label.value)
-    #     message.path_label.value = path.parent.as_posix() if message.path == ".." else message.path
-    #     self.fill_remote_list() if message.list_view.id == "#remote" else self.fill_local_list(
-    #         message.list_view, message.path_label
-    #     )
-    #     for i, item in enumerate(message.list_view.children):
-    #         if Path(item.name[2:]).name == path.name:
-    #             message.list_view.index = i
-    #             message.list_view.scroll_to(0, i - message.list_view.size.height / 2)
 
     def on_input_changed(self, message):
         if message.input.id == "username-input":
@@ -897,34 +892,55 @@ class ChartGenerator(App):
             Config.toolkit_path = message.value
         Config.save()
 
-    def download_dir(self, sftp, remotedir, localdir, call_depth=0):
-        self.logger.info(f"Start downloading {remotedir}")
-        for entry in sftp.listdir_attr(remotedir):
-            if self.stop_event.is_set():
-                self.logger.info("Downloading stopped")
-                break
-            remotepath = remotedir + "/" + entry.filename
-            localpath = os.path.join(localdir, entry.filename)
-            mode = entry.st_mode
-            if S_ISDIR(mode):
+    def get_entries(self, sftp, remote_path):
+        def calc_entries(path):
+            return list(
+                map(
+                    lambda x: (Path(path) / x.filename).as_posix(),
+                    filter(lambda x: S_ISREG(x.st_mode), sftp.listdir_attr(path)),
+                )
+            )
+
+        entries = calc_entries(remote_path)
+        if Path(remote_path, "results_summary.log").as_posix() in entries:
+            return entries
+        else:
+            Logger.warning("Selected directory does not contain results_summary.log.")
+            Logger.info("Check if current directory is correct test results folder.")
+            entries = calc_entries(Path(remote_path).parent.as_posix())
+            if (Path(remote_path).parent / "results_summary.log").as_posix() in entries:
+                return entries
+            else:
+                Logger.warning("Parent directory is does not contain results_summary.log. Cancel Download")
+                return []
+
+    def download_dir(self, sftp, remotedir, localdir):
+        try:
+            entries = self.get_entries(sftp, remotedir)
+            if entries:
+                localpath = Path(localdir, Path(entries[0]).parent.name)
                 try:
-                    self.logger.info(f"mkdir {localpath}")
+                    Logger.info(f"Trying to create: {localpath}")
                     os.mkdir(localpath)
                 except OSError as err:
-                    self.logger.error(str(err))
+                    self.logger.warning(err)
                 except Exception as err:
-                    self.logger.error(str(err))
-                self.download_dir(remotepath, localpath, call_depth + 1)
-            elif S_ISREG(mode):
-                self.logger.info(f"Downloading file {remotepath} to {localpath}")
+                    self.logger.error(err)
+                localfile = Path(localpath, Path(entries[0]).name)
+            for i, entry in enumerate(entries):
+                if self.stop_event.is_set():
+                    self.logger.info("Downloading stopped")
+                    break
+                self.logger.info(f"Downloading file {entry} to {localfile} ({i + 1}/{len(entries)})")
                 try:
-                    sftp.get(remotepath, localpath)
+                    sftp.get(entry, localfile)
                 except Exception as err:
                     self.logger.error(str(err))
-        if call_depth == 0 and not self.stop_event.is_set():
-            self.logger.info("FINISHED")
-            self.query_one("#stop-btn").add_class("hidden")
-            self.query_one("#download-btn").remove_class("hidden")
+        except Exception as err:
+            Logger.error(err)
+        self.logger.info("FINISHED")
+        self.query_one("#stop-btn").add_class("hidden")
+        self.query_one("#download-btn").remove_class("hidden")
 
 
 class RemoteSsh:
