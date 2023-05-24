@@ -5226,6 +5226,10 @@ ${emoji_binary_data}&#xd;
                         <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
                         <stringProp name="Header.value">1</stringProp>
                       </elementProp>
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                        <stringProp name="Header.value">no-check</stringProp>
+                      </elementProp>
                     </collectionProp>
                   </HeaderManager>
                   <hashTree/>
