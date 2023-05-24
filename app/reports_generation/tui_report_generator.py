@@ -735,9 +735,16 @@ class DownloadComponent(Static):
     def on_button_pressed(self, event):
         try:
             if event.button.id == "connect-btn":
+                try:
+                    self.remote_file_browser = RemoteFileBrowser(id="rfb")
+                except paramiko.ssh_exception.AuthenticationException as err:
+                    Logger.error(
+                        f"If your key contains passphrase, add it to keychain with following command: "
+                        f"ssh-add {Path(Config.ssh_key_path)}"
+                    )
+                    raise err
                 self.connect_btn.add_class("hidden")
                 self.disconnect_btn.remove_class("hidden")
-                self.remote_file_browser = RemoteFileBrowser(id="rfb")
                 self.mount(self.remote_file_browser, after=self.disconnect_btn)
             elif event.button.id == "disconnect-btn":
                 self.remote_file_browser.ssh_client.disconnect()
