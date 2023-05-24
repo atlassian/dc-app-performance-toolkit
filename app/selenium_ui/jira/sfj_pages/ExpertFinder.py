@@ -22,6 +22,7 @@ class ExpertFinder(BasePage):
         }
         self.selectors = {
             "controls": ".expert-finder .controls",
+            "select-selected-nodes": ".expert-finder .controls *[class*=-ValueContainer] *[class*='-BaseTag']",
             "node": '.expert-finder .rstcustom__rowWrapper'
         }
 
@@ -34,3 +35,14 @@ class ExpertFinder(BasePage):
         self.wait_until_any_ec_presented(selectors=[
             (By.CSS_SELECTOR, self.selectors['node'])
         ])
+        
+    def click_expert_finder_node(self):
+        self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['node'])) \
+            .click()
+
+        self.wait_until_any_ec_presented(selectors=[
+            (By.CSS_SELECTOR, self.selectors['select-selected-nodes'])
+        ])
+        
+
+

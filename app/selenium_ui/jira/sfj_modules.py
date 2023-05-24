@@ -51,6 +51,17 @@ def open_expert_finder(webdriver, datasets):
 
     measure()
 
+def click_expert_finder_node(webdriver, datasets):
+    page = ExpertFinder(webdriver)
+
+    open_expert_finder(webdriver, datasets)
+    
+    @print_timing("selenium_click_expert_finder_node")
+    def measure():
+        page.click_expert_finder_node()
+
+    measure()
+
 def open_assignments_dashboard(webdriver, datasets):
     page = AssignmentsDashboard(webdriver)
     

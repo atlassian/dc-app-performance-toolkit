@@ -71,6 +71,10 @@ def test_1_selenium_view_skillset(jira_webdriver, jira_datasets, jira_screen_sho
 def test_1_selenium_open_expert_finder(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_expert_finder(jira_webdriver, jira_datasets)
 
+
+def test_1_selenium_click_expert_finder_node(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.click_expert_finder_node(jira_webdriver, jira_datasets)
+    
 def test_1_selenium_open_assignments_dashboard(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_assignments_dashboard(jira_webdriver, jira_datasets)
 
