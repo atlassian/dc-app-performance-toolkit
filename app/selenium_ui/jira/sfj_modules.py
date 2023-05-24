@@ -10,6 +10,7 @@ from selenium_ui.jira.sfj_pages.ExpertFinder import ExpertFinder
 from selenium_ui.jira.sfj_pages.AssignmentsDashboard import AssignmentsDashboard
 from selenium_ui.jira.sfj_pages.Inspector import Inspector
 from selenium_ui.jira.sfj_pages.RiskAnalysis import RiskAnalysis
+from selenium_ui.jira.sfj_pages.Simulation import Simulation
 from selenium_ui.jira.pages.pages import Issue
 
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, LogoutLocators
@@ -97,5 +98,25 @@ def run_risk_analysis(webdriver, datasets):
     @print_timing("selenium_run_risk_analysis")
     def measure():
         page.run_risk_analysis()
+
+    measure()
+
+def open_simulation(webdriver, datasets):
+    page = Simulation(webdriver)
+    
+    @print_timing("selenium_open_simulation")
+    def measure():
+        page.open_simulation()
+
+    measure()
+
+def run_simulation(webdriver, datasets):
+    page = Simulation(webdriver)
+    
+    open_simulation(webdriver, datasets)
+    
+    @print_timing("selenium_run_simulation")
+    def measure():
+        page.run_simulation()
 
     measure()
