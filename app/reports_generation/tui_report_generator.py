@@ -103,28 +103,30 @@ class Configuration(Static):
 
     def compose(self) -> ComposeResult:
         yield VerticalScroll(
+            Label("Execution environment configuration:"),
             Horizontal(
-                Label("username: ", classes="config-label"),
+                Label("Username: ", classes="config-label"),
                 Input(Config.username, id="username-input", classes="config-input"),
-                Button("Paste from clipboard", id="set-username-btn", classes="right-side-btn"),
+                Button("Paste from clipboard", id="set-username-btn", classes="right-side-btn config-btn"),
                 classes="config-field",
             ),
             Horizontal(
-                Label("Host: ", classes="config-label"),
+                Label("Hostname: ", classes="config-label"),
                 Input(Config.host, id="host-input", classes="config-input"),
-                Button("Paste from clipboard", id="set-host-btn", classes="right-side-btn"),
+                Button("Paste from clipboard", id="set-host-btn", classes="right-side-btn config-btn"),
                 classes="config-field",
             ),
             Horizontal(
                 Label("SSH key path: ", classes="config-label"),
                 Input(Config.ssh_key_path, id="ssh-key-path-input", classes="config-input"),
-                Button("Set from local", id="set-key-btn", classes="right-side-btn"),
+                Button("Set from local", id="set-key-btn", classes="right-side-btn config-btn"),
                 classes="config-field",
             ),
+            Label("Local configuration:", classes="small-margin-top"),
             Horizontal(
                 Label("Toolkit path: ", classes="config-label"),
                 Input(Config.toolkit_path, id="toolkit-path-input", classes="config-input"),
-                Button("Set from local", id="set-toolkit-btn", classes="right-side-btn"),
+                Button("Set from local", id="set-toolkit-btn", classes="right-side-btn config-btn"),
                 classes="config-field",
             ),
         )
