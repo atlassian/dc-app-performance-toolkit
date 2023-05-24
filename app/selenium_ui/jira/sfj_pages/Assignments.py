@@ -21,10 +21,15 @@ class AssignmentsDashboard(BasePage):
             "entry": "/plugins/servlet/skillsforjira/team#assignments"
         }
         self.selectors = {
-            "pull_widget_loaded": ".pull-widget:not(.blurred)",
             "in_progress_widget_loaded": '.in-progress-widget .issues-list:not(.blurred), .in-progress-widget h4',
             "queue_widget_loaded": '.queue-widget .issues-list:not(.blurred), .queue-widget h4',
             "demand_widget_loaded": '.skills-demand-widget div:nth-child(3):not(.blurred), .skills-demand-widget h4',
+            "pull_widget_loaded": ".pull-widget:not(.blurred)",
+            "pull-button": '.pull-widget button',
+            "pull-button-inactive": '.pull-widget button[disabled]',
+            "pull-button-active": '.pull-widget button:not([disabled])',
+            "pull-success-message": '.pull-widget .notification *[style*="success"]',
+            "pull-error-message": '.pull-widget .notification *[style*="danger"]',
         }
 
     def open_assignments_dashboard(self):
@@ -42,3 +47,15 @@ class AssignmentsDashboard(BasePage):
         self.wait_until_any_ec_presented(selectors=[
             (By.CSS_SELECTOR, self.selectors['demand_widget_loaded'])
         ])
+
+    def pull_assignment(self):
+        # self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['pull-button'])) # Doesn't work for some reason
+        # self.wait_until_visible((By.CSS_SELECTOR, self.selectors['pull-button-active'])) \
+        #     .click()
+
+        self.driver.execute_script(f"document.querySelector('{self.selectors['pull-button-active']}').click()")
+
+        # self.wait_until_visible((By.CSS_SELECTOR, self.selectors['pull-button-inactive']))
+        
+        self.wait_until_visible((By.CSS_SELECTOR, self.selectors['pull-success-message']))
+

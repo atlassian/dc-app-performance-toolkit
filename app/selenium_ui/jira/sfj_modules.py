@@ -7,7 +7,7 @@ from util.conf import JIRA_SETTINGS
 
 from selenium_ui.jira.sfj_pages.SkillsetField import SkillsetField
 from selenium_ui.jira.sfj_pages.ExpertFinder import ExpertFinder
-from selenium_ui.jira.sfj_pages.AssignmentsDashboard import AssignmentsDashboard
+from selenium_ui.jira.sfj_pages.Assignments import AssignmentsDashboard
 from selenium_ui.jira.sfj_pages.Inspector import Inspector
 from selenium_ui.jira.sfj_pages.RiskAnalysis import RiskAnalysis
 from selenium_ui.jira.sfj_pages.Simulation import Simulation
@@ -57,6 +57,17 @@ def open_assignments_dashboard(webdriver, datasets):
     @print_timing("selenium_open_assignments_dashboard")
     def measure():
         page.open_assignments_dashboard()
+
+    measure()
+    
+def pull_assignment(webdriver, datasets):
+    page = AssignmentsDashboard(webdriver)
+    
+    open_assignments_dashboard(webdriver, datasets)
+
+    @print_timing("selenium_pull_assignment")
+    def measure():
+        page.pull_assignment()
 
     measure()
 
