@@ -953,14 +953,10 @@ class ChartGenerator(App):
 
 
 class RemoteSsh:
-    host = None
-    ssh_key = None
     ssh_client = None
     sftp_client = None
 
     def __init__(self):
-        self.host = Config.host
-        self.ssh_key = Config.ssh_key_path
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.connect(
