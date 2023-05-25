@@ -37,3 +37,5 @@ class SkillsetField(Issue):
 
         self.edit_issue_submit()
         self.wait_for_issue_title()
+
+        self.wait_until_visible(self.selectors['skillset_view_skills'])

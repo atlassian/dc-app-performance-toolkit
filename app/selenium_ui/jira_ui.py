@@ -1,7 +1,4 @@
 from selenium_ui.jira import modules
-from selenium_ui.jira import sfj_modules
-from extension.jira import extension_ui  # noqa F401
-
 
 # this action should be the first one
 def test_0_selenium_a_login(jira_webdriver, jira_datasets, jira_screen_shots):
@@ -62,42 +59,10 @@ Write your custom selenium scripts in `app/extension/jira/extension_ui.py`.
 Refer to `app/selenium_ui/jira/modules.py` for examples.
 """
 
-def test_1_selenium_edit_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.edit_skillset(jira_webdriver, jira_datasets)
-
-def test_1_selenium_view_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.view_skillset(jira_webdriver, jira_datasets)
-    
-def test_1_selenium_open_expert_finder(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.open_expert_finder(jira_webdriver, jira_datasets)
-
-
-def test_1_selenium_click_expert_finder_node(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.click_expert_finder_node(jira_webdriver, jira_datasets)
-    
-def test_1_selenium_open_assignments_dashboard(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.open_assignments_dashboard(jira_webdriver, jira_datasets)
-
-def test_1_selenium_pull_assignment(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.pull_assignment(jira_webdriver, jira_datasets)
-
-def test_1_selenium_open_inspector(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.open_inspector(jira_webdriver, jira_datasets)
-def test_1_selenium_inspector_select_user(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.inspector_select_user(jira_webdriver, jira_datasets)
-
-def test_1_selenium_open_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.open_risk_analysis(jira_webdriver, jira_datasets)
-def test_1_selenium_run_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.run_risk_analysis(jira_webdriver, jira_datasets)
-def test_1_selenium_open_simulation(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.open_simulation(jira_webdriver, jira_datasets)
-def test_1_selenium_run_simulation(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.run_simulation(jira_webdriver, jira_datasets)
-
 # def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
 #     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
 
+from extension.jira.extension_ui import *  # noqa F401
 
 # this action should be the last one
 def test_2_selenium_z_log_out(jira_webdriver, jira_datasets, jira_screen_shots):

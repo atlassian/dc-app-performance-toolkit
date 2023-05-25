@@ -22,7 +22,6 @@ rte_status = client.check_rte_status()
 def view_skillset(webdriver, datasets):
     page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
 
-    edit_skillset(webdriver, datasets)
     @print_timing("selenium_view_skillset")
     def measure():
         page.view_skillset()
@@ -53,8 +52,6 @@ def open_expert_finder(webdriver, datasets):
 
 def click_expert_finder_node(webdriver, datasets):
     page = ExpertFinder(webdriver)
-
-    open_expert_finder(webdriver, datasets)
     
     @print_timing("selenium_click_expert_finder_node")
     def measure():
@@ -74,8 +71,6 @@ def open_assignments_dashboard(webdriver, datasets):
 def pull_assignment(webdriver, datasets):
     page = AssignmentsDashboard(webdriver)
     
-    open_assignments_dashboard(webdriver, datasets)
-
     @print_timing("selenium_pull_assignment")
     def measure():
         page.pull_assignment()
@@ -93,8 +88,6 @@ def open_inspector(webdriver, datasets):
 
 def inspector_select_user(webdriver, datasets):
     page = Inspector(webdriver)
-
-    open_inspector(webdriver, datasets)
     
     @print_timing("selenium_inspector_select_user")
     def measure():
@@ -115,8 +108,6 @@ def open_risk_analysis(webdriver, datasets):
 def run_risk_analysis(webdriver, datasets):
     page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
     
-    open_risk_analysis(webdriver, datasets)
-    
     @print_timing("selenium_run_risk_analysis")
     def measure():
         page.run_risk_analysis()
@@ -134,8 +125,6 @@ def open_simulation(webdriver, datasets):
 
 def run_simulation(webdriver, datasets):
     page = Simulation(webdriver)
-    
-    open_simulation(webdriver, datasets)
     
     @print_timing("selenium_run_simulation")
     def measure():
