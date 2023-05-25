@@ -30,7 +30,7 @@ settings:
     view_projects_list: 10
     standalone_extension: 0            # Standalone extension weight for JMeter. By default, disabled. Set appropriate weight to enable.
     # Locust app specific
-    standalone_extension_locust: 0     # Standalone extension weight for Locust. By default, disabled. Set 1 to enable.
+    standalone_extension_locust: 1     # Standalone extension weight for Locust. By default, disabled. Set 1 to enable.
     # Bamboo agents and plans settings
     number_of_agents: 50               # number of available remote agents
     parallel_plans_count: 40           # number of parallel plans execution
