@@ -6,10 +6,12 @@ from locustio.common_utils import LocustConfig, MyBaseTaskSet
 from extension.jira.extension_locust import app_specific_action
 from util.conf import JIRA_SETTINGS
 
+from extension.jira.extension_locust import SkillsForJiraBehavior
+
 config = LocustConfig(config_yml=JIRA_SETTINGS)
 
 
-class JiraBehavior(MyBaseTaskSet):
+class JiraBehavior(SkillsForJiraBehavior):
 
     def on_start(self):
         self.client.verify = config.secure
