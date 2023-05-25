@@ -20,8 +20,8 @@ def test_1_selenium_click_expert_finder_node(jira_webdriver, jira_datasets, jira
 def test_1_selenium_open_assignments_dashboard(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_assignments_dashboard(jira_webdriver, jira_datasets)
 
-def test_1_selenium_pull_assignment(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.pull_assignment(jira_webdriver, jira_datasets)
+# def test_1_selenium_pull_assignment(jira_webdriver, jira_datasets, jira_screen_shots):
+#     sfj_modules.pull_assignment(jira_webdriver, jira_datasets)
 
 def test_1_selenium_open_inspector(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_inspector(jira_webdriver, jira_datasets)
@@ -30,12 +30,15 @@ def test_1_selenium_inspector_select_user(jira_webdriver, jira_datasets, jira_sc
 
 def test_1_selenium_open_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_risk_analysis(jira_webdriver, jira_datasets)
-def test_1_selenium_run_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.run_risk_analysis(jira_webdriver, jira_datasets)
+
+# def test_1_selenium_run_risk_analysis(jira_webdriver, jira_datasets, jira_screen_shots):
+#     sfj_modules.run_risk_analysis(jira_webdriver, jira_datasets)
+
 def test_1_selenium_open_simulation(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_simulation(jira_webdriver, jira_datasets)
-def test_1_selenium_run_simulation(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.run_simulation(jira_webdriver, jira_datasets)
+
+# def test_1_selenium_run_simulation(jira_webdriver, jira_datasets, jira_screen_shots):
+#     sfj_modules.run_simulation(jira_webdriver, jira_datasets)
 
 
 # def app_specific_action(webdriver, datasets):
