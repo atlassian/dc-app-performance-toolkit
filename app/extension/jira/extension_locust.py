@@ -18,17 +18,28 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         login_and_view_dashboard(self)
 
+    @task(config.percentage('sfj_get_servlet_admin'))
+    @jira_measure("get_servlet_admin")
+    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_admin(self):
         r = self.get(f'plugins/servlet/skillsforjira/admin')
         assert r.ok
+
+    @task(config.percentage('sfj_get_servlet_config'))
+    @jira_measure("get_servlet_config")
+    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_config(self):
         r = self.get(f'plugins/servlet/skillsforjira/config')
         assert r.ok
+    
+    @task(config.percentage('sfj_get_servlet_team'))
+    @jira_measure("get_servlet_team")
+    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_team(self):
         r = self.get(f'plugins/servlet/skillsforjira/team')
         assert r.ok
         
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_users'))
     @jira_measure("get-users")
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_users(self):
@@ -46,14 +57,14 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
             logger.error(f"'key' was not found in {content}")
         assert 'key' in content  # assert specific string in response content
 
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_changed_users'))
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     @jira_measure("get-changed-users")
     def get_changed_users(self):
         r = self.get(f'/rest/skillsforjira/1/user/updatedAfter?timestamp={startedAt}', catch_response=False)  # call app-specific GET endpoint
         assert r.ok
 
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_pull_status'))
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     @jira_measure("get-user-pull-status")
     def get_pull_status(self):
@@ -71,7 +82,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
             logger.error(f"'enabled' was not found in {content}")
         assert 'enabled' in content  # assert specific string in response content
 
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_pull_task'))
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     @jira_measure("pull-task")
     def pull_task(self):
@@ -86,7 +97,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
 
 
     @jira_measure("run_risk_analysis_page")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_run_risk_analysis_page'))
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def run_risk_analysis_page(self):
         body = {
@@ -103,9 +114,9 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'issuesAtRisk' in content  # assert specific string in response content
         
     @jira_measure("run_simulation_page")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_run_simulation_page'))
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
-    def run_simulation(self):
+    def run_simulation_page(self):
         body = {
             "userKeys": [ self.session_data_storage["username"] ],
             "groupNames": [],
@@ -122,7 +133,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'pulls' in content  # assert specific string in response content
     
     @jira_measure("get_skilltree")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_skilltree'))
     def get_skilltree(self):
         r = self.get(f'/rest/skillsforjira/1/skilltree/global', catch_response=False)
         content = r.content.decode('utf-8')
@@ -130,7 +141,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'nodes' in content
         
     @jira_measure("get_all_expertise")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_all_expertise'))
     def get_all_expertise(self):
         r = self.get(f'/rest/skillsforjira/1/expertise', catch_response=False)
         content = r.content.decode('utf-8')
@@ -138,7 +149,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'skillsByUserKey' in content
         
     @jira_measure("get_expertise_coverage")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_expertise_coverage'))
     def get_expertise_coverage(self):
         jql = "type=Task"
         r = self.get(f'/rest/skillsforjira/1/expertise/coverage/admin?jql={urllib.parse.quote(jql)}', catch_response=False)
@@ -147,7 +158,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'demandInfoBySkillsetKey' in content
     
     @jira_measure("get_user_expertise")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_user_expertise'))
     def get_user_expertise(self):
         r = self.get(f'/rest/skillsforjira/1/expertise/admin', catch_response=False)
         content = r.content.decode('utf-8')
@@ -155,7 +166,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert content.startswith('[')
         
     @jira_measure("get_queues")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_queues'))
     def get_queues(self):
         r = self.get(f'/rest/skillsforjira/1/queue', catch_response=False)
         content = r.content.decode('utf-8')
@@ -163,15 +174,15 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert content.startswith('[')
         
     @jira_measure("get_user_queues")
-    @task(config.percentage('standalone_extension'))
-    def get_queues(self):
+    @task(config.percentage('sfj_get_user_queues'))
+    def get_user_queues(self):
         r = self.get(f'/rest/skillsforjira/1/queue/user/admin', catch_response=False)
         content = r.content.decode('utf-8')
         assert r.ok
         assert content.startswith('[')
         
     @jira_measure("validate_queues")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_valiate_queues'))
     def valiate_queues(self):
         r = self.get(f'/rest/skillsforjira/1/queue/validate', catch_response=False)
         content = r.content.decode('utf-8')
@@ -179,7 +190,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'ok' in content
         
     @jira_measure("get_analytics_config")
-    @task(config.percentage('standalone_extension'))
+    @task(config.percentage('sfj_get_analytics_config'))
     def get_analytics_config(self):
         r = self.get(f'/rest/skillsforjira/1/config/analytics', catch_response=False)
         content = r.content.decode('utf-8')
@@ -187,8 +198,8 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         assert 'isEnabled' in content
         
     @jira_measure("get_assignments_config")
-    @task(config.percentage('standalone_extension'))
-    def get_analytics_config(self):
+    @task(config.percentage('sfj_get_assignments_config'))
+    def get_assignments_config(self):
         r = self.get(f'/rest/skillsforjira/1/config/assignments', catch_response=False)
         content = r.content.decode('utf-8')
         assert r.ok
