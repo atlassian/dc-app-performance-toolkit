@@ -1,5 +1,6 @@
 import re
 import time
+import urllib
 
 from locust import HttpUser, task, between, run_single_user
 from locustio.jira.http_actions import login_and_view_dashboard, create_issue, search_jql, view_issue, \
@@ -17,6 +18,16 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         login_and_view_dashboard(self)
 
+    def get_servlet_admin(self):
+        r = self.get(f'plugins/servlet/skillsforjira/admin')
+        assert r.ok
+    def get_servlet_config(self):
+        r = self.get(f'plugins/servlet/skillsforjira/config')
+        assert r.ok
+    def get_servlet_team(self):
+        r = self.get(f'plugins/servlet/skillsforjira/team')
+        assert r.ok
+        
     @task(config.percentage('standalone_extension'))
     @jira_measure("get-users")
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
@@ -125,6 +136,15 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         content = r.content.decode('utf-8')
         assert r.ok
         assert 'skillsByUserKey' in content
+        
+    @jira_measure("get_expertise_coverage")
+    @task(config.percentage('standalone_extension'))
+    def get_expertise_coverage(self):
+        jql = "type=Task"
+        r = self.get(f'/rest/skillsforjira/1/expertise/coverage/admin?jql={urllib.parse.quote(jql)}', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'demandInfoBySkillsetKey' in content
     
     @jira_measure("get_user_expertise")
     @task(config.percentage('standalone_extension'))
@@ -133,6 +153,46 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         content = r.content.decode('utf-8')
         assert r.ok
         assert content.startswith('[')
+        
+    @jira_measure("get_queues")
+    @task(config.percentage('standalone_extension'))
+    def get_queues(self):
+        r = self.get(f'/rest/skillsforjira/1/queue', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert content.startswith('[')
+        
+    @jira_measure("get_user_queues")
+    @task(config.percentage('standalone_extension'))
+    def get_queues(self):
+        r = self.get(f'/rest/skillsforjira/1/queue/user/admin', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert content.startswith('[')
+        
+    @jira_measure("validate_queues")
+    @task(config.percentage('standalone_extension'))
+    def valiate_queues(self):
+        r = self.get(f'/rest/skillsforjira/1/queue/validate', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'ok' in content
+        
+    @jira_measure("get_analytics_config")
+    @task(config.percentage('standalone_extension'))
+    def get_analytics_config(self):
+        r = self.get(f'/rest/skillsforjira/1/config/analytics', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'isEnabled' in content
+        
+    @jira_measure("get_assignments_config")
+    @task(config.percentage('standalone_extension'))
+    def get_analytics_config(self):
+        r = self.get(f'/rest/skillsforjira/1/config/assignments', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'mode' in content
 
     
 class SkillsForJiraUser(HttpUser):
