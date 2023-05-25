@@ -22,21 +22,21 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     @jira_measure("get_servlet_admin")
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_admin(self):
-        r = self.get(f'plugins/servlet/skillsforjira/admin')
+        r = self.get(f'/plugins/servlet/skillsforjira/admin')
         assert r.ok
 
     @task(config.percentage('sfj_get_servlet_config'))
     @jira_measure("get_servlet_config")
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_config(self):
-        r = self.get(f'plugins/servlet/skillsforjira/config')
+        r = self.get(f'/plugins/servlet/skillsforjira/config')
         assert r.ok
     
     @task(config.percentage('sfj_get_servlet_team'))
     @jira_measure("get_servlet_team")
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_team(self):
-        r = self.get(f'plugins/servlet/skillsforjira/team')
+        r = self.get(f'/plugins/servlet/skillsforjira/team')
         assert r.ok
         
     @task(config.percentage('sfj_get_users'))
