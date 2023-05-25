@@ -40,9 +40,6 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     @jira_measure("get-changed-users")
     def get_changed_users(self):
         r = self.get(f'/rest/skillsforjira/1/user/updatedAfter?timestamp={startedAt}', catch_response=False)  # call app-specific GET endpoint
-    
-        if not r.ok:
-            logger.error(f"get-changed-users failed")
         assert r.ok
 
     @task(config.percentage('standalone_extension'))
@@ -112,10 +109,31 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         if 'pulls' not in content:
             logger.error(f"'pulls' was not found in {content}")
         assert 'pulls' in content  # assert specific string in response content
-    # @jira_measure("get_skilltree")
-    # @jira_measure("get_all_expertise")
-    # @jira_measure("get_user_expertise")
     
+    @jira_measure("get_skilltree")
+    @task(config.percentage('standalone_extension'))
+    def get_skilltree(self):
+        r = self.get(f'/rest/skillsforjira/1/skilltree/global', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'nodes' in content
+        
+    @jira_measure("get_all_expertise")
+    @task(config.percentage('standalone_extension'))
+    def get_all_expertise(self):
+        r = self.get(f'/rest/skillsforjira/1/expertise', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert 'skillsByUserKey' in content
+    
+    @jira_measure("get_user_expertise")
+    @task(config.percentage('standalone_extension'))
+    def get_user_expertise(self):
+        r = self.get(f'/rest/skillsforjira/1/expertise/admin', catch_response=False)
+        content = r.content.decode('utf-8')
+        assert r.ok
+        assert content.startswith('[')
+
     
 class SkillsForJiraUser(HttpUser):
     host = JIRA_SETTINGS.server_url
