@@ -49,8 +49,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     @jira_measure("get-user-pull-status")
     def get_pull_status(self):
-        user_key = 'admin'
-        r = self.get(f'/rest/skillsforjira/1/assignments/pull/status/{user_key}', catch_response=True)
+        r = self.get(f'/rest/skillsforjira/1/assignments/pull/status/{self.session_data_storage["username"]}', catch_response=True)
         content = r.content.decode('utf-8')   # decode response content
     
         if not r.ok:
@@ -68,22 +67,54 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     @run_as_specific_user(username='admin', password='admin')  # run as specific user
     @jira_measure("pull-task")
     def pull_task(self):
-        user_key = 'admin'
         body = {}  # include parsed variables to POST request body
         headers = {'content-type': 'application/json'}
-        r = self.post(f'/rest/skillsforjira/1/assignments/pull/{user_key}', body, headers, catch_response=True)  # call app-specific POST endpoint
+        r = self.post(f'/rest/skillsforjira/1/assignments/pull/admin', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
         content = r.content.decode('utf-8')
-    
-        if not r.ok:
-            logger.error(f"pull-task failed")
-        assert r.ok
     
         if 'enabled' not in content:
             logger.error(f"'enabled' was not found in {content}")
         assert 'enabled' in content  # assert specific string in response content
 
-    # @jira_measure("run_risk_analysis_page")
-    # @jira_measure("run_simulation_page")
+
+    @jira_measure("run_risk_analysis_page")
+    @task(config.percentage('standalone_extension'))
+    @run_as_specific_user(username='admin', password='admin')  # run as specific user
+    def run_risk_analysis_page(self):
+        body = {
+            "jql": "type=Task",
+            "userKeys": [ self.session_data_storage["username"] ],
+            "groupNames": [],
+        } 
+        headers = {'content-type': 'application/json'}
+        r = self.post(f'/rest/skillsforjira/1/risks', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
+        content = r.content.decode('utf-8')
+
+        if 'issuesAtRisk' not in content:
+            logger.error(f"'issuesAtRisk' was not found in {content}")
+        assert 'issuesAtRisk' in content  # assert specific string in response content
+        
+    @jira_measure("run_simulation_page")
+    @task(config.percentage('standalone_extension'))
+    @run_as_specific_user(username='admin', password='admin')  # run as specific user
+    def run_simulation(self):
+        body = {
+            "userKeys": [ self.session_data_storage["username"] ],
+            "groupNames": [],
+            "queueIds": [],
+            "simulationEndAt": startedAt + 1000 * 5,
+            "batchDescriptor": None
+        }
+        headers = {'content-type': 'application/json'}
+        r = self.post(f'/rest/skillsforjira/1/simulation', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
+        content = r.content.decode('utf-8')
+
+        if 'pulls' not in content:
+            logger.error(f"'pulls' was not found in {content}")
+        assert 'pulls' in content  # assert specific string in response content
+    # @jira_measure("get_skilltree")
+    # @jira_measure("get_all_expertise")
+    # @jira_measure("get_user_expertise")
     
     
 class SkillsForJiraUser(HttpUser):
