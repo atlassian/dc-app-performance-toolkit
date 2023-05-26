@@ -526,6 +526,40 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
    ```
 1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
+#### Generating a Jira performance regression report with TUI tool (beta)
+
+It is possible to use TUI tool for report generation. For MacOS it is recommended to use different terminal than the
+build-in one for better look and faster responses (for example iTerm2).
+
+{{% note %}}
+TUI tool is started in application mode what blocks normal text selectiion with mouse. In most of the terminals you can
+hold 'Shift' to re-enable text selection. For OS X: In iTerm, use 'Option' instead of 'Shift'.  In Terminal.app, use 'Fn'.
+{{% /note %}}
+
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+
+2. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
+
+3. Run the following command:
+    ``` bash
+    python3 tui_report_generator.py
+    ```
+   
+4. Set configuration fields according to your execution environment configuration and go to the "Download test results" tab.
+
+5. Set download path or leave it as default and press connect button.
+
+6. Go to dc-app-performance-toolkit/app/results path.
+
+7. Select and download test runs for your performance report and go to "Generate report" tab.
+
+8. Open "Performance report" sub-tab and set previously downloaded test runs according to description of fields.
+
+9. Click on "Generate report" button.
+
+10. Generated report path can be copied to the clipboard with "Copy report path" button or selecting with mouse using
+the way from the above note.
+
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
@@ -643,6 +677,41 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 It is recommended to terminate an enterprise-scale environment after completing all tests.
 Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
 {{% /warning %}}
+
+#### Generating a report for scalability scenario with TUI tool (beta)
+
+It is possible to use TUI tool for report generation. For MacOS it is recommended to use different terminal than the
+build-in one for better look and faster responses (for example iTerm2).
+
+{{% note %}}
+TUI tool is started in application mode what blocks normal text selectiion with mouse. In most of the terminals you can
+hold 'Shift' to re-enable text selection. For OS X: In iTerm, use 'Option' instead of 'Shift'.  In Terminal.app, use 'Fn'.
+{{% /note %}}
+
+1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
+
+2. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
+
+3. Run the following command:
+    ``` bash
+    python3 tui_report_generator.py
+    ```
+   
+4. Set configuration fields according to your execution environment configuration and go to the "Download test results" tab.
+
+5. Set download path or leave it as default and press connect button.
+
+6. Go to dc-app-performance-toolkit/app/results path.
+
+7. Select and download test runs for your scale report and go to "Generate report" tab.
+
+8. Open "Scale report" sub-tab and set previously downloaded test runs according to description of fields.
+
+9. Click on "Generate report" button.
+
+10. Generated report path can be copied to the clipboard with "Copy report path" button or selecting with mouse using
+the way from the above note.
+
 
 #### Attaching testing results to ECOHELP ticket
 
