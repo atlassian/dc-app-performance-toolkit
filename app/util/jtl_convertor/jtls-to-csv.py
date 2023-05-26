@@ -133,29 +133,37 @@ def __pathname_pattern_expansion(args: List[str]) -> List[str]:
 
 
 def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
-    # TODO: If list is too big, read iteratively from CSV if possible
     with input_jtl.open(mode='r') as f:
-        reader = csv.DictReader(f)
+        first_line = next(f).strip()
+        keys = first_line.split(',')
+
+        reader = csv.DictReader(f, fieldnames=keys)
         jtl_list = [row for row in reader]
 
     csv_list = []
 
-    for jtl_sample in jtl_list:
-        sample = {}
-        if jtl_sample[LABEL_JTL] not in [processed_sample[LABEL] for processed_sample in csv_list]:
-            sample[LABEL] = jtl_sample[LABEL_JTL]
-            sample[SAMPLES] = 1
-            sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current label
-            # Temp list with 'success' value for current label
-            sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]
-            csv_list.append(sample)
+    first_timestamp = int(jtl_list[0]['timeStamp'])
 
-        else:
-            # Get and update processed row with current label
-            processed_sample = [row for row in csv_list if row[LABEL] == jtl_sample['label']][0]
-            processed_sample[SAMPLES] = processed_sample[SAMPLES] + 1  # Count samples
-            processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
-            processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL].lower())  # list of success values
+    for jtl_sample in jtl_list:
+        current_timestamp = int(jtl_sample['timeStamp'])
+
+        # Only process lines after 60 seconds (60000 milliseconds) from the first timestamp
+        if (current_timestamp - first_timestamp) >= 60000:
+            sample = {}
+            if jtl_sample[LABEL_JTL] not in [processed_sample[LABEL] for processed_sample in csv_list]:
+                sample[LABEL] = jtl_sample[LABEL_JTL]
+                sample[SAMPLES] = 1
+                sample[ELAPSED_JTL_TMP] = [int(jtl_sample[ELAPSED_JTL])]  # Temp list with 'elapsed' value for current
+                # label
+                # Temp list with 'success' value for current label
+                sample[SUCCESS_JTL_TMP] = [jtl_sample[SUCCESS_JTL].lower()]
+                csv_list.append(sample)
+            else:
+                # Get and update processed row with current label
+                processed_sample = [row for row in csv_list if row[LABEL] == jtl_sample['label']][0]
+                processed_sample[SAMPLES] = processed_sample[SAMPLES] + 1  # Count samples
+                processed_sample[ELAPSED_JTL_TMP].append(int(jtl_sample[ELAPSED_JTL]))  # list of elapsed values
+                processed_sample[SUCCESS_JTL_TMP].append(jtl_sample[SUCCESS_JTL].lower())  # list of success values
 
     # Calculation after the last row in kpi.jtl is processed
     for processed_sample in csv_list:
