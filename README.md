@@ -46,7 +46,7 @@ Make sure that you have:
 * Google Chrome web browser
 ```
 python3 --version
-pip --version
+pip --version / python3 -m pip -V
 java -version
 # command to check if XCode Command Line Tools installed
 xcode-select --print-path
