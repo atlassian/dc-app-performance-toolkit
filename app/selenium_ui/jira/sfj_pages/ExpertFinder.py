@@ -22,7 +22,7 @@ class ExpertFinder(BasePage):
         }
         self.selectors = {
             "controls": ".expert-finder .controls",
-            "select-selected-nodes": ".expert-finder .controls *[class*=-ValueContainer] *[class*='-BaseTag']",
+            "select-selected-nodes": ".expert-finder .controls *[class*=-control] > *",
             "node": '.expert-finder .rstcustom__rowWrapper'
         }
 
