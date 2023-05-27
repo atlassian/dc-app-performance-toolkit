@@ -22,7 +22,7 @@ rte_status = client.check_rte_status()
 def view_skillset(webdriver, datasets):
     page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
 
-    @print_timing("selenium_view_skillset")
+    @print_timing("selenium_sfj_view_skillset")
     def measure():
         page.view_skillset()
 
@@ -34,7 +34,7 @@ def edit_skillset(webdriver, datasets):
 
     page.go_to_edit_issue()
     
-    @print_timing("selenium_edit_skillset")
+    @print_timing("selenium_sfj_edit_skillset")
     def measure():
         page.edit_skillset()
 
@@ -44,7 +44,7 @@ def edit_skillset(webdriver, datasets):
 def open_expert_finder(webdriver, datasets):
     page = ExpertFinder(webdriver)
     
-    @print_timing("selenium_open_expert_finder")
+    @print_timing("selenium_sfj_open_expert_finder")
     def measure():
         page.open_expert_finder()
 
@@ -53,7 +53,7 @@ def open_expert_finder(webdriver, datasets):
 def click_expert_finder_node(webdriver, datasets):
     page = ExpertFinder(webdriver)
     
-    @print_timing("selenium_click_expert_finder_node")
+    @print_timing("selenium_sfj_click_expert_finder_node")
     def measure():
         page.click_expert_finder_node()
 
@@ -62,7 +62,7 @@ def click_expert_finder_node(webdriver, datasets):
 def open_assignments_dashboard(webdriver, datasets):
     page = AssignmentsDashboard(webdriver)
     
-    @print_timing("selenium_open_assignments_dashboard")
+    @print_timing("selenium_sfj_open_assignments_dashboard")
     def measure():
         page.open_assignments_dashboard()
 
@@ -71,7 +71,7 @@ def open_assignments_dashboard(webdriver, datasets):
 def pull_assignment(webdriver, datasets):
     page = AssignmentsDashboard(webdriver)
     
-    @print_timing("selenium_pull_assignment")
+    @print_timing("selenium_sfj_pull_assignment")
     def measure():
         page.pull_assignment()
 
@@ -80,7 +80,7 @@ def pull_assignment(webdriver, datasets):
 def open_inspector(webdriver, datasets):
     page = Inspector(webdriver)
     
-    @print_timing("selenium_open_inspector")
+    @print_timing("selenium_sfj_open_inspector")
     def measure():
         page.open_inspector()
 
@@ -89,7 +89,7 @@ def open_inspector(webdriver, datasets):
 def inspector_select_user(webdriver, datasets):
     page = Inspector(webdriver)
     
-    @print_timing("selenium_inspector_select_user")
+    @print_timing("selenium_sfj_inspector_select_user")
     def measure():
         page.select_user()
 
@@ -99,7 +99,7 @@ def inspector_select_user(webdriver, datasets):
 def open_risk_analysis(webdriver, datasets):
     page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
     
-    @print_timing("selenium_open_risk_analysis")
+    @print_timing("selenium_sfj_open_risk_analysis")
     def measure():
         page.open_risk_analysis()
 
@@ -108,7 +108,7 @@ def open_risk_analysis(webdriver, datasets):
 def run_risk_analysis(webdriver, datasets):
     page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
     
-    @print_timing("selenium_run_risk_analysis")
+    @print_timing("selenium_sfj_run_risk_analysis")
     def measure():
         page.run_risk_analysis()
 
@@ -117,7 +117,7 @@ def run_risk_analysis(webdriver, datasets):
 def open_simulation(webdriver, datasets):
     page = Simulation(webdriver)
     
-    @print_timing("selenium_open_simulation")
+    @print_timing("selenium_sfj_open_simulation")
     def measure():
         page.open_simulation()
 
@@ -126,7 +126,7 @@ def open_simulation(webdriver, datasets):
 def run_simulation(webdriver, datasets):
     page = Simulation(webdriver)
     
-    @print_timing("selenium_run_simulation")
+    @print_timing("selenium_sfj_run_simulation")
     def measure():
         page.run_simulation()
 
