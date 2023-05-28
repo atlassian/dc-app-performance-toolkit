@@ -10,12 +10,12 @@
 # Unique name of your enterprise-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-product"
+environment_name = "dcapt-skillsforjira"
 
 # Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
+products = ["jira"]
 
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
@@ -73,7 +73,7 @@ jira_image_repository = "atlassian/jira-software"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid confluence license is used without spaces and new line symbols.
 # ! REQUIRED !
-jira_license = "jira-license"
+jira_license = "AAAB3Q0ODAoPeNp9kttvolAQxt/5K0j2ZTcbkItVMSFZC6yr4dIVbGvSl1Mc9Vi5ZDjY4l+/3IxutT4e+GbmN9833/w85h1S8MqAl7vDrjpUFd4wA16RFJV7g+IRMKNJrMs9SepLA1WVuTUCxJskTQFFm4YQZ2AtKatUlhtYs4fZxLc4N49eAb3VPCs76ILMGUnMSMhcEoGOcFgT/MUSBpG4hD23pUjEi5KHHMMNycAkDPSKSJDuBEXj2qlBkULdzvAcx5oZk5F9/GV9pBSLs7qeoAyOCJZD6O6SwQfcA05M/f5ZUgRt4cnCxB30BNu7GzeAKSbLPGRi9RCyZMXeCYJYdqR70BnmcEtWwhADYgbYSHcN6R+SbXTHkIzf5sfqMGXzv74U5j26PRh438exokaFOtrMR2/x02IRdmHdcWcRLIrO00/tvTPdBuPwRef8/DULkaZ1DCeUr/O5kuI1P0urSuSYxOEXnt7Y+CLPdk5psT0xfcsVbFnrqlq/LzdtPltUSvQrsuvTfEawqlyRXQach2sS04zUawdVxrxZZmwg1J8+X1QbxvHalf/sqYlSpFkbsgknq6clA++3DPz3agO+WeHHy5C39mSX1wMb8otTueH8OcF53aln8/4H0ZVKvDAsAhQ2bqlvU67m5Of0S8mLBkls+wpxqAIUC8U5UIJu0bMOwnlpjM3TdBaQ6p0=X02mm"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
@@ -83,7 +83,7 @@ jira_replica_count = 1
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 #
 # Jira version
-jira_version_tag = "8.20.20"
+jira_version_tag = "9.4.4"
 # JSM version
 # jira_version_tag = "4.20.20"
 
@@ -91,9 +91,9 @@ jira_version_tag = "8.20.20"
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
 # Jira 8.20.20 DCAPT large dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
+#jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
 # Jira 9.4.4 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
+jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
 # JSM 4.20.20 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-012d40647b2ffa6eb	"
 # JSM 5.4.4 DCAPT large dataset EBS snapshot
@@ -104,9 +104,9 @@ jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
 # Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
 #
 # Jira 8.20.20 DCAPT large dataset RDS snapshot
-jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
 # Jira 9.4.4 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
+jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
 # JSM 4.20.20 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-20"
 # JSM 5.4.4 DCAPT large dataset RDS snapshot
@@ -144,13 +144,13 @@ jira_db_iops                 = 1000
 
 # If you restore the database, make sure `jira_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
-jira_db_name = "jira"
+jira_db_name = "jira_dcapt"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
-jira_db_master_username = "atljira"
-jira_db_master_password = "Password1!"
+jira_db_master_username = "totemjira"
+jira_db_master_password = "P@ssw0rd"
 
 ################################################################################
 # Confluence Settings
