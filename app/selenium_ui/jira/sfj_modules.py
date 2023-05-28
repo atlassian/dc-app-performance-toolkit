@@ -19,12 +19,28 @@ client = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIR
 rte_status = client.check_rte_status()
 
 
-def view_skillset(webdriver, datasets):
+
+def edit_issue_with_skillset(webdriver, datasets):
+    page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
+    
+    @print_timing("selenium_sfj_edit_issue_with_skillset")
+    def measure():
+        page.go_to_edit_issue()
+        
+        @print_timing("selenium_sfj_edit_issue:save_edit_issue_form")
+        def sub_measure():
+            page.edit_issue_with_skillset();
+
+        sub_measure()
+
+    measure()
+
+def view_issue_with_skillset(webdriver, datasets):
     page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
 
-    @print_timing("selenium_sfj_view_skillset")
+    @print_timing("selenium_sfj_view_issue_with_skillset")
     def measure():
-        page.view_skillset()
+        page.view_issue_with_skillset()
 
     measure()
 
@@ -32,8 +48,6 @@ def view_skillset(webdriver, datasets):
 def edit_skillset(webdriver, datasets):
     page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
 
-    page.go_to_edit_issue()
-    
     @print_timing("selenium_sfj_edit_skillset")
     def measure():
         page.edit_skillset()

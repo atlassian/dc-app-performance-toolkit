@@ -4,11 +4,14 @@ from selenium_ui.jira import sfj_modules
 
 from selenium_ui.jira_ui import test_0_selenium_a_login
 
+def test_1_selenium_edit_issue_with_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.edit_issue_with_skillset(jira_webdriver, jira_datasets)
+    
+def test_1_selenium_view_issue_with_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
+    sfj_modules.view_issue_with_skillset(jira_webdriver, jira_datasets)
+
 def test_1_selenium_edit_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.edit_skillset(jira_webdriver, jira_datasets)
-
-def test_1_selenium_view_skillset(jira_webdriver, jira_datasets, jira_screen_shots):
-    sfj_modules.view_skillset(jira_webdriver, jira_datasets)
 
 def test_1_selenium_open_expert_finder(jira_webdriver, jira_datasets, jira_screen_shots):
     sfj_modules.open_expert_finder(jira_webdriver, jira_datasets)
