@@ -150,7 +150,7 @@ jira_db_name = "jira_dcapt"
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
 jira_db_master_username = "totemjira"
-jira_db_master_password = "P@ssw0rd"
+jira_db_master_password = "Passw0rd!"
 
 ################################################################################
 # Confluence Settings
