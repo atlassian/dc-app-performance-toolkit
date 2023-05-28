@@ -1,6 +1,6 @@
 ---
 settings:
-  artifacts-dir: results/jira/%Y-%m-%d_%H-%M-%S
+  artifacts-dir: results/jira/withapp-%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
   check-updates: false    # disable bzt check for updates
