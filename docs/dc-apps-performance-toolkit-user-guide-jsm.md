@@ -92,7 +92,8 @@ Below process describes how to install low-tier Jira Service Management DC with 
    - `jira_license` - one-liner of valid Jira Service Management license without spaces and new line symbols.
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
-   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
+   - Make sure that the Jira Service Management version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt-small.tfvars
@@ -377,9 +378,9 @@ Below process describes how to install enterprise-scale Jira Service Management 
    - `jira_image_repository` - `atlassian/jira-servicemanagement` - make sure to select the **Jira Service Management** application.
    - `jira_license` - one-liner of valid Jira Service Management license without spaces and new line symbols.
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-   - `instance_types` - `["m5.4xlarge"]` 
 7. Optional variables to override:
-    - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - `jira_version_tag` - Jira Service Management version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
+   - Make sure that the Jira Service Management version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars
@@ -509,6 +510,10 @@ The re-index time for JSM 4.20.x is about ~30-50 minutes, while for JSM 5.4.x it
 3. Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
 4. Select the **Full re-index** option.
 5. Click **Re-Index** and wait until re-indexing is completed.
+{{% note %}}
+Jira Service Management will be temporarily unavailable during the re-indexing process. Once the process is complete, the system will be fully accessible and operational once again.
+{{% /note %}}
+
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
 7. Attach the screenshot(s) to your ECOHELP ticket.
 
