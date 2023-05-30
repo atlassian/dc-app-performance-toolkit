@@ -10,7 +10,7 @@
 # Unique name of your enterprise-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-skillsforjira"
+environment_name = "dcapt-testing"
 
 # Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
@@ -93,7 +93,8 @@ jira_version_tag = "9.4.4"
 # Jira 8.20.20 DCAPT large dataset EBS snapshot
 #jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
 # Jira 9.4.4 DCAPT large dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
+#jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
+jira_shared_home_snapshot_id = "snap-0ccb2fc46d0f2f43b" # sfj-10p
 # JSM 4.20.20 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-012d40647b2ffa6eb	"
 # JSM 5.4.4 DCAPT large dataset EBS snapshot
@@ -106,7 +107,8 @@ jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
 # Jira 8.20.20 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
 # Jira 9.4.4 DCAPT large dataset RDS snapshot
-jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
+#jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
+jira_db_snapshot_id = "arn:aws:rds:us-east-2:617319066074:snapshot:sfj-10p"
 # JSM 4.20.20 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-20"
 # JSM 5.4.4 DCAPT large dataset RDS snapshot
@@ -130,7 +132,7 @@ jira_reserved_code_cache = "2048m"
 # Storage
 # initial volume size of local/shared home EBS.
 jira_local_home_size  = "100Gi"
-jira_shared_home_size = "100Gi"
+jira_shared_home_size = "150Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.

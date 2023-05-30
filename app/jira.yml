@@ -35,26 +35,26 @@ settings:
     view_backlog: 6
     browse_boards: 1
     
-    sfj_get_analytics_config: 8
-    sfj_get_assignments_config: 12 
+    sfj_get_analytics_config: 4
+    sfj_get_assignments_config: 6
     sfj_valiate_queues: 5
-    sfj_get_queues: 12
-    sfj_get_user_queues: 7 
-    sfj_get_user_expertise: 10 
-    sfj_get_expertise_coverage: 7 
-    sfj_get_all_expertise: 16
+    sfj_get_queues: 8
+    sfj_get_user_queues: 8
+    sfj_get_user_expertise: 4
+    sfj_get_expertise_coverage: 2
+    sfj_get_all_expertise: 8
     sfj_get_skilltree: 12
-    sfj_run_simulation_page: 3
-    sfj_run_risk_analysis_page: 3 
-    sfj_get_pull_status: 12
-    sfj_get_changed_users: 20 
+    sfj_run_simulation_page: 1
+    sfj_run_risk_analysis_page: 1
+    sfj_get_pull_status: 8
+    sfj_get_changed_users: 20
     sfj_pull_task: 5
-    sfj_get_users: 8
+    sfj_get_users: 2
     sfj_get_servlet_admin: 1
-    sfj_get_servlet_config: 2 
+    sfj_get_servlet_config: 2
     sfj_get_servlet_team: 16
     # Custom dataset section.
-    custom_dataset_query: type=Task          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
+    custom_dataset_query: type=Task and 'Worker Skillset' is not empty        # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
 services:
   - module: shellexec
     prepare:
@@ -70,9 +70,9 @@ services:
   - module: pip-install
     packages:
       - selenium==4.8.3
-  - module: virtual-display
-    width: 1024
-    height: 768
+#  - module: virtual-display
+#    width: 1024
+#    height: 768
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}

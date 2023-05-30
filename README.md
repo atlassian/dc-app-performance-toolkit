@@ -85,7 +85,7 @@ Make sure that you have:
 * Python developer package (e.g. `python3.9-dev` package for Python3.9)
 * Google Chrome web browser
 ```
-python3 --version
+python3 --version 
 pip --version
 java -version
 ```

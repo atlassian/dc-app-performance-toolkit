@@ -151,7 +151,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     @jira_measure("get_expertise_coverage")
     @task(config.percentage('sfj_get_expertise_coverage'))
     def get_expertise_coverage(self):
-        jql = "type=Task"
+        jql = "project = aaeneus"
         r = self.get(f'/rest/skillsforjira/1/expertise/coverage/admin?jql={urllib.parse.quote(jql)}', catch_response=False)
         content = r.content.decode('utf-8')
         assert r.ok
