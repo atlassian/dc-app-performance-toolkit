@@ -19,7 +19,7 @@ settings:
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
-    insight: True                  # Set True to enable Insight specific tests
+    insight: False                  # Set True to enable Insight specific tests
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
