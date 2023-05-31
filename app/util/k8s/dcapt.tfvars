@@ -10,7 +10,7 @@
 # Unique name of your enterprise-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-testing"
+environment_name = "dcapt-scaletest1"
 
 # Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
@@ -94,7 +94,9 @@ jira_version_tag = "9.4.4"
 #jira_shared_home_snapshot_id = "snap-001cb5a5d63b1a016"
 # Jira 9.4.4 DCAPT large dataset EBS snapshot
 #jira_shared_home_snapshot_id = "snap-0ae3cf75516d1ce0c"
-jira_shared_home_snapshot_id = "snap-0ccb2fc46d0f2f43b" # sfj-10p
+#jira_shared_home_snapshot_id = "snap-0ccb2fc46d0f2f43b" # sfj-10p
+jira_shared_home_snapshot_id = "snap-092705bc747c27840" # sfj-p10-used-in-testing
+
 # JSM 4.20.20 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-012d40647b2ffa6eb	"
 # JSM 5.4.4 DCAPT large dataset EBS snapshot
@@ -108,7 +110,9 @@ jira_shared_home_snapshot_id = "snap-0ccb2fc46d0f2f43b" # sfj-10p
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-20"
 # Jira 9.4.4 DCAPT large dataset RDS snapshot
 #jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-4"
-jira_db_snapshot_id = "arn:aws:rds:us-east-2:617319066074:snapshot:sfj-10p"
+#jira_db_snapshot_id = "arn:aws:rds:us-east-2:617319066074:snapshot:sfj-10p"
+jira_db_snapshot_id = "arn:aws:rds:us-east-2:617319066074:snapshot:sfj-p10-used-in-testing"
+
 # JSM 4.20.20 DCAPT large dataset RDS snapshot
 # jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-20"
 # JSM 5.4.4 DCAPT large dataset RDS snapshot

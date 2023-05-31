@@ -17,7 +17,7 @@ settings:
     test_duration: 45m
     ramp-up: 3m                     # time to spin all concurrent users
     total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
-    WEBDRIVER_VISIBLE: True
+    WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
