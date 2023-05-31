@@ -40,7 +40,7 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - python util/pre_run/environment_checker.py
+      - python util/pre_run/environment_checker.py confluence
       - python util/pre_run/check_for_updates.py
       - python util/data_preparation/confluence_prepare_data.py
     shutdown:

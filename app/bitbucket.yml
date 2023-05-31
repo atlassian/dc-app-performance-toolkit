@@ -24,7 +24,7 @@ settings:
 services:
   - module: shellexec
     prepare:
-      - python util/pre_run/environment_checker.py
+      - python util/pre_run/environment_checker.py bitbucket
       - python util/pre_run/check_for_updates.py
       - python util/pre_run/git_client_check.py
       - python util/data_preparation/bitbucket_prepare_data.py
