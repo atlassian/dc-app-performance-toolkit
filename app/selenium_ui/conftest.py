@@ -181,7 +181,7 @@ def webdriver(app_settings):
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         if app_settings.webdriver_visible and is_docker():
-            raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
+            raise Exception("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         if not app_settings.secure:
