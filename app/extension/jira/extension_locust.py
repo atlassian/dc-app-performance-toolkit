@@ -18,31 +18,20 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         self.client.verify = config.secure
         login_and_view_dashboard(self)
 
-    
-    @jira_measure("locust_sfj_get_servlet_admin")
-    @task(config.percentage('sfj_get_servlet_admin'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
-    def get_servlet_admin(self):
-        r = self.get(f'/plugins/servlet/skillsforjira/admin')
-        assert r.ok
-
     @jira_measure("locust_sfj_get_servlet_config")
     @task(config.percentage('sfj_get_servlet_config'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_config(self):
         r = self.get(f'/plugins/servlet/skillsforjira/config')
         assert r.ok
 
     @jira_measure("locust_sfj_get_servlet_team")
     @task(config.percentage('sfj_get_servlet_team'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_servlet_team(self):
         r = self.get(f'/plugins/servlet/skillsforjira/team')
         assert r.ok
 
     @jira_measure("locust_sfj_get-users")
     @task(config.percentage('sfj_get_users'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_users(self):
         r = self.get('/rest/skillsforjira/1/user', catch_response=True)  # call app-specific GET endpoint
         content = r.content.decode('utf-8')   # decode response content
@@ -60,14 +49,12 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
 
     @jira_measure("locust_sfj_get-changed-users")
     @task(config.percentage('sfj_get_changed_users'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_changed_users(self):
         r = self.get(f'/rest/skillsforjira/1/user/updatedAfter?timestamp={startedAt}', catch_response=False)  # call app-specific GET endpoint
         assert r.ok
 
     @jira_measure("locust_sfj_get-user-pull-status")
     @task(config.percentage('sfj_get_pull_status'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def get_pull_status(self):
         r = self.get(f'/rest/skillsforjira/1/assignments/pull/status/{self.session_data_storage["username"]}', catch_response=True)
         content = r.content.decode('utf-8')   # decode response content
@@ -85,7 +72,6 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
 
     @jira_measure("locust_sfj_pull-task")
     @task(config.percentage('sfj_pull_task'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def pull_task(self):
         body = {}  # include parsed variables to POST request body
         headers = {'content-type': 'application/json'}
@@ -99,7 +85,6 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
 
     @jira_measure("locust_sfj_run_risk_analysis_page")
     @task(config.percentage('sfj_run_risk_analysis_page'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def run_risk_analysis_page(self):
         body = {
             "jql": "type=Task",
@@ -116,7 +101,6 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         
     @jira_measure("locust_sfj_run_simulation_page")
     @task(config.percentage('sfj_run_simulation_page'))
-    @run_as_specific_user(username='admin', password='admin')  # run as specific user
     def run_simulation_page(self):
         body = {
             "userKeys": [ self.session_data_storage["username"] ],
