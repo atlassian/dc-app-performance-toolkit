@@ -35,16 +35,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
     def get_users(self):
         r = self.get('/rest/skillsforjira/1/user', catch_response=True)  # call app-specific GET endpoint
         content = r.content.decode('utf-8')   # decode response content
-    
-        if not r.ok:
-            logger.error(f"get-users failed")
         assert r.ok
-    
-        # key_pattern_example = '"key":"(.+?)"'
-        # keys = re.findall(key_pattern_example, content)  # get TOKEN from response using regexp
-        #logger.locust_info(f'keys: {keys}')  # log info for debug when verbose is true in jira.yml file
-        if 'key' not in content:
-            logger.error(f"'key' was not found in {content}")
         assert 'key' in content  # assert specific string in response content
 
     @jira_measure("locust_sfj_get-changed-users")
@@ -59,28 +50,20 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         r = self.get(f'/rest/skillsforjira/1/assignments/pull/status/{self.session_data_storage["username"]}', catch_response=True)
         content = r.content.decode('utf-8')   # decode response content
     
-        if not r.ok:
-            logger.error(f"get-pull-status failed")
         assert r.ok
-    
-        enabled_pattern_example = '"enabled":"(.+?)"'
-        enabled = re.findall(enabled_pattern_example, content)  # get TOKEN from response using regexp
-    
-        if 'enabled' not in content:
-            logger.error(f"'enabled' was not found in {content}")
         assert 'enabled' in content  # assert specific string in response content
 
-    @jira_measure("locust_sfj_pull-task")
-    @task(config.percentage('sfj_pull_task'))
-    def pull_task(self):
-        body = {}  # include parsed variables to POST request body
-        headers = {'content-type': 'application/json'}
-        r = self.post(f'/rest/skillsforjira/1/assignments/pull/admin', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
-        content = r.content.decode('utf-8')
-    
-        if 'enabled' not in content:
-            logger.error(f"'enabled' was not found in {content}")
-        assert 'enabled' in content  # assert specific string in response content
+    # NOTE: We don't have current user key with locust. And users can't pull on behalf of other users.
+    # @jira_measure("locust_sfj_pull-task")
+    # @task(config.percentage('sfj_pull_task'))
+    # def pull_task(self):
+    #     body = {}  # include parsed variables to POST request body
+    #     headers = {'content-type': 'application/json'}
+    #     r = self.post(f'/rest/skillsforjira/1/assignments/pull/admin', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
+    #     content = r.content.decode('utf-8')
+    # 
+    #     assert r.ok
+    #     assert 'enabled' in content  # assert specific string in response content
 
 
     @jira_measure("locust_sfj_run_risk_analysis_page")
@@ -95,8 +78,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         r = self.post(f'/rest/skillsforjira/1/risks', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
         content = r.content.decode('utf-8')
 
-        if 'issuesAtRisk' not in content:
-            logger.error(f"'issuesAtRisk' was not found in {content}")
+        assert r.ok   
         assert 'issuesAtRisk' in content  # assert specific string in response content
         
     @jira_measure("locust_sfj_run_simulation_page")
@@ -113,8 +95,7 @@ class SkillsForJiraBehavior(MyBaseTaskSet):
         r = self.post(f'/rest/skillsforjira/1/simulation', json=body, headers=headers, catch_response=True)  # call app-specific POST endpoint
         content = r.content.decode('utf-8')
 
-        if 'pulls' not in content:
-            logger.error(f"'pulls' was not found in {content}")
+        assert r.ok
         assert 'pulls' in content  # assert specific string in response content
     
     @jira_measure("locust_sfj_get_skilltree")
