@@ -168,12 +168,6 @@ def view_queues_form_diff_projects_size(browse_queue_page, project_size):
 
         sub_measure()
 
-        @print_timing(f'selenium_agent_view_queues_{project_size}_project:random_choice_queue')
-        def sub_measure():
-            browse_queue_page.get_random_queue()
-
-        sub_measure()
-
     measure()
 
 
@@ -223,6 +217,7 @@ def add_comment(webdriver, datasets):
 
         @print_timing('selenium_agent_add_comment:add comment')
         def sub_measure():
+            PopupManager(webdriver).dismiss_default_popup()
             customer_request_page.add_request_comment(rte_status)
 
         sub_measure()

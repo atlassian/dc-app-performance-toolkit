@@ -9,6 +9,7 @@ class PopupLocators:
     popup_3 = '.aui-close-button'
     popup_4 = '.aui-button aui-button-link'
     popup_5 = '.buttons-container > div > a'
+    popup_6 = '.css-19r5em7'
 
 
 class UrlManager:
@@ -87,7 +88,6 @@ class LoginPageLocators:
 
 class DashboardLocators:
     dashboard_url = UrlManager().dashboard_url()
-    dashboard_params = UrlManager().dashboard_params
     dashboard_window = (By.CLASS_NAME, "page-type-dashboard")
 
 
@@ -114,22 +114,15 @@ class ViewCustomerRequestLocators:
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
     comment_tinymce_field = (By.ID, "tinymce")
     comment_internally_btn = (By.XPATH, "//button[contains(text(),'Comment internally')]")
+    customers_sidebar_selector = (By.CSS_SELECTOR, 'span.aui-icon.aui-icon-large.sd-sidebar-icon.icon-sidebar-customers')
 
 
 class ViewReportsLocators:
-    # locators to click
-    workload = (By.XPATH, "//span[contains(text(),'Workload')]")
-    time_to_resolution = (By.XPATH, "//span[contains(text(),'Time to resolution')]")
-    created_vs_resolved = (By.XPATH, "//span[contains(text(),'Created vs Resolved')]")
-
-    # wait until visible locators
-    reports_nav = (By.ID, "pinnednav-opts-sd-reports-nav")
     custom_report_content = (By.CSS_SELECTOR, "#sd-report-content .js-report-graph.sd-graph-container")
     team_workload_agents_table = (By.CSS_SELECTOR, ".js-page-panel-content.sd-page-panel-content .aui.sd-agents-table")
 
 
 class ViewQueueLocators:
-    queues = (By.CSS_SELECTOR, "#pinnednav-opts-sd-queues-nav li")
     queues_status = (By.XPATH, "//span[contains(text(),'Status')]")
     queue_is_empty = (By.CSS_SELECTOR, '.sd-queue-empty')
 
@@ -145,7 +138,7 @@ class InsightNewSchemaLocators:
 
     @staticmethod
     def get_new_object_schema_name_locator(name):
-        return (By.XPATH, f"//a[contains(text(),'{name}')]")
+        return By.XPATH, f"//a[contains(text(),'{name}')]"
 
 
 class InsightDeleteSchemaLocators:
@@ -155,11 +148,11 @@ class InsightDeleteSchemaLocators:
 
     @staticmethod
     def new_object_schema_id_locator(schema_id):
-        return (By.CSS_SELECTOR, f"a[aria-owns='rlabs-actions-{schema_id}")
+        return By.CSS_SELECTOR, f"a[aria-owns='rlabs-actions-{schema_id}"
 
     @staticmethod
     def new_object_schema_delete_button_locator(name):
-        return (By.ID, f"object-schema-delete-{name}")
+        return By.ID, f"object-schema-delete-{name}"
 
 
 class InsightNewObjectLocators:
