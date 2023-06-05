@@ -23,7 +23,7 @@ settings:
     allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
     extended_metrics: False
-    view_page: 35
+    view_page: 33
     view_dashboard: 9
     view_blog: 13
     search_cql: 10
@@ -33,6 +33,7 @@ settings:
     view_attachment: 5
     upload_attachment: 6
     like_page: 3
+    upload_emoticon: 2      # For Confluence 8.4.x+
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
@@ -50,7 +51,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.1.3
+      - selenium==4.9.0
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -85,6 +86,7 @@ scenarios:
       perc_view_attachment: ${view_attachment}
       perc_upload_attachment: ${upload_attachment}
       perc_like_page: ${like_page}
+      perc_upload_emoticon: ${upload_emoticon}
       perc_standalone_extension: ${standalone_extension}
 modules:
   consolidator:
@@ -115,7 +117,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "110.0.5481.77" # Supports Chrome version 110. You can refer to http://chromedriver.chromium.org/downloads
+      version: "114.0.5735.90" # Supports Chrome version 114. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml
