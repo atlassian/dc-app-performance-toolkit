@@ -33,6 +33,8 @@ settings:
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
     allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    normal_auth: 90
+    secsign_login: 10
 services:
   - module: shellexec
     prepare:
@@ -64,6 +66,8 @@ scenarios:
       application_password: ${application_password}
       # Workload model
       total_actions_per_hr: ${total_actions_per_hour}
+      perc_standard_login: ${normal_auth}
+      perc_secsign_login: ${secsign_login}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
