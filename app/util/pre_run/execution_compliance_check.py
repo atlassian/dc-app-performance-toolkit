@@ -4,13 +4,16 @@ from util.common_util import get_latest_version, get_current_version, get_unsupp
 from util.analytics.analytics_utils import get_first_elem
 from util.analytics.application_info import ApplicationSelector
 from util.analytics.analytics import MIN_DEFAULTS
-from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS
+from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, \
+    CROWD_SETTINGS
 
 APPS_SETTINGS = {
-    "JIRA": {"settings": JIRA_SETTINGS, 'processors': 6},
-    "CONFLUENCE": {"settings": CONFLUENCE_SETTINGS, 'processors': 4},
-    "BITBUCKET": {"settings": BITBUCKET_SETTINGS, 'processors': 4},
-    "JSM": {"settings": JSM_SETTINGS, 'processors': 6}
+    "JIRA": {"settings": JIRA_SETTINGS},
+    "CONFLUENCE": {"settings": CONFLUENCE_SETTINGS},
+    "BITBUCKET": {"settings": BITBUCKET_SETTINGS},
+    "JSM": {"settings": JSM_SETTINGS},
+    "BAMBOO": {"settings": BAMBOO_SETTINGS},
+    "CROWD": {"settings": CROWD_SETTINGS},
 }
 
 
@@ -37,35 +40,49 @@ def check_dcapt_version():
 
 
 def validate_application_config(processors, app_name_upper, app_settings, min_defaults):
-    is_jsm_or_insight = app_name_upper in ["JSM", "INSIGHT"]
+    is_jsm = app_name_upper == "JSM"
 
-    if ((not is_jsm_or_insight and app_settings.concurrency == min_defaults['concurrency']) or
-            (is_jsm_or_insight and
+    if ((not is_jsm and app_settings.concurrency == min_defaults['concurrency']) or
+            (is_jsm and
              app_settings.customers_concurrency == min_defaults['customer_concurrency'] and
              app_settings.agents_concurrency == min_defaults['agent_concurrency'])):
-        if processors < APPS_SETTINGS[app_name_upper]['processors']:
-            raise SystemExit("You are using enterprise-scale load against a development environment. "
-                             "Please check your instance configurations or decrease the load.")
+        if processors < 4:
+            concurrency = app_settings.concurrency if not is_jsm else (app_settings.customers_concurrency,
+                                                                       app_settings.agents_concurrency)
+            raise SystemExit(
+                f"You are trying to run an enterprise-scale load test with {concurrency} against the "
+                f"instance with a weaker configuration than recommended. "
+                f"Kindly consider decreasing the load in your {app_name_upper.lower()}.yml file or "
+                f"using or re-installing the appropriate environment.")
 
 
 def analyze_application_configuration(app_name):
     app_name_upper = app_name.upper()
     if app_name_upper in APPS_SETTINGS:
         app = ApplicationSelector(app_name).application
-        deployment_type = app.deployment
-        processors = int(app.processors)
+        processors = app.processors
+
+        try:
+            processors = int(processors)
+        except ValueError:
+            print(f"Warning: You are using a server instance for running enterprise-scale load tests.")
+            return
 
         app_settings = APPS_SETTINGS[app_name_upper]["settings"]
         min_defaults = MIN_DEFAULTS.get(app_name.lower())
 
-        if deployment_type == "terraform":
-            validate_application_config(processors, app_name_upper, app_settings, min_defaults)
+        validate_application_config(processors, app_name_upper, app_settings, min_defaults)
 
 
 def main():
     check_dcapt_version()
+    if len(sys.argv) < 2:
+        raise SystemExit("Error: Please provide the application type as an argument.")
     app_name = get_first_elem(sys.argv)
-    analyze_application_configuration(app_name)
+
+    # TODO: Add a check for CROWD configuration once the feature with processors is implemented in the product
+    if app_name.upper() != "CROWD":
+        analyze_application_configuration(app_name)
 
 
 if __name__ == "__main__":

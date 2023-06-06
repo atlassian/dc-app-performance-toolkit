@@ -37,7 +37,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/check_for_updates.py
+      - python util/pre_run/execution_compliance_check.py crowd
       - python util/data_preparation/crowd_prepare_data.py
       - python util/data_preparation/crowd_sync_check.py
     shutdown:
