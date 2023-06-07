@@ -65,7 +65,7 @@ def analyze_application_configuration(app_name):
         try:
             processors = int(processors)
         except ValueError:
-            print(f"Warning: You are using a server instance for running enterprise-scale load tests.")
+            print("Warning: You are using a server instance for running enterprise-scale load tests.")
             return
 
         app_settings = APPS_SETTINGS[app_name_upper]["settings"]
