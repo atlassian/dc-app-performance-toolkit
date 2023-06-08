@@ -1,7 +1,6 @@
 import sys
 
 from util.common_util import get_latest_version, get_current_version, get_unsupported_version
-from util.analytics.analytics_utils import get_first_elem
 from util.analytics.application_info import ApplicationSelector
 from util.analytics.analytics import MIN_DEFAULTS
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, \
@@ -76,9 +75,10 @@ def analyze_application_configuration(app_name):
 
 def main():
     check_dcapt_version()
-    if len(sys.argv) < 2:
-        raise SystemExit("Error: Please provide the application type as an argument.")
-    app_name = get_first_elem(sys.argv)
+    try:
+        app_name = sys.argv[1].lower()
+    except IndexError:
+        raise SystemExit("ERROR: execution_compliance_check.py expects application name as argument")
 
     # TODO: Add a check for CROWD configuration once the feature with processors is implemented in the product
     if app_name.upper() != "CROWD":
