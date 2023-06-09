@@ -10,6 +10,7 @@ settings:
     application_port: 443            # 80, 443, 8080, 1990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:            # e.g. /confluence in case of url like http://localhost:1990/confluence
+    ###todo application_postfix: /confluence
     admin_login: admin
     admin_password: admin
     load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
