@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-02-13"
+date: "2023-04-20"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -92,7 +92,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
    ``` bash
@@ -105,6 +105,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
    - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+   - Make sure that the Confluence version specified in **confluence_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ```bash
    ./install.sh -c dcapt-small.tfvars
@@ -328,7 +329,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
       ``` bash
@@ -341,6 +342,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 7. Optional variables to override:
     - `confluence_version_tag` - Confluence version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+    - Make sure that the Confluence version specified in **confluence_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
 8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
     ```bash
     ./install.sh -c dcapt.tfvars
@@ -626,6 +628,9 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
-See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page
-for Terraform related questions.
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
+
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
+For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
+
+In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

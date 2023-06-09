@@ -22,7 +22,7 @@ esac; shift; done
 ###################    Variables section         ###################
 # Bitbucket version variables
 BITBUCKET_VERSION_FILE="/media/atl/bitbucket/shared/bitbucket.version"
-SUPPORTED_BITBUCKET_VERSIONS=(7.17.11 7.21.5 8.0.4)
+SUPPORTED_BITBUCKET_VERSIONS=(7.17.15 7.21.10 8.8.2)
 
 BITBUCKET_VERSION=$(sudo su bitbucket -c "cat ${BITBUCKET_VERSION_FILE}")
 if [[ -z "$BITBUCKET_VERSION" ]]; then

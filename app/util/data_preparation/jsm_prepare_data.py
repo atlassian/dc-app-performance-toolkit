@@ -140,24 +140,30 @@ def __get_agents(jira_client):
 
 
 @print_timing('Retrieving customers')
-def __get_customers(jira_client, jsm_client):
+def __get_customers(jira_client, jsm_client, servicedesks):
+    created_agents = []
+    errors_count = 0
     prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
-    perf_users = jira_client.get_users(username=prefix_name, max_results=count)
-    users_to_create = count - len(perf_users)
-    if users_to_create > 0:
-        created_agents = __generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
-                                          application_keys=[])
-        if not created_agents:
-            raise Exception(f"ERROR: Jira Service Management could not create customers"
-                            f"There were {len(perf_users)}/{count} retrieved.")
     perf_users_with_requests = __get_customers_with_requests(jsm_client=jsm_client, jira_client=jira_client,
                                                              count=count)
-    if len(perf_users_with_requests) < performance_customers_count:
-        raise Exception(f'ERROR: Not enough customers with prefix "{DEFAULT_CUSTOMER_PREFIX}" '
-                        f'with requests were found: '
-                        f'{len(perf_users_with_requests)}/{performance_customers_count}. '
-                        f'Please review the "concurrency_customers" value in jsm.yml file and/or '
-                        f'create requests on behalf of customers with prefix "{DEFAULT_CUSTOMER_PREFIX}".')
+    while len(perf_users_with_requests) < performance_customers_count:
+        username = f"{prefix_name}{__generate_random_string(10)}"
+        try:
+            agent = jira_client.create_user(name=username, password=DEFAULT_PASSWORD,
+                                            application_keys=application_keys)
+            created_agents.append(agent)
+            request_types = __get_request_types(jsm_client, servicedesks)
+            if not request_types:
+                raise Exception("No request types found for service desk")
+            random_request_type = random.choice(request_types).split(",")
+            service_desk_id = random_request_type[1]
+            request_type_id = random_request_type[2]
+            # Create the request on behalf of the newly created customer
+            jsm_client.create_request(service_desk_id=int(service_desk_id), request_type_id=int(request_type_id),
+                                      raise_on_behalf_of=username)
+        except Exception as error:
+            print(f"WARNING: Create Jira user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")
+            errors_count = errors_count + 1
 
     customers_list = []
     for customer in perf_users_with_requests:
@@ -447,7 +453,7 @@ def __create_data_set(jira_client, jsm_client):
     service_desks = __get_all_service_desks_and_validate(jira_client, jsm_client)
     dataset = dict()
     dataset[AGENTS] = __get_agents(jira_client)
-    dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client)
+    dataset[CUSTOMERS] = __get_customers(jira_client, jsm_client, service_desks)
     issues = __get_issues_by_project_keys(jira_client, jsm_client,
                                           [project['projectKey'] for project in service_desks])
     dataset[REQUESTS] = __get_requests(jira_client, service_desks, issues)

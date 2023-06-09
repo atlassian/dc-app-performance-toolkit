@@ -189,6 +189,7 @@ class JiraRestClient(RestClient):
             'webSudoPassword': self.password
         }
         self.post(login_url, error_msg='Could not login in')
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
         system_info_html = self._session.post(auth_url, data=auth_body)
         return system_info_html.content.decode("utf-8")
 

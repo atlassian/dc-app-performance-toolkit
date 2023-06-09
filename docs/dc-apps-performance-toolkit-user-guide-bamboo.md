@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-02-13"
+date: "2023-04-20"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -43,7 +43,7 @@ specifically for performance testing during the DC app review process.
    {{% /warning %}}
 4. Clone the project repo:
    ```bash
-   git clone -b 2.3.1 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
 5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
       ``` bash
@@ -382,5 +382,9 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 
 
 ## <a id="support"></a> Support
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the 
-[community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
+
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
+For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
+
+In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
