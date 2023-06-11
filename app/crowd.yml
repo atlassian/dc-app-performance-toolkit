@@ -42,7 +42,7 @@ services:
       - python util/data_preparation/crowd_sync_check.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi.jtl
+      - python util/jtl_convertor/jtls_to_csv.py kpi.jtl
     post-process:
       - python util/analytics/analytics.py crowd
       - python util/post_run/cleanup_results_dir.py

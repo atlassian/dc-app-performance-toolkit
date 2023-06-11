@@ -62,11 +62,12 @@ def __reset_file_stream(stream: IO) -> None:
     stream.seek(0)
 
 
-def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list) -> None:
+def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list, cold_start: int) -> None:
     if not input_file_path.exists():
         raise SystemExit(f'ERROR: Input file {output_file_path} does not exist')
     start = time.time()
-    convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path, default_test_actions=default_test_actions)
+    convert_to_csv(output_csv=output_file_path, input_jtl=input_file_path, default_test_actions=default_test_actions,
+                   cold_start=cold_start)
     if not output_file_path.exists():
         raise SystemExit(f'ERROR: Something went wrong. Output file {output_file_path} does not exist')
 
@@ -132,7 +133,7 @@ def __pathname_pattern_expansion(args: List[str]) -> List[str]:
     return file_names
 
 
-def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list):
+def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list, cold_start: int = 0):
     with input_jtl.open(mode='r') as f:
         first_line = next(f).strip()
         keys = first_line.split(',')
@@ -147,8 +148,8 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
     for jtl_sample in jtl_list:
         current_timestamp = int(jtl_sample['timeStamp'])
 
-        # Only process lines after 60 seconds (60000 milliseconds) from the first timestamp
-        if (current_timestamp - first_timestamp) >= 60000:
+        # Only process lines after cold_start (in seconds) from the first timestamp
+        if (current_timestamp - first_timestamp) >= cold_start * 1000:
             sample = {}
             if jtl_sample[LABEL_JTL] not in [processed_sample[LABEL] for processed_sample in csv_list]:
                 sample[LABEL] = jtl_sample[LABEL_JTL]
@@ -189,7 +190,7 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             dict_writer.writerow(row)
 
 
-def main():
+def main(cold_start: int = 0):
     args = sys.argv[1:]
     file_names = __pathname_pattern_expansion(args)
     __validate_file_names(file_names)
@@ -202,7 +203,7 @@ def main():
             jtl_validator.validate(jtl_file_path)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
             default_test_actions = __get_all_default_actions()
-            __convert_jtl_to_csv(jtl_file_path, csv_file_path, default_test_actions)
+            __convert_jtl_to_csv(jtl_file_path, csv_file_path, default_test_actions, cold_start)
             temp_csv_list.append(csv_file_path)
 
         results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
