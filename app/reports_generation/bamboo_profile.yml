@@ -20,3 +20,4 @@ image_height_px: 1000
 image_width_px: 1600
 check_actions_count: false
 judge: false
+cold_start: 60
