@@ -62,7 +62,8 @@ def __reset_file_stream(stream: IO) -> None:
     stream.seek(0)
 
 
-def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list, cold_start: int) -> None:
+def __convert_jtl_to_csv(input_file_path: Path, output_file_path: Path, default_test_actions: list,
+                         cold_start: int) -> None:
     if not input_file_path.exists():
         raise SystemExit(f'ERROR: Input file {output_file_path} does not exist')
     start = time.time()
