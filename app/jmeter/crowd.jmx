@@ -225,7 +225,7 @@
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}plugins/servlet/secsignid</stringProp>
+                <stringProp name="HTTPSampler.path">${application.protocol}://${application.hostname}:${application.port}${application.postfix}/plugins/servlet/secsignid</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -340,7 +340,7 @@ if ( sleep_time &gt; 0 ) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/authentication?username=${username}</stringProp>
+                <stringProp name="HTTPSampler.path">${application.protocol}://${application.hostname}:${application.port}${application.postfix}/rest/usermanagement/1/authentication?username=${username}</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -354,7 +354,7 @@ if ( sleep_time &gt; 0 ) {
                 <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
                   <collectionProp name="AuthManager.auth_list">
                     <elementProp name="" elementType="Authorization">
-                      <stringProp name="Authorization.url">${application.postfix}</stringProp>
+                      <stringProp name="Authorization.url">${application.protocol}://${application.hostname}:${application.port}${application.postfix}</stringProp>
                       <stringProp name="Authorization.username">${application.name}</stringProp>
                       <stringProp name="Authorization.password">${application.password}</stringProp>
                       <stringProp name="Authorization.domain"></stringProp>
@@ -404,7 +404,7 @@ if ( sleep_time &gt; 0 ) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/usermanagement/1/user/group/direct?username=${username}&amp;start-index=0&amp;max-results=-1</stringProp>
+                <stringProp name="HTTPSampler.path">${application.protocol}://${application.hostname}:${application.port}${application.postfix}/rest/usermanagement/1/user/group/direct?username=${username}&amp;start-index=0&amp;max-results=-1</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -418,7 +418,7 @@ if ( sleep_time &gt; 0 ) {
                 <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
                   <collectionProp name="AuthManager.auth_list">
                     <elementProp name="" elementType="Authorization">
-                      <stringProp name="Authorization.url">${application.postfix}</stringProp>
+                      <stringProp name="Authorization.url">${application.protocol}://${application.hostname}:${application.port}${application.postfix}</stringProp>
                       <stringProp name="Authorization.username">${application.name}</stringProp>
                       <stringProp name="Authorization.password">${application.password}</stringProp>
                       <stringProp name="Authorization.domain"></stringProp>
