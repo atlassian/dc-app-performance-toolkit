@@ -52,7 +52,7 @@ def validate_application_config(processors, app_name_upper, app_settings, min_de
                 f"You are trying to run an enterprise-scale load test with {concurrency} against the "
                 f"instance with a weaker configuration than recommended. "
                 f"Kindly consider decreasing the load in your {app_name_upper.lower()}.yml file or "
-                f"using or re-installing the appropriate environment.")
+                f"using/re-installing the appropriate environment.")
 
 
 def analyze_application_configuration(app_name):
