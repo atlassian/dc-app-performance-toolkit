@@ -49,7 +49,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.9.0
+      - selenium==4.10.0
 execution:
   - scenario: jmeter
     executor: jmeter
