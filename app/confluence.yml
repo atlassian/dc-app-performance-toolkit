@@ -5,12 +5,11 @@ settings:
   verbose: false
   check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: scale-confluence-testdc.zephyr4jiracloud.net   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
-    application_protocol: https      # http or https
-    application_port: 443            # 80, 443, 8080, 1990, etc
+    application_hostname: a45290634dcd841f4936eba02ea34b4e-697273123.us-east-2.elb.amazonaws.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+    application_protocol: http      # http or https
+    application_port: 80            # 80, 443, 8080, 1990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /confluence in case of url like http://localhost:1990/confluence
-    ###todo application_postfix: /confluence
+    application_postfix: /confluence           # e.g. /confluence in case of url like http://localhost:1990/confluence
     admin_login: admin
     admin_password: admin
     load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
