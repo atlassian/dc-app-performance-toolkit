@@ -5,6 +5,7 @@ from typing import List
 from scripts.utils import validate_file_exists, resolve_path, validate_config
 
 RESULTS_CSV_FILE_NAME = "results.csv"
+COLD_START_RESULTS_CSV_FILE_NAME = "cold_start_results.csv"
 
 
 class ResultsCSV:
@@ -31,12 +32,12 @@ def __validate_count_of_actions(tests_results: List[ResultsCSV]):
                          'The number of actions should be the same for each results.csv.')
 
 
-def __get_tests_results(config: dict) -> List[ResultsCSV]:
+def __get_tests_results(config: dict, csv_file_name: str) -> List[ResultsCSV]:
     results_files_list = []
     column_name = config['column_name']
     for run in config['runs']:
         value_by_action = {}
-        absolute_file_path = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
+        absolute_file_path = resolve_path(run['fullPath']) / csv_file_name
         with absolute_file_path.open(mode='r') as fs:
             for row in csv.DictReader(fs):
                 value_by_action[row['Label']] = {column_name: row[column_name], 'App-specific': row['App specific']}
@@ -72,9 +73,9 @@ def __get_output_file_path(config, results_dir) -> Path:
     return results_dir / f"{config['profile']}.csv"
 
 
-def aggregate(config: dict, results_dir: Path) -> Path:
+def aggregate(config: dict, results_dir: Path, csv_file_name: str) -> Path:
     validate_config(config)
-    tests_results = __get_tests_results(config)
+    tests_results = __get_tests_results(config, csv_file_name)
     if config.get('check_actions_count', True):
         __validate_count_of_actions(tests_results)
     output_file_path = __get_output_file_path(config, results_dir)

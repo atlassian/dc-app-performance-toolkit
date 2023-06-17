@@ -43,7 +43,12 @@ def validate_config(config: dict):
 def make_chart(config: dict, results_dir: Path, scenario_status: str) -> Path:
     csv_path_str = config["aggregated_csv_path"]
     index_col = config["index_col"]
-    title = config["title"] + f" | Scenario status: {scenario_status}"
+    cold_start = config.get('cold_start', 0)
+    title = f"{config['title']} | Scenario status: {scenario_status}"
+
+    if cold_start > 0:
+        title += f" | Cold start {cold_start}(s)"
+
     image_height_px = config["image_height_px"]
     image_width_px = config["image_width_px"]
 

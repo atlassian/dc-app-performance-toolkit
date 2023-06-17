@@ -191,7 +191,7 @@ def convert_to_csv(input_jtl: Path, output_csv: Path, default_test_actions: list
             dict_writer.writerow(row)
 
 
-def main(cold_start: int = 0):
+def main():
     args = sys.argv[1:]
     file_names = __pathname_pattern_expansion(args)
     __validate_file_names(file_names)
@@ -204,7 +204,7 @@ def main(cold_start: int = 0):
             jtl_validator.validate(jtl_file_path)
             csv_file_path = Path(tmp_dir) / __change_file_extension(file_name, '.csv')
             default_test_actions = __get_all_default_actions()
-            __convert_jtl_to_csv(jtl_file_path, csv_file_path, default_test_actions, cold_start)
+            __convert_jtl_to_csv(jtl_file_path, csv_file_path, default_test_actions, cold_start=0)
             temp_csv_list.append(csv_file_path)
 
         results_file_path = ENV_TAURUS_ARTIFACT_DIR / RESULTS_CSV_NAME
