@@ -1,30 +1,28 @@
----
 settings:
   artifacts-dir: results/jsm/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false
   env:
-    application_hostname: test_jsm_instance.atlassian.com    # Jira Service Desk DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 2990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /jira for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`. Leave this value blank for url without postfix.
+    application_hostname: test_jsm_instance.atlassian.com
+    application_protocol: http
+    application_port: 80
+    secure: true
+    application_postfix: null
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency_agents: 50          # number of concurrent virtual agent users for jmeter or locust scenario
-    concurrency_customers: 150      # number of concurrent virtual customer users for jmeter or locust scenario
+    load_executor: jmeter
+    concurrency_agents: 50
+    concurrency_customers: 150
     test_duration: 45m
-    ramp-up: 3m                     # time to spin all concurrent users
+    ramp-up: 3m
     total_actions_per_hour_agents: 5000
     total_actions_per_hour_customers: 15000
-    insight: False                  # Set True to enable Insight specific tests
-    WEBDRIVER_VISIBLE: False
+    insight: false
+    WEBDRIVER_VISIBLE: false
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
-    allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    # Action percentage for Jmeter and Locust load executors
+    allow_analytics: false
     agent_browse_projects: 10
     agent_view_request: 24
     agent_add_comment: 26
@@ -41,7 +39,6 @@ settings:
     agent_insight_view_queue_insight_column: 4
     agent_insight_view_issue_with_objects: 8
     agent_insight_search_object_by_iql: 2
-
     customer_view_portal: 11
     customer_view_requests: 25
     customer_view_request: 15
@@ -51,42 +48,41 @@ settings:
     customer_create_request: 16
     customer_insight_view_request: 6
     customer_standalone_extension: 0
-
-    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
+    custom_dataset_query: ''
 services:
-  - module: shellexec
-    prepare:
-      - python util/pre_run/environment_checker.py
-      - python util/pre_run/check_for_updates.py
-      - python util/data_preparation/jsm_prepare_data.py
-    shutdown:
-      - python util/post_run/jmeter_post_check.py
-      - python util/jtl_convertor/jtls-to-csv.py kpi*.jtl selenium.jtl
-    post-process:
-      - python util/analytics/analytics.py jsm
-      - python util/post_run/cleanup_results_dir.py
-  - module: pip-install
-    packages:
-      - selenium==4.9.1
+- module: shellexec
+  prepare:
+  - python util/pre_run/environment_checker.py
+  - python util/pre_run/check_for_updates.py
+  - python util/data_preparation/jsm_prepare_data.py
+  shutdown:
+  - python util/post_run/jmeter_post_check.py
+  - python util/jtl_convertor/jtls-to-csv.py kpi*.jtl selenium.jtl
+  post-process:
+  - python util/analytics/analytics.py jsm
+  - python util/post_run/cleanup_results_dir.py
+- module: pip-install
+  packages:
+  - selenium==4.9.1
 execution:
-  - scenario: ${load_executor}_agents
-    executor: ${load_executor}
-    concurrency: ${concurrency_agents}
-    hold-for: ${test_duration}
-    ramp-up: ${ramp-up}
-  - scenario: ${load_executor}_customers
-    executor: ${load_executor}
-    concurrency: ${concurrency_customers}
-    hold-for: ${test_duration}
-    ramp-up: ${ramp-up}
-  - scenario: selenium_customers
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
-  - scenario: selenium_agents
-    executor: selenium
-    runner: pytest
-    hold-for: ${test_duration}
+- scenario: ${load_executor}_agents
+  executor: ${load_executor}
+  concurrency: ${concurrency_agents}
+  hold-for: ${test_duration}
+  ramp-up: ${ramp-up}
+- scenario: ${load_executor}_customers
+  executor: ${load_executor}
+  concurrency: ${concurrency_customers}
+  hold-for: ${test_duration}
+  ramp-up: ${ramp-up}
+- scenario: selenium_customers
+  executor: selenium
+  runner: pytest
+  hold-for: ${test_duration}
+- scenario: selenium_agents
+  executor: selenium
+  runner: pytest
+  hold-for: ${test_duration}
 scenarios:
   selenium_customers:
     script: selenium_ui/jsm_ui_customers.py
@@ -104,7 +100,6 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
-      # Workload model
       total_actions_per_hour_agents: ${total_actions_per_hour_agents}
       perc_agent_browse_projects: ${agent_browse_projects}
       perc_agent_view_request: ${agent_view_request}
@@ -130,7 +125,6 @@ scenarios:
       application_protocol: ${application_protocol}
       application_port: ${application_port}
       application_postfix: ${application_postfix}
-      # Workload model
       total_actions_per_hour_customers: ${total_actions_per_hour_customers}
       perc_customer_view_portal: ${customer_view_portal}
       perc_customer_view_requests: ${customer_view_requests}
@@ -143,34 +137,34 @@ scenarios:
       perc_customer_standalone_extension: ${customer_standalone_extension}
 modules:
   consolidator:
-    rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling
-    percentiles: [] # CONFSRVDEV-7631 disable all percentiles due to Taurus's excessive memory usage
+    rtimes-len: 0
+    percentiles: []
   jmeter:
     version: ${JMETER_VERSION}
     detect-plugins: true
-    memory-xmx: 8G  # allow JMeter to use up to 8G of memory
+    memory-xmx: 8G
     plugins:
-      - bzm-parallel=0.4
-      - bzm-random-csv=0.6
-      - jpgc-casutg=2.5
-      - jpgc-dummy=0.2
-      - jpgc-ffw=2.0
-      - jpgc-fifo=0.2
-      - jpgc-functions=2.1
-      - jpgc-json=2.6
-      - jpgc-perfmon=2.1
-      - jpgc-prmctl=0.4
-      - jpgc-tst=2.4
-      - jpgc-wsc=0.3
-      - tilln-sshmon=1.0
-      - jpgc-synthesis=2.2
+    - bzm-parallel=0.4
+    - bzm-random-csv=0.6
+    - jpgc-casutg=2.5
+    - jpgc-dummy=0.2
+    - jpgc-ffw=2.0
+    - jpgc-fifo=0.2
+    - jpgc-functions=2.1
+    - jpgc-json=2.6
+    - jpgc-perfmon=2.1
+    - jpgc-prmctl=0.4
+    - jpgc-tst=2.4
+    - jpgc-wsc=0.3
+    - tilln-sshmon=1.0
+    - jpgc-synthesis=2.2
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
-      httpsampler.ignore_failed_embedded_resources: "true"
+      httpsampler.ignore_failed_embedded_resources: 'true'
   selenium:
     chromedriver:
-      version: "114.0.5735.90" # Supports Chrome version 114. You can refer to http://chromedriver.chromium.org/downloads
+      version: 113.0.5672.63
 reporting:
-  - data-source: sample-labels
-    module: junit-xml
+- data-source: sample-labels
+  module: junit-xml
