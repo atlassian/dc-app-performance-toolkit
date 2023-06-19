@@ -5362,7 +5362,7 @@ if (response.contains(&quot;Successfully added emoji&quot;)) {
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/emoticons/1.0/custom/delete-your-upload/${emoji_shortcut}</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/rest/emoticons/1.0/custom/delete-your-upload?shortcut=${emoji_shortcut}</stringProp>
                   <stringProp name="HTTPSampler.method">DELETE</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
