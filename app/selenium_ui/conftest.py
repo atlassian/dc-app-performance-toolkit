@@ -230,10 +230,7 @@ def get_performance_logs(webdriver):
     needed_logs = []
     for entry in logs:
         log = json.loads(entry["message"])["message"]
-        if log["method"] == "Network.requestWillBeSent" or \
-           log["method"] == "Network.responseReceived" or \
-           log["method"] == "Network.requestServedFromCache" or \
-           log["method"] == "Network.loadingFinished":
+        if log["method"] == "Network.requestWillBeSent" or log["method"] == "Network.responseReceived" or log["method"] == "Network.requestServedFromCache" or log["method"] == "Network.loadingFinished":
             needed_logs.append(log)
 
     sorted_requests = {}
