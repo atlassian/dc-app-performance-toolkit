@@ -474,7 +474,7 @@ This increase in re-index time is due to a known issue which affects Jira 9.4.x,
 4. Select the **Full re-index** option.
 5. Click **Re-Index** and wait until re-indexing is completed. 
 {{% note %}}
-Jira will be temporarily unavailable during the re-indexing process. Once the process is complete, the system will be fully accessible and operational once again.
+Jira will be temporarily unavailable during the re-indexing process - "503 Service Temporarily Unavailable" message will be displayed. Once the process is complete, the system will be fully accessible and operational once again.
 {{% /note %}}
 
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
