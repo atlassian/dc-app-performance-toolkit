@@ -160,6 +160,10 @@ jira_db_name = "jira"
 jira_db_master_username = "atljira"
 jira_db_master_password = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# jira_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Confluence Settings
 ################################################################################
@@ -258,6 +262,9 @@ confluence_db_master_password = "Password1!"
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# confluence_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
 # Bitbucket Settings
@@ -369,3 +376,7 @@ bitbucket_db_name = "bitbucket"
 # If password is not provided, a random password will be generated.
 bitbucket_db_master_username = "atlbitbucket"
 bitbucket_db_master_password = "Password1!"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bitbucket_custom_values_file = "/path/to/values.yaml"

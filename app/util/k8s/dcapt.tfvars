@@ -153,6 +153,10 @@ jira_db_name = "jira"
 jira_db_master_username = "atljira"
 jira_db_master_password = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# jira_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Confluence Settings
 ################################################################################
@@ -248,6 +252,14 @@ confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
+
+# Use AWS S3 to store attachments. See: https://confluence.atlassian.com/doc/configuring-s3-object-storage-1206794554.html
+# Terraform will automatically create S3 bucket, IAM role and policy
+#confluence_s3_attachments_storage = true
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# confluence_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
 # Bitbucket Settings
@@ -357,6 +369,10 @@ bitbucket_db_name = "bitbucket"
 bitbucket_db_master_username = "atlbitbucket"
 bitbucket_db_master_password = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bitbucket_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Crowd Settings
 ################################################################################
@@ -442,6 +458,10 @@ crowd_termination_grace_period = 0
 # If password is not provided, a random password will be generated.
 crowd_db_master_username     = "atlcrowd"
 crowd_db_master_password     = "Password1!"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# crowd_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
 # Bamboo Settings
@@ -530,3 +550,32 @@ bamboo_db_name                 = "bamboo"
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
 bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bamboo_custom_values_file = "/path/to/values.yaml"
+
+################################################################################
+# Monitoring settings
+################################################################################
+
+# Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
+# to kube-monitoring namespace. Defaults to false.
+# monitoring_enabled = true
+
+# Create Grafana service of LoadBalancer type. Defaults to false. To restric access to LB URL
+# the list of CIRDs from whitelist_cidr will be automatically applied.
+# monitoring_grafana_expose_lb = true
+
+# Prometheus Persistent Volume Claim size. Defaults to 10Gi.
+# Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+# i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+# to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+# prometheus_pvc_disk_size = "100Gi"
+
+# Grafana Persistent Volume Claim size. Defaults to 10Gi.
+# grafana_pvc_disk_size = "20Gi"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# monitoring_custom_values_file = "/path/to/values.yaml"
