@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-07-05"
+date: "2023-07-06"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -70,7 +70,7 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-2. Navigate to `app/util/k8s` folder.
+2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 3. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
@@ -96,7 +96,7 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-7. Re-index:    
+7. Re-index (only for Jira 8.x, for Jira 9.x skip this step):    
    - Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
    - Select the **Full re-index** option. 
    - Click **Re-Index** and wait until re-indexing is completed (~2s).
@@ -321,7 +321,7 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-2. Navigate to `app/util/k8s` folder.
+2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 3. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
@@ -548,11 +548,15 @@ The same article has instructions on how to increase limit if needed.
 
 To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
-1. Navigate to `app/util/k8s` folder.
+1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 2. Open `dcapt.tfvars` file and set `jira_replica_count` value to `2`.
 3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
-   ```bash
-   ./install.sh -c dcapt.tfvars
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
 4. Use SSH to connect to execution environment.
 5. Run toolkit with docker from the execution environment instance:
