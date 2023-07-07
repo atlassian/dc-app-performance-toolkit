@@ -290,20 +290,16 @@ bitbucket_version_tag = "7.21.11"
 #
 # 7.21.11 DCAPT small dataset EBS snapshot
 bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
-# 8.8.3 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
-# 7.17.16 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0c945dbcbd3e4ebff"
+# 8.9.2 DCAPT small dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0fb8cd6bf387057c0"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.11 DCAPT small dataset RDS snapshot
  bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-11"
-# 8.8.3 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-8-3"
-# 7.17.16 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-16"
+# 8.9.2 DCAPT small dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-2"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
