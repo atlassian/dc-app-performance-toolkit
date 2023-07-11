@@ -85,34 +85,34 @@ jira_replica_count = 1
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 #
 # Jira version
-jira_version_tag = "9.4.6"
+jira_version_tag = "9.4.8"
 # JSM version
-# jira_version_tag = "5.4.6"
+# jira_version_tag = "5.4.8"
 
 # Shared home restore configuration.
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
-# Jira 9.4.6 DCAPT small dataset EBS snapshot
- jira_shared_home_snapshot_id = "snap-0651a00c1234ca355"
-# Jira 8.20.22 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-060af366a595cf019"
-# JSM 5.4.6 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0b989ff3e3236e707"
-# JSM 4.20.22 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-02cf7f70e3872320f"
+# Jira 9.4.8 DCAPT small dataset EBS snapshot
+ jira_shared_home_snapshot_id = "snap-0005a8c3cc297b294"
+# Jira 8.20.24 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0c3cb60ddc50c1136"
+# JSM 5.4.8 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-02f299ef7f1f524b2"
+# JSM 4.20.24 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0971e128b8d1d2af9"
 
 # Database restore configuration.
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
 #
-# Jira 9.4.6 DCAPT small dataset RDS snapshot
- jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-6"
-# Jira 8.20.22 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-22"
-# JSM 5.4.6 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-6"
-# JSM 4.20.22 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-22"
+# Jira 9.4.8 DCAPT small dataset RDS snapshot
+ jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-8"
+# Jira 8.20.24 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-24"
+# JSM 5.4.8 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-8"
+# JSM 4.20.24 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-24"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
