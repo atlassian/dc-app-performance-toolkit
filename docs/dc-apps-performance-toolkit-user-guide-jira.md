@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-04-20"
+date: "2023-07-06"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -46,9 +46,6 @@ DCAPT has fully transitioned to Terraform deployment. If you still wish to use C
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
 
-We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
-how to deploy a Jira Data Center environment and AWS on k8s.
-
 #### AWS cost estimation for the development environment
 
 {{% note %}}
@@ -69,44 +66,42 @@ See [Set up an enterprise-scale environment Jira Data Center on AWS](#instancese
 
 Below process describes how to install low-tier Jira DC with "small" dataset included:
 
-1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
-   section of the official documentation.
-2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
-3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-4. Clone the project repo:
-   ```bash
-   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
-   ```
-5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
-   ``` bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars
-    ```
-6. Set **required** variables in `dcapt-small.tfvars` file:
+2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+3. Set AWS access keys created in step1 in `aws_envs` file:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+4. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-jira-small`
    - `products` - `jira`
    - `jira_license` - one-liner of valid jira license without spaces and new line symbols
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-7. Optional variables to override:
+
+   {{% note %}}
+   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   {{% /note %}}
+   
+5. Optional variables to override:
    - `jira_version_tag` - Jira version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
    - Make sure that the Jira version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
-   ```bash
-   ./install.sh -c dcapt-small.tfvars
+6. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-9. Re-index:    
+7. Re-index (only for Jira 8.x, for Jira 9.x skip this step):    
    - Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
    - Select the **Full re-index** option. 
    - Click **Re-Index** and wait until re-indexing is completed (~2s).
 
-10. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
-
-{{% note %}}
-New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
-{{% /note %}}
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -269,12 +264,14 @@ App-specific actions are required. Do not proceed with the next step until you h
 ---
 ## <a id="mainenvironmententerprise"></a> Enterprise-scale environment
 
+{{% warning %}}
+It is recommended to terminate a development environment before creating an enterprise-scale environment.
+Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-development-environment) instructions.
+{{% /warning %}}
+
 After adding your custom app-specific actions, you should now be ready to run the required tests for the Marketplace Data Center Apps Approval process. To do this, you'll need an **enterprise-scale environment**.
 
 ### <a id="instancesetup"></a>4. Setting up Jira Data Center enterprise-scale environment with "large" dataset
-
-We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
-how to deploy a Jira Data Center environment and AWS on k8s.
 
 #### AWS cost estimation
 [AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
@@ -318,56 +315,44 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 
-{{% warning %}}
-It is recommended to terminate a development environment before creating an enterprise-scale environment.
-Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
-If you want to keep a development environment up, read [How do I deal with a pre-existing state in multiple environments?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#:~:text=How%20do%20I%20deal%20with%20pre%2Dexisting%20state%20in%20multiple%20environment%3F)
-{{% /warning %}}
-
 Below process describes how to install enterprise-scale Jira DC with "large" dataset included: 
 
-1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
-   section of the official documentation.
-2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
-3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-4. Clone the project repo:
-   ```bash
-   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
-   ```
-5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
-      ``` bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
-    ```
-6. Set **required** variables in `dcapt.tfvars` file:
-   - `environment_name` - any name for you environment, e.g. `dcapt-jira-large`
+2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+3. Set AWS access keys created in step1 in `aws_envs` file:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+4. Set **required** variables in `dcapt.tfvars` file:
+   - `environment_name` - any name for you environment, e.g. `dcapt-jira`
    - `products` - `jira`
    - `jira_license` - one-liner of valid jira license without spaces and new line symbols
-   - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-7. Optional variables to override:
+   - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
+
+   {{% note %}}
+   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   {{% /note %}}
+   
+5. Optional variables to override:
    - `jira_version_tag` - Jira version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
    - Make sure that the Jira version specified in **jira_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
-    ```bash
-    ./install.sh -c dcapt.tfvars
-    ```
+6. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+   ```
 9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
-
-{{% note %}}
-New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-Use this server id for generation `BX02-9YO1-IN86-LO5G`.
-{{% /note %}}
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
 It's recommended to change default password from UI account page for security reasons.
 {{% /note %}}
-
-{{% warning %}}
-Terminate cluster when it is not used for performance results generation.
-{{% /warning %}}
 
 ---
 
@@ -563,11 +548,15 @@ The same article has instructions on how to increase limit if needed.
 
 To receive scalability benchmark results for two-node Jira DC **with** app-specific actions:
 
-1. Navigate to `data-center-terraform` folder.
+1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 2. Open `dcapt.tfvars` file and set `jira_replica_count` value to `2`.
 3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
-   ```bash
-   ./install.sh -c dcapt.tfvars
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
 4. Use SSH to connect to execution environment.
 5. Run toolkit with docker from the execution environment instance:
@@ -641,7 +630,7 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 
 {{% warning %}}
 It is recommended to terminate an enterprise-scale environment after completing all tests.
-Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
+Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
 {{% /warning %}}
 
 #### Attaching testing results to ECOHELP ticket
@@ -658,7 +647,7 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 ## <a id="support"></a> Support
 For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
 
-If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
-For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For instructions on how to collect detailed logs, see [Collect detailed k8s logs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#collect-detailed-k8s-logs).
 
 In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

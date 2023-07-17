@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-04-20"
+date: "2023-07-06"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -23,45 +23,41 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 
 ## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Crowd Data Center on k8s
 
-We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
-how to deploy a Crowd Data Center environment and AWS on k8s. 
-
 #### Setup Crowd Data Center with an enterprise-scale dataset on k8s
 
 Below process describes how to install Crowd DC with an enterprise-scale dataset included. This configuration was created
 specifically for performance testing during the DC app review process.
 
-1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
-   section of the official documentation.
-2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
-3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-4. Clone the project repo:
-   ```bash
-   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
-   ```
-5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
-      ``` bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
-    ```
-6. Set **required** variables in `dcapt.tfvars` file:
+2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+3. Set AWS access keys created in step1 in `aws_envs` file:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+4. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-crowd`
    - `products` - `crowd`
    - `crowd_license` - one-liner of valid crowd license without spaces and new line symbols
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
    - `instance_types` - `["c5.xlarge"]`
-7. From local terminal (Git bash terminal for Windows) start the installation (~40min):
-   ```bash
-   ./install.sh -c dcapt.tfvars
-   ```
-8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
-{{% note %}}
-New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
-{{% /note %}}
+   {{% note %}}
+   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   {{% /note %}}
+
+5. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+   ```
+6. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
+
 
 ---
 
@@ -77,12 +73,8 @@ All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 ---
 
-#### Troubleshooting
-See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page.
-
 #### Terminate Crowd Data Center
-
-Follow steps described on [Uninstallation and cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) page.
+Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
 
 ---
 
@@ -284,11 +276,15 @@ The same article has instructions on how to increase limit if needed.
 
 To receive scalability benchmark results for two-node Crowd DC **with** app-specific actions:
 
-1. Navigate to `data-center-terraform` folder.
+1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 2. Open `dcapt.tfvars` file and set `crowd_replica_count` value to `2`.
 3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
-   ```bash
-   ./install.sh -c dcapt.tfvars
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+   -v "$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
 4. Use SSH to connect to execution environment.
 
@@ -396,7 +392,8 @@ After completing all your tests, delete your Crowd Data Center stacks.
 #### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your ECOHELP ticket.
+It is recommended to terminate an enterprise-scale environment after completing all tests.
+Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
@@ -407,7 +404,7 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 ## <a id="support"></a> Support
 For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
 
-If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
-For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For instructions on how to collect detailed logs, see [Collect detailed k8s logs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#collect-detailed-k8s-logs).
 
 In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
