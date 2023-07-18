@@ -93,6 +93,7 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    - `products` - `bitbucket`
    - `bitbucket_license` - one-liner of valid bitbucket license without spaces and new line symbols
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
+   - `instance_types` - `["t3.2xlarge"]`
 
    {{% note %}}
    New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
