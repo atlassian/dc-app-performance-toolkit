@@ -33,10 +33,10 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-1": "snap-0c98167037a14f031",
+                "us-east-1": "snap-0640210f62a262aaf",
                 "us-east-2": "snap-0d619095feaa2eca5",
-                "us-west-1": "snap-07b153b928501f065",
-                "us-west-2": "snap-0bd8c254fbf4feb25"
+                "us-west-1": "snap-00f6a0fc8ba4c4cce",
+                "us-west-2": "snap-0d23a05be5f527030"
               }
             ]
           },
