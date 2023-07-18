@@ -181,32 +181,32 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.9"
+confluence_version_tag = "7.19.11"
 
 # Shared home restore configuration.
 # 8.1.4 DCAPT small dataset EBS snapshot
 # confluence_shared_home_snapshot_id = "snap-0815ada397b953b93"
-# 7.19.9 DCAPT small dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-04a21b844f187b645"
-# 7.13.17 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-02107cfb60888ccbf"
+# 7.19.11 DCAPT small dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-00ede7dca448a6243"
+# 7.13.18 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-055811dae848f13ae"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 # 8.1.4 DCAPT small dataset RDS snapshot
 # confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-1-4"
-# 7.19.9 DCAPT small dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-9"
-# 7.13.17 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-17"
+# 7.19.11 DCAPT small dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-11"
+# 7.13.18 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-18"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.1.1
+# 8.1.4
 # confluence_db_snapshot_build_number = "9003"
-# 7.19.6
+# 7.19.11
 confluence_db_snapshot_build_number = "8804"
-# 7.13.14
+# 7.13.18
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
@@ -283,21 +283,21 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.11"
+bitbucket_version_tag = "7.21.14"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT small dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
+# 7.21.14 DCAPT small dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-03893c494ba7edcf4"
 # 8.9.2 DCAPT small dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-0fb8cd6bf387057c0"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT small dataset RDS snapshot
- bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-11"
+# 7.21.14 DCAPT small dataset RDS snapshot
+ bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-14"
 # 8.9.2 DCAPT small dataset RDS snapshot
 #bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-2"
 
