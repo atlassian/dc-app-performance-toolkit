@@ -282,7 +282,7 @@ bitbucket_version_tag = "7.21.11"
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.11 DCAPT small dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
+bitbucket_shared_home_snapshot_id = "snap-0a6edc9184118695c"
 # 8.8.3 DCAPT small dataset EBS snapshot
 #bitbucket_shared_home_snapshot_id = "snap-01f510d0c4405ce78"
 # 7.17.16 DCAPT small dataset EBS snapshot
