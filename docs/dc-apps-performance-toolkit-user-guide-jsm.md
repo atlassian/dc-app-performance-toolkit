@@ -310,7 +310,7 @@ After adding your custom app-specific actions, you should now be ready to run th
 ### <a id="instancesetup"></a>4. Setting up Jira Service Management Data Center enterprise-scale environment with "large" dataset
 
 #### EC2 CPU Limit
-The installation of Jira Service Management requires **32** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
+The installation of 4-nodes Jira Service Management requires **32** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
 
 The limit can be increased by creating AWS Support ticket. To request the limit increase fill in [Amazon EC2 Limit increase request form](https://aws.amazon.com/contact-us/ec2-request/):
 
