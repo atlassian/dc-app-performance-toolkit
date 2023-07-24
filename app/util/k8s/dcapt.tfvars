@@ -278,23 +278,23 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.14"
+bitbucket_version_tag = "8.9.2"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.14 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0ccb8c3d34ff171f1"
+#bitbucket_shared_home_snapshot_id = "snap-0ccb8c3d34ff171f1"
 # 8.9.2 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0d933f3d40000e877"
+bitbucket_shared_home_snapshot_id = "snap-0d933f3d40000e877"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
 # 7.21.14 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-14"
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-14"
 # 8.9.2 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-2"
+bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-2"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
