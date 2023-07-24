@@ -205,6 +205,22 @@ It is recommended to terminate a development environment before creating an ente
 Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-development-environment) instructions.
 {{% /warning %}}
 
+#### EC2 CPU Limit
+The installation of 4-nodes Bitbucket requires **48** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
+
+The limit can be increased by creating AWS Support ticket. To request the limit increase fill in [Amazon EC2 Limit increase request form](https://aws.amazon.com/contact-us/ec2-request/):
+
+| Parameter             | Value                                                                           |
+|-----------------------|---------------------------------------------------------------------------------|
+| Limit type            | EC2 Instances                                                                   |
+| Severity              | Urgent business impacting question                                              |
+| Region                | US East (Ohio) _or your specific region the product is going to be deployed in_ |
+| Primary Instance Type | All Standard (A, C, D, H, I, M, R, T, Z) instances                              |
+| Limit                 | Instance Limit                                                                  |
+| New limit value       | _The needed limit of CPU Cores_                                                 |
+| Case description      | _Give a small description of your case_                                         |
+Select the **Contact Option** and click **Submit** button.
+
 ### AWS cost estimation ###
 [AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
@@ -441,8 +457,8 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run4"></a> Run 4 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bitbucket/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for two-node Bitbucket DC **with** app-specific actions:
@@ -473,8 +489,8 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run5"></a> Run 5 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bitbucket/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
