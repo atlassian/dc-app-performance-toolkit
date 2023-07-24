@@ -26,6 +26,22 @@ test results for the Marketplace approval process. Preferably, use the below rec
 
 ## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Bamboo Data Center on k8s
 
+#### EC2 CPU Limit
+The installation of Jira Service Management requires **16** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
+
+The limit can be increased by creating AWS Support ticket. To request the limit increase fill in [Amazon EC2 Limit increase request form](https://aws.amazon.com/contact-us/ec2-request/):
+
+| Parameter             | Value                                                                           |
+|-----------------------|---------------------------------------------------------------------------------|
+| Limit type            | EC2 Instances                                                                   |
+| Severity              | Urgent business impacting question                                              |
+| Region                | US East (Ohio) _or your specific region the product is going to be deployed in_ |
+| Primary Instance Type | All Standard (A, C, D, H, I, M, R, T, Z) instances                              |
+| Limit                 | Instance Limit                                                                  |
+| New limit value       | _The needed limit of CPU Cores_                                                 |
+| Case description      | _Give a small description of your case_                                         |
+Select the **Contact Option** and click **Submit** button.
+
 #### Setup Bamboo Data Center with an enterprise-scale dataset on k8s
 
 Below process describes how to install Bamboo DC with an enterprise-scale dataset included. This configuration was created
