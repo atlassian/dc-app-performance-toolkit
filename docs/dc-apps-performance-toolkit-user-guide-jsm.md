@@ -500,6 +500,10 @@ Jira Service Management will be temporarily unavailable during the re-indexing p
 {{% /note %}}
 
 6. **Take a screenshot of the acknowledgment screen** displaying the re-index time and Lucene index timing.
+{{% note %}}
+Re-index information window is displayed on the **Indexing page**. If the window is not displayed, log in to Jira Service Management one more time and navigate to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**. If you use the direct link to the **Indexing** page, refresh the page after the re-index is finished.
+{{% /note %}}
+
 7. Attach the screenshot(s) to your ECOHELP ticket.
 
 
