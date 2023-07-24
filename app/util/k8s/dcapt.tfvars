@@ -174,17 +174,17 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.9"
+confluence_version_tag = "7.19.11"
 
 # Shared home restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 #
 # 8.1.4 DCAPT large dataset EBS snapshot
 # confluence_shared_home_snapshot_id = "snap-0125fdfcf37dabef5"
-# 7.19.9 DCAPT large dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-0bd74575c95014c10"
-# 7.13.17 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-08abae6cf1937e958"
+# 7.19.11 DCAPT large dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-09365c581a158a979"
+# 7.13.18 DCAPT large dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-04cc3d8455b1ef6e9"
 
 # Database restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
@@ -192,18 +192,18 @@ confluence_shared_home_snapshot_id = "snap-0bd74575c95014c10"
 #
 # 8.1.4 DCAPT large dataset RDS snapshot
 # confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-1-4"
-# 7.19.9 DCAPT large dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-9"
-# 7.13.17 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-13-17"
+# 7.19.11 DCAPT large dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-11"
+# 7.13.18 DCAPT large dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-13-18"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
 # 8.1.4
 # confluence_db_snapshot_build_number = "9003"
-# 7.19.9
+# 7.19.11
 confluence_db_snapshot_build_number = "8804"
-# 7.13.17
+# 7.13.18
 # confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
@@ -212,7 +212,7 @@ confluence_db_snapshot_build_number = "8804"
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
-confluence_installation_timeout = 25
+confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
 confluence_cpu      = "4"
@@ -278,23 +278,23 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.11"
+bitbucket_version_tag = "8.9.2"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0456406e413ff835b"
+# 7.21.14 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0ccb8c3d34ff171f1"
 # 8.9.2 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0d933f3d40000e877"
+bitbucket_shared_home_snapshot_id = "snap-0d933f3d40000e877"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-11"
+# 7.21.14 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-14"
 # 8.9.2 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-2"
+bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-2"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -386,7 +386,7 @@ crowd_license = "crowd-license"
 crowd_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "5.0.5"
+crowd_version_tag = "5.1.3"
 
 # Dataset Restore
 
@@ -395,8 +395,8 @@ crowd_version_tag = "5.0.5"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #
-# Crowd 5.0.5 DCAPT large dataset EBS snapshot
-crowd_shared_home_snapshot_id = "snap-0da31ed523c51a0af"
+# Crowd 5.1.3 DCAPT large dataset EBS snapshot
+crowd_shared_home_snapshot_id = "snap-0799b1778e63d824b"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
@@ -404,9 +404,9 @@ crowd_shared_home_snapshot_id = "snap-0da31ed523c51a0af"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
 #
-# Crowd 5.0.2 DCAPT large dataset RDS snapshot
-crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-0-5"
-crowd_db_snapshot_build_number = "1794"
+# Crowd 5.1.3 DCAPT large dataset RDS snapshot
+crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-3"
+crowd_db_snapshot_build_number = "1892"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -473,8 +473,8 @@ bamboo_license = "bamboo-license"
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.2.1"
-bamboo_agent_version_tag = "9.2.1"
+bamboo_version_tag       = "9.2.3"
+bamboo_agent_version_tag = "9.2.3"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
