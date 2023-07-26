@@ -21,7 +21,7 @@ settings:
     total_actions_per_hour_customers: 15000
     insight: False                  # Set True to enable Insight specific tests
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.6.2
     LANGUAGE: en_US.utf8
     allow_analytics: No            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for Jmeter and Locust load executors

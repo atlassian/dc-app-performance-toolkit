@@ -9,7 +9,6 @@
 ``` bash
 docker run --env-file aws_envs \
 -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
--v "$PWD/.terraform:/data-center-terraform/.terraform" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
@@ -17,7 +16,6 @@ docker run --env-file aws_envs \
 ``` bash
 docker run --env-file aws_envs \
 -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
--v "$PWD/.terraform:/data-center-terraform/.terraform" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
 ```
@@ -33,7 +31,6 @@ docker run --env-file aws_envs \
 ``` bash
 docker run --env-file aws_envs \
 -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
--v "$PWD/.terraform:/data-center-terraform/.terraform" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
@@ -41,7 +38,6 @@ docker run --env-file aws_envs \
 ``` bash
 docker run --env-file aws_envs \
 -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
--v "$PWD/.terraform:/data-center-terraform/.terraform" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
 ```
@@ -49,24 +45,26 @@ docker run --env-file aws_envs \
 # Collect detailed k8s logs
 Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
-export CLUSTER_NAME=your_cluster_name
+export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
+
 docker run --env-file aws_envs \
 -v "$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 -v "$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh $CLUSTER_NAME $REGION k8s_logs
+-it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
 ```
 
 # Force terminate cluster
 Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
-export CLUSTER_NAME=your_cluster_name
+export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
+
 docker run --env-file aws_envs \
 --workdir="/data-center-terraform" \
 --entrypoint="python" \
 -v "$PWD/terminate_cluster.py:/data-center-terraform/terminate_cluster.py" \
-atlassian/dcapt terminate_cluster.py --cluster_name $CLUSTER_NAME --aws_region $REGION
+atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-cluster --aws_region $REGION
 ```
 
 # Non default product version or aws region
