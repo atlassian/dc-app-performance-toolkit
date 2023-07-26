@@ -294,7 +294,7 @@ Make sure **English (United States)** language is selected as a default language
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
     - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
-    - `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira.
+    - `application_postfix`: set to empty for CloudFormation deployment; e.g., /jira for url like this http://localhost:2990/jira.
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
@@ -874,8 +874,8 @@ Instead, set those values directly in `.yml` file on execution environment insta
        application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
        application_protocol: http                # http or https
        application_port: 80                      # 80, 443, 8080, 2990, etc
-       secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-       application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
+       secure: True                              # set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:                      # set to empty for CloudFromation deploymente.g. /jira in case of url like http://localhost:2990/jira
        admin_login: admin
        admin_password: admin
        load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.

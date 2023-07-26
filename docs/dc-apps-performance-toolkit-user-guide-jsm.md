@@ -120,7 +120,7 @@ Make sure **English (United States)** language is selected as a default language
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
     - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
-    - `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira.
+    - `application_postfix`: /jira    # default value for TerraForm deployment; e.g., /jira for url like this http://localhost:2990/jira.
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
@@ -422,7 +422,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
        application_protocol: http                # http or https
        application_port: 80                      # 80, 443, 8080, 2990, etc
        secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-       application_postfix: /jira      # e.g. /jira for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`. Leave this value blank for url without postfix.
+       application_postfix: /jira                # e.g. /jira for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`. Leave this value blank for url without postfix.
        admin_login: admin
        admin_password: admin
        load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
