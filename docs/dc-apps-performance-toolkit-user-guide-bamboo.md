@@ -235,7 +235,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
     application_protocol: http          # http or https
     application_port: 80                # 80, 443, 8080, 8085, etc
     secure: True                        # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:                # e.g. /babmoo in case of url like http://localhost:8085/bamboo
+    application_postfix: /bamboo        # e.g. /babmoo in case of url like http://localhost:8085/bamboo
     admin_login: admin
     admin_password: admin
     load_executor: jmeter            
