@@ -7,6 +7,11 @@ Configuration located inside: [src/main/java/bamboogenerator/Main.java](src/main
 **Client Configuration**
 
 - `BAMBOO_SERVER_URL` - the URL of Bamboo
+
+    For TerraForm deployment URL should have port and postfix
+    ```
+    BAMBOO_SERVER_URL = "http://my-bamboo.amazonaws.com:80/bamboo"
+    ```
 - `ADMIN_USER_NAME` - the username of admin account
 
 
