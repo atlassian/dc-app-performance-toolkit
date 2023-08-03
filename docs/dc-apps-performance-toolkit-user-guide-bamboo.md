@@ -320,7 +320,7 @@ the next steps. For an enterprise-scale environment run, the acceptable success 
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive scalability benchmark results for one-node Bamboo DC **with app** and **with app-specific actions**:
+To receive results for Bamboo DC **with app** and **with app-specific actions**:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
