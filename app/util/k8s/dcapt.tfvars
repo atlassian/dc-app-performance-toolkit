@@ -386,7 +386,7 @@ crowd_license = "crowd-license"
 crowd_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "5.1.3"
+crowd_version_tag = "5.1.4"
 
 # Dataset Restore
 
@@ -395,8 +395,8 @@ crowd_version_tag = "5.1.3"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #
-# Crowd 5.1.3 DCAPT large dataset EBS snapshot
-crowd_shared_home_snapshot_id = "snap-0799b1778e63d824b"
+# Crowd 5.1.4 DCAPT large dataset EBS snapshot
+crowd_shared_home_snapshot_id = "snap-0a8e229690be9ae30"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
@@ -404,9 +404,9 @@ crowd_shared_home_snapshot_id = "snap-0799b1778e63d824b"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
 #
-# Crowd 5.1.3 DCAPT large dataset RDS snapshot
-crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-3"
-crowd_db_snapshot_build_number = "1892"
+# Crowd 5.1.4 DCAPT large dataset RDS snapshot
+crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4"
+crowd_db_snapshot_build_number = "1893"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
