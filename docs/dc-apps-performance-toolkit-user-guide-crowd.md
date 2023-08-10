@@ -57,7 +57,7 @@ specifically for performance testing during the DC app review process.
    - `products` - `crowd`
    - `crowd_license` - one-liner of valid crowd license without spaces and new line symbols
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-   - `instance_types` - `["c5.xlarge"]`
+   - `instance_types` - `["m5.xlarge"]`
 
    {{% note %}}
    New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
