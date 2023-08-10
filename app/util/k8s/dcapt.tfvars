@@ -31,7 +31,7 @@ resource_tags = {Name: "dcapt-testing"}
 # Instance types that is preferred for EKS node group.
 # Confluence, Bamboo, Jira - use default value
 # Bitbucket - ["m5.4xlarge"]
-# Crowd - ["c5.xlarge"]
+# Crowd - ["m5.xlarge"]
 # ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
 instance_disk_size = 100
@@ -418,19 +418,19 @@ crowd_installation_timeout = 20
 
 # Crowd instance resource configuration
 crowd_cpu      = "2"
-crowd_mem      = "3Gi"
-crowd_min_heap = "1024m"
-crowd_max_heap = "1024m"
+crowd_mem      = "8Gi"
+crowd_min_heap = "2048m"
+crowd_max_heap = "2048m"
 
 # Storage
-crowd_local_home_size  = "10Gi"
-crowd_shared_home_size = "10Gi"
+crowd_local_home_size  = "15Gi"
+crowd_shared_home_size = "15Gi"
 
 # Crowd NFS instance resource configuration
 crowd_nfs_requests_cpu    = "1"
 crowd_nfs_requests_memory = "1Gi"
 crowd_nfs_limits_cpu      = "1"
-crowd_nfs_limits_memory   = "1Gi"
+crowd_nfs_limits_memory   = "2Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
