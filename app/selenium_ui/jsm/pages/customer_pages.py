@@ -36,7 +36,7 @@ class TopPanel(BasePage):
 
     def logout(self):
         self.get_element(TopPanelSelectors.logout_button).click()
-        self.wait_until_invisible(TopPanelSelectors.profile_icon)
+        self.wait_until_visible(LoginPageLocators.login_field)
 
 
 class CustomerPortals(BasePage):

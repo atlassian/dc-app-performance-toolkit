@@ -18,7 +18,7 @@ settings:
     ramp-up: 10m                      # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
     allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
@@ -36,7 +36,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.9.0
+      - selenium==4.10.0
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
