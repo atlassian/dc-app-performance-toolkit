@@ -49,7 +49,7 @@
         <dependency>
             <groupId>com.atlassian.buildeng</groupId>
             <artifactId>bamboo-plan-ownership-specs</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.7</version>
         </dependency>
         <!-- For PBC -->
         <dependency>
