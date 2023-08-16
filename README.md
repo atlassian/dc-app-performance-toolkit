@@ -95,7 +95,7 @@ git --version
 ```
 We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
 
-## Example setup for clean Ubuntu 20.04
+## Example setup for clean Ubuntu 22.04
 JDK setup (if missing):
 ```
 sudo apt-get update

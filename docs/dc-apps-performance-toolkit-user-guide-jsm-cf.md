@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-04-20"
+date: "2023-08-15"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management (CloudFormation deployment)
 
@@ -71,7 +71,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended value                                                                                                                                                                                      |
 | --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Jira Product | ServiceManagement                                                                                                                                                                                      |
-| Version | The Data Center App Performance Toolkit officially supports `4.20.22`, `5.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.20.24`, `5.4.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -553,7 +553,7 @@ All important parameters are listed and described in this section. For all other
 | Parameter | Recommended Value                                                                                                                                                                                      |
 | --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Jira Product | ServiceManagement                                                                                                                                                                                      |
-| Version | The Data Center App Performance Toolkit officially supports `4.20.22`, `5.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Version | The Data Center App Performance Toolkit officially supports `4.20.24`, `5.4.8` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -891,7 +891,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
 
 1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
-   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
+   * OS: select from Quick Start `Ubuntu Server 22.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -933,8 +933,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker pull atlassian/dcapt
-    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+    docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jsm/YY-MM-DD-hh-mm-ss` folder:
@@ -976,8 +975,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1035,8 +1033,7 @@ To receive scalability benchmark results for one-node Jira Service Management DC
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1081,8 +1078,7 @@ In case if index synchronization is failed by some reason (e.g. application stat
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1107,8 +1103,7 @@ To receive scalability benchmark results for four-node Jira Service Management D
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```  
 
 {{% note %}}

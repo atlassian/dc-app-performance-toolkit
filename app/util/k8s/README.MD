@@ -7,14 +7,14 @@
   * `license`
 * run install development environment command:
 ``` bash
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
 ## Terminate development environment
 ``` bash
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
@@ -29,14 +29,14 @@ docker run --env-file aws_envs \
   * `license`
 * run install enterprise-scale environment command:
 ``` bash
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
 ## Terminate enterprise-scale environment
 ``` bash
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
@@ -48,7 +48,7 @@ Set AWS credential in [aws_envs](./aws_envs) file and run command:
 export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
 
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 -v "$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
@@ -60,7 +60,7 @@ Set AWS credential in [aws_envs](./aws_envs) file and run command:
 export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
 
-docker run --env-file aws_envs \
+docker run --pull=always --env-file aws_envs \
 --workdir="/data-center-terraform" \
 --entrypoint="python" \
 -v "$PWD/terminate_cluster.py:/data-center-terraform/terminate_cluster.py" \
