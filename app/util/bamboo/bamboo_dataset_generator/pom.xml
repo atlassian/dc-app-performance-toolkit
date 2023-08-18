@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.atlassian.buildeng</groupId>
             <artifactId>bamboo-pbc-specs</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.7</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
