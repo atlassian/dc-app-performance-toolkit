@@ -1,7 +1,7 @@
 matplotlib==3.7.2
 pandas==2.0.3
 numpy==1.25.1
-scipy==1.11.1
+scipy==1.11.2
 pytest==7.4.0
 locust==2.15.1
 selenium==4.10.0
