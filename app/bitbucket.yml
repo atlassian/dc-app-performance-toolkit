@@ -9,7 +9,7 @@ settings:
     application_protocol: http        # http or https
     application_port: 80              # 80, 443, 8080, 7990 etc
     secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:  /bitbucket  # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
+    application_postfix: /bitbucket   # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
     load_executor: jmeter             # only jmeter executor is supported
@@ -18,9 +18,9 @@ settings:
     ramp-up: 10m                      # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
-    allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: No              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
   - module: shellexec
     prepare:
@@ -36,7 +36,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.1.3
+      - selenium==4.10.0
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
@@ -90,7 +90,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "109.0.5414.74" # Supports Chrome version 109. You can refer to http://chromedriver.chromium.org/downloads
+      version: "114.0.5735.90" # Supports Chrome version 114. You can refer to http://chromedriver.chromium.org/downloads
 reporting:
 - data-source: sample-labels
   module: junit-xml

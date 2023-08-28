@@ -14,7 +14,7 @@
 # ! REQUIRED !
 environment_name = "dcapt-product-small"
 
-# Supported products: confluence and bitbucket
+# Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
@@ -31,7 +31,7 @@ whitelist_cidr = ["0.0.0.0/0"]
 resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence - use default value
+# Confluence, Jira  - use default value
 # Bitbucket - ["t3.2xlarge"]
 # ! REQUIRED !
 instance_types     = ["t3.xlarge"]
@@ -43,6 +43,126 @@ instance_disk_size = 100
 # and removes the need to change this value.
 min_cluster_capacity = 1
 max_cluster_capacity = 1
+
+# By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
+# uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
+# This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
+#enable_https_ingress = false
+
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
+#
+#domain = "<example.com>"
+
+################################################################################
+# Jira/JSM Settings
+################################################################################
+
+# To select a different image repository for the Jira application, you can change following variable:
+# Official suitable values are:
+# - "atlassian/jira-software"
+# - "atlassian/jira-servicemanagement"
+#
+# Jira
+jira_image_repository = "atlassian/jira-software"
+# JSM
+# jira_image_repository = "atlassian/jira-servicemanagement"
+
+# Jira/JSM license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
+# Please make sure valid confluence license is used without spaces and new line symbols.
+# ! REQUIRED !
+jira_license = "jira-license"
+
+# Number of Jira/JSM application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
+# installed and configured.
+jira_replica_count = 1
+
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+#
+# Jira version
+jira_version_tag = "9.4.8"
+# JSM version
+# jira_version_tag = "5.4.8"
+
+# Shared home restore configuration.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
+#
+# Jira 9.4.8 DCAPT small dataset EBS snapshot
+ jira_shared_home_snapshot_id = "snap-0005a8c3cc297b294"
+# Jira 8.20.24 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0c3cb60ddc50c1136"
+# JSM 5.4.8 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-02f299ef7f1f524b2"
+# JSM 4.20.24 DCAPT small dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0971e128b8d1d2af9"
+
+# Database restore configuration.
+# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
+# Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
+#
+# Jira 9.4.8 DCAPT small dataset RDS snapshot
+ jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-8"
+# Jira 8.20.24 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-24"
+# JSM 5.4.8 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-8"
+# JSM 4.20.24 DCAPT small dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-24"
+
+# Helm chart version of Jira
+# jira_helm_chart_version = "<helm_chart_version>"
+
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+jira_installation_timeout = 20
+
+# Jira/JSM instance resource configuration
+jira_cpu                 = "1500m"
+jira_mem                 = "11Gi"
+jira_min_heap            = "4096m"
+jira_max_heap            = "4096m"
+jira_reserved_code_cache = "2048m"
+
+# Jira/JSM NFS instance resource configuration
+jira_nfs_requests_cpu    = "500m"
+jira_nfs_requests_memory = "1Gi"
+jira_nfs_limits_cpu      = "1"
+jira_nfs_limits_memory   = "1.5Gi"
+
+# Storage
+# initial volume size of local/shared home EBS.
+jira_local_home_size  = "10Gi"
+jira_shared_home_size = "10Gi"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+jira_db_major_engine_version = "12"
+jira_db_instance_class       = "db.t3.medium"
+jira_db_allocated_storage    = 200
+jira_db_iops                 = 1000
+
+# If you restore the database, make sure `jira_db_name' is set to the db name from the snapshot.
+# Set `null` if the snapshot does not have a default db name.
+jira_db_name = "jira"
+
+# The master user credential for the database instance.
+# If username is not provided, it'll be default to "postgres".
+# If password is not provided, a random password will be generated.
+jira_db_master_username = "atljira"
+jira_db_master_password = "Password1!"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# jira_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
 # Confluence Settings
@@ -61,27 +181,33 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.2"
+confluence_version_tag = "7.19.11"
 
 # Shared home restore configuration.
-# 8.x.x
-# confluence_shared_home_snapshot_id = "snap-0be9055e5b42333fd"
-# 7.x.x
-confluence_shared_home_snapshot_id = "snap-0237a9f4c1a332dc6"
+# 8.1.4 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-0815ada397b953b93"
+# 7.19.11 DCAPT small dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-00ede7dca448a6243"
+# 7.13.18 DCAPT small dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-055811dae848f13ae"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-# 8.x.x
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:dcapt-confluence-small-8-0-x-psql14"
-# 7.x.x
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-x-psql14"
+# 8.1.4 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-1-4"
+# 7.19.11 DCAPT small dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-11"
+# 7.13.18 DCAPT small dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-18"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.x.x
-# confluence_db_snapshot_build_number = "9002"
-# 7.x.x
-confluence_db_snapshot_build_number = "8703"
+# 8.1.4
+# confluence_db_snapshot_build_number = "9003"
+# 7.19.11
+confluence_db_snapshot_build_number = "8804"
+# 7.13.18
+# confluence_db_snapshot_build_number = "8703"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
@@ -130,12 +256,15 @@ confluence_db_name = "confluence"
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
 # If password is not provided, a random password will be generated.
-confluence_db_master_username = "postgres"
+confluence_db_master_username = "atlconfluence"
 confluence_db_master_password = "Password1!"
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# confluence_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
 # Bitbucket Settings
@@ -154,27 +283,23 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.7"
+bitbucket_version_tag = "7.21.14"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.7 DCAPT small dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-014e88755f53c2284"
-# 8.0.5 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-04f8cce571e8ff53b"
-# 7.17.13 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0291604b41056ad4e"
+# 7.21.14 DCAPT small dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-03893c494ba7edcf4"
+# 8.9.2 DCAPT small dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0fb8cd6bf387057c0"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.7 DCAPT small dataset RDS snapshot
- bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-x"
-# 8.0.5 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-0-x"
-# 7.17.13 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-17-x"
+# 7.21.14 DCAPT small dataset RDS snapshot
+bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-14"
+# 8.9.2 DCAPT small dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-2"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -183,6 +308,12 @@ bitbucket_shared_home_snapshot_id = "snap-014e88755f53c2284"
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
 bitbucket_installation_timeout = 30
+
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
+# if you encounter such an issue
+bitbucket_termination_grace_period = 0
 
 # Bitbucket system admin credentials
 # To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
@@ -241,3 +372,7 @@ bitbucket_db_name = "bitbucket"
 # If password is not provided, a random password will be generated.
 bitbucket_db_master_username = "atlbitbucket"
 bitbucket_db_master_password = "Password1!"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bitbucket_custom_values_file = "/path/to/values.yaml"
