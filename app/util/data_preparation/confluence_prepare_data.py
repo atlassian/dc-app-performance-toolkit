@@ -61,7 +61,7 @@ def __create_data_set(rest_client, rpc_client):
     print('------------------------')
     print(f'Custom pages count: {len(dataset[CUSTOM_PAGES])}')
 
-    cq_license = os.environ['bamboo_cq_tesing_license']
+    cq_license = os.environ['bamboo_cq_testing_license']
     if cq_license:
         print("Installing CQ license")
         # Using timebomb license for testing pupose
