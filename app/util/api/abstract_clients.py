@@ -76,10 +76,10 @@ class RestClient(Client):
                                     auth=auth if auth else self.base_auth)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
-
-    def delete(self, url: str, error_msg: str, expected_status_codes: list = None, allow_redirect=False):
+    
+    def delete(self, url: str, error_msg: str, headers: dict = None, expected_status_codes: list = None, allow_redirect=False):
         response = self.session.delete(url, auth=self.base_auth, verify=self.verify, timeout=self.requests_timeout,
-                                       allow_redirects=allow_redirect)
+                                       allow_redirects=allow_redirect, headers=headers)
         self.__verify_response(response, error_msg, expected_status_codes)
         return response
 
