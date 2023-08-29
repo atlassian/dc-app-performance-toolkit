@@ -107,6 +107,14 @@ class RestClient(Client):
 
         self.__verify_response(response, error_msg)
         return response
+    
+    def put(self, url: str, error_msg: str, body: dict = None, headers: dict = None, params=None, allow_redirect=False):
+        body_data = self.to_json(body) if body else None
+        response = self.session.put(url, body_data, params=params, auth=self.base_auth, headers=headers if headers else self.headers,
+                                    allow_redirects=allow_redirect, verify=self.verify)
+
+        self.__verify_response(response, error_msg)
+        return response
 
     def __verify_response(self, response: Response, error_msg: str, expected_status_codes: list = None):
         if response.is_redirect:

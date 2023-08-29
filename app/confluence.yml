@@ -5,9 +5,9 @@ settings:
   verbose: false
   check-updates: false    # disable bzt check for updates
   env:
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol, port and postfix e.g. test-confluence.atlassian.com or localhost
+    application_hostname: localhost   # Confluence DC hostname without protocol, port and postfix e.g. test-confluence.atlassian.com or localhost
     application_protocol: http        # http or https
-    application_port: 80              # 80, 443, 8080, 1990, etc
+    application_port: 8080              # 80, 443, 8080, 1990, etc
     secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
     admin_login: admin

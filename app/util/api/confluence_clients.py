@@ -16,7 +16,10 @@ class ConfluenceRestClient(RestClient):
         headers = {"Content-Type": "application/vnd.atl.plugins+json"}
         api_url = self.host + f'/rest/plugins/1.0/com.atlassian.confluence.plugins.confluence-questions-key/license';
         payload = {"rawLicense": timebomb_license}
-        self.put(url=api_url, json=payload, headers=headers , error_msg='Could not install CQ license')
+
+        print("Installing CQ license payload")
+        print(payload)
+        self.put(url=api_url, body=payload, headers=headers, error_msg='Could not install CQ license')
 
 
     def get_content(self, start=0, limit=100, type="page", expand="space"):
