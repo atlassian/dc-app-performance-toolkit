@@ -1,4 +1,5 @@
 import random
+import os
 
 from multiprocessing.pool import ThreadPool
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
@@ -59,6 +60,17 @@ def __create_data_set(rest_client, rpc_client):
     print(f'Blogs count: {len(dataset[BLOGS])}')
     print('------------------------')
     print(f'Custom pages count: {len(dataset[CUSTOM_PAGES])}')
+
+    cq_license = os.environ['bamboo_cq_tesing_license']
+    if cq_license:
+        print("Installing CQ license")
+        # Using timebomb license for testing pupose
+        """
+        License must be a continuous string with \n 
+        """
+        timebomb_license = cq_license
+        rest_client.install_cq_license(timebomb_license)
+
     return dataset
 
 

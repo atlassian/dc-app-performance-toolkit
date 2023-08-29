@@ -9,6 +9,16 @@ BATCH_SIZE_SEARCH = 500
 
 class ConfluenceRestClient(RestClient):
 
+    def install_cq_license(self, timebomb_license):
+        """
+        This will install CQ timebomb license
+        """
+        headers = {"Content-Type": "application/vnd.atl.plugins+json"}
+        api_url = self.host + f'/rest/plugins/1.0/com.atlassian.confluence.plugins.confluence-questions-key/license';
+        payload = {"rawLicense": timebomb_license}
+        self.put(url=api_url, json=payload, headers=headers , error_msg='Could not install CQ license')
+
+
     def get_content(self, start=0, limit=100, type="page", expand="space"):
         """
         Returns all content. This only includes pages that the user has permission to view.
