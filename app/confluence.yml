@@ -13,7 +13,7 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                  # number of concurrent virtual users for jmeter or locust scenario
+    concurrency: 100                  # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
     ramp-up: 5m                       # time to spin all concurrent users
     total_actions_per_hour: 20000
