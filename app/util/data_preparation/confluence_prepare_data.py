@@ -220,7 +220,7 @@ def main():
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     __is_remote_api_enabled(rest_client)
     __check_for_admin_permissions(rest_client)
-    # __is_collaborative_editing_enabled(rest_client)
+    __is_collaborative_editing_enabled(rest_client)
     __check_current_language(rest_client)
 
     dataset = __create_data_set(rest_client, rpc_client)
