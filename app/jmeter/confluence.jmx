@@ -5718,7 +5718,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Questions" enabled="false">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Questions" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">1</stringProp>
             </LoopController>
