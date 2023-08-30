@@ -29,12 +29,12 @@ settings:
     search_cql: 6
     create_blog: 4
     create_and_edit_page: 8
-    comment_page: 7
-    view_attachment: 5
-    upload_attachment: 6
+    comment_page: 5
+    view_attachment: 4
+    upload_attachment: 4
     like_page: 3
     upload_emoticon: 2      # For Confluence 8.4.x+
-    standalone_extension: 10 # By default disabled
+    standalone_extension: 15 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
