@@ -17,6 +17,9 @@ class ConfluenceRestClient(RestClient):
         api_url = self.host + f'/rest/plugins/1.0/com.atlassian.confluence.plugins.confluence-questions-key/license';
         payload = {"rawLicense": timebomb_license}
         self.put(url=api_url, body=payload, headers=headers, error_msg='Could not install CQ license')
+        # update CQ from MarketPlace
+        last_log_url = self.host + f'/rest/plugins/1.0/com.atlassian.confluence.plugins.confluence-questions/marketplace';
+        self.get(last_log_url, "Could not install lastlog", headers=headers)
 
 
     def get_content(self, start=0, limit=100, type="page", expand="space"):
