@@ -217,14 +217,14 @@ def main():
 
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password,
                                        verify=CONFLUENCE_SETTINGS.secure)
-    rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
-    __is_remote_api_enabled(rest_client)
-    __check_for_admin_permissions(rest_client)
-    __is_collaborative_editing_enabled(rest_client)
-    __check_current_language(rest_client)
+    # rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
+    # __is_remote_api_enabled(rest_client)
+    # __check_for_admin_permissions(rest_client)
+    # __is_collaborative_editing_enabled(rest_client)
+    # __check_current_language(rest_client)
 
-    dataset = __create_data_set(rest_client, rpc_client)
-    write_test_data_to_files(dataset)
+    # dataset = __create_data_set(rest_client, rpc_client)
+    # write_test_data_to_files(dataset)
 
     try:
         cq_license = "AAAB9Q0ODAoPeNp9kktv4jAURvf+FZZmhxQISVseUhY0MY8ZIBQCajvMwoQLuCR26gePfz8mgDqak\nWaRTT753u8c+1tiAHfMFnst7Lptv9n2W7g3SrDnej7aw3kBUjHBg/qT6zbcpu/X0djkK5DxZq5sF\ntRdFAquaarHNIdgnRnBt6jIzJZxVa1UbcAOEGhpAE2MTHdUQUQ1BJcNjtt0vBYashS4guRcQDkkj\nEcjMg0HneE9IqeCyXN5blL33P59JxlRlt2XzkAeQA6i4Jk0iPMQvXvOU/y94fT8VhNl10F9qnbBK\nDyGXcLNSX9sKH2PFp/1rv/6whdD4fW7XtLZTcnr27aZ7Rebx+Hxh9drsQfZ8LOem5uXZbAM0MysV\nCpZoS9ySrgv5JmmUoO8/q5UKuM4cbrx1JlM42geJoN47MxnxAZBKMEirfHqjPUO8A0WE56KNUhcS\nPEBqcY/d1oXy3atthVVqjOqFKO8moq8dqNy4HriVxVHAnOh8ZopLdnKaLCTmcJa4NQoLXJ7Z1Vkr\nXENnPL0X7O2VzglnYREzvPbpeTN7q2c1Tvney6OHM3IOLCf8+i6KJZbypmipQ9yonmRAQ5FXlB+R\niWmDf6+9wi+HCagNL7h4I2w8KVPvIYDZKKwtf8w/J8HQw40M9caG5opQL8BeZ73IzAsAhRC901dX\nuaGNg0eGTqoYOw8H6dUjQIUUYSQCzKhxnGuUct+2Ne9EUDbM+Q=X02nn"
@@ -234,7 +234,7 @@ def main():
             timebomb_license = cq_license
             rest_client.install_cq_license(timebomb_license)
     except:
-        print("There is an exception to install CQ license")
+       print("There is an exception to install CQ license")
 
     print("Finished preparing data")
 

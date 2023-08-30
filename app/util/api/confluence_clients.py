@@ -16,10 +16,6 @@ class ConfluenceRestClient(RestClient):
         headers = {"Content-Type": "application/vnd.atl.plugins+json"}
         api_url = self.host + f'/rest/plugins/1.0/com.atlassian.confluence.plugins.confluence-questions-key/license';
         payload = {"rawLicense": timebomb_license}
-
-        print("Installing CQ license payload")
-        print(payload)
-        self.delete(url=api_url, error_msg='Could not delete CQ license', headers=headers)
         self.put(url=api_url, body=payload, headers=headers, error_msg='Could not install CQ license')
 
 
