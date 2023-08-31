@@ -6316,7 +6316,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Create Answer" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Create Answer" enabled="false">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
@@ -6401,7 +6401,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Create Comment" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Create Comment" enabled="false">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
                 <boolProp name="TransactionController.parent">true</boolProp>
               </TransactionController>
