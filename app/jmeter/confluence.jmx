@@ -6327,7 +6327,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
                       <elementProp name="body" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
                         <stringProp name="Argument.name">body</stringProp>
-                        <stringProp name="Argument.value">&lt;p&gt;Why oh why?&lt;/p&gt;</stringProp>
+                        <stringProp name="Argument.value">Why oh why?</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                       </elementProp>
@@ -6412,7 +6412,7 @@ if (response_data.username != vars.get(&quot;app_specific_username&quot;)) {
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&quot;commentBodyId&quot;:&quot;&quot;,&quot;body&quot;:&quot;&lt;p&gt;Comment&lt;/p&gt;&quot;,&quot;commentId&quot;:&quot;&quot;}</stringProp>
+                        <stringProp name="Argument.value">{&quot;commentBodyId&quot;:&quot;&quot;,&quot;body&quot;:&quot;Comment&quot;,&quot;commentId&quot;:&quot;&quot;}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                       </elementProp>
                     </collectionProp>
@@ -6738,7 +6738,7 @@ if ( sleep_time &gt; 0 ) {
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">/Users/dluong/Downloads/error.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
