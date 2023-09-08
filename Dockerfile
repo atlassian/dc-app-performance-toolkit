@@ -13,9 +13,14 @@ RUN apt-get -y update \
   && python -m pip install --upgrade pip \
   && apt-get clean
 
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && $APT_INSTALL ./google-chrome-stable_current_amd64.deb \
-  && rm -rf ./google-chrome-stable_current_amd64.deb
+# Workaround to deal with broken chrome for testing changes 9/8/2023
+RUN wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.90-1_amd64.deb \
+  && $APT_INSTALL ./google-chrome-stable_114.0.5735.90-1_amd64.deb
+
+# Original entry for downloading chrome driver
+# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+#   && $APT_INSTALL ./google-chrome-stable_current_amd64.deb \
+#   && rm -rf ./google-chrome-stable_current_amd64.deb
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
