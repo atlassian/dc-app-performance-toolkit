@@ -5,7 +5,7 @@ scipy==1.11.2
 pytest==7.4.0
 locust==2.16.1
 selenium==4.10.0
-filelock==3.12.2
+filelock==3.12.4
 packaging==23.1
 prettytable==3.8.0
 bzt==1.16.23
