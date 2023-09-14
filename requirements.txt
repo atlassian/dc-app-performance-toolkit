@@ -8,5 +8,5 @@ selenium==4.10.0
 filelock==3.12.2
 packaging==23.1
 prettytable==3.8.0
-bzt==1.16.23
+bzt==1.16.25
 boto3==1.28.29
