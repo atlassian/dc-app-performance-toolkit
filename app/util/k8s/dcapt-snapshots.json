@@ -328,17 +328,17 @@
         ]
       },
       {
-        "version": "8.1.4",
+        "version": "8.5.1",
         "data": [
           {
             "type": "rds",
             "size": "large",
             "snapshots": [
               {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-1-4",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-1-4",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-8-1-4",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-8-1-4"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-1",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-1",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-8-5-1",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-8-5-1"
               }
             ]
           },
@@ -347,10 +347,10 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-1-4",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-1-4",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-8-1-4",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-8-1-4"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-1",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-1",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-8-5-1",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-8-5-1"
               }
             ]
           },
@@ -359,10 +359,10 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-1": "snap-05ef2adcab5114c74",
-                "us-east-2": "snap-0125fdfcf37dabef5",
-                "us-west-1": "snap-03bc324c9a6de2295",
-                "us-west-2": "snap-0ec08b4c302b42b95"
+                "us-east-1": "snap-099a9ce9e9c902815",
+                "us-east-2": "snap-074a2fdca0497b6b6",
+                "us-west-1": "snap-01b07710d49b113b2",
+                "us-west-2": "snap-031dad82fa7367921"
               }
             ]
           },
@@ -371,10 +371,10 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-1": "snap-055cb419abdb154e3",
-                "us-east-2": "snap-0815ada397b953b93",
-                "us-west-1": "snap-08339c9a4eac5fbb1",
-                "us-west-2": "snap-07a38cca1ce0aa26b"
+                "us-east-1": "snap-09d97f19261bd463e",
+                "us-east-2": "snap-008cc496f440198de",
+                "us-west-1": "snap-02b3a229b530c8a87",
+                "us-west-2": "snap-01d8ebf9701613c4c"
               }
             ]
           }
