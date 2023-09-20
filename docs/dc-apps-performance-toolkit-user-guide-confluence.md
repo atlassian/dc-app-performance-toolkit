@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-08-15"
+date: "2023-09-20"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -32,31 +32,6 @@ Running the tests in a development environment helps familiarize you with the to
 It'll also provide you with a lightweight and less expensive environment for developing app-specific actions.
 Once you're ready to generate test results for the Marketplace Data Center Apps Approval process,
 run the toolkit in an **enterprise-scale environment**.
-
----
-
-{{% note %}}
-In case you are in the middle of Confluence DC app performance testing with the CloudFormation deployment option,
-the process can be continued after switching to the `6.3.0` DCAPT version.
-{{% /note %}}
-
-* Checkout release `6.3.0` of the `dc-app-performance-toolkit` repository:
-
-   ```
-   git checkout release-6.3.0
-   ```
-* Use the docker container with the `6.3.0` release tag to run performance tests from docker:
-
-   ```
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt:6.3.0
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt:6.3.0 confluence.yml
-   ```
-* The corresponding version of the user guide could be found in the `dc-app-performance-toolkit/docs` folder or by this 
-[link](https://github.com/atlassian/dc-app-performance-toolkit/blob/release-6.3.0/docs/dc-apps-performance-toolkit-user-guide-confluence.md).
-* If specific version of the Confluence DC is required, please contact support in the [community Slack](http://bit.ly/dcapt_slack).
-
----
 
 ### <a id="devinstancesetup"></a>1. Setting up Confluence Data Center development environment
 
