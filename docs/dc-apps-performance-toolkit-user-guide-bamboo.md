@@ -70,7 +70,6 @@ specifically for performance testing during the DC app review process.
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
