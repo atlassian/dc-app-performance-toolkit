@@ -223,6 +223,7 @@
     "versions": [
       {
         "version": "7.19.11",
+        "build_number": "8804",
         "data": [
           {
             "type": "rds",
@@ -276,6 +277,7 @@
       },
       {
         "version": "7.13.18",
+        "build_number": "8703",
         "data": [
           {
             "type": "rds",
@@ -329,6 +331,7 @@
       },
       {
         "version": "8.5.1",
+        "build_number": "9012",
         "data": [
           {
             "type": "rds",
@@ -496,6 +499,7 @@
     "versions": [
       {
         "version": "5.1.4",
+        "build_number": "1893",
         "data": [
           {
             "type": "rds",
