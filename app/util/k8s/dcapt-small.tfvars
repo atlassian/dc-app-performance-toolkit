@@ -181,33 +181,27 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.11"
+confluence_version_tag = "8.5.1"
 
 # Shared home restore configuration.
 # 8.5.1 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-008cc496f440198de"
+confluence_shared_home_snapshot_id = "snap-008cc496f440198de"
 # 7.19.11 DCAPT small dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-00ede7dca448a6243"
-# 7.13.18 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-055811dae848f13ae"
+# confluence_shared_home_snapshot_id = "snap-00ede7dca448a6243"
 
 # Database restore configuration.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 # 8.5.1 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-1"
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-1"
 # 7.19.11 DCAPT small dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-11"
-# 7.13.18 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-13-18"
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-11"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
 # 8.5.1
-# confluence_db_snapshot_build_number = "9012"
+confluence_db_snapshot_build_number = "9012"
 # 7.19.11
-confluence_db_snapshot_build_number = "8804"
-# 7.13.18
-# confluence_db_snapshot_build_number = "8703"
+# confluence_db_snapshot_build_number = "8804"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
