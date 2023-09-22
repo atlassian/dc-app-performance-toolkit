@@ -10,3 +10,4 @@ packaging==23.1
 prettytable==3.8.0
 bzt==1.16.23
 boto3==1.28.11
+urwid==2.1.2
