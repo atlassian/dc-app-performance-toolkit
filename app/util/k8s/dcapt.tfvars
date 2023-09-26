@@ -467,8 +467,8 @@ bamboo_license = "bamboo-license"
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.2.3"
-bamboo_agent_version_tag = "9.2.3"
+bamboo_version_tag       = "9.2.5"
+bamboo_agent_version_tag = "9.2.5"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
