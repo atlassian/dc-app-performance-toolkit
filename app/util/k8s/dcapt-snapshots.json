@@ -350,9 +350,9 @@
             "snapshots": [
               {
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14",
-                "us-west-2": "dcapt-confluence-7-19-14",
-                "us-west-1": "dcapt-confluence-7-19-14",
-                "us-east-1": "dcapt-confluence-7-19-14"
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-7-19-14",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-7-19-14",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-14"
               }
             ]
           }
