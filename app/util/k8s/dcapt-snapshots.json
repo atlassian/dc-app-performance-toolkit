@@ -358,6 +358,36 @@
           }
         ],
         "build_number": "8804"
+      },
+      {
+        "version": "8804",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-00772533e2207cffb",
+                "us-west-2": "snap-0753fc6fe81171813",
+                "us-west-1": "snap-076efeb4970d9baf6",
+                "us-east-1": "snap-094e7161256cd2377"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8804",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-8804",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-8804",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8804"
+              }
+            ]
+          }
+        ],
+        "build_number": "7.19.14"
       }
     ]
   },
