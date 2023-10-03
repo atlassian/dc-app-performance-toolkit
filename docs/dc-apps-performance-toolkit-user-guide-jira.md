@@ -96,13 +96,13 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-8. Re-index (only for Jira 8.x, for Jira 9.x skip this step):    
+
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
+
+9. Re-index (only for Jira 8.x, for Jira 9.x skip this step):
    - Go to **![cog icon](/platform/marketplace/images/cog.png) &gt; System &gt; Indexing**.
-   - Select the **Full re-index** option. 
+   - Select the **Full re-index** option.
    - Click **Re-Index** and wait until re-indexing is completed (~2s).
-
-9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
-
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
