@@ -441,6 +441,59 @@
         ]
       },
       {
+        "version": "7.21.16",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0d4bbe0cf3056c0ee",
+                "us-west-2": "snap-011517fb12a96d7f6",
+                "us-west-1": "snap-0a7ef1f68ad32c5a0",
+                "us-east-1": "snap-0f86be2be1f2f4ddf"
+              }
+            ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-04351bd6779e3ee76",
+                "us-west-2": "snap-0bebe8f1c94590199",
+                "us-west-1": "snap-0ce49affbc7cc1b07",
+                "us-east-1": "snap-06eb9677c8467e578"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-7-21-16",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-7-21-16",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-7-21-16"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-16"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "version": "8.9.2",
         "data": [
           {
@@ -494,17 +547,41 @@
         ]
       },
       {
-        "version": "7.21.16",
+        "version": "8.9.5",
         "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0261a9130a9fd7618",
+                "us-west-2": "snap-0562a2bce19b8da31",
+                "us-west-1": "snap-0af7263fa69303a6c",
+                "us-east-1": "snap-0acd7f844242a09ee"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-04351bd6779e3ee76",
-                "us-west-2": "snap-0bebe8f1c94590199",
-                "us-west-1": "snap-0ce49affbc7cc1b07",
-                "us-east-1": "snap-06eb9677c8467e578"
+                "us-east-2": "snap-01806166c1afe8bd5",
+                "us-west-2": "snap-0b274a971cccb6a27",
+                "us-west-1": "snap-07a647d51a0b5028f",
+                "us-east-1": "snap-035b01bc7520af6fb"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-5",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-8-9-5",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-8-9-5",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-8-9-5"
               }
             ]
           },
@@ -513,10 +590,10 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-16",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-16"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-5",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-5",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-small-8-9-5",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-8-9-5"
               }
             ]
           }
