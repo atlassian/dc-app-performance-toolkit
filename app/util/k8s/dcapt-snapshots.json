@@ -328,60 +328,6 @@
   "confluence": {
     "versions": [
       {
-        "version": "7.19.11",
-        "build_number": "8804",
-        "data": [
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-11",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-11",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-7-19-11",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-7-19-11"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-7-19-11",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-11",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-7-19-11",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-7-19-11"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "snap-03b3a8541b7466ec3",
-                "us-east-2": "snap-09365c581a158a979",
-                "us-west-1": "snap-01bc9fdb49bc6641e",
-                "us-west-2": "snap-061919924738ea4c3"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-1": "snap-0dad75f94da7f317b",
-                "us-east-2": "snap-00ede7dca448a6243",
-                "us-west-1": "snap-0f72ad2146e3a19c3",
-                "us-west-2": "snap-09ff2c4be549518a0"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "8.5.1",
         "build_number": "9012",
         "data": [

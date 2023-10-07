@@ -181,8 +181,8 @@ confluence_version_tag = "8.5.1"
 #
 # 8.5.1 DCAPT large dataset EBS snapshot
 confluence_shared_home_snapshot_id = "snap-074a2fdca0497b6b6"
-# 7.19.11 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-09365c581a158a979"
+# 7.19.14 DCAPT large dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-00f5e8147604a017e"
 
 # Database restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
@@ -190,14 +190,14 @@ confluence_shared_home_snapshot_id = "snap-074a2fdca0497b6b6"
 #
 # 8.5.1 DCAPT large dataset RDS snapshot
 confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-1"
-# 7.19.11 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-11"
+# 7.19.14 DCAPT large dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
 # 8.5.1
 confluence_db_snapshot_build_number = "9012"
-# 7.19.11
+# 7.19.14
 # confluence_db_snapshot_build_number = "8804"
 
 # Helm chart version of Confluence
