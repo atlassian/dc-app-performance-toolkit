@@ -92,11 +92,11 @@ jira_version_tag = "9.4.10"
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
 # Jira 9.4.10 DCAPT large dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-0d619095feaa2eca5"
+jira_shared_home_snapshot_id = "snap-084e99e384dcfbe31"
 # Jira 8.20.26 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-0c0c388d53cd4153b"
 # JSM 5.4.10 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0fb58e8d005edeb32"
+# jira_shared_home_snapshot_id = "snap-0381cc00e37231565"
 # JSM 4.20.26 DCAPT large dataset EBS snapshot
 # jira_shared_home_snapshot_id = "snap-0f7aa03eea37f3304"
 
