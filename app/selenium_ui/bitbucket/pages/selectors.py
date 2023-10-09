@@ -20,7 +20,7 @@ class UrlManager:
         self.pull_request_params_commits = f'{self.repo_params}/pull-requests/{pull_request_key}/commits'
         self.branches_params = f'{self.repo_params}/branches'
         self.repo_commits_params = f'{self.repo_params}/commits'
-        self.login_params = '/plugins/servlet/secsignid?returnUrl==/getting-started'
+        self.login_params = '/plugins/servlet/secsignid?returnUrl=/getting-started'
         self.logout_params = '/j_atl_security_logout'
         self.get_started_params = '/getting-started'
         self.dashboard_params = '/dashboard'
