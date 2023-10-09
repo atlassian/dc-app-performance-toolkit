@@ -137,7 +137,7 @@ class StartJMeter:
             print(setting.replace('\n', ''))
 
     def launch_jmeter_ui(self):
-        jmeter_path = JMETER_HOME / self.env_settings['JMETER_VERSION'] / 'bin' / 'jmeter'
+        jmeter_path = JMETER_HOME / str(self.env_settings['JMETER_VERSION']) / 'bin' / 'jmeter'
         command = [str(jmeter_path), "-p", str(PROPERTIES), "-t", str(self.jmx)]
         print("JMeter start command: {}".format(' '.join(command)))
         print("Working dir: {}".format(APP_DIR))

@@ -4,19 +4,17 @@ import datetime
 import functools
 import json
 import os
-import sys
-import time
-from datetime import timezone
 import re
+import sys
+from datetime import timezone
 from pprint import pprint
+from time import sleep, time
 
 import filelock
 import pytest
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
-from time import sleep
 
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.exceptions import WebDriverExceptionPostpone
@@ -24,7 +22,7 @@ from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATA
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
     BITBUCKET_PROJECTS, BITBUCKET_REPOS, BITBUCKET_PRS, CONFLUENCE_BLOGS, CONFLUENCE_PAGES, CONFLUENCE_CUSTOM_PAGES, \
     CONFLUENCE_USERS, ENV_TAURUS_ARTIFACT_DIR, JSM_DATASET_REQUESTS, JSM_DATASET_CUSTOMERS, JSM_DATASET_AGENTS, \
-    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES,\
+    JSM_DATASET_SERVICE_DESKS_L, JSM_DATASET_SERVICE_DESKS_M, JSM_DATASET_SERVICE_DESKS_S, JSM_DATASET_CUSTOM_ISSUES, \
     JSM_DATASET_INSIGHT_SCHEMAS, JSM_DATASET_INSIGHT_ISSUES, BAMBOO_USERS, BAMBOO_BUILD_PLANS
 
 SCREEN_WIDTH = 1920
@@ -134,7 +132,7 @@ def print_timing(interaction=None, explicit_timing=None):
             if globals.login_failed:
                 pytest.skip("login is failed")
             node_ip = ""
-            start = time.time()
+            start = time()
             error_msg = 'Success'
             full_exception = ''
             if args:
@@ -148,14 +146,14 @@ def print_timing(interaction=None, explicit_timing=None):
                 # https://docs.python.org/2/library/sys.html#sys.exc_info
                 exc_type, full_exception = sys.exc_info()[:2]
                 error_msg = f"Failed measure: {interaction} - {exc_type.__name__}"
-            end = time.time()
+            end = time()
             timing = str(int((end - start) * 1000))
 
             lockfile = f'{selenium_results_file}.lock'
 
             with filelock.SoftFileLock(lockfile):
                 with open(selenium_results_file, "a+") as jtl_file:
-                    timestamp = round(time.time() * 1000)
+                    timestamp = round(time() * 1000)
                     if explicit_timing:
                         jtl_file.write(f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
                                        f",{success},0,0,0,0,,0\n")
@@ -178,10 +176,8 @@ def print_timing(interaction=None, explicit_timing=None):
 def webdriver(app_settings):
     def driver_init():
         chrome_options = Options()
-        capabilities = DesiredCapabilities.CHROME
-        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         if app_settings.webdriver_visible and is_docker():
-            raise SystemExit("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
+            raise Exception("ERROR: WEBDRIVER_VISIBLE is True in .yml, but Docker container does not have a display.")
         if not app_settings.webdriver_visible:
             chrome_options.add_argument("--headless")
         if not app_settings.secure:
@@ -191,7 +187,8 @@ def webdriver(app_settings):
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument('lang=en')
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-        driver = Chrome(options=chrome_options, desired_capabilities=capabilities)
+        chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
+        driver = Chrome(options=chrome_options)
         driver.app_settings = app_settings
         return driver
 
@@ -271,7 +268,7 @@ def get_wait_browser_metrics(webdriver, expected_metrics):
             return data
 
         print(f'Waiting for browser metrics, attempt {i}, sleep {sleep_time}')
-        time.sleep(sleep_time)
+        sleep(sleep_time)
 
     return {}
 
@@ -287,7 +284,7 @@ def measure_dom_requests(webdriver, interaction, description=''):
     success = True
     with filelock.SoftFileLock(lockfile):
         with open(selenium_results_file, "a+") as jtl_file:
-            timestamp = round(time.time() * 1000)
+            timestamp = round(time() * 1000)
             jtl_file.write(
                 f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
             print(f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
@@ -351,7 +348,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
             for metric in metrics:
                 interaction = metric['key']
                 ready_for_user_timing = metric['ready_for_user']
-                timestamp = round(time.time() * 1000)
+                timestamp = round(time() * 1000)
                 node_ip = webdriver.node_ip
                 jtl_file.write(
                     f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
@@ -430,7 +427,7 @@ def get_screen_shots(request, webdriver):
         action_name = request.node.rep_call.head_line
         error_text = request.node.rep_call.longreprtext
         with open(selenium_error_file, mode) as err_file:
-            timestamp = round(time.time() * 1000)
+            timestamp = round(time() * 1000)
             dt = datetime.datetime.now()
             utc_time = dt.replace(tzinfo=timezone.utc)
             str_time = utc_time.strftime("%m-%d-%Y, %H:%M:%S")
