@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-08-15"
+date: "2023-10-03"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -48,11 +48,12 @@ specifically for performance testing during the DC app review process.
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
-3. Set AWS access keys created in step1 in `aws_envs` file:
+2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
-4. Set **required** variables in `dcapt.tfvars` file:
+5. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-crowd`
    - `products` - `crowd`
    - `crowd_license` - one-liner of valid crowd license without spaces and new line symbols
@@ -64,15 +65,14 @@ specifically for performance testing during the DC app review process.
    Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
    {{% /note %}}
 
-5. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+6. From local terminal (Git bash terminal for Windows) start the installation (~40min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-6. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
+7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
 
 ---
@@ -295,7 +295,6 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```

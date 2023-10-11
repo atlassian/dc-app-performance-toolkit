@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.atlassian.bamboo</groupId>
         <artifactId>bamboo-specs-parent</artifactId>
-        <version>9.2.1</version>
+        <version>9.2.5</version>
         <relativePath/>
     </parent>
 
@@ -18,7 +18,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -49,13 +49,13 @@
         <dependency>
             <groupId>com.atlassian.buildeng</groupId>
             <artifactId>bamboo-plan-ownership-specs</artifactId>
-            <version>1.4.0</version>
+            <version>2.1.7</version>
         </dependency>
         <!-- For PBC -->
         <dependency>
             <groupId>com.atlassian.buildeng</groupId>
             <artifactId>bamboo-pbc-specs</artifactId>
-            <version>1.4.0</version>
+            <version>2.1.7</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
@@ -67,38 +67,38 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.12.4</version>
+            <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.2</version>
+            <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>2.4.0</version>
+            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
+            <version>1.16.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.17.1</version>
+            <version>2.20.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
+            <version>2.20.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.17.1</version>
+            <version>2.20.0</version>
         </dependency>
     </dependencies>
 

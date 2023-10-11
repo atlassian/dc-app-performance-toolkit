@@ -67,7 +67,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.10.0
+      - selenium==4.13.0
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
@@ -170,7 +170,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "114.0.5735.90" # Supports Chrome version 114. You can refer to http://chromedriver.chromium.org/downloads
+      version: "118.0.5993.70" # Supports Chrome version 118. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
   - data-source: sample-labels
     module: junit-xml

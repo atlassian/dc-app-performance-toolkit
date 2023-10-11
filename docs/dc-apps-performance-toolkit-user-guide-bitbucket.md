@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-08-15"
+date: "2023-10-03"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -33,31 +33,6 @@ It'll also provide you with a lightweight and less expensive environment for dev
 Once you're ready to generate test results for the Marketplace Data Center Apps Approval process,
 run the toolkit in an **enterprise-scale environment**.
 
----
-
-{{% note %}}
-In case you are in the middle of Bitbucket DC app performance testing with the CloudFormation deployment option,
-the process can be continued after switching to the `7.1.0` DCAPT version.
-{{% /note %}}
-
-* Checkout release `7.1.0` of the `dc-app-performance-toolkit` repository:
-
-   ```
-   git checkout release-7.1.0
-   ```
-* Use the docker container with the `7.1.0` release tag to run performance tests from docker:
-
-   ```
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt:7.1.0
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt:7.1.0 bitbucket.yml
-   ```
-* The corresponding version of the user guide could be found in the `dc-app-performance-toolkit/docs` folder or by this 
-[link](https://github.com/atlassian/dc-app-performance-toolkit/blob/release-7.1.0/docs/dc-apps-performance-toolkit-user-guide-bitbucket.md).
-* If specific version of the Bitbucket DC is required, please contact support in the [community Slack](http://bit.ly/dcapt_slack).
-
----
-
 ### <a id="devinstancesetup"></a>1. Setting up Bitbucket Data Center development environment
 
 #### AWS cost estimation for the development environment
@@ -84,11 +59,12 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
-3. Set AWS access keys created in step1 in `aws_envs` file:
+2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
-4. Set **required** variables in `dcapt-small.tfvars` file:
+5. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-bitbucket-small`
    - `products` - `bitbucket`
    - `bitbucket_license` - one-liner of valid bitbucket license without spaces and new line symbols
@@ -100,18 +76,17 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
    {{% /note %}}
 
-5. Optional variables to override:
+6. Optional variables to override:
    - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
    - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-6. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
+7. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
    ``` bash
    docker run --env-file aws_envs \
    -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -252,28 +227,28 @@ Below process describes how to install enterprise-scale Bitbucket DC with "large
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-2. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
-3. Set AWS access keys created in step1 in `aws_envs` file:
+2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
-4. Set **required** variables in `dcapt.tfvars` file:
+5. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-bitbucket-large`
    - `products` - `bitbucket`
    - `bitbucket_license` - one-liner of valid bitbucket license without spaces and new line symbols
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
    - `instance_types` - `["m5.4xlarge"]` 
-5. Optional variables to override:
+6. Optional variables to override:
     - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
     - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-6. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+7. From local terminal (Git bash terminal for Windows) start the installation (~40min):
    ``` bash
    docker run --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
-7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
 {{% note %}}
 New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
@@ -466,7 +441,6 @@ To receive scalability benchmark results for two-node Bitbucket DC **with** app-
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/.terraform:/data-center-terraform/.terraform" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
