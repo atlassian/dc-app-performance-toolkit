@@ -22,6 +22,7 @@ settings:
     LANGUAGE: en_US.utf8
     allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter load executor
+    environment_compliance_check: True # Pre-test application environment validation. "False" to skip it.
     view_all_builds: 15
     view_build_result: 15
     view_build_configuration: 10
@@ -40,7 +41,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/execution_compliance_check.py bamboo
+      - python util/pre_run/environment_compliance_check.py bamboo
       - python util/data_preparation/bamboo_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py

@@ -21,6 +21,7 @@ settings:
     JMETER_VERSION: 5.4.3
     LANGUAGE: en_US.utf8
     allow_analytics: No              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test application environment validation. "False" to skip it.
     # Action percentage for JMeter and Locust load executors
     extended_metrics: False
     view_page: 33
@@ -41,7 +42,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/execution_compliance_check.py confluence
+      - python util/pre_run/environment_compliance_check.py confluence
       - python util/data_preparation/confluence_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
