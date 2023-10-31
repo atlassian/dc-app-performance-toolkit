@@ -4,9 +4,14 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-04-20"
+date: "2023-09-20"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management (CloudFormation deployment)
+
+{{% warning %}}
+CloudFormation deployment option will be no longer supported starting from January 2024.
+It is recommended to use TerraForm deployment. More details could be found in [User Guide](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jsm/).
+{{% /warning %}}
 
 This document walks you through the process of testing your app on Jira Service Management using the Data Center App Performance Toolkit. These instructions focus on producing the required [performance and scale benchmarks for your Data Center app](/platform/marketplace/dc-apps-performance-and-scale-testing/):
 
@@ -68,10 +73,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended value                                                                                                                                                                                      |
-| --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Jira Product | ServiceManagement                                                                                                                                                                                      |
-| Version | The Data Center App Performance Toolkit officially supports `4.20.22`, `5.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | ServiceManagement                                                                                                                                                                                       |
+| Version | The Data Center App Performance Toolkit officially supports `4.20.26`, `5.4.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -294,7 +299,7 @@ Make sure **English (United States)** language is selected as a default language
     - `application_protocol`: http or https.
     - `application_port`: for HTTP - 80, for HTTPS - 443, 8080, 2990 or your instance-specific port.
     - `secure`: True or False. Default value is True. Set False to allow insecure connections, e.g. when using self-signed SSL certificate.
-    - `application_postfix`: it is empty by default; e.g., /jira for url like this http://localhost:2990/jira.
+    - `application_postfix`: set to empty for CloudFormation deployment; e.g., /jira for url like this http://localhost:2990/jira.
     - `admin_login`: admin user username.
     - `admin_password`: admin user password.
     - `load_executor`: executor for load tests. Valid options are [jmeter](https://jmeter.apache.org/) (default) or [locust](https://locust.io/).
@@ -550,10 +555,10 @@ All important parameters are listed and described in this section. For all other
 
 **Jira setup**
 
-| Parameter | Recommended Value                                                                                                                                                                                      |
-| --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Jira Product | ServiceManagement                                                                                                                                                                                      |
-| Version | The Data Center App Performance Toolkit officially supports `4.20.22`, `5.4.6` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
+| Parameter | Recommended Value                                                                                                                                                                                       |
+| --------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jira Product | ServiceManagement                                                                                                                                                                                       |
+| Version | The Data Center App Performance Toolkit officially supports `4.20.26`, `5.4.10` ([Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html)) |
 
 **Cluster nodes**
 
@@ -874,8 +879,8 @@ Instead, set those values directly in `.yml` file on execution environment insta
        application_hostname: test_jsm_instance.atlassian.com   # Jira Service Management DC hostname without protocol and port e.g. test-jsm.atlassian.com or localhost
        application_protocol: http                # http or https
        application_port: 80                      # 80, 443, 8080, 2990, etc
-       secure: True                              # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-       application_postfix:                      # e.g. /jira in case of url like http://localhost:2990/jira
+       secure: True                              # set False to allow insecure connections, e.g. when using self-signed SSL certificate
+       application_postfix:                      # set to empty for CloudFromation deploymente.g. /jira in case of url like http://localhost:2990/jira
        admin_login: admin
        admin_password: admin
        load_executor: jmeter                     # jmeter and locust are supported. jmeter by default.
@@ -891,7 +896,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
 
 1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
-   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
+   * OS: select from Quick Start `Ubuntu Server 22.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
@@ -933,8 +938,7 @@ To receive performance baseline results **without** an app installed:
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker pull atlassian/dcapt
-    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+    docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jsm/YY-MM-DD-hh-mm-ss` folder:
@@ -976,8 +980,7 @@ If your Amazon RDS DB instance class is lower than `db.m5.xlarge` it is required
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1035,8 +1038,7 @@ To receive scalability benchmark results for one-node Jira Service Management DC
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1081,8 +1083,7 @@ In case if index synchronization is failed by some reason (e.g. application stat
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```
 
 {{% note %}}
@@ -1107,8 +1108,7 @@ To receive scalability benchmark results for four-node Jira Service Management D
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
+   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jsm.yml
    ```  
 
 {{% note %}}

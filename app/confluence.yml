@@ -18,7 +18,7 @@ settings:
     ramp-up: 5m                       # time to spin all concurrent users
     total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
     allow_analytics: No              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test application environment validation. "False" to skip it.
@@ -52,7 +52,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.9.0
+      - selenium==4.13.0
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -118,7 +118,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "113.0.5672.63" # Supports Chrome version 113. You can refer to http://chromedriver.chromium.org/downloads
+      version: "118.0.5993.70" # Supports Chrome version 118. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

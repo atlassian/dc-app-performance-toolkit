@@ -31,7 +31,7 @@ resource_tags = {Name: "dcapt-testing"}
 # Instance types that is preferred for EKS node group.
 # Confluence, Bamboo, Jira - use default value
 # Bitbucket - ["m5.4xlarge"]
-# Crowd - ["c5.xlarge"]
+# Crowd - ["m5.xlarge"]
 # ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
 instance_disk_size = 100
@@ -84,34 +84,34 @@ jira_replica_count = 1
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 #
 # Jira version
-jira_version_tag = "9.4.6"
+jira_version_tag = "9.4.10"
 # JSM version
-# jira_version_tag = "5.4.6"
+# jira_version_tag = "5.4.10"
 
 # Shared home restore configuration.
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 #
-# Jira 9.4.6 DCAPT large dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-051b68559232b9c52"
-# Jira 8.20.22 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-07eabc725b2784dd8"
-# JSM 5.4.6 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0a65d52f20fc43d4e"
-# JSM 4.20.22 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-02cf7f70e3872320f"
+# Jira 9.4.10 DCAPT large dataset EBS snapshot
+jira_shared_home_snapshot_id = "snap-084e99e384dcfbe31"
+# Jira 8.20.26 DCAPT large dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0c0c388d53cd4153b"
+# JSM 5.4.10 DCAPT large dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0381cc00e37231565"
+# JSM 4.20.26 DCAPT large dataset EBS snapshot
+# jira_shared_home_snapshot_id = "snap-0f7aa03eea37f3304"
 
 # Database restore configuration.
 # Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
 #
-# Jira 9.4.6 DCAPT large dataset RDS snapshot
-jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-6"
-# Jira 8.20.22 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-22"
-# JSM 5.4.6 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-6"
-# JSM 4.20.22 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-22"
+# Jira 9.4.10 DCAPT large dataset RDS snapshot
+jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-10"
+# Jira 8.20.26 DCAPT large dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-26"
+# JSM 5.4.10 DCAPT large dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-10"
+# JSM 4.20.26 DCAPT large dataset RDS snapshot
+# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-26"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -153,6 +153,10 @@ jira_db_name = "jira"
 jira_db_master_username = "atljira"
 jira_db_master_password = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# jira_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Confluence Settings
 ################################################################################
@@ -170,37 +174,31 @@ confluence_license = "confluence-license"
 confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "7.19.9"
+confluence_version_tag = "8.5.1"
 
 # Shared home restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 #
-# 8.1.4 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-0125fdfcf37dabef5"
-# 7.19.9 DCAPT large dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-0bd74575c95014c10"
-# 7.13.17 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-08abae6cf1937e958"
+# 8.5.1 DCAPT large dataset EBS snapshot
+confluence_shared_home_snapshot_id = "snap-074a2fdca0497b6b6"
+# 7.19.14 DCAPT large dataset EBS snapshot
+# confluence_shared_home_snapshot_id = "snap-00f5e8147604a017e"
 
 # Database restore configuration.
 # Make sure confluence version set in `confluence_version_tag` match the snapshot version.
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
 #
-# 8.1.4 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-1-4"
-# 7.19.9 DCAPT large dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-9"
-# 7.13.17 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-13-17"
+# 8.5.1 DCAPT large dataset RDS snapshot
+confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-1"
+# 7.19.14 DCAPT large dataset RDS snapshot
+# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14"
 
 # Build number for a specific Confluence version can be found in the link below:
 # https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.1.4
-# confluence_db_snapshot_build_number = "9003"
-# 7.19.9
-confluence_db_snapshot_build_number = "8804"
-# 7.13.17
-# confluence_db_snapshot_build_number = "8703"
+# 8.5.1
+confluence_db_snapshot_build_number = "9012"
+# 7.19.14
+# confluence_db_snapshot_build_number = "8804"
 
 # Helm chart version of Confluence
 # confluence_helm_chart_version = "<helm_chart_version>"
@@ -208,7 +206,7 @@ confluence_db_snapshot_build_number = "8804"
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These
 # can be dataset restoration, resource requirements, number of replicas and others.
-confluence_installation_timeout = 25
+confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
 confluence_cpu      = "4"
@@ -249,6 +247,14 @@ confluence_db_master_password = "Password1!"
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
 
+# Use AWS S3 to store attachments. See: https://confluence.atlassian.com/doc/configuring-s3-object-storage-1206794554.html
+# Terraform will automatically create S3 bucket, IAM role and policy
+#confluence_s3_attachments_storage = true
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# confluence_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################
@@ -266,27 +272,23 @@ bitbucket_license = "bitbucket-license"
 bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.11"
+bitbucket_version_tag = "7.21.16"
 
 # Shared home restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0456406e413ff835b"
-# 8.8.3 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-04138d264fb24f2e7"
-# 7.17.16 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-06fceac7bdcc3844c"
+# 7.21.16 DCAPT large dataset EBS snapshot
+bitbucket_shared_home_snapshot_id = "snap-0d4bbe0cf3056c0ee"
+# 8.9.5 DCAPT large dataset EBS snapshot
+#bitbucket_shared_home_snapshot_id = "snap-0261a9130a9fd7618"
 
 # Database restore configuration.
 # Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
 #
-# 7.21.11 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-11"
-# 8.8.3 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-8-3"
-# 7.17.16 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-17-16"
+# 7.21.16 DCAPT large dataset RDS snapshot
+bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16"
+# 8.9.5 DCAPT large dataset RDS snapshot
+#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-5"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -357,6 +359,10 @@ bitbucket_db_name = "bitbucket"
 bitbucket_db_master_username = "atlbitbucket"
 bitbucket_db_master_password = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bitbucket_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Crowd Settings
 ################################################################################
@@ -374,7 +380,7 @@ crowd_license = "crowd-license"
 crowd_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "5.0.5"
+crowd_version_tag = "5.1.4"
 
 # Dataset Restore
 
@@ -383,8 +389,8 @@ crowd_version_tag = "5.0.5"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #
-# Crowd 5.0.5 DCAPT large dataset EBS snapshot
-crowd_shared_home_snapshot_id = "snap-0da31ed523c51a0af"
+# Crowd 5.1.4 DCAPT large dataset EBS snapshot
+crowd_shared_home_snapshot_id = "snap-0a8e229690be9ae30"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
@@ -392,9 +398,9 @@ crowd_shared_home_snapshot_id = "snap-0da31ed523c51a0af"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
 #
-# Crowd 5.0.2 DCAPT large dataset RDS snapshot
-crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-0-5"
-crowd_db_snapshot_build_number = "1794"
+# Crowd 5.1.4 DCAPT large dataset RDS snapshot
+crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4"
+crowd_db_snapshot_build_number = "1893"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -406,19 +412,19 @@ crowd_installation_timeout = 20
 
 # Crowd instance resource configuration
 crowd_cpu      = "2"
-crowd_mem      = "3Gi"
-crowd_min_heap = "1024m"
-crowd_max_heap = "1024m"
+crowd_mem      = "8Gi"
+crowd_min_heap = "2048m"
+crowd_max_heap = "2048m"
 
 # Storage
-crowd_local_home_size  = "10Gi"
-crowd_shared_home_size = "10Gi"
+crowd_local_home_size  = "15Gi"
+crowd_shared_home_size = "15Gi"
 
 # Crowd NFS instance resource configuration
 crowd_nfs_requests_cpu    = "1"
 crowd_nfs_requests_memory = "1Gi"
 crowd_nfs_limits_cpu      = "1"
-crowd_nfs_limits_memory   = "1Gi"
+crowd_nfs_limits_memory   = "2Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -443,6 +449,10 @@ crowd_termination_grace_period = 0
 crowd_db_master_username     = "atlcrowd"
 crowd_db_master_password     = "Password1!"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# crowd_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Bamboo Settings
 ################################################################################
@@ -457,8 +467,8 @@ bamboo_license = "bamboo-license"
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.2.1"
-bamboo_agent_version_tag = "9.2.1"
+bamboo_version_tag       = "9.2.5"
+bamboo_agent_version_tag = "9.2.5"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
@@ -530,3 +540,32 @@ bamboo_db_name                 = "bamboo"
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
 bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bamboo_custom_values_file = "/path/to/values.yaml"
+
+################################################################################
+# Monitoring settings
+################################################################################
+
+# Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
+# to kube-monitoring namespace. Defaults to false.
+# monitoring_enabled = true
+
+# Create Grafana service of LoadBalancer type. Defaults to false. To restric access to LB URL
+# the list of CIRDs from whitelist_cidr will be automatically applied.
+# monitoring_grafana_expose_lb = true
+
+# Prometheus Persistent Volume Claim size. Defaults to 10Gi.
+# Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+# i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+# to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+# prometheus_pvc_disk_size = "100Gi"
+
+# Grafana Persistent Volume Claim size. Defaults to 10Gi.
+# grafana_pvc_disk_size = "20Gi"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# monitoring_custom_values_file = "/path/to/values.yaml"
