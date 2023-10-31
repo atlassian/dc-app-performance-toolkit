@@ -81,7 +81,7 @@ class Jira(BaseApplication):
 
     @property
     def nodes_count(self):
-        if self.client.get_confluence_nodes() == 'Server':
+        if self.client.get_nodes() == 'Server':
             return 'Server'
         return len(self.client.get_nodes())
 
@@ -128,9 +128,8 @@ class Bitbucket(BaseApplication):
 
     @property
     def nodes_count(self):
-        if self.client.get_confluence_nodes() == 'Server':
-            return 'Server'
-        return self.client.get_bitbucket_nodes_count()
+        nodes_count = self.client.get_bitbucket_nodes_count()
+        return nodes_count
 
     @property
     def dataset_information(self):
@@ -147,7 +146,7 @@ class Jsm(BaseApplication):
 
     @property
     def nodes_count(self):
-        if self.client.get_confluence_nodes() == 'Server':
+        if self.client.get_nodes() == 'Server':
             return 'Server'
         return len(self.client.get_nodes())
 

@@ -40,10 +40,11 @@ def check_dcapt_version():
 
 def validate_application_config(processors, app_name_upper, app_settings, min_defaults):
     is_jsm = app_name_upper == "JSM"
-    if not is_jsm:
-        current_concurrency = app_settings.concurrency
-    else:
+    if is_jsm:
         current_concurrency = (app_settings.customers_concurrency, app_settings.agents_concurrency)
+    else:
+        current_concurrency = app_settings.concurrency
+
     if (
         (not is_jsm and current_concurrency == min_defaults['concurrency']) or
         (is_jsm and
@@ -75,7 +76,6 @@ def analyze_application_configuration(app_name):
     validate_application_config(processors, app_name_upper, app_settings, min_defaults)
 
 
-
 def main():
     check_dcapt_version()
     try:
@@ -92,7 +92,6 @@ def main():
         else:
             raise SystemExit(f'ERROR: Unknown application: {app_name.upper()}. '
                              f'Supported applications are {list(APPS_SETTINGS.keys())}')
-
 
 
 if __name__ == "__main__":

@@ -140,7 +140,7 @@ class ConfluenceRestClient(RestClient):
         try:
             nodes = self.get_confluence_nodes()
             if nodes == 'Server':
-                return nodes
+                return 'Server'
             node_id = self.get_confluence_nodes()[0]
             api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                       f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
