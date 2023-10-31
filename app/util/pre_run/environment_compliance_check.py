@@ -46,9 +46,9 @@ def validate_application_config(processors, app_name_upper, app_settings, min_de
         current_concurrency = app_settings.concurrency
 
     if (
-        (not is_jsm and current_concurrency == min_defaults['concurrency']) or
+        (not is_jsm and current_concurrency >= min_defaults['concurrency']) or
         (is_jsm and
-         current_concurrency == (min_defaults['customer_concurrency'], min_defaults['agent_concurrency']))
+         current_concurrency >= (min_defaults['customer_concurrency'], min_defaults['agent_concurrency']))
     ):
         # If the number of processors is less than 4, raise a SystemExit with a warning message.
         if processors < 4:
