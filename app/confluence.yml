@@ -3,27 +3,27 @@ settings:
   artifacts-dir: results/confluence/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false                 # disable bzt check for updates
   env:
     application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol, port and postfix e.g. test-confluence.atlassian.com or localhost
-    application_protocol: http        # http or https
-    application_port: 80              # 80, 443, 8080, 1990, etc
-    secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
+    application_protocol: http         # http or https
+    application_port: 80               # 80, 443, 8080, 1990, etc
+    secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix: /confluence   # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                  # number of concurrent virtual users for jmeter or locust scenario
+    load_executor: jmeter              # jmeter and locust are supported. jmeter by default.
+    concurrency: 200                   # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 5m                       # time to spin all concurrent users
+    ramp-up: 5m                        # time to spin all concurrent users
     total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
-    allow_analytics: No              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    environment_compliance_check: True # Pre-test application environment validation. "False" to skip it.
-    # Action percentage for JMeter and Locust load executors
+    allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     extended_metrics: False
+    # Action percentage for JMeter and Locust load executors
     view_page: 33
     view_dashboard: 9
     view_blog: 13
