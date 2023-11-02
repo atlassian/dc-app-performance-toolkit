@@ -27,6 +27,7 @@ class BaseAppSettings:
         self.analytics_collector = self.get_property('allow_analytics')
         self.load_executor = self.get_property('load_executor')
         self.secure = self.get_property('secure')
+        self.environment_compliance_check = self.get_property('environment_compliance_check')
 
     @property
     def server_url(self):
