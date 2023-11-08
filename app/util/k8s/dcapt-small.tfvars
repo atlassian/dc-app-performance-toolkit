@@ -12,13 +12,13 @@
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-product-small"
+environment_name = "dcapt-sm-smor-3"
 
 # Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
-
+products = ["jira"]
+jira_dataset_size = "small"
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
 
@@ -28,7 +28,13 @@ region = "us-east-2"
 whitelist_cidr = ["0.0.0.0/0"]
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
-resource_tags = {Name: "dcapt-testing-small"}
+resource_tags = {
+ persist_days : "0.4",
+ business_unit : "Engineering-Enterprise DC",
+ creator : "ci",
+ resource_owner : "ometelytsia",
+ service_name : "dcapt"
+}
 
 # Instance types that is preferred for EKS node group.
 # Confluence, Jira  - use default value
@@ -75,7 +81,7 @@ jira_image_repository = "atlassian/jira-software"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid confluence license is used without spaces and new line symbols.
 # ! REQUIRED !
-jira_license = "jira-license"
+jira_license = "AAACCA0ODAoPeNqNk1Fv2jAQx9/zKSztZUNySIJaBlKk0cTrskKCksA0rXswyQGugh3ZDhvffiYBtR0dmpQX2/e/+93/Lu++QYlisUcDB7nu2LkZ37jofpYjz/E8ayMB+FbUNUh7ygrgCkjJNBPcJ3FO0nkaZcSKm90KZLJeKJDKx64VCK5poWO6A58qTdX2YD7+ieqKKsUotwuxs56YpPaFdt7IYksVhFSD7znuCDtD7H60TuXzQw1t3iCZzUgaRJPp+Yn8rpk8tLq56zlfzhhkRll1hSMDuQcZhf7dLFri1Ln3cDocTXAweFh2kLUUZVNo+3jASqz1LyrBNqnZHnwtG7gWZoBoAFyD7EKzZqUKyerWxfbmDZffarOt8e8p9Hq9OMnx5yTF8zQJF0EeJTFeZMQ8+IEE40uJVgekt4BOWRDhhShBIkP+BIVGP7Za14/jfn8j7Fcm9atOgaFT/LRRKBAXGpVMaclWjQaTmSmkBSoapcXOzNO2jPWmc055cTkewxWkZJKTEN99P0IajYbqoE3R80zNVKZRmJEYT93BaHB7O/SueX2xTW3sxQRI7P93ykxTeVSuaaXASuSGcqZoa/7k7JDV2muu/l7ak2tLQ3MUvP6hWqJaMnXaoRCe9+KrYUDZiQG9P3aAuhY+PI4R2dOqaQt25BebeGWLXhK81D3n7M5/AGEqbKMwLQIVAIGhKyPPM2ZK4yWWthGFszXWziMrAhQPrZpZ8MurfHmf42EG2hC3RgCAaQ==X02ok"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
