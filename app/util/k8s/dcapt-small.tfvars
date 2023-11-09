@@ -12,7 +12,7 @@
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-sm-smor-3"
+environment_name = "dcapt-testing-small"
 
 # Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
@@ -28,13 +28,7 @@ region = "us-east-2"
 whitelist_cidr = ["0.0.0.0/0"]
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
-resource_tags = {
- persist_days : "0.4",
- business_unit : "Engineering-Enterprise DC",
- creator : "ci",
- resource_owner : "ometelytsia",
- service_name : "dcapt"
-}
+resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
 # Confluence, Jira  - use default value
