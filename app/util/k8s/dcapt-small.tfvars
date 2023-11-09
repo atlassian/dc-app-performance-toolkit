@@ -18,6 +18,7 @@ environment_name = "dcapt-testing-small"
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
 products = ["jira"]
+snapshots_json_file_path=dcapt-snapshots.json
 jira_dataset_size = "small"
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
