@@ -12,14 +12,13 @@
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-testing-small"
+environment_name = "dcapt-product-small"
 
 # Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["jira"]
-snapshots_json_file_path="dcapt-snapshots.json"
-jira_dataset_size = "small"
+products = ["product-to-deploy"]
+
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
 
@@ -27,6 +26,9 @@ region = "us-east-2"
 # By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by changing the
 # default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
 whitelist_cidr = ["0.0.0.0/0"]
+
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing-small"}
@@ -76,7 +78,10 @@ jira_image_repository = "atlassian/jira-software"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid confluence license is used without spaces and new line symbols.
 # ! REQUIRED !
-jira_license = "AAACCA0ODAoPeNqNk1Fv2jAQx9/zKSztZUNySIJaBlKk0cTrskKCksA0rXswyQGugh3ZDhvffiYBtR0dmpQX2/e/+93/Lu++QYlisUcDB7nu2LkZ37jofpYjz/E8ayMB+FbUNUh7ygrgCkjJNBPcJ3FO0nkaZcSKm90KZLJeKJDKx64VCK5poWO6A58qTdX2YD7+ieqKKsUotwuxs56YpPaFdt7IYksVhFSD7znuCDtD7H60TuXzQw1t3iCZzUgaRJPp+Yn8rpk8tLq56zlfzhhkRll1hSMDuQcZhf7dLFri1Ln3cDocTXAweFh2kLUUZVNo+3jASqz1LyrBNqnZHnwtG7gWZoBoAFyD7EKzZqUKyerWxfbmDZffarOt8e8p9Hq9OMnx5yTF8zQJF0EeJTFeZMQ8+IEE40uJVgekt4BOWRDhhShBIkP+BIVGP7Za14/jfn8j7Fcm9atOgaFT/LRRKBAXGpVMaclWjQaTmSmkBSoapcXOzNO2jPWmc055cTkewxWkZJKTEN99P0IajYbqoE3R80zNVKZRmJEYT93BaHB7O/SueX2xTW3sxQRI7P93ykxTeVSuaaXASuSGcqZoa/7k7JDV2muu/l7ak2tLQ3MUvP6hWqJaMnXaoRCe9+KrYUDZiQG9P3aAuhY+PI4R2dOqaQt25BebeGWLXhK81D3n7M5/AGEqbKMwLQIVAIGhKyPPM2ZK4yWWthGFszXWziMrAhQPrZpZ8MurfHmf42EG2hC3RgCAaQ==X02ok"
+jira_license = "jira-license"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+jira_dataset_size = "small"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
@@ -89,31 +94,6 @@ jira_replica_count = 1
 jira_version_tag = "9.4.10"
 # JSM version
 # jira_version_tag = "5.4.10"
-
-# Shared home restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-#
-# Jira 9.4.10 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-019fd367ec397b1f3"
-# Jira 8.20.26 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0592bc60820536611"
-# JSM 5.4.10 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0e340e980918e45f6"
-# JSM 4.20.26 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-096d1185a5fee02ea"
-
-# Database restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
-#
-# Jira 9.4.10 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-10"
-# Jira 8.20.26 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-26"
-# JSM 5.4.10 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-10"
-# JSM 4.20.26 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-26"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -175,6 +155,9 @@ jira_db_master_password = "Password1!"
 # Please make sure valid confluence license is used without spaces and new line symbols.
 # ! REQUIRED !
 confluence_license = "confluence-license"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "small"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
@@ -271,6 +254,9 @@ confluence_collaborative_editing_enabled = true
 # Please make sure valid bitbucket license is used without spaces and new line symbols.
 # ! REQUIRED !
 bitbucket_license = "bitbucket-license"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "small"
 
 # Number of Bitbucket application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
