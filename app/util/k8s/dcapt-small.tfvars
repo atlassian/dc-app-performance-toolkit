@@ -19,6 +19,15 @@ environment_name = "dcapt-product-small"
 # ! REQUIRED !
 products = ["product-to-deploy"]
 
+# License
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
+# Please make sure valid license is used without spaces and new line symbols.
+# ! REQUIRED !
+jira_license = "jira-license"
+confluence_license = "confluence-license"
+bitbucket_license = "bitbucket-license"
+
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
 
@@ -72,13 +81,6 @@ max_cluster_capacity = 1
 jira_image_repository = "atlassian/jira-software"
 # JSM
 # jira_image_repository = "atlassian/jira-servicemanagement"
-
-# Jira/JSM license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid confluence license is used without spaces and new line symbols.
-# ! REQUIRED !
-jira_license = "jira-license"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -148,13 +150,6 @@ jira_db_master_password = "Password1!"
 ################################################################################
 # Confluence Settings
 ################################################################################
-
-# Confluence license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid confluence license is used without spaces and new line symbols.
-# ! REQUIRED !
-confluence_license = "confluence-license"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
@@ -227,13 +222,6 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 # Bitbucket Settings
 ################################################################################
-
-# Bitbucket license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
-# Please make sure valid bitbucket license is used without spaces and new line symbols.
-# ! REQUIRED !
-bitbucket_license = "bitbucket-license"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
