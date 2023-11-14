@@ -17,6 +17,17 @@ environment_name = "dcapt-product"
 # ! REQUIRED !
 products = ["product-to-deploy"]
 
+# License
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
+# Please make sure valid license is used without spaces and new line symbols.
+# ! REQUIRED !
+jira_license = "jira-license"
+confluence_license = "confluence-license"
+bitbucket_license = "bitbucket-license"
+crowd_license = "crowd-license"
+bamboo_license = "bamboo-license"
+
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
 
@@ -69,13 +80,6 @@ jira_image_repository = "atlassian/jira-software"
 # JSM
 # jira_image_repository = "atlassian/jira-servicemanagement"
 
-# Jira/JSM license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid Jira/JSM license is used without spaces and new line symbols.
-# ! REQUIRED !
-jira_license = "jira-license"
-
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
 # installed and configured.
@@ -87,31 +91,6 @@ jira_replica_count = 1
 jira_version_tag = "9.4.10"
 # JSM version
 # jira_version_tag = "5.4.10"
-
-# Shared home restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-#
-# Jira 9.4.10 DCAPT large dataset EBS snapshot
-jira_shared_home_snapshot_id = "snap-084e99e384dcfbe31"
-# Jira 8.20.26 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0c0c388d53cd4153b"
-# JSM 5.4.10 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0381cc00e37231565"
-# JSM 4.20.26 DCAPT large dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0f7aa03eea37f3304"
-
-# Database restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
-#
-# Jira 9.4.10 DCAPT large dataset RDS snapshot
-jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-10"
-# Jira 8.20.26 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-8-20-26"
-# JSM 5.4.10 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-10"
-# JSM 4.20.26 DCAPT large dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-26"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -161,13 +140,6 @@ jira_db_master_password = "Password1!"
 # Confluence Settings
 ################################################################################
 
-# Confluence license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid Confluence license is used without spaces and new line symbols.
-# ! REQUIRED !
-confluence_license = "confluence-license"
-
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
 # installed and configured.
@@ -175,30 +147,6 @@ confluence_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 confluence_version_tag = "8.5.1"
-
-# Shared home restore configuration.
-# Make sure confluence version set in `confluence_version_tag` match the snapshot version.
-#
-# 8.5.1 DCAPT large dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-074a2fdca0497b6b6"
-# 7.19.14 DCAPT large dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-00f5e8147604a017e"
-
-# Database restore configuration.
-# Make sure confluence version set in `confluence_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-#
-# 8.5.1 DCAPT large dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-1"
-# 7.19.14 DCAPT large dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14"
-
-# Build number for a specific Confluence version can be found in the link below:
-# https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.5.1
-confluence_db_snapshot_build_number = "9012"
-# 7.19.14
-# confluence_db_snapshot_build_number = "8804"
 
 # Helm chart version of Confluence
 # confluence_helm_chart_version = "<helm_chart_version>"
@@ -259,13 +207,6 @@ confluence_collaborative_editing_enabled = true
 # Bitbucket Settings
 ################################################################################
 
-# Bitbucket license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
-# Please make sure valid Bitbucket license is used without spaces and new line symbols.
-# ! REQUIRED !
-bitbucket_license = "bitbucket-license"
-
 # Number of Bitbucket application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
 # installed and configured.
@@ -273,22 +214,6 @@ bitbucket_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 bitbucket_version_tag = "7.21.16"
-
-# Shared home restore configuration.
-# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
-#
-# 7.21.16 DCAPT large dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-0d4bbe0cf3056c0ee"
-# 8.9.5 DCAPT large dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-0261a9130a9fd7618"
-
-# Database restore configuration.
-# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
-#
-# 7.21.16 DCAPT large dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16"
-# 8.9.5 DCAPT large dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-9-5"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -367,13 +292,6 @@ bitbucket_db_master_password = "Password1!"
 # Crowd Settings
 ################################################################################
 
-# Crowd license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_crowd_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
-# Please make sure valid Crowd license is used without spaces and new line symbols.
-# ! REQUIRED !
-crowd_license = "crowd-license"
-
 # Number of Crowd application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Crowd is fully
 # installed and configured.
@@ -381,26 +299,6 @@ crowd_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 crowd_version_tag = "5.1.4"
-
-# Dataset Restore
-
-# Shared home restore configuration
-# To restore shared home dataset, you can provide EBS snapshot ID that contains content of the shared home volume.
-# This volume will be mounted to the NFS server and used when the product is started.
-# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
-#
-# Crowd 5.1.4 DCAPT large dataset EBS snapshot
-crowd_shared_home_snapshot_id = "snap-0a8e229690be9ae30"
-
-# Database restore configuration
-# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
-# This will restore the database from the snapshot and will not create a new database.
-# The snapshot should be in the same AWS account and region as the environment to be deployed.
-# Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
-#
-# Crowd 5.1.4 DCAPT large dataset RDS snapshot
-crowd_db_snapshot_id           = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4"
-crowd_db_snapshot_build_number = "1893"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -456,13 +354,6 @@ crowd_db_master_password     = "Password1!"
 ################################################################################
 # Bamboo Settings
 ################################################################################
-
-# Bamboo license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid Bamboo license is used without spaces and new line symbols.
-# ! REQUIRED !
-bamboo_license = "bamboo-license"
 
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
