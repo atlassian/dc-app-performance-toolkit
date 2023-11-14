@@ -36,6 +36,9 @@ region = "us-east-2"
 # default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
 whitelist_cidr = ["0.0.0.0/0"]
 
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
+
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing"}
 
