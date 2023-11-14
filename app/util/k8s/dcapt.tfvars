@@ -77,6 +77,10 @@ max_cluster_capacity = 4
 #
 # Jira
 jira_image_repository = "atlassian/jira-software"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+jira_dataset_size = "large"
+
 # JSM
 # jira_image_repository = "atlassian/jira-servicemanagement"
 
@@ -139,6 +143,9 @@ jira_db_master_password = "Password1!"
 ################################################################################
 # Confluence Settings
 ################################################################################
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "large"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
@@ -206,6 +213,9 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 # Bitbucket Settings
 ################################################################################
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "large"
 
 # Number of Bitbucket application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
