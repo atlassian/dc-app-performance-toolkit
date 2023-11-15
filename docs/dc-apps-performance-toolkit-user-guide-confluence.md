@@ -81,6 +81,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
@@ -316,6 +317,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```
@@ -503,6 +505,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
    ``` bash
    docker run --pull=always --env-file aws_envs \
    -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c config.tfvars
    ```

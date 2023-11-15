@@ -28,7 +28,7 @@ bitbucket_license = "bitbucket-license"
 crowd_license = "crowd-license"
 bamboo_license = "bamboo-license"
 
-# Default AWS region for DCAPT snapshots.
+# Default AWS region for DCAPT snapshots. Supported regions are us-east-1, us-east-2, us-west-1, us-west-2.
 region = "us-east-2"
 
 # List of IP ranges that are allowed to access the running applications over the World Wide Web.
