@@ -93,7 +93,6 @@ jira_dataset_size = "large"
 jira_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-#
 # Jira version
 jira_version_tag = "9.4.10"
 # JSM version

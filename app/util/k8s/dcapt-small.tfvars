@@ -91,8 +91,7 @@ jira_dataset_size = "small"
 jira_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-#
-# Jira version
+# Jira version.
 jira_version_tag = "9.4.10"
 # JSM version
 # jira_version_tag = "5.4.10"
@@ -202,6 +201,7 @@ confluence_db_major_engine_version = "14"
 confluence_db_instance_class       = "db.t3.medium"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
+
 # If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
 confluence_db_name = "confluence"
@@ -296,6 +296,7 @@ bitbucket_db_major_engine_version = "14"
 bitbucket_db_instance_class       = "db.t3.medium"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
+
 # If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
 bitbucket_db_name = "bitbucket"
