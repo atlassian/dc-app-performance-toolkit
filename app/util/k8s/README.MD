@@ -9,6 +9,7 @@
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
@@ -31,6 +32,7 @@ docker run --pull=always --env-file aws_envs \
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./install.sh -c config.tfvars
 ```
@@ -69,8 +71,3 @@ docker run --pull=always --env-file aws_envs \
 -v "$PWD/terminate_cluster.py:/data-center-terraform/terminate_cluster.py" \
 atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-cluster --aws_region $REGION
 ```
-
-# Non default product version or aws region
-File [dcapt-snapshots.json](./dcapt-snapshots.json) has all available RDS and EBS snapshots IDs for all supported product 
-versions and AWS regions.
-Set `version_tag`, `shared_home_snapshot_id` and `db_snapshot_id` values correspondingly to product version and region.
