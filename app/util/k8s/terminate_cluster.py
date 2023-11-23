@@ -48,6 +48,26 @@ def wait_for_node_group_delete(eks_client, cluster_name, node_group):
         logging.error(f"Node group {node_group} for cluster {cluster_name} was not deleted in {timeout} seconds.")
 
 
+def wait_for_hosted_zone_delete(route53_client, hosted_zone_id):
+    timeout = 600  # 10 min
+    attempt = 0
+    sleep_time = 10
+    attempts = timeout // sleep_time
+
+    while attempt < attempts:
+        try:
+            route53_client.get_hosted_zone(Id=hosted_zone_id)
+        except route53_client.exceptions.NoSuchHostedZone:
+            logging.info(f"Hosted zone {hosted_zone_id} was successfully deleted.")
+            break
+        logging.info(f"Hosted zone {hosted_zone_id} is still exists. "
+                     f"Attempt {attempt}/{attempts}. Sleeping {sleep_time} seconds.")
+        sleep(sleep_time)
+        attempt += 1
+    else:
+        logging.error(f"Hosted zone {hosted_zone_id} was not deleted in {timeout} seconds.")
+
+
 def wait_for_cluster_delete(eks_client, cluster_name):
     timeout = 600  # 10 min
     attempt = 0
@@ -87,6 +107,26 @@ def wait_for_rds_delete(rds_client, db_name):
         attempt += 1
     else:
         logging.error(f"RDS {db_name} was not deleted in {timeout} seconds.")
+
+
+def delete_record_from_hosted_zone(route53_client, hosted_zone_id, record):
+    change_batch = {
+        'Changes': [
+            {
+                'Action': 'DELETE',
+                'ResourceRecordSet': record
+            }
+        ]
+    }
+    try:
+        route53_client.change_resource_record_sets(
+            HostedZoneId=hosted_zone_id,
+            ChangeBatch=change_batch
+        )
+        logging.info(f"Record {record['Name']} was successfully deleted from hosted zone {hosted_zone_id}.")
+    except Exception as e:
+        logging.error(f'Unexpected error occurs, could not delete record from hosted zone {hosted_zone_id}: {e}')
+
 
 
 def delete_nodegroup(aws_region, cluster_name):
@@ -131,6 +171,36 @@ def delete_cluster(aws_region, cluster_name):
             logging.info(f"No cluster found for name: {cluster_name}")
         else:
             raise e
+
+
+def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
+    environment_name = cluster_name.replace('atlas-', '').replace('-cluster', '')
+    try:
+        route53_client = boto3.client('route53', region_name=aws_region)
+        existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
+        if not existed_hosted_zones:
+            return
+        for hosted_zone in existed_hosted_zones:
+            if environment_name in hosted_zone['Name']:
+                hosted_zone_to_delete = hosted_zone
+                records_hosted_zone_to_delete = route53_client.list_resource_record_sets(
+                    HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']
+                for record in records_hosted_zone_to_delete:
+                    if record['Type'] not in ['NS', 'SOA']:
+                        delete_record_from_hosted_zone(route53_client, hosted_zone['Id'], record)
+                route53_client.delete_hosted_zone(Id=hosted_zone_to_delete['Id'])
+                wait_for_hosted_zone_delete(route53_client, hosted_zone['Id'])
+                break
+
+        existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
+        existed_hosted_zones_ids = [zone["Id"] for zone in existed_hosted_zones]
+        for hosted_zone_id in existed_hosted_zones_ids:
+            records_set = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone_id)['ResourceRecordSets']
+            for record in records_set:
+                if environment_name in record['Name']:
+                    delete_record_from_hosted_zone(route53_client, hosted_zone_id, record)
+    except Exception as e:
+        logging.error(f"Unexpected error occurs: {e}")
 
 
 def delete_lb(aws_region, vpc_id):
@@ -373,6 +443,7 @@ def terminate_cluster(cluster_name, aws_region=None):
     # Delete the nodegroup and cluster in the specified region
     delete_nodegroup(aws_region, cluster_name)
     delete_cluster(aws_region, cluster_name)
+    delete_hosted_zone_record_if_exists(aws_region, cluster_name)
 
 
 def release_eip(aws_region, vpc_name):
@@ -729,3 +800,4 @@ def main():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     main()
+
