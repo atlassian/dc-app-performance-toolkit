@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-10-03"
+date: "2023-11-27"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -56,13 +56,14 @@ specifically for performance testing during the DC app review process.
    Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
    {{% /note %}}
 
-6. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+6. From local terminal start the installation (~40min) (see [note](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/k8s#note-for-windows-users) for Windows git bash user)
+7. 
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+   -v "$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+   -it atlassianlabs/terraform ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
 8. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
