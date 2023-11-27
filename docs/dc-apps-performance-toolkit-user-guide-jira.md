@@ -451,8 +451,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 If you are submitting a Jira app, you are required to conduct a Lucene Index timing test. This involves conducting a foreground re-index on a single-node Data Center deployment (with your app installed) and a dataset that has 1M issues.
 
 {{% note %}}
-The re-index time for Jira 8.20.x is about ~30-50 minutes, while for Jira 9.4.x it can take significantly longer at around 110-130 minutes. 
-This increase in re-index time is due to a known issue which affects Jira 9.4.x, and you can find more information about it in this ticket: [Re-Index: Jira 9.4.x](https://jira.atlassian.com/browse/JRASERVER-74787).
+The re-index time for Jira is about ~50-70 minutes.
 {{% /note %}}
 
 **Benchmark your re-index time with your app installed:**
