@@ -1,4 +1,17 @@
 # Development environment
+
+## Note for Windows users
+For some Windows setups, Git Bash `$PWD` command does not return correct full path.
+In this case $PWD needs to be changed to absolute path directory in Windows format. 
+E.g.
+```bash
+docker run --pull=always --env-file aws_envs \
+-v "//c//Users//user//dc-app-performance-toolkit//app//util//k8s//dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+-v "//c//Users//user//dc-app-performance-toolkit//app//util//k8s//dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+-v "//c//Users//user//dc-app-performance-toolkit//app//util//k8s///logs:/data-center-terraform/logs" \
+-it atlassianlabs/terraform ./install.sh -c conf.tfvars
+```
+
 ## Create development environment 
 * set AWS credential in [aws_envs](./aws_envs) file
 * set correct values in [dcapt-small.tfvars](./dcapt-small.tfvars) file:
@@ -8,17 +21,17 @@
 * run install development environment command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
--v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./install.sh -c config.tfvars
+-it atlassianlabs/terraform ./install.sh -c conf.tfvars
 ```
 ## Terminate development environment
 ``` bash
 docker run --pull=always --env-file aws_envs \
--v "$PWD/dcapt-small.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./uninstall.sh -c config.tfvars
+-it atlassianlabs/terraform ./uninstall.sh -c conf.tfvars
 ```
 
 # Enterprise-scale environment
@@ -31,10 +44,10 @@ docker run --pull=always --env-file aws_envs \
 * run install enterprise-scale environment command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
--v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./install.sh -c config.tfvars
+-it atlassianlabs/terraform ./install.sh -c conf.tfvars
 ```
 ## Terminate enterprise-scale environment
 Option `-t` deletes Terraform state files for all installed environment in the same region using the same AWS account.
@@ -42,9 +55,9 @@ Option `-t` deletes Terraform state files for all installed environment in the s
 If state files are needed, e.g. there are other running clusters for other product, do not use `-t` flag in below command.
 ``` bash
 docker run --pull=always --env-file aws_envs \
--v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
+-v "$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
+-it atlassianlabs/terraform ./uninstall.sh -t -c conf.tfvars
 ```
 
 # Collect detailed k8s logs

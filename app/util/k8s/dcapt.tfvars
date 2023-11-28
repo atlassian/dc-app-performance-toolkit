@@ -4,7 +4,7 @@
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/ for more information.
 
 ################################################################################
-# Common Settings
+# Configuration settings to change
 ################################################################################
 
 # Unique name of your enterprise-scale test cluster.
@@ -12,21 +12,35 @@
 # ! REQUIRED !
 environment_name = "dcapt-product"
 
-# Supported products: jira, confluence, bitbucket and bamboo.
-# e.g.: products = ["confluence"]
+# Supported products: jira, confluence, bitbucket, crowd and bamboo.
+# For JSM set product as jira.
+# e.g.: products = ["jira"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
 
 # License
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid license is used without spaces and new line symbols.
+# ! IMPORTANT ! Please make sure valid license is used without spaces and new line symbols.
 # ! REQUIRED !
 jira_license = "jira-license"
 confluence_license = "confluence-license"
 bitbucket_license = "bitbucket-license"
 crowd_license = "crowd-license"
 bamboo_license = "bamboo-license"
+
+# Replica count.
+# Number of product application nodes.
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after product is fully
+# installed and configured.
+jira_replica_count = 1
+confluence_replica_count = 1
+bitbucket_replica_count = 1
+crowd_replica_count = 1
+
+################################################################################
+# Common Settings
+################################################################################
 
 # Default AWS region for DCAPT snapshots. Supported regions are us-east-1, us-east-2, us-west-1, us-west-2.
 region = "us-east-2"
@@ -43,19 +57,15 @@ snapshots_json_file_path = "dcapt-snapshots.json"
 resource_tags = {Name: "dcapt-testing"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence, Bamboo, Jira - use default value
-# Bitbucket - ["m5.4xlarge"]
-# Crowd - ["m5.xlarge"]
-# ! REQUIRED !
 instance_types     = ["m5.2xlarge"]
-instance_disk_size = 100
+instance_disk_size = 200
 
 # Minimum and maximum size of the EKS cluster.
 # Cluster-autoscaler is installed in the EKS cluster that will manage the requested capacity
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 4
+max_cluster_capacity = 6
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
@@ -70,6 +80,17 @@ max_cluster_capacity = 4
 #domain = "<example.com>"
 
 ################################################################################
+# Execution Environment Settings
+################################################################################
+# Create a docker-in-docker privileged container as execution environment pod
+
+start_test_deployment = "true"
+test_deployment_cpu_request = "3"
+test_deployment_cpu_limit = "4"
+test_deployment_mem_request = "6Gi"
+test_deployment_mem_limit = "6Gi"
+
+################################################################################
 # Jira/JSM Settings
 ################################################################################
 
@@ -81,22 +102,20 @@ max_cluster_capacity = 4
 # Jira
 jira_image_repository = "atlassian/jira-software"
 
-# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-jira_dataset_size = "large"
-
 # JSM
+# ! REQUIRED for JSM !
 # jira_image_repository = "atlassian/jira-servicemanagement"
-
-# Number of Jira/JSM application nodes
-# Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
-# installed and configured.
-jira_replica_count = 1
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version
 jira_version_tag = "9.4.10"
+
 # JSM version
+# ! REQUIRED for JSM !
 # jira_version_tag = "5.4.10"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
+jira_dataset_size = "large"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -108,15 +127,15 @@ jira_installation_timeout = 25
 
 # Jira/JSM instance resource configuration
 jira_cpu                 = "6"
-jira_mem                 = "24Gi"
+jira_mem                 = "20Gi"
 jira_min_heap            = "12288m"
 jira_max_heap            = "12288m"
 jira_reserved_code_cache = "2048m"
 
 # Storage
 # initial volume size of local/shared home EBS.
-jira_local_home_size  = "100Gi"
-jira_shared_home_size = "100Gi"
+jira_local_home_size  = "200Gi"
+jira_shared_home_size = "200Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -146,16 +165,11 @@ jira_db_master_password = "Password1!"
 # Confluence Settings
 ################################################################################
 
-# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-confluence_dataset_size = "large"
-
-# Number of Confluence application nodes
-# Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
-# installed and configured.
-confluence_replica_count = 1
-
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 confluence_version_tag = "8.5.1"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "large"
 
 # Helm chart version of Confluence
 # confluence_helm_chart_version = "<helm_chart_version>"
@@ -166,21 +180,21 @@ confluence_version_tag = "8.5.1"
 confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
-confluence_cpu      = "4"
+confluence_cpu      = "6"
 confluence_mem      = "20Gi"
 confluence_min_heap = "12288m"
 confluence_max_heap = "12288m"
 
 # Synchrony instance resource configuration
-synchrony_cpu       = "2"
-synchrony_mem       = "2.5Gi"
+synchrony_cpu       = "1"
+synchrony_mem       = "3Gi"
 synchrony_min_heap  = "1024m"
 synchrony_max_heap  = "2048m"
 synchrony_stack_size = "2048k"
 
 # Storage
 confluence_local_home_size  = "200Gi"
-confluence_shared_home_size = "100Gi"
+confluence_shared_home_size = "200Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -216,16 +230,11 @@ confluence_collaborative_editing_enabled = true
 # Bitbucket Settings
 ################################################################################
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "8.9.5"
+
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
-
-# Number of Bitbucket application nodes
-# Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
-# installed and configured.
-bitbucket_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.16"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -304,11 +313,6 @@ bitbucket_db_master_password = "Password1!"
 # Crowd Settings
 ################################################################################
 
-# Number of Crowd application nodes
-# Note: For initial installation this value needs to be set to 1 and it can be changed only after Crowd is fully
-# installed and configured.
-crowd_replica_count = 1
-
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 crowd_version_tag = "5.1.4"
 
@@ -327,8 +331,8 @@ crowd_min_heap = "2048m"
 crowd_max_heap = "2048m"
 
 # Storage
-crowd_local_home_size  = "15Gi"
-crowd_shared_home_size = "15Gi"
+crowd_local_home_size  = "20Gi"
+crowd_shared_home_size = "20Gi"
 
 # Crowd NFS instance resource configuration
 crowd_nfs_requests_cpu    = "1"
@@ -414,8 +418,8 @@ bamboo_min_heap = "2048m"
 bamboo_max_heap = "4096m"
 
 # Bamboo Agent instance resource configuration
-bamboo_agent_cpu = "200m"
-bamboo_agent_mem = "700m"
+bamboo_agent_cpu = "250m"
+bamboo_agent_mem = "1000m"
 
 # Storage
 bamboo_local_home_size  = "200Gi"
@@ -456,9 +460,17 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 # to kube-monitoring namespace. Defaults to false.
 # monitoring_enabled = true
 
-# Create Grafana service of LoadBalancer type. Defaults to false. To restric access to LB URL
+# Create Grafana service of LoadBalancer type. Defaults to false. To restrict access to LB URL
 # the list of CIRDs from whitelist_cidr will be automatically applied.
+
 # monitoring_grafana_expose_lb = true
+
+# Command to select cluster:
+# export ENVIRONMENT_NAME=your_environment_name
+# aws eks update-kubeconfig --region us-east-2 --name atlas-$ENVIRONMENT_NAME-cluster
+
+# Command to get grafana ulr: kubectl get svc -n kube-monitoring | grep grafana
+# Default grafana creds: admin/prom-operator
 
 # Prometheus Persistent Volume Claim size. Defaults to 10Gi.
 # Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,

@@ -6,7 +6,7 @@
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/ for more information.
 
 ################################################################################
-# Common Settings
+# Configuration settings to change
 ################################################################################
 
 # Unique name of your small-scale test cluster.
@@ -14,19 +14,24 @@
 # ! REQUIRED !
 environment_name = "dcapt-product-small"
 
-# Supported products: jira, confluence and bitbucket
-# e.g.: products = ["confluence"]
+# Supported products: jira, confluence and bitbucket.
+# For JSM set product as jira.
+# e.g.: products = ["jira"]
 # ! REQUIRED !
 products = ["product-to-deploy"]
 
 # License
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid license is used without spaces and new line symbols.
+# ! IMPORTANT ! Please make sure valid license is used without spaces and new line symbols.
 # ! REQUIRED !
 jira_license = "jira-license"
 confluence_license = "confluence-license"
 bitbucket_license = "bitbucket-license"
+
+################################################################################
+# Common Settings
+################################################################################
 
 # Default AWS region for DCAPT snapshots. Supported regions are us-east-1, us-east-2, us-west-1, us-west-2.
 region = "us-east-2"
@@ -43,9 +48,6 @@ snapshots_json_file_path = "dcapt-snapshots.json"
 resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence, Jira  - use default value
-# Bitbucket - ["t3.2xlarge"]
-# ! REQUIRED !
 instance_types     = ["t3.xlarge"]
 instance_disk_size = 100
 
@@ -54,7 +56,7 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 1
+max_cluster_capacity = 2
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
@@ -80,7 +82,15 @@ max_cluster_capacity = 1
 # Jira
 jira_image_repository = "atlassian/jira-software"
 # JSM
+# ! REQUIRED for JSM !
 # jira_image_repository = "atlassian/jira-servicemanagement"
+
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+# Jira version.
+jira_version_tag = "9.4.10"
+# JSM version
+# ! REQUIRED for JSM !
+# jira_version_tag = "5.4.10"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -89,12 +99,6 @@ jira_dataset_size = "small"
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
 # installed and configured.
 jira_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-# Jira version.
-jira_version_tag = "9.4.10"
-# JSM version
-# jira_version_tag = "5.4.10"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -119,8 +123,8 @@ jira_nfs_limits_memory   = "1.5Gi"
 
 # Storage
 # initial volume size of local/shared home EBS.
-jira_local_home_size  = "10Gi"
-jira_shared_home_size = "10Gi"
+jira_local_home_size  = "20Gi"
+jira_shared_home_size = "20Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -150,6 +154,9 @@ jira_db_master_password = "Password1!"
 # Confluence Settings
 ################################################################################
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+confluence_version_tag = "8.5.1"
+
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
 
@@ -157,9 +164,6 @@ confluence_dataset_size = "small"
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
 # installed and configured.
 confluence_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.1"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
@@ -184,7 +188,7 @@ synchrony_stack_size = "2048k"
 
 # Storage
 confluence_local_home_size  = "20Gi"
-confluence_shared_home_size = "10Gi"
+confluence_shared_home_size = "20Gi"
 
 # Confluence NFS instance resource configuration
 confluence_nfs_requests_cpu    = "500m"
@@ -223,6 +227,9 @@ confluence_collaborative_editing_enabled = true
 # Bitbucket Settings
 ################################################################################
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "8.9.5"
+
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
 
@@ -230,9 +237,6 @@ bitbucket_dataset_size = "small"
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
 # installed and configured.
 bitbucket_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.16"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -270,7 +274,7 @@ bitbucket_min_heap = "1024m"
 bitbucket_max_heap = "2048m"
 
 # Storage
-bitbucket_local_home_size  = "10Gi"
+bitbucket_local_home_size  = "20Gi"
 bitbucket_shared_home_size = "20Gi"
 
 # Bitbucket NFS instance resource configuration
