@@ -122,7 +122,7 @@ def wait_for_network_interface_to_be_detached(ec2_client, network_interface_id):
             if status != 'attached':
                 return
         except Exception as e:
-            logging.info(f"Unexpected error occurs during detaching the network interface {network_interface_id}.")
+            logging.info(f"Unexpected error occurs during detaching the network interface {network_interface_id}, {e}")
             break
         logging.info(f"Network interface {network_interface_id} is in status {status}. "
                      f"Attempt {attempt}/{attempts}. Sleeping {sleep_time} seconds.")
@@ -149,7 +149,6 @@ def delete_record_from_hosted_zone(route53_client, hosted_zone_id, record):
         logging.info(f"Record {record['Name']} was successfully deleted from hosted zone {hosted_zone_id}.")
     except Exception as e:
         logging.error(f'Unexpected error occurs, could not delete record from hosted zone {hosted_zone_id}: {e}')
-
 
 
 def delete_nodegroup(aws_region, cluster_name):
@@ -206,9 +205,8 @@ def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
         cluster_info = eks_client.describe_cluster(name=cluster_name)['cluster']
         cluster_vpc_config = cluster_info['resourcesVpcConfig']
         cluster_vpc_id = cluster_vpc_config['vpcId']
-        cluster_elb = [lb
-                    for lb in elb_client.describe_load_balancers()['LoadBalancerDescriptions']
-                    if lb['VPCId'] == cluster_vpc_id]
+        cluster_elb = [lb for lb in elb_client.describe_load_balancers()['LoadBalancerDescriptions'] \
+                       if lb['VPCId'] == cluster_vpc_id]
         if cluster_elb:
             cluster_elb_listeners = cluster_elb[0]['ListenerDescriptions']
             for listener in cluster_elb_listeners:
@@ -248,7 +246,8 @@ def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
             existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
             existed_hosted_zones_ids = [zone["Id"] for zone in existed_hosted_zones]
             for hosted_zone_id in existed_hosted_zones_ids:
-                records_set = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone_id)['ResourceRecordSets']
+                records_set = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone_id) \
+                ['ResourceRecordSets']
                 for record in records_set:
                     if environment_name in record['Name']:
                         delete_record_from_hosted_zone(route53_client, hosted_zone_id, record)
@@ -461,8 +460,8 @@ def delete_rds(aws_region, vpc_id):
             if 'NetworkInterfaces' in network_interface_info:
                 if network_interface_info['NetworkInterfaces']:
                     if network_interface_info['NetworkInterfaces'][0]['Attachment']['Status'] == 'attached':
-                        network_interface_attach_id = network_interface_info['NetworkInterfaces'][0] \
-                        ['Attachment']['AttachmentId']
+                        network_interface_attach_id = \
+                            network_interface_info['NetworkInterfaces'][0]['Attachment']['AttachmentId']
                         ec2_client.detach_network_interface(
                             AttachmentId=network_interface_attach_id, Force=True
                         )
@@ -471,7 +470,7 @@ def delete_rds(aws_region, vpc_id):
                 logging.info(f'Network interface {network_interface_id} is deleted.')
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'InvalidNetworkInterfaceID.NotFound':
-                    return
+                return
 
 
 def terminate_vpc(vpc_name, aws_region=None):
@@ -898,4 +897,3 @@ def main():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     main()
-
