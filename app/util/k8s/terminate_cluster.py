@@ -60,7 +60,7 @@ def wait_for_hosted_zone_delete(route53_client, hosted_zone_id):
         except route53_client.exceptions.NoSuchHostedZone:
             logging.info(f"Hosted zone {hosted_zone_id} was successfully deleted.")
             break
-        logging.info(f"Hosted zone {hosted_zone_id} is still exists. "
+        logging.info(f"Hosted zone {hosted_zone_id} still exists. "
                      f"Attempt {attempt}/{attempts}. Sleeping {sleep_time} seconds.")
         sleep(sleep_time)
         attempt += 1
