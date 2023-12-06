@@ -4,7 +4,7 @@ numpy==1.26.0
 scipy==1.11.3
 pytest==7.4.2
 locust==2.16.1
-selenium==4.13.0
+selenium==4.16.0
 filelock==3.12.4
 packaging==23.1
 prettytable==3.9.0
