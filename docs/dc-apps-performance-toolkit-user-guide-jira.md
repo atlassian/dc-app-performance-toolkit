@@ -41,7 +41,7 @@ run the toolkit in an **enterprise-scale environment**.
 ---
 
 {{% note %}}
-DCAPT has fully transitioned to Terraform deployment. CloudFormation deployment option will be no longer supported starting from January 2024.
+DCAPT has fully transitioned to Terraform deployment. CloudFormation deployment option is no longer supported.
 {{% /note %}}
 
 ### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
@@ -88,12 +88,12 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    
 6. Optional variables to override:
    - `jira_version_tag` - Jira version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
-7. From local terminal start the installation (~20 min) (see [note](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/k8s#note-for-windows-users) for Windows git bash users)
+7. From local terminal (Git Bash for Windows users) start the installation (~20 min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
-   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
+   -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c conf.tfvars
    ```
 
@@ -344,12 +344,12 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    
 6. Optional variables to override:
    - `jira_version_tag` - Jira version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md). 
-7. From local terminal start the installation (~20 min) (see [note](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/k8s#note-for-windows-users) for Windows git bash users)
+7. From local terminal (Git Bash for Windows users) start the installation (~20 min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
-   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
@@ -555,12 +555,12 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
 
 1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 2. Open `dcapt.tfvars` file and set `jira_replica_count` value to `2`.
-3. From local terminal start scaling (~20 min) (see [note](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/k8s#note-for-windows-users) for Windows git bash users)
+3. From local terminal (Git Bash for Windows users) start scaling (~20 min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
-   -v "$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
    -it atlassianlabs/terraform ./install.sh -c conf.tfvars
    ```
 4. Use SSH to connect to execution environment.
