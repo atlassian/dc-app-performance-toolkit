@@ -246,8 +246,8 @@ def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
             existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
             existed_hosted_zones_ids = [zone["Id"] for zone in existed_hosted_zones]
             for hosted_zone_id in existed_hosted_zones_ids:
-                records_set = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone_id) \
-                    ['ResourceRecordSets']
+                records_set = route53_client.list_resource_record_sets(
+                    HostedZoneId=hosted_zone_id)['ResourceRecordSets']
                 for record in records_set:
                     if environment_name in record['Name']:
                         delete_record_from_hosted_zone(route53_client, hosted_zone_id, record)
