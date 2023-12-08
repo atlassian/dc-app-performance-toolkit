@@ -350,10 +350,7 @@ def view_project_summary(locust):
     content = r.content.decode('utf-8')
     logger.locust_info(f"{params.action_name}. View project {project_key}: {content}")
 
-    assert_string = f'["project-key"]="\\"{project_key}\\"'
-    if not (assert_string in content):
-        logger.error(f'{params.err_message} {project_key}')
-    assert assert_string in content, params.err_message
+    assert re.compile(f'.*project-key.*{project_key}').search(content), params.err_message
 
     # 505 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
@@ -794,7 +791,8 @@ def kanban_board(locust, board_id):
     if project_plan:
         project_plan = project_plan.replace('\\', '')
     logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{board_id}', 'Could not open board'
+
+    assert re.compile(f'currentViewConfig.*id.*{board_id}').search(content), f'Could not open board with id {board_id}'
 
     # 1005 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
@@ -874,7 +872,7 @@ def scrum_board(locust, board_id):
     if project_plan:
         project_plan = project_plan.replace('\\', '')
     logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{board_id}', 'Could not open board'
+    assert re.compile(f'currentViewConfig.*id.*{board_id}').search(content), f'Could not open board with id {board_id}'
 
     # 1110 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
@@ -967,7 +965,8 @@ def backlog_board(locust, board_id):
     if project_plan:
         project_plan = project_plan.replace('\\', '')
     logger.locust_info(f"{params.action_name}: key = {project_key}, id = {project_id}, plan = {project_plan}")
-    assert f'currentViewConfig\"{{\"id\":{board_id}', 'Could not open board'
+
+    assert re.compile(f'currentViewConfig.*id.*{board_id}').search(content), f'Could not open board with id {board_id}'
 
     # 1210 /rest/webResources/1.0/resources
     locust.post('/rest/webResources/1.0/resources',
