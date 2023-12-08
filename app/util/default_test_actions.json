@@ -98,7 +98,8 @@
       "jmeter_create_blog:feel_and_publish",
       "jmeter_view_attachment",
       "jmeter_like_page",
-      "jmeter_create_and_edit_page:quick_edit_page"
+      "jmeter_create_and_edit_page:quick_edit_page",
+      "jmeter_upload_emoji"
     ],
     "locust": [
       "locust_login_and_view_dashboard",
