@@ -339,7 +339,7 @@ def delete_igw(ec2_resource, vpc_id):
                     logging.error(f"Deleting igw failed with error: {e}")
 
 
-def delete_subnets(ec2_resource, vpc_id):
+def delete_subnets(ec2_resource, vpc_id, aws_region):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     subnets_all = vpc_resource.subnets.all()
     subnets = [ec2_resource.Subnet(subnet.id) for subnet in subnets_all]
@@ -347,7 +347,18 @@ def delete_subnets(ec2_resource, vpc_id):
         try:
             for sub in subnets:
                 logging.info(f"Removing subnet with id: {sub.id}")
-                sub.delete()
+                try:
+                    sub.delete()
+                except botocore.exceptions.ClientError as e:
+                    error_code = e.response['Error']['Code']
+                    if error_code == 'DependencyViolation':
+                        ec2_client = boto3.client('ec2', region_name=aws_region)
+                        subnet_network_interfaces = ec2_client.describe_network_interfaces(
+                            Filters=[{'Name': 'subnet-id', 'Values': [sub.id]}])
+                        subnet_network_interface = subnet_network_interfaces.get('NetworkInterfaces', [])
+                        logging.info(subnet_network_interface)
+                        raise SystemExit(f'Could not delete subnet {sub.id}, {e}')
+
         except Boto3Error as e:
             logging.error(f"Delete of subnet failed with error: {e}")
 
@@ -486,6 +497,7 @@ def terminate_vpc(vpc_name, aws_region=None):
             return
         vpc_id = vpc[0].id
         logging.info(f"Checking RDS for VPC {vpc_name}.")
+
         delete_rds(aws_region, vpc_id)
 
         logging.info(f"Checking load balancers for VPC {vpc_name}.")
@@ -498,7 +510,7 @@ def terminate_vpc(vpc_name, aws_region=None):
         delete_igw(ec2_resource, vpc_id)
 
         logging.info(f"Checking subnets for VPC {vpc_name}.")
-        delete_subnets(ec2_resource, vpc_id)
+        delete_subnets(ec2_resource, vpc_id, aws_region)
 
         logging.info(f"Checking route tables for VPC {vpc_name}.")
         delete_route_tables(ec2_resource, vpc_id)
