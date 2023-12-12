@@ -296,6 +296,30 @@
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-5-12-0"
               }
             ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0b2cf3b7f74da3fa8",
+                "us-west-2": "snap-01143a8a415ce534d",
+                "us-west-1": "snap-06eec09639ee66634",
+                "us-east-1": "snap-0045671a003a875bf"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-12-0",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-5-12-0",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-5-12-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-5-12-0"
+              }
+            ]
           }
         ]
       }
