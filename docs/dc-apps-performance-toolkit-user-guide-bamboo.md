@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-10-03"
+date: "2022-05-10"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -26,60 +26,33 @@ test results for the Marketplace approval process. Preferably, use the below rec
 
 ## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Bamboo Data Center on k8s
 
-#### EC2 CPU Limit
-The installation of Bamboo requires **16** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
-
-The limit can be increased by creating AWS Support ticket. To request the limit increase fill in [Amazon EC2 Limit increase request form](https://aws.amazon.com/contact-us/ec2-request/):
-
-| Parameter             | Value                                                                           |
-|-----------------------|---------------------------------------------------------------------------------|
-| Limit type            | EC2 Instances                                                                   |
-| Severity              | Urgent business impacting question                                              |
-| Region                | US East (Ohio) _or your specific region the product is going to be deployed in_ |
-| Primary Instance Type | All Standard (A, C, D, H, I, M, R, T, Z) instances                              |
-| Limit                 | Instance Limit                                                                  |
-| New limit value       | _The needed limit of CPU Cores_                                                 |
-| Case description      | _Give a small description of your case_                                         |
-Select the **Contact Option** and click **Submit** button.
+We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
+how to deploy a Bamboo Data Center environment and AWS on k8s. 
 
 #### Setup Bamboo Data Center with an enterprise-scale dataset on k8s
 
 Below process describes how to install Bamboo DC with an enterprise-scale dataset included. This configuration was created
 specifically for performance testing during the DC app review process.
 
-1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
-   {{% warning %}}
-   Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
-   {{% /warning %}}
-2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
-3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
-4. Set AWS access keys created in step1 in `aws_envs` file:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-5. Set **required** variables in `dcapt.tfvars` file:
-   - `environment_name` - any name for you environment, e.g. `dcapt-bamboo`
-   - `products` - `bamboo`
-   - `bamboo_license` - one-liner of valid bamboo license without spaces and new line symbols
-   - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-
-   {{% note %}}
-   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
-   {{% /note %}}
-
-6. From local terminal (Git bash terminal for Windows) start the installation (~40min):
-   ``` bash
-   docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
+   section of the official documentation.
+2. Set up [Terraform](https://www.terraform.io/), [Helm](https://helm.sh/), [AWS CLI](https://aws.amazon.com/cli/)
+   and [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl) as per
+   [Environment setup guide](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
+3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+4. Clone the project repo:
+   ```bash
+   git clone -b 1.0.2 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
    ```
-7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
-8. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
+5. Copy [`dcapt_bamboo.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/bamboo/dcapt_bamboo.tfvars) file to the `data-center-terraform` folder.
+6. Set `environment_name`, `region` and `license` variable values in `dcapt_bamboo.tfvars` file.
+7. Start the installation (~40min):
 
-{{% note %}}
-All the datasets use the standard `admin`/`admin` credentials.
-{{% /note %}}
+   ```bash
+   ./install.sh -c dcapt_bamboo.tfvars
+   ```
+
+8. Copy product URL from the console output.
 
 ---
 
@@ -94,8 +67,12 @@ Data dimensions and values for default enterprise-scale dataset uploaded are lis
 
 ---
 
+#### Troubleshooting
+See [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page.
+
 #### Terminate Bamboo Data Center
-Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
+
+Follow steps described on [Uninstallation and cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) page.
 
 ---
 
@@ -235,7 +212,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
     application_protocol: http          # http or https
     application_port: 80                # 80, 443, 8080, 8085, etc
     secure: True                        # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix: /bamboo        # e.g. /babmoo in case of url like http://localhost:8085/bamboo
+    application_postfix:                # e.g. /babmoo in case of url like http://localhost:8085/bamboo
     admin_login: admin
     admin_password: admin
     load_executor: jmeter            
@@ -251,7 +228,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
 
 1. Push your changes to the forked repository.
 1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
-   * OS: select from Quick Start `Ubuntu Server 22.04 LTS`.
+   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
    * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
    * Storage size: `30` GiB
 1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) 
@@ -285,7 +262,8 @@ To receive performance baseline results **without** an app installed and **witho
 
     ``` bash
     cd dc-app-performance-toolkit
-    docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
+    docker pull atlassian/dcapt
+    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bamboo/YY-MM-DD-hh-mm-ss` folder:
@@ -308,7 +286,8 @@ the next steps. For an enterprise-scale environment run, the acceptable success 
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
    ```
 
 {{% note %}}
@@ -318,7 +297,7 @@ the next steps. For an enterprise-scale environment run, the acceptable success 
 
 ##### <a id="run3"></a> Run 3 (~50 min)
 
-To receive results for Bamboo DC **with app** and **with app-specific actions**:
+To receive scalability benchmark results for one-node Bamboo DC **with app** and **with app-specific actions**:
 
 1. Apply app-specific code changes to a new branch of forked repo.
 1. Use SSH to connect to execution environment.
@@ -327,7 +306,8 @@ To receive results for Bamboo DC **with app** and **with app-specific actions**:
 
    ``` bash
    cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
+   docker pull atlassian/dcapt
+   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bamboo.yml
    ```
 
 {{% note %}}
@@ -371,28 +351,19 @@ Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy repo
 1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to 
    see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend 
    taking a look into the app implementation to understand the root cause of this delta.
-
-{{% warning %}}
-It is recommended to terminate an enterprise-scale environment after completing all tests.
-Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
-{{% /warning %}}
    
-#### Attaching testing results to ECOHELP ticket
+#### Attaching testing results to DCHELP ticket
 
 {{% warning %}}
-Do not forget to attach performance testing results to your ECOHELP ticket.
+Do not forget to attach performance testing results to your DCHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have report folder with bamboo performance scenario results. 
    Folder should have `profile.csv`, `profile.png`, `profile_summary.log` and profile run result archives. Archives 
    should contain all raw data created during the run: `bzt.log`, selenium/jmeter/locust logs, .csv and .yml files, etc.
-2. Attach report folder to your ECOHELP ticket.
+2. Attach report folder to your DCHELP ticket.
 
 
 ## <a id="support"></a> Support
-For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
-
-If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
-For instructions on how to collect detailed logs, see [Collect detailed k8s logs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#collect-detailed-k8s-logs).
-
-In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the 
+[community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

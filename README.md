@@ -5,22 +5,22 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `9.4.10` and `8.20.26`
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.13.20`, `8.20.8`
 
 * Supported Jira Service Management versions: 
-    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `5.4.10` and `4.20.26`
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.13.20`, `4.20.8`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.19.14` and `8.5.1`
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.13.7`, `7.4.17` 
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.21.16` and `8.9.5`
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.6.14`, `7.17.6`  
 
 * Supported Crowd versions:
-    * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `5.1.4`
+    * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `4.4.0`
   
 * Supported Bamboo versions:
-    * Bamboo [Long Term Support release](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `9.2.5`
+    * Bamboo [release notes](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `8.1.3`
   
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
@@ -28,7 +28,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.8, 3.9, 3.10 or 3.11 and pip
+* Python 3.7, 3.8 or 3.9 and pip
 * JDK 11
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
@@ -66,7 +66,7 @@ pip install virtualenv
 ```
 2. Create new virtual env with python3:
 ```
-virtualenv venv -p full_path_to_python # e.g. use `which python3.11` to find the path
+virtualenv venv -p full_path_to_python # e.g. use `which python3.9` to find the path
 ```
 3. Activate virtual env:
 ```
@@ -95,7 +95,7 @@ git --version
 ```
 We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
 
-## Example setup for clean Ubuntu 22.04
+## Example setup for clean Ubuntu 20.04
 JDK setup (if missing):
 ```
 sudo apt-get update
