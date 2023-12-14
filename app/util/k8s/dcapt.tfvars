@@ -15,7 +15,7 @@ environment_name = "dcapt-product"
 # Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
+products = ["jira"]
 
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"

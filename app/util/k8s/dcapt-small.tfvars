@@ -12,12 +12,12 @@
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-product-small"
+environment_name = "dcapt-jira-small"
 
 # Supported products: jira, confluence and bitbucket
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
+products = ["jira"]
 
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
@@ -75,7 +75,7 @@ jira_image_repository = "atlassian/jira-software"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid confluence license is used without spaces and new line symbols.
 # ! REQUIRED !
-jira_license = "jira-license"
+jira_license = "AAAB6w0ODAoPeNqVUk1v2kAUvPtXrNRLq9SuvSYJIFkqNduWyNgEO0mpuGzMA5vYa2d3DfG/rz9AkJAg9bizejNvZt6nICrQEEJkdJBu9vF1H18i2w8Q1rGp2ByojDM2pBKsGlENrBodxYlDYAKCMgeXpmDZ3nhMpvZo4CjrmFNt908WcT1tETcg08l05BPFLdJH4N7yTgAXlmrsqchLHvNyr9NRdUM1zJYs59miCKVWP1SRLeWWctBoKOMNWJIXoPjFowh5nDdiDUI2NCno4d0QVezUBiaBt2DSSv+mIrLG9tb+OZhcREvvr+zoMxuv7789yPLmZaJnF/pqEN2aGXHxOk68oGSbGWbjO30rEmM9e76dW3Nr72Q0tJzR0Ceu6hi9bg/jzlkfvqS83mhJE1E5Ab4BXlH8+KNjtTfzDHXkdq9Ux7v8pTxBeV+lVpsyrnT9Wu+apqGsOACLsjwHfib3ScHDiAp42+TxdBNNzmOxj5W41msf72i9dwNDONRxU7lF/s4t+lx3gNoSvsz76NCTMqZxhTLKwv8/hpOrOl70+FLOcHxwHfvEseLxFWWxaK8qAJqKr+gh40/IkQtNsTMmKyVS2UisCNiimsuYllbtlt9XaYVqYZa2C5ys26Ane55JeKfWwB+L/QOwXVPZMCwCFFOdHTdFTqnyqp6+lGwB1SiIUp1+AhQCBY5VAyyUnI+NGWnRcyQbybtUsQ==X02nb"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
