@@ -348,17 +348,18 @@ def delete_subnets(ec2_resource, vpc_id, aws_region):
             for sub in subnets:
                 logging.info(f"Removing subnet with id: {sub.id}")
                 try:
+                    ec2_client = boto3.client('ec2', region_name=aws_region)
+                    subnet_network_interfaces = ec2_client.describe_network_interfaces(
+                        Filters=[{'Name': 'subnet-id', 'Values': [sub.id]}])
+                    subnet_network_interfaces = subnet_network_interfaces.get('NetworkInterfaces', [])
+                    if subnet_network_interfaces:
+                        logging.info(f'VPC {sub.id} has dependency - network interfaces: {subnet_network_interfaces}')
+                        for subnet_network_interface in subnet_network_interfaces:
+                            delete_network_interface(ec2_client,
+                                                     subnet_network_interface['NetworkInterfaceId'])
                     sub.delete()
                 except botocore.exceptions.ClientError as e:
-                    error_code = e.response['Error']['Code']
-                    if error_code == 'DependencyViolation':
-                        ec2_client = boto3.client('ec2', region_name=aws_region)
-                        subnet_network_interfaces = ec2_client.describe_network_interfaces(
-                            Filters=[{'Name': 'subnet-id', 'Values': [sub.id]}])
-                        subnet_network_interface = subnet_network_interfaces.get('NetworkInterfaces', [])
-                        logging.info(subnet_network_interface)
                         raise SystemExit(f'Could not delete subnet {sub.id}, {e}')
-
         except Boto3Error as e:
             logging.error(f"Delete of subnet failed with error: {e}")
 
@@ -402,6 +403,26 @@ def delete_security_groups(ec2_resource, vpc_id):
                 sg.delete()
         except Boto3Error as e:
             logging.error(f"Delete of security group failed with error: {e}")
+
+
+def delete_network_interface(ec2_client, network_interface_id):
+    timeout = 180  # 3 min
+    sleep_time = 10
+    attempts = timeout // sleep_time
+
+    for attempt in range(1, attempts):
+        try:
+            # Attempt to delete the network interface
+            ec2_client.delete_network_interface(NetworkInterfaceId=network_interface_id)
+            logging.info(f"Network interface {network_interface_id} deleted successfully.")
+            return
+
+        except botocore.exceptions.ClientError as e:
+            if attempt == attempts:
+                raise e
+            else:
+                print(f"Attempt {attempt}: {e}")
+                sleep(sleep_time)
 
 
 def get_vpc_region_by_name(vpc_name):
