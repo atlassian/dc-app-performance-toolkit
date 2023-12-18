@@ -6,7 +6,7 @@ from sys import version_info
 
 import yaml
 
-SUPPORTED_PYTHON_VERSIONS = ["3.7", "3.8", "3.9"]
+SUPPORTED_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
 
 python_full_version = '.'.join(map(str, version_info[0:3]))
 python_short_version = '.'.join(map(str, version_info[0:2]))
@@ -137,7 +137,7 @@ class StartJMeter:
             print(setting.replace('\n', ''))
 
     def launch_jmeter_ui(self):
-        jmeter_path = JMETER_HOME / self.env_settings['JMETER_VERSION'] / 'bin' / 'jmeter'
+        jmeter_path = JMETER_HOME / str(self.env_settings['JMETER_VERSION']) / 'bin' / 'jmeter'
         command = [str(jmeter_path), "-p", str(PROPERTIES), "-t", str(self.jmx)]
         print("JMeter start command: {}".format(' '.join(command)))
         print("Working dir: {}".format(APP_DIR))

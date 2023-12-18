@@ -1,9 +1,8 @@
 import sys
 import uuid
-from datetime import datetime, timezone
 
 import requests
-import urllib3
+from util.data_preparation.prepare_data_common import __warnings_filter
 
 from util.analytics.analytics_utils import get_os, convert_to_sec, get_timestamp, get_date, is_all_tests_successful, \
     uniq_user_id, generate_report_summary, get_first_elem, generate_test_actions_by_type, get_crowd_sync_test_results
@@ -13,7 +12,7 @@ from util.analytics.bamboo_post_run_collector import BambooPostRunCollector
 from util.analytics.log_reader import BztFileReader, ResultsFileReader, LocustFileReader
 from util.conf import TOOLKIT_VERSION
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 MIN_DEFAULTS = {JIRA: {'test_duration': 2700, 'concurrency': 200},
                 CONFLUENCE: {'test_duration': 2700, 'concurrency': 200},
@@ -78,14 +77,18 @@ class AnalyticsCollector:
             self.java_version = application.java_version
 
     def is_analytics_enabled(self):
+        """
+        Check if analytics is enabled in *.yml file.
+        """
         return str(self.conf.analytics_collector).lower() in ['yes', 'true', 'y']
 
-    def set_date_timestamp(self):
-        utc_now = datetime.utcnow()
-        self.time_stamp = int(round(utc_now.timestamp() * 1000))
-        self.date = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat('T', 'seconds')
-
     def is_success(self):
+        """
+        Verify that tests are found and the success rate of the test actions of the run(minimum success rate 95% for
+        tests).
+
+        :return: True with “OK” message if all tests >=95% success, otherwise False with an explanatory message.
+        """
         message = 'OK'
         load_test_rates = dict()
         if self.conf.load_executor == 'jmeter':
@@ -108,6 +111,12 @@ class AnalyticsCollector:
         return success, message
 
     def is_finished(self):
+        """
+        Verify that the required duration matches the default requirements for each product
+        (e.g. of default duration Confluence 45m, Bitbucket 50m).
+
+        :return: True with "OK" message if the run duration is correct, otherwise False with an explanatory message.
+        """
         message = 'OK'
         finished = self.actual_duration >= self.duration
         if not finished:
@@ -116,6 +125,12 @@ class AnalyticsCollector:
         return finished, message
 
     def is_compliant(self):
+        """
+        Check if the values (duration/concurrency etc.) set up for the run (in *.yml)
+        meet the default minimum requirements for each product.
+
+        :return: True with "OK" message if the result compliant, otherwise False with an explanatory message.
+        """
         message = 'OK'
 
         if self.app_type == JSM:
@@ -168,7 +183,7 @@ class AnalyticsCollector:
                     err_msg.append(f"The actual test duration {self.actual_duration} is less than "
                                    f"required value {MIN_DEFAULTS[self.app_type]['test_duration']}")
                 if self.concurrency < MIN_DEFAULTS[self.app_type]['concurrency']:
-                    err_msg.append(f"The run concurrency {self.total_actions_per_hour} is less "
+                    err_msg.append(f"The run concurrency {self.concurrency} is less "
                                    f"than minimum concurrency "
                                    f"required {MIN_DEFAULTS[self.app_type]['concurrency']}")
                 if self.parallel_plans_count < MIN_DEFAULTS[self.app_type]['parallel_plans_count']:
@@ -193,7 +208,12 @@ class AnalyticsCollector:
         return compliant, message
 
     def is_git_operations_compliant(self):
-        # calculate expected git operations for a particular test duration
+        """
+        Calculate expected git operations for a given test duration (only for BITBUCKET).
+
+        :return: True with "OK" message if the result matches the requirements,
+                 otherwise False with an explanatory message.
+        """
         message = 'OK'
         expected_get_operations_count = int(MIN_DEFAULTS[BITBUCKET]['git_operations_per_hour'] / 3600 * self.duration)
         git_operations_compliant = self.results_log.actual_git_operations_count >= expected_get_operations_count
@@ -204,6 +224,11 @@ class AnalyticsCollector:
 
 
 def send_analytics(collector: AnalyticsCollector):
+    """
+    Send Analytics data to AWS.
+
+    :param collector: Collecting all the data from the run.
+    """
     headers = {"Content-Type": "application/json"}
     payload = {"run_id": collector.run_id,
                "user_id": uniq_user_id(collector.conf.server_url),
