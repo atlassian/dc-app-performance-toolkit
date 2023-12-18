@@ -48,6 +48,12 @@ def write_to_file(content, file):
 
 
 def generate_report_summary(collector):
+    """
+    Generates and writes to the file (results_summary.log) all necessary metrics of the run (duration/concurrency etc.).
+
+    :param collector: Collecting all the data from the run.
+    :return: None.
+    """
     git_compliant = None
 
     summary_report = []
@@ -149,6 +155,11 @@ def generate_report_summary(collector):
 
 
 def get_os():
+    """
+    Get the operating system on which the tests were run.
+
+    :return: OS type.
+    """
     os_type = platform.system()
     for key, value in OS.items():
         os_type = key if os_type in value else os_type
@@ -156,6 +167,12 @@ def get_os():
 
 
 def uniq_user_id(server_url: str):
+    """
+    Create a user ID for the run, encoded with a secure hash.
+
+    :param: server_url: URL to the product instance on which tests were running.
+    :return: user ID.
+    """
     if is_docker():
         user_info = server_url
     else:
@@ -200,6 +217,13 @@ def get_timestamp():
 
 
 def generate_test_actions_by_type(test_actions, application):
+    """
+    Disunion of test actions by type.
+
+    :param test_actions: all test actions used in test.
+    :param application: Product used for the run (e.g. Confluence).
+    :return: Separated test types (locus/jmeter and selenium).
+    """
     selenium_actions = {}
     jmeter_actions = {}
     locust_actions = {}

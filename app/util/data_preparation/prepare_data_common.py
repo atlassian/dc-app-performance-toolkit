@@ -1,6 +1,12 @@
 import random
 import string
+import warnings
+
 from os import makedirs
+
+
+def __warnings_filter():
+    warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
 def __generate_random_string(length=20):

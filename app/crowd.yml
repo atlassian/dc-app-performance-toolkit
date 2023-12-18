@@ -9,7 +9,7 @@ settings:
     application_protocol: http      # http or https
     application_port: 80            # 80, 443, 8080, 4990, etc
     secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /crowd in case of url like http://localhost:4990/crowd
+    application_postfix: /crowd     # e.g. /crowd in case of url like http://localhost:4990/crowd
     admin_login: admin
     admin_password: admin
     application_name: crowd
@@ -30,7 +30,7 @@ settings:
     # ramp-up: 5s                     # time to spin all concurrent threads
     # total_actions_per_hour: 720000  # number of total JMeter actions per hour
 
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
     allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
 services:
