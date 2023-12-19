@@ -112,59 +112,6 @@
   "jsm": {
     "versions": [
       {
-        "version": "4.20.26",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-0f7aa03eea37f3304",
-                "us-west-2": "snap-0db2080204c6af65b",
-                "us-west-1": "snap-0e59b22bdf8afc48a",
-                "us-east-1": "snap-0039e3761f9a41435"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-096d1185a5fee02ea",
-                "us-west-2": "snap-0e8f9a8451a8a5471",
-                "us-west-1": "snap-0ef9883afd1b1c4c8",
-                "us-east-1": "snap-0b53ebf533e7497fc"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-4-20-26",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-4-20-26",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-4-20-26",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-4-20-26"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-26",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jsm-small-4-20-26",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jsm-small-4-20-26",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-4-20-26"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "5.4.10",
         "data": [
           {
