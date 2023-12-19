@@ -359,7 +359,7 @@ def delete_subnets(ec2_resource, vpc_id, aws_region):
                                                      subnet_network_interface['NetworkInterfaceId'])
                     sub.delete()
                 except botocore.exceptions.ClientError as e:
-                        raise SystemExit(f'Could not delete subnet {sub.id}, {e}')
+                    raise SystemExit(f'Could not delete subnet {sub.id}, {e}')
         except Boto3Error as e:
             logging.error(f"Delete of subnet failed with error: {e}")
 
