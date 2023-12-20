@@ -6,9 +6,9 @@ from scripts import (config_provider, csv_aggregator, chart_generator,
 
 
 def main():
-    results_dir = __get_results_dir()
-
     config = config_provider.get_config()
+    results_dir = __get_results_dir(config)
+
     agg_csv = csv_aggregator.aggregate(config, results_dir)
     agg, scenario_status = summary_aggregator.aggregate(config, results_dir)
     chart_generator_config = config_provider.get_chart_generator_config(config, agg_csv)
@@ -21,9 +21,9 @@ def main():
         judgement.judge(**judgement_kwargs)
 
 
-def __get_results_dir() -> Path:
+def __get_results_dir(config) -> Path:
     path = (Path(__file__).absolute().parents[1] / "results" / "reports" /
-            datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{config['profile']}")
     path.mkdir(parents=True, exist_ok=True)
     return path
 
