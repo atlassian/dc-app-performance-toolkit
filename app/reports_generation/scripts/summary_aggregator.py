@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 
+from constants import SUPPORTED_TEST_ATLASSIAN_PRODUCTS
 from scripts.utils import validate_file_exists, resolve_path, validate_config
 
 SUMMARY_FILE_NAME = "results_summary.log"
@@ -15,6 +16,19 @@ def __get_summary_files(config: dict) -> List[Path]:
         validate_file_exists(file_path, f"File {file_path} does not exists")
         summary_files.append(resolve_path(run['fullPath']) / SUMMARY_FILE_NAME)
     return summary_files
+
+
+def __get_product_name(config):
+    summary_files = __get_summary_files(config)
+    for file in summary_files:
+        with file.open('r') as f:
+            for line in f:
+                if "Application" in line:
+                    file_content = line
+                    for product in SUPPORTED_TEST_ATLASSIAN_PRODUCTS:
+                        if product in file_content:
+                            return product
+                    print("WARNING: No product name found in log files.")
 
 
 def __get_run_names(config: dict) -> list:
