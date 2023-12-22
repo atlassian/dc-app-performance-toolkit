@@ -166,7 +166,7 @@ def create_issue(locust):
     def create_issue_open_quick_create():
         raise_if_login_failed(locust)
         # 200 /secure/QuickCreateIssue!default.jspa?decorator=none
-        r = locust.post(f'/secure/QuickCreateIssue!default.jspa',
+        r = locust.post('/secure/QuickCreateIssue!default.jspa',
                         json={'atlassian.xsrf.token': locust.session_data_storage["token"]},
                         headers=ADMIN_HEADERS, catch_response=True)
 
