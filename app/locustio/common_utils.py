@@ -42,7 +42,6 @@ ADMIN_HEADERS = {
     'Connection': 'keep-alive',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     'User-Agent': 'xx',
-    'Authorization': 'Basic'
 }
 NO_TOKEN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
