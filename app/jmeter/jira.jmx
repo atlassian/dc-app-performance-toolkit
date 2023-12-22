@@ -9740,7 +9740,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/overall?projectId=10502&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=false&amp;withDetails=true</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10512&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;projects=10512&amp;activeTab=basic&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=false</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9765,7 +9765,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testexecutionreport/testexecutions/?start=0&amp;pageSize=20&amp;projectId=10502&amp;filterscope=saved_filter&amp;savedfilter=10101</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testexecutionreport/testexecutions/?start=0&amp;pageSize=20&amp;projectId=10512&amp;filterscope=saved_filter&amp;savedfilter=10100</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9790,7 +9790,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;projects=&amp;start=0&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10102</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10512&amp;projects=&amp;start=0&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10101</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9809,7 +9809,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;projects=&amp;start=1&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10102</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10512&amp;projects=&amp;start=1&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10101</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9828,7 +9828,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10502&amp;projects=&amp;start=2&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10102</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testplanreport/testPlans?projectId=10512&amp;projects=&amp;start=2&amp;pageSize=1&amp;hideTestRuns=&amp;savedFilter=10101</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9853,7 +9853,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testrunsreport/testruns/?start=0&amp;pageSize=20&amp;projectId=10502&amp;showCustomFields=false&amp;showIterationsProgress=false&amp;filterScope=filter&amp;fixVersion=v0</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/testrunsreport/testruns/?start=0&amp;pageSize=20&amp;projectId=10512&amp;showCustomFields=false&amp;showIterationsProgress=false&amp;filterScope=filter&amp;fixVersion=v0 </stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9895,7 +9895,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10502&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;projects=10502&amp;activeTab=advanced&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=true</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/traceability/requirements?projectId=10512&amp;pageSize=20&amp;start=0&amp;requirementStatuses=&amp;projects=10512&amp;activeTab=advanced&amp;execScope=version&amp;environment=-1&amp;hideTestRuns=false&amp;flattenRequirements=true</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9937,7 +9937,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/historical/numberDays?projectId=10502&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=false&amp;startDate=2022-12-14&amp;toDate=2022-12-15&amp;isToRemoveEntry=true</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/report/requirementCoverage/historical/numberDays?projectId=10512&amp;execScope=version&amp;environment=-1&amp;groupingField=none&amp;flattenRequirements=false&amp;startDate=2023-12-20&amp;toDate=2023-12-21&amp;isToRemoveEntry=true</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -9962,7 +9962,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test?filter=10103</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test?filter=10102</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10237,7 +10237,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/24498/iteration/50089/step</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/20400/iteration/84561/step</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10262,7 +10262,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/24498/iteration/50089/step/1</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/20400/iteration/84561/step/6</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10287,7 +10287,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/24498/iteration/50089/step/1/status</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/20400/iteration/84561/step/6/status</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10312,7 +10312,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/24498/iteration/50089/step/1/attachment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/20044/iteration/79369/step/1/attachment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10555,7 +10555,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/DCXRAY2-13021/step/69666</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/DCXRAY2-13021/step/93436</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10580,7 +10580,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/DCXRAY2-13021/step/69666/attachment</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/api/test/DCXRAY2-13021/step/93436/attachment</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10730,7 +10730,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/project/10501/settings/customfields/testruns</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/project/10512/settings/customfields/testruns</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10755,7 +10755,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/project/10501/settings/customfields/teststeps</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/project/10512/settings/customfields/teststeps</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10805,7 +10805,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/28335/customfield/2</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun/32309/customfield/1</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10848,7 +10848,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset/parseDataset?entityId=2075280&amp;entityType=TEST&amp;createNewParameters=true&amp;overwriteValues=false&amp;delimiter=,&amp;encoding=UTF-8</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset/parseDataset?entityId=2091423&amp;entityType=TEST&amp;createNewParameters=true&amp;overwriteValues=false&amp;delimiter=,&amp;encoding=UTF-8&amp;subEntityId=37360</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10880,7 +10880,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:45001,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Acorn Computers&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45002,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SamsungElectronics&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_MITS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45003,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SYSGO&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_DigitalEquipmentCorporation,TandemComputers,Compaq,Hewlett-Packard&quot;,&quot;rank&quot;:1}]}]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:112067,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_AppleIII&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:112068,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BAESystems&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_GS/OS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:112066,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_AppleDOS&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Novell&quot;,&quot;rank&quot;:1}]}]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -10889,7 +10889,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset/export?entityId=2075280&amp;entityType=TEST</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset/export?entityId=2091423&amp;entityType=TEST&amp;subEntityId=37360</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10921,7 +10921,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:45001,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Acorn Computers&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45002,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SamsungElectronics&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_MITS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:45003,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_SYSGO&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_DigitalEquipmentCorporation,TandemComputers,Compaq,Hewlett-Packard&quot;,&quot;rank&quot;:1}]}]}</stringProp>
+                      <stringProp name="Argument.value">{&quot;params&quot;:[{&quot;param&quot;:{&quot;id&quot;:112067,&quot;name&quot;:&quot;Input_2&quot;,&quot;rank&quot;:0,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BeInc.&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_AppleIII&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:112068,&quot;name&quot;:&quot;Input_3&quot;,&quot;rank&quot;:1,&quot;combinatorial&quot;:false,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_BAESystems&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_GS/OS&quot;,&quot;rank&quot;:1}]},{&quot;param&quot;:{&quot;id&quot;:112066,&quot;name&quot;:&quot;Input_1&quot;,&quot;rank&quot;:2,&quot;combinatorial&quot;:true,&quot;info&quot;:{&quot;type&quot;:&quot;TEXT&quot;}},&quot;values&quot;:[{&quot;value&quot;:&quot;0_AppleDOS&quot;,&quot;rank&quot;:0},{&quot;value&quot;:&quot;1_Novell&quot;,&quot;rank&quot;:1}]}]}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
@@ -10930,7 +10930,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset?entityId=2075280&amp;type=TEST</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/dataset?entityId=2091423&amp;type=TEST&amp;subEntityId=37360</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10955,7 +10955,7 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun?testExecIssueKey=DCXRAY2-13040&amp;testIssueKey=DCXRAY2-13039</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun?testExecIssueKey=DCXRAY2-13037&amp;testIssueKey=DCXRAY2-13036</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -10980,8 +10980,83 @@ if (response_data.name != vars.get(&quot;username&quot;)) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/test/DCXRAY2-13039/steps</stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/test/DCXRAY2-13036/steps</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_api2_get_parameterized_generic_testrun" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API Request" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun?testExecIssueKey=DCXRAY2-13032&amp;testIssueKey=DCXRAY2-13025</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_api2_get_parameterized_cucumber_testrun" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API Request" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/2.0/api/testrun?testExecIssueKey=DCXRAY-7820&amp;testIssueKey=DCXRAY-5408</stringProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree/>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_xray_get_tests_dynamictestplan" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API Request" enabled="true">
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">${application.postfix}/rest/raven/1.0/testplan/DCXRAY2-13038/get/tests</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
