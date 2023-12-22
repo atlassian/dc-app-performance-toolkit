@@ -165,7 +165,6 @@ def create_issue(locust):
     @jira_measure('locust_create_issue:open_quick_create')
     def create_issue_open_quick_create():
         raise_if_login_failed(locust)
-        print(f'storage: {locust.session_data_storage}')
         # 200 /secure/QuickCreateIssue!default.jspa?decorator=none
         r = locust.post(f'/secure/QuickCreateIssue!default.jspa',
                         json={'atlassian.xsrf.token': locust.session_data_storage["token"]},
