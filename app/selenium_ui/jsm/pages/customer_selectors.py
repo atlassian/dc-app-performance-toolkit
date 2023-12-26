@@ -79,7 +79,7 @@ class RequestSelectors:
     comment_request_field = OrderedDict({"4.13.0": (By.CSS_SELECTOR, 'textarea#comment-on-request'),
                                          "4.15.0": (By.CLASS_NAME, 'ProseMirror')})
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
-    share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
+    share_request_button = (By.XPATH, "//*[self::a or self::span][normalize-space(text())='Share']")
     share_request_search_field = (By.ID, 's2id_participants')
     share_request_dropdown = (By.ID, 'select2-drop')
     share_request_dropdown_results = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
