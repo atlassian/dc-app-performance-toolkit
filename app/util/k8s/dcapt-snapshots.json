@@ -491,6 +491,35 @@
             ]
           }
         ]
+      },
+      {
+        "version": "7.21.20",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-01e565f1a0c5d3f2c",
+                "us-west-2": "snap-0ed9ca01d9c27755c",
+                "us-west-1": "snap-05fcaa3d397e7e507",
+                "us-east-1": "snap-046e472e93ae1ad2b"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-20",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-20",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-20",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-7-21-20"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
