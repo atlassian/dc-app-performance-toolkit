@@ -157,12 +157,18 @@ def share_request_with_customer(webdriver, datasets):
 
         @print_timing("selenium_customer_share_request_with_customer:search_for_customer_to_share_with")
         def sub_measure():
-            customer_request.search_for_customer_to_share_with(customer_name='performance_customer')
+            if webdriver.app_version.base_version.startswith('5.12'):
+                customer_request.search_for_customer_to_share_with_react_ui(customer_name='performance_customer')
+            else:
+                customer_request.search_for_customer_to_share_with(customer_name='performance_customer')
         sub_measure()
 
         @print_timing("selenium_customer_share_request:share_request_with_customer")
         def sub_measure():
-            customer_request.share_request()
+            if webdriver.app_version.base_version.startswith('5.12'):
+                customer_request.share_request_react()
+            else:
+                customer_request.share_request()
         sub_measure()
     measure()
 
