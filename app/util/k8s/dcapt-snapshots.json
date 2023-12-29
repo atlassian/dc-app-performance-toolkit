@@ -334,6 +334,30 @@
         "data": [
           {
             "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-021574360a781464f",
+                "us-west-2": "snap-0684fba1bfe25da2e",
+                "us-west-1": "snap-0cfc6520219671dd1",
+                "us-east-1": "snap-00d1f3a18d176ceca"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-4",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-8-5-4",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-8-5-4",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-4"
+              }
+            ]
+          },
+          {
+            "type": "ebs",
             "size": "large",
             "snapshots": [
               {
