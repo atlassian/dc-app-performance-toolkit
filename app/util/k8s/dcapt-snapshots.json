@@ -106,59 +106,6 @@
             ]
           }
         ]
-      },
-      {
-        "version": "9.4.14",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-084abf5dfca234b9d",
-                "us-west-2": "snap-0dab6fba99c0995b9",
-                "us-west-1": "snap-0061ace6d46497f56",
-                "us-east-1": "snap-0934c1aa5c62be5dc"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-14",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-9-4-14",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-9-4-14",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-14"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-00af725c87690569d",
-                "us-west-2": "snap-06e76435bf1cba625",
-                "us-west-1": "snap-098b6daa64c6f0a28",
-                "us-east-1": "snap-04417460cb27d17cb"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-14",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-jira-small-9-4-14",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-jira-small-9-4-14",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-14"
-              }
-            ]
-          }
-        ]
       }
     ]
   },
@@ -435,6 +382,36 @@
           }
         ],
         "build_number": "9012"
+      },
+      {
+        "version": "7.19.17",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0b8723cc5a8f8becc",
+                "us-west-2": "snap-05f02fd97ba755034",
+                "us-west-1": "snap-065efd48cb9072b1d",
+                "us-east-1": "snap-030f0bb7870b60c73"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-17",
+                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-7-19-17",
+                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-7-19-17",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-17"
+              }
+            ]
+          }
+        ],
+        "build_number": "8804"
       }
     ]
   },
