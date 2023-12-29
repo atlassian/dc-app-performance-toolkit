@@ -148,7 +148,7 @@ def print_timing(interaction=None, explicit_timing=None):
                 locator_debug_message = ""
                 if 'msg' in dir(full_exception):
                     if 'Locator' in full_exception.msg:
-                        locator_debug_message = f" - {full_exception.msg.split('Locator:')[-1].strip()}"
+                        locator_debug_message = f" - {full_exception.msg.split('Locator:')[-1].strip().replace(',','')}"
                 error_msg = f"Failed measure: {interaction} - {exc_type.__name__}{locator_debug_message}"
             end = time()
             timing = str(int((end - start) * 1000))
