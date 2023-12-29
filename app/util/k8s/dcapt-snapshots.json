@@ -275,60 +275,6 @@
   "confluence": {
     "versions": [
       {
-        "version": "8.5.1",
-        "build_number": "9012",
-        "data": [
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-1",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-1",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-8-5-1",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-8-5-1"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-1",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-1",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-confluence-small-8-5-1",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-confluence-small-8-5-1"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "snap-099a9ce9e9c902815",
-                "us-east-2": "snap-074a2fdca0497b6b6",
-                "us-west-1": "snap-01b07710d49b113b2",
-                "us-west-2": "snap-031dad82fa7367921"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-1": "snap-09d97f19261bd463e",
-                "us-east-2": "snap-008cc496f440198de",
-                "us-west-1": "snap-02b3a229b530c8a87",
-                "us-west-2": "snap-01d8ebf9701613c4c"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "7.19.14",
         "data": [
           {
