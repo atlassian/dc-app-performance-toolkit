@@ -122,6 +122,8 @@ class CustomerRequest(BasePage):
     def search_for_customer_to_share_with_react_ui(self, customer_name):
         self.wait_until_visible(RequestSelectors.share_request_button).click()
         self.wait_until_visible(RequestSelectors.share_request_search_field_react)
+        self.action_chains().move_to_element(
+            self.get_element(RequestSelectors.share_request_search_field_react)).click().perform()
         self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field_react)).\
             send_keys(customer_name).perform()
         #self.wait_until_visible(RequestSelectors.share_request_dropdown_react)
