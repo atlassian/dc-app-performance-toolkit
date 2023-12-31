@@ -90,8 +90,10 @@ class RequestSelectors:
     list_of_requests_types = (By.ID, "cv-request-content")
 
     # JSM 5.12 Changes in UI
-    share_request_search_field_react = (By.XPATH, "//div[starts-with(@id, 'react-select-') and contains(@id, '-placeholder')]") # JSM 5.12+
-    share_request_search_field_arrow_react = (By.XPATH, "//div[contains(@class, 'indicatorContainer')]//span[contains(@role, 'img')]")
+    share_request_search_field_react = (By.XPATH,
+                                        "//div[starts-with(@id, 'react-select-') and contains(@id, '-placeholder')]")
+    share_request_search_field_arrow_react = (By.XPATH,
+                                              "//div[contains(@class, 'indicatorContainer')]//span[contains(@role, 'img')]")
     share_request_dropdown_react = (By.XPATH, "//div[starts-with(@id, 'react-select-') and contains(@id, '-listbox')]")
     share_request_dropdown_one_elem_react = (By.XPATH,
                                              "//div[starts-with(@id, 'react-select-') and contains(@id, 'option')]/div/div[2]/div[1]/span")
