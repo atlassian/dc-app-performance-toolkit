@@ -150,7 +150,6 @@ def share_request_with_customer(webdriver, datasets):
     customer_request = CustomerRequest(webdriver, portal_id=datasets['customer_service_desk_id'],
                                        request_key=datasets['customer_request_key'])
     customer_request.go_to()
-    customer_request.if_error_message(datasets)
     customer_request.wait_for_page_loaded()
 
     @print_timing("selenium_customer_share_request_with_customer")

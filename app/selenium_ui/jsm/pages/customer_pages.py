@@ -1,5 +1,4 @@
 import random
-import time
 from datetime import datetime
 
 from packaging import version
@@ -180,11 +179,6 @@ class CustomerRequest(BasePage):
         self.wait_until_invisible(RequestSelectors.share_request_dropdown_one_elem_react)
         self.wait_until_clickable(RequestSelectors.share_request_button_request_widget).click()
 
-    def if_error_message(self, dataset):
-        from selenium.webdriver.common.by import By
-        if self.element_exists((By.CSS_SELECTOR, "p.cp-error-panel-message")):
-            print(self.get_element((By.CSS_SELECTOR, "p.cp-error-panel-message")).text)
-            print(f'Customer {dataset["customer_username"]} does not have access to {dataset["customer_service_desk_id"]}, {dataset["customer_service_key"]}')
 
 class Requests(BasePage):
 
