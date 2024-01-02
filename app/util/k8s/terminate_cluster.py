@@ -48,6 +48,26 @@ def wait_for_node_group_delete(eks_client, cluster_name, node_group):
         logging.error(f"Node group {node_group} for cluster {cluster_name} was not deleted in {timeout} seconds.")
 
 
+def wait_for_hosted_zone_delete(route53_client, hosted_zone_id):
+    timeout = 600  # 10 min
+    attempt = 0
+    sleep_time = 10
+    attempts = timeout // sleep_time
+
+    while attempt < attempts:
+        try:
+            route53_client.get_hosted_zone(Id=hosted_zone_id)
+        except route53_client.exceptions.NoSuchHostedZone:
+            logging.info(f"Hosted zone {hosted_zone_id} was successfully deleted.")
+            break
+        logging.info(f"Hosted zone {hosted_zone_id} still exists. "
+                     f"Attempt {attempt}/{attempts}. Sleeping {sleep_time} seconds.")
+        sleep(sleep_time)
+        attempt += 1
+    else:
+        logging.error(f"Hosted zone {hosted_zone_id} was not deleted in {timeout} seconds.")
+
+
 def wait_for_cluster_delete(eks_client, cluster_name):
     timeout = 600  # 10 min
     attempt = 0
@@ -87,6 +107,48 @@ def wait_for_rds_delete(rds_client, db_name):
         attempt += 1
     else:
         logging.error(f"RDS {db_name} was not deleted in {timeout} seconds.")
+
+
+def wait_for_network_interface_to_be_detached(ec2_client, network_interface_id):
+    timeout = 600  # 10 min
+    attempt = 0
+    sleep_time = 10
+    attempts = timeout // sleep_time
+
+    while attempt < attempts:
+        try:
+            status = ec2_client.describe_network_interfaces(
+                NetworkInterfaceIds=[network_interface_id])['NetworkInterfaces'][0]['Attachment']['Status']
+            if status != 'attached':
+                return
+        except Exception as e:
+            logging.info(f"Unexpected error occurs during detaching the network interface {network_interface_id}, {e}")
+            break
+        logging.info(f"Network interface {network_interface_id} is in status {status}. "
+                     f"Attempt {attempt}/{attempts}. Sleeping {sleep_time} seconds.")
+        sleep(sleep_time)
+        attempt += 1
+    else:
+        logging.error(f"Network interface {network_interface_id} is not detached in {timeout} seconds.")
+
+
+def delete_record_from_hosted_zone(route53_client, hosted_zone_id, record):
+    change_batch = {
+        'Changes': [
+            {
+                'Action': 'DELETE',
+                'ResourceRecordSet': record
+            }
+        ]
+    }
+    try:
+        route53_client.change_resource_record_sets(
+            HostedZoneId=hosted_zone_id,
+            ChangeBatch=change_batch
+        )
+        logging.info(f"Record {record['Name']} was successfully deleted from hosted zone {hosted_zone_id}.")
+    except Exception as e:
+        logging.error(f'Unexpected error occurs, could not delete record from hosted zone {hosted_zone_id}: {e}')
 
 
 def delete_nodegroup(aws_region, cluster_name):
@@ -131,6 +193,66 @@ def delete_cluster(aws_region, cluster_name):
             logging.info(f"No cluster found for name: {cluster_name}")
         else:
             raise e
+
+
+def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
+    environment_name = cluster_name.replace('atlas-', '').replace('-cluster', '')
+    eks_client = boto3.client('eks', region_name=aws_region)
+    elb_client = boto3.client('elb', region_name=aws_region)
+    acm_client = boto3.client('acm', region_name=aws_region)
+    domain_name = None
+    try:
+        cluster_info = eks_client.describe_cluster(name=cluster_name)['cluster']
+        cluster_vpc_config = cluster_info['resourcesVpcConfig']
+        cluster_vpc_id = cluster_vpc_config['vpcId']
+        cluster_elb = [lb for lb in elb_client.describe_load_balancers()['LoadBalancerDescriptions']
+                       if lb['VPCId'] == cluster_vpc_id]
+        if cluster_elb:
+            cluster_elb_listeners = cluster_elb[0]['ListenerDescriptions']
+            for listener in cluster_elb_listeners:
+                if listener['Listener']['Protocol'] == 'HTTPS':
+                    if 'SSLCertificateId' in listener['Listener']:
+                        certificate_arn = listener['Listener']['SSLCertificateId']
+                        certificate_info = acm_client.describe_certificate(
+                            CertificateArn=certificate_arn)['Certificate']
+                        certificate_domain_name = certificate_info['DomainName']
+                        domain_name = certificate_domain_name.replace('*.', '').replace(environment_name, '')
+                        break
+                    else:
+                        return
+
+    except Exception:
+        logging.info(f'No hosted zone found for cluster: {cluster_name}')
+        return
+
+    if domain_name:
+        try:
+            route53_client = boto3.client('route53', region_name=aws_region)
+            existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
+            if not existed_hosted_zones:
+                return
+            for hosted_zone in existed_hosted_zones:
+                if f'{environment_name}{domain_name}.' == hosted_zone['Name']:
+                    hosted_zone_to_delete = hosted_zone
+                    records_hosted_zone_to_delete = route53_client.list_resource_record_sets(
+                        HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']
+                    for record in records_hosted_zone_to_delete:
+                        if record['Type'] not in ['NS', 'SOA']:
+                            delete_record_from_hosted_zone(route53_client, hosted_zone['Id'], record)
+                    route53_client.delete_hosted_zone(Id=hosted_zone_to_delete['Id'])
+                    wait_for_hosted_zone_delete(route53_client, hosted_zone['Id'])
+                    break
+
+            existed_hosted_zones = route53_client.list_hosted_zones()["HostedZones"]
+            existed_hosted_zones_ids = [zone["Id"] for zone in existed_hosted_zones]
+            for hosted_zone_id in existed_hosted_zones_ids:
+                records_set = route53_client.list_resource_record_sets(
+                    HostedZoneId=hosted_zone_id)['ResourceRecordSets']
+                for record in records_set:
+                    if environment_name in record['Name']:
+                        delete_record_from_hosted_zone(route53_client, hosted_zone_id, record)
+        except Exception as e:
+            logging.error(f"Unexpected error occurs: {e}")
 
 
 def delete_lb(aws_region, vpc_id):
@@ -217,16 +339,27 @@ def delete_igw(ec2_resource, vpc_id):
                     logging.error(f"Deleting igw failed with error: {e}")
 
 
-def delete_subnets(ec2_resource, vpc_id):
+def delete_subnets(ec2_resource, vpc_id, aws_region):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     subnets_all = vpc_resource.subnets.all()
     subnets = [ec2_resource.Subnet(subnet.id) for subnet in subnets_all]
-
     if subnets:
         try:
             for sub in subnets:
                 logging.info(f"Removing subnet with id: {sub.id}")
-                sub.delete()
+                try:
+                    ec2_client = boto3.client('ec2', region_name=aws_region)
+                    subnet_network_interfaces = ec2_client.describe_network_interfaces(
+                        Filters=[{'Name': 'subnet-id', 'Values': [sub.id]}])
+                    subnet_network_interfaces = subnet_network_interfaces.get('NetworkInterfaces', [])
+                    if subnet_network_interfaces:
+                        logging.info(f'VPC {sub.id} has dependency - network interfaces: {subnet_network_interfaces}')
+                        for subnet_network_interface in subnet_network_interfaces:
+                            delete_network_interface(ec2_client,
+                                                     subnet_network_interface['NetworkInterfaceId'])
+                    sub.delete()
+                except botocore.exceptions.ClientError as e:
+                    raise SystemExit(f'Could not delete subnet {sub.id}, {e}')
         except Boto3Error as e:
             logging.error(f"Delete of subnet failed with error: {e}")
 
@@ -272,6 +405,26 @@ def delete_security_groups(ec2_resource, vpc_id):
             logging.error(f"Delete of security group failed with error: {e}")
 
 
+def delete_network_interface(ec2_client, network_interface_id):
+    timeout = 180  # 3 min
+    sleep_time = 10
+    attempts = timeout // sleep_time
+
+    for attempt in range(1, attempts):
+        try:
+            # Attempt to delete the network interface
+            ec2_client.delete_network_interface(NetworkInterfaceId=network_interface_id)
+            logging.info(f"Network interface {network_interface_id} deleted successfully.")
+            return
+
+        except botocore.exceptions.ClientError as e:
+            if attempt == attempts:
+                raise e
+            else:
+                print(f"Attempt {attempt}: {e}")
+                sleep(sleep_time)
+
+
 def get_vpc_region_by_name(vpc_name):
     for rgn in REGIONS:
         ec2_resource = boto3.resource('ec2', region_name=rgn)
@@ -286,6 +439,9 @@ def get_vpc_region_by_name(vpc_name):
 
 def delete_rds(aws_region, vpc_id):
     rds_client = boto3.client('rds', region_name=aws_region)
+    ec2_client = boto3.client('ec2', region_name=aws_region)
+    network_interface_id = None
+
     try:
         db_instances = rds_client.describe_db_instances()['DBInstances']
     except exceptions.EndpointConnectionError as e:
@@ -294,6 +450,31 @@ def delete_rds(aws_region, vpc_id):
     db_names_and_subnets = [(db_instance['DBInstanceIdentifier'], db_instance['DBSubnetGroup']['DBSubnetGroupName'])
                             for db_instance in db_instances
                             if vpc_id == db_instance['DBSubnetGroup']['VpcId']]
+    if db_names_and_subnets:
+        db_name = db_names_and_subnets[0][0]
+        try:
+            response = rds_client.describe_db_instances(DBInstanceIdentifier=db_name)['DBInstances'][0]
+            if 'VpcSecurityGroups' in response:
+                db_security_groups = response['VpcSecurityGroups']
+                if db_security_groups:
+                    db_security_group_id = db_security_groups[0]['VpcSecurityGroupId']
+                    response = ec2_client.describe_network_interfaces(
+                        Filters=[
+                            {
+                                'Name': 'group-id',
+                                'Values': [db_security_group_id]
+                            }
+                        ]
+                    )
+                    if response['NetworkInterfaces']:
+                        network_interface_id = response['NetworkInterfaces'][0]['NetworkInterfaceId']
+            else:
+                return
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'DBInstanceNotFound':
+                logging.error(f'Could not found the RDS, name: {db_name}')
+                return
+
     for db_name, subnet_name in db_names_and_subnets:
         try:
             logging.info(f"Deleting RDS {db_name} for VPC id: {vpc_id}.")
@@ -304,6 +485,24 @@ def delete_rds(aws_region, vpc_id):
             rds_client.delete_db_subnet_group(DBSubnetGroupName=subnet_name)
         except Boto3Error as e:
             logging.error(f"Delete RDS {db_name} failed with error: {e}")
+
+    if network_interface_id:
+        try:
+            network_interface_info = ec2_client.describe_network_interfaces(NetworkInterfaceIds=[network_interface_id])
+            if 'NetworkInterfaces' in network_interface_info:
+                if network_interface_info['NetworkInterfaces']:
+                    if network_interface_info['NetworkInterfaces'][0]['Attachment']['Status'] == 'attached':
+                        network_interface_attach_id = \
+                            network_interface_info['NetworkInterfaces'][0]['Attachment']['AttachmentId']
+                        ec2_client.detach_network_interface(
+                            AttachmentId=network_interface_attach_id, Force=True
+                        )
+                        wait_for_network_interface_to_be_detached(ec2_client, network_interface_id)
+                ec2_client.delete_network_interface(NetworkInterfaceId=network_interface_id)
+                logging.info(f'Network interface {network_interface_id} is deleted.')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'InvalidNetworkInterfaceID.NotFound':
+                return
 
 
 def terminate_vpc(vpc_name, aws_region=None):
@@ -319,6 +518,7 @@ def terminate_vpc(vpc_name, aws_region=None):
             return
         vpc_id = vpc[0].id
         logging.info(f"Checking RDS for VPC {vpc_name}.")
+
         delete_rds(aws_region, vpc_id)
 
         logging.info(f"Checking load balancers for VPC {vpc_name}.")
@@ -331,7 +531,7 @@ def terminate_vpc(vpc_name, aws_region=None):
         delete_igw(ec2_resource, vpc_id)
 
         logging.info(f"Checking subnets for VPC {vpc_name}.")
-        delete_subnets(ec2_resource, vpc_id)
+        delete_subnets(ec2_resource, vpc_id, aws_region)
 
         logging.info(f"Checking route tables for VPC {vpc_name}.")
         delete_route_tables(ec2_resource, vpc_id)
@@ -373,6 +573,7 @@ def terminate_cluster(cluster_name, aws_region=None):
     # Delete the nodegroup and cluster in the specified region
     delete_nodegroup(aws_region, cluster_name)
     delete_cluster(aws_region, cluster_name)
+    delete_hosted_zone_record_if_exists(aws_region, cluster_name)
 
 
 def release_eip(aws_region, vpc_name):
@@ -467,7 +668,7 @@ def terminate_open_id_providers(cluster_name=None):
             iam_client.delete_open_id_connect_provider(OpenIDConnectProviderArn=provider['Arn'])
             return
         if name == 'Alfred':
-            logging.info(f"Skipping Alfred Open ID provider")
+            logging.info("Skipping Alfred Open ID provider")
             continue
         persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
         if persist_days:
@@ -698,7 +899,7 @@ def main():
         delete_ebs_volumes_by_id(aws_region=args.aws_region, volumes=volumes)
         return
 
-    logging.info(f"--cluster_name parameter was not specified.")
+    logging.info("--cluster_name parameter was not specified.")
     logging.info("Searching for clusters to remove.")
     clusters = get_clusters_to_terminate()
     for cluster_name in clusters:
