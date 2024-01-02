@@ -668,7 +668,7 @@ def terminate_open_id_providers(cluster_name=None):
             iam_client.delete_open_id_connect_provider(OpenIDConnectProviderArn=provider['Arn'])
             return
         if name == 'Alfred':
-            logging.info(f"Skipping Alfred Open ID provider")
+            logging.info("Skipping Alfred Open ID provider")
             continue
         persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
         if persist_days:
@@ -899,7 +899,7 @@ def main():
         delete_ebs_volumes_by_id(aws_region=args.aws_region, volumes=volumes)
         return
 
-    logging.info(f"--cluster_name parameter was not specified.")
+    logging.info("--cluster_name parameter was not specified.")
     logging.info("Searching for clusters to remove.")
     clusters = get_clusters_to_terminate()
     for cluster_name in clusters:
