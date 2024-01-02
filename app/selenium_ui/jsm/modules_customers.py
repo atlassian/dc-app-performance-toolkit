@@ -2,6 +2,8 @@ from selenium_ui.conftest import print_timing
 from selenium_ui.jsm.pages.customer_pages import Login, TopPanel, CustomerPortals, CustomerPortal, CustomerRequest, \
     Requests, ViewRequestWithInsight
 import random
+from packaging import version
+
 
 REQUESTS = "requests"
 CUSTOMERS = "customers"
@@ -157,7 +159,7 @@ def share_request_with_customer(webdriver, datasets):
 
         @print_timing("selenium_customer_share_request_with_customer:search_for_customer_to_share_with")
         def sub_measure():
-            if webdriver.app_version.base_version.startswith('5.12'):
+            if webdriver.app_version >= version.parse('5.12'):
                 customer_request.search_for_customer_to_share_with_react_ui(customer_name='performance_customer')
             else:
                 customer_request.search_for_customer_to_share_with(customer_name='performance_customer')
@@ -165,7 +167,7 @@ def share_request_with_customer(webdriver, datasets):
 
         @print_timing("selenium_customer_share_request:share_request_with_customer")
         def sub_measure():
-            if webdriver.app_version.base_version.startswith('5.12'):
+            if webdriver.app_version >= version.parse('5.12'):
                 customer_request.share_request_react()
             else:
                 customer_request.share_request()
