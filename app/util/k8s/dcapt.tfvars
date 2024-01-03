@@ -314,7 +314,7 @@ bitbucket_db_master_password = "Password1!"
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "5.1.4"
+crowd_version_tag = "5.2.2"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
