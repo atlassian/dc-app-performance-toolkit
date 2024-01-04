@@ -204,7 +204,7 @@ def delete_nat_gateway(aws_region, vpc_id):
                 logging.error(f"Deleting NAT gateway with id {nat_gateway_id} failed with error: {e}")
 
 
-@retry(Exception, tries=RETRY_COUNT, delay=RETRY_DELAY)
+@retry(Exception, tries=3, delay=RETRY_DELAY)
 def delete_igw(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     igws = vpc_resource.internet_gateways.all()
@@ -258,7 +258,7 @@ def delete_route_tables(ec2_resource, vpc_id):
             logging.error(f"Delete of route table failed with error: {e}")
 
 
-@retry(Exception, tries=RETRY_COUNT, delay=RETRY_DELAY)
+@retry(Exception, tries=3, delay=RETRY_DELAY)
 def delete_security_groups(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     sgps = vpc_resource.security_groups.all()
