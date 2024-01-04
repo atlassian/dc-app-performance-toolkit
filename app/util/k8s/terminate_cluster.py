@@ -8,6 +8,11 @@ import botocore
 from boto3.exceptions import Boto3Error
 from botocore import exceptions
 
+from retry import retry
+
+DEFAULT_RETRY_COUNT = 3
+DEFAULT_RETRY_DELAY = 10
+
 US_EAST_2 = "us-east-2"
 US_EAST_1 = "us-east-1"
 REGIONS = [US_EAST_2, US_EAST_1]
@@ -254,7 +259,7 @@ def delete_hosted_zone_record_if_exists(aws_region, cluster_name):
         except Exception as e:
             logging.error(f"Unexpected error occurs: {e}")
 
-
+@retry(Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RETRY_DELAY)
 def delete_lb(aws_region, vpc_id):
     elb_client = boto3.client('elb', region_name=aws_region)
     try:
@@ -299,6 +304,8 @@ def wait_for_nat_gateway_delete(ec2, nat_gateway_id):
         logging.error(f"NAT gateway with id {nat_gateway_id} was not deleted in {timeout} seconds.")
 
 
+
+@retry(Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RETRY_DELAY)
 def delete_nat_gateway(aws_region, vpc_id):
     ec2_client = boto3.client('ec2', region_name=aws_region)
     filters = [{'Name': 'vpc-id', 'Values': [f'{vpc_id}', ]}, ]
@@ -317,7 +324,7 @@ def delete_nat_gateway(aws_region, vpc_id):
             except Boto3Error as e:
                 logging.error(f"Deleting NAT gateway with id {nat_gateway_id} failed with error: {e}")
 
-
+@retry(Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RETRY_DELAY)
 def delete_igw(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     igws = vpc_resource.internet_gateways.all()
@@ -339,6 +346,7 @@ def delete_igw(ec2_resource, vpc_id):
                     logging.error(f"Deleting igw failed with error: {e}")
 
 
+@retry(Exception, tries=12, delay=DEFAULT_RETRY_DELAY)
 def delete_subnets(ec2_resource, vpc_id, aws_region):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     subnets_all = vpc_resource.subnets.all()
@@ -363,7 +371,7 @@ def delete_subnets(ec2_resource, vpc_id, aws_region):
         except Boto3Error as e:
             logging.error(f"Delete of subnet failed with error: {e}")
 
-
+@retry(Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RETRY_DELAY)
 def delete_route_tables(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     rtbs = vpc_resource.route_tables.all()
@@ -379,7 +387,7 @@ def delete_route_tables(ec2_resource, vpc_id):
         except Boto3Error as e:
             logging.error(f"Delete of route table failed with error: {e}")
 
-
+@retry(Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RETRY_DELAY)
 def delete_security_groups(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     sgps = vpc_resource.security_groups.all()
