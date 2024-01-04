@@ -1,4 +1,5 @@
 import logging
+
 from argparse import ArgumentParser
 from datetime import datetime, timedelta
 from time import sleep, time
@@ -7,6 +8,11 @@ import boto3
 import botocore
 from boto3.exceptions import Boto3Error
 from botocore import exceptions
+
+from retry import retry
+
+RETRY_COUNT = 12
+RETRY_DELAY = 10
 
 US_EAST_2 = "us-east-2"
 US_EAST_1 = "us-east-1"
@@ -133,6 +139,7 @@ def delete_cluster(aws_region, cluster_name):
             raise e
 
 
+@retry(Exception, tries=3, delay=RETRY_DELAY)
 def delete_lb(aws_region, vpc_id):
     elb_client = boto3.client('elb', region_name=aws_region)
     try:
@@ -177,6 +184,7 @@ def wait_for_nat_gateway_delete(ec2, nat_gateway_id):
         logging.error(f"NAT gateway with id {nat_gateway_id} was not deleted in {timeout} seconds.")
 
 
+@retry(Exception, tries=3, delay=RETRY_DELAY)
 def delete_nat_gateway(aws_region, vpc_id):
     ec2_client = boto3.client('ec2', region_name=aws_region)
     filters = [{'Name': 'vpc-id', 'Values': [f'{vpc_id}', ]}, ]
@@ -196,6 +204,7 @@ def delete_nat_gateway(aws_region, vpc_id):
                 logging.error(f"Deleting NAT gateway with id {nat_gateway_id} failed with error: {e}")
 
 
+@retry(Exception, tries=RETRY_COUNT, delay=RETRY_DELAY)
 def delete_igw(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     igws = vpc_resource.internet_gateways.all()
@@ -217,6 +226,7 @@ def delete_igw(ec2_resource, vpc_id):
                     logging.error(f"Deleting igw failed with error: {e}")
 
 
+@retry(Exception, tries=RETRY_COUNT, delay=RETRY_DELAY)
 def delete_subnets(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     subnets_all = vpc_resource.subnets.all()
@@ -231,6 +241,7 @@ def delete_subnets(ec2_resource, vpc_id):
             logging.error(f"Delete of subnet failed with error: {e}")
 
 
+@retry(Exception, tries=3, delay=RETRY_DELAY)
 def delete_route_tables(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     rtbs = vpc_resource.route_tables.all()
@@ -247,6 +258,7 @@ def delete_route_tables(ec2_resource, vpc_id):
             logging.error(f"Delete of route table failed with error: {e}")
 
 
+@retry(Exception, tries=RETRY_COUNT, delay=RETRY_DELAY)
 def delete_security_groups(ec2_resource, vpc_id):
     vpc_resource = ec2_resource.Vpc(vpc_id)
     sgps = vpc_resource.security_groups.all()
