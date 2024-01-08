@@ -18,6 +18,7 @@ docker run --pull=always --env-file aws_envs \
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
+-v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -c conf.tfvars
 ```
@@ -44,6 +45,7 @@ If state files are needed, e.g. there are other running clusters for other produ
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+-v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
 -it atlassianlabs/terraform ./uninstall.sh -t -c conf.tfvars
 ```
@@ -53,7 +55,9 @@ Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
+```
 
+``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
@@ -65,10 +69,33 @@ Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
+```
 
+``` bash
 docker run --pull=always --env-file aws_envs \
 --workdir="/data-center-terraform" \
 --entrypoint="python" \
 -v "/$PWD/terminate_cluster.py:/data-center-terraform/terminate_cluster.py" \
 atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-cluster --aws_region $REGION
 ```
+
+# Connect to product pod
+Set your environment name
+``` bash
+export ENVIRONMENT_NAME=your_environment_name
+export REGION=us-east-2
+```
+
+SSH to `atlassianlabs/terraform` container
+``` bash
+docker run --pull=always --env-file aws_envs \
+-e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+-e REGION=$REGION \
+-it atlassianlabs/terraform bash 
+```
+
+Connect to the product pod. Example below for jira pod with number 0. For other product or pod number change `PRODUCT_POD` accordingly.
+``` bash
+export PRODUCT_POD=jira-0
+aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
+kubectl exec -it $PRODUCT_POD -n atlassian -- bash

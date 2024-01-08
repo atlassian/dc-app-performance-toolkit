@@ -25,6 +25,7 @@ def main():
 def __get_results_dir(config, product_name) -> Path:
     path = (Path(__file__).absolute().parents[1] / "results" / "reports" /
             f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{product_name}_{config['profile']}")
+    print(f"Results dir: {path}")
     path.mkdir(parents=True, exist_ok=True)
     return path
 
