@@ -155,13 +155,12 @@ def generate_report_summary(collector):
 
 
 def rename_results_dir(collector):
-    new_results_name = f'{collector.log_dir}_{collector.nodes_count}-node'
+    app_specific = ""
     if bool(collector.app_specific_rates):
-        os.rename(f'{collector.log_dir}', f'{new_results_name}_app-specific')
-        print("Results directory with app-specific actions was successfully renamed.")
-    else:
-        os.rename(f'{collector.log_dir}', new_results_name)
-        print("Results directory was successfully renamed.")
+        app_specific = "_app-specific"
+    new_results_dir_name = f'{collector.log_dir}_{collector.nodes_count}-node{app_specific}'
+    os.rename(f'{collector.log_dir}', f'{new_results_dir_name}')
+    print(f'Results directory was renamed. Old name: {collector.log_dir}, new name: {new_results_dir_name}')
 
 
 def get_os():
