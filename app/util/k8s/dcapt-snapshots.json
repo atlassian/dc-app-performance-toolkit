@@ -444,36 +444,6 @@
   "crowd": {
     "versions": [
       {
-        "version": "5.1.4",
-        "build_number": "1893",
-        "data": [
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-5-1-4",
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4",
-                "us-west-1": "arn:aws:rds:us-west-1:585036043680:snapshot:dcapt-crowd-5-1-4",
-                "us-west-2": "arn:aws:rds:us-west-2:585036043680:snapshot:dcapt-crowd-5-1-4"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-1": "snap-08c6dc6abc75fe2b4",
-                "us-east-2": "snap-0a8e229690be9ae30",
-                "us-west-1": "snap-0206b022c6880fe67",
-                "us-west-2": "snap-07a9b523b316aeb32"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "5.2.2",
         "data": [
           {
