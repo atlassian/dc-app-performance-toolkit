@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 
 from constants import SUPPORTED_TEST_ATLASSIAN_PRODUCTS
-from scripts.utils import validate_file_exists, resolve_path, validate_config
+from scripts.utils import validate_file_exists, resolve_relative_path, validate_config
 
 SUMMARY_FILE_NAME = "results_summary.log"
 DELIMITER = ('\n================================================================================'
@@ -12,9 +12,9 @@ DELIMITER = ('\n================================================================
 def __get_summary_files(config: dict) -> List[Path]:
     summary_files = []
     for run in config['runs']:
-        file_path = resolve_path(run['fullPath']) / SUMMARY_FILE_NAME
+        file_path = resolve_relative_path(run['relativePath']) / SUMMARY_FILE_NAME
         validate_file_exists(file_path, f"File {file_path} does not exists")
-        summary_files.append(resolve_path(run['fullPath']) / SUMMARY_FILE_NAME)
+        summary_files.append(resolve_relative_path(run['relativePath']) / SUMMARY_FILE_NAME)
     return summary_files
 
 
