@@ -47,7 +47,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./uninstall.sh -t -c conf.tfvars
+-it atlassianlabs/terraform ./uninstall.sh -c conf.tfvars
 ```
 
 # Collect detailed k8s logs
