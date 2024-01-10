@@ -14,7 +14,7 @@ ENV CHROME_LATEST_URL="https://dl.google.com/linux/direct/google-chrome-stable_c
 ENV CHROME_VERSION_URL="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb"
 
 RUN apt-get -y update \
-  && $APT_INSTALL vim git openssh-server wget openjdk-17-jdk \
+  && $APT_INSTALL vim git openssh-server wget openjdk-11-jdk \
   && python -m pip install --upgrade pip \
   && apt-get clean
 
