@@ -15,6 +15,7 @@ docker run --pull=always --env-file aws_envs \
 -it atlassianlabs/terraform ./install.sh -c conf.tfvars
 ```
 ## Terminate development environment
+Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
@@ -39,9 +40,7 @@ docker run --pull=always --env-file aws_envs \
 -it atlassianlabs/terraform ./install.sh -c conf.tfvars
 ```
 ## Terminate enterprise-scale environment
-Option `-t` deletes Terraform state files for all installed environment in the same region using the same AWS account.
-
-If state files are needed, e.g. there are other running clusters for other product, do not use `-t` flag in below command.
+Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
