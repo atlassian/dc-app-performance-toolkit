@@ -12,16 +12,17 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./install.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
 ```
 ## Terminate development environment
+Note: install and uninstall commands have to use the same `atlassianlabs/terraform:TAG` image tag.
 Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./uninstall.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.7.1 ./uninstall.sh -c conf.tfvars
 ```
 
 # Enterprise-scale environment
@@ -37,16 +38,17 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./install.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
 ```
 ## Terminate enterprise-scale environment
+Note: install and uninstall commands have to use the same `atlassianlabs/terraform:TAG` image tag.
 Set AWS credential in [aws_envs](./aws_envs) file and run command:
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./uninstall.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.7.1 ./uninstall.sh -c conf.tfvars
 ```
 
 # Collect detailed k8s logs
@@ -60,7 +62,7 @@ export REGION=us-east-2
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
+-it atlassianlabs/terraform:2.7.1 ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
 ```
 
 # Force terminate cluster
@@ -79,18 +81,18 @@ atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-clus
 ```
 
 # Connect to product pod
-Set your environment name
+Set your environment name:
 ``` bash
 export ENVIRONMENT_NAME=your_environment_name
 export REGION=us-east-2
 ```
 
-SSH to `atlassianlabs/terraform` container
+SSH to terraform container:
 ``` bash
 docker run --pull=always --env-file aws_envs \
 -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
 -e REGION=$REGION \
--it atlassianlabs/terraform bash 
+-it atlassianlabs/terraform:2.7.1 bash 
 ```
 
 Connect to the product pod. Example below for jira pod with number 0. For other product or pod number change `PRODUCT_POD` accordingly.
