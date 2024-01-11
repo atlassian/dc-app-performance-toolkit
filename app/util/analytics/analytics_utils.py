@@ -154,15 +154,6 @@ def generate_report_summary(collector):
     write_to_file(pretty_report, summary_report_file)
 
 
-def rename_results_dir(collector):
-    app_specific = ""
-    if bool(collector.app_specific_rates):
-        app_specific = "_app-specific"
-    new_results_dir_name = f'{collector.log_dir}_{collector.nodes_count}-node{app_specific}'
-    os.rename(f'{collector.log_dir}', f'{new_results_dir_name}')
-    print(f'Results directory was renamed. Old name: {collector.log_dir}, new name: {new_results_dir_name}')
-
-
 def get_os():
     """
     Get the operating system on which the tests were run.
