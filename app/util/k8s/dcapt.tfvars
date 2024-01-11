@@ -87,8 +87,8 @@ max_cluster_capacity = 6
 start_test_deployment = "true"
 test_deployment_cpu_request = "3"
 test_deployment_cpu_limit = "4"
-test_deployment_mem_request = "6Gi"
-test_deployment_mem_limit = "6Gi"
+test_deployment_mem_request = "8Gi"
+test_deployment_mem_limit = "8Gi"
 
 ################################################################################
 # Jira/JSM Settings
@@ -127,7 +127,7 @@ jira_installation_timeout = 25
 
 # Jira/JSM instance resource configuration
 jira_cpu                 = "6"
-jira_mem                 = "20Gi"
+jira_mem                 = "16Gi"
 jira_min_heap            = "12288m"
 jira_max_heap            = "12288m"
 jira_reserved_code_cache = "2048m"
@@ -181,7 +181,7 @@ confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
 confluence_cpu      = "6"
-confluence_mem      = "20Gi"
+confluence_mem      = "16Gi"
 confluence_min_heap = "12288m"
 confluence_max_heap = "12288m"
 
@@ -419,17 +419,17 @@ bamboo_max_heap = "4096m"
 
 # Bamboo Agent instance resource configuration
 bamboo_agent_cpu = "250m"
-bamboo_agent_mem = "1000m"
+bamboo_agent_mem = "700m"
 
 # Storage
 bamboo_local_home_size  = "200Gi"
 bamboo_shared_home_size = "400Gi"
 
 # Bamboo NFS instance resource configuration
-#bamboo_nfs_requests_cpu    = "<REQUESTS_CPU>"
-#bamboo_nfs_requests_memory = "<REQUESTS_MEMORY>"
-#bamboo_nfs_limits_cpu      = "<LIMITS_CPU>"
-#bamboo_nfs_limits_memory   = "<LIMITS_MEMORY>"
+bamboo_nfs_requests_cpu    = "1"
+bamboo_nfs_requests_memory = "1Gi"
+bamboo_nfs_limits_cpu      = "2"
+bamboo_nfs_limits_memory   = "2Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
