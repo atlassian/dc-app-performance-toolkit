@@ -890,6 +890,7 @@ def delete_unused_volumes():
                         logging.warning(f"Volume {volume.id} does not have 'persist_days' tag "
                                         f"| Name tag {name}: skipping")
 
+
 def delete_s3_bucket_tf_state(cluster_name):
     environment_name = retrieve_environment_name(cluster_name=cluster_name)
     s3_client = boto3.client('s3')
@@ -926,7 +927,7 @@ def delete_s3_bucket_tf_state(cluster_name):
 def delete_dynamo_bucket_tf_state(cluster_name, aws_region):
     environment_name = retrieve_environment_name(cluster_name=cluster_name)
     dynamodb_client = boto3.client('dynamodb', region_name=aws_region)
-    dynamodb_name_template = f'atl_dc_{environment_name}'.replace('-','_')
+    dynamodb_name_template = f'atl_dc_{environment_name}'.replace('-', '_')
     response = dynamodb_client.list_tables()
     matching_tables = [table for table in response['TableNames'] if dynamodb_name_template in table]
     if not matching_tables:
