@@ -29,8 +29,9 @@ def is_float(element):
 def retrieve_environment_name(cluster_name):
     if cluster_name.endswith('-cluster'):
         cluster_name = cluster_name[:-(len('-cluster'))]
-    environment_name = cluster_name.replace('atlas-', '')
-    return environment_name
+    if cluster_name.startswith('atlas-'):
+        cluster_name = cluster_name[len('atlas-'):]
+    return cluster_name
 
 
 def wait_for_node_group_delete(eks_client, cluster_name, node_group):
@@ -978,6 +979,8 @@ def main():
         vpc_name = f'{cluster_name.replace("-cluster", "-vpc")}'
         terminate_vpc(vpc_name=vpc_name)
         terminate_open_id_providers(cluster_name=cluster_name)
+        delete_s3_bucket_tf_state(cluster_name=cluster_name)
+        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
     vpcs = get_vpcs_to_terminate()
     for vpc_name in vpcs:
         logging.info(f"Delete all resources for vpc {vpc_name}.")
