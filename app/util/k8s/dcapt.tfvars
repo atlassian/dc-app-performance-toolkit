@@ -108,11 +108,11 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version
-jira_version_tag = "9.4.10"
+jira_version_tag = "9.12.1"
 
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.4.10"
+# jira_version_tag = "5.12.1"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
 jira_dataset_size = "large"
@@ -231,7 +231,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.5"
+bitbucket_version_tag = "8.9.8"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
