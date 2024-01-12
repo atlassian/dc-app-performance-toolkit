@@ -843,7 +843,7 @@ def kanban_board(locust, board_id):
             # 1055 /rest/greenhopper/1.0/xboard/work/transitions.json
             locust.get(f'/rest/greenhopper/1.0/xboard/work/transitions.json?'
                        f'projectId={project_id}'
-                       f'&_={timestamp_int()}')
+                       f'&_={timestamp_int()}', catch_response=True)
 
         # 1060 /rest/analytics/1.0/publish/bulk
         locust.post('/rest/analytics/1.0/publish/bulk',
