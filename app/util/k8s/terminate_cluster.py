@@ -26,6 +26,14 @@ def is_float(element):
         return False
 
 
+def retrieve_environment_name(cluster_name):
+    if cluster_name.endswith('-cluster'):
+        cluster_name = cluster_name[:-(len('-cluster'))]
+    if cluster_name.startswith('atlas-'):
+        cluster_name = cluster_name[len('atlas-'):]
+    return cluster_name
+
+
 def wait_for_node_group_delete(eks_client, cluster_name, node_group):
     timeout = 900  # 15 min
     attempt = 0
@@ -884,6 +892,56 @@ def delete_unused_volumes():
                                         f"| Name tag {name}: skipping")
 
 
+def delete_s3_bucket_tf_state(cluster_name):
+    environment_name = retrieve_environment_name(cluster_name=cluster_name)
+    s3_client = boto3.client('s3')
+    bucket_name_template = f'atl-dc-{environment_name}'
+    response = s3_client.list_buckets()
+    matching_buckets = [bucket['Name'] for bucket in response['Buckets'] if bucket_name_template in bucket['Name']]
+    if not matching_buckets:
+        logging.info(f"Could not find s3 bucket with name contains {bucket_name_template}")
+        return
+    for bucket in matching_buckets:
+        objects_response = s3_client.list_objects_v2(Bucket=bucket)
+        if 'Contents' in objects_response:
+            objects = objects_response['Contents']
+            for obj in objects:
+                s3_client.delete_object(Bucket=bucket, Key=obj['Key'])
+                logging.info(f"Object '{obj['Key']}' deleted successfully from bucket {bucket}.")
+        versions = s3_client.list_object_versions(Bucket=bucket).get('Versions', [])
+        delete_markers = s3_client.list_object_versions(Bucket=bucket).get('DeleteMarkers', [])
+        if versions:
+            for version in versions:
+                s3_client.delete_object(Bucket=bucket, Key=version['Key'], VersionId=version['VersionId'])
+                logging.info(f"S3 object version '{version}' deleted successfully from bucket {bucket}.")
+        if delete_markers:
+            for delete_marker in delete_markers:
+                s3_client.delete_object(Bucket=bucket, Key=delete_marker['Key'], VersionId=delete_marker['VersionId'])
+                logging.info(f"S3 delete marker '{delete_marker['Key']}' deleted successfully from bucket {bucket}.")
+        try:
+            s3_client.delete_bucket(Bucket=bucket)
+            logging.info(f"S3 bucket '{bucket}' was successfully deleted.")
+        except Exception as e:
+            logging.warning(f"Could not delete s3 bucket '{bucket}': {e}")
+
+
+def delete_dynamo_bucket_tf_state(cluster_name, aws_region):
+    environment_name = retrieve_environment_name(cluster_name=cluster_name)
+    dynamodb_client = boto3.client('dynamodb', region_name=aws_region)
+    dynamodb_name_template = f'atl_dc_{environment_name}'.replace('-', '_')
+    response = dynamodb_client.list_tables()
+    matching_tables = [table for table in response['TableNames'] if dynamodb_name_template in table]
+    if not matching_tables:
+        logging.info(f"Could not find dynamo db with name contains {dynamodb_name_template}")
+        return
+    for table in matching_tables:
+        try:
+            dynamodb_client.delete_table(TableName=table)
+            logging.info(f"Dynamo db '{table}' was successfully deleted.")
+        except Exception as e:
+            logging.warning(f"Could not delete dynamo db '{table}': {e}")
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--cluster_name", type=str, help='Cluster name to terminate.')
@@ -908,6 +966,8 @@ def main():
         delete_open_identities_for_cluster(open_identities)
         remove_cluster_specific_roles_and_policies(cluster_name=args.cluster_name, aws_region=args.aws_region)
         delete_ebs_volumes_by_id(aws_region=args.aws_region, volumes=volumes)
+        delete_s3_bucket_tf_state(cluster_name=args.cluster_name)
+        delete_dynamo_bucket_tf_state(cluster_name=args.cluster_name, aws_region=args.aws_region)
         return
 
     logging.info("--cluster_name parameter was not specified.")
@@ -919,6 +979,8 @@ def main():
         vpc_name = f'{cluster_name.replace("-cluster", "-vpc")}'
         terminate_vpc(vpc_name=vpc_name)
         terminate_open_id_providers(cluster_name=cluster_name)
+        delete_s3_bucket_tf_state(cluster_name=cluster_name)
+        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
     vpcs = get_vpcs_to_terminate()
     for vpc_name in vpcs:
         logging.info(f"Delete all resources for vpc {vpc_name}.")
