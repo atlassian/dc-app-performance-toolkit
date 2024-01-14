@@ -125,6 +125,10 @@ class MyBaseTaskSet(TaskSet):
         if hasattr(response, 'error') or not response:
             if 'login' in action_name:
                 self.login_failed = True
+            try:
+                logger.error(response.json())
+            except json.decoder.JSONDecodeError:
+                logger.error(response.text())
             events.request.fire(request_type="Action",
                                 name=f"locust_{action_name}",
                                 response_time=0,
