@@ -1,18 +1,27 @@
 package bamboogenerator.service.generator.plan;
 
 import bamboogenerator.model.PlanInfo;
+import com.atlassian.bamboo.specs.api.builders.AtlassianModule;
+import com.atlassian.bamboo.specs.api.builders.BambooOid;
 import com.atlassian.bamboo.specs.api.builders.Variable;
 import com.atlassian.bamboo.specs.api.builders.plan.Job;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.artifact.Artifact;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
+import com.atlassian.bamboo.specs.api.builders.repository.VcsChangeDetection;
+import com.atlassian.bamboo.specs.api.builders.repository.VcsRepositoryIdentifier;
+import com.atlassian.bamboo.specs.api.builders.task.AnyTask;
 import com.atlassian.bamboo.specs.builders.repository.git.GitRepository;
+import com.atlassian.bamboo.specs.builders.repository.git.UserPasswordAuthentication;
+import com.atlassian.bamboo.specs.builders.repository.github.GitHubRepository;
+import com.atlassian.bamboo.specs.builders.repository.viewer.GitHubRepositoryViewer;
 import com.atlassian.bamboo.specs.builders.task.CheckoutItem;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.task.TestParserTask;
 import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
 import com.atlassian.bamboo.specs.model.task.TestParserTaskProperties;
+import com.atlassian.bamboo.specs.util.MapBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,30 +51,51 @@ public class PlanGenerator {
                         .branch("master"))
                 .variables(new Variable("stack_name", ""))
                 .stages(new Stage("Stage 1")
-                        .jobs(new Job("Job 1", "JB1")
-                                .tasks(
-                                        new VcsCheckoutTask()
-                                                .description("Checkout repository task")
-                                                .cleanCheckout(true)
-                                                .checkoutItems(new CheckoutItem()
-                                                        .repository("dcapt-test-repo").path("dcapt-test-repo")),
-                                        new ScriptTask()
-                                                .description("Run Bash code")
-                                                .interpreterBinSh()
-                                                .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
-                                        new ScriptTask()
-                                                .description("Write XML test results")
-                                                .interpreterBinSh()
-                                                .inlineBody(isFailedPlan
-                                                        ? String.format(BODY_FAIL, TEST_COUNT, TEST_COUNT, TEST_COUNT)
-                                                        : String.format(BODY_SUCCESS, TEST_COUNT, TEST_COUNT))
-                                )
-                                .finalTasks(new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                                        .description("Unit test results parser task")
-                                        .resultDirectories(isFailedPlan ? RESULT_NAME_FAIL : RESULT_NAME_SUCCESS)
-                                )
-                                .artifacts(new Artifact("Test Reports")
-                                        .location(".")
-                                        .copyPattern("*.log"))));
+                    .jobs(new Job("Job 1", "JB1")
+                        .tasks(
+                            new VcsCheckoutTask()
+                                .description("Checkout repository task")
+                                .checkoutItems(new CheckoutItem()
+                                    .repository(new VcsRepositoryIdentifier()
+                                        .name("testing-az")))
+                                .cleanCheckout(true),
+                            new AnyTask(new AtlassianModule("com.sonatype.clm.ci.bamboo:clm-scan-task"))
+                                .description("bamboo-app-2")
+                                .configuration(new MapBuilder()
+                                    .put("clmOrgIdType", "selected")
+                                    .put("clmStageTypeId", "build")
+                                    .put("clmScanTargets", "**/*.xml")
+                                    .put("failOnScanningErrors", "")
+                                    .put("failOnClmFailures", "")
+                                    .put("clmAppId", "test3")
+                                    .put("clmStageType", "selected")
+                                    .put("clmScanProperties", "")
+                                    .put("clmAppIdType", "selected")
+                                    .put("clmModuleExcludes", "")
+                                    .put("clmOrgId", "256d828c50d240bbabc1b1695af70f0a")
+                                    .build()),
+                            new VcsCheckoutTask()
+                                .description("Checkout repository task")
+                                .cleanCheckout(true)
+                                .checkoutItems(new CheckoutItem()
+                                    .repository("dcapt-test-repo").path("dcapt-test-repo")),
+                            new ScriptTask()
+                                .description("Run Bash code")
+                                .interpreterBinSh()
+                                .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
+                            new ScriptTask()
+                                .description("Write XML test results")
+                                .interpreterBinSh()
+                                .inlineBody(isFailedPlan
+                                    ? String.format(BODY_FAIL, TEST_COUNT, TEST_COUNT, TEST_COUNT)
+                                    : String.format(BODY_SUCCESS, TEST_COUNT, TEST_COUNT))
+                        )
+                        .finalTasks(new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                            .description("Unit test results parser task")
+                            .resultDirectories(isFailedPlan ? RESULT_NAME_FAIL : RESULT_NAME_SUCCESS)
+                        )
+                        .artifacts(new Artifact("Test Reports")
+                            .location(".")
+                            .copyPattern("*.log"))));
     }
 }

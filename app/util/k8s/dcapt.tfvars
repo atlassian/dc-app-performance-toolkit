@@ -10,12 +10,12 @@
 # Unique name of your enterprise-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-product"
+environment_name = "dcapt-bamboo"
 
 # Supported products: jira, confluence, bitbucket and bamboo.
 # e.g.: products = ["confluence"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
+products = ["bamboo"]
 
 # Default AWS region for DCAPT snapshots.
 region = "us-east-2"
@@ -74,7 +74,7 @@ jira_image_repository = "atlassian/jira-software"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid Jira/JSM license is used without spaces and new line symbols.
 # ! REQUIRED !
-jira_license = "jira-license"
+jira_license="jira_license"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
@@ -462,7 +462,7 @@ crowd_db_master_password     = "Password1!"
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
 # Please make sure valid Bamboo license is used without spaces and new line symbols.
 # ! REQUIRED !
-bamboo_license = "bamboo-license"
+bamboo_license = "AAAByQ0ODAoPeNqVUl1vm0AQfOdXIPUlVUVygB1/SEi1MYlxMTiGuk3llzVd41PgoHeHE/rrC8bUbZQ+VLqX29ub2ZnZd1GJ6gKYSgxVN8fmaEx6qh1GqkGMnmJzBElzNgOJVlPRiK4RU9lBtsvza4glPaIleYldyS+zHfJgPz1dvTyGdJIgk8LSdMWjMTKBzktBefUHplEfJSx3Iua0aPhaSOcIaQmX+5nijBJVBfqQoWUHy6Wztt2J13XU0GDXpMjbj2n7Yw7iYC3tZ/vuXs6DeY8Zi9H+R1/6UaBXN18eZx9+LqaTw7q/mW+y7CWMPj9Xg5tk+GmZHu4IpQ/fkq21tToZ7szy3Fno+Jqnj0amMRgOugFCCbxh30MqUAmRH5HX7dOvtdTRY6Brrj+81bygf688YbVBLhqR+i0hAzI0TV1ZlTw+gMDXxtds1t+MM7y41pquXjX61daA99uxevFRWQKtqwxY/I8U3oxxlQI7Bfjm6xqzXOI5ZZ0Q0vnd6TKUgCfAqGizFDkDWYen2DmT9Qo59VDp76oGMgUhKDAtA/6EskghRi3heVl87Jqu4zx7tQ7Od3pCd/zIWa/Wbuh0+Kcl+X/4X/EZDWEwLAIUBvnCPfW37V5zFNkXPLnLWz/bdo0CFG52XWTsDfXwKlVHBZsbiQO1xESQX02lp"
 
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags

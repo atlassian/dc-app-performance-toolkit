@@ -34,6 +34,9 @@ def test_1_selenium_view_plan_history(bamboo_webdriver, bamboo_datasets, bamboo_
 def test_1_selenium_view_build_summary(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
     modules.view_build_summary(bamboo_webdriver, bamboo_datasets)
 
+def test_1_selenium_custom_action(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
+    extension_ui.app_specific_action(bamboo_webdriver, bamboo_datasets)
+
 
 def test_1_selenium_view_build_logs(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
     modules.view_build_logs(bamboo_webdriver, bamboo_datasets)
@@ -41,15 +44,6 @@ def test_1_selenium_view_build_logs(bamboo_webdriver, bamboo_datasets, bamboo_sc
 
 def test_1_selenium_view_job_configuration(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
     modules.view_job_configuration(bamboo_webdriver, bamboo_datasets)
-
-
-"""
-Add custom actions anywhere between login and log out action. Move this to a different line as needed.
-Write your custom selenium scripts in `app/extension/bamboo/extension_ui.py`.
-Refer to `app/selenium_ui/bamboo/modules.py` for examples.
-"""
-# def test_1_selenium_custom_action(bamboo_webdriver, bamboo_datasets, bamboo_screen_shots):
-#     extension_ui.app_specific_action(bamboo_webdriver, bamboo_datasets)
 
 
 # this action should be the last one
