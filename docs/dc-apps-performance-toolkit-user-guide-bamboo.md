@@ -353,11 +353,11 @@ To generate a performance regression report:
     - Under `runName: "without app"`, in the `relativePath` key, insert the relative path to results directory of [Run 1](#regressionrun1).
     - Under `runName: "with app"`, in the `relativePath` key, insert the relative path to results directory of [Run 2](#regressionrun2).
     - Under `runName: "with app and app-specific actions"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).    
-1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command to generate reports:
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:
     ``` bash
     docker run --pull=always \
     -v "/$PWD:/dc-app-performance-toolkit" \
-    --workdir="/dc-app-performance-toolkit/app/reports_generation" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
     --entrypoint="python" \
     -it atlassian/dcapt csv_chart_generator.py bamboo_profile.yml
     ```

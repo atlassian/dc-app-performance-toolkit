@@ -221,10 +221,11 @@ To generate a performance regression report:
 1. Edit the `./app/reports_generation/performance_profile.yml` file:
    - For `runName: "without app"`, in the `relativePath` key, insert the relative path to results directory of [Run 1](#regressionrun1).
    - For `runName: "with app"`, in the `relativePath` key, insert the relative path to results directory of [Run 2](#regressionrun2).
-1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command to generate reports:    ``` bash
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:
+    ``` bash
     docker run --pull=always \
     -v "/$PWD:/dc-app-performance-toolkit" \
-    --workdir="/dc-app-performance-toolkit/app/reports_generation" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
     --entrypoint="python" \
     -it atlassian/dcapt csv_chart_generator.py performance_profile.yml
     ```
@@ -374,10 +375,11 @@ To generate a scalability report:
    - For `runName: "1 Node"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).
    - For `runName: "2 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 4](#run4).
    - For `runName: "4 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 5](#run5).
-1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command to generate reports:    ``` bash
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:
+    ``` bash
     docker run --pull=always \
     -v "/$PWD:/dc-app-performance-toolkit" \
-    --workdir="/dc-app-performance-toolkit/app/reports_generation" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
     --entrypoint="python" \
     -it atlassian/dcapt csv_chart_generator.py scale_profile.yml
     ```
