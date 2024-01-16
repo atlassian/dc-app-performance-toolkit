@@ -210,7 +210,7 @@ Note, that `locust_app_specific_action` action execution will start in some time
 
 ---
 
-### <a id="loadconfiguration"></a>3. Setting up load configuration for Enterprise-scale runs
+## <a id="loadconfiguration"></a>3. Setting up load configuration for Enterprise-scale runs
 
 Default TerraForm deployment [configuration](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/dcapt.tfvars)
 already has a dedicated execution environment pod to run tests from. For more details see `Execution Environment Settings` section in `dcapt.tfvars` file.
