@@ -74,7 +74,7 @@ export REGION=us-east-2
 
 ``` bash
 docker run --pull=always --env-file aws_envs \
---workdir="/data-center-terraform" \
+--workdir="//data-center-terraform" \
 --entrypoint="python" \
 -v "/$PWD/terminate_cluster.py:/data-center-terraform/terminate_cluster.py" \
 atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-cluster --aws_region $REGION
@@ -100,3 +100,4 @@ Connect to the product pod. Example below for jira pod with number 0. For other 
 export PRODUCT_POD=jira-0
 aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
 kubectl exec -it $PRODUCT_POD -n atlassian -- bash
+```
