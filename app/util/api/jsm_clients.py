@@ -368,7 +368,7 @@ class JsmRestClient(JiraRestClient):
         objectschemas = []
         api_url = self.host + "/rest/insight/1.0/objectschema/list?"
         r = self.get(api_url,
-                     f"Could not get objectSchemas id").json()
+                     "Could not get objectSchemas id").json()
         objectschemas.extend(r['objectschemas'])
         return objectschemas
 
