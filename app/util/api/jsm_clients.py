@@ -1,11 +1,11 @@
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
-from util.api.abstract_clients import RestClient
+from util.api.jira_clients import JiraRestClient
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_USERS = 1000
 
 
-class JsmRestClient(RestClient):
+class JsmRestClient(JiraRestClient):
 
     def get_agent(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
