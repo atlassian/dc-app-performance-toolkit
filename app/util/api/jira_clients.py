@@ -233,11 +233,6 @@ class JiraRestClient(RestClient):
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
 
-    def get_service_desk_info(self):
-        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
-        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
-        return service_desk_info.json()
-
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         jira_system_page = self.get_system_info_page()
