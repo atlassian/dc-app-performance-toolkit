@@ -2,8 +2,8 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
-TOOLKIT_VERSION = '7.6.0'
-UNSUPPORTED_VERSION = '6.3.0'
+TOOLKIT_VERSION = '8.0.0'
+UNSUPPORTED_VERSION = '7.3.0'
 
 
 def read_yml_file(file):
@@ -27,6 +27,7 @@ class BaseAppSettings:
         self.analytics_collector = self.get_property('allow_analytics')
         self.load_executor = self.get_property('load_executor')
         self.secure = self.get_property('secure')
+        self.environment_compliance_check = self.get_property('environment_compliance_check')
 
     @property
     def server_url(self):

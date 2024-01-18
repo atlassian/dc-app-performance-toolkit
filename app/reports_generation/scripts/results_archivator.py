@@ -1,7 +1,7 @@
 from pathlib import Path
 from shutil import make_archive
 
-from scripts.utils import validate_config, clean_str
+from scripts.utils import validate_config, clean_str, resolve_relative_path
 
 
 def __zip_folder(folder_path: Path, destination_path: Path) -> Path:
@@ -12,7 +12,7 @@ def __zip_folder(folder_path: Path, destination_path: Path) -> Path:
 def archive_results(config: dict, results_dir: Path):
     validate_config(config)
     for run in config['runs']:
-        results_folder_path = Path(run["fullPath"])
+        results_folder_path = resolve_relative_path(run['relativePath'])
         destination_name = f"{config['profile']}_run_{clean_str(run['runName'])}_{results_folder_path.name}"
         destination_path = results_dir / destination_name
         archive_path = __zip_folder(results_folder_path, destination_path)

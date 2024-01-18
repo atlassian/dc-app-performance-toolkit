@@ -44,8 +44,10 @@ def __create_data_set(rest_client, rpc_client):
     perf_user_api = ConfluenceRestClient(CONFLUENCE_SETTINGS.server_url, perf_user['username'], DEFAULT_USER_PASSWORD)
 
     pool = ThreadPool(processes=2)
-    async_pages = pool.apply_async(__get_pages, (perf_user_api, 5000))
-    async_blogs = pool.apply_async(__get_blogs, (perf_user_api, 5000))
+
+    dcapt_dataset = bool(perf_user_api.search(limit=1, cql='type=page and text ~ PAGE_1'))
+    async_pages = pool.apply_async(__get_pages, (perf_user_api, 5000, dcapt_dataset))
+    async_blogs = pool.apply_async(__get_blogs, (perf_user_api, 5000, dcapt_dataset))
 
     async_pages.wait()
     async_blogs.wait()
@@ -88,11 +90,10 @@ def __get_users(confluence_api, rpc_api, count):
 
 
 @print_timing('Getting pages')
-def __get_pages(confluence_api, count):
+def __get_pages(confluence_api, count, dcapt_dataset):
     pages_templates = [i for sublist in DATASET_PAGES_TEMPLATES.values() for i in sublist]
     pages_templates_count = len(pages_templates)
     pages_per_template = int(count / pages_templates_count) if count > pages_templates_count else 1
-    dcapt_dataset = bool(confluence_api.search(limit=100, cql='type=page and text ~ PAGE_1'))
     total_pages = []
 
     if dcapt_dataset:
@@ -137,11 +138,10 @@ def __get_custom_pages(confluence_api, count, cql):
 
 
 @print_timing('Getting blogs')
-def __get_blogs(confluence_api, count):
+def __get_blogs(confluence_api, count, dcapt_dataset):
     blogs_templates = [i for sublist in DATASET_BLOGS_TEMPLATES.values() for i in sublist]
     blogs_templates_count = len(blogs_templates)
     blogs_per_template = int(count / blogs_templates_count) if count > blogs_templates_count else 1
-    dcapt_dataset = bool(confluence_api.search(limit=100, cql='type=page and text ~ PAGE_1'))
     total_blogs = []
 
     if dcapt_dataset:
