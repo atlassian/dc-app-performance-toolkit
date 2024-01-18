@@ -371,3 +371,8 @@ class JsmRestClient(RestClient):
                      f"Could not get objectSchemas id").json()
         objectschemas.extend(r['objectschemas'])
         return objectschemas
+
+    def get_service_desk_info(self):
+        api_url = f'{self.host}/rest/servicedeskapi/info'
+        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
+        return service_desk_info.json()
