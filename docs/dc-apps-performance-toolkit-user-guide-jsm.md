@@ -457,7 +457,7 @@ To receive performance baseline results **without** an app installed:
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
    * `standalone_extension` set to 0. App-specific actions are not needed for Run1 and Run2.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
@@ -572,7 +572,7 @@ To receive scalability benchmark results for one-node Jira Service Management DC
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * `standalone_extension` set to non 0 and .jmx file has standalone actions implementation in case of JMeter app-specific actions.
    * [test_1_selenium_customer_custom_action](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/selenium_ui/jsm_ui_customers.py#L43C9-L44) is uncommented and has implementation in case of Selenium app-specific actions.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)

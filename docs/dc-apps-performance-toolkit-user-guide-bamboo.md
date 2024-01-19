@@ -257,7 +257,7 @@ To receive performance baseline results **without** an app installed and **witho
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
    * `standalone_extension` set to 0. App-specific actions are not needed for Run1 and Run2.
    * `standalone_extension_locust` set to 0.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
@@ -322,7 +322,7 @@ To receive results for Bamboo DC **with app** and **with app-specific actions**:
    * `standalone_extension` set to non 0 and .jmx file has standalone actions implementation in case of JMeter app-specific actions.
    * `standalone_extension_locust` set to 1 and Locust app-specific actions code base applied  in case of Locust app-specific actions.
    * [test_1_selenium_custom_action](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/selenium_ui/bamboo_ui.py#L51-L52) is uncommented and has implementation in case of Selenium app-specific actions.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
