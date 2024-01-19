@@ -308,7 +308,7 @@ To receive performance baseline results **without** an app installed:
    * App-specific actions code base is not needed for Run1 and Run2.
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
@@ -389,7 +389,7 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * [test_1_selenium_custom_action](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/selenium_ui/bitbucket_ui.py#L67-L68) is uncommented and has implementation in case of Selenium app-specific actions.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
