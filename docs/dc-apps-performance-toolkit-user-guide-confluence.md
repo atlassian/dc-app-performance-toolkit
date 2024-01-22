@@ -384,7 +384,7 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Before run:
-   * Make sure `jira.yml` and toolkit code base has default configuration from the `master` branch.
+   * Make sure `confluence.yml` and toolkit code base has default configuration from the `master` branch.
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
    * `standalone_extension` set to 0. App-specific actions are not needed for Run1 and Run2.
@@ -573,7 +573,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
-1. Edit the `./app/reports_generation/performance_profile.yml` file:
+1. Edit the `./app/reports_generation/scale_profile.yml` file:
    - For `runName: "1 Node"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).
    - For `runName: "2 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 4](#run4).
    - For `runName: "4 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 5](#run5).
