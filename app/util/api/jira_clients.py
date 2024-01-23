@@ -80,6 +80,8 @@ class JiraRestClient(RestClient):
 
         return users_list
 
+
+    @retry()
     def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
