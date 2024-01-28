@@ -69,3 +69,19 @@ def print_timing(message, sep='-'):
         return wrapper
 
     return deco_wrapper
+
+
+def webdriver_pretty_debug(webdriver, additional_field):
+    debug_message = {}
+    for key, value in additional_field:
+        debug_message[key] = value
+
+    if 'debug_info' in dir(webdriver):
+        webdriver.debug_info['current_url'] = webdriver.current_url
+        webdriver.debug_info['session_id'] = webdriver.session_id
+        debug_message.update(webdriver.debug_info)
+    list_to_print = '\n'.join([f'{key}: {value}' for key, value in debug_message.items()])
+    pretty_formatted_string = f"""=============== WEBDRIVER DEBUG INFORMATION ===============""" + \
+                             f'\n{list_to_print}' + \
+                             """\n===========================================================\n"""
+    return pretty_formatted_string
