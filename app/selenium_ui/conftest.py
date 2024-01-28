@@ -16,6 +16,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
+from util.common_util import webdriver_pretty_debug
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
 from util.exceptions import WebDriverExceptionPostpone
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
@@ -149,6 +150,8 @@ def print_timing(interaction=None, explicit_timing=None):
                 if 'msg' in dir(full_exception):
                     if 'Locator' in full_exception.msg:
                         locator_debug_message = f" - {full_exception.msg.split('Locator:')[-1].strip().replace(',','')}"
+                    else:
+                        locator_debug_message = f" - {full_exception.msg}"
                 error_msg = f"Failed measure: {interaction} - {exc_type.__name__}{locator_debug_message}"
             end = time()
             timing = str(int((end - start) * 1000))
@@ -430,17 +433,19 @@ def get_screen_shots(request, webdriver):
         mode = "w" if not selenium_error_file.exists() else "a+"
         action_name = request.node.rep_call.head_line
         error_text = request.node.rep_call.longreprtext
+        errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
+        errors_artifacts.mkdir(parents=True, exist_ok=True)
+        error_artifact_name = errors_artifacts / datetime_now(action_name)
+        pretty_debug = webdriver_pretty_debug(webdriver, additional_field={'screenshot_name':
+                                                                               f'{error_artifact_name}.png'})
         with open(selenium_error_file, mode) as err_file:
             timestamp = round(time() * 1000)
             dt = datetime.datetime.now()
             utc_time = dt.replace(tzinfo=timezone.utc)
             str_time = utc_time.strftime("%m-%d-%Y, %H:%M:%S")
             str_time_stamp = f'{str_time}, {timestamp}'
-            err_file.write(f"{str_time_stamp}, Action: {action_name}, Error: {error_text}\n")
-        print(f"Action: {action_name}, Error: {error_text}\n")
-        errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
-        errors_artifacts.mkdir(parents=True, exist_ok=True)
-        error_artifact_name = errors_artifacts / datetime_now(action_name)
+            err_file.write(f"{str_time_stamp}, Action: {action_name}, Error: {error_text}\n{pretty_debug}")
+        print(f"Action: {action_name}, Error: {error_text}\n{pretty_debug}")
         webdriver.save_screenshot('{}.png'.format(error_artifact_name))
         with open(f'{error_artifact_name}.html', 'wb') as html_file:
             html_file.write(webdriver.page_source.encode('utf-8'))
