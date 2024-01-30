@@ -458,19 +458,15 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 
 # Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
 # to kube-monitoring namespace. Defaults to false.
+#
 # monitoring_enabled = true
 
 # Create Grafana service of LoadBalancer type. Defaults to false. To restrict access to LB URL
 # the list of CIRDs from whitelist_cidr will be automatically applied.
-
+#
+# To get Grafana URL see README.MD instructions.
+#
 # monitoring_grafana_expose_lb = true
-
-# Command to select cluster:
-# export ENVIRONMENT_NAME=your_environment_name
-# aws eks update-kubeconfig --region us-east-2 --name atlas-$ENVIRONMENT_NAME-cluster
-
-# Command to get grafana ulr: kubectl get svc -n kube-monitoring | grep grafana
-# Default grafana creds: admin/prom-operator
 
 # Prometheus Persistent Volume Claim size. Defaults to 10Gi.
 # Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,

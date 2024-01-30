@@ -101,3 +101,27 @@ export PRODUCT_POD=jira-0
 aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
 kubectl exec -it $PRODUCT_POD -n atlassian -- bash
 ```
+
+# Enable detailed resources monitoring
+To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisation:
+1. Go to `dcapt.tvars` file -> Monitoring section.
+2. Uncomment and set to `true` following required variables: `monitoring_enabled` and `monitoring_grafana_expose_lb`.
+3. Modify if needed other optional variables.
+4. Do `install.sh` as described in [Create enterprise-scale environment](#create-enterprise-scale-environment).
+5. Get Grafana URL:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    export REGION=us-east-2
+    ```
+    ``` bash
+    docker run --pull=always --env-file aws_envs \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -e REGION=$REGION \
+    -it atlassianlabs/terraform:2.7.1 bash 
+    ```
+    ``` bash
+    aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
+    kubectl get svc -n kube-monitoring | grep grafana
+    ```
+6. Open Grafana URL in the browser. Default Grafana creds: `admin/prom-operator`.
+7. Go to Dashboards -> General -> select one of the available dashboards.
