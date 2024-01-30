@@ -129,16 +129,18 @@ class ConfluenceRestClient(RestClient):
         return response.status_code == 200
 
     def get_confluence_nodes(self):
-        api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
-        response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
-                            expected_status_codes=[200, 500])
-        if response.status_code == 500 and 'NonClusterMonitoring' in response.text:
+        response = self.get(f'{self.host}/rest/zdu/cluster', error_msg='Could not get Confluence nodes count via API',
+                            expected_status_codes=[200, 403, 500])
+        if response.status_code == 403 and 'clustered installation' in response.text:
             return 'Server'
-        nodes = [node['nodeId'] for node in response.json()]
+        nodes = [node['id'] for node in response.json()['nodes']]
         return nodes
 
     def get_available_processors(self):
         try:
+            nodes = self.get_confluence_nodes()
+            if nodes == 'Server':
+                return 'Server'
             node_id = self.get_confluence_nodes()[0]
             api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                       f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
@@ -193,6 +195,16 @@ class ConfluenceRestClient(RestClient):
         if confluence_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    def get_node_ip(self, node_id: str) -> str:
+        if node_id != "SERVER":
+            return self.get(
+                url=f"{self.host}/rest/zdu/nodes/{node_id}",
+                expected_status_codes=[200],
+                error_msg=f"Cannot get {node_id} node IP",
+            ).json().get("ipAddress")
+        else:
+            return ""
 
 
 class ConfluenceRpcClient(Client):

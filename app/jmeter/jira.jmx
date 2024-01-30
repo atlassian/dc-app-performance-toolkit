@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -3061,12 +3061,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1182867844">[&quot;project-key&quot;]=&quot;\&quot;${project_key}\&quot;&quot;;</stringProp>
+                    <stringProp name="-1259658522">.*project-key.*${project_key}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
@@ -6247,12 +6247,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-659010545">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${kanban_board_id},\&quot;</stringProp>
+                    <stringProp name="-527263441">.*currentViewConfig.*id.*${kanban_board_id}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
@@ -7107,12 +7107,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1102120432">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${scrum_board_id},\&quot;</stringProp>
+                    <stringProp name="-883171818">.*currentViewConfig.*id.*${scrum_board_id}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
@@ -7967,12 +7967,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1102120432">&quot;{\&quot;currentViewConfig\&quot;:{\&quot;id\&quot;:${scrum_board_id},\&quot;</stringProp>
+                    <stringProp name="-883171818">.*currentViewConfig.*id.*${scrum_board_id}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>

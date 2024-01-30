@@ -3,6 +3,7 @@ from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, mea
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
+from util.api.confluence_clients import ConfluenceRestClient
 from util.confluence.browser_metrics import browser_metrics
 from util.conf import CONFLUENCE_SETTINGS
 
@@ -35,6 +36,12 @@ def setup_run_data(datasets):
 
 def login(webdriver, datasets):
     setup_run_data(datasets)
+    rest_client = ConfluenceRestClient(
+        CONFLUENCE_SETTINGS.server_url,
+        CONFLUENCE_SETTINGS.admin_login,
+        CONFLUENCE_SETTINGS.admin_password,
+        verify=CONFLUENCE_SETTINGS.secure,
+    )
     login_page = Login(webdriver)
 
     def measure():
@@ -45,9 +52,11 @@ def login(webdriver, datasets):
                 login_page.delete_all_cookies()
                 login_page.go_to()
             login_page.wait_for_page_loaded()
+            node_id = login_page.get_node_id()
+            node_ip = rest_client.get_node_ip(node_id)
+            webdriver.node_ip = node_ip
+            print(f"node_id:{node_id}, node_ip: {webdriver.node_ip}")
             measure_dom_requests(webdriver, interaction="selenium_login:open_login_page")
-            webdriver.node_id = login_page.get_node_id()
-            print(f"node_id:{webdriver.node_id}")
 
         sub_measure()
 
@@ -241,33 +250,33 @@ def create_inline_comment(webdriver, datasets):
     page = Page(webdriver, page_id=page_id)
 
     @print_timing("selenium_create_comment")
-    def measure():
+    def measure(webdriver):
         page.go_to()
         page.wait_for_page_loaded()
         edit_comment = Editor(webdriver)
 
         @print_timing("selenium_create_comment:write_comment")
-        def sub_measure():
+        def sub_measure(webdriver):
             page.click_add_comment()
             edit_comment.write_content(text='This is selenium comment')
 
-        sub_measure()
+        sub_measure(webdriver)
 
         @print_timing("selenium_create_comment:save_comment")
-        def sub_measure():
+        def sub_measure(webdriver):
             edit_comment.click_submit()
             page.wait_for_comment_field()
 
-        sub_measure()
+        sub_measure(webdriver)
 
-    measure()
+    measure(webdriver)
 
 
 def log_out(webdriver, datasets):
     @print_timing("selenium_log_out")
-    def measure():
+    def measure(webdriver):
         logout_page = Logout(webdriver)
         logout_page.go_to()
         logout_page.wait_for_logout()
 
-    measure()
+    measure(webdriver)

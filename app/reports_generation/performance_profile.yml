@@ -1,13 +1,14 @@
 # Defines which column from test runs is used for aggregated report. Default is "90% Line"
 column_name: "90% Line"
 runs:
-  # fullPath should contain a full path to the directory with run results. E.g. /home/$USER/dc-app-performance-toolkit/app/results/jira/2019-08-06_17-41-08
+  # relativePath should contain a relative path to the directory with run results starting from dc-app-performance-toolkit folder.
+  # E.g. relativePath: "./app/results/jira/2024-01-01_10-10-10"
   - runName: "without app"
     runType: "baseline"
-    fullPath: ""
+    relativePath: "./app/results/{PRODUCT}/{TIMESTAMP}"
   - runName: "with app"
     runType: "experiment"
-    fullPath: ""
+    relativePath: "./app/results/{PRODUCT}/{TIMESTAMP}"
 
 # Chart generation config
 index_col: "Action"

@@ -5,22 +5,22 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
 
 ## Supported versions
 * Supported Jira versions: 
-    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.20.15` and `9.4.0`
+    * Jira [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `9.12.1` and `9.4.14`
 
 * Supported Jira Service Management versions: 
-    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `4.20.15` and `5.4.0`
+    * Jira Service Management [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `5.12.1` and `5.4.14`
     
 * Supported Confluence versions:
-    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.19.2`, `7.13.7`  and `8.0.0` platform release
+    * Confluence [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.5.4` and `7.19.17`
 
 * Supported Bitbucket Server versions:
-    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `7.21.7`, `7.17.13`, and `8.0.5` platform release.
+    * Bitbucket Server [Long Term Support release](https://confluence.atlassian.com/enterprise/atlassian-enterprise-releases-948227420.html): `8.9.8` and `7.21.20`
 
 * Supported Crowd versions:
-    * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `5.0.2`
+    * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `5.2.2`
   
 * Supported Bamboo versions:
-    * Bamboo [release notes](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `8.1.3`
+    * Bamboo [Long Term Support release](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `9.2.9`
   
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
@@ -29,7 +29,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 
 #### Dependencies
 * Python 3.8, 3.9, 3.10 or 3.11 and pip
-* JDK 11
+* JDK 17
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
 
@@ -41,7 +41,7 @@ If a first part of ChromeDriver version does not match with a first part of your
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
+* [JDK 17](https://www.oracle.com/java/technologies/downloads/#java17) installed
 * XCode Command Line Tools
 * Google Chrome web browser
 ```
@@ -81,7 +81,7 @@ pip install -r requirements.txt
 Make sure that you have:
 * [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions)
 * pip
-* [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed
+* [JDK 17](https://www.oracle.com/java/technologies/downloads/#java17) installed
 * Python developer package (e.g. `python3.9-dev` package for Python3.9)
 * Google Chrome web browser
 ```
@@ -95,11 +95,11 @@ git --version
 ```
 We recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/) for Taurus. See example setup below.
 
-## Example setup for clean Ubuntu 20.04
+## Example setup for clean Ubuntu 22.04
 JDK setup (if missing):
 ```
 sudo apt-get update
-sudo apt-get install -y openjdk-11-jre-headless
+sudo apt-get install -y openjdk-17-jre-headless
 ```
 Chrome setup (if missing):
 ```
@@ -119,7 +119,7 @@ pip install -r requirements.txt
 
 ### Windows setup
 #### Installing Taurus manually
-Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 11](https://www.oracle.com/java/technologies/downloads/#java11) installed:
+Make sure you have [Python](https://www.python.org/downloads/) (see [dependencies](#dependencies) section for supported versions), pip, and [JDK 17](https://www.oracle.com/java/technologies/downloads/#java17) installed:
 ```
 python --version or python3 --version
 pip --version
