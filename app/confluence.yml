@@ -35,7 +35,7 @@ settings:
     upload_attachment: 6
     like_page: 3
     upload_emoticon: 2      # For Confluence 8.4.x+
-    standalone_extension: 5 # By default disabled
+    standalone_extension: 3 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
