@@ -73,7 +73,7 @@ def print_timing(message, sep='-'):
 
 def webdriver_pretty_debug(webdriver, additional_field):
     debug_message = {}
-    for key, value in additional_field:
+    for key, value in additional_field.items():
         debug_message[key] = value
 
     if 'debug_info' in dir(webdriver):
