@@ -38,7 +38,7 @@ def setup_run_data(datasets):
         datasets['current_session']['medium_project_key'] = service_desk_medium[2]
         datasets['current_session']['all_open_queue_id_medium'] = service_desk_medium[4]
         # Medium projects reports
-        datasets['m_report_created_vs_resolved_id'] = service_desk_medium[5]
+        datasets['current_session']['m_report_created_vs_resolved_id'] = service_desk_medium[5]
 
     if datasets[SERVICE_DESKS_SMALL]:
         service_desk_small = random.choice(datasets[SERVICE_DESKS_SMALL])

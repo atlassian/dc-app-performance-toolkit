@@ -85,7 +85,7 @@ def login(webdriver, datasets):
         current_session_response = login_page.rest_api_get(url=f'{webdriver.base_url}/rest/auth/latest/session')
         if 'name' in current_session_response:
             actual_username = current_session_response['name']
-            assert actual_username == datasets['current_session']['agent_username']
+            assert actual_username == datasets['current_session']['customer_username']
     measure()
 
 
