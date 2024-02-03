@@ -276,7 +276,7 @@ def insight_create_new_schema(webdriver, datasets):
         insight_create_schema_page.go_to()
         insight_create_schema_page.wait_for_page_loaded()
         PopupManager(webdriver).dismiss_default_popup()
-        datasets['schema_name'] = insight_create_schema_page.create_new_schema()
+        datasets['current_session']['schema_name'] = insight_create_schema_page.create_new_schema()
 
     measure()
 
