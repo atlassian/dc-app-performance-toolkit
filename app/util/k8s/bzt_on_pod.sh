@@ -26,6 +26,13 @@ aws eks update-kubeconfig --name atlas-"$ENVIRONMENT_NAME"-cluster --region "$RE
 
 echo "INFO: Get execution environment pod name"
 exec_pod_name=$(kubectl get pods -n atlassian -l=exec=true --no-headers -o custom-columns=":metadata.name")
+
+if [[ -z "$exec_pod_name" ]]; then
+  echo "ERROR: Current cluster does not have execution environment pod. Check what environment type is used.
+  Development environment does not have execution environment pod by default because dedicated for local app-specific actions development only."
+exit 1
+fi
+
 echo "INFO: Execution environment pod name: $exec_pod_name"
 
 echo "INFO: Cleanup dc-app-performance-toolkit folder on the exec env pod"
