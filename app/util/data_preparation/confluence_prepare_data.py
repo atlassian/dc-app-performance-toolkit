@@ -16,6 +16,19 @@ BLOGS = "blogs"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
+
+PAGE_CQL = ('type=page'
+            ' and title !~ JMeter'  # filter out pages created by JMeter
+            ' and title !~ Selenium'  # filter out pages created by Selenium
+            ' and title !~ locust'  # filter out pages created by locust
+            ' and title !~ Home'  # filter out space Home pages
+            )
+
+BLOG_CQL = ('type=blogpost'
+            ' and title !~ Performance'  # filter out blogs with Performance in title
+            )
+
+
 DATASET_PAGES_TEMPLATES = {'big_attachments_1': ['PAGE_1', 'PAGE_2'],
                            'small_attachments_3': ['PAGE_3', 'PAGE_4', 'PAGE_5', 'PAGE_6'],
                            'small_text_7': ['PAGE_7', 'PAGE_8', 'PAGE_9', 'PAGE_10', 'PAGE_11',
@@ -25,8 +38,8 @@ DATASET_PAGES_TEMPLATES = {'big_attachments_1': ['PAGE_1', 'PAGE_2'],
                            'text_formatting_21': ['PAGE_21', 'PAGE_22', 'PAGE_25', 'PAGE_26', 'PAGE_27', 'PAGE_28',
                                                   'PAGE_29', 'PAGE_30']
                            }
-DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'],  #, 'BLOG_2'], # TODO Investigate how to group similar blogs
-                           3: ['BLOG_3'],  #'BLOG_4', 'BLOG_5'],
+DATASET_BLOGS_TEMPLATES = {1: ['BLOG_1'],  # , 'BLOG_2'], # TODO Investigate how to group similar blogs
+                           3: ['BLOG_3'],  # 'BLOG_4', 'BLOG_5'],
                            6: ['BLOG_6']  # 'BLOG_7', 'BLOG_8', 'BLOG_9', 'BLOG_10']
 
                            }
@@ -45,7 +58,9 @@ def __create_data_set(rest_client, rpc_client):
 
     pool = ThreadPool(processes=2)
 
-    dcapt_dataset = bool(perf_user_api.search(limit=1, cql='type=page and text ~ PAGE_1'))
+    dcapt_dataset = (len(perf_user_api.search(limit=5, cql='type=page and text ~ PAGE_7')) +
+                     len(perf_user_api.search(limit=5, cql='type=blogpost and text ~ BLOG_7')) == 10)
+    print(f"DCAPT dataset: {dcapt_dataset}")
     async_pages = pool.apply_async(__get_pages, (perf_user_api, 5000, dcapt_dataset))
     async_blogs = pool.apply_async(__get_blogs, (perf_user_api, 5000, dcapt_dataset))
 
@@ -100,23 +115,14 @@ def __get_pages(confluence_api, count, dcapt_dataset):
         for template_id, pages_marks in DATASET_PAGES_TEMPLATES.items():
             for mark in pages_marks:
                 pages = confluence_api.get_content_search(
-                    0, pages_per_template, cql='type=page'
-                                               ' and title !~ JMeter'  # filter out pages created by JMeter
-                                               ' and title !~ Selenium'  # filter out pages created by Selenium
-                                               ' and title !~ locust'  # filter out pages created by locust
-                                               ' and title !~ Home'  # filter out space Home pages
-                                               f' and text ~ {mark}')
+                    0, pages_per_template, cql=PAGE_CQL + f' and text ~ {mark}')
                 for page in pages:
                     page['template_id'] = template_id
                 total_pages.extend(pages)
 
     else:
         total_pages = confluence_api.get_content_search(
-            0, count, cql='type=page'
-                          ' and title !~ JMeter'  # filter out pages created by JMeter
-                          ' and title !~ Selenium'  # filter out pages created by Selenium
-                          ' and title !~ locust'  # filter out pages created by locust
-                          ' and title !~ Home')  # filter out space Home pages
+            0, count, cql=PAGE_CQL)
         for page in total_pages:
             page['template_id'] = DEFAULT_TEMPLATE_ID
     if not total_pages:
@@ -148,16 +154,13 @@ def __get_blogs(confluence_api, count, dcapt_dataset):
         for template_id, blogs_marks in DATASET_BLOGS_TEMPLATES.items():
             for mark in blogs_marks:
                 blogs = confluence_api.get_content_search(
-                    0, blogs_per_template, cql='type=blogpost'
-                                               ' and title !~ Performance'
-                                               f' and text ~ {mark}')
+                    0, blogs_per_template, cql=BLOG_CQL + f' and text ~ {mark}')
                 for blog in blogs:
                     blog['template_id'] = template_id
                 total_blogs.extend(blogs)
     else:
         total_blogs = confluence_api.get_content_search(
-            0, count, cql='type=blogpost'
-                          ' and title !~ Performance')
+            0, count, cql=BLOG_CQL)
         for blog in total_blogs:
             blog['template_id'] = DEFAULT_TEMPLATE_ID
 
