@@ -187,7 +187,6 @@ class ConfluenceRestClient(RestClient):
         }
         self.post(url=login_url, error_msg='Could not get login in')
         system_info_html = self._session.post(url=auth_url, data=auth_body)
-
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
