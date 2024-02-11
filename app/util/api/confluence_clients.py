@@ -187,6 +187,7 @@ class ConfluenceRestClient(RestClient):
         }
         self.post(url=login_url, error_msg='Could not get login in')
         system_info_html = self._session.post(url=auth_url, data=auth_body)
+
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
@@ -205,6 +206,19 @@ class ConfluenceRestClient(RestClient):
             ).json().get("ipAddress")
         else:
             return ""
+
+    def create_user(self, username, password):
+        create_user_url = f'{self.host}/rest/api/admin/user'
+        payload = {
+            "userName": username,
+            "password": password,
+            "email": f'{username}@test.com',
+            "notifyViaEmail": False,
+            "fullName": username.capitalize()
+        }
+        r = self.post(url=create_user_url, body=payload, error_msg='ERROR: Could not create user')
+        return r.json()
+
 
 
 class ConfluenceRpcClient(Client):
