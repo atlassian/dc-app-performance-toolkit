@@ -64,8 +64,8 @@ def setup_run_data(datasets):
     if CUSTOM_ISSUES in datasets:
         if len(datasets[CUSTOM_ISSUES]) > 0:
             custom_issue = random.choice(datasets[CUSTOM_ISSUES])
-            datasets['current_session']['custom_issue_key'] = custom_issue[0]
-            datasets['current_session']['custom_issue_id'] = custom_issue[1]
+            datasets['custom_issue_key'] = custom_issue[0]
+            datasets['custom_issue_id'] = custom_issue[1]
 
     if JSM_SETTINGS.insight:
         schema_id = random.choice(datasets[INSIGHT_SCHEMAS])
