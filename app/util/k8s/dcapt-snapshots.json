@@ -5,6 +5,16 @@
         "version": "9.4.14",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0dab2d7af5181534e",
+                "us-east-1": "snap-0d0022bbbc868bf06"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "large",
             "snapshots": [
@@ -49,6 +59,16 @@
       {
         "version": "9.12.1",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0057b5f699da7ad8a",
+                "us-east-1": "snap-0d8a6b19da5de9c32"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
@@ -99,6 +119,16 @@
         "version": "5.4.14",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-07b20d8da0cbc1685",
+                "us-east-1": "snap-0314231b8d47747d7"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "large",
             "snapshots": [
@@ -143,6 +173,16 @@
       {
         "version": "5.12.1",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-09cd264de9bf8b315",
+                "us-east-1": "snap-0ceb47174c62f381c"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
@@ -193,6 +233,16 @@
         "version": "8.5.4",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-075cc8959eac2a063",
+                "us-east-1": "snap-082987042e6cfbf5d"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "small",
             "snapshots": [
@@ -238,6 +288,16 @@
       {
         "version": "7.19.17",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0d2c9acae3ddb764e",
+                "us-east-1": "snap-066a112e42cdb7d3a"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
