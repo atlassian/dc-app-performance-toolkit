@@ -892,9 +892,9 @@ def delete_unused_volumes():
                                         f"| Name tag {name}: skipping")
 
 
-def delete_s3_bucket_tf_state(cluster_name):
+def delete_s3_bucket_tf_state(cluster_name, aws_region):
     environment_name = retrieve_environment_name(cluster_name=cluster_name)
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name=aws_region)
     bucket_name_template = f'atl-dc-{environment_name}'
     response = s3_client.list_buckets()
     matching_buckets = [bucket['Name'] for bucket in response['Buckets'] if bucket_name_template in bucket['Name']]
@@ -966,7 +966,7 @@ def main():
         delete_open_identities_for_cluster(open_identities)
         remove_cluster_specific_roles_and_policies(cluster_name=args.cluster_name, aws_region=args.aws_region)
         delete_ebs_volumes_by_id(aws_region=args.aws_region, volumes=volumes)
-        delete_s3_bucket_tf_state(cluster_name=args.cluster_name)
+        delete_s3_bucket_tf_state(cluster_name=args.cluster_name, aws_region=args.aws_region)
         delete_dynamo_bucket_tf_state(cluster_name=args.cluster_name, aws_region=args.aws_region)
         return
 
@@ -979,7 +979,7 @@ def main():
         vpc_name = f'{cluster_name.replace("-cluster", "-vpc")}'
         terminate_vpc(vpc_name=vpc_name)
         terminate_open_id_providers(cluster_name=cluster_name)
-        delete_s3_bucket_tf_state(cluster_name=cluster_name)
+        delete_s3_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
         delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
     vpcs = get_vpcs_to_terminate()
     for vpc_name in vpcs:
