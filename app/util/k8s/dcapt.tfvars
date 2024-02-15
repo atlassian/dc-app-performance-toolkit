@@ -38,6 +38,13 @@ confluence_replica_count = 1
 bitbucket_replica_count = 1
 crowd_replica_count = 1
 
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
+#
+#domain = "<example.com>"
+
 ################################################################################
 # Common Settings
 ################################################################################
@@ -72,13 +79,6 @@ max_cluster_capacity = 6
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
 # This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
 #enable_https_ingress = false
-
-# (Optional) Domain name used by the ingress controller.
-# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
-# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
-# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
-#
-#domain = "<example.com>"
 
 ################################################################################
 # Execution Environment Settings
