@@ -39,7 +39,16 @@ echo "INFO: Cleanup dc-app-performance-toolkit folder on the exec env pod"
 kubectl exec -it "$exec_pod_name" -n atlassian -- rm -rf /dc-app-performance-toolkit
 
 echo "INFO: Copy latest dc-app-performance-toolkit folder to the exec env pod"
-kubectl cp --retries 10 dc-app-performance-toolkit atlassian/"$exec_pod_name":/dc-app-performance-toolkit
+start=$(date +%s)
+# tar only app folder, exclude results and util/k8s folder
+tar -czf dcapt.tar.gz -C dc-app-performance-toolkit --exclude results --exclude util/k8s app
+kubectl cp --retries 10 dcapt.tar.gz atlassian/"$exec_pod_name":/dcapt.tar.gz
+kubectl exec -it "$exec_pod_name" -n atlassian -- mkdir /dc-app-performance-toolkit
+kubectl exec -it "$exec_pod_name" -n atlassian -- tar -xf /dcapt.tar.gz -C /dc-app-performance-toolkit
+rm -rf dcapt.tar.gz
+end=$(date +%s)
+runtime=$((end-start))
+echo "INFO: Copy finished in $runtime seconds"
 
 echo "INFO: Run bzt on the exec env pod"
 kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --pull=always --shm-size=4g -v "/dc-app-performance-toolkit:/dc-app-performance-toolkit" $DCAPT_DOCKER_IMAGE "$1"
