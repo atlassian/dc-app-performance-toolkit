@@ -22,7 +22,8 @@ def get_latest_version(supported=True):
         r.raise_for_status()
         conf = r.text.splitlines()
         version_line = next((line for line in conf if VERSION_STR in line))
-        latest_version_str = version_line.split('=')[1].replace("'", "").replace('"', "").strip()
+        latest_version_str = version_line.split(
+            '=')[1].replace("'", "").replace('"', "").strip()
         latest_version = version.parse(latest_version_str)
         return latest_version
     except requests.exceptions.RequestException as e:
@@ -69,3 +70,19 @@ def print_timing(message, sep='-'):
         return wrapper
 
     return deco_wrapper
+
+
+def webdriver_pretty_debug(webdriver, additional_field):
+    debug_message = {}
+    for key, value in additional_field.items():
+        debug_message[key] = value
+
+    if 'debug_info' in dir(webdriver):
+        webdriver.debug_info['current_url'] = webdriver.current_url
+        webdriver.debug_info['session_id'] = webdriver.session_id
+        debug_message.update(webdriver.debug_info)
+    list_to_print = '\n'.join(
+        [f'{key}: {value}' for key, value in debug_message.items()])
+    pretty_formatted_string = f"""=============== WEBDRIVER DEBUG INFORMATION ===============""" + \
+        f'\n{list_to_print}' + """\n===========================================================\n"""
+    return pretty_formatted_string
