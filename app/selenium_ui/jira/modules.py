@@ -8,7 +8,10 @@ from selenium_ui.jira.pages.pages import Login, PopupManager, Issue, Project, Se
 from util.api.jira_clients import JiraRestClient
 from util.conf import JIRA_SETTINGS
 
-client = JiraRestClient(JIRA_SETTINGS.server_url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password)
+client = JiraRestClient(
+    JIRA_SETTINGS.server_url,
+    JIRA_SETTINGS.admin_login,
+    JIRA_SETTINGS.admin_password)
 rte_status = client.check_rte_status()
 
 KANBAN_BOARDS = "kanban_boards"
@@ -21,6 +24,7 @@ PROJECTS = "projects"
 
 
 def setup_run_data(datasets):
+    datasets['current_session'] = {}
     page_size = 25
     projects_count = len(datasets[PROJECTS])
     user = random.choice(datasets[USERS])
@@ -33,16 +37,25 @@ def setup_run_data(datasets):
     scrum_boards = random.choice(datasets[SCRUM_BOARDS])
     kanban_boards = random.choice(datasets[KANBAN_BOARDS])
     projects = random.choice(datasets[PROJECTS])
-    datasets['username'] = user[0]
-    datasets['password'] = user[1]
-    datasets['issue_key'] = issue[0]
-    datasets['issue_id'] = issue[1]
-    datasets['project_key'] = projects[0]
-    datasets['scrum_board_id'] = scrum_boards[0]
-    datasets['kanban_board_id'] = kanban_boards[0]
-    datasets['jql'] = urllib.parse.quote(random.choice(datasets[JQLS][0]))
-    datasets['project_pages_count'] = projects_count // page_size if projects_count % page_size == 0 \
+    datasets['current_session']['username'] = user[0]
+    datasets['current_session']['password'] = user[1]
+    datasets['current_session']['issue_key'] = issue[0]
+    datasets['current_session']['issue_id'] = issue[1]
+    datasets['current_session']['project_key'] = projects[0]
+    datasets['current_session']['scrum_board_id'] = scrum_boards[0]
+    datasets['current_session']['kanban_board_id'] = kanban_boards[0]
+    datasets['current_session']['jql'] = urllib.parse.quote(
+        random.choice(datasets[JQLS][0]))
+    datasets['current_session']['project_pages_count'] = projects_count // page_size if projects_count % page_size == 0 \
         else projects_count // page_size + 1
+
+
+def generate_debug_session_info(webdriver, datasets):
+    debug_data = datasets['current_session']
+    debug_data['current_url'] = webdriver.current_url
+    debug_data['custom_issue_key'] = datasets.get('custom_issue_key')
+    debug_data['custom_issue_id'] = datasets.get('custom_issue_id')
+    return debug_data
 
 
 def login(webdriver, datasets):
@@ -51,16 +64,19 @@ def login(webdriver, datasets):
     @print_timing("selenium_login")
     def measure():
         login_page = Login(webdriver)
+        webdriver.base_url = login_page.base_url
+        webdriver.debug_info = generate_debug_session_info(webdriver, datasets)
 
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
-
         sub_measure()
 
         @print_timing("selenium_login:login_and_view_dashboard")
         def sub_measure():
-            login_page.set_credentials(username=datasets['username'], password=datasets['password'])
+            login_page.set_credentials(
+                username=datasets['current_session']['username'],
+                password=datasets['current_session']['password'])
             if login_page.is_first_login():
                 login_page.first_login_setup()
             if login_page.is_first_login_second_page():
@@ -70,13 +86,20 @@ def login(webdriver, datasets):
             print(f"node_id:{webdriver.node_id}")
 
         sub_measure()
+        current_session_response = login_page.rest_api_get(
+            url=f'{webdriver.base_url}/rest/auth/latest/session')
+        if 'name' in current_session_response:
+            actual_username = current_session_response['name']
+            assert actual_username == datasets['current_session']['username']
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
 
 
 def view_issue(webdriver, datasets):
-    issue_page = Issue(webdriver, issue_key=datasets['issue_key'])
+    issue_page = Issue(
+        webdriver,
+        issue_key=datasets['current_session']['issue_key'])
 
     @print_timing("selenium_view_issue")
     def measure():
@@ -87,7 +110,9 @@ def view_issue(webdriver, datasets):
 
 
 def view_project_summary(webdriver, datasets):
-    project_page = Project(webdriver, project_key=datasets['project_key'])
+    project_page = Project(
+        webdriver,
+        project_key=datasets['current_session']['project_key'])
 
     @print_timing("selenium_project_summary")
     def measure():
@@ -111,7 +136,8 @@ def create_issue(webdriver, dataset):
         @print_timing("selenium_create_issue:fill_and_submit_issue_form")
         def sub_measure():
             issue_modal.fill_summary_create()  # Fill summary field
-            issue_modal.fill_description_create(rte_status)  # Fill description field
+            issue_modal.fill_description_create(
+                rte_status)  # Fill description field
             issue_modal.assign_to_me()  # Click assign to me
             issue_modal.set_resolution()  # Set resolution if there is such field
             issue_modal.set_issue_type()  # Set issue type, use non epic type
@@ -129,7 +155,7 @@ def create_issue(webdriver, dataset):
 
 
 def search_jql(webdriver, datasets):
-    search_page = Search(webdriver, jql=datasets['jql'])
+    search_page = Search(webdriver, jql=datasets['current_session']['jql'])
 
     @print_timing("selenium_search_jql")
     def measure():
@@ -140,7 +166,9 @@ def search_jql(webdriver, datasets):
 
 
 def edit_issue(webdriver, datasets):
-    issue_page = Issue(webdriver, issue_id=datasets['issue_id'])
+    issue_page = Issue(
+        webdriver,
+        issue_id=datasets['current_session']['issue_id'])
 
     @print_timing("selenium_edit_issue")
     def measure():
@@ -164,7 +192,9 @@ def edit_issue(webdriver, datasets):
 
 
 def save_comment(webdriver, datasets):
-    issue_page = Issue(webdriver, issue_id=datasets['issue_id'])
+    issue_page = Issue(
+        webdriver,
+        issue_id=datasets['current_session']['issue_id'])
 
     @print_timing("selenium_save_comment")
     def measure():
@@ -188,7 +218,9 @@ def save_comment(webdriver, datasets):
 def browse_projects_list(webdriver, datasets):
     @print_timing("selenium_browse_projects_list")
     def measure():
-        projects_list_page = ProjectsList(webdriver, projects_list_pages=datasets['project_pages_count'])
+        projects_list_page = ProjectsList(
+            webdriver,
+            projects_list_pages=datasets['current_session']['project_pages_count'])
         projects_list_page.go_to()
         projects_list_page.wait_for_page_loaded()
 
@@ -207,7 +239,9 @@ def browse_boards_list(webdriver, datasets):
 
 
 def view_backlog_for_scrum_board(webdriver, datasets):
-    scrum_board_page = Board(webdriver, board_id=datasets['scrum_board_id'])
+    scrum_board_page = Board(
+        webdriver,
+        board_id=datasets['current_session']['scrum_board_id'])
 
     @print_timing("selenium_view_scrum_board_backlog")
     def measure():
@@ -218,7 +252,9 @@ def view_backlog_for_scrum_board(webdriver, datasets):
 
 
 def view_scrum_board(webdriver, datasets):
-    scrum_board_page = Board(webdriver, board_id=datasets['scrum_board_id'])
+    scrum_board_page = Board(
+        webdriver,
+        board_id=datasets['current_session']['scrum_board_id'])
 
     @print_timing("selenium_view_scrum_board")
     def measure():
@@ -229,7 +265,9 @@ def view_scrum_board(webdriver, datasets):
 
 
 def view_kanban_board(webdriver, datasets):
-    kanban_board_page = Board(webdriver, board_id=datasets['kanban_board_id'])
+    kanban_board_page = Board(
+        webdriver,
+        board_id=datasets['current_session']['kanban_board_id'])
 
     @print_timing("selenium_view_kanban_board")
     def measure():
