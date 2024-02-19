@@ -2,51 +2,6 @@
   "jira": {
     "versions": [
       {
-        "version": "9.4.14",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-084abf5dfca234b9d",
-                "us-east-1": "snap-0934c1aa5c62be5dc"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-14",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-14"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-00af725c87690569d",
-                "us-east-1": "snap-04417460cb27d17cb"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-14",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-14"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "9.12.1",
         "data": [
           {
@@ -111,6 +66,26 @@
               {
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-16",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-16"
+              }
+            ]
+          },
+             {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-065d2da720ec5f084",
+                "us-east-1": "snap-0f32ad5a78d5fbbed"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-16",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-16"
               }
             ]
           }
