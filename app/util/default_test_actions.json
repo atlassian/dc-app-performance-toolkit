@@ -79,6 +79,7 @@
       "selenium_create_comment:write_comment",
       "selenium_create_comment:save_comment",
       "selenium_create_comment",
+      "selenium_cql_search",
       "selenium_log_out"
     ],
     "jmeter": [

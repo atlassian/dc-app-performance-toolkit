@@ -65,6 +65,9 @@ class PageLocators:
     page_title = (By.ID, "title-text")
     comment_text_field = (By.CSS_SELECTOR, ".quick-comment-prompt")
     edit_page_button = (By.ID, "editPageLink")
+    search_box = (By.ID, "quick-search-query")
+    search_results = (By.ID, "search-result-container")
+    close_search_button = (By.ID, "search-drawer-close")
 
 
 class DashboardLocators:
