@@ -430,6 +430,32 @@
           }
         ],
         "build_number": "1943"
+      },
+      {
+        "version": "5.2.3",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0824995529fb96ba3",
+                "us-east-1": "snap-02205f6bb80eb7d0e"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-2-3",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-5-2-3"
+              }
+            ]
+          }
+        ],
+        "build_number": "1944"
       }
     ]
   }
