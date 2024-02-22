@@ -408,6 +408,7 @@ def view_blog(locust):
 
 def search_cql_and_view_results(locust):
     raise_if_login_failed(locust)
+    cql = random.choice(confluence_dataset["cqls"])[0]
 
     @confluence_measure('locust_search_cql:recently_viewed')
     def search_recently_viewed():
@@ -420,7 +421,7 @@ def search_cql_and_view_results(locust):
     def search_cql():
         # 530 rest/api/search
         r = locust.get(f"/rest/api/search"
-                       f"?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
+                       f"?cql=siteSearch~'{cql}'"
                        f"&start=0"
                        f"&limit=20",
                        catch_response=True)

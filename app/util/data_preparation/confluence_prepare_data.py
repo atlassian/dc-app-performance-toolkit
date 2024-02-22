@@ -72,7 +72,7 @@ def __create_data_set(rest_client, rpc_client):
     dataset[PAGES] = async_pages.get()
     dataset[BLOGS] = async_blogs.get()
 
-    dataset[CQLS] = __generate_cqls(words_count=5)
+    dataset[CQLS] = __generate_cqls(words_count=3)
 
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
