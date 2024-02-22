@@ -236,52 +236,6 @@
         "build_number": "9012"
       },
       {
-        "version": "7.19.17",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-0b8723cc5a8f8becc",
-                "us-east-1": "snap-030f0bb7870b60c73"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-17",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-17"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-062952d964320477f",
-                "us-east-1": "snap-0720b5df2ed27b435"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-17",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-7-19-17"
-              }
-            ]
-          }
-        ],
-        "build_number": "8804"
-      },
-      {
         "version": "7.19.19",
         "data": [
           {
@@ -303,9 +257,29 @@
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-7-19-19"
               }
             ]
+          },
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-08214afe1a976c163",
+                "us-east-1": "snap-0c44719a5adbc18e5"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-19",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-19"
+              }
+            ],
+            "build_number": "8804"
           }
-        ],
-        "build_number": "8804"
+        ]
       }
     ]
   },
@@ -379,7 +353,7 @@
               }
             ]
           },
-                    {
+          {
             "type": "ebs",
             "size": "small",
             "snapshots": [
