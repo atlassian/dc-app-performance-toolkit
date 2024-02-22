@@ -18,6 +18,7 @@ CQLS = "cqls"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
+CQL_WORDS_COUNT = 3
 
 PAGE_CQL = ('type=page'
             ' and title !~ JMeter'  # filter out pages created by JMeter
@@ -72,7 +73,7 @@ def __create_data_set(rest_client, rpc_client):
     dataset[PAGES] = async_pages.get()
     dataset[BLOGS] = async_blogs.get()
 
-    dataset[CQLS] = __generate_cqls(words_count=3)
+    dataset[CQLS] = __generate_cqls(words_count=CQL_WORDS_COUNT)
 
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
