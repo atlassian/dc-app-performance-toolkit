@@ -280,6 +280,32 @@
           }
         ],
         "build_number": "8804"
+      },
+      {
+        "version": "8.5.6",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-00f8b2e81378f57b4",
+                "us-east-1": "snap-097851c90fadc39d9"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-6",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-6"
+              }
+            ]
+          }
+        ],
+        "build_number": "9012"
       }
     ]
   },
