@@ -276,10 +276,10 @@
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-19",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-19"
               }
-            ],
-            "build_number": "8804"
+            ]
           }
-        ]
+        ],
+        "build_number": "8804"
       }
     ]
   },
