@@ -190,52 +190,6 @@
   "confluence": {
     "versions": [
       {
-        "version": "8.5.4",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-021574360a781464f",
-                "us-east-1": "snap-00d1f3a18d176ceca"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-4",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-4"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-09802dd4106f2686a",
-                "us-east-1": "snap-08d42b48214eaf3bf"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-4",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-4"
-              }
-            ]
-          }
-        ],
-        "build_number": "9012"
-      },
-      {
         "version": "7.19.19",
         "data": [
           {
@@ -301,6 +255,26 @@
               {
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-6",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-6"
+              }
+            ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-00f8b2e81378f57b4",
+                "us-east-1": "snap-097851c90fadc39d9"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-6",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-6"
               }
             ]
           }
