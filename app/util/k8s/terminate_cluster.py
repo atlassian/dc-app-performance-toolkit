@@ -955,7 +955,7 @@ def main():
             raise SystemExit("--cluster_name argument is not provided.")
         if not args.aws_region:
             raise SystemExit("--aws_region argument is not provided.")
-
+    print(f'DEBUG AWS_REGION: {args.aws_region}')
     os.environ['AWS_DEFAULT_REGION'] = args.aws_region
     if args.cluster_name and args.aws_region:
         logging.info(f"Delete all resources for cluster {args.cluster_name}.")
