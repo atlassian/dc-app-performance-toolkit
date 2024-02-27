@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from time import sleep, time
 
 import boto3
+import os
 import botocore
 from boto3.exceptions import Boto3Error
 from botocore import exceptions
@@ -955,6 +956,7 @@ def main():
         if not args.aws_region:
             raise SystemExit("--aws_region argument is not provided.")
 
+    os.environ['AWS_DEFAULT_REGION'] = args.aws_region
     if args.cluster_name and args.aws_region:
         logging.info(f"Delete all resources for cluster {args.cluster_name}.")
         open_identities = retrieve_open_identities(cluster_name=args.cluster_name, aws_region=args.aws_region)
