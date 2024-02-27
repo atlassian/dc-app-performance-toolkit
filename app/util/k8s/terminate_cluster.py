@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from time import sleep, time
 
 import boto3
-import os
 import botocore
 from boto3.exceptions import Boto3Error
 from botocore import exceptions
