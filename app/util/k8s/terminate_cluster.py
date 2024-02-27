@@ -654,7 +654,7 @@ def delete_ebs_volumes_by_id(aws_region, volumes):
 
 
 def get_clusters_to_terminate():
-    clusters_to_terminate = []
+    clusters_to_terminate = dict()
     for rgn in REGIONS:
         eks_client = boto3.client('eks', region_name=rgn)
         clusters = eks_client.list_clusters()['clusters']
@@ -671,7 +671,7 @@ def get_clusters_to_terminate():
                 logging.info(f"Cluster {cluster} is not EOL yet, skipping...")
             else:
                 logging.info(f"Cluster {cluster} is EOL and should be deleted.")
-                clusters_to_terminate.append(cluster)
+                clusters_to_terminate[rgn]=cluster
     return clusters_to_terminate
 
 
@@ -955,8 +955,7 @@ def main():
             raise SystemExit("--cluster_name argument is not provided.")
         if not args.aws_region:
             raise SystemExit("--aws_region argument is not provided.")
-    print(f'DEBUG AWS_REGION: {args.aws_region}')
-    os.environ['AWS_DEFAULT_REGION'] = args.aws_region
+
     if args.cluster_name and args.aws_region:
         logging.info(f"Delete all resources for cluster {args.cluster_name}.")
         open_identities = retrieve_open_identities(cluster_name=args.cluster_name, aws_region=args.aws_region)
@@ -975,14 +974,14 @@ def main():
     logging.info("--cluster_name parameter was not specified.")
     logging.info("Searching for clusters to remove.")
     clusters = get_clusters_to_terminate()
-    for cluster_name in clusters:
+    for region, cluster_name in clusters.items():
         logging.info(f"Delete all resources and VPC for cluster {cluster_name}.")
         terminate_cluster(cluster_name=cluster_name)
         vpc_name = f'{cluster_name.replace("-cluster", "-vpc")}'
         terminate_vpc(vpc_name=vpc_name)
         terminate_open_id_providers(cluster_name=cluster_name)
-        delete_s3_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
-        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
+        delete_s3_bucket_tf_state(cluster_name=cluster_name, aws_region=region)
+        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=region)
     vpcs = get_vpcs_to_terminate()
     for vpc_name in vpcs:
         logging.info(f"Delete all resources for vpc {vpc_name}.")
