@@ -5,6 +5,16 @@
         "version": "9.12.4",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-07697b86f59ee0797",
+                "us-east-1": "snap-0fa61c3eec9545167"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "large",
             "snapshots": [
@@ -49,6 +59,16 @@
       {
         "version": "9.4.17",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0d30def8619538ace",
+                "us-east-1": "snap-09281bd82ae6848a4"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
@@ -99,6 +119,16 @@
         "version": "5.12.4",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-00c30a7f70049afa3",
+                "us-east-1": "snap-03c748acde6e42160"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "large",
             "snapshots": [
@@ -143,6 +173,16 @@
       {
         "version": "5.4.17",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-06bf40723859b07f8",
+                "us-east-1": "snap-0c4a96a8d9df2acd2"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
@@ -193,6 +233,16 @@
         "version": "7.19.19",
         "data": [
           {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-051ca1f3060f748a9",
+                "us-east-1": "snap-05e7f0f83a095335b"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "small",
             "snapshots": [
@@ -238,6 +288,16 @@
       {
         "version": "8.5.6",
         "data": [
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0e4f68027cc6d5252",
+                "us-east-1": "snap-03adba820e61eafcd"
+              }
+            ]
+          },
           {
             "type": "ebs",
             "size": "large",
