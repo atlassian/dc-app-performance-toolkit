@@ -8,7 +8,7 @@ FROM python:3.11-slim-bullseye
 
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 
-ARG CHROME_VERSION="120.0.6099.224-1"
+ARG CHROME_VERSION="latest"
 
 ENV CHROME_LATEST_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 ENV CHROME_VERSION_URL="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb"

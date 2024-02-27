@@ -38,6 +38,13 @@ confluence_replica_count = 1
 bitbucket_replica_count = 1
 crowd_replica_count = 1
 
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
+#
+#domain = "<example.com>"
+
 ################################################################################
 # Common Settings
 ################################################################################
@@ -65,20 +72,13 @@ instance_disk_size = 200
 # Cluster-autoscaler is installed in the EKS cluster that will manage the requested capacity
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
-min_cluster_capacity = 1
+min_cluster_capacity = 2
 max_cluster_capacity = 6
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
 # This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
 #enable_https_ingress = false
-
-# (Optional) Domain name used by the ingress controller.
-# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
-# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
-# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
-#
-#domain = "<example.com>"
 
 ################################################################################
 # Execution Environment Settings
@@ -375,8 +375,8 @@ crowd_db_master_password     = "Password1!"
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.2.9"
-bamboo_agent_version_tag = "9.2.9"
+bamboo_version_tag       = "9.2.11"
+bamboo_agent_version_tag = "9.2.11"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
@@ -437,7 +437,7 @@ bamboo_nfs_limits_memory   = "2Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bamboo_db_major_engine_version = "13"
+bamboo_db_major_engine_version = "14"
 bamboo_db_instance_class       = "db.t3.medium"
 bamboo_db_allocated_storage    = 100
 bamboo_db_iops                 = 1000

@@ -125,3 +125,53 @@ To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisatio
     ```
 6. Open Grafana URL in the browser. Default Grafana creds: `admin/prom-operator`.
 7. Go to Dashboards -> General -> select one of the available dashboards.
+
+# Connect to RDS database
+1. Set AWS credential in [aws_envs](./aws_envs) file
+2. Export environment variables for environment name, region and product:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    export REGION=us-east-2
+    export PRODUCT=jira
+    # PRODUCT options: jira/jsm/confluence/bitbucket/crowd/bamboo
+    ```
+3. Start and ssh to `atlassianlabs/terraform` docker container:
+    ``` bash
+    docker run --pull=always --env-file aws_envs \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -e REGION=$REGION \
+    -e PRODUCT=$PRODUCT \
+    -v "/$PWD/script-runner.yml:/data-center-terraform/script-runner.yml" \
+    -it atlassianlabs/terraform:2.7.1 bash 
+    ```
+4. Run following command one by one inside docker container:
+    ``` bash
+    aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
+    kubectl apply -f script-runner.yml
+    rds_endpoint=$(aws rds --region $REGION describe-db-instances --filters "Name=db-instance-id,Values=atlas-${ENVIRONMENT_NAME}-${PRODUCT}-db" --query "DBInstances[].Endpoint.Address" --output text)
+    kubectl exec -it script-runner -- psql -h $rds_endpoint -d $PRODUCT -U atl$PRODUCT
+    ```
+5. Default DB password: `Password1!`
+
+# Run tests locally from docker container
+1. Navigate to `dc-app-performance-toolkit` folder
+2. Select needed product and run below command (example below is for jira):
+    ``` bash
+    docker run --pull=always --shm-size=4g -v "/$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
+    ```
+   
+# Run tests from execution environment pod
+1. Navigate to `dc-app-performance-toolkit` folder
+2. Set environment name:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
+3. Select needed product and run below command (example below is for jira):
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh jira.yml
+    ```
