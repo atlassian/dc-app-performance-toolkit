@@ -14,7 +14,6 @@ BLOGS = "blogs"
 
 
 def setup_run_data(datasets):
-    datasets['current_session'] = {}
     user = random.choice(datasets[USERS])
     page = random.choice(datasets[PAGES])
     if CUSTOM_PAGES in datasets:
@@ -22,24 +21,17 @@ def setup_run_data(datasets):
             custom_page = random.choice(datasets[CUSTOM_PAGES])
             datasets['custom_page_id'] = custom_page[0]
     blog = random.choice(datasets[BLOGS])
-    datasets['current_session']['username'] = user[0]
-    datasets['current_session']['password'] = user[1]
-    datasets['current_session']['page_id'] = page[0]
-    datasets['current_session']['blog_id'] = blog[0]
+    datasets['username'] = user[0]
+    datasets['password'] = user[1]
+    datasets['page_id'] = page[0]
+    datasets['blog_id'] = blog[0]
 
-    datasets['current_session']['view_page'] = None
-    datasets['current_session']['view_page_cache'] = None
-    datasets['current_session']['edit_page'] = None
-    datasets['current_session']['edit_page_click'] = None
-    datasets['current_session']['create_comment_page'] = None
-    datasets['current_session']['view_blog'] = None
-
-
-def generate_debug_session_info(webdriver, datasets):
-    debug_data = datasets['current_session']
-    debug_data['current_url'] = webdriver.current_url
-    debug_data['custom_page_id'] = datasets.get('custom_page_id')
-    return debug_data
+    datasets['view_page'] = None
+    datasets['view_page_cache'] = None
+    datasets['edit_page'] = None
+    datasets['edit_page_click'] = None
+    datasets['create_comment_page'] = None
+    datasets['view_blog'] = None
 
 
 def login(webdriver, datasets):
@@ -51,7 +43,6 @@ def login(webdriver, datasets):
         verify=CONFLUENCE_SETTINGS.secure,
     )
     login_page = Login(webdriver)
-    webdriver.debug_info = generate_debug_session_info(webdriver, datasets)
 
     def measure():
 
@@ -69,8 +60,7 @@ def login(webdriver, datasets):
 
         sub_measure()
 
-        login_page.set_credentials(username=datasets['current_session']['username'],
-                                   password=datasets['current_session']['password'])
+        login_page.set_credentials(username=datasets['username'], password=datasets['password'])
 
         def sub_measure():
             login_page.click_login_button()
@@ -83,11 +73,6 @@ def login(webdriver, datasets):
                 measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_login'])
 
         sub_measure()
-        current_session_response = login_page.rest_api_get(url=f'{CONFLUENCE_SETTINGS.server_url}'
-                                                               f'/rest/api/user/current')
-        if 'username' in current_session_response:
-            actual_username = current_session_response['username']
-            assert actual_username == datasets['current_session']['username']
 
     measure()
     PopupManager(webdriver).dismiss_default_popup()
@@ -97,8 +82,8 @@ def view_page(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
     page_description = random_page[2]
-    datasets['current_session']['view_page'] = random_page
-    datasets['current_session']['view_page_cache'] = random_page
+    datasets['view_page'] = random_page
+    datasets['view_page_cache'] = random_page
     page = Page(webdriver, page_id=page_id)
 
     def measure():
@@ -112,10 +97,10 @@ def view_page(webdriver, datasets):
 
 
 def view_page_from_cache(webdriver, datasets):
-    cached_page = datasets['current_session']['view_page_cache']
+    cached_page = datasets['view_page_cache']
     page_id = cached_page[0]
     page_description = cached_page[2]
-    datasets['current_session']['view_page'] = cached_page
+    datasets['view_page'] = cached_page
 
     page = Page(webdriver, page_id=page_id)
 
@@ -135,7 +120,7 @@ def view_blog(webdriver, datasets):
     blog_id = random_blog[0]
     blog_description = random_blog[2]
     blog = Page(webdriver, page_id=blog_id)
-    datasets['current_session']['view_blog'] = random_blog
+    datasets['view_blog'] = random_blog
 
     def measure():
         blog.go_to()
@@ -197,7 +182,7 @@ def edit_confluence_page_by_url(webdriver, datasets):
     random_page = random.choice(datasets[PAGES])
     page_id = random_page[0]
     page_description = random_page[2]
-    datasets['current_session']['edit_page'] = random_page
+    datasets['edit_page'] = random_page
     edit_page = Editor(webdriver, page_id=page_id)
 
     def measure():
@@ -225,9 +210,9 @@ def edit_confluence_page_by_url(webdriver, datasets):
 
 
 def edit_confluence_page_quick_edit(webdriver, datasets):
-    random_page = datasets['current_session']['edit_page']
+    random_page = datasets['edit_page']
     page_description = random_page[2]
-    datasets['current_session']['edit_page_click'] = random_page
+    datasets['edit_page_click'] = random_page
     page = Page(webdriver, page_id=random_page[0])
     edit_page = Editor(webdriver, page_id=random_page[0])
 
@@ -261,7 +246,7 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
 def create_inline_comment(webdriver, datasets):
     page = random.choice(datasets[PAGES])
     page_id = page[0]
-    datasets['current_session']['create_comment_page'] = page
+    datasets['create_comment_page'] = page
     page = Page(webdriver, page_id=page_id)
 
     @print_timing("selenium_create_comment")

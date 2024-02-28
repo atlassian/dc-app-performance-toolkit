@@ -16,7 +16,6 @@ class PopupManager(BasePage):
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
-    base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.system_dashboard
 
     def is_first_login(self):
