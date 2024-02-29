@@ -440,15 +440,15 @@
   "crowd": {
     "versions": [
       {
-        "version": "5.2.2",
+        "version": "5.2.3",
         "data": [
           {
             "type": "ebs",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-01d7f772d9d5f1ea3",
-                "us-east-1": "snap-09a3ae3234cb7dbfe"
+                "us-east-2": "snap-0824995529fb96ba3",
+                "us-east-1": "snap-02205f6bb80eb7d0e"
               }
             ]
           },
@@ -457,13 +457,13 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-2-2",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-5-2-2"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-2-3",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-5-2-3"
               }
             ]
           }
         ],
-        "build_number": "1943"
+        "build_number": "1944"
       }
     ]
   }
