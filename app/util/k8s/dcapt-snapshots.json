@@ -406,32 +406,6 @@
   "crowd": {
     "versions": [
       {
-        "version": "5.2.2",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-01d7f772d9d5f1ea3",
-                "us-east-1": "snap-09a3ae3234cb7dbfe"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-2-2",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-5-2-2"
-              }
-            ]
-          }
-        ],
-        "build_number": "1943"
-      },
-      {
         "version": "5.2.3",
         "data": [
           {
