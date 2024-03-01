@@ -1,4 +1,5 @@
 import random
+from packaging import version
 
 from multiprocessing.pool import ThreadPool
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter, __read_file
@@ -86,6 +87,13 @@ def __create_data_set(rest_client, rpc_client):
 
 @print_timing('Getting users')
 def __get_users(confluence_api, rpc_api, count):
+    # TODO Remove RPC Client after Confluence 7.X.X. EOL
+    confluence_version = confluence_api.get_confluence_version()
+    if version.parse(confluence_version) > version.parse('8.5'):
+        create_user = confluence_api.create_user
+    else:
+        create_user = rpc_api.create_user
+
     errors_count = 0
     cur_perf_users = confluence_api.get_users(DEFAULT_USER_PREFIX, count)
     if len(cur_perf_users) >= count:
@@ -97,10 +105,10 @@ def __get_users(confluence_api, rpc_api, count):
                             f'Please check the errors in bzt.log')
         username = f"{DEFAULT_USER_PREFIX}{__generate_random_string(10)}"
         try:
-            user = rpc_api.create_user(username=username, password=DEFAULT_USER_PASSWORD)
-            print(f"User {user['user']['username']} is created, number of users to create is "
+            create_user(username=username, password=DEFAULT_USER_PASSWORD)
+            print(f"User {username} is created, number of users to create is "
                   f"{count - len(cur_perf_users)}")
-            cur_perf_users.append(user)
+            cur_perf_users.append({'user': {'username': username}})
         # To avoid rate limit error from server. Execution should not be stopped after catch error from server.
         except Exception as error:
             print(f"Warning: Create confluence user error: {error}. Retry limits {errors_count}/{ERROR_LIMIT}")

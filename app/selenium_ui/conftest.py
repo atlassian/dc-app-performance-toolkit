@@ -218,7 +218,6 @@ def webdriver(app_settings):
             "--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
-        chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('lang=en')
         chrome_options.add_experimental_option(
             'prefs', {'intl.accept_languages': 'en,en_US'})
@@ -360,7 +359,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
             # confluence.page.create.collaborative.view...]
             mark = ''
             if 'blogpost.view' in key:
-                blogpost_template_id = dataset['view_blog'][2]
+                blogpost_template_id = dataset['current_session']['view_blog'][2]
                 mark = f'-view_blog-{blogpost_template_id}'
                 print(f'BLOGPOST_FOUND {mark}')
             if 'page.view' in key:
@@ -368,7 +367,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                     page_id = re.search(
                         r'"pageID":"(.+?)"', post_data_str).group(1)
                     mark = get_mark_from_dataset(
-                        page_id, dataset) or '-create_page'
+                        page_id, dataset['current_session']) or '-create_page'
                 elif 'pageID' in str(requests):
                     page_ids = re.findall(r'"pageID":"(.+?)"', str(requests))
                     print(
@@ -376,7 +375,7 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                     print(f'Available pageID: {page_ids}')
                     print(
                         f'Trying to retrieve mark related to first page_id {page_ids[0]}')
-                    mark = get_mark_from_dataset(page_ids[0], dataset)
+                    mark = get_mark_from_dataset(page_ids[0], dataset['current_session'])
                 if not mark:  # key == page.view and pageID is not related to any template
                     print(
                         f'Hit {key} without mark, '
