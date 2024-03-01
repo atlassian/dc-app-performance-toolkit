@@ -109,11 +109,11 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version
-jira_version_tag = "9.12.1"
+jira_version_tag = "9.12.4"
 
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.1"
+# jira_version_tag = "5.12.4"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
 jira_dataset_size = "large"
@@ -167,7 +167,7 @@ jira_db_master_password = "Password1!"
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.4"
+confluence_version_tag = "8.5.6"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "large"
@@ -232,7 +232,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.8"
+bitbucket_version_tag = "8.9.10"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
@@ -315,7 +315,7 @@ bitbucket_db_master_password = "Password1!"
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "5.2.2"
+crowd_version_tag = "5.2.3"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
