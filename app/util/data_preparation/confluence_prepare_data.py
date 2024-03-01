@@ -1,6 +1,5 @@
 import random
 from packaging import version
-import re
 
 from multiprocessing.pool import ThreadPool
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
