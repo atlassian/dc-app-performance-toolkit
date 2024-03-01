@@ -37,7 +37,8 @@ def setup_run_data(datasets):
 
 def generate_debug_session_info(webdriver, datasets):
     debug_data = datasets['current_session']
-    debug_data['current_url'] = webdriver.current_url
+    if 'current_url' in dir(webdriver):
+        debug_data['current_url'] = webdriver.current_url
     debug_data['custom_page_id'] = datasets.get('custom_page_id')
     return debug_data
 
