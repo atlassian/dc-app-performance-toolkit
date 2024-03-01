@@ -1,5 +1,6 @@
 import random
 from packaging import version
+import re
 
 from multiprocessing.pool import ThreadPool
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
@@ -84,9 +85,15 @@ def __create_data_set(rest_client, rpc_client):
 def __get_users(confluence_api, rpc_api, count):
     # TODO Remove RPC Client after Confluence 7.X.X. EOL
     confluence_version = confluence_api.get_confluence_version()
-    if version.parse(confluence_version) > version.parse('8.5'):
-        create_user = confluence_api.create_user
+    match = re.match(r'(\d+\.\d+\.\d+)', confluence_version)
+    if match:
+        version_number = match.group(1)
+        if version.parse(version_number) > version.parse('8.5'):
+            create_user = confluence_api.create_user
+        else:
+            create_user = rpc_api.create_user
     else:
+        print(f"Could not parse Confluence version. Current version {confluence_version}")
         create_user = rpc_api.create_user
 
     errors_count = 0
