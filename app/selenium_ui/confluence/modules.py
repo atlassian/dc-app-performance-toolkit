@@ -3,12 +3,14 @@ from selenium_ui.conftest import print_timing, measure_browser_navi_metrics, mea
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
+from selenium_ui.confluence.pages.selectors import PageLocators
 from util.api.confluence_clients import ConfluenceRestClient
 from util.confluence.browser_metrics import browser_metrics
 from util.conf import CONFLUENCE_SETTINGS
 
 USERS = "users"
 PAGES = "pages"
+CQLS = "cqls"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
 
@@ -264,35 +266,49 @@ def create_inline_comment(webdriver, datasets):
     page_id = page[0]
     datasets['current_session']['create_comment_page'] = page
     page = Page(webdriver, page_id=page_id)
+    editor_page = Editor(webdriver)
 
     @print_timing("selenium_create_comment")
-    def measure(webdriver):
+    def measure():
         page.go_to()
         page.wait_for_page_loaded()
-        edit_comment = Editor(webdriver)
 
         @print_timing("selenium_create_comment:write_comment")
-        def sub_measure(webdriver):
+        def sub_measure():
             page.click_add_comment()
-            edit_comment.write_content(text='This is selenium comment')
+            editor_page.write_content(text='This is selenium comment')
 
-        sub_measure(webdriver)
+        sub_measure()
 
         @print_timing("selenium_create_comment:save_comment")
-        def sub_measure(webdriver):
-            edit_comment.click_submit()
+        def sub_measure():
+            editor_page.click_submit()
             page.wait_for_comment_field()
 
-        sub_measure(webdriver)
+        sub_measure()
 
-    measure(webdriver)
+    measure()
+
+
+def cql_search(webdriver, datasets):
+    random_cql = random.choice(datasets[CQLS])
+    page = Page(webdriver)
+    page.wait_until_visible(PageLocators.search_box)
+
+    @print_timing("selenium_cql_search")
+    def measure():
+        page.get_element(PageLocators.search_box).send_keys(random_cql)
+        page.wait_until_visible(PageLocators.search_results)
+        page.get_element(PageLocators.close_search_button).click()
+    measure()
 
 
 def log_out(webdriver, datasets):
+    logout_page = Logout(webdriver)
+
     @print_timing("selenium_log_out")
-    def measure(webdriver):
-        logout_page = Logout(webdriver)
+    def measure():
         logout_page.go_to()
         logout_page.wait_for_logout()
 
-    measure(webdriver)
+    measure()

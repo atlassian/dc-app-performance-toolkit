@@ -2,11 +2,12 @@ import random
 from packaging import version
 
 from multiprocessing.pool import ThreadPool
-from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
+from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter, __read_file
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.common_util import print_timing
 from util.conf import CONFLUENCE_SETTINGS
-from util.project_paths import CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CUSTOM_PAGES
+from util.project_paths import (CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CQLS,
+                                CONFLUENCE_CUSTOM_PAGES, CONFLUENCE_WORDS)
 
 __warnings_filter()
 
@@ -14,9 +15,11 @@ USERS = "users"
 PAGES = "pages"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
+CQLS = "cqls"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
+CQL_WORDS_COUNT = 3
 
 PAGE_CQL = ('type=page'
             ' and title !~ JMeter'  # filter out pages created by JMeter
@@ -70,6 +73,8 @@ def __create_data_set(rest_client, rpc_client):
 
     dataset[PAGES] = async_pages.get()
     dataset[BLOGS] = async_blogs.get()
+
+    dataset[CQLS] = __generate_cqls(words_count=CQL_WORDS_COUNT)
 
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
@@ -150,6 +155,17 @@ def __get_custom_pages(confluence_api, count, cql):
     return pages
 
 
+@print_timing('Generate CQLs')
+def __generate_cqls(words_count, total=5000):
+    cqls = []
+    words = __read_file(CONFLUENCE_WORDS)
+    for i in range(total):
+        random_words = random.sample(words, words_count)
+        cql = ' '.join(random_words)
+        cqls.append(cql)
+    return cqls
+
+
 @print_timing('Getting blogs')
 def __get_blogs(confluence_api, count, dcapt_dataset):
     blogs_templates = [i for sublist in DATASET_BLOGS_TEMPLATES.values() for i in sublist]
@@ -192,6 +208,8 @@ def write_test_data_to_files(dataset):
 
     users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(CONFLUENCE_USERS, users)
+
+    __write_to_file(CONFLUENCE_CQLS, dataset[CQLS])
 
     custom_pages = [f"{page['id']},{page['space']['key']}" for page in dataset[CUSTOM_PAGES]]
     __write_to_file(CONFLUENCE_CUSTOM_PAGES, custom_pages)

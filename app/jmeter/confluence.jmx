@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="upload_attachments" enabled="true">
       <stringProp name="TestPlan.comments">This test plan was created by the BlazeMeter converter v.2.4.18. Please contact support@blazemeter.com for further support.</stringProp>
@@ -48,8 +48,8 @@
         <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
         <stringProp name="HTTPSampler.embedded_url_re">^((?!google|youtube|facebook|pinterest|twimg|doubleclick|lorempixel|extranet|bulldogwiki|jira-dev|jira).)*$</stringProp>
-        <stringProp name="HTTPSampler.connect_timeout">10000</stringProp>
-        <stringProp name="HTTPSampler.response_timeout">10000</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout">25000</stringProp>
+        <stringProp name="HTTPSampler.response_timeout">25000</stringProp>
       </ConfigTestElement>
       <hashTree/>
       <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
@@ -400,6 +400,17 @@ log.info(&quot;Confluence version: ${confluence-version}&quot;)</stringProp>
             <boolProp name="stopThread">false</boolProp>
             <stringProp name="variableNames">page_id,space_key</stringProp>
           </CSVDataSet>
+          <hashTree/>
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql" enabled="true">
+            <stringProp name="filename">datasets/confluence/cqls.csv</stringProp>
+            <stringProp name="fileEncoding">UTF-8</stringProp>
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="variableNames">cql_var</stringProp>
+            <boolProp name="randomOrder">true</boolProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="rewindOnTheEndOfList">true</boolProp>
+            <boolProp name="independentListPerThread">false</boolProp>
+          </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="files upload" enabled="true">
             <stringProp name="delimiter">,</stringProp>
@@ -1489,7 +1500,7 @@ if ( sleep_time &gt; 0 ) {
                     <elementProp name="cql" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">cql</stringProp>
-                      <stringProp name="Argument.value">siteSearch~${p_search_term}</stringProp>
+                      <stringProp name="Argument.value">siteSearch~&apos;${cql_var}&apos;</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -1554,15 +1565,6 @@ if ( sleep_time &gt; 0 ) {
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate Random Search String" enabled="true">
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="script">vars.put(&quot;p_search_term&quot;, (new Random().with {(1..5).collect {((&apos;a&apos;..&apos;z&apos;)).join()[ nextInt(((&apos;a&apos;..&apos;z&apos;)).join().length())]}.join()}).toString());
-</stringProp>
-                </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
             </hashTree>
