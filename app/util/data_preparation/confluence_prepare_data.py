@@ -88,12 +88,11 @@ def __create_data_set(rest_client, rpc_client):
 @print_timing('Getting users')
 def __get_users(confluence_api, rpc_api, count):
     # TODO Remove RPC Client after Confluence 7.X.X. EOL
-    confluence_version = confluence_api.get_confluence_version()
+    confluence_version = confluence_api.get_confluence_version().split('-')[0]
     if version.parse(confluence_version) > version.parse('8.5'):
         create_user = confluence_api.create_user
     else:
         create_user = rpc_api.create_user
-
     errors_count = 0
     cur_perf_users = confluence_api.get_users(DEFAULT_USER_PREFIX, count)
     if len(cur_perf_users) >= count:
