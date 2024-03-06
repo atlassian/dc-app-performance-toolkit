@@ -205,6 +205,7 @@ def view_page(locust):
                f'&pageId={parsed_page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000&_={timestamp_int()}',
                catch_response=True)
 
@@ -385,6 +386,7 @@ def view_blog(locust):
                    f'&pageId={blog_id}'
                    f'&spaceKey={space_key}'
                    f'&atl_after_login_redirect=/pages/viewpage.action'
+                   f"&atl_token={locust.session_data_storage['token']}"
                    f'&timeout=12000&_={timestamp_int()}',
                    catch_response=True)
 
@@ -453,6 +455,7 @@ def open_editor_and_create_blog(locust):
 
         # 550 pages/createblogpost.action
         r = locust.get(f'/pages/createblogpost.action'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'?spaceKey={blog_space_key}',
                        catch_response=True)
 
@@ -711,6 +714,7 @@ def open_editor_and_create_blog(locust):
                        f'&pageId={content_id}'
                        f'&spaceKey={parsed_space_key}'
                        f'&atl_after_login_redirect=/pages/viewpage.action'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&timeout=12000&_={timestamp_int()}',
                        catch_response=True)
 
@@ -1023,6 +1027,7 @@ def create_and_edit_page(locust):
                        f'&pageId={locust.session_data_storage["content_id"]}'
                        f'&spaceKey={space_key}'
                        f'&atl_after_login_redirect=/display/{space_key}/{page_title}'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&timeout=12000&_={timestamp_int()}',
                        catch_response=True)
 
@@ -1279,6 +1284,7 @@ def create_and_edit_page(locust):
                    f'&pageId={locust.session_data_storage["content_id"]}'
                    f'&spaceKey={space_key}'
                    f'&atl_after_login_redirect=/pages/viewpage.action'
+                   f"&atl_token={locust.session_data_storage['token']}"
                    f'&timeout=12000'
                    f'&_={timestamp_int()}', catch_response=True)
 
@@ -1441,6 +1447,7 @@ def view_attachments(locust):
                f'&pageId={page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000'
                f'&_={timestamp_int()}',
                catch_response=True)
@@ -1555,6 +1562,7 @@ def upload_attachments(locust):
                f'&pageId={page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000'
                f'&_={timestamp_int()}',
                catch_response=True)
