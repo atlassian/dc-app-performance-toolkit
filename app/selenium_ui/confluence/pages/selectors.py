@@ -93,3 +93,6 @@ class EditorLocators:
 
 class LogoutLocators:
     logout_msg = (By.ID, "logout-message")
+
+class XsrfTokenLocators:
+    xsrf_token = (By.ID, "atlassian-token")
