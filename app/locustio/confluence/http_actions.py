@@ -755,6 +755,7 @@ def create_and_edit_page(locust):
         r = locust.get(f'/pages/createpage.action'
                        f'?spaceKey={space_key}'
                        f'&fromPageId={page_id}'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&src=quick-create',
                        catch_response=True)
 
