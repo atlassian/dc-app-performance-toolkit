@@ -455,8 +455,8 @@ def open_editor_and_create_blog(locust):
 
         # 550 pages/createblogpost.action
         r = locust.get(f'/pages/createblogpost.action'
-                       #f"&atl_token={locust.session_data_storage['token']}"
-                       f'?spaceKey={blog_space_key}',
+                       f'?spaceKey={blog_space_key}'
+                       f"&atl_token={locust.session_data_storage['token']}",
                        catch_response=True)
 
         content = r.content.decode('utf-8')
