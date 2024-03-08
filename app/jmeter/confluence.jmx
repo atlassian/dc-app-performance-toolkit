@@ -858,6 +858,13 @@ log.info(&quot;Confluence version: ${confluence-version}&quot;)</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -1344,6 +1351,13 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -1640,6 +1654,13 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.value">${blog_space_key}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>
@@ -2138,6 +2159,13 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -2264,6 +2292,13 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.value">quick-create</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>
@@ -2797,6 +2832,13 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -3300,6 +3342,13 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -3667,6 +3716,13 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                       <stringProp name="Argument.value">${__time(,)}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>
@@ -4356,6 +4412,13 @@ if ( sleep_time &gt; 0 ) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
+                    <elementProp name="atl_token" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">atl_token</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -4827,6 +4890,13 @@ if ( sleep_time &gt; 0 ) {
                         <stringProp name="Argument.value">${__time(,)}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      </elementProp>
+                      <elementProp name="atl_token" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">${atlassian-token}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                        <stringProp name="Argument.name">atl_token</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
