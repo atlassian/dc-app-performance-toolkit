@@ -9,8 +9,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-07697b86f59ee0797",
-                "us-east-1": "snap-0fa61c3eec9545167"
+                "us-east-2": "snap-01942e6924d6094d3",
+                "us-east-1": "snap-0b77a63ff601d4480"
               }
             ]
           },
@@ -19,8 +19,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-076e8b1ab8b75b4ba",
-                "us-east-1": "snap-0b50c39cc84b33977"
+                "us-east-2": "snap-0800247b9bad8a16d",
+                "us-east-1": "snap-018690e2d4e8a8393"
               }
             ]
           },
@@ -64,8 +64,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0d30def8619538ace",
-                "us-east-1": "snap-09281bd82ae6848a4"
+                "us-east-2": "snap-01ebb87caac609507",
+                "us-east-1": "snap-04ba555d376baa19a"
               }
             ]
           },
@@ -74,8 +74,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-051f59212c34ef54d",
-                "us-east-1": "snap-0802937ad1681d1d0"
+                "us-east-2": "snap-05655fde5263939cb",
+                "us-east-1": "snap-01e52802d576b3243"
               }
             ]
           },
@@ -123,8 +123,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-00c30a7f70049afa3",
-                "us-east-1": "snap-03c748acde6e42160"
+                "us-east-2": "snap-01f8e5dda7e44c94b",
+                "us-east-1": "snap-084c8edeae71b8dfd"
               }
             ]
           },
@@ -133,8 +133,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-04635e9aec30210bd",
-                "us-east-1": "snap-0d0b7c71412b8cf68"
+                "us-east-2": "snap-0098dceccb1e60b46",
+                "us-east-1": "snap-02f1c88e526bca8a2"
               }
             ]
           },
@@ -178,8 +178,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-06bf40723859b07f8",
-                "us-east-1": "snap-0c4a96a8d9df2acd2"
+                "us-east-2": "snap-0b0914139687f8fd3",
+                "us-east-1": "snap-0d12a2fddf1f54173"
               }
             ]
           },
@@ -188,8 +188,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0e36b5becbc4fb4df",
-                "us-east-1": "snap-0986e7a7e64c40b45"
+                "us-east-2": "snap-0fe2f2d7fe239f9fd",
+                "us-east-1": "snap-0a764e69e95c35f38"
               }
             ]
           },
