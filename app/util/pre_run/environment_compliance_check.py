@@ -17,7 +17,6 @@ APPS_SETTINGS = {
     "BAMBOO": BAMBOO_SETTINGS,
     "CROWD": CROWD_SETTINGS,
 }
-CHROMEDRIVER_CHECK_APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'bamboo']
 
 
 def check_dcapt_version():
@@ -26,20 +25,20 @@ def check_dcapt_version():
     unsupported_version = get_unsupported_version()
 
     if latest_version is None:
-        print('Warning: failed to get the latest version')
+        print('WARNING: failed to get the latest version')
     elif unsupported_version is None:
-        print('Warning: failed to get the unsupported version')
+        print('WARNING: failed to get the unsupported version')
     elif current_version <= unsupported_version:
         raise SystemExit(
             f"DCAPT version {current_version} is no longer supported. "
             f"Consider an upgrade to the latest version: {latest_version}")
     elif current_version < latest_version:
-        print(f"Warning: DCAPT version {current_version} is outdated. "
+        print(f"WARNING: DCAPT version {current_version} is outdated. "
               f"Consider upgrade to the latest version: {latest_version}.")
     elif current_version == latest_version:
-        print(f"Info: DCAPT version {current_version} is the latest.")
+        print(f"INFO: DCAPT version {current_version} is the latest.")
     else:
-        print(f"Info: DCAPT version {current_version} "
+        print(f"INFO: DCAPT version {current_version} "
               f"is ahead of the latest production version: {latest_version}.")
 
 
@@ -76,11 +75,16 @@ def validate_chromedriver_version(app_name, app_settings):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
-    current_chrome_version = version.parse(
-        driver.capabilities['browserVersion'])
-    current_chromedriver_version = version.parse(
-        app_settings.chromedriver_version)
-    if current_chromedriver_version.major != current_chrome_version.major:
+    current_chrome_version = version.parse(driver.capabilities['browserVersion'])
+    if app_settings.chromedriver_version:
+        current_chromedriver_version = version.parse(app_settings.chromedriver_version)
+    else:
+        print(f"WARNING: Chromedriver version was not found in the {app_name}.yml. Skipping Chrome/chromedriver check.")
+        return
+    if current_chromedriver_version.major == current_chrome_version.major:
+        print(f"INFO: Chrome version: {current_chrome_version}")
+        print(f"INFO: Chromedriver version in {app_name}.yml: {current_chromedriver_version}")
+    else:
         raise SystemExit(
             f'ERROR: Your Chromedriver version {current_chromedriver_version} is '
             f'not corresponding to your Chrome browser version {current_chrome_version}. '
@@ -91,21 +95,22 @@ def analyze_application_configuration(app_name):
     app_name_upper = app_name.upper()
     app = ApplicationSelector(app_name).application
     processors = app.processors
+    app_settings = APPS_SETTINGS[app_name_upper]
 
     try:
         processors = int(processors)
+        min_defaults = MIN_DEFAULTS.get(app_name.lower())
+        validate_application_config(
+            processors,
+            app_name_upper,
+            app_settings,
+            min_defaults)
     except ValueError:
-        print("Warning: You are using a server instance for running enterprise-scale load tests.")
-        return
+        print("WARNING: Skipping processor count validation because.")
 
-    app_settings = APPS_SETTINGS[app_name_upper]
-    min_defaults = MIN_DEFAULTS.get(app_name.lower())
-    validate_application_config(
-        processors,
-        app_name_upper,
-        app_settings,
-        min_defaults)
-    if app_name in CHROMEDRIVER_CHECK_APPS:
+    if app_name.upper() == "CROWD":
+        print("INFO: Skipping Chromedriver check for Crowd.")
+    else:
         validate_chromedriver_version(app_name, app_settings)
 
 
@@ -114,8 +119,7 @@ def main():
     try:
         app_name = sys.argv[1].lower()
     except IndexError:
-        raise SystemExit(
-            "ERROR: execution_compliance_check.py expects application name as argument")
+        raise SystemExit("ERROR: execution_compliance_check.py expects application name as argument")
 
     # TODO: Add a check for CROWD configuration once the feature with
     # processors is implemented in the product

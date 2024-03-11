@@ -28,6 +28,8 @@ class BaseAppSettings:
         self.load_executor = self.get_property('load_executor')
         self.secure = self.get_property('secure')
         self.environment_compliance_check = self.get_property('environment_compliance_check')
+        self.chromedriver_version = (
+            self.obj.get('modules', {}).get('selenium', {}).get('chromedriver', {}).get('version', None))
 
     @property
     def server_url(self):
@@ -48,7 +50,6 @@ class JiraSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
-        self.chromedriver_version = self.obj['modules']['selenium']['chromedriver']['version']
 
 
 class ConfluenceSettings(BaseAppSettings):
@@ -61,7 +62,6 @@ class ConfluenceSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
         self.extended_metrics = self.get_property('extended_metrics')
-        self.chromedriver_version = self.obj['modules']['selenium']['chromedriver']['version']
 
 
 class BitbucketSettings(BaseAppSettings):
@@ -72,7 +72,6 @@ class BitbucketSettings(BaseAppSettings):
         self.concurrency = self.get_property('concurrency')
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
-        self.chromedriver_version = self.obj['modules']['selenium']['chromedriver']['version']
 
 
 class JsmSettings(BaseAppSettings):
@@ -88,7 +87,6 @@ class JsmSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.insight = self.get_property('insight')
-        self.chromedriver_version = self.obj['modules']['selenium']['chromedriver']['version']
 
 
 class CrowdSettings(BaseAppSettings):
@@ -114,7 +112,6 @@ class BambooSettings(BaseAppSettings):
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
-        self.chromedriver_version = self.obj['modules']['selenium']['chromedriver']['version']
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)
