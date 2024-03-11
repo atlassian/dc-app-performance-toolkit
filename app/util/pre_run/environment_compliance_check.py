@@ -80,7 +80,7 @@ def validate_chromedriver_version(app_name, app_settings):
         driver.capabilities['browserVersion'])
     current_chromedriver_version = version.parse(
         app_settings.chromedriver_version)
-    if current_chromedriver_version != current_chrome_version:
+    if current_chromedriver_version.major != current_chrome_version.major:
         raise SystemExit(
             f'ERROR: Your Chromedriver version {current_chromedriver_version} is '
             f'not corresponding to your Chrome browser version {current_chrome_version}. '
