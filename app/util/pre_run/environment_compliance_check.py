@@ -1,4 +1,6 @@
 import sys
+from selenium import webdriver
+from packaging import version
 
 from util.common_util import get_latest_version, get_current_version, get_unsupported_version
 from util.analytics.application_info import ApplicationSelector
@@ -6,14 +8,16 @@ from util.analytics.analytics import MIN_DEFAULTS
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, \
     CROWD_SETTINGS
 
+
 APPS_SETTINGS = {
     "JIRA": JIRA_SETTINGS,
     "CONFLUENCE": CONFLUENCE_SETTINGS,
-    "BITBUCKET":  BITBUCKET_SETTINGS,
+    "BITBUCKET": BITBUCKET_SETTINGS,
     "JSM": JSM_SETTINGS,
     "BAMBOO": BAMBOO_SETTINGS,
     "CROWD": CROWD_SETTINGS,
 }
+CHROMEDRIVER_CHECK_APPS = ['jira', 'confluence', 'bitbucket', 'jsm', 'bamboo']
 
 
 def check_dcapt_version():
@@ -26,8 +30,9 @@ def check_dcapt_version():
     elif unsupported_version is None:
         print('Warning: failed to get the unsupported version')
     elif current_version <= unsupported_version:
-        raise SystemExit(f"DCAPT version {current_version} is no longer supported. "
-                         f"Consider an upgrade to the latest version: {latest_version}")
+        raise SystemExit(
+            f"DCAPT version {current_version} is no longer supported. "
+            f"Consider an upgrade to the latest version: {latest_version}")
     elif current_version < latest_version:
         print(f"Warning: DCAPT version {current_version} is outdated. "
               f"Consider upgrade to the latest version: {latest_version}.")
@@ -38,10 +43,16 @@ def check_dcapt_version():
               f"is ahead of the latest production version: {latest_version}.")
 
 
-def validate_application_config(processors, app_name_upper, app_settings, min_defaults):
+def validate_application_config(
+        processors,
+        app_name_upper,
+        app_settings,
+        min_defaults):
     is_jsm = app_name_upper == "JSM"
     if is_jsm:
-        current_concurrency = (app_settings.customers_concurrency, app_settings.agents_concurrency)
+        current_concurrency = (
+            app_settings.customers_concurrency,
+            app_settings.agents_concurrency)
     else:
         current_concurrency = app_settings.concurrency
 
@@ -50,7 +61,8 @@ def validate_application_config(processors, app_name_upper, app_settings, min_de
         (is_jsm and
          current_concurrency >= (min_defaults['customer_concurrency'], min_defaults['agent_concurrency']))
     ):
-        # If the number of processors is less than 4, raise a SystemExit with a warning message.
+        # If the number of processors is less than 4, raise a SystemExit with a
+        # warning message.
         if processors < 4:
             raise SystemExit(
                 f"ERROR: You are trying to run an enterprise-scale load test with concurrency: {current_concurrency} against the "
@@ -58,6 +70,21 @@ def validate_application_config(processors, app_name_upper, app_settings, min_de
                 f"Kindly consider decreasing the `concurrency`/`total_actions_per_hour` in your {app_name_upper.lower()}.yml file if this development environment.\n"
                 f"For enterprise-scale load make sure environment has a compliant configuration.\n"
                 f"To skip environment compliance check set `environment_compliance_check` variable to False in your {app_name_upper.lower()}.yml file.")
+
+
+def validate_chromedriver_version(app_name, app_settings):
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    current_chrome_version = version.parse(
+        driver.capabilities['browserVersion'])
+    current_chromedriver_version = version.parse(
+        app_settings.chromedriver_version)
+    if current_chromedriver_version != current_chrome_version:
+        raise SystemExit(
+            f'ERROR: Your Chromedriver version {current_chromedriver_version} is '
+            f'not corresponding to your Chrome browser version {current_chrome_version}. '
+            f'Please change `chromedriver` version in your {app_name}.yml.')
 
 
 def analyze_application_configuration(app_name):
@@ -73,7 +100,13 @@ def analyze_application_configuration(app_name):
 
     app_settings = APPS_SETTINGS[app_name_upper]
     min_defaults = MIN_DEFAULTS.get(app_name.lower())
-    validate_application_config(processors, app_name_upper, app_settings, min_defaults)
+    validate_application_config(
+        processors,
+        app_name_upper,
+        app_settings,
+        min_defaults)
+    if app_name in CHROMEDRIVER_CHECK_APPS:
+        validate_chromedriver_version(app_name, app_settings)
 
 
 def main():
@@ -81,17 +114,20 @@ def main():
     try:
         app_name = sys.argv[1].lower()
     except IndexError:
-        raise SystemExit("ERROR: execution_compliance_check.py expects application name as argument")
+        raise SystemExit(
+            "ERROR: execution_compliance_check.py expects application name as argument")
 
-    # TODO: Add a check for CROWD configuration once the feature with processors is implemented in the product
+    # TODO: Add a check for CROWD configuration once the feature with
+    # processors is implemented in the product
     if app_name.upper() != "CROWD":
         if app_name.upper() in APPS_SETTINGS:
             app_settings = APPS_SETTINGS[app_name.upper()]
             if app_settings.environment_compliance_check:
                 analyze_application_configuration(app_name)
         else:
-            raise SystemExit(f'ERROR: Unknown application: {app_name.upper()}. '
-                             f'Supported applications are {list(APPS_SETTINGS.keys())}')
+            raise SystemExit(
+                f'ERROR: Unknown application: {app_name.upper()}. '
+                f'Supported applications are {list(APPS_SETTINGS.keys())}')
 
 
 if __name__ == "__main__":
