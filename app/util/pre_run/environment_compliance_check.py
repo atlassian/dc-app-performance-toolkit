@@ -64,11 +64,13 @@ def validate_application_config(
         # warning message.
         if processors < 4:
             raise SystemExit(
-                f"ERROR: You are trying to run an enterprise-scale load test with concurrency: {current_concurrency} against the "
-                f"instance with a weaker configuration than recommended.\n"
-                f"Kindly consider decreasing the `concurrency`/`total_actions_per_hour` in your {app_name_upper.lower()}.yml file if this development environment.\n"
+                f"ERROR: You are trying to run an enterprise-scale load test with concurrency: "
+                f"{current_concurrency} against the instance with a weaker configuration than recommended.\n"
+                f"Kindly consider decreasing the `concurrency`/`total_actions_per_hour` in your "
+                f"{app_name_upper.lower()}.yml file if this development environment.\n"
                 f"For enterprise-scale load make sure environment has a compliant configuration.\n"
-                f"To skip environment compliance check set `environment_compliance_check` variable to False in your {app_name_upper.lower()}.yml file.")
+                f"To skip environment compliance check set `environment_compliance_check` variable to False in your "
+                f"{app_name_upper.lower()}.yml file.")
 
 
 def validate_chromedriver_version(app_name, app_settings):
