@@ -76,6 +76,7 @@ def validate_application_config(
 def validate_chromedriver_version(app_name, app_settings):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
     driver = webdriver.Chrome(options=options)
     current_chrome_version = version.parse(driver.capabilities['browserVersion'])
     if app_settings.chromedriver_version:
