@@ -151,7 +151,7 @@ To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisatio
     export ENVIRONMENT_NAME=your_environment_name
     export REGION=us-east-2
     export PRODUCT=jira
-    # PRODUCT options: jira/jsm/confluence/bitbucket/crowd/bamboo
+    # PRODUCT options: jira/confluence/bitbucket. For jsm use jira as well.
     ```
 4. Start and ssh to `atlassianlabs/terraform` docker container:
     ``` bash
@@ -162,7 +162,7 @@ To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisatio
     -v "/$PWD/script-runner.yml:/data-center-terraform/script-runner.yml" \
     -it atlassianlabs/terraform:2.7.3 bash 
     ```
-5. Run following command one by one inside docker container:
+5. Run following commands one by one inside docker container:
     ``` bash
     aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
     kubectl apply -f script-runner.yml
