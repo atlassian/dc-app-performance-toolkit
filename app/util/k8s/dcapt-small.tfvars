@@ -152,6 +152,7 @@ jira_db_master_password = "Password1!"
 # jira_custom_values_file = "/path/to/values.yaml"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
 jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 
 ################################################################################
