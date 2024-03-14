@@ -41,7 +41,7 @@ kubectl exec -it "$exec_pod_name" -n atlassian -- rm -rf /dc-app-performance-too
 echo "INFO: Copy latest dc-app-performance-toolkit folder to the exec env pod"
 start=$(date +%s)
 # tar only app folder, exclude results and util/k8s folder
-tar -czf dcapt.tar.gz -C dc-app-performance-toolkit --exclude results --exclude util/k8s app
+tar -czf dcapt.tar.gz -C dc-app-performance-toolkit --exclude results --exclude util/k8s app Dockerfile requirements.txt
 kubectl cp --retries 10 dcapt.tar.gz atlassian/"$exec_pod_name":/dcapt.tar.gz
 kubectl exec -it "$exec_pod_name" -n atlassian -- mkdir /dc-app-performance-toolkit
 kubectl exec -it "$exec_pod_name" -n atlassian -- tar -xf /dcapt.tar.gz -C /dc-app-performance-toolkit
@@ -50,8 +50,12 @@ end=$(date +%s)
 runtime=$((end-start))
 echo "INFO: Copy finished in $runtime seconds"
 
+# Uncomment below section in case a need to rebuild docker image for tests execution
+#echo "INFO: Rebuild docker container"
+#kubectl exec -it "$exec_pod_name" -n atlassian -- docker build -t $DCAPT_DOCKER_IMAGE dc-app-performance-toolkit
+
 echo "INFO: Run bzt on the exec env pod"
-kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --pull=always --shm-size=4g -v "/dc-app-performance-toolkit:/dc-app-performance-toolkit" $DCAPT_DOCKER_IMAGE "$1"
+kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --shm-size=4g -v "/dc-app-performance-toolkit:/dc-app-performance-toolkit" $DCAPT_DOCKER_IMAGE "$1"
 sleep 10
 
 echo "INFO: Copy results folder from the exec env pod to local"

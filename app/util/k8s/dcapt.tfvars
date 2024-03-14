@@ -162,6 +162,10 @@ jira_db_master_password = "Password1!"
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # jira_custom_values_file = "/path/to/values.yaml"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
+jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+
 ################################################################################
 # Confluence Settings
 ################################################################################
@@ -226,6 +230,9 @@ confluence_collaborative_editing_enabled = true
 # Custom values file location. Defaults to an empty string which means only values from config.tfvars
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # confluence_custom_values_file = "/path/to/values.yaml"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# confluence_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Bitbucket Settings
@@ -310,6 +317,9 @@ bitbucket_db_master_password = "Password1!"
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # bitbucket_custom_values_file = "/path/to/values.yaml"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# bitbucket_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+
 ################################################################################
 # Crowd Settings
 ################################################################################
@@ -367,6 +377,9 @@ crowd_db_master_password     = "Password1!"
 # Custom values file location. Defaults to an empty string which means only values from config.tfvars
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # crowd_custom_values_file = "/path/to/values.yaml"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# crowd_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Bamboo Settings
@@ -452,6 +465,9 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 # Custom values file location. Defaults to an empty string which means only values from config.tfvars
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # bamboo_custom_values_file = "/path/to/values.yaml"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# bamboo_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Monitoring settings
