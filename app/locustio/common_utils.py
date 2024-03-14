@@ -127,6 +127,7 @@ class MyBaseTaskSet(TaskSet):
                 self.login_failed = True
             if response.headers.get('Content-Type') == 'application/json':
                 logger.error(response.json())
+            logger.info(f'DEBUG_SESSION_DATA_STORAGE: {self.session_data_storage}')
             events.request.fire(request_type="Action",
                                 name=f"locust_{action_name}",
                                 response_time=0,
