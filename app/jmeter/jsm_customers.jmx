@@ -2184,7 +2184,7 @@ vars.put(&quot;p_description&quot;, comment.toString())
     }
 }
 
-def comment = &quot;Summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 10);
+def comment = &quot;Jmeter summary - &quot; + generator(((&apos;a&apos;..&apos;z&apos;) + &apos; &apos; * 10).join(), 10);
 
 // request
 vars.put(&quot;p_summary&quot;, comment.toString())
