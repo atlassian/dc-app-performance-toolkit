@@ -11,7 +11,7 @@
 - [Connect to the execution environment pod](#connect-to-the-execution-environment-pod)
 - [Connect to the RDS database](#connect-to-the-rds-database)
 - [Enable detailed resources monitoring](#enable-detailed-resources-monitoring)
-- [Rebuild atlassian/dcapt docker image](#rebuild-atlassiandcapt-docker-image)
+- [Rebuild atlassian/dcapt docker image on the fly](#rebuild-atlassiandcapt-docker-image-on-the-fly)
 - [Run tests locally from docker container](#run-tests-locally-from-docker-container)
 - [Run tests from execution environment pod](#run-tests-from-execution-environment-pod)
 
