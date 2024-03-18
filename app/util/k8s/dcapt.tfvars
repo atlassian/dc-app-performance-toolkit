@@ -467,7 +467,8 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 # bamboo_custom_values_file = "/path/to/values.yaml"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# bamboo_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
+bamboo_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 
 ################################################################################
 # Monitoring settings
