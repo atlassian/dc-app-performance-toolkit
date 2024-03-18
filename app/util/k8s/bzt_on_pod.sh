@@ -16,10 +16,18 @@ fi
 echo "INFO: AWS REGION: $REGION"
 
 if [ $# -eq 0 ]; then
-  echo "ERROR: No arguments supplied. Product .yml file need to be passed as argument. E.g. jira.yml"
+  echo "ERROR: No arguments supplied. Product .yml file need to be passed as first argument. E.g. jira.yml"
   exit 1
 fi
-echo "INFO: Product .yml: $1"
+
+if [[ $1 =~ "yml" ]]; then
+  echo "INFO: Product .yml: $1"
+else
+  echo "ERROR: first argument should be product.yml, e.g. jira.yml"
+  echo "ERROR: provided first argument: $1"
+  exit 1
+fi
+
 
 echo "INFO: Update kubeconfig"
 aws eks update-kubeconfig --name atlas-"$ENVIRONMENT_NAME"-cluster --region "$REGION"
@@ -50,9 +58,10 @@ end=$(date +%s)
 runtime=$((end-start))
 echo "INFO: Copy finished in $runtime seconds"
 
-# Uncomment below section in case a need to rebuild docker image for tests execution
-#echo "INFO: Rebuild docker container"
-#kubectl exec -it "$exec_pod_name" -n atlassian -- docker build -t $DCAPT_DOCKER_IMAGE dc-app-performance-toolkit
+if [[ $2 == "--docker_image_rebuild" ]]; then
+  echo "INFO: Rebuild docker image"
+  kubectl exec -it "$exec_pod_name" -n atlassian -- docker build -t $DCAPT_DOCKER_IMAGE dc-app-performance-toolkit
+fi
 
 echo "INFO: Run bzt on the exec env pod"
 kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --shm-size=4g -v "/dc-app-performance-toolkit:/dc-app-performance-toolkit" $DCAPT_DOCKER_IMAGE "$1"

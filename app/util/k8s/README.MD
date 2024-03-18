@@ -213,11 +213,10 @@ To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisatio
 8. Open Grafana URL in the browser. Default Grafana creds: `admin/prom-operator`.
 9. Go to Dashboards -> General -> select one of the available dashboards.
 
-# Rebuild atlassian/dcapt docker image
+# Rebuild atlassian/dcapt docker image on the fly
 In case any changes are needed in `atlassian/dcapt` image:
 1. Modify locally `dc-app-performance-toolkit/Dockerfile` file
-2. Go to `dc-app-performance-toolkit/app/util/k8s/bzt_on_pod.sh` file and uncomment docker rebuild section.
-3. [Run tests from execution environment pod](#run-tests-from-execution-environment-pod)
+2. [Run tests from execution environment pod](#run-tests-from-execution-environment-pod) with extra flag in the end `--docker_image_rebuild`
 
 # Run tests locally from docker container
 Note: this option is **not** suitable for full-scale performance runs as local network is a bottleneck.
@@ -241,5 +240,6 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh jira.yml \
+    --docker_image_rebuild
     ```
