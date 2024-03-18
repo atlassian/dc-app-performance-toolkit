@@ -240,6 +240,5 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh jira.yml \
-    --docker_image_rebuild
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh jira.yml
     ```
