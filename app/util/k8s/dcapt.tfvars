@@ -318,7 +318,8 @@ bitbucket_db_master_password = "Password1!"
 # bitbucket_custom_values_file = "/path/to/values.yaml"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# bitbucket_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
+bitbucket_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 
 ################################################################################
 # Crowd Settings
