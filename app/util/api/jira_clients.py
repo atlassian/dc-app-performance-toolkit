@@ -80,6 +80,8 @@ class JiraRestClient(RestClient):
 
         return users_list
 
+
+    @retry()
     def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
@@ -232,11 +234,6 @@ class JiraRestClient(RestClient):
         api_url = f'{self.host}/rest/api/2/mypermissions'
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
-
-    def get_service_desk_info(self):
-        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
-        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
-        return service_desk_info.json()
 
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'

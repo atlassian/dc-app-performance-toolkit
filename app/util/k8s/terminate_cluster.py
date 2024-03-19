@@ -653,7 +653,7 @@ def delete_ebs_volumes_by_id(aws_region, volumes):
 
 
 def get_clusters_to_terminate():
-    clusters_to_terminate = []
+    clusters_to_terminate = dict()
     for rgn in REGIONS:
         eks_client = boto3.client('eks', region_name=rgn)
         clusters = eks_client.list_clusters()['clusters']
@@ -670,7 +670,7 @@ def get_clusters_to_terminate():
                 logging.info(f"Cluster {cluster} is not EOL yet, skipping...")
             else:
                 logging.info(f"Cluster {cluster} is EOL and should be deleted.")
-                clusters_to_terminate.append(cluster)
+                clusters_to_terminate[rgn]=cluster
     return clusters_to_terminate
 
 
@@ -892,9 +892,9 @@ def delete_unused_volumes():
                                         f"| Name tag {name}: skipping")
 
 
-def delete_s3_bucket_tf_state(cluster_name):
+def delete_s3_bucket_tf_state(cluster_name, aws_region):
     environment_name = retrieve_environment_name(cluster_name=cluster_name)
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name=aws_region)
     bucket_name_template = f'atl-dc-{environment_name}'
     response = s3_client.list_buckets()
     matching_buckets = [bucket['Name'] for bucket in response['Buckets'] if bucket_name_template in bucket['Name']]
@@ -966,21 +966,21 @@ def main():
         delete_open_identities_for_cluster(open_identities)
         remove_cluster_specific_roles_and_policies(cluster_name=args.cluster_name, aws_region=args.aws_region)
         delete_ebs_volumes_by_id(aws_region=args.aws_region, volumes=volumes)
-        delete_s3_bucket_tf_state(cluster_name=args.cluster_name)
+        delete_s3_bucket_tf_state(cluster_name=args.cluster_name, aws_region=args.aws_region)
         delete_dynamo_bucket_tf_state(cluster_name=args.cluster_name, aws_region=args.aws_region)
         return
 
     logging.info("--cluster_name parameter was not specified.")
     logging.info("Searching for clusters to remove.")
     clusters = get_clusters_to_terminate()
-    for cluster_name in clusters:
+    for region, cluster_name in clusters.items():
         logging.info(f"Delete all resources and VPC for cluster {cluster_name}.")
         terminate_cluster(cluster_name=cluster_name)
         vpc_name = f'{cluster_name.replace("-cluster", "-vpc")}'
         terminate_vpc(vpc_name=vpc_name)
         terminate_open_id_providers(cluster_name=cluster_name)
-        delete_s3_bucket_tf_state(cluster_name=cluster_name)
-        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=args.aws_region)
+        delete_s3_bucket_tf_state(cluster_name=cluster_name, aws_region=region)
+        delete_dynamo_bucket_tf_state(cluster_name=cluster_name, aws_region=region)
     vpcs = get_vpcs_to_terminate()
     for vpc_name in vpcs:
         logging.info(f"Delete all resources for vpc {vpc_name}.")

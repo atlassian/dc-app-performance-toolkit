@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-01-05"
+date: "2024-03-19"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
@@ -83,7 +83,7 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.7.4 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
@@ -328,7 +328,7 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.7.4 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`.
 
@@ -384,11 +384,11 @@ This scenario helps to identify basic performance issues without a need to spin 
 To receive performance baseline results **without** an app installed:
 
 1. Before run:
-   * Make sure `jira.yml` and toolkit code base has default configuration from the `master` branch.
+   * Make sure `confluence.yml` and toolkit code base has default configuration from the `master` branch.
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
    * `standalone_extension` set to 0. App-specific actions are not needed for Run1 and Run2.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
@@ -403,7 +403,7 @@ To receive performance baseline results **without** an app installed:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh confluence.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh confluence.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/confluence/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -433,7 +433,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh confluence.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh confluence.yml
     ```
 
 {{% note %}}
@@ -479,7 +479,7 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
    * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
    * `standalone_extension` set to non 0 and .jmx file has standalone actions implementation in case of JMeter app-specific actions.
    * [test_1_selenium_custom_action](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/selenium_ui/confluence_ui.py#L47-L48) is uncommented and has implementation in case of Selenium app-specific actions.
-   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
       - `AWS_ACCESS_KEY_ID`
       - `AWS_SECRET_ACCESS_KEY`
       - `AWS_SESSION_TOKEN` (only for temporary creds)
@@ -494,7 +494,7 @@ To receive scalability benchmark results for one-node Confluence DC **with** app
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh confluence.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh confluence.yml
     ```
 
 {{% note %}}
@@ -505,7 +505,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run4"></a> Run 4 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
@@ -519,7 +519,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.7.4 ./install.sh -c conf.tfvars
    ```
 1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
     ``` bash
@@ -532,7 +532,7 @@ To receive scalability benchmark results for two-node Confluence DC **with** app
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh confluence.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh confluence.yml
     ```
 
 {{% note %}}
@@ -543,7 +543,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run5"></a> Run 5 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
@@ -561,7 +561,7 @@ To receive scalability benchmark results for four-node Confluence DC with app-sp
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh confluence.yml
+    -it atlassianlabs/terraform:2.7.4 bash bzt_on_pod.sh confluence.yml
     ```
 
 {{% note %}}
@@ -573,7 +573,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
-1. Edit the `./app/reports_generation/performance_profile.yml` file:
+1. Edit the `./app/reports_generation/scale_profile.yml` file:
    - For `runName: "1 Node"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).
    - For `runName: "2 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 4](#run4).
    - For `runName: "4 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 5](#run5).

@@ -29,11 +29,19 @@ jira_license = "jira-license"
 confluence_license = "confluence-license"
 bitbucket_license = "bitbucket-license"
 
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
+#
+#domain = "<example.com>"
+
 ################################################################################
 # Common Settings
 ################################################################################
 
-# Default AWS region for DCAPT snapshots. Supported regions are us-east-1, us-east-2, us-west-1, us-west-2.
+# Default AWS region for DCAPT snapshots. Supported regions: us-east-2, us-east-1.
+# If any other specific region is required, please contact support via community slack channel.
 region = "us-east-2"
 
 # List of IP ranges that are allowed to access the running applications over the World Wide Web.
@@ -63,13 +71,6 @@ max_cluster_capacity = 2
 # This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
 #enable_https_ingress = false
 
-# (Optional) Domain name used by the ingress controller.
-# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
-# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
-# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
-#
-#domain = "<example.com>"
-
 ################################################################################
 # Jira/JSM Settings
 ################################################################################
@@ -87,10 +88,10 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version.
-jira_version_tag = "9.12.1"
+jira_version_tag = "9.12.4"
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.1"
+# jira_version_tag = "5.12.4"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -150,12 +151,16 @@ jira_db_master_password = "Password1!"
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # jira_custom_values_file = "/path/to/values.yaml"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
+jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+
 ################################################################################
 # Confluence Settings
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.4"
+confluence_version_tag = "8.5.6"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
@@ -223,12 +228,15 @@ confluence_collaborative_editing_enabled = true
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # confluence_custom_values_file = "/path/to/values.yaml"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# confluence_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.8"
+bitbucket_version_tag = "8.9.10"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
@@ -314,3 +322,6 @@ bitbucket_db_master_password = "Password1!"
 # Custom values file location. Defaults to an empty string which means only values from config.tfvars
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
 # bitbucket_custom_values_file = "/path/to/values.yaml"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# bitbucket_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
