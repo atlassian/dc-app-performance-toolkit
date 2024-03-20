@@ -1,13 +1,14 @@
+import subprocess
 import sys
-from selenium import webdriver
-from packaging import version
 
-from util.common_util import get_latest_version, get_current_version, get_unsupported_version
-from util.analytics.application_info import ApplicationSelector
+from packaging import version
+from selenium import webdriver
+
 from util.analytics.analytics import MIN_DEFAULTS
+from util.analytics.application_info import ApplicationSelector
+from util.common_util import get_latest_version, get_current_version, get_unsupported_version
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, \
     CROWD_SETTINGS
-
 
 APPS_SETTINGS = {
     "JIRA": JIRA_SETTINGS,
@@ -17,6 +18,8 @@ APPS_SETTINGS = {
     "BAMBOO": BAMBOO_SETTINGS,
     "CROWD": CROWD_SETTINGS,
 }
+
+SUPPORTED_JAVA_VERSIONS = [11, 17]
 
 
 def check_dcapt_version():
@@ -94,10 +97,27 @@ def validate_chromedriver_version(app_name, app_settings):
             f'Please change `chromedriver` version in your {app_name}.yml.')
 
 
+def validate_java_version():
+    try:
+        response = subprocess.check_output(['java', '-version'], stderr=subprocess.STDOUT)
+        java_version = str(response.splitlines()[0]).split('"')[1]
+        print(f'INFO: Java version: {java_version}')
+    except Exception as e:
+        print(f"WARNING: Skipping Java version check. Failed to get java version: {e}")
+        return
+    java_version_major = int(java_version.split(".")[0])
+
+    if java_version_major not in SUPPORTED_JAVA_VERSIONS:
+        raise SystemExit(
+            f"ERROR: Current java version {java_version} is not supported. "
+            f"Supported java versions: {SUPPORTED_JAVA_VERSIONS}")
+
+
 def analyze_application_configuration(app_name):
     app_name_upper = app_name.upper()
     app = ApplicationSelector(app_name).application
     processors = app.processors
+    print(f"INFO: {app_name} processors count: {processors}")
     app_settings = APPS_SETTINGS[app_name_upper]
 
     try:
@@ -109,12 +129,14 @@ def analyze_application_configuration(app_name):
             app_settings,
             min_defaults)
     except ValueError:
-        print("WARNING: Skipping processor count validation because.")
+        print("WARNING: Skipping processor count validation. Get processor count failed.")
 
     if app_name.upper() == "CROWD":
         print("INFO: Skipping Chromedriver check for Crowd.")
     else:
         validate_chromedriver_version(app_name, app_settings)
+
+    validate_java_version()
 
 
 def main():
