@@ -6,7 +6,7 @@ pytest==8.0.2
 locust==2.24.0
 selenium==4.18.1
 filelock==3.13.1
-packaging==23.2
+packaging==24.0
 prettytable==3.10.0
 bzt==1.16.29
 boto3==1.34.58
