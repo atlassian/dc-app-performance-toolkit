@@ -1,6 +1,7 @@
 import json
+import string
 import uuid
-
+import base64
 import random
 
 from locustio.common_utils import init_logger, jsm_customer_measure, TEXT_HEADERS, RESOURCE_HEADERS, \
@@ -152,6 +153,7 @@ def customer_add_comment(locust):
                 headers=RESOURCE_HEADERS, catch_response=True)
     locust.post('/rest/analytics/1.0/publish/bulk', json=params.resources_body.get("365"),
                 headers=RESOURCE_HEADERS, catch_response=True)
+    update_issue_summary(locust)
 
 
 def customer_share_request_with_customer(locust):
@@ -197,6 +199,7 @@ def customer_share_request_with_customer(locust):
     customer_search_customer_for_share_with(locust)
     customer_add_customer(locust)
     customer_remove_customer(locust)
+    update_issue_summary(locust)
 
 
 def customer_share_request_with_org(locust):
@@ -241,6 +244,7 @@ def customer_share_request_with_org(locust):
     customer_search_org_for_share_with(locust)
     customer_add_org(locust)
     customer_remove_org(locust)
+    update_issue_summary(locust)
 
 
 def customer_create_request(locust):
@@ -293,3 +297,25 @@ def customer_create_request(locust):
     customer_open_create_request_view(locust)
     customer_create_request(locust)
     customer_view_request_after_creation(locust)
+
+def update_issue_summary(locust, new_summary=None):
+    admin_headers = RESOURCE_HEADERS
+    encoded_bytes = base64.b64encode(f'{locust.config.admin_login}:{locust.config.admin_password}'.encode('utf-8'))
+    encoded_string = encoded_bytes.decode('utf-8')
+    admin_headers['Authorization'] = f'Basic {encoded_string}'
+    admin_headers['Accept'] = "application/json"
+    updated_summary = f'Locust {"".join(random.choice(string.ascii_letters) for _ in range(random.randint(5, 10)))}'
+    payload = {
+        "fields": {
+            "summary": new_summary if new_summary else updated_summary
+        }
+    }
+    payload_json = json.dumps(payload)
+    r = locust.client.put(f'/rest/api/2/issue/{locust.session_data_storage["request_key"]}',
+               data=payload_json,
+               headers=admin_headers,
+               catch_response=True)
+    text_response = (str(r))
+    logger.info(f'{locust.session_data_storage["request_key"]}')
+    logger.info(f'{admin_headers}')
+    logger.info(text_response)

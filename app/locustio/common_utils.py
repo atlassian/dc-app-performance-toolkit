@@ -86,6 +86,8 @@ class LocustConfig:
     def __init__(self, config_yml: BaseAppSettings):
         self.env = config_yml.env_settings
         self.secure = config_yml.secure
+        self.admin_login = config_yml.admin_login
+        self.admin_password = config_yml.admin_password
 
     def percentage(self, action_name: str):
         if action_name in self.env:
@@ -144,6 +146,12 @@ class MyBaseTaskSet(TaskSet):
 
     def post(self, *args, **kwargs):
         r = self.client.post(*args, **kwargs)
+        action_name = inspect.stack()[1][3]
+        self.failure_check(response=r, action_name=action_name)
+        return r
+
+    def put(self, *args, **kwargs):
+        r = self.client.put(*args, **kwargs)
         action_name = inspect.stack()[1][3]
         self.failure_check(response=r, action_name=action_name)
         return r
