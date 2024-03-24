@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-01-05"
+date: "2024-03-19"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -415,7 +415,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run4"></a> Run 4 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
@@ -453,7 +453,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run5"></a> Run 5 (~1 hour)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
