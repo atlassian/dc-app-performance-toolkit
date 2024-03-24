@@ -1,6 +1,9 @@
+import json
 import random
+import string
 from datetime import datetime
 
+import requests
 from packaging import version
 from selenium.webdriver.common.keys import Keys
 
@@ -108,6 +111,7 @@ class CustomerRequest(BasePage):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(portal_id=portal_id, request_key=request_key)
         self.page_url = url_manager.request_url()
+        self.rest_issue_endpoint = url_manager.rest_issue_url()
 
     page_loaded_selector = RequestSelectors.request_option
 
@@ -178,6 +182,21 @@ class CustomerRequest(BasePage):
     def share_request_react(self):
         self.wait_until_invisible(RequestSelectors.share_request_dropdown_one_elem_react)
         self.wait_until_clickable(RequestSelectors.share_request_button_request_widget).click()
+
+    def rest_update_request_summary(self, login, password, new_summary=None):
+        generated_summary = f'Selenium {"".join(random.choice(string.ascii_letters) for _ in range(random.randint(5, 10)))}'
+        payload = {
+        "fields": {
+            "summary": new_summary if new_summary else generated_summary
+                  }
+        }
+        payload_json = json.dumps(payload)
+        auth = (login, password)
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+        requests.put(self.rest_issue_endpoint, data=payload_json, headers=headers, auth=auth)
 
 
 class Requests(BasePage):

@@ -169,6 +169,7 @@ def add_comment(webdriver, datasets):
         customer_request.wait_for_page_loaded()
         customer_request.comment_request()
     measure()
+    customer_request.rest_update_request_summary(login=datasets['admin_login'], password=datasets['admin_password'])
 
 
 def share_request_with_customer(webdriver, datasets):
@@ -200,6 +201,7 @@ def share_request_with_customer(webdriver, datasets):
                 customer_request.share_request()
         sub_measure()
     measure()
+    customer_request.rest_update_request_summary(login=datasets['admin_login'], password=datasets['admin_password'])
 
 
 def view_request_with_insight(webdriver, datasets):

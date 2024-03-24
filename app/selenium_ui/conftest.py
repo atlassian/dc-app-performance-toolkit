@@ -80,6 +80,8 @@ class Dataset:
                 JSM_DATASET_INSIGHT_SCHEMAS)
             self.dataset["insight_issues"] = self.__read_input_file(
                 JSM_DATASET_INSIGHT_ISSUES)
+            self.dataset['admin_login'] = JSM_SETTINGS.admin_login
+            self.dataset['admin_password'] = JSM_SETTINGS.admin_password
         return self.dataset
 
     def confluence_dataset(self):
