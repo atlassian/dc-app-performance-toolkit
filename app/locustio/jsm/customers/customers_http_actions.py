@@ -315,7 +315,3 @@ def update_issue_summary(locust, new_summary=None):
                data=payload_json,
                headers=admin_headers,
                catch_response=True)
-    text_response = (str(r))
-    logger.info(f'{locust.session_data_storage["request_key"]}')
-    logger.info(f'{admin_headers}')
-    logger.info(text_response)

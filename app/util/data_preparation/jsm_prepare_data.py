@@ -380,7 +380,7 @@ def __get_custom_issues(jira_api, jsm_api, custom_jql):
     issues = []
     if custom_jql:
         issues = jira_api.issues_search(
-            jql=custom_jql, max_results=8000,
+            jql=custom_jql, max_results=8000
         )
     for issue in issues:
         expanded_issue = jsm_api.get_request(issue_id_or_key=issue['key'])
