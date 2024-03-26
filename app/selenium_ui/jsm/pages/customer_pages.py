@@ -24,11 +24,13 @@ class Login(BasePage):
         self.get_element(LoginPageLocators.login_submit_button).click()
 
     def is_logged_in(self):
-        elements = self.get_elements(CustomerPortalsSelectors.welcome_logged_in_page)
+        elements = self.get_elements(
+            CustomerPortalsSelectors.welcome_logged_in_page)
         return True if elements else False
 
     def get_app_version(self):
-        version_str = self.get_element(LoginPageLocators.app_version).get_attribute('content')
+        version_str = self.get_element(
+            LoginPageLocators.app_version).get_attribute('content')
         return version.parse(version_str)
 
 
@@ -48,8 +50,11 @@ class CustomerPortals(BasePage):
 
     def browse_projects(self):
         self.wait_until_visible(CustomerPortalsSelectors.browse_portals_button)
-        self.get_element(CustomerPortalsSelectors.browse_portals_button).click()
-        self.wait_until_visible(self.get_selector(CustomerPortalsSelectors.full_portals_list))
+        self.get_element(
+            CustomerPortalsSelectors.browse_portals_button).click()
+        self.wait_until_visible(
+            self.get_selector(
+                CustomerPortalsSelectors.full_portals_list))
 
     def open_random_portal(self):
         portals = self.get_elements(CustomerPortalsSelectors.portal_from_list)
@@ -82,27 +87,36 @@ class CustomerPortal(BasePage):
         self.get_element(CustomerPortalSelectors.summary_field).\
             send_keys(f'Selenium - {self.generate_random_string(5)}')
         selector = self.get_selector(CustomerPortalSelectors.description_field)
-        self.wait_until_visible(selector).send_keys(f'Selenium - Description {self.generate_random_string(5)}')
+        self.wait_until_visible(selector).send_keys(
+            f'Selenium - Description {self.generate_random_string(5)}')
 
         # If required dropdown
-        required_dropdown_elements = self.get_elements(CustomerPortalSelectors.required_dropdown_field)
+        required_dropdown_elements = self.get_elements(
+            CustomerPortalSelectors.required_dropdown_field)
         if required_dropdown_elements:
             dropdown = required_dropdown_elements[0]
             dropdown.click()
-            self.wait_until_visible(CustomerPortalSelectors.required_dropdown_list)
-            self.wait_until_visible(CustomerPortalSelectors.required_dropdown_element)
-            self.action_chains().move_to_element(
-                random.choice(self.get_elements(CustomerPortalSelectors.required_dropdown_element))).click().perform()
-            self.wait_until_invisible(CustomerPortalSelectors.required_dropdown_list)
+            self.wait_until_visible(
+                CustomerPortalSelectors.required_dropdown_list)
+            self.wait_until_visible(
+                CustomerPortalSelectors.required_dropdown_element)
+            self.action_chains().move_to_element(random.choice(self.get_elements(
+                CustomerPortalSelectors.required_dropdown_element))).click().perform()
+            self.wait_until_invisible(
+                CustomerPortalSelectors.required_dropdown_list)
 
-        required_calendar_field = self.get_elements(CustomerPortalSelectors.required_calendar_button)
+        required_calendar_field = self.get_elements(
+            CustomerPortalSelectors.required_calendar_button)
         if required_calendar_field:
             date_now = f"{datetime.now().day}/{datetime.now().strftime('%h')}/{datetime.now().strftime('%Y')}"
-            self.wait_until_visible(CustomerPortalSelectors.required_calendar_input_field)
-            self.get_element(CustomerPortalSelectors.required_calendar_input_field).send_keys(date_now)
+            self.wait_until_visible(
+                CustomerPortalSelectors.required_calendar_input_field)
+            self.get_element(
+                CustomerPortalSelectors.required_calendar_input_field).send_keys(date_now)
 
         self.get_element(CustomerPortalSelectors.create_request_button).click()
-        self.wait_until_visible(self.get_selector(RequestSelectors.comment_request_field))
+        self.wait_until_visible(self.get_selector(
+            RequestSelectors.comment_request_field))
 
 
 class CustomerRequest(BasePage):
@@ -116,7 +130,9 @@ class CustomerRequest(BasePage):
     page_loaded_selector = RequestSelectors.request_option
 
     def comment_request(self):
-        self.wait_until_visible(self.get_selector(RequestSelectors.comment_field_minimized)).click()
+        self.wait_until_visible(
+            self.get_selector(
+                RequestSelectors.comment_field_minimized)).click()
         self.wait_until_visible(self.get_selector(RequestSelectors.comment_request_field)).\
             send_keys(f'Selenium comment - {self.generate_random_string(10)}')
         self.wait_until_clickable(RequestSelectors.add_comment_button)
@@ -125,24 +141,27 @@ class CustomerRequest(BasePage):
 
     def search_for_customer_to_share_with_react_ui(self, customer_name):
         self.wait_until_visible(RequestSelectors.share_request_button).click()
-        self.wait_until_visible(RequestSelectors.share_request_search_field_react)
-        self.action_chains().move_to_element(
-            self.get_element(RequestSelectors.share_request_search_field_react)).click().perform()
-        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field_react)).\
-            send_keys(customer_name).perform()
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem_react)
+        self.wait_until_visible(
+            RequestSelectors.share_request_search_field_react)
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field_react)).click().perform()
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field_react)). send_keys(customer_name).perform()
+        self.wait_until_visible(
+            RequestSelectors.share_request_dropdown_one_elem_react)
 
-        random_customer_name = random.choice(
-            [i.text for i in self.get_elements(RequestSelectors.share_request_dropdown_one_elem_react)])
+        random_customer_name = random.choice([i.text for i in self.get_elements(
+            RequestSelectors.share_request_dropdown_one_elem_react)])
 
-        self.action_chains().move_to_element(
-            self.get_element(RequestSelectors.share_request_search_field_arrow_react)).click().perform()
-        self.wait_until_invisible(RequestSelectors.share_request_dropdown_react)
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field_arrow_react)).click().perform()
+        self.wait_until_invisible(
+            RequestSelectors.share_request_dropdown_react)
         self.action_chains().move_to_element(self.get_element(
             RequestSelectors.share_request_search_field_react)).send_keys(
             random_customer_name).perform()
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem_react).click()
-
+        self.wait_until_visible(
+            RequestSelectors.share_request_dropdown_one_elem_react).click()
 
     def search_for_customer_to_share_with(self, customer_name):
         if not self.element_exists(RequestSelectors.share_request_button):
@@ -150,45 +169,53 @@ class CustomerRequest(BasePage):
             return
 
         self.wait_until_visible(RequestSelectors.share_request_button).click()
-        self.wait_until_visible(RequestSelectors.share_request_search_field).click()
+        self.wait_until_visible(
+            RequestSelectors.share_request_search_field).click()
 
-        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field)).\
-            send_keys(customer_name).perform()
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field)). send_keys(customer_name).perform()
         self.wait_until_visible(RequestSelectors.share_request_dropdown)
 
         # Chose random customer to share with
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem)
+        self.wait_until_visible(
+            RequestSelectors.share_request_dropdown_one_elem)
 
-        random_customer_name = random.choice([i.text for i in
-                                              self.get_elements(RequestSelectors.share_request_dropdown_one_elem)])
-        self.action_chains().move_to_element(
-            self.get_element(RequestSelectors.share_request_search_field)).click().perform()
+        random_customer_name = random.choice([i.text for i in self.get_elements(
+            RequestSelectors.share_request_dropdown_one_elem)])
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field)).click().perform()
 
         self.wait_until_invisible(RequestSelectors.share_request_dropdown)
 
-        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field)).send_keys(
-            random_customer_name).perform()
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field)).send_keys(random_customer_name).perform()
 
-        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem)
-        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field)).send_keys(
+        self.wait_until_visible(
+            RequestSelectors.share_request_dropdown_one_elem)
+        self.action_chains().move_to_element(
+            self.get_element(
+                RequestSelectors.share_request_search_field)).send_keys(
             Keys.RETURN).perform()
 
         self.wait_until_invisible(RequestSelectors.share_request_dropdown)
 
     def share_request(self):
-        self.wait_until_visible(RequestSelectors.share_request_modal_button).click()
+        self.wait_until_visible(
+            RequestSelectors.share_request_modal_button).click()
         self.wait_until_invisible(RequestSelectors.share_request_modal_button)
 
     def share_request_react(self):
-        self.wait_until_invisible(RequestSelectors.share_request_dropdown_one_elem_react)
-        self.wait_until_clickable(RequestSelectors.share_request_button_request_widget).click()
+        self.wait_until_invisible(
+            RequestSelectors.share_request_dropdown_one_elem_react)
+        self.wait_until_clickable(
+            RequestSelectors.share_request_button_request_widget).click()
 
     def rest_update_request_summary(self, login, password, new_summary=None):
         generated_summary = f'Selenium {"".join(random.choice(string.ascii_letters) for _ in range(random.randint(5, 10)))}'
         payload = {
-        "fields": {
-            "summary": new_summary if new_summary else generated_summary
-                  }
+            "fields": {
+                "summary": new_summary if new_summary else generated_summary
+            }
         }
         payload_json = json.dumps(payload)
         auth = (login, password)
@@ -196,7 +223,11 @@ class CustomerRequest(BasePage):
             "Content-Type": "application/json",
             "Accept": "application/json"
         }
-        requests.put(self.rest_issue_endpoint, data=payload_json, headers=headers, auth=auth)
+        requests.put(
+            self.rest_issue_endpoint,
+            data=payload_json,
+            headers=headers,
+            auth=auth)
 
 
 class Requests(BasePage):
@@ -204,7 +235,8 @@ class Requests(BasePage):
     def __init__(self, driver, all_requests=False):
         BasePage.__init__(self, driver)
         url_manager = UrlManager()
-        self.page_url = url_manager.all_requests_url() if all_requests else url_manager.my_requests_url()
+        self.page_url = url_manager.all_requests_url(
+        ) if all_requests else url_manager.my_requests_url()
 
     page_loaded_selector = RequestsSelectors.requests_label
 
