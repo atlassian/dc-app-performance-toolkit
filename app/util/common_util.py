@@ -78,7 +78,8 @@ def webdriver_pretty_debug(webdriver, additional_field):
         debug_message[key] = value
 
     if 'debug_info' in dir(webdriver):
-        webdriver.debug_info['current_url'] = webdriver.current_url
+        if 'current_url' in dir(webdriver):
+            webdriver.debug_info['current_url'] = webdriver.current_url
         webdriver.debug_info['session_id'] = webdriver.session_id
         debug_message.update(webdriver.debug_info)
     list_to_print = '\n'.join(

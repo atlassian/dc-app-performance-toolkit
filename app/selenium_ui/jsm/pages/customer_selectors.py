@@ -14,6 +14,7 @@ class UrlManager:
         self.request_params = f'/servicedesk/customer/portal/{portal_id}/{request_key}'
         self.my_requests = '/servicedesk/customer/user/requests'
         self.all_requests = '/servicedesk/customer/user/requests?reporter=all'
+        self.rest_issue_endpoint = f'/rest/api/2/issue/{request_key}'
 
     def login_url(self):
         return f'{self.host}{self.login_params}'
@@ -29,6 +30,9 @@ class UrlManager:
 
     def all_requests_url(self):
         return f'{self.host}{self.all_requests}'
+
+    def rest_issue_url(self):
+        return f'{self.host}{self.rest_issue_endpoint}'
 
 
 class LoginPageLocators:

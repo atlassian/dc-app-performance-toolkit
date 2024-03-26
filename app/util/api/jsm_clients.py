@@ -103,8 +103,7 @@ class JsmRestClient(JiraRestClient):
 
         init_url = self.host + "/rest/servicedeskapi/request"
         while loop_count > 0:
-
-            api_url = init_url + f"?start={start_at}&limit={max_results}"
+            api_url = init_url + f"?start={start_at}&limit={max_results}&searchTerm=!=Selenium!=locust!=Jmeter"
             if status:
                 api_url += f"&requestStatus={status}"
 
