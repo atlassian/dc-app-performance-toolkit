@@ -12,6 +12,7 @@ class JsmCustomerBehavior(MyBaseTaskSet):
     def on_start(self):
         self.client.verify = config.secure
         customers_http_actions.customer_login_and_view_portals(self)
+        self.config = config
 
     @task(config.percentage('customer_view_portal'))
     def customer_view_portal(self):
