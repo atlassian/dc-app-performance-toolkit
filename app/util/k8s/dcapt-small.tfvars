@@ -6,20 +6,35 @@
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/ for more information.
 
 ################################################################################
-# Common Settings
+# Configuration settings to change
+# Configuration settings to change
 ################################################################################
 
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
 # ! REQUIRED !
-environment_name = "dcapt-jira-small"
+environment_name = "dcapt-product-jira-small"
 
-# Supported products: jira, confluence and bitbucket
-# e.g.: products = ["confluence"]
+# Supported products: jira, confluence and bitbucket.
+# For JSM set product as jira.
+# e.g.: products = ["jira"]
 # ! REQUIRED !
 products = ["jira"]
 
-# Default AWS region for DCAPT snapshots.
+# License
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
+# ! IMPORTANT ! Please make sure valid license is used without spaces and new line symbols.
+# ! REQUIRED !
+jira_license = "AAAB6A0ODAoPeNqVUttu2kAUfPdXrNSXVqpdXwIFpJVKbbdx5AvBJISKl8U+gBt77eyuSejXZ21A0JIg9XFndWbOzJwPMRFoWDFkWEjvDTqdgWEi25kgUzevFJsBEVlJHSIAN4iqX6mGpfhZApTDZFtBSArAdhQE7tj2hr7yO2NE2/+7adZMYzecuOPR2ItdJayLBbBoeceBcawaByr3pcrY9kSn0+i0ZBUr0zoRWvNQebkUz4SBRhKRbQALVoMS1wuesKxqxVrE3ZC8Jsd3SyTZiQ1UANuB+U76mvA1Duxn+8f1PX25TX/dBMmXcCZo36jhbprT6SKdDdfjVah34gevCp5mft7r0j8LU/pLRs5oNcdzfHDiOdj3nNgNVV86MbuW1b/kIxaENRstSc6lE2AbYJLi+4Nuqv1ZZKhe2OuqftT5qTzC9l6m1pgyurr+Ve9ZlqGsGABdl1UF7ELuo5ola8Lh3yZPp9toKpbxQ6xuiP/28YbWWzfgwLGOG+kWxXu36GPTAdqV8Gk+QMeelIBkEqWEJv9/DGdXdbro6aVc4HjnOg6Jm0rEVoRmfHdVEyAF/4ymJXtEvkg1xS6pkEqutJHjNdBUzpVUK2S722+rQqJaUha7Bc7WbdGzPS8kvFdr4ffFXgGMblR+MCwCFGsKmyewgfNUx1qz2BajsWBYAt/vAhRxmav0U0YyXYDj3je92pomMnc6JQ==X02n7"
+confluence_license = "confluence-license"
+bitbucket_license = "bitbucket-license"
+
+################################################################################
+# Common Settings
+################################################################################
+
+# Default AWS region for DCAPT snapshots. Supported regions are us-east-1, us-east-2, us-west-1, us-west-2.
 region = "us-east-2"
 
 # List of IP ranges that are allowed to access the running applications over the World Wide Web.
@@ -27,13 +42,16 @@ region = "us-east-2"
 # default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
 whitelist_cidr = ["0.0.0.0/0"]
 
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
+
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
+
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing-small"}
 
 # Instance types that is preferred for EKS node group.
-# Confluence, Jira  - use default value
-# Bitbucket - ["t3.2xlarge"]
-# ! REQUIRED !
 instance_types     = ["t3.xlarge"]
 instance_disk_size = 100
 
@@ -42,7 +60,8 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
-max_cluster_capacity = 1
+max_cluster_capacity = 2
+max_cluster_capacity = 2
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
@@ -68,51 +87,33 @@ max_cluster_capacity = 1
 # Jira
 jira_image_repository = "atlassian/jira-software"
 # JSM
+# ! REQUIRED for JSM !
+# ! REQUIRED for JSM !
 # jira_image_repository = "atlassian/jira-servicemanagement"
 
-# Jira/JSM license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid confluence license is used without spaces and new line symbols.
-# ! REQUIRED !
-jira_license = "AAAB6w0ODAoPeNqVUk1v2kAUvPtXrNRLq9SuvSYJIFkqNduWyNgEO0mpuGzMA5vYa2d3DfG/rz9AkJAg9bizejNvZt6nICrQEEJkdJBu9vF1H18i2w8Q1rGp2ByojDM2pBKsGlENrBodxYlDYAKCMgeXpmDZ3nhMpvZo4CjrmFNt908WcT1tETcg08l05BPFLdJH4N7yTgAXlmrsqchLHvNyr9NRdUM1zJYs59miCKVWP1SRLeWWctBoKOMNWJIXoPjFowh5nDdiDUI2NCno4d0QVezUBiaBt2DSSv+mIrLG9tb+OZhcREvvr+zoMxuv7789yPLmZaJnF/pqEN2aGXHxOk68oGSbGWbjO30rEmM9e76dW3Nr72Q0tJzR0Ceu6hi9bg/jzlkfvqS83mhJE1E5Ab4BXlH8+KNjtTfzDHXkdq9Ux7v8pTxBeV+lVpsyrnT9Wu+apqGsOACLsjwHfib3ScHDiAp42+TxdBNNzmOxj5W41msf72i9dwNDONRxU7lF/s4t+lx3gNoSvsz76NCTMqZxhTLKwv8/hpOrOl70+FLOcHxwHfvEseLxFWWxaK8qAJqKr+gh40/IkQtNsTMmKyVS2UisCNiimsuYllbtlt9XaYVqYZa2C5ys26Ane55JeKfWwB+L/QOwXVPZMCwCFFOdHTdFTqnyqp6+lGwB1SiIUp1+AhQCBY5VAyyUnI+NGWnRcyQbybtUsQ==X02nb"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+# Jira version.
+jira_version_tag = "9.12.1"
+# JSM version
+# ! REQUIRED for JSM !
+# jira_version_tag = "5.12.1"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+jira_dataset_size = "small"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+# Jira version.
+jira_version_tag = "9.12.1"
+# JSM version
+# ! REQUIRED for JSM !
+# jira_version_tag = "5.12.1"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+jira_dataset_size = "small"
 
 # Number of Jira/JSM application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
 # installed and configured.
 jira_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-#
-# Jira version
-jira_version_tag = "9.4.10"
-# JSM version
-# jira_version_tag = "5.4.10"
-
-# Shared home restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-#
-# Jira 9.4.10 DCAPT small dataset EBS snapshot
- jira_shared_home_snapshot_id = "snap-019fd367ec397b1f3"
-# Jira 8.20.26 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0592bc60820536611"
-# JSM 5.4.10 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-0e340e980918e45f6"
-# JSM 4.20.26 DCAPT small dataset EBS snapshot
-# jira_shared_home_snapshot_id = "snap-096d1185a5fee02ea"
-
-# Database restore configuration.
-# Make sure Jira/JSM version set in `jira_version_tag` match the snapshot version.
-# Build number stored within the snapshot and Jira license are also required, so that Jira can be fully setup prior to start.
-#
-# Jira 9.4.10 DCAPT small dataset RDS snapshot
- jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-10"
-# Jira 8.20.26 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-8-20-26"
-# JSM 5.4.10 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-10"
-# JSM 4.20.26 DCAPT small dataset RDS snapshot
-# jira_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-4-20-26"
 
 # Helm chart version of Jira
 # jira_helm_chart_version = "<helm_chart_version>"
@@ -137,8 +138,10 @@ jira_nfs_limits_memory   = "1.5Gi"
 
 # Storage
 # initial volume size of local/shared home EBS.
-jira_local_home_size  = "10Gi"
-jira_shared_home_size = "10Gi"
+jira_local_home_size  = "20Gi"
+jira_shared_home_size = "20Gi"
+jira_local_home_size  = "20Gi"
+jira_shared_home_size = "20Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -168,40 +171,21 @@ jira_db_master_password = "Password1!"
 # Confluence Settings
 ################################################################################
 
-# Confluence license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here.
-# Please make sure valid confluence license is used without spaces and new line symbols.
-# ! REQUIRED !
-confluence_license = "confluence-license"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+confluence_version_tag = "8.5.4"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "small"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+confluence_version_tag = "8.5.4"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "small"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
 # installed and configured.
 confluence_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.1"
-
-# Shared home restore configuration.
-# 8.5.1 DCAPT small dataset EBS snapshot
-confluence_shared_home_snapshot_id = "snap-008cc496f440198de"
-# 7.19.14 DCAPT small dataset EBS snapshot
-# confluence_shared_home_snapshot_id = "snap-0a175c4fd76039985"
-
-# Database restore configuration.
-# Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-# 8.5.1 DCAPT small dataset RDS snapshot
-confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-1"
-# 7.19.14 DCAPT small dataset RDS snapshot
-# confluence_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-14"
-
-# Build number for a specific Confluence version can be found in the link below:
-# https://developer.atlassian.com/server/confluence/confluence-build-information
-# 8.5.1
-confluence_db_snapshot_build_number = "9012"
-# 7.19.14
-# confluence_db_snapshot_build_number = "8804"
 
 # Helm chart version of Confluence
 #confluence_helm_chart_version = "<helm_chart_version>"
@@ -226,7 +210,8 @@ synchrony_stack_size = "2048k"
 
 # Storage
 confluence_local_home_size  = "20Gi"
-confluence_shared_home_size = "10Gi"
+confluence_shared_home_size = "20Gi"
+confluence_shared_home_size = "20Gi"
 
 # Confluence NFS instance resource configuration
 confluence_nfs_requests_cpu    = "500m"
@@ -243,6 +228,8 @@ confluence_db_major_engine_version = "14"
 confluence_db_instance_class       = "db.t3.medium"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
+
+
 # If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
 confluence_db_name = "confluence"
@@ -264,36 +251,21 @@ confluence_collaborative_editing_enabled = true
 # Bitbucket Settings
 ################################################################################
 
-# Bitbucket license
-# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
-# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
-# Please make sure valid bitbucket license is used without spaces and new line symbols.
-# ! REQUIRED !
-bitbucket_license = "bitbucket-license"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "8.9.8"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "small"
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "8.9.8"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "small"
 
 # Number of Bitbucket application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Bitbucket is fully
 # installed and configured.
 bitbucket_replica_count = 1
-
-# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "7.21.16"
-
-# Shared home restore configuration.
-# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
-#
-# 7.21.16 DCAPT small dataset EBS snapshot
-bitbucket_shared_home_snapshot_id = "snap-04351bd6779e3ee76"
-# 8.9.5 DCAPT small dataset EBS snapshot
-#bitbucket_shared_home_snapshot_id = "snap-01806166c1afe8bd5"
-
-# Database restore configuration.
-# Make sure Bitbucket version set in `bitbucket_version_tag` match the snapshot version.
-#
-# 7.21.16 DCAPT small dataset RDS snapshot
-bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-7-21-16"
-# 8.9.5 DCAPT small dataset RDS snapshot
-#bitbucket_db_snapshot_id = "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-9-5"
 
 # Helm chart version of Bitbucket
 #bitbucket_helm_chart_version = "<helm_chart_version>"
@@ -331,7 +303,8 @@ bitbucket_min_heap = "1024m"
 bitbucket_max_heap = "2048m"
 
 # Storage
-bitbucket_local_home_size  = "10Gi"
+bitbucket_local_home_size  = "20Gi"
+bitbucket_local_home_size  = "20Gi"
 bitbucket_shared_home_size = "20Gi"
 
 # Bitbucket NFS instance resource configuration
@@ -357,6 +330,8 @@ bitbucket_db_major_engine_version = "14"
 bitbucket_db_instance_class       = "db.t3.medium"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
+
+
 # If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
 bitbucket_db_name = "bitbucket"

@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-10-03"
+date: "2024-01-05"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -15,8 +15,8 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 **Enterprise-scale environment**: Crowd Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Crowd Data Center.
 
 1. [Set up an enterprise-scale environment Crowd Data Center on AWS](#instancesetup).
-2. [App-specific actions development](#appspecificaction).   
-3. [Set up an execution environment for the toolkit](#executionhost).
+2. [App-specific actions development](#appspecificaction).
+3. [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
 4. [Running the test scenarios from execution environment against enterprise-scale Crowd Data Center](#testscenario).
 
 ---
@@ -24,21 +24,16 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 ## <a id="instancesetup"></a>1. Set up an enterprise-scale environment Crowd Data Center on k8s
 
 #### EC2 CPU Limit
-The installation of 4-nodes Crowd requires **16** CPU Cores. Make sure that the current EC2 CPU limit is set to higher number of CPU Cores. [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) service shows the limit for All Standard Spot Instance Requests. **Applied quota value** is the current CPU limit in the specific region.
+{{% warning %}}
+The installation of 4-pods DC environment and execution pod requires at least **24** vCPU Cores.
+Newly created AWS account often has vCPU limit set to low numbers like 5 vCPU per region.
+Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) page.
+**Applied quota value** is the current CPU limit in the specific region.
 
-The limit can be increased by creating AWS Support ticket. To request the limit increase fill in [Amazon EC2 Limit increase request form](https://aws.amazon.com/contact-us/ec2-request/):
-
-| Parameter             | Value                                                                           |
-|-----------------------|---------------------------------------------------------------------------------|
-| Limit type            | EC2 Instances                                                                   |
-| Severity              | Urgent business impacting question                                              |
-| Region                | US East (Ohio) _or your specific region the product is going to be deployed in_ |
-| Primary Instance Type | All Standard (A, C, D, H, I, M, R, T, Z) instances                              |
-| Limit                 | Instance Limit                                                                  |
-| New limit value       | _The needed limit of CPU Cores_                                                 |
-| Case description      | _Give a small description of your case_                                         |
-Select the **Contact Option** and click **Submit** button.
-
+Make that current limit is large enough to deploy new cluster.
+The limit can be increased by using **Request increase at account-level** button: choose a region, set a quota value which equals a required number of CPU Cores for the installation and press **Request** button.
+Recommended limit is 30.
+{{% /warning %}}
 #### Setup Crowd Data Center with an enterprise-scale dataset on k8s
 
 Below process describes how to install Crowd DC with an enterprise-scale dataset included. This configuration was created
@@ -53,27 +48,27 @@ specifically for performance testing during the DC app review process.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_SESSION_TOKEN` (only for temporary creds)
 5. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-crowd`
    - `products` - `crowd`
    - `crowd_license` - one-liner of valid crowd license without spaces and new line symbols
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-   - `instance_types` - `["m5.xlarge"]`
 
    {{% note %}}
    New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
    Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
    {{% /note %}}
 
-6. From local terminal (Git bash terminal for Windows) start the installation (~40min):
+6. From local terminal (Git Bash for Windows users) start the installation (~40min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
-
 
 ---
 
@@ -89,11 +84,6 @@ All the datasets use the standard `admin`/`admin` credentials.
 {{% /note %}}
 ---
 
-#### Terminate Crowd Data Center
-Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
-
----
-
 {{% note %}}
 You are responsible for the cost of the AWS services running during the reference deployment. For more information, 
 go to [aws.amazon.com/pricing](https://aws.amazon.com/ec2/pricing/).
@@ -103,7 +93,7 @@ To reduce costs, we recommend you to keep your deployment up and running only du
 
 ---
 
-## <a id="appspecificaction"></a>3. App-specific actions development
+## <a id="appspecificaction"></a>2. App-specific actions development
 
 Data Center App Performance Toolkit has its own set of default [JMeter](https://jmeter.apache.org/) test actions for Crowd Data Center.
 
@@ -124,17 +114,13 @@ Data Center App Performance Toolkit has its own set of default [JMeter](https://
 
 ---
 
-## <a id="executionhost"></a>4. Setting up an execution environment
+## <a id="loadconfiguration"></a>3. Setting up load configuration for Enterprise-scale runs
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+Default TerraForm deployment [configuration](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/dcapt.tfvars)
+already has a dedicated execution environment pod to run tests from. For more details see `Execution Environment Settings` section in `dcapt.tfvars` file.
 
-1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `crowd.yml` configuration file. Set enterprise-scale Crowd Data Center parameters:
-
-{{% warning %}}
-Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
-Instead, set those values directly in `.yml` file on execution environment instance.
-{{% /warning %}}
+1. Check the `crowd.yml` configuration file. If load configuration settings were changed for dev runs, make sure parameters
+   were changed back to the defaults:
 
    ``` yaml
     application_hostname: test_crowd_instance.atlassian.com    # Crowd DC hostname without protocol and port e.g. test-crowd.atlassian.com or localhost
@@ -151,26 +137,11 @@ Instead, set those values directly in `.yml` file on execution environment insta
     test_duration: 45m
    ```  
 
-1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
-   * OS: select from Quick Start `Ubuntu Server 22.04 LTS`.
-   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-   * Storage size: `30` GiB
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
-   ```bash
-   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
-   ```
-
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
-1. Clone forked repository.
-
-
 You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
 
 ---
 
-## <a id="testscenario"></a>5. Running the test scenarios from execution environment against enterprise-scale Crowd Data Center
+## <a id="testscenario"></a>4. Running the test scenarios from execution environment against enterprise-scale Crowd Data Center
 
 Using the Data Center App Performance Toolkit for [Performance and scale testing your Data Center app](/platform/marketplace/developing-apps-for-atlassian-data-center-products/) involves two test scenarios:
 
@@ -187,14 +158,27 @@ This scenario helps to identify basic performance issues without a need to spin 
 
 To receive performance baseline results **without** an app installed and **without** app-specific actions (use code from `master` branch):
 
-1. Use SSH to connect to execution environment.
-1. Run toolkit with docker from the execution environment instance:
-
+1. Before run:
+   * Make sure `crowd.yml` and toolkit code base has default configuration from the `master` branch. No app-specific actions code applied.
+   * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
+   * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+      - `AWS_ACCESS_KEY_ID`
+      - `AWS_SECRET_ACCESS_KEY`
+      - `AWS_SESSION_TOKEN` (only for temporary creds)
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
     ``` bash
-    cd dc-app-performance-toolkit
-    docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
+    export ENVIRONMENT_NAME=your_environment_name
     ```
 
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh crowd.yml
+    ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/crowd/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -205,17 +189,25 @@ To receive performance baseline results **without** an app installed and **witho
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
-##### <a id="regressionrun2"></a> Run 2
+##### <a id="regressionrun2"></a> Run 2 (~50 min)
 
+To receive performance results with an app installed (still use master branch):
 
-**Performance results generation with the app installed (still use master branch):**
+1. Install the app you want to test.
+1. Setup app license.
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-1. Run toolkit with docker from the execution environment instance:
-
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh crowd.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -224,83 +216,82 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### Generating a performance regression report
 
-To generate a performance regression report:  
+To generate a performance regression report:
 
-1. Use SSH to connect to execution environment.
-1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
-1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
-   ``` bash
-   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
-   ```
-1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `performance_profile.yml` file:
-    - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
-    - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
-1. Run the following command:
+1. Edit the `./app/reports_generation/performance_profile.yml` file:
+   - For `runName: "without app"`, in the `relativePath` key, insert the relative path to results directory of [Run 1](#regressionrun1).
+   - For `runName: "with app"`, in the `relativePath` key, insert the relative path to results directory of [Run 2](#regressionrun2).
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:
     ``` bash
-    python csv_chart_generator.py performance_profile.yml
+    docker run --pull=always \
+    -v "/$PWD:/dc-app-performance-toolkit" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
+    --entrypoint="python" \
+    -it atlassian/dcapt csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
-
-#### Analyzing report
-
-Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
-
-1. From local machine terminal (Git bash terminal for Windows) run command:
-   ``` bash
-   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
-   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
-   ```
-1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
-
+1. In the `./app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
+   If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 #### <a id="testscenario2"></a> Scenario 2: Scalability testing
 
-The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. For this, you have to run scale testing on your app.
+The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. 
+For this, you have to run scale testing on your app.
 
-For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Crowd DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Crowd DC app in a cluster.
+For many apps and extensions to Atlassian products, 
+there should not be a significant performance difference between operating on a single node or across many nodes in
+Crowd DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Crowd DC app in a cluster.
 
 
 ###### <a id="run3"></a> Run 3 (~50 min)
 
 To receive scalability benchmark results for one-node Crowd DC **with** app-specific actions:
 
-1. Apply app-specific code changes to a new branch of forked repo.
-1. Use SSH to connect to execution environment.
-1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker from the execution environment instance:
+1. Before run:
+   * Make sure `crowd.yml` and toolkit code base has code base with your developed app-specific actions.
+   * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
+   * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs/aws_envs` file:
+      - `AWS_ACCESS_KEY_ID`
+      - `AWS_SECRET_ACCESS_KEY`
+      - `AWS_SESSION_TOKEN` (only for temporary creds)
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh crowd.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
 
-
 ##### <a id="run4"></a> Run 4 (~50 min)
 {{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 30.
 Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
-[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-crowd/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for two-node Crowd DC **with** app-specific actions:
 
 1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
-2. Open `dcapt.tfvars` file and set `crowd_replica_count` value to `2`.
-3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
+1. Open `dcapt.tfvars` file and set `crowd_replica_count` value to `2`.
+1. From local terminal (Git Bash for Windows users) start scaling (~20 min):
    ``` bash
    docker run --pull=always --env-file aws_envs \
-   -v "$PWD/dcapt.tfvars:/data-center-terraform/config.tfvars" \
-   -v "$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform ./install.sh -c config.tfvars
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform:2.7.1 ./install.sh -c conf.tfvars
    ```
-4. Use SSH to connect to execution environment.
-
-5. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
+1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
    # 1 node scenario parameters
    # ramp-up: 20s                    # time to spin all concurrent threads
@@ -314,12 +305,19 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    # ramp-up: 5s                     # time to spin all concurrent threads
    # total_actions_per_hour: 720000  # number of total JMeter actions per hour
    ```
-6. Run toolkit with docker from the execution environment instance:
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh crowd.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -328,9 +326,9 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### <a id="run5"></a> Run 5 (~50 min)
 {{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 30.
 Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-34B43A08) to see current limit.
-[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-crowd/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for four-node Crowd DC with app-specific actions:
@@ -349,14 +347,20 @@ To receive scalability benchmark results for four-node Crowd DC with app-specifi
    # 4 nodes scenario parameters
    ramp-up: 5s                     # time to spin all concurrent threads
    total_actions_per_hour: 720000  # number of total JMeter actions per hour
-   ```   
-   
-1. Run toolkit with docker from the execution environment instance:
+   ```
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker run --pull=always --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt crowd.yml
-   ```  
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.1 bash bzt_on_pod.sh crowd.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -367,43 +371,31 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
-1. Use SSH to connect to execution environment.
-1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
-   ``` bash
-   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
-   ```
-1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `scale_profile.yml` file:
-    - For `runName: "Node 1"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
-    - For `runName: "Node 2"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
-    - For `runName: "Node 4"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the activated `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
+1. Edit the `./app/reports_generation/performance_profile.yml` file:
+   - For `runName: "1 Node"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).
+   - For `runName: "2 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 4](#run4).
+   - For `runName: "4 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 5](#run5).
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:
     ``` bash
-    python csv_chart_generator.py scale_profile.yml
+    docker run --pull=always \
+    -v "/$PWD:/dc-app-performance-toolkit" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
+    --entrypoint="python" \
+    -it atlassian/dcapt csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
-
-
-#### Analyzing report
-
-Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
-
-1. From local terminal (Git bash terminal for Windows) run command:
-   ``` bash
-   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
-   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
-   ```
-1. Once completed, in the `./reports` folder you will be able to review action timings on Crowd Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+1. In the `./app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
+   If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 {{% warning %}}
-After completing all your tests, delete your Crowd Data Center stacks.
+It is recommended to terminate an enterprise-scale environment after completing all tests.
+Follow [Terminate enterprise-scale environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
+In case of any problems with uninstall use [Force terminate command](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#force-terminate-cluster).
 {{% /warning %}}
 
 #### Attaching testing results to ECOHELP ticket
 
 {{% warning %}}
-It is recommended to terminate an enterprise-scale environment after completing all tests.
-Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
+Do not forget to attach performance testing results to your ECOHELP ticket.
 {{% /warning %}}
 
 1. Make sure you have two reports folders: one with performance profile and second with scale profile results. 
@@ -412,9 +404,8 @@ Follow [Terminate development environment](https://github.com/atlassian/dc-app-p
 2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
-For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
-
 If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
 For instructions on how to collect detailed logs, see [Collect detailed k8s logs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#collect-detailed-k8s-logs).
+For failed cluster uninstall use [Force terminate command](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#force-terminate-cluster).
 
-In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of any technical questions or issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

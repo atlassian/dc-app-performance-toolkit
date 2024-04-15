@@ -181,8 +181,8 @@ def judge(baseline_dir, tested_dirs, output_dir):
 
 def __get_judgement_kwargs(config):
     baseline_result_dir = next((run for run in config['runs']
-                               if run['runType'] == constants.DCAPTRunType.baseline))['fullPath']
-    tested_result_dirs = [run['fullPath'] for run in config['runs']
+                               if run['runType'] == constants.DCAPTRunType.baseline))['relativePath']
+    tested_result_dirs = [run['relativePath'] for run in config['runs']
                           if run['runType'] == constants.DCAPTRunType.experiment]
 
     return {
