@@ -5,6 +5,7 @@
 
 ################################################################################
 # Configuration settings to change
+# Configuration settings to change
 ################################################################################
 
 # Unique name of your enterprise-scale test cluster.
@@ -53,11 +54,15 @@ whitelist_cidr = ["0.0.0.0/0"]
 # Path to a JSON file with EBS and RDS snapshot IDs
 snapshots_json_file_path = "dcapt-snapshots.json"
 
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
+
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing"}
 
 # Instance types that is preferred for EKS node group.
 instance_types     = ["m5.2xlarge"]
+instance_disk_size = 200
 instance_disk_size = 200
 
 # Minimum and maximum size of the EKS cluster.
@@ -65,6 +70,7 @@ instance_disk_size = 200
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
+max_cluster_capacity = 6
 max_cluster_capacity = 6
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
@@ -91,6 +97,17 @@ test_deployment_mem_request = "8Gi"
 test_deployment_mem_limit = "8Gi"
 
 ################################################################################
+# Execution Environment Settings
+################################################################################
+# Create a docker-in-docker privileged container as execution environment pod
+
+start_test_deployment = "true"
+test_deployment_cpu_request = "3"
+test_deployment_cpu_limit = "4"
+test_deployment_mem_request = "8Gi"
+test_deployment_mem_limit = "8Gi"
+
+################################################################################
 # Jira/JSM Settings
 ################################################################################
 
@@ -102,7 +119,9 @@ test_deployment_mem_limit = "8Gi"
 # Jira
 jira_image_repository = "atlassian/jira-software"
 
+
 # JSM
+# ! REQUIRED for JSM !
 # ! REQUIRED for JSM !
 # jira_image_repository = "atlassian/jira-servicemanagement"
 
@@ -110,7 +129,14 @@ jira_image_repository = "atlassian/jira-software"
 # Jira version
 jira_version_tag = "9.12.1"
 
+jira_version_tag = "9.12.1"
+
 # JSM version
+# ! REQUIRED for JSM !
+# jira_version_tag = "5.12.1"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
+jira_dataset_size = "large"
 # ! REQUIRED for JSM !
 # jira_version_tag = "5.12.1"
 
@@ -128,12 +154,15 @@ jira_installation_timeout = 25
 # Jira/JSM instance resource configuration
 jira_cpu                 = "6"
 jira_mem                 = "16Gi"
+jira_mem                 = "16Gi"
 jira_min_heap            = "12288m"
 jira_max_heap            = "12288m"
 jira_reserved_code_cache = "2048m"
 
 # Storage
 # initial volume size of local/shared home EBS.
+jira_local_home_size  = "200Gi"
+jira_shared_home_size = "200Gi"
 jira_local_home_size  = "200Gi"
 jira_shared_home_size = "200Gi"
 
@@ -167,7 +196,10 @@ jira_db_master_password = "Password1!"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 confluence_version_tag = "8.5.4"
+confluence_version_tag = "8.5.4"
 
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "large"
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "large"
 
@@ -182,10 +214,14 @@ confluence_installation_timeout = 30
 # Confluence instance resource configuration
 confluence_cpu      = "6"
 confluence_mem      = "16Gi"
+confluence_cpu      = "6"
+confluence_mem      = "16Gi"
 confluence_min_heap = "12288m"
 confluence_max_heap = "12288m"
 
 # Synchrony instance resource configuration
+synchrony_cpu       = "1"
+synchrony_mem       = "3Gi"
 synchrony_cpu       = "1"
 synchrony_mem       = "3Gi"
 synchrony_min_heap  = "1024m"
@@ -194,6 +230,7 @@ synchrony_stack_size = "2048k"
 
 # Storage
 confluence_local_home_size  = "200Gi"
+confluence_shared_home_size = "200Gi"
 confluence_shared_home_size = "200Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
@@ -232,7 +269,10 @@ confluence_collaborative_editing_enabled = true
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 bitbucket_version_tag = "8.9.8"
+bitbucket_version_tag = "8.9.8"
 
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "large"
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
 
@@ -315,6 +355,7 @@ bitbucket_db_master_password = "Password1!"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 crowd_version_tag = "5.2.2"
+crowd_version_tag = "5.2.2"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -331,6 +372,8 @@ crowd_min_heap = "2048m"
 crowd_max_heap = "2048m"
 
 # Storage
+crowd_local_home_size  = "20Gi"
+crowd_shared_home_size = "20Gi"
 crowd_local_home_size  = "20Gi"
 crowd_shared_home_size = "20Gi"
 
@@ -376,6 +419,8 @@ crowd_db_master_password     = "Password1!"
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
 bamboo_version_tag       = "9.2.9"
 bamboo_agent_version_tag = "9.2.9"
+bamboo_version_tag       = "9.2.9"
+bamboo_agent_version_tag = "9.2.9"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
@@ -419,6 +464,7 @@ bamboo_max_heap = "4096m"
 
 # Bamboo Agent instance resource configuration
 bamboo_agent_cpu = "250m"
+bamboo_agent_cpu = "250m"
 bamboo_agent_mem = "700m"
 
 # Storage
@@ -426,6 +472,10 @@ bamboo_local_home_size  = "200Gi"
 bamboo_shared_home_size = "400Gi"
 
 # Bamboo NFS instance resource configuration
+bamboo_nfs_requests_cpu    = "1"
+bamboo_nfs_requests_memory = "1Gi"
+bamboo_nfs_limits_cpu      = "2"
+bamboo_nfs_limits_memory   = "2Gi"
 bamboo_nfs_requests_cpu    = "1"
 bamboo_nfs_requests_memory = "1Gi"
 bamboo_nfs_limits_cpu      = "2"
@@ -461,9 +511,18 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 # monitoring_enabled = true
 
 # Create Grafana service of LoadBalancer type. Defaults to false. To restrict access to LB URL
+# Create Grafana service of LoadBalancer type. Defaults to false. To restrict access to LB URL
 # the list of CIRDs from whitelist_cidr will be automatically applied.
 
+
 # monitoring_grafana_expose_lb = true
+
+# Command to select cluster:
+# export ENVIRONMENT_NAME=your_environment_name
+# aws eks update-kubeconfig --region us-east-2 --name atlas-$ENVIRONMENT_NAME-cluster
+
+# Command to get grafana ulr: kubectl get svc -n kube-monitoring | grep grafana
+# Default grafana creds: admin/prom-operator
 
 # Command to select cluster:
 # export ENVIRONMENT_NAME=your_environment_name

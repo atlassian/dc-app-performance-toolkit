@@ -7,6 +7,7 @@
 
 ################################################################################
 # Configuration settings to change
+# Configuration settings to change
 ################################################################################
 
 # Unique name of your small-scale test cluster.
@@ -44,6 +45,9 @@ whitelist_cidr = ["0.0.0.0/0"]
 # Path to a JSON file with EBS and RDS snapshot IDs
 snapshots_json_file_path = "dcapt-snapshots.json"
 
+# Path to a JSON file with EBS and RDS snapshot IDs
+snapshots_json_file_path = "dcapt-snapshots.json"
+
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing-small"}
 
@@ -56,6 +60,7 @@ instance_disk_size = 100
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
 min_cluster_capacity = 1
+max_cluster_capacity = 2
 max_cluster_capacity = 2
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
@@ -83,8 +88,18 @@ max_cluster_capacity = 2
 jira_image_repository = "atlassian/jira-software"
 # JSM
 # ! REQUIRED for JSM !
+# ! REQUIRED for JSM !
 # jira_image_repository = "atlassian/jira-servicemanagement"
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+# Jira version.
+jira_version_tag = "9.12.1"
+# JSM version
+# ! REQUIRED for JSM !
+# jira_version_tag = "5.12.1"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+jira_dataset_size = "small"
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version.
 jira_version_tag = "9.12.1"
@@ -125,6 +140,8 @@ jira_nfs_limits_memory   = "1.5Gi"
 # initial volume size of local/shared home EBS.
 jira_local_home_size  = "20Gi"
 jira_shared_home_size = "20Gi"
+jira_local_home_size  = "20Gi"
+jira_shared_home_size = "20Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -154,6 +171,11 @@ jira_db_master_password = "Password1!"
 # Confluence Settings
 ################################################################################
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+confluence_version_tag = "8.5.4"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+confluence_dataset_size = "small"
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 confluence_version_tag = "8.5.4"
 
@@ -189,6 +211,7 @@ synchrony_stack_size = "2048k"
 # Storage
 confluence_local_home_size  = "20Gi"
 confluence_shared_home_size = "20Gi"
+confluence_shared_home_size = "20Gi"
 
 # Confluence NFS instance resource configuration
 confluence_nfs_requests_cpu    = "500m"
@@ -205,6 +228,7 @@ confluence_db_major_engine_version = "14"
 confluence_db_instance_class       = "db.t3.medium"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
+
 
 # If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
@@ -227,6 +251,11 @@ confluence_collaborative_editing_enabled = true
 # Bitbucket Settings
 ################################################################################
 
+# Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
+bitbucket_version_tag = "8.9.8"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+bitbucket_dataset_size = "small"
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 bitbucket_version_tag = "8.9.8"
 
@@ -275,6 +304,7 @@ bitbucket_max_heap = "2048m"
 
 # Storage
 bitbucket_local_home_size  = "20Gi"
+bitbucket_local_home_size  = "20Gi"
 bitbucket_shared_home_size = "20Gi"
 
 # Bitbucket NFS instance resource configuration
@@ -300,6 +330,7 @@ bitbucket_db_major_engine_version = "14"
 bitbucket_db_instance_class       = "db.t3.medium"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
+
 
 # If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
