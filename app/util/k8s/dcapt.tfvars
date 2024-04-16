@@ -389,8 +389,8 @@ crowd_db_master_password     = "Password1!"
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.2.11"
-bamboo_agent_version_tag = "9.2.11"
+bamboo_version_tag       = "9.6.1"
+bamboo_agent_version_tag = "9.6.1"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
