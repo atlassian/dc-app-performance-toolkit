@@ -52,7 +52,7 @@ class AllBuildsLocators:
 
 
 class PlanConfigurationLocators:
-    edit_config_button = (By.XPATH, "//span[contains(text(),'Configure plan')]")
+    edit_config_button = (By.XPATH, "//span[@title='Configure plan']")
     config_plan_page = (By.ID, "config-sidebar")
     config_plan_page_content = (By.ID, "content")
 
