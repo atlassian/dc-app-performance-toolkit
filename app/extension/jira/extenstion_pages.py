@@ -7,7 +7,7 @@ import json
 from selenium_ui.base_page import BasePage
 
 from extension.jira.extension_selectors import UrlManager, NewProjectPageLocators, NewGoalPageLocators, ProjectSearchPageLocators, \
-    GoalSearchPageLocators, ProjectDetailsPageLocators, TagSearchPageLocators
+    GoalSearchPageLocators, ProjectDetailsPageLocators, OnboardingDialogLocators, TagSearchPageLocators
 
 class NewProject(BasePage):
     page_loaded_selector = NewProjectPageLocators.new_project_modal_ready
@@ -18,6 +18,7 @@ class NewProject(BasePage):
         self.page_url = url_manager_modal.new_project_url()
 
     def wait_for_new_project_title(self):
+        self.dismiss_popup(OnboardingDialogLocators.dismiss_onboarding_button)
         self.wait_until_visible(NewProjectPageLocators.new_project_modal_ready)
 
     def fill_new_project_title(self):
@@ -37,6 +38,7 @@ class ProjectDetails(BasePage):
         self.page_url = url_manager.project_details_url()
 
     def wait_for_project_details(self):
+        self.dismiss_popup(OnboardingDialogLocators.dismiss_onboarding_button)
         self.wait_until_visible(ProjectDetailsPageLocators.project_details_update_list)
 
     def fill_project_update(self):
@@ -60,6 +62,7 @@ class ProjectsList(BasePage):
         self.page_url = url_manager.project_search_url()
 
     def wait_for_page_loaded(self):
+        self.dismiss_popup(OnboardingDialogLocators.dismiss_onboarding_button)
         self.wait_until_any_ec_presented(
             selectors=[ProjectSearchPageLocators.search_results_table])
 
@@ -71,6 +74,7 @@ class GoalsList(BasePage):
         self.page_url = url_manager.goal_search_url()
 
     def wait_for_page_loaded(self):
+        self.dismiss_popup(OnboardingDialogLocators.dismiss_onboarding_button)
         self.wait_until_any_ec_presented(
             selectors=[GoalSearchPageLocators.search_results_table])
         
@@ -81,5 +85,6 @@ class TagsList(BasePage):
         self.page_url = url_manager.tag_search_url()
 
     def wait_for_page_loaded(self):
+        self.dismiss_popup(OnboardingDialogLocators.dismiss_onboarding_button)
         self.wait_until_any_ec_presented(
             selectors=[TagSearchPageLocators.search_results_table])        

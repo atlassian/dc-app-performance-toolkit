@@ -71,3 +71,9 @@ class ProjectDetailsPageLocators:
     project_target_date_picker = (By.ID, "project-target-date-picker")
     project_status_button = (By.ID, "project-status-update-select-button")
     project_status_on_track = (By.ID, "react-select-8-option-3")
+
+class OnboardingDialogLocators:
+    onboarding_popup = '#onboarding-project-general'
+    next_onboarding_button = "#next-onboarding-stage"
+    previous_onboarding_button = "#previous-onboarding-stage"
+    dismiss_onboarding_button = "#dismiss-general-onboarding"
