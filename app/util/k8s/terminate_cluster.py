@@ -179,7 +179,7 @@ def delete_nodegroup(aws_region, cluster_name):
                         nodegroupName=node_group)['nodegroup']['resources']['autoScalingGroups'][0]['name']
                     autoscaling_client.delete_auto_scaling_group(AutoScalingGroupName=autoscaling_group_name,
                                                                  ForceDelete=True)
-                except Boto3Error as e:
+                except (Boto3Error, KeyError) as e:
                     logging.error(f"Deleting autoscaling group {autoscaling_group_name} failed with error: {e}")
 
                 try:
