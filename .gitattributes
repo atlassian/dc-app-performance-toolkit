@@ -1,1 +1,2 @@
-*.sh        text eol=lf
+*.sh                    text eol=lf
+dcapt-snapshots.json    text eol=lf
