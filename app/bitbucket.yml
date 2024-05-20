@@ -18,7 +18,7 @@ settings:
     ramp-up: 10m                       # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.5
+    JMETER_VERSION: 5.6
     LANGUAGE: en_US.utf8
     allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
@@ -91,7 +91,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "123.0.6312.122" # Supports Chrome version 123. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "125.0.6422.60" # Supports Chrome version 125. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml
