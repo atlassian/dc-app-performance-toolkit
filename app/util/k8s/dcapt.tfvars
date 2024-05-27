@@ -72,7 +72,7 @@ instance_disk_size = 200
 # Cluster-autoscaler is installed in the EKS cluster that will manage the requested capacity
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
-min_cluster_capacity = 2
+min_cluster_capacity = 1
 max_cluster_capacity = 6
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
@@ -196,6 +196,12 @@ synchrony_mem       = "3Gi"
 synchrony_min_heap  = "1024m"
 synchrony_max_heap  = "2048m"
 synchrony_stack_size = "2048k"
+
+# Confluence NFS instance resource configuration
+confluence_nfs_requests_cpu    = "1"
+confluence_nfs_requests_memory = "1Gi"
+confluence_nfs_limits_cpu      = "1.5"
+confluence_nfs_limits_memory   = "2Gi"
 
 # Storage
 confluence_local_home_size  = "200Gi"
