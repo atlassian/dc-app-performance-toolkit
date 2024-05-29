@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import List
 
-from constants import SUPPORTED_TEST_ATLASSIAN_PRODUCTS
 from scripts.utils import validate_file_exists, resolve_relative_path, validate_config
 
+SUPPORTED_TEST_ATLASSIAN_PRODUCTS = ("bamboo", "bitbucket", "confluence", "crowd", "jira", "jsm", )
 SUMMARY_FILE_NAME = "results_summary.log"
 DELIMITER = ('\n================================================================================'
              '========================================\n')
