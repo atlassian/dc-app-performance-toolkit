@@ -236,7 +236,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.10"
+bitbucket_version_tag = "8.19.0"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
