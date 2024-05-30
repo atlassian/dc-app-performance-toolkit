@@ -24,7 +24,6 @@ def setup_run_data(datasets):
 
 def generate_debug_session_info(webdriver, datasets):
     debug_data = datasets['current_session']
-    debug_data['current_url'] = webdriver.current_url
     return debug_data
 
 
@@ -55,6 +54,8 @@ def login(webdriver, datasets):
         def sub_measure():
             login_page.submit_login()
             get_started_page = GetStarted(webdriver)
+            PopupManager(webdriver).dismiss_default_popup()
+            get_started_page.close_whats_new_window()
             get_started_page.wait_for_page_loaded()
             webdriver.node_id = login_page.get_node_id()
             print(f"node_id:{webdriver.node_id}")

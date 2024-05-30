@@ -39,6 +39,12 @@ class GetStarted(BasePage):
     page_url = GetStartedLocators.get_started_url
     page_loaded_selector = GetStartedLocators.user_profile_icon
 
+    def close_whats_new_window(self):
+        popup_window = self.get_elements(GetStartedLocators.whats_new_window_close_button)
+        if popup_window:
+            self.wait_until_visible(GetStartedLocators.whats_new_window_close_button).click()
+            self.wait_until_invisible(GetStartedLocators.whats_new_window_close_button)
+
 
 class Dashboard(BasePage):
     page_url = DashboardLocators.dashboard_url
@@ -72,7 +78,7 @@ class PopupManager(BasePage):
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
                                   PopupLocators.popup_3, PopupLocators.popup_4, PopupLocators.popup_5,
-                                  PopupLocators.popup_6)
+                                  PopupLocators.popup_6, PopupLocators.popup_7)
 
 
 class Repository(BasePage):

@@ -82,6 +82,7 @@ class PopupLocators:
     popup_4 = '.css-1dqf51u'
     popup_5 = '.css-1kflcxk'
     popup_6 = '.css-1gh2dqy'
+    popup_7 = "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']"
 
 
 class LoginPageLocators:
@@ -99,6 +100,7 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_url = UrlManager().get_started_url()
     user_profile_icon = (By.ID, 'current-user')
+    whats_new_window_close_button = (By.CSS_SELECTOR, "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
 
 
 class DashboardLocators:
