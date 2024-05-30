@@ -110,6 +110,41 @@
             ]
           }
         ]
+      },
+      {
+        "version": "9.12.8",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-06e6b3625907ef40f",
+                "us-east-1": "snap-00c4d3e86f49a50ae"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-12-8",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-12-8"
+              }
+            ]
+          },
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-07e3750629682c9f8",
+                "us-east-1": "snap-0b408784b5913567c"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
