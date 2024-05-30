@@ -345,6 +345,26 @@
         "version": "8.5.9",
         "data": [
           {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-9",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-9"
+              }
+            ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0f50f2ea319c45d51",
+                "us-east-1": "snap-04e7e96e4150c9334"
+              }
+            ]
+          },
+          {
             "type": "ebs",
             "size": "large",
             "snapshots": [
