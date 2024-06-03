@@ -11,6 +11,7 @@
 
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
+# Only lowercase letters, numbers, dashes, and dots are allowed.
 # ! REQUIRED !
 environment_name = "dcapt-product-small"
 
