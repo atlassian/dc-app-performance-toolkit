@@ -205,6 +205,7 @@ def view_page(locust):
                f'&pageId={parsed_page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000&_={timestamp_int()}',
                catch_response=True)
 
@@ -385,6 +386,7 @@ def view_blog(locust):
                    f'&pageId={blog_id}'
                    f'&spaceKey={space_key}'
                    f'&atl_after_login_redirect=/pages/viewpage.action'
+                   f"&atl_token={locust.session_data_storage['token']}"
                    f'&timeout=12000&_={timestamp_int()}',
                    catch_response=True)
 
@@ -408,6 +410,7 @@ def view_blog(locust):
 
 def search_cql_and_view_results(locust):
     raise_if_login_failed(locust)
+    cql = random.choice(confluence_dataset["cqls"])[0]
 
     @confluence_measure('locust_search_cql:recently_viewed')
     def search_recently_viewed():
@@ -420,7 +423,7 @@ def search_cql_and_view_results(locust):
     def search_cql():
         # 530 rest/api/search
         r = locust.get(f"/rest/api/search"
-                       f"?cql=siteSearch~'{generate_random_string(3, only_letters=True)}'"
+                       f"?cql=siteSearch~'{cql}'"
                        f"&start=0"
                        f"&limit=20",
                        catch_response=True)
@@ -452,7 +455,8 @@ def open_editor_and_create_blog(locust):
 
         # 550 pages/createblogpost.action
         r = locust.get(f'/pages/createblogpost.action'
-                       f'?spaceKey={blog_space_key}',
+                       f'?spaceKey={blog_space_key}'
+                       f"&atl_token={locust.session_data_storage['token']}",
                        catch_response=True)
 
         content = r.content.decode('utf-8')
@@ -710,6 +714,7 @@ def open_editor_and_create_blog(locust):
                        f'&pageId={content_id}'
                        f'&spaceKey={parsed_space_key}'
                        f'&atl_after_login_redirect=/pages/viewpage.action'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&timeout=12000&_={timestamp_int()}',
                        catch_response=True)
 
@@ -750,6 +755,7 @@ def create_and_edit_page(locust):
         r = locust.get(f'/pages/createpage.action'
                        f'?spaceKey={space_key}'
                        f'&fromPageId={page_id}'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&src=quick-create',
                        catch_response=True)
 
@@ -1022,6 +1028,7 @@ def create_and_edit_page(locust):
                        f'&pageId={locust.session_data_storage["content_id"]}'
                        f'&spaceKey={space_key}'
                        f'&atl_after_login_redirect=/display/{space_key}/{page_title}'
+                       f"&atl_token={locust.session_data_storage['token']}"
                        f'&timeout=12000&_={timestamp_int()}',
                        catch_response=True)
 
@@ -1278,6 +1285,7 @@ def create_and_edit_page(locust):
                    f'&pageId={locust.session_data_storage["content_id"]}'
                    f'&spaceKey={space_key}'
                    f'&atl_after_login_redirect=/pages/viewpage.action'
+                   f"&atl_token={locust.session_data_storage['token']}"
                    f'&timeout=12000'
                    f'&_={timestamp_int()}', catch_response=True)
 
@@ -1440,6 +1448,7 @@ def view_attachments(locust):
                f'&pageId={page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000'
                f'&_={timestamp_int()}',
                catch_response=True)
@@ -1554,6 +1563,7 @@ def upload_attachments(locust):
                f'&pageId={page_id}'
                f'&spaceKey={space_key}'
                f'&atl_after_login_redirect=/pages/viewpage.action'
+               f"&atl_token={locust.session_data_storage['token']}"
                f'&timeout=12000'
                f'&_={timestamp_int()}',
                catch_response=True)

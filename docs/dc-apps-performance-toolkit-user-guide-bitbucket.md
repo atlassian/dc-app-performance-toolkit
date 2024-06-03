@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2023-04-20"
+date: "2024-04-29"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -21,7 +21,7 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 **[Enterprise-scale environment](#mainenvironmententerprise)**: Bitbucket Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process.
 
 4. [Set up an enterprise-scale environment Bitbucket Data Center on AWS](#instancesetup).
-5. [Set up an execution environment for the toolkit](#executionhost).
+5. [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
 6. [Running the test scenarios from execution environment against enterprise-scale Bitbucket Data Center](#testscenario).
 
 ---
@@ -33,35 +33,7 @@ It'll also provide you with a lightweight and less expensive environment for dev
 Once you're ready to generate test results for the Marketplace Data Center Apps Approval process,
 run the toolkit in an **enterprise-scale environment**.
 
----
-
-{{% note %}}
-In case you are in the middle of Bitbucket DC app performance testing with the CloudFormation deployment option,
-the process can be continued after switching to the `7.1.0` DCAPT version.
-{{% /note %}}
-
-* Checkout release `7.1.0` of the `dc-app-performance-toolkit` repository:
-
-   ```
-   git checkout release-7.1.0
-   ```
-* Use the docker container with the `7.1.0` release tag to run performance tests from docker:
-
-   ```
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt:7.1.0
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt:7.1.0 bitbucket.yml
-   ```
-* The corresponding version of the user guide could be found in the `dc-app-performance-toolkit/docs` folder or by this 
-[link](https://github.com/atlassian/dc-app-performance-toolkit/blob/release-7.1.0/docs/dc-apps-performance-toolkit-user-guide-bitbucket.md).
-* If specific version of the Bitbucket DC is required, please contact support in the [community Slack](http://bit.ly/dcapt_slack).
-
----
-
 ### <a id="devinstancesetup"></a>1. Setting up Bitbucket Data Center development environment
-
-We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
-how to deploy a Bitbucket Data Center environment and AWS on k8s.
 
 #### AWS cost estimation for the development environment
 
@@ -83,39 +55,38 @@ See [Set up an enterprise-scale environment Bitbucket Data Center on AWS](#insta
 
 Below process describes how to install low-tier Bitbucket DC with "small" dataset included:
 
-1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
-   section of the official documentation.
-2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
-3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-4. Clone the project repo:
-   ```bash
-   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
-   ```
-5. Copy [`dcapt-small.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars) file to the `data-center-terraform` folder.
-   ``` bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt-small.tfvars
-    ```
-6. Set **required** variables in `dcapt-small.tfvars` file:
+2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+4. Set AWS access keys created in step1 in `aws_envs` file:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_SESSION_TOKEN` (only for temporary creds)
+5. Set **required** variables in `dcapt-small.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-bitbucket-small`
    - `products` - `bitbucket`
    - `bitbucket_license` - one-liner of valid bitbucket license without spaces and new line symbols
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-7. Optional variables to override:
-   - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-   - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-8. From local terminal (Git bash terminal for Windows) start the installation (~20 min):
-   ```bash
-   ./install.sh -c dcapt-small.tfvars
-   ```
-9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
-{{% note %}}
-New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
-{{% /note %}}
+   {{% note %}}
+   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   {{% /note %}}
+
+6. Optional variables to override:
+   - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+7. From local terminal (Git Bash for Windows users) start the installation (~20 min):
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   ```
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
@@ -204,20 +175,34 @@ After adding your custom app-specific actions, you should now be ready to run th
 
 ### <a id="instancesetup"></a>4. Setting up Bitbucket Data Center enterprise-scale environment with "large" dataset
 
-We recommend that you use the [official documentation](https://atlassian-labs.github.io/data-center-terraform/) 
-how to deploy a Bitbucket Data Center environment and AWS on k8s.
+{{% warning %}}
+It is recommended to terminate a development environment before creating an enterprise-scale environment.
+Follow [Terminate development environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-development-environment) instructions.
+In case of any problems with uninstall use [Force terminate command](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#force-terminate-cluster).
+{{% /warning %}}
 
+#### EC2 CPU Limit
+{{% warning %}}
+The installation of 4-pods DC environment and execution pod requires at least **40** vCPU Cores.
+Newly created AWS account often has vCPU limit set to low numbers like 5 vCPU per region.
+Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) page.
+**Applied quota value** is the current CPU limit in the specific region.
+
+Make that current limit is large enough to deploy new cluster.
+The limit can be increased by using **Request increase at account-level** button: choose a region, set a quota value which equals a required number of CPU Cores for the installation and press **Request** button.
+Recommended limit is 50.
+{{% /warning %}}
 ### AWS cost estimation ###
 [AWS Pricing Calculator](https://calculator.aws/) provides an estimate of usage charges for AWS services based on certain information you provide.
 Monthly charges will be based on your actual usage of AWS services, and may vary from the estimates the Calculator has provided.
 
 *The prices below are approximate and may vary depending on factors such as (region, instance type, deployment type of DB, etc.)
 
-| Stack | Estimated hourly cost ($) |
-| ----- | ------------------------- |
-| One Node Bitbucket DC | 1.4 - 2.0 |
-| Two Nodes Bitbucket DC | 1.7 - 2.5 |
-| Four Nodes Bitbucket DC | 2.4 - 3.6 |
+| Stack                 | Estimated hourly cost ($) |
+|-----------------------|---------------------------|
+| One pod Bitbucket DC  | 1 - 2
+| Two pods Bitbucket DC | 1.5 - 2.5
+| Four pods Bitbucket DC   | 2.5 - 4
 
 #### Setup Bitbucket Data Center enterprise-scale environment on k8s.
 
@@ -232,71 +217,55 @@ Data dimensions and values for an enterprise-scale dataset are listed and descri
 | Total files number | ~750 000 |
 
 
-{{% warning %}}
-It is recommended to terminate a development environment before creating an enterprise-scale environment.
-Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
-If you want to keep a development environment up, read [How do I deal with a pre-existing state in multiple environments?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#:~:text=How%20do%20I%20deal%20with%20pre%2Dexisting%20state%20in%20multiple%20environment%3F)
-{{% /warning %}}
-
 Below process describes how to install enterprise-scale Bitbucket DC with "large" dataset included: 
 
-1. Read [requirements](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#requirements)
-   section of the official documentation.
-2. Set up [environment](https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/#environment-setup).
-3. Set up [AWS security credentials](https://atlassian-labs.github.io/data-center-terraform/userguide/INSTALLATION/#1-set-up-aws-security-credentials).
+1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
    {{% warning %}}
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
-4. Clone the project repo:
-   ```bash
-   git clone -b 2.4.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
-   ```
-5. Copy [`dcapt.tfvars`](https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars) file to the `data-center-terraform` folder.
-      ``` bash
-   wget https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/dcapt.tfvars
-    ```
-6. Set **required** variables in `dcapt.tfvars` file:
+2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+4. Set AWS access keys created in step1 in `aws_envs` file:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_SESSION_TOKEN` (only for temporary creds)
+5. Set **required** variables in `dcapt.tfvars` file:
    - `environment_name` - any name for you environment, e.g. `dcapt-bitbucket-large`
    - `products` - `bitbucket`
    - `bitbucket_license` - one-liner of valid bitbucket license without spaces and new line symbols
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
-   - `instance_types` - `["m5.4xlarge"]` 
-7. Optional variables to override:
-    - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
-    - Make sure that the Bitbucket version specified in **bitbucket_version_tag** is consistent with the EBS and RDS snapshot versions. Additionally, ensure that corresponding version snapshot lines are uncommented.
-8. From local terminal (Git bash terminal for Windows) start the installation (~40min):
-    ```bash
-    ./install.sh -c dcapt.tfvars
-    ```
-9. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
-{{% note %}}
-New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-Use this server id for generation `BX02-9YO1-IN86-LO5G`.
-{{% /note %}}
+   {{% note %}}
+   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
+   Use this server id for generation `BX02-9YO1-IN86-LO5G`.
+   {{% /note %}}
+
+6. Optional variables to override:
+    - `bitbucket_version_tag` - Bitbucket version to deploy. Supported versions see in [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
+7. From local terminal (Git Bash for Windows users) start the installation (~40min):
+   ``` bash
+   docker run --env-file aws_envs \
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   ```
+8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
 {{% note %}}
 All the datasets use the standard `admin`/`admin` credentials.
 It's recommended to change default password from UI account page for security reasons.
 {{% /note %}}
 
-{{% warning %}}
-Terminate cluster when it is not used for performance results generation.
-{{% /warning %}}
-
 ---
 
-### <a id="executionhost"></a>5. Setting up an execution environment
+### <a id="loadconfiguration"></a>5. Setting up load configuration for Enterprise-scale runs
 
-For generating performance results suitable for Marketplace approval process use dedicated execution environment. This is a separate AWS EC2 instance to run the toolkit from. Running the toolkit from a dedicated instance but not from a local machine eliminates network fluctuations and guarantees stable CPU and memory performance.
+Default TerraForm deployment [configuration](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/dcapt.tfvars)
+already has a dedicated execution environment pod to run tests from. For more details see `Execution Environment Settings` section in `dcapt.tfvars` file.
 
-1. Go to GitHub and create a fork of [dc-app-performance-toolkit](https://github.com/atlassian/dc-app-performance-toolkit).
-1. Clone the fork locally, then edit the `bitbucket.yml` configuration file. Set enterprise-scale Bitbucket Data Center parameters:
-
-{{% warning %}}
-Do not push to the fork real `application_hostname`, `admin_login` and `admin_password` values for security reasons.
-Instead, set those values directly in `.yml` file on execution environment instance.
-{{% /warning %}}
+1. Check the `bitbucket.yml` configuration file. If load configuration settings were changed for dev runs, make sure parameters
+   were changed back to the defaults:
 
    ``` yaml
        application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
@@ -311,25 +280,7 @@ Instead, set those values directly in `.yml` file on execution environment insta
        test_duration: 50m
        ramp-up: 10m                      # time to spin all concurrent users
        total_actions_per_hour: 32700     # number of total JMeter actions per hour
-   ```  
-
-1. Push your changes to the forked repository.
-1. [Launch AWS EC2 instance](https://console.aws.amazon.com/ec2/). 
-   * OS: select from Quick Start `Ubuntu Server 20.04 LTS`.
-   * Instance type: [`c5.2xlarge`](https://aws.amazon.com/ec2/instance-types/c5/)
-   * Storage size: `30` GiB
-1. Connect to the instance using [SSH](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) or the [AWS Systems Manager Sessions Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
-
-   ```bash
-   ssh -i path_to_pem_file ubuntu@INSTANCE_PUBLIC_IP
    ```
-
-1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). Setup manage Docker as a [non-root user](https://docs.docker.com/engine/install/linux-postinstall).
-1. Clone forked repository.
-
-{{% note %}}
-At this stage app-specific actions are not needed yet. Use code from `master` branch with your `bitbucket.yml` changes.
-{{% /note %}}
 
 You'll need to run the toolkit for each [test scenario](#testscenario) in the next section.
 
@@ -352,13 +303,27 @@ This scenario helps to identify basic performance issues without a need to spin 
 
 To receive performance baseline results **without** an app installed:
 
-1. Use SSH to connect to execution environment.
-1. Run toolkit with docker from the execution environment instance:
+1. Before run:
+   * Make sure `bitbucket.yml` and toolkit code base has default configuration from the `master` branch.
+   * App-specific actions code base is not needed for Run1 and Run2.
+   * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
+   * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
+      - `AWS_ACCESS_KEY_ID`
+      - `AWS_SECRET_ACCESS_KEY`
+      - `AWS_SESSION_TOKEN` (only for temporary creds)
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
     ``` bash
-    cd dc-app-performance-toolkit
-    docker pull atlassian/dcapt
-    docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh bitbucket.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
@@ -374,17 +339,23 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### <a id="regressionrun2"></a> Run 2 (~1 hour)
 
-To receive performance results with an app installed:
+To receive performance results with an app installed (still use master branch):
 
 1. Install the app you want to test.
 1. Setup app license.
-1. Run toolkit with docker from the execution environment instance:
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
-   ```
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh bitbucket.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -393,57 +364,49 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### Generating a performance regression report
 
-To generate a performance regression report:  
+To generate a performance regression report:
 
-1. Use SSH to connect to execution environment.
-1. Install and activate the `virtualenv` as described in `dc-app-performance-toolkit/README.md`
-1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
-   ``` bash
-   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
-   ```
-1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `performance_profile.yml` file:
-    - Under `runName: "without app"`, in the `fullPath` key, insert the full path to results directory of [Run 1](#regressionrun1).
-    - Under `runName: "with app"`, in the `fullPath` key, insert the full path to results directory of [Run 2](#regressionrun2).
-1. Run the following command:
+1. Edit the `./app/reports_generation/performance_profile.yml` file:
+   - For `runName: "without app"`, in the `relativePath` key, insert the relative path to results directory of [Run 1](#regressionrun1).
+   - For `runName: "with app"`, in the `relativePath` key, insert the relative path to results directory of [Run 2](#regressionrun2).
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:    
     ``` bash
-    python csv_chart_generator.py performance_profile.yml
+    docker run --pull=always \
+    -v "/$PWD:/dc-app-performance-toolkit" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
+    --entrypoint="python" \
+    -it atlassian/dcapt csv_chart_generator.py performance_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
-
-#### Analyzing report
-
-Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
-
-1. From local machine terminal (Git bash terminal for Windows) run command:
-   ``` bash
-   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
-   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
-   ```
-1. Once completed, in the `./reports` folder you will be able to review the action timings with and without your app to see its impact on the performance of the instance. If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
-
-#### <a id="testscenario2"></a> Scenario 2: Scalability testing
-
-The purpose of scalability testing is to reflect the impact on the customer experience when operating across multiple nodes. For this, you have to run scale testing on your app.
-
-For many apps and extensions to Atlassian products, there should not be a significant performance difference between operating on a single node or across many nodes in Bitbucket DC deployment. To demonstrate performance impacts of operating your app at scale, we recommend testing your Bitbucket DC app in a cluster.
-
+1. In the `./app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
+   If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 ##### <a id="run3"></a> Run 3 (~1 hour)
 
 To receive scalability benchmark results for one-node Bitbucket DC **with** app-specific actions:
 
-1. Apply app-specific code changes to a new branch of forked repo.
-1. Use SSH to connect to execution environment.
-1. Pull cloned fork repo branch with app-specific actions.
-1. Run toolkit with docker from the execution environment instance:
+1. Before run:
+   * Make sure `bitbucket.yml` and toolkit code base has code base with your developed app-specific actions.
+   * Check correctness of `application_hostname`, `application_protocol`, `application_port` and `application_postfix` in .yml file.
+   * Check load configuration parameters needed for enterprise-scale run: [Setting up load configuration for Enterprise-scale runs](#loadconfiguration).
+   * [test_1_selenium_custom_action](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/selenium_ui/bitbucket_ui.py#L67-L68) is uncommented and has implementation in case of Selenium app-specific actions.
+   * AWS access keys set in `./dc-app-performance-toolkit/app/util/k8s/aws_envs` file:
+      - `AWS_ACCESS_KEY_ID`
+      - `AWS_SECRET_ACCESS_KEY`
+      - `AWS_SESSION_TOKEN` (only for temporary creds)
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
-   ```
-
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh bitbucket.yml
+    ```
+   
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
 {{% /note %}}
@@ -451,26 +414,36 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### <a id="run4"></a> Run 4 (~1 hour)
 {{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for two-node Bitbucket DC **with** app-specific actions:
 
-1. Navigate to `data-center-terraform` folder.
-2. Open `dcapt.tfvars` file and set `bitbucket_replica_count` value to `2`.
-3. From local terminal (Git bash terminal for Windows) start scaling (~20 min):
-   ```bash
-   ./install.sh -c dcapt.tfvars
-   ```
-4. Use SSH to connect to execution environment.
-5. Run toolkit with docker from the execution environment instance:
+1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
+1. Open `dcapt.tfvars` file and set `bitbucket_replica_count` value to `2`.
+1. From local terminal (Git Bash for Windows users) start scaling (~20 min):
    ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
+   docker run --pull=always --env-file aws_envs \
+   -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
+   -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
+   -v "/$PWD/logs:/data-center-terraform/logs" \
+   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
    ```
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
+
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh bitbucket.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -479,21 +452,27 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 ##### <a id="run5"></a> Run 5 (~1 hour)
 {{% note %}}
-Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. 
-Use [vCPU limits calculator](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/) to see current limit.
-The same article has instructions on how to increase limit if needed.
+Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 50.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
+[EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
 To receive scalability benchmark results for four-node Bitbucket DC with app-specific actions:
 
 1. Scale your Bitbucket Data Center deployment to 4 nodes as described in [Run 4](#run4).
-1. Run toolkit with docker from the execution environment instance:
+1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
 
-   ``` bash
-   cd dc-app-performance-toolkit
-   docker pull atlassian/dcapt
-   docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt bitbucket.yml
-   ```  
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
+    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh bitbucket.yml
+    ```
 
 {{% note %}}
 Review `results_summary.log` file under artifacts dir location. Make sure that overall status is `OK` before moving to the next steps. For an enterprise-scale environment run, the acceptable success rate for actions is 95% and above.
@@ -504,37 +483,25 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 
 To generate a scalability report:
 
-1. Use SSH to connect to execution environment.
-1. Allow current user (for execution environment default user is `ubuntu`) to access Docker generated reports:
-   ``` bash
-   sudo chown -R ubuntu:ubuntu /home/ubuntu/dc-app-performance-toolkit/app/results
-   ```
-1. Navigate to the `dc-app-performance-toolkit/app/reports_generation` folder.
-1. Edit the `scale_profile.yml` file:
-    - For `runName: "1 Node"`, in the `fullPath` key, insert the full path to results directory of [Run 3](#run3).
-    - For `runName: "2 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 4](#run4).
-    - For `runName: "4 Nodes"`, in the `fullPath` key, insert the full path to results directory of [Run 5](#run5).
-1. Run the following command from the `virtualenv` (as described in `dc-app-performance-toolkit/README.md`):
+1. Edit the `./app/reports_generation/scale_profile.yml` file:
+   - For `runName: "1 Node"`, in the `relativePath` key, insert the relative path to results directory of [Run 3](#run3).
+   - For `runName: "2 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 4](#run4).
+   - For `runName: "4 Nodes"`, in the `relativePath` key, insert the relative path to results directory of [Run 5](#run5).
+1. Navigate locally to `dc-app-performance-toolkit` folder and run the following command from local terminal (Git Bash for Windows users) to generate reports:   
     ``` bash
-    python csv_chart_generator.py scale_profile.yml
+    docker run --pull=always \
+    -v "/$PWD:/dc-app-performance-toolkit" \
+    --workdir="//dc-app-performance-toolkit/app/reports_generation" \
+    --entrypoint="python" \
+    -it atlassian/dcapt csv_chart_generator.py scale_profile.yml
     ```
-1. In the `dc-app-performance-toolkit/app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and summary report.
-
-
-#### Analyzing report
-
-Use [scp](https://man7.org/linux/man-pages/man1/scp.1.html) command to copy report artifacts from execution env to local drive:
-
-1. From local terminal (Git bash terminal for Windows) run command:
-   ``` bash
-   export EXEC_ENV_PUBLIC_IP=execution_environment_ec2_instance_public_ip
-   scp -r -i path_to_exec_env_pem ubuntu@$EXEC_ENV_PUBLIC_IP:/home/ubuntu/dc-app-performance-toolkit/app/results/reports ./reports
-   ```
-1. Once completed, in the `./reports` folder, you will be able to review action timings on Bitbucket Data Center with different numbers of nodes. If you see a significant variation in any action timings between configurations, we recommend taking a look into the app implementation to understand the root cause of this delta.
+1. In the `./app/results/reports/YY-MM-DD-hh-mm-ss` folder, view the `.csv` file (with consolidated scenario results), the `.png` chart file and performance scenario summary report.
+   If you see an impact (>20%) on any action timing, we recommend taking a look into the app implementation to understand the root cause of this delta.
 
 {{% warning %}}
 It is recommended to terminate an enterprise-scale environment after completing all tests.
-Follow [Uninstallation and Cleanup](https://atlassian-labs.github.io/data-center-terraform/userguide/CLEANUP/) instructions.
+Follow [Terminate enterprise-scale environment](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#terminate-enterprise-scale-environment) instructions.
+In case of any problems with uninstall use [Force terminate command](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#force-terminate-cluster).
 {{% /warning %}}
 
 #### Attaching testing results to ECOHELP ticket
@@ -549,9 +516,8 @@ Do not forget to attach performance testing results to your ECOHELP ticket.
 2. Attach two reports folders to your ECOHELP ticket.
 
 ## <a id="support"></a> Support
-For Terraform deploy related questions see  [Troubleshooting tips](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/)page.
+If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+For instructions on how to collect detailed logs, see [Collect detailed k8s logs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#collect-detailed-k8s-logs).
+For failed cluster uninstall use [Force terminate command](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/README.MD#force-terminate-cluster).
 
-If the installation script fails on installing Helm release or any other reason, collect the logs, zip and share to [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.  
-For instructions on how to do this, see [How to troubleshoot a failed Helm release installation?](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/#_1).
-
-In case of the above problem or any other technical questions, issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of any technical questions or issues with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.

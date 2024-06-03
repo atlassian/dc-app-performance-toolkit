@@ -39,6 +39,10 @@ def test_1_selenium_create_inline_comment(confluence_webdriver, confluence_datas
     modules.create_inline_comment(confluence_webdriver, confluence_datasets)
 
 
+def test_1_selenium_cql_search(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+    modules.cql_search(confluence_webdriver, confluence_datasets)
+
+
 """
 Add custom actions anywhere between login and log out action. Move this to a different line as needed.
 Write your custom selenium scripts in `app/extension/confluence/extension_ui.py`.

@@ -79,15 +79,25 @@ class RequestSelectors:
     comment_request_field = OrderedDict({"4.13.0": (By.CSS_SELECTOR, 'textarea#comment-on-request'),
                                          "4.15.0": (By.CLASS_NAME, 'ProseMirror')})
     add_comment_button = (By.XPATH, "//button[contains(text(),'Add')]")
-    share_request_button = (By.CSS_SELECTOR, 'a.js-share-request')
+    share_request_button = (By.XPATH, "//*[self::a or self::span][normalize-space(text())='Share']")
+    share_request_button_request_widget = (By.XPATH, "//button[contains(@data-testid, 'popup-share')]")
     share_request_search_field = (By.ID, 's2id_participants')
     share_request_dropdown = (By.ID, 'select2-drop')
     share_request_dropdown_results = (By.CSS_SELECTOR, '#select2-drop>ul.select2-results>li')
     share_request_dropdown_one_elem = (By.CSS_SELECTOR,
                                        '#select2-drop>ul.select2-results>li>div>span.user-picker-display-name')
-
     share_request_modal_button = (By.XPATH, "//button[contains(text(),'Share')]")
     list_of_requests_types = (By.ID, "cv-request-content")
+
+    # JSM 5.12 Changes in UI
+    share_request_search_field_react = (By.XPATH,
+                                        "//div[starts-with(@id, 'react-select-') and contains(@id, '-placeholder')]")
+    share_request_search_field_arrow_react = (By.XPATH,
+                                              "//div[contains(@class, 'indicatorContainer')]//span[contains(@role, 'img')]")
+    share_request_dropdown_react = (By.XPATH, "//div[starts-with(@id, 'react-select-') and contains(@id, '-listbox')]")
+    share_request_dropdown_one_elem_react = (By.XPATH,
+                                             "//div[starts-with(@id, 'react-select-') and contains(@id, 'option')]/div/div[2]/div[1]/span")
+    share_request_widget_react = (By.ID, 'cp-request-share-root')
 
 
 class InsightSelectors:
