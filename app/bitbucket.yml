@@ -3,29 +3,30 @@ settings:
   artifacts-dir: results/bitbucket/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false                 # disable bzt check for updates
   env:
     application_hostname: test_bitbucket_instance.atlassian.com   # Bitbucket DC hostname without protocol and port e.g. test-bitbucket.atlassian.com or localhost
-    application_protocol: http        # http or https
-    application_port: 80              # 80, 443, 8080, 7990 etc
-    secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix: /bitbucket   # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
+    application_protocol: http         # http or https
+    application_port: 80               # 80, 443, 8080, 7990 etc
+    secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix: /bitbucket    # e.g. /bitbucket for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter             # only jmeter executor is supported
-    concurrency: 20                   # number of concurrent virtual users for jmeter scenario
+    load_executor: jmeter              # only jmeter executor is supported
+    concurrency: 20                    # number of concurrent virtual users for jmeter scenario
     test_duration: 50m
-    ramp-up: 10m                      # time to spin all concurrent users
+    ramp-up: 10m                       # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
 services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/check_for_updates.py
+      - python util/pre_run/environment_compliance_check.py bitbucket
       - python util/pre_run/git_client_check.py
       - python util/data_preparation/bitbucket_prepare_data.py
     shutdown:
@@ -36,7 +37,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.8.3
+      - selenium==4.18.1
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
@@ -90,7 +91,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "112.0.5615.49" # Supports Chrome version 112. You can refer to http://chromedriver.chromium.org/downloads
+      version: "124.0.6367.60" # Supports Chrome version 124. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

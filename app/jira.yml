@@ -3,24 +3,25 @@ settings:
   artifacts-dir: results/jira/withapp-%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false                 # disable bzt check for updates
   env:
     application_hostname: localhost    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
-    application_protocol: http      # http or https
-    application_port: 8080            # 80, 443, 8080, 2990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix:            # e.g. /jira for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`. Leave this value blank for url without postfix.
+    application_protocol: http         # http or https
+    application_port: 80     # 80, 443, 8080, 2990, etc
+    secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix: /jira         # e.g. /jira for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: locust           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
+    load_executor: locust              # jmeter and locust are supported. jmeter by default.
+    concurrency: 200                   # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 3m                     # time to spin all concurrent users
-    total_actions_per_hour: 54500   # number of total JMeter/Locust actions per hour
+    ramp-up: 3m                        # time to spin all concurrent users
+    total_actions_per_hour: 54500      # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     # Action percentage for Jmeter and Locust load executors
     create_issue: 4
     search_jql: 11
@@ -34,7 +35,7 @@ settings:
     view_kanban_board: 7
     view_backlog: 6
     browse_boards: 1
-    
+    standalone_extension: 0 # By default disabled
     sfj_get_analytics_config: 4
     sfj_get_assignments_config: 6
     sfj_valiate_queues: 5
@@ -59,7 +60,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/check_for_updates.py
+      - python util/pre_run/environment_compliance_check.py jira
       - python util/data_preparation/jira_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
@@ -69,10 +70,10 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.8.3
-#  - module: virtual-display
-#    width: 1024
-#    height: 768
+      - selenium==4.18.1
+  # - module: virtual-display
+  #   width: 1024
+  #   height: 768
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -139,7 +140,8 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "112.0.5615.49" # Supports Chrome version 112. You can refer to http://chromedriver.chromium.org/downloads
+      version: "124.0.6367.60" # "124.0.6367.201" Supports Chrome version 124. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      # chromedriver-download-source: "https://storage.googleapis.com/chrome-for-testing-public/124.0.6367.201/linux64/chromedriver-linux64.zip"
 reporting:
 - data-source: sample-labels
   module: junit-xml

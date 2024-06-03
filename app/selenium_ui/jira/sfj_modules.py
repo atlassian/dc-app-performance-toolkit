@@ -21,7 +21,7 @@ rte_status = client.check_rte_status()
 
 
 def edit_issue_with_skillset(webdriver, datasets):
-    page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
+    page = SkillsetField(webdriver, issue_key=datasets['current_session']['issue_key'], issue_id=datasets['current_session']['issue_id'])
     
     @print_timing("selenium_sfj_edit_issue_with_skillset")
     def measure():
@@ -36,7 +36,7 @@ def edit_issue_with_skillset(webdriver, datasets):
     measure()
 
 def view_issue_with_skillset(webdriver, datasets):
-    page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
+    page = SkillsetField(webdriver, issue_key=datasets['current_session']['issue_key'], issue_id=datasets['current_session']['issue_id'])
 
     @print_timing("selenium_sfj_view_issue_with_skillset")
     def measure():
@@ -46,7 +46,7 @@ def view_issue_with_skillset(webdriver, datasets):
 
 
 def edit_skillset(webdriver, datasets):
-    page = SkillsetField(webdriver, issue_key=datasets['issue_key'], issue_id=datasets['issue_id'])
+    page = SkillsetField(webdriver, issue_key=datasets['current_session']['issue_key'], issue_id=datasets['current_session']['issue_id'])
 
     @print_timing("selenium_sfj_edit_skillset")
     def measure():
@@ -111,7 +111,7 @@ def inspector_select_user(webdriver, datasets):
 
 
 def open_risk_analysis(webdriver, datasets):
-    page = RiskAnalysis(webdriver, project_key=datasets['project_key'])
+    page = RiskAnalysis(webdriver, project_key=datasets['current_session']['project_key'])
     
     @print_timing("selenium_sfj_open_risk_analysis")
     def measure():

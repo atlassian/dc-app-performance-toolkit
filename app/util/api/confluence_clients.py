@@ -26,10 +26,10 @@ class ConfluenceRestClient(RestClient):
 
         while loop_count > 0:
             api_url = (
-                    self.host + f'/rest/api/content/?type={type}'
-                                f'&start={start}'
-                                f'&limit={limit}'
-                                f'&expand={expand}'
+                self.host + f'/rest/api/content/?type={type}'
+                f'&start={start}'
+                f'&limit={limit}'
+                f'&expand={expand}'
             )
             request = self.get(api_url, "Could not retrieve content")
 
@@ -63,10 +63,10 @@ class ConfluenceRestClient(RestClient):
 
         while loop_count > 0:
             api_url = (
-                    self.host + f'/rest/api/content/search?cql={cql}'
-                                f'&start={start}'
-                                f'&limit={limit}'
-                                f'&expand={expand}'
+                self.host + f'/rest/api/content/search?cql={cql}'
+                f'&start={start}'
+                f'&limit={limit}'
+                f'&expand={expand}'
             )
             request = self.get(api_url, "Could not retrieve content")
 
@@ -123,29 +123,40 @@ class ConfluenceRestClient(RestClient):
     @retry()
     def is_remote_api_enabled(self):
         api_url = f'{self.host}/rpc/xmlrpc'
-        response = self.get(api_url, error_msg='Confluence Remote API (XML-RPC & SOAP) is disabled. '
-                                               'For further processing enable Remote API via '
-                                               'General Configuration - Further Configuration - Remote API')
+        response = self.get(
+            api_url, error_msg='Confluence Remote API (XML-RPC & SOAP) is disabled. '
+            'For further processing enable Remote API via '
+            'General Configuration - Further Configuration - Remote API')
         return response.status_code == 200
 
     def get_confluence_nodes(self):
-        api_url = f"{self.host}/rest/atlassian-cluster-monitoring/cluster/nodes"
-        response = self.get(api_url, error_msg='Could not get Confluence nodes count via API',
-                            expected_status_codes=[200, 500])
-        if response.status_code == 500 and 'NonClusterMonitoring' in response.text:
+        response = self.get(
+            f'{self.host}/rest/zdu/cluster',
+            error_msg='Could not get Confluence nodes count via API',
+            expected_status_codes=[
+                200,
+                403,
+                500])
+        if response.status_code == 403 and 'clustered installation' in response.text:
             return 'Server'
-        nodes = [node['nodeId'] for node in response.json()]
+        nodes = [node['id'] for node in response.json()['nodes']]
         return nodes
 
     def get_available_processors(self):
         try:
+            nodes = self.get_confluence_nodes()
+            if nodes == 'Server':
+                return 'Server'
             node_id = self.get_confluence_nodes()[0]
             api_url = f'{self.host}/rest/atlassian-cluster-monitoring/cluster/suppliers/data/com.atlassian.cluster' \
                       f'.monitoring.cluster-monitoring-plugin/runtime-information/{node_id}'
-            response = self.get(api_url, "Could not get Available Processors information")
-            processors = response.json()['data']['rows']['availableProcessors'][1]
+            response = self.get(
+                api_url, "Could not get Available Processors information")
+            processors = response.json(
+            )['data']['rows']['availableProcessors'][1]
         except Exception as e:
-            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            print(
+                f"Warning: Could not get Available Processors information. Error: {e}")
             return 'N/A'
         return processors
 
@@ -156,15 +167,19 @@ class ConfluenceRestClient(RestClient):
 
     def get_collaborative_editing_status(self):
         api_url = f'{self.host}/rest/synchrony-interop/status'
-        response = self.get(api_url, error_msg='Could not get collaborative editing status')
+        response = self.get(
+            api_url, error_msg='Could not get collaborative editing status')
         return response.json()
 
     def get_locale(self):
         language = None
-        page = self.get(f"{self.host}/index.action#all-updates", "Could not get page content.")
+        page = self.get(
+            f"{self.host}/index.action#all-updates",
+            "Could not get page content.")
         tree = html.fromstring(page.content)
         try:
-            language = tree.xpath('.//meta[@name="ajs-user-locale"]/@content')[0]
+            language = tree.xpath(
+                './/meta[@name="ajs-user-locale"]/@content')[0]
         except Exception as error:
             print(f"Warning: Could not get user locale: {error}")
         return language
@@ -195,11 +210,29 @@ class ConfluenceRestClient(RestClient):
         return 'other'
 
     def get_node_ip(self, node_id: str) -> str:
-        return self.get(
-            url=f"{self.host}/rest/zdu/nodes/{node_id}",
-            expected_status_codes=[200],
-            error_msg=f"Cannot get {node_id} node IP",
-        ).json().get("ipAddress")
+        if node_id != "SERVER":
+            return self.get(
+                url=f"{self.host}/rest/zdu/nodes/{node_id}",
+                expected_status_codes=[200],
+                error_msg=f"Cannot get {node_id} node IP",
+            ).json().get("ipAddress")
+        else:
+            return ""
+
+    def create_user(self, username, password):
+        create_user_url = f'{self.host}/rest/api/admin/user'
+        payload = {
+            "userName": username,
+            "password": password,
+            "email": f'{username}@test.com',
+            "notifyViaEmail": False,
+            "fullName": username.capitalize()
+        }
+        r = self.post(
+            url=create_user_url,
+            body=payload,
+            error_msg='ERROR: Could not create user')
+        return r.json()
 
 
 class ConfluenceRpcClient(Client):
@@ -224,6 +257,10 @@ class ConfluenceRpcClient(Client):
             }
             proxy.confluence2.addUser(token, user_definition, password)
             user_definition['password'] = password
-            return {'user': {'username': user_definition["name"], 'email': user_definition["email"]}}
+            return {
+                'user': {
+                    'username': user_definition["name"],
+                    'email': user_definition["email"]}}
         else:
-            raise Exception(f"Can't create user {username}: user already exists.")
+            raise Exception(
+                f"Can't create user {username}: user already exists.")

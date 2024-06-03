@@ -3,7 +3,7 @@ settings:
   artifacts-dir: results/bamboo/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false                 # disable bzt check for updates
   env:
     application_hostname: test-bamboo.atlassian.com   # Bamboo DC hostname without protocol and port e.g. test-bamboo.atlassian.com or localhost
     application_protocol: http         # http or https
@@ -13,14 +13,15 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter
-    concurrency: 200                   # number of Bamboo users for Selenium actions
+    concurrency: 200                   # number of Bamboo users for Jmeter actions
     test_duration: 45m
     ramp-up: 5m                        # time to spin all concurrent threads
     total_actions_per_hour: 2000       # number of total JMeter actions per hour
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.4.3
+    JMETER_VERSION: 5.5
     LANGUAGE: en_US.utf8
     allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     # Action percentage for JMeter load executor
     view_all_builds: 15
     view_build_result: 15
@@ -40,6 +41,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
+      - python util/pre_run/environment_compliance_check.py bamboo
       - python util/data_preparation/bamboo_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
@@ -49,7 +51,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.8.3
+      - selenium==4.18.1
 execution:
   - scenario: jmeter
     executor: jmeter
@@ -123,7 +125,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "112.0.5615.49" # Supports Chrome version 112. You can refer to http://chromedriver.chromium.org/downloads
+      version: "124.0.6367.60" # Supports Chrome version 124. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

@@ -13,7 +13,7 @@ class SkillsetField(Issue):
             "skillset_edit_skills": ".skillset-root > .skillset-edit .skill input",
             "skillset_edit_skills_checked": ".skillset-root > .skillset-edit .skill input:checked",
             "skillset_edit_skills_unchecked": ".skillset-root > .skillset-edit .skill input:not(:checked)",
-            "skillset_edit_form_submit": ".save-options button[type=submit]",
+            "skillset_edit_form_submit": ".save-options button.aui-button.submit[type=submit]",
         }
         
     def edit_issue_with_skillset(self):
@@ -22,7 +22,7 @@ class SkillsetField(Issue):
             if i < 3:
                 self.wait_until_clickable(category).click()
             else:
-                break;
+                break
         
         self.wait_until_visible((By.CSS_SELECTOR, self.selectors['skillset_edit_skills_unchecked']))
         skills = self.get_elements((By.CSS_SELECTOR, self.selectors['skillset_edit_skills_unchecked']))
@@ -37,14 +37,24 @@ class SkillsetField(Issue):
 
     def edit_skillset(self):
         self.wait_until_visible((By.CSS_SELECTOR, self.selectors['skillset_view_skills']))
-        self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['skillset_view_skills'])).click()
+        
+        # Ensure the element is clickable
+        skillset_view_skills = self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['skillset_view_skills']))
+        
+        # Scroll into view and click
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", skillset_view_skills)
+        self.driver.execute_script("arguments[0].click();", skillset_view_skills)
+        
         self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['skillset_edit_categories']))
 
         skills = self.get_elements((By.CSS_SELECTOR, self.selectors['skillset_edit_skills_unchecked']))
         for (i, skill) in enumerate(skills):
             if i < 2:
-                self.wait_until_clickable(skill).click()
-                
-        self.get_element((By.CSS_SELECTOR, self.selectors['skillset_edit_form_submit'])).click()
+                self.driver.execute_script("arguments[0].click();", skill)
+        
+        # Wait for the submit button to be visible and clickable
+        submit_button = self.wait_until_clickable((By.CSS_SELECTOR, self.selectors['skillset_edit_form_submit']))
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
+        self.driver.execute_script("arguments[0].click();", submit_button)
 
         self.wait_until_visible((By.CSS_SELECTOR, self.selectors['skillset_view_skills']))
