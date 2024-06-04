@@ -503,31 +503,6 @@
         ]
       },
       {
-        "version": "8.19.0",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-090fd5defd776e950",
-                "us-east-1": "snap-0ff8c644085142ef2"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-19-0",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-8-19-0"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "8.19.3",
         "data": [
           {
