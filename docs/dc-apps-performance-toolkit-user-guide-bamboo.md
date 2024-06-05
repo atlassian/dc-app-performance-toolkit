@@ -30,10 +30,10 @@ test results for the Marketplace approval process. Preferably, use the below rec
 {{% warning %}}
 The installation of DC environment and execution pod requires at least **24** vCPU Cores.
 Newly created AWS account often has vCPU limit set to low numbers like 5 vCPU per region.
-Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) page.
+Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A?region=us-east-2) page.
 **Applied quota value** is the current CPU limit in the specific region.
 
-Make that current limit is large enough to deploy new cluster.
+Make that current region limit is large enough to deploy new cluster.
 The limit can be increased by using **Request increase at account-level** button: choose a region, set a quota value which equals a required number of CPU Cores for the installation and press **Request** button.
 Recommended limit is 30.
 {{% /warning %}}

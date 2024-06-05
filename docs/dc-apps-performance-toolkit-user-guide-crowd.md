@@ -27,10 +27,10 @@ In this document, we cover the use of the Data Center App Performance Toolkit on
 {{% warning %}}
 The installation of 4-pods DC environment and execution pod requires at least **24** vCPU Cores.
 Newly created AWS account often has vCPU limit set to low numbers like 5 vCPU per region.
-Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) page.
+Check your account current vCPU limit for On-Demand Standard instances by visiting [AWS Service Quotas](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A?region=us-east-2) page.
 **Applied quota value** is the current CPU limit in the specific region.
 
-Make that current limit is large enough to deploy new cluster.
+Make that current region limit is large enough to deploy new cluster.
 The limit can be increased by using **Request increase at account-level** button: choose a region, set a quota value which equals a required number of CPU Cores for the installation and press **Request** button.
 Recommended limit is 30.
 {{% /warning %}}
@@ -275,7 +275,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run4"></a> Run 4 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 30.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A?region=us-east-2) to see current limit for `us-east-2` region.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
@@ -327,7 +327,7 @@ Review `results_summary.log` file under artifacts dir location. Make sure that o
 ##### <a id="run5"></a> Run 5 (~50 min)
 {{% note %}}
 Before scaling your DC make sure that AWS vCPU limit is not lower than needed number. Minimum recommended value is 30.
-Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A) to see current limit.
+Use [AWS Service Quotas service](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-1216C47A?region=us-east-2) to see current limit for `us-east-2` region.
 [EC2 CPU Limit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-jira/#ec2-cpu-limit) section has instructions on how to increase limit if needed.
 {{% /note %}}
 
