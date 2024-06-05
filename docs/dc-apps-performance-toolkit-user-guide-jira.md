@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-04-29"
+date: "2024-06-03"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -95,7 +95,7 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
    ```
 
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
@@ -356,7 +356,7 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
 
@@ -431,7 +431,7 @@ To receive performance baseline results **without** an app installed:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh jira.yml
     ```
 1. View the results files of the run in the local `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -483,7 +483,7 @@ Re-index information window is displayed on the **Indexing page**. If the window
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh jira.yml
     ```
 
 {{% note %}}
@@ -544,7 +544,7 @@ To receive scalability benchmark results for one-node Jira DC **with** app-speci
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh jira.yml
     ```
 
 {{% note %}}
@@ -569,7 +569,7 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
    ```
 1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
     ``` bash
@@ -582,7 +582,7 @@ To receive scalability benchmark results for two-node Jira DC **with** app-speci
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh jira.yml
     ```
 
 {{% note %}}
@@ -611,7 +611,7 @@ To receive scalability benchmark results for four-node Jira DC with app-specific
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh jira.yml
     ```
 
 {{% note %}}

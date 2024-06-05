@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-04-29"
+date: "2024-06-03"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -12,7 +12,7 @@ This document walks you through the process of testing your app on Crowd using t
 
 In this document, we cover the use of the Data Center App Performance Toolkit on Enterprise-scale environment.
 
-**Enterprise-scale environment**: Crowd Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the [AWS Quick Start for Crowd Data Center](https://aws.amazon.com/quickstart/architecture/atlassian-crowd) with the parameters prescribed below. These parameters provision larger, more powerful infrastructure for your Crowd Data Center.
+**Enterprise-scale environment**: Crowd Data Center environment used to generate Data Center App Performance Toolkit test results for the Marketplace approval process. Preferably, use the parameters prescribed below.
 
 1. [Set up an enterprise-scale environment Crowd Data Center on AWS](#instancesetup).
 2. [App-specific actions development](#appspecificaction).
@@ -66,7 +66,7 @@ specifically for performance testing during the DC app review process.
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
@@ -177,7 +177,7 @@ To receive performance baseline results **without** an app installed and **witho
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh crowd.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/crowd/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -206,7 +206,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -265,7 +265,7 @@ To receive scalability benchmark results for one-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -289,7 +289,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.7.9 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
    ```
 1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
@@ -316,7 +316,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -359,7 +359,7 @@ To receive scalability benchmark results for four-node Crowd DC with app-specifi
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.7.9 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
