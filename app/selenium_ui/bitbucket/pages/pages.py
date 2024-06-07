@@ -181,6 +181,10 @@ class PullRequest(BasePage):
         self.wait_until_clickable(PullRequestLocator.pull_request_modal_merge_button).click()
         self.wait_until_invisible(PullRequestLocator.del_branch_checkbox_selector)
 
+    def dismiss_updates_info_popup(self):
+        updates_banners = self.get_elements(PullRequestLocator.updates_info_banner)
+        if updates_banners:
+            self.driver.refresh()
 
 class RepositoryBranches(BasePage):
     page_loaded_selector = BranchesLocator.branches_name

@@ -128,6 +128,7 @@ def view_pull_request_overview_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_overview")
     def measure():
         pull_request_page.go_to_overview()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_overview_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -141,6 +142,7 @@ def view_pull_request_diff_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_diff")
     def measure():
         pull_request_page.go_to_diff()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_diff_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -154,6 +156,7 @@ def view_pull_request_commits_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_commits")
     def measure():
         pull_request_page.go_to_commits()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_commits_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -164,6 +167,7 @@ def comment_pull_request_diff(webdriver, datasets):
                                     repo_slug=datasets['current_session']['repo_slug'],
                                     pull_request_key=datasets['current_session']['pull_request_id'])
     pull_request_page.go_to_diff()
+    pull_request_page.dismiss_updates_info_popup()
 
     @print_timing("selenium_comment_pull_request_file")
     def measure():

@@ -156,6 +156,7 @@ class PullRequestLocator:
     pull_request_modal_merge_button = (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")
     del_branch_checkbox_selector = (By.NAME, 'deleteSourceRef')
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
+    updates_info_banner = (By.CSS_SELECTOR, ".pull-request-onboarding>footer>button")
 
 
 class BranchesLocator:
