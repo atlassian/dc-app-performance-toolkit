@@ -237,7 +237,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.19.0"
+bitbucket_version_tag = "8.19.3"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
@@ -292,13 +292,14 @@ bitbucket_nfs_requests_memory = "4Gi"
 bitbucket_nfs_limits_cpu      = "1.5"
 bitbucket_nfs_limits_memory   = "6Gi"
 
-# Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_requests_cpu    = "1"
-bitbucket_elasticsearch_requests_memory = "4Gi"
-bitbucket_elasticsearch_limits_cpu      = "1.5"
-bitbucket_elasticsearch_limits_memory   = "6Gi"
-bitbucket_elasticsearch_storage         = "100"
-bitbucket_elasticsearch_replicas        = "2"
+# Opensearch resource configuration for Bitbucket
+bitbucket_opensearch_requests_cpu = "1"
+bitbucket_opensearch_requests_memory = "4Gi"
+bitbucket_opensearch_limits_cpu = "1.5"
+bitbucket_opensearch_limits_memory = "6Gi"
+bitbucket_opensearch_storage = "100"
+bitbucket_opensearch_replicas = "2"
+
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
