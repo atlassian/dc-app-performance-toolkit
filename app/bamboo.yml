@@ -107,15 +107,15 @@ modules:
     plugins:
       - bzm-parallel=0.4
       - bzm-random-csv=0.6
-      - jpgc-casutg=2.5
-      - jpgc-dummy=0.2
+      - jpgc-casutg=2.9
+      - jpgc-dummy=0.4
       - jpgc-ffw=2.0
       - jpgc-fifo=0.2
       - jpgc-functions=2.1
       - jpgc-json=2.6
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
-      - jpgc-tst=2.4
+      - jpgc-tst=2.5
       - jpgc-wsc=0.3
       - tilln-sshmon=1.0
       - jpgc-synthesis=2.2
@@ -125,7 +125,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "124.0.6367.60" # Supports Chrome version 124. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "125.0.6422.141" # Supports Chrome version 125. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml
