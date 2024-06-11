@@ -45,7 +45,7 @@ def app_specific_action(webdriver, datasets):
 
 def zscale_view_test_case_in_issue_view(webdriver, datasets):
     page = BasePage(webdriver)
-    issue_key = "AANES-290"
+    issue_key = "AANES-1"
 
     @print_timing("zephyr_scale_view_test_case_in_issue_view")
     def measure():
@@ -57,7 +57,7 @@ def zscale_view_test_case_in_issue_view(webdriver, datasets):
 
 def zscale_view_test_cycle_in_issue_view(webdriver, datasets):
     page = BasePage(webdriver)
-    issue_key = "AANES-299"
+    issue_key = "AANES-2"
 
     @print_timing("zephyr_scale_view_test_cycle_in_issue_view")
     def measure():
@@ -69,7 +69,7 @@ def zscale_view_test_cycle_in_issue_view(webdriver, datasets):
 
 def zscale_view_test_plan_in_issue_view(webdriver, datasets):
     page = BasePage(webdriver)
-    issue_key = "AANES-309"
+    issue_key = "AANES-3"
 
     @print_timing("zephyr_scale_view_test_plan_in_issue_view")
     def measure():
