@@ -5,7 +5,7 @@ settings:
   verbose: false
   check-updates: false                 # disable bzt check for updates
   env:
-    application_hostname: ae6f1651c241e49df873023909641a46-696523856.us-east-2.elb.amazonaws.com    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
+    application_hostname: a832b9406866444208c6d72648e56876-100308878.us-east-2.elb.amazonaws.com/    # Jira DC hostname without protocol and port e.g. test-jira.atlassian.com or localhost
     application_protocol: http         # http or https
     application_port: 80               # 80, 443, 8080, 2990, etc
     secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
@@ -14,7 +14,7 @@ settings:
     admin_password: admin
     load_executor: jmeter              # jmeter and locust are supported. jmeter by default.
     concurrency: 200                   # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 1m
+    test_duration: 45m
     ramp-up: 3m                        # time to spin all concurrent users
     total_actions_per_hour: 54500      # number of total JMeter/Locust actions per hour
     WEBDRIVER_VISIBLE: False
