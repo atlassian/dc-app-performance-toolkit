@@ -2,15 +2,15 @@
   "jira": {
     "versions": [
       {
-        "version": "9.12.4",
+        "version": "9.12.8",
         "data": [
           {
             "type": "local-home",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-01942e6924d6094d3",
-                "us-east-1": "snap-0b77a63ff601d4480"
+                "us-east-2": "snap-051fd66ef030198a5",
+                "us-east-1": "snap-043527b245bf2db91"
               }
             ]
           },
@@ -19,8 +19,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0800247b9bad8a16d",
-                "us-east-1": "snap-018690e2d4e8a8393"
+                "us-east-2": "snap-06e6b3625907ef40f",
+                "us-east-1": "snap-00c4d3e86f49a50ae"
               }
             ]
           },
@@ -29,8 +29,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-12-4",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-12-4"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-12-8",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-12-8"
               }
             ]
           },
@@ -39,8 +39,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0b103b4d0d75384f5",
-                "us-east-1": "snap-0ff264d124d02af3a"
+                "us-east-2": "snap-0a6568ae761e93d5c",
+                "us-east-1": "snap-06008c47c2d5cbd70"
               }
             ]
           },
@@ -49,23 +49,23 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-12-4",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-12-4"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-12-8",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-12-8"
               }
             ]
           }
         ]
       },
       {
-        "version": "9.4.17",
+        "version": "9.4.22",
         "data": [
           {
             "type": "local-home",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-01ebb87caac609507",
-                "us-east-1": "snap-04ba555d376baa19a"
+                "us-east-2": "snap-0548a582912286c64",
+                "us-east-1": "snap-0aab7a3309f8e7229"
               }
             ]
           },
@@ -74,8 +74,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-05655fde5263939cb",
-                "us-east-1": "snap-01e52802d576b3243"
+                "us-east-2": "snap-07d26a4a8ad14fdaa",
+                "us-east-1": "snap-0f868af59e30df0ac"
               }
             ]
           },
@@ -84,8 +84,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-17",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-17"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-22",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-4-22"
               }
             ]
           },
@@ -94,8 +94,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0e9f7412296d3cb5c",
-                "us-east-1": "snap-0c22d9c03f3f7b075"
+                "us-east-2": "snap-0c99bf246ecbd7738",
+                "us-east-1": "snap-061ff31c1bf905c39"
               }
             ]
           },
@@ -104,8 +104,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-17",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-17"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-22",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-22"
               }
             ]
           }
