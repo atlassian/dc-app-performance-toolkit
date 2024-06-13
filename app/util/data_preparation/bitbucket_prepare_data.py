@@ -24,6 +24,10 @@ def __get_users(client: BitbucketRestClient):
     current_perf_users = client.get_users(f'{DEFAULT_USER_PREFIX}', perf_users_desired_number)
     perf_users_current_number = len(current_perf_users)
     if not (perf_users_current_number < perf_users_desired_number):
+        for user in current_perf_users:
+            current_client = BitbucketRestClient(BITBUCKET_SETTINGS.server_url, user['name'], user['name'],
+                                         verify=BITBUCKET_SETTINGS.secure)
+            current_client.dissmiss_pr_update()
         return current_perf_users
 
     perf_user_count_to_create = perf_users_desired_number - perf_users_current_number
