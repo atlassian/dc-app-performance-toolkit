@@ -114,6 +114,11 @@ class RepoPullRequests(BasePage):
         title.send_keys('Selenium test pull request')
         self.wait_until_visible(self.get_selector(RepoLocators.pr_submit_button)).click()
         self.wait_until_visible(PullRequestLocator.pull_request_activity_content)
+        updates_banners = self.get_elements(PullRequestLocator.updates_info_banner)
+        while updates_banners:
+            updates_banners[0].click()
+            self.driver.refresh()
+            updates_banners = self.get_elements(PullRequestLocator.updates_info_banner)
         self.wait_until_clickable(PullRequestLocator.pull_request_page_merge_button)
 
 
@@ -183,8 +188,10 @@ class PullRequest(BasePage):
 
     def dismiss_updates_info_popup(self):
         updates_banners = self.get_elements(PullRequestLocator.updates_info_banner)
-        if updates_banners:
+        while updates_banners:
+            updates_banners[0].click()
             self.driver.refresh()
+            updates_banners = self.get_elements(PullRequestLocator.updates_info_banner)
 
 class RepositoryBranches(BasePage):
     page_loaded_selector = BranchesLocator.branches_name

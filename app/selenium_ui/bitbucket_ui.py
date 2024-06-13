@@ -6,6 +6,25 @@ from extension.bitbucket import extension_ui  # noqa F401
 def test_0_selenium_a_login(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.login(bitbucket_webdriver, bitbucket_datasets)
 
+def test_1_selenium_view_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.view_pull_request_overview_tab(bitbucket_webdriver, bitbucket_datasets)
+
+
+def test_1_selenium_view_pull_request_diff(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.view_pull_request_diff_tab(bitbucket_webdriver, bitbucket_datasets)
+
+
+def test_1_selenium_view_pull_request_commits(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.view_pull_request_commits_tab(bitbucket_webdriver, bitbucket_datasets)
+
+
+def test_1_selenium_comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets)
+
+
+def test_1_selenium_comment_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.comment_pull_request_overview(bitbucket_webdriver, bitbucket_datasets)
+
 
 def test_1_selenium_view_dashboard(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_dashboard(bitbucket_webdriver, bitbucket_datasets)
@@ -29,26 +48,6 @@ def test_1_selenium_view_repo(bitbucket_webdriver, bitbucket_datasets, bitbucket
 
 def test_1_selenium_view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_view_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.view_pull_request_overview_tab(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_view_pull_request_diff(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.view_pull_request_diff_tab(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_view_pull_request_commits(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.view_pull_request_commits_tab(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.comment_pull_request_diff(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_comment_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.comment_pull_request_overview(bitbucket_webdriver, bitbucket_datasets)
 
 
 def test_1_selenium_view_branches(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):

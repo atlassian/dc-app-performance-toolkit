@@ -172,11 +172,15 @@ def comment_pull_request_diff(webdriver, datasets):
     @print_timing("selenium_comment_pull_request_file")
     def measure():
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_diff_tab()
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_code_diff()
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.click_inline_comment_button_js()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.add_code_comment()
     measure()
 
@@ -218,6 +222,7 @@ def create_pull_request(webdriver, datasets):
     repository_branches_page = RepositoryBranches(webdriver, repo_slug=repository_page.repo_slug,
                                                   project_key=repository_page.project_key)
     navigation_panel = RepoNavigationPanel(webdriver)
+    pull_request_page = PullRequest(webdriver)
     PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing("selenium_create_pull_request")
@@ -235,13 +240,14 @@ def create_pull_request(webdriver, datasets):
             datasets['pull_request_fork_branch_to'] = fork_branch_to
             navigation_panel.wait_for_navigation_panel()
             repo_pull_requests_page.create_new_pull_request(from_branch=fork_branch_from, to_branch=fork_branch_to)
+            pull_request_page.dismiss_updates_info_popup()
             PopupManager(webdriver).dismiss_default_popup()
         sub_measure()
 
         @print_timing("selenium_create_pull_request:merge_pull_request")
         def sub_measure():
             PopupManager(webdriver).dismiss_default_popup()
-            pull_request_page = PullRequest(webdriver)
+            pull_request_page.dismiss_updates_info_popup()
             pull_request_page.wait_for_overview_tab()
             PopupManager(webdriver).dismiss_default_popup()
             pull_request_page.merge_pull_request()
