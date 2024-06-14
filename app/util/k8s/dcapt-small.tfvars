@@ -92,7 +92,7 @@ jira_image_repository = "atlassian/jira-software"
 jira_version_tag = "9.12.8"
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.4"
+# jira_version_tag = "5.12.8"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
