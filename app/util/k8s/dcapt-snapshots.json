@@ -224,6 +224,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "5.4.22",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0c74b3819cb65506b",
+                "us-east-1": "snap-05f62e3a2a87c16c1"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-4-22",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-5-4-22"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
