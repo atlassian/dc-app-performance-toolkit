@@ -178,8 +178,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0b0914139687f8fd3",
-                "us-east-1": "snap-0d12a2fddf1f54173"
+                "us-east-2": "snap-0aec17f537e32dc0b",
+                "us-east-1": "snap-0333d62ab3cbae6cb"
               }
             ]
           },
@@ -188,8 +188,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0fe2f2d7fe239f9fd",
-                "us-east-1": "snap-0a764e69e95c35f38"
+                "us-east-2": "snap-06f0a720296fc68f2",
+                "us-east-1": "snap-03b5a3a9b27083e36"
               }
             ]
           },
@@ -208,8 +208,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0eafdaae32b290fa9",
-                "us-east-1": "snap-026b0562c39192007"
+                "us-east-2": "snap-05f62e3a2a87c16c1",
+                "us-east-1": "snap-0c74b3819cb65506b"
               }
             ]
           },
