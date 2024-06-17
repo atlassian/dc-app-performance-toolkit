@@ -112,10 +112,14 @@ def view_list_pull_requests(webdriver, datasets):
     repo_pull_requests_page = RepoPullRequests(webdriver,
                                                project_key=datasets['current_session']['project_key'],
                                                repo_slug=datasets['current_session']['repo_slug'])
+    pull_request_page = PullRequest(webdriver, project_key=datasets['current_session']['project_key'],
+                                    repo_slug=datasets['current_session']['repo_slug'],
+                                    pull_request_key=datasets['current_session']['pull_request_id'])
 
     @print_timing("selenium_view_list_pull_requests")
     def measure():
         repo_pull_requests_page.go_to()
+        pull_request_page.dismiss_updates_info_popup()
         repo_pull_requests_page.wait_for_page_loaded()
     measure()
 
