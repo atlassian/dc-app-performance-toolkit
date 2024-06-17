@@ -38,16 +38,16 @@ def test_1_selenium_view_projects(bitbucket_webdriver, bitbucket_datasets, bitbu
     modules.view_projects(bitbucket_webdriver, bitbucket_datasets)
 
 
+def test_1_selenium_view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets)
+
+
 def test_1_selenium_view_project_repositories(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_project_repos(bitbucket_webdriver, bitbucket_datasets)
 
 
 def test_1_selenium_view_repo(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_repo(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets)
 
 
 def test_1_selenium_view_branches(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
