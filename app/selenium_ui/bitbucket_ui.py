@@ -6,6 +6,11 @@ from extension.bitbucket import extension_ui  # noqa F401
 def test_0_selenium_a_login(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.login(bitbucket_webdriver, bitbucket_datasets)
 
+
+def test_1_selenium_view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
+    modules.view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets)
+
+
 def test_1_selenium_view_pull_request_overview(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_pull_request_overview_tab(bitbucket_webdriver, bitbucket_datasets)
 
@@ -36,10 +41,6 @@ def test_1_selenium_create_pull_request(bitbucket_webdriver, bitbucket_datasets,
 
 def test_1_selenium_view_projects(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
     modules.view_projects(bitbucket_webdriver, bitbucket_datasets)
-
-
-def test_1_selenium_view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
-    modules.view_list_pull_requests(bitbucket_webdriver, bitbucket_datasets)
 
 
 def test_1_selenium_view_project_repositories(bitbucket_webdriver, bitbucket_datasets, bitbucket_screen_shots):
