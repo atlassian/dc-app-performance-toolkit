@@ -105,8 +105,6 @@ modules:
     detect-plugins: true
     memory-xmx: 8G  # allow JMeter to use up to 8G of memory
     plugins:
-      - bzm-parallel=0.12
-      - bzm-random-csv=0.8
       - jpgc-casutg=2.10
       - jpgc-dummy=0.4
       - jpgc-ffw=2.0
@@ -116,9 +114,6 @@ modules:
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
       - jpgc-tst=2.6
-      - jpgc-wsc=0.7
-      - tilln-sshmon=1.4
-      - jpgc-synthesis=2.2
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
