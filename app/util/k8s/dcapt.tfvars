@@ -144,7 +144,7 @@ jira_shared_home_size = "200Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-jira_db_major_engine_version = "12"
+jira_db_major_engine_version = "14"
 jira_db_instance_class       = "db.m5.xlarge"
 jira_db_allocated_storage    = 200
 jira_db_iops                 = 1000
