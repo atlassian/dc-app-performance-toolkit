@@ -180,11 +180,12 @@ def edit_issue(webdriver, datasets):
 
         issue_page.fill_summary_edit()  # edit summary
         issue_page.fill_description_edit(rte_status)  # edit description
+        issue_page.set_resolution()  # Set resolution if there is such field
 
         @print_timing("selenium_edit_issue:save_edit_issue_form")
         def sub_measure():
             issue_page.edit_issue_submit()  # submit edit issue
-            issue_page.wait_for_issue_title()
+            issue_page.wait_for_issue_loaded()
 
         sub_measure()
 

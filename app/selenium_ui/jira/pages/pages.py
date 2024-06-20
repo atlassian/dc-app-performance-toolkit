@@ -88,8 +88,8 @@ class Issue(BasePage):
         self.page_url_edit_issue = url_manager_edit_page.edit_issue_url()
         self.page_url_edit_comment = url_manager_edit_page.edit_comments_url()
 
-    def wait_for_issue_title(self):
-        self.wait_until_visible(IssueLocators.issue_title)
+    def wait_for_issue_loaded(self):
+        self.wait_until_visible(IssueLocators.issue_edit_button)
 
     def go_to_edit_issue(self):
         self.go_to_url(self.page_url_edit_issue)

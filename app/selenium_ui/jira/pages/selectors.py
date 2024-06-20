@@ -95,6 +95,7 @@ class IssueLocators:
     issue_title = (By.ID, "summary-val")
 
     create_issue_button = (By.ID, "create_link")
+    issue_edit_button = (By.ID, "edit-issue")
     # Issue create modal form
     issue_modal = (By.ID, "create-issue-dialog")
     issue_summary_field = (By.ID, "summary")
