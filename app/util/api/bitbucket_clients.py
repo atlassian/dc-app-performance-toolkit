@@ -207,10 +207,3 @@ class BitbucketRestClient(RestClient):
         if bitbucket_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
-
-    def dissmiss_pr_update(self):
-        api_url = f'{self.host}/rest/chaperone/1/chaperone/7.0-pull-request'
-        body = {"isAllDismissed": True}
-        self.headers = None
-        response = self.put(api_url, body=body, error_msg="Could not dismiss PR upgrade popup.")
-        return response.text
