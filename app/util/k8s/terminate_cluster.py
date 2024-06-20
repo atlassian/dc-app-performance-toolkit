@@ -627,9 +627,9 @@ def retrieve_ebs_volumes(aws_region, cluster_name):
 
             # Check for 'dynamic-pvc' or 'nfs-shared-home' in the name
             name = next((tag["Value"] for tag in volume.tags if tag["Key"] == "Name"), None)
-            if "dynamic-pvc" in name or "nfs-shared-home" in name:
+            if "dynamic-pvc" in name or "nfs-shared-home" in name or "local-home" in name:
                 logging.info(f"Volume {volume.id} is not in use and "
-                             f"has 'dynamic-pvc' or 'nfs-shared-home' in name: deleting...")
+                             f"has 'dynamic-pvc', 'nfs-shared-home' or 'local-home' in name: deleting...")
                 volumes.append(volume.id)
 
     print(f"Found volumes: {volumes}")
