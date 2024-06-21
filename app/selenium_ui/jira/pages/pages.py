@@ -194,6 +194,11 @@ class Issue(BasePage):
         self.get_element(IssueLocators.edit_comment_add_comment_button).click()
         self.wait_until_visible(IssueLocators.issue_title)
 
+    def set_epic_name(self):
+        if self.get_elements(IssueLocators.issue_epic_name):
+            epic_name = f"Epic name created date {time.time()}"
+            self.wait_until_clickable(IssueLocators.issue_epic_name).send_keys(epic_name)
+
 
 class Project(BasePage):
     page_loaded_selector = ProjectLocators.project_summary_property_column
