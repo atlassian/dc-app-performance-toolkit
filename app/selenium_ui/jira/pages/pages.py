@@ -101,6 +101,7 @@ class Issue(BasePage):
 
     def fill_summary_edit(self):
         text_summary = f"Edit summary form selenium - {self.generate_random_string(10)}"
+        self.get_element(IssueLocators.issue_summary_field).clear()
         self.get_element(IssueLocators.issue_summary_field).send_keys(text_summary)
 
     def __fill_rich_editor_textfield(self, text, selector):
