@@ -168,6 +168,9 @@ class BasePage:
     def delete_all_cookies(self):
         self.driver.delete_all_cookies()
 
+    def scroll_down_till_bottom(self):
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+
 
 class AnyEc:
     """ Use with WebDriverWait to combine expected_conditions
