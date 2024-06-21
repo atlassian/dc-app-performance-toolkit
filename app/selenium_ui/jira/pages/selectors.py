@@ -109,6 +109,7 @@ class IssueLocators:
     issue_type_dropdown_elements = (By.CLASS_NAME, "aui-list-item")
     issue_ready_to_save_spinner = (By.CSS_SELECTOR, ".buttons>.throbber")
     issue_submit_button = (By.ID, "create-issue-submit")
+    issue_epic_name = (By.ID, "customfield_10104")     # Epic Name custom field
 
     # Edit Issue page
     edit_issue_page = (By.ID, "issue-edit")
