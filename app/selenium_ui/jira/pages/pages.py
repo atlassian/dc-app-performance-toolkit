@@ -18,6 +18,7 @@ class PopupManager(BasePage):
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
     page_loaded_selector = LoginPageLocators.system_dashboard
+    base_url = UrlManager().host
 
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False

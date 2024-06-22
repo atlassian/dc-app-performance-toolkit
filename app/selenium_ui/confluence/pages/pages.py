@@ -3,7 +3,7 @@ import time
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
-    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators
+    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators, XsrfTokenLocators
 
 
 class Login(BasePage):
@@ -118,7 +118,9 @@ class Editor(BasePage):
     def __init__(self, driver, page_id=None):
         BasePage.__init__(self, driver)
         url_manager = UrlManager(page_id=page_id)
-        self.page_url = url_manager.edit_page_url()
+
+        xsrf_token = self.get_element(XsrfTokenLocators.xsrf_token).get_attribute('content')
+        self.page_url = url_manager.edit_page_url() + "&atl_token=" + xsrf_token
 
     def wait_for_create_page_open(self):
         self.wait_until_clickable(EditorLocators.publish_button)

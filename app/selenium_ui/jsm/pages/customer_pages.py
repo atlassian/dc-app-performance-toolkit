@@ -11,6 +11,7 @@ from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocato
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
+    base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.login_submit_button
 
     def set_credentials(self, username, password):
