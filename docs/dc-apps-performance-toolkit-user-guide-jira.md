@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-06-03"
+date: "2024-06-24"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -136,8 +136,8 @@ Make sure **English (United States)** language is selected as a default language
     bzt jira.yml
     ```
 
-1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 95+% success rate.  
-In case some actions does not have 95+% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
+1. Review the resulting table in the console log. All JMeter/Locust and Selenium actions should have 0+% success rate.  
+In case some actions have 0% success rate refer to the following logs in `dc-app-performance-toolkit/app/results/jira/YY-MM-DD-hh-mm-ss` folder:
 
     - `results_summary.log`: detailed run summary
     - `results.csv`: aggregated .csv file with all actions and timings
@@ -147,7 +147,11 @@ In case some actions does not have 95+% success rate refer to the following logs
     - `pytest.*`: logs of Pytest-Selenium execution
 
 {{% warning %}}
-Do not proceed with the next step until you have all actions 95+% success rate. Ask [support](#support) if above logs analysis did not help.
+On the local run with development environment default tests may be flaky due to limited resources of the development cluster and local network.
+
+The only purpose of the development cluster is to [develop app-specific actions](#devappaction).
+
+Do not proceed with the next step if any action has 0% success rate. Ask [support](#support) if above logs analysis did not help.
 {{% /warning %}}
 
 ---
