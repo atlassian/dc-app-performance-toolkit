@@ -24,7 +24,6 @@ def setup_run_data(datasets):
 
 def generate_debug_session_info(webdriver, datasets):
     debug_data = datasets['current_session']
-    debug_data['current_url'] = webdriver.current_url
     return debug_data
 
 
@@ -55,6 +54,8 @@ def login(webdriver, datasets):
         def sub_measure():
             login_page.submit_login()
             get_started_page = GetStarted(webdriver)
+            PopupManager(webdriver).dismiss_default_popup()
+            get_started_page.close_whats_new_window()
             get_started_page.wait_for_page_loaded()
             webdriver.node_id = login_page.get_node_id()
             print(f"node_id:{webdriver.node_id}")
@@ -111,10 +112,14 @@ def view_list_pull_requests(webdriver, datasets):
     repo_pull_requests_page = RepoPullRequests(webdriver,
                                                project_key=datasets['current_session']['project_key'],
                                                repo_slug=datasets['current_session']['repo_slug'])
+    pull_request_page = PullRequest(webdriver, project_key=datasets['current_session']['project_key'],
+                                    repo_slug=datasets['current_session']['repo_slug'],
+                                    pull_request_key=datasets['current_session']['pull_request_id'])
 
     @print_timing("selenium_view_list_pull_requests")
     def measure():
         repo_pull_requests_page.go_to()
+        pull_request_page.dismiss_updates_info_popup()
         repo_pull_requests_page.wait_for_page_loaded()
     measure()
 
@@ -127,6 +132,7 @@ def view_pull_request_overview_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_overview")
     def measure():
         pull_request_page.go_to_overview()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_overview_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -140,6 +146,7 @@ def view_pull_request_diff_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_diff")
     def measure():
         pull_request_page.go_to_diff()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_diff_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -153,6 +160,7 @@ def view_pull_request_commits_tab(webdriver, datasets):
     @print_timing("selenium_view_pull_request_commits")
     def measure():
         pull_request_page.go_to_commits()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_commits_tab()
         PopupManager(webdriver).dismiss_default_popup()
     measure()
@@ -163,15 +171,20 @@ def comment_pull_request_diff(webdriver, datasets):
                                     repo_slug=datasets['current_session']['repo_slug'],
                                     pull_request_key=datasets['current_session']['pull_request_id'])
     pull_request_page.go_to_diff()
+    pull_request_page.dismiss_updates_info_popup()
 
     @print_timing("selenium_comment_pull_request_file")
     def measure():
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_diff_tab()
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.wait_for_code_diff()
         PopupManager(webdriver).dismiss_default_popup()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.click_inline_comment_button_js()
+        pull_request_page.dismiss_updates_info_popup()
         pull_request_page.add_code_comment()
     measure()
 
@@ -213,6 +226,7 @@ def create_pull_request(webdriver, datasets):
     repository_branches_page = RepositoryBranches(webdriver, repo_slug=repository_page.repo_slug,
                                                   project_key=repository_page.project_key)
     navigation_panel = RepoNavigationPanel(webdriver)
+    pull_request_page = PullRequest(webdriver)
     PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing("selenium_create_pull_request")
@@ -230,13 +244,14 @@ def create_pull_request(webdriver, datasets):
             datasets['pull_request_fork_branch_to'] = fork_branch_to
             navigation_panel.wait_for_navigation_panel()
             repo_pull_requests_page.create_new_pull_request(from_branch=fork_branch_from, to_branch=fork_branch_to)
+            pull_request_page.dismiss_updates_info_popup()
             PopupManager(webdriver).dismiss_default_popup()
         sub_measure()
 
         @print_timing("selenium_create_pull_request:merge_pull_request")
         def sub_measure():
             PopupManager(webdriver).dismiss_default_popup()
-            pull_request_page = PullRequest(webdriver)
+            pull_request_page.dismiss_updates_info_popup()
             pull_request_page.wait_for_overview_tab()
             PopupManager(webdriver).dismiss_default_popup()
             pull_request_page.merge_pull_request()
