@@ -373,7 +373,7 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0438e7673f26a217b",
+                "us-east-2": "snap-0cdb2acd1339d5285",
                 "us-east-1": "snap-062ca53c21e52a36e"
               }
             ]
@@ -418,8 +418,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0e001f5f719312ce0",
-                "us-east-1": "snap-01b4978d1771ac93a"
+                "us-east-2": "snap-0e91bbe8ae07948f4",
+                "us-east-1": "snap-079d4c5f2e28b0f09"
               }
             ]
           },
