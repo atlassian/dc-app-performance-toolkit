@@ -11,6 +11,7 @@
 
 # Unique name of your small-scale test cluster.
 # This value can not be altered after the configuration has been applied.
+# Only lowercase letters, numbers, dashes, and dots are allowed.
 # ! REQUIRED !
 environment_name = "dcapt-product-small"
 
@@ -88,10 +89,10 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version.
-jira_version_tag = "9.12.4"
+jira_version_tag = "9.12.8"
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.4"
+# jira_version_tag = "5.12.8"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -132,7 +133,7 @@ jira_shared_home_size = "20Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-jira_db_major_engine_version = "12"
+jira_db_major_engine_version = "14"
 jira_db_instance_class       = "db.t3.medium"
 jira_db_allocated_storage    = 200
 jira_db_iops                 = 1000
@@ -160,7 +161,7 @@ jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.6"
+confluence_version_tag = "8.5.9"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
@@ -236,7 +237,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.10"
+bitbucket_version_tag = "8.9.14"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
@@ -291,13 +292,14 @@ bitbucket_nfs_requests_memory = "4Gi"
 bitbucket_nfs_limits_cpu      = "1.5"
 bitbucket_nfs_limits_memory   = "6Gi"
 
-# Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_requests_cpu    = "1"
-bitbucket_elasticsearch_requests_memory = "4Gi"
-bitbucket_elasticsearch_limits_cpu      = "1.5"
-bitbucket_elasticsearch_limits_memory   = "6Gi"
-bitbucket_elasticsearch_storage         = "100"
-bitbucket_elasticsearch_replicas        = "2"
+# Opensearch resource configuration for Bitbucket
+bitbucket_opensearch_requests_cpu = "1"
+bitbucket_opensearch_requests_memory = "4Gi"
+bitbucket_opensearch_limits_cpu = "1.5"
+bitbucket_opensearch_limits_memory = "6Gi"
+bitbucket_opensearch_storage = "100"
+bitbucket_opensearch_replicas = "2"
+
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.

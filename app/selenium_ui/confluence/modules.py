@@ -298,7 +298,7 @@ def cql_search(webdriver, datasets):
     @print_timing("selenium_cql_search")
     def measure():
         page.get_element(PageLocators.search_box).send_keys(random_cql)
-        page.wait_until_visible(PageLocators.search_results)
+        page.wait_until_any_ec_presented((PageLocators.empty_search_results, PageLocators.search_results))
         page.get_element(PageLocators.close_search_button).click()
     measure()
 

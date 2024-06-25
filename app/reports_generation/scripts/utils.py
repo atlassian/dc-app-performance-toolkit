@@ -1,11 +1,7 @@
-import json
-import numbers
-from pathlib import Path
-import typing
-from distutils import util
 import csv
-
-import yaml
+import numbers
+from distutils import util
+from pathlib import Path
 
 
 def resolve_relative_path(str_path: str) -> Path:
@@ -80,19 +76,3 @@ def clean_str(string: str):
     string = string.replace(" ", "_")
     # Return alphanumeric characters from a string, except "_"
     return ''.join(e for e in string if e.isalnum() or e == "_")
-
-
-def save_results(results: typing.List[typing.List], filepath: str):
-    with open(filepath, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(results)
-
-
-def read_json(filepath: str):
-    with open(filepath) as f:
-        return json.load(f)
-
-
-def read_yaml(filepath: str):
-    with open(filepath) as f:
-        return yaml.safe_load(f)

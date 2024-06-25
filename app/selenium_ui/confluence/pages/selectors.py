@@ -68,6 +68,7 @@ class PageLocators:
     search_box = (By.ID, "quick-search-query")
     search_results = (By.ID, "search-result-container")
     close_search_button = (By.ID, "search-drawer-close")
+    empty_search_results = (By.CLASS_NAME, "captioned-image-component")
 
 
 class DashboardLocators:

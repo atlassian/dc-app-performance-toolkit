@@ -18,7 +18,7 @@ settings:
     ramp-up: 10m                       # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.5
+    JMETER_VERSION: 5.6
     LANGUAGE: en_US.utf8
     allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
@@ -37,7 +37,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.18.1
+      - selenium==4.21.0
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
@@ -71,27 +71,22 @@ modules:
     detect-plugins: true
     memory-xmx: 8G  # allow JMeter to use up to 8G of memory
     plugins:
-      - bzm-parallel=0.4
-      - bzm-random-csv=0.6
-      - jpgc-casutg=2.9
+      - jpgc-casutg=2.10
       - jpgc-dummy=0.4
       - jpgc-ffw=2.0
       - jpgc-fifo=0.2
-      - jpgc-functions=2.1
-      - jpgc-json=2.6
+      - jpgc-functions=2.2
+      - jpgc-json=2.7
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
-      - jpgc-tst=2.5
-      - jpgc-wsc=0.3
-      - tilln-sshmon=1.0
-      - jpgc-synthesis=2.2
+      - jpgc-tst=2.6
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "125.0.6422.141" # Supports Chrome version 125. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "126.0.6478.126" # Supports Chrome version 126. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml
