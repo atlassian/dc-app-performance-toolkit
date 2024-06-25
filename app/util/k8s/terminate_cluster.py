@@ -892,6 +892,30 @@ def delete_unused_volumes():
                                         f"| Name tag {name}: skipping")
 
 
+def delete_bucket_by_name(s3_client, bucket):
+    objects_response = s3_client.list_objects_v2(Bucket=bucket)
+    if 'Contents' in objects_response:
+        objects = objects_response['Contents']
+        for obj in objects:
+            s3_client.delete_object(Bucket=bucket, Key=obj['Key'])
+            logging.info(f"Object '{obj['Key']}' deleted successfully from bucket {bucket}.")
+    versions = s3_client.list_object_versions(Bucket=bucket).get('Versions', [])
+    delete_markers = s3_client.list_object_versions(Bucket=bucket).get('DeleteMarkers', [])
+    if versions:
+        for version in versions:
+            s3_client.delete_object(Bucket=bucket, Key=version['Key'], VersionId=version['VersionId'])
+            logging.info(f"S3 object version '{version}' deleted successfully from bucket {bucket}.")
+    if delete_markers:
+        for delete_marker in delete_markers:
+            s3_client.delete_object(Bucket=bucket, Key=delete_marker['Key'], VersionId=delete_marker['VersionId'])
+            logging.info(f"S3 delete marker '{delete_marker['Key']}' deleted successfully from bucket {bucket}.")
+    try:
+        s3_client.delete_bucket(Bucket=bucket)
+        logging.info(f"S3 bucket '{bucket}' was successfully deleted.")
+    except Exception as e:
+        logging.warning(f"Could not delete s3 bucket '{bucket}': {e}")
+
+
 def delete_s3_bucket_tf_state(cluster_name, aws_region):
     environment_name = retrieve_environment_name(cluster_name=cluster_name)
     s3_client = boto3.client('s3', region_name=aws_region)
@@ -902,27 +926,7 @@ def delete_s3_bucket_tf_state(cluster_name, aws_region):
         logging.info(f"Could not find s3 bucket with name contains {bucket_name_template}")
         return
     for bucket in matching_buckets:
-        objects_response = s3_client.list_objects_v2(Bucket=bucket)
-        if 'Contents' in objects_response:
-            objects = objects_response['Contents']
-            for obj in objects:
-                s3_client.delete_object(Bucket=bucket, Key=obj['Key'])
-                logging.info(f"Object '{obj['Key']}' deleted successfully from bucket {bucket}.")
-        versions = s3_client.list_object_versions(Bucket=bucket).get('Versions', [])
-        delete_markers = s3_client.list_object_versions(Bucket=bucket).get('DeleteMarkers', [])
-        if versions:
-            for version in versions:
-                s3_client.delete_object(Bucket=bucket, Key=version['Key'], VersionId=version['VersionId'])
-                logging.info(f"S3 object version '{version}' deleted successfully from bucket {bucket}.")
-        if delete_markers:
-            for delete_marker in delete_markers:
-                s3_client.delete_object(Bucket=bucket, Key=delete_marker['Key'], VersionId=delete_marker['VersionId'])
-                logging.info(f"S3 delete marker '{delete_marker['Key']}' deleted successfully from bucket {bucket}.")
-        try:
-            s3_client.delete_bucket(Bucket=bucket)
-            logging.info(f"S3 bucket '{bucket}' was successfully deleted.")
-        except Exception as e:
-            logging.warning(f"Could not delete s3 bucket '{bucket}': {e}")
+        delete_bucket_by_name(s3_client, bucket)
 
 
 def delete_dynamo_bucket_tf_state(cluster_name, aws_region):
@@ -940,6 +944,35 @@ def delete_dynamo_bucket_tf_state(cluster_name, aws_region):
             logging.info(f"Dynamo db '{table}' was successfully deleted.")
         except Exception as e:
             logging.warning(f"Could not delete dynamo db '{table}': {e}")
+
+
+def delete_expired_tf_state_s3_buckets():
+    for rgn in REGIONS:
+        logging.info(f"Region: {rgn}")
+        s3_client = boto3.client('s3', region_name=rgn)
+        bucket_name_template = f'atl-dc-'
+        response = s3_client.list_buckets()
+        if not response["Buckets"]:
+            logging.info(f"There are no S3 buckets")
+            return
+        for bucket in response["Buckets"]:
+            if bucket_name_template in bucket["Name"]:
+                created_date = bucket["CreationDate"]
+                tags = s3_client.get_bucket_tagging(Bucket=bucket["Name"])["TagSet"]
+                persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
+                if persist_days:
+                    if not is_float(persist_days):
+                        persist_days = 0
+                    created_date_timestamp = created_date.timestamp()
+                    persist_seconds = float(persist_days) * 24 * 60 * 60
+                    now = time()
+                    if created_date_timestamp + persist_seconds > now:
+                        logging.info(f"S3 bucket {bucket['Name']} is not EOL yet, skipping...")
+                    else:
+                        logging.info(f"S3 bucket {bucket['Name']} is EOL and should be deleted.")
+                        delete_bucket_by_name(s3_client, bucket['Name'])
+                else:
+                    logging.warning(f"S3 bucket {bucket['Name']} does not have tags.")
 
 
 def main():
@@ -998,6 +1031,8 @@ def main():
         remove_role_and_policies(role_name, active_clusters)
     logging.info("Terminate unused and expired ebs volumes")
     delete_unused_volumes()
+    logging.info("Search for abandoned S3 buckets")
+    delete_expired_tf_state_s3_buckets()
 
 
 if __name__ == '__main__':
