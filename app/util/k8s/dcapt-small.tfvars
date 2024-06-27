@@ -230,7 +230,8 @@ confluence_collaborative_editing_enabled = true
 # confluence_custom_values_file = "/path/to/values.yaml"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# confluence_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+# Example: ["-Dproperty=value", "-Dproperty1=value1"]
+confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 
 ################################################################################
 # Bitbucket Settings
