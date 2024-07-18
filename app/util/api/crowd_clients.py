@@ -97,3 +97,13 @@ class CrowdRestClient(RestClient):
         api_url = self.host + '/rest/atlassian-cluster-monitoring/cluster/nodes'
         response = self.get(api_url, 'Can not get Crowd cluster nodes information')
         return response.json()
+
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        try:
+            status = self.get(api_url, "Could not get status")
+            if status.ok:
+                return status.text
+        except Exception as e:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False
