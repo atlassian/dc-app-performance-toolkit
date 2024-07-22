@@ -1,5 +1,7 @@
 import random
 from packaging import version
+import time
+from datetime import datetime
 
 from multiprocessing.pool import ThreadPool
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter, __read_file
@@ -235,6 +237,21 @@ def __check_for_admin_permissions(confluence_api):
         raise SystemExit(f"The '{confluence_api.user}' user does not have admin permissions.")
 
 
+def __check_license(rest_client):
+    current_timestamp = int(time.time() * 1000)
+    license_details = rest_client.get_license_details()
+    license_remaining_seats = rest_client.get_license_remaining_seats()
+    expiry_date = license_details['expiryDate']
+    expiry_date_human = datetime.fromtimestamp(expiry_date / 1000).strftime('%Y-%m-%d %H:%M:%S')
+    if expiry_date < current_timestamp:
+        raise SystemExit(f"ERROR: The license has expired. Expiry date: {expiry_date_human}")
+    if license_remaining_seats['count'] <= 0:
+        raise SystemExit(f"ERROR: The license remaining available seats is {license_remaining_seats['count']}. "
+                         f"Please, check your license.")
+    print(f"The license expiry date: {expiry_date_human}.\n"
+          f"License available seats: {license_remaining_seats['count']}")
+
+
 @print_timing('Confluence data preparation')
 def main():
     print("Started preparing data")
@@ -246,6 +263,7 @@ def main():
                                        verify=CONFLUENCE_SETTINGS.secure)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
     __is_remote_api_enabled(rest_client)
+    __check_license(rest_client)
     __check_for_admin_permissions(rest_client)
     __is_collaborative_editing_enabled(rest_client)
     __check_current_language(rest_client)

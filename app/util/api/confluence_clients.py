@@ -244,6 +244,16 @@ class ConfluenceRestClient(RestClient):
             print(f"Warning: failed to get {api_url}: Error: {e}")
             return False
 
+    def get_license_details(self):
+        api_url = f'{self.host}/rest/license/1.0/license/details'
+        r = self.get(api_url, "Could not get license details")
+        return r.json()
+
+    def get_license_remaining_seats(self):
+        api_url = f'{self.host}/rest/license/1.0/license/remainingSeats'
+        r = self.get(api_url, "Could not get license remaining seats")
+        return r.json()
+
 
 class ConfluenceRpcClient(Client):
 
