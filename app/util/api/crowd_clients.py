@@ -1,4 +1,5 @@
 from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
+from selenium_ui.conftest import retry
 
 
 BATCH_SIZE_USERS = 1000
@@ -98,6 +99,7 @@ class CrowdRestClient(RestClient):
         response = self.get(api_url, 'Can not get Crowd cluster nodes information')
         return response.json()
 
+    @retry()
     def get_status(self):
         api_url = f'{self.host}/status'
         try:

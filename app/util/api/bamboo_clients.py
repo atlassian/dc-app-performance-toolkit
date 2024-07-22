@@ -183,6 +183,7 @@ class BambooClient(RestClient):
             return 'terraform'
         return 'other'
 
+    @retry()
     def get_status(self):
         api_url = f'{self.host}/rest/api/latest/status'
         try:

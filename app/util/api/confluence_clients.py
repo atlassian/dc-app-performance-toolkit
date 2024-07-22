@@ -234,6 +234,7 @@ class ConfluenceRestClient(RestClient):
             error_msg='ERROR: Could not create user')
         return r.json()
 
+    @retry()
     def get_status(self):
         api_url = f'{self.host}/status'
         try:
