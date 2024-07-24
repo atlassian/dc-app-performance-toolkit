@@ -48,6 +48,11 @@ specifically for performance testing during the DC app review process.
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
