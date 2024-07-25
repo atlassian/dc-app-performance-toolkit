@@ -87,8 +87,8 @@ class StartJMeter:
             else:
                 raise SystemExit(f'JSM unsupported type: {self.args.type}. Valid types: {AGENTS}, {CUSTOMERS}')
         else:
-            raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {}".
-                             format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM))
+            raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {} {} {}".
+                             format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM, BAMBOO, CROWD))
 
     @staticmethod
     def read_yml_file(file):

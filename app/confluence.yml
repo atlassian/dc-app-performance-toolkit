@@ -18,7 +18,7 @@ settings:
     ramp-up: 5m                        # time to spin all concurrent users
     total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.6
+    JMETER_VERSION: 5.6.3
     LANGUAGE: en_US.utf8
     allow_analytics: No               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
@@ -34,7 +34,7 @@ settings:
     view_attachment: 6
     upload_attachment: 7
     like_page: 3
-    upload_emoticon: 2      # For Confluence 8.4.x+
+    upload_emoticon: 4      # For Confluence 8.4.x+
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
