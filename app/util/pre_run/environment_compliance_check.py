@@ -124,10 +124,11 @@ def analyze_application_configuration(app_name, app_settings):
     url = f"{app_settings.protocol}://{app_settings.hostname}:{app_settings.port}{app_settings.postfix}"
     print(f"INFO: Product URL: {url}")
 
-    status = app.status
-    if status:
-        print(f"INFO: Product status: {status}")
-    else:
+    try:
+        status = app.status
+        if status:
+            print(f"INFO: Product status: {status}")
+    except Exception as e:
         raise SystemExit(f"ERROR: check correctness of protocol, hostname, port, postfix in {app_name}.yml file: {url}"
                          f"\n    application_protocol (http or https): {app_settings.protocol}"
                          f"\n    application_hostname (should be without protocol, postfix and slash): "
@@ -135,6 +136,7 @@ def analyze_application_configuration(app_name, app_settings):
                          f"\n    application_port: {app_settings.port}"
                          f"\n    application_postfix: {app_settings.postfix}"
                          f"\n    product URL: {url}"
+                         f"\n    Exception: {e}"
                          )
 
     # TODO: Add a check for CROWD configuration once the feature with
