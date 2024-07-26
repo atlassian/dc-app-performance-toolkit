@@ -1,7 +1,7 @@
 matplotlib==3.9.0
 pandas==2.2.2
 pytest==8.2.2
-locust==2.28.0
+locust==2.29.1
 selenium==4.21.0
 filelock==3.15.4
 packaging==24.1
