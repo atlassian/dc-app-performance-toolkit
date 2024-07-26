@@ -1,4 +1,4 @@
-matplotlib==3.9.0
+matplotlib==3.9.1
 pandas==2.2.2
 pytest==8.2.2
 locust==2.28.0
