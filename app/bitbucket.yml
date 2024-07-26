@@ -80,6 +80,7 @@ modules:
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
       - jpgc-tst=2.6
+      - bzm-random-csv=0.8    # not used default jmx file
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
