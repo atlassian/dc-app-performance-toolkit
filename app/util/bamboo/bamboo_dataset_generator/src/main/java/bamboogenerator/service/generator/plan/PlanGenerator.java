@@ -33,6 +33,67 @@ public class PlanGenerator {
 
     private static Plan createPlan(PlanInfo planInfo) {
         boolean isFailedPlan = planInfo.isFailed();
+
+        Job job;
+
+        if (planInfo.isCustomPlan()) {
+            job = new Job("Job 1", "JB1")
+                    .tasks(
+                            new VcsCheckoutTask()
+                                    .description("Checkout repository task")
+                                    .cleanCheckout(true)
+                                    .checkoutItems(new CheckoutItem()
+                                            .repository("dcapt-test-repo").path("dcapt-test-repo")),
+                            new ScriptTask()
+                                    .description("Run Bash code")
+                                    .interpreterBinSh()
+                                    .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
+                            new ScriptTask()
+                                    .description("Write XML test results")
+                                    .interpreterBinSh()
+                                    .inlineBody(isFailedPlan
+                                            ? String.format(BODY_FAIL, TEST_COUNT, TEST_COUNT, TEST_COUNT)
+                                            : String.format(BODY_SUCCESS, TEST_COUNT, TEST_COUNT)),
+                            new ScriptTask()
+                                    .description("Custom task")
+                                    .interpreterBinSh()
+                                    .inlineBody("echo hello")
+                    )
+                    .finalTasks(new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                            .description("Unit test results parser task")
+                            .resultDirectories(isFailedPlan ? RESULT_NAME_FAIL : RESULT_NAME_SUCCESS)
+                    )
+                    .artifacts(new Artifact("Test Reports")
+                            .location(".")
+                            .copyPattern("*.log"));
+        } else {
+            job = new Job("Job 1", "JB1")
+                    .tasks(
+                            new VcsCheckoutTask()
+                                    .description("Checkout repository task")
+                                    .cleanCheckout(true)
+                                    .checkoutItems(new CheckoutItem()
+                                            .repository("dcapt-test-repo").path("dcapt-test-repo")),
+                            new ScriptTask()
+                                    .description("Run Bash code")
+                                    .interpreterBinSh()
+                                    .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
+                            new ScriptTask()
+                                    .description("Write XML test results")
+                                    .interpreterBinSh()
+                                    .inlineBody(isFailedPlan
+                                            ? String.format(BODY_FAIL, TEST_COUNT, TEST_COUNT, TEST_COUNT)
+                                            : String.format(BODY_SUCCESS, TEST_COUNT, TEST_COUNT))
+                    )
+                    .finalTasks(new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                            .description("Unit test results parser task")
+                            .resultDirectories(isFailedPlan ? RESULT_NAME_FAIL : RESULT_NAME_SUCCESS)
+                    )
+                    .artifacts(new Artifact("Test Reports")
+                            .location(".")
+                            .copyPattern("*.log"));
+        }
+
         return new Plan(new Project().name(planInfo.getProjectName())
                 .key(planInfo.getProjectKey()), planInfo.getPlanName(), planInfo.getPlanKey())
                 .description("DCAPT Bamboo test build plan")
@@ -42,30 +103,8 @@ public class PlanGenerator {
                         .branch("master"))
                 .variables(new Variable("stack_name", ""))
                 .stages(new Stage("Stage 1")
-                        .jobs(new Job("Job 1", "JB1")
-                                .tasks(
-                                        new VcsCheckoutTask()
-                                                .description("Checkout repository task")
-                                                .cleanCheckout(true)
-                                                .checkoutItems(new CheckoutItem()
-                                                        .repository("dcapt-test-repo").path("dcapt-test-repo")),
-                                        new ScriptTask()
-                                                .description("Run Bash code")
-                                                .interpreterBinSh()
-                                                .inlineBody("for i in $(seq 1 1000); do date=$(date -u); echo $date >> results.log; echo $date; sleep 0.06; done"),
-                                        new ScriptTask()
-                                                .description("Write XML test results")
-                                                .interpreterBinSh()
-                                                .inlineBody(isFailedPlan
-                                                        ? String.format(BODY_FAIL, TEST_COUNT, TEST_COUNT, TEST_COUNT)
-                                                        : String.format(BODY_SUCCESS, TEST_COUNT, TEST_COUNT))
-                                )
-                                .finalTasks(new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                                        .description("Unit test results parser task")
-                                        .resultDirectories(isFailedPlan ? RESULT_NAME_FAIL : RESULT_NAME_SUCCESS)
-                                )
-                                .artifacts(new Artifact("Test Reports")
-                                        .location(".")
-                                        .copyPattern("*.log"))));
+                        .jobs(job));
+
+
     }
 }

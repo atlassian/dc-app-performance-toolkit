@@ -38,7 +38,13 @@ public class PlanInfoGenerator {
             String projectKey = projectNamesKeys.get(i).get(1);
             LOG.info("Generating plan: PlanName: " + planName + ". PlanKey: " + planKey + ". " +
                     "Into the project: ProjectName: " + projectName + ". ProjectKey: " + projectKey);
-            plans.add(new PlanInfo(planName, planIsFailed, planKey, projectName, projectKey));
+            if (i % 5 == 0) {
+                plans.add(new PlanInfo(planName, planIsFailed, planKey, projectName, projectKey, true));
+            }
+            else {
+                plans.add(new PlanInfo(planName, planIsFailed, planKey, projectName, projectKey, false));
+            }
+
         }
 
         return plans;

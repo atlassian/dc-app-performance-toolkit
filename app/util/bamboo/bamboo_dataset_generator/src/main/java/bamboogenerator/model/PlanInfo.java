@@ -6,13 +6,19 @@ public class PlanInfo {
     private final String planKey;
     private final String projectName;
     private final String projectKey;
+    private final boolean customPlan;
 
-    public PlanInfo(String planName, boolean failed, String planKey, String projectName, String projectKey) {
+    public PlanInfo(String planName, boolean failed, String planKey, String projectName, String projectKey, boolean customPlan) {
         this.planName = planName;
         this.failed = failed;
         this.planKey = planKey;
         this.projectName = projectName;
         this.projectKey = projectKey;
+        this.customPlan = customPlan;
+    }
+
+    public boolean isCustomPlan() {
+        return customPlan;
     }
 
     public String getPlanName() {
