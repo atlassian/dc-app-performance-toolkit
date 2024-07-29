@@ -40,10 +40,6 @@ run the toolkit in an **enterprise-scale environment**.
 
 ---
 
-{{% note %}}
-DCAPT has fully transitioned to Terraform deployment. CloudFormation deployment option is no longer supported.
-{{% /note %}}
-
 ### <a id="devinstancesetup"></a>1. Setting up Jira Data Center development environment
 
 #### AWS cost estimation for the development environment
@@ -71,6 +67,11 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+   
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
@@ -113,6 +114,11 @@ Make sure **English (United States)** language is selected as a default language
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
 1. Navigate to `dc-app-performance-toolkit/app` folder.
 1. Open the `jira.yml` file and fill in the following variables:
@@ -336,6 +342,11 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`

@@ -234,6 +234,26 @@ class ConfluenceRestClient(RestClient):
             error_msg='ERROR: Could not create user')
         return r.json()
 
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False
+
+    def get_license_details(self):
+        api_url = f'{self.host}/rest/license/1.0/license/details'
+        r = self.get(api_url, "Could not get license details")
+        return r.json()
+
+    def get_license_remaining_seats(self):
+        api_url = f'{self.host}/rest/license/1.0/license/remainingSeats'
+        r = self.get(api_url, "Could not get license remaining seats")
+        return r.json()
+
 
 class ConfluenceRpcClient(Client):
 

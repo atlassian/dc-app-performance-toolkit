@@ -182,3 +182,13 @@ class BambooClient(RestClient):
         if bamboo_system_info_html.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/rest/api/latest/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False

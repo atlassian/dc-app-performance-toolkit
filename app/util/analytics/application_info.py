@@ -70,6 +70,10 @@ class BaseApplication:
     def java_version(self):
         return None  # TODO: Add Java version to results_summary.log for all supported products
 
+    @property
+    def status(self):
+        return self.client.get_status()
+
 
 class Jira(BaseApplication):
     type = JIRA

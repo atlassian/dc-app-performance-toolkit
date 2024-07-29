@@ -60,6 +60,11 @@ Below process describes how to install low-tier Confluence DC with "small" datas
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`
@@ -104,6 +109,11 @@ Make sure **Remote API** is enabled on the **![cog icon](/platform/marketplace/i
 {{% /warning %}}
 
 1. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 1. Follow the [README.md](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md) instructions to set up toolkit locally.
 1. Navigate to `dc-app-performance-toolkit/app` folder.
 1. Open the `confluence.yml` file and fill in the following variables:
@@ -308,6 +318,11 @@ Below process describes how to install enterprise-scale Confluence DC with "larg
    Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
    {{% /warning %}}
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
+   {{% warning %}}
+   For annual review, always get the latest version of the DCAPT code from the master branch.
+
+   DCAPT supported versions: three latest minor version [releases](https://github.com/atlassian/dc-app-performance-toolkit/releases).
+   {{% /warning %}}
 3. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder.
 4. Set AWS access keys created in step1 in `aws_envs` file:
    - `AWS_ACCESS_KEY_ID`

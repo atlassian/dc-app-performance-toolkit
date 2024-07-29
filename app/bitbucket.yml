@@ -18,7 +18,7 @@ settings:
     ramp-up: 10m                       # time to spin all concurrent users
     total_actions_per_hour: 32700
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.6
+    JMETER_VERSION: 5.6.3
     LANGUAGE: en_US.utf8
     allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
@@ -80,13 +80,14 @@ modules:
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
       - jpgc-tst=2.6
+      - bzm-random-csv=0.8    # not used default jmx file
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "126.0.6478.126" # Supports Chrome version 126. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "127.0.6533.72" # Supports Chrome version 127. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

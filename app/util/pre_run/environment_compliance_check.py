@@ -113,12 +113,40 @@ def validate_java_version():
             f"Supported java versions: {SUPPORTED_JAVA_VERSIONS}")
 
 
-def analyze_application_configuration(app_name):
+def analyze_application_configuration(app_name, app_settings):
     app_name_upper = app_name.upper()
     app = ApplicationSelector(app_name).application
+
+    print(f"INFO: application_protocol (http or https): {app_settings.protocol}")
+    print(f"INFO: application_hostname (should be without protocol, postfix and slash): {app_settings.hostname}")
+    print(f"INFO: application_port: {app_settings.port}")
+    print(f"INFO: application_postfix: {app_settings.postfix}")
+    url = f"{app_settings.protocol}://{app_settings.hostname}:{app_settings.port}{app_settings.postfix}"
+    print(f"INFO: Product URL: {url}")
+
+    try:
+        status = app.status
+        if status:
+            print(f"INFO: Product status: {status}")
+    except Exception as e:
+        raise SystemExit(f"ERROR: check correctness of protocol, hostname, port, postfix in {app_name}.yml file: {url}"
+                         f"\n    application_protocol (http or https): {app_settings.protocol}"
+                         f"\n    application_hostname (should be without protocol, postfix and slash): "
+                         f"{app_settings.hostname}"
+                         f"\n    application_port: {app_settings.port}"
+                         f"\n    application_postfix: {app_settings.postfix}"
+                         f"\n    product URL: {url}"
+                         f"\n    Exception: {e}"
+                         )
+
+    # TODO: Add a check for CROWD configuration once the feature with
+    # processors api is implemented in the product
+    if app_name_upper == "CROWD":
+        print("Warning: skip processors validation for crowd")
+        return
+
     processors = app.processors
     print(f"INFO: {app_name} processors count: {processors}")
-    app_settings = APPS_SETTINGS[app_name_upper]
 
     try:
         processors = int(processors)
@@ -146,17 +174,14 @@ def main():
     except IndexError:
         raise SystemExit("ERROR: execution_compliance_check.py expects application name as argument")
 
-    # TODO: Add a check for CROWD configuration once the feature with
-    # processors is implemented in the product
-    if app_name.upper() != "CROWD":
-        if app_name.upper() in APPS_SETTINGS:
-            app_settings = APPS_SETTINGS[app_name.upper()]
-            if app_settings.environment_compliance_check:
-                analyze_application_configuration(app_name)
-        else:
-            raise SystemExit(
-                f'ERROR: Unknown application: {app_name.upper()}. '
-                f'Supported applications are {list(APPS_SETTINGS.keys())}')
+    if app_name.upper() in APPS_SETTINGS:
+        app_settings = APPS_SETTINGS[app_name.upper()]
+        if app_settings.environment_compliance_check:
+            analyze_application_configuration(app_name, app_settings)
+    else:
+        raise SystemExit(
+            f'ERROR: Unknown application: {app_name.upper()}. '
+            f'Supported applications are {list(APPS_SETTINGS.keys())}')
 
 
 if __name__ == "__main__":

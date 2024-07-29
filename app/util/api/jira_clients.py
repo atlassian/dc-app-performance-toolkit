@@ -241,3 +241,30 @@ class JiraRestClient(RestClient):
         if jira_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False
+
+    def get_license_details(self):
+        login_url = f'{self.host}/login.jsp'
+        auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        auth_body = {
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
+        }
+        self.post(login_url, error_msg='Could not login in')
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
+        self._session.post(auth_url, data=auth_body)
+        api_url = f"{self.host}/rest/plugins/applications/1.0/installed/jira-software/license"
+        self.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,' \
+                                 'image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+        r = self.get(api_url, "Could not retrieve license details")
+        return r.json()
