@@ -791,12 +791,6 @@ def role_filter(role):
         tags = boto3.client("iam").list_role_tags(RoleName=role["RoleName"])
         persist_days = None
 
-        # delete all roles older than ttl
-        max_role_ttl = 60
-        if datetime.now(role['CreateDate'].tzinfo) > role['CreateDate'] + timedelta(days=float(max_role_ttl)):
-            print(f"OLD role for TERMINATION: {role['RoleName']}; creation date: {role['CreateDate']}")
-            return True
-
         for tag in tags["Tags"]:
             if tag["Key"] == "persist_days":
                 try:
@@ -806,6 +800,14 @@ def role_filter(role):
         if persist_days:
             eol_time = role['CreateDate'] + timedelta(days=float(persist_days))
             return datetime.now(role['CreateDate'].tzinfo) > eol_time
+        else:
+            # mark roles without persist_days tag and created more than TTL for termination
+            logging.warning(f"Role does NOT have 'persist_days' tag: {role['RoleName']}")
+            max_role_ttl = 90     # days
+            if datetime.now(role['CreateDate'].tzinfo) > role['CreateDate'] + timedelta(days=float(max_role_ttl)):
+                print(f"OLD role for TERMINATION: {role['RoleName']} was created "
+                      f"{role['CreateDate']} > {max_role_ttl} days ago.")
+                return True
     return False
 
 
