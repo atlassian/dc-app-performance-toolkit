@@ -440,7 +440,7 @@ def delete_network_interface(ec2_client, network_interface_id):
             if attempt == attempts:
                 raise e
             else:
-                print(f"Attempt {attempt}: {e}")
+                logging.info(f"Attempt {attempt}: {e}")
                 sleep(sleep_time)
 
 
@@ -632,7 +632,7 @@ def retrieve_ebs_volumes(aws_region, cluster_name):
                              f"has 'dynamic-pvc', 'nfs-shared-home' or 'local-home' in name: deleting...")
                 volumes.append(volume.id)
 
-    print(f"Found volumes: {volumes}")
+    logging.info(f"Found volumes: {volumes}")
     return volumes
 
 
@@ -644,12 +644,12 @@ def delete_ebs_volumes_by_id(aws_region, volumes):
         try:
             volume = ec2.Volume(volume_id)
             if volume.state == "in-use":
-                print(f"Volume {volume_id} is in use: skipping")
+                logging.info(f"Volume {volume_id} is in use: skipping")
                 continue
             volume.delete()
-            print(f"Terminated volume: {volume_id}")
+            logging.info(f"Terminated volume: {volume_id}")
         except Exception as e:
-            print(f"Failed to terminate volume {volume_id}: {e}")
+            logging.info(f"Failed to terminate volume {volume_id}: {e}")
 
 
 def get_clusters_to_terminate():
@@ -713,17 +713,17 @@ def retrieve_open_identities(cluster_name, aws_region):
         identity_provider = response["cluster"]["identity"]["oidc"]["issuer"]
         identity_id = identity_provider.split('/id/')[-1]
         open_identities.append(identity_id)
-        print(f"Open identity providers: {open_identities}")
+        logging.info(f"Open identity providers: {open_identities}")
     except Exception as e:
-        print(f"Failed to retrieve Open identity providers from {cluster_name}. Skipping...")
-        print(f"Error details: {e}")
+        logging.info(f"Failed to retrieve Open identity providers from {cluster_name}. Skipping...")
+        logging.info(f"Error details: {e}")
 
     return open_identities
 
 
 def delete_open_identities_for_cluster(open_identities):
     if not open_identities:
-        print("No OpenID Connect providers to delete.")
+        logging.info("No OpenID Connect providers to delete.")
         return
 
     iam_client = boto3.client('iam')
@@ -735,12 +735,12 @@ def delete_open_identities_for_cluster(open_identities):
                 provider_identity_id = provider['Arn'].split('/id/')[-1]
                 if provider_identity_id == identity:
                     iam_client.delete_open_id_connect_provider(OpenIDConnectProviderArn=provider['Arn'])
-                    print(f"Deleted identity provider: {identity}")
+                    logging.info(f"Deleted identity provider: {identity}")
                 else:
-                    print(f"Identity '{identity}' not found in provider '{provider['Arn']}'")
+                    logging.info(f"Identity '{identity}' not found in provider '{provider['Arn']}'")
         except Exception as e:
-            print(f"Failed to delete identity provider: {identity}")
-            print(f"Error details: {e}")
+            logging.info(f"Failed to delete identity provider: {identity}")
+            logging.info(f"Error details: {e}")
 
 
 def get_vpcs_to_terminate():
@@ -805,7 +805,7 @@ def role_filter(role):
             logging.warning(f"Role does NOT have 'persist_days' tag: {role['RoleName']}")
             max_role_ttl = 90     # days
             if datetime.now(role['CreateDate'].tzinfo) > role['CreateDate'] + timedelta(days=float(max_role_ttl)):
-                print(f"OLD role for TERMINATION: {role['RoleName']} was created "
+                logging.info(f"OLD role for TERMINATION: {role['RoleName']} was created "
                       f"{role['CreateDate']} > {max_role_ttl} days ago.")
                 return True
     return False
