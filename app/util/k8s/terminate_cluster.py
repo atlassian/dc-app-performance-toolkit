@@ -440,7 +440,7 @@ def delete_network_interface(ec2_client, network_interface_id):
             if attempt == attempts:
                 raise e
             else:
-                print(f"Attempt {attempt}: {e}")
+                logging.info(f"Attempt {attempt}: {e}")
                 sleep(sleep_time)
 
 
@@ -632,7 +632,7 @@ def retrieve_ebs_volumes(aws_region, cluster_name):
                              f"has 'dynamic-pvc', 'nfs-shared-home' or 'local-home' in name: deleting...")
                 volumes.append(volume.id)
 
-    print(f"Found volumes: {volumes}")
+    logging.info(f"Found volumes: {volumes}")
     return volumes
 
 
@@ -644,12 +644,12 @@ def delete_ebs_volumes_by_id(aws_region, volumes):
         try:
             volume = ec2.Volume(volume_id)
             if volume.state == "in-use":
-                print(f"Volume {volume_id} is in use: skipping")
+                logging.info(f"Volume {volume_id} is in use: skipping")
                 continue
             volume.delete()
-            print(f"Terminated volume: {volume_id}")
+            logging.info(f"Terminated volume: {volume_id}")
         except Exception as e:
-            print(f"Failed to terminate volume {volume_id}: {e}")
+            logging.info(f"Failed to terminate volume {volume_id}: {e}")
 
 
 def get_clusters_to_terminate():
@@ -713,17 +713,17 @@ def retrieve_open_identities(cluster_name, aws_region):
         identity_provider = response["cluster"]["identity"]["oidc"]["issuer"]
         identity_id = identity_provider.split('/id/')[-1]
         open_identities.append(identity_id)
-        print(f"Open identity providers: {open_identities}")
+        logging.info(f"Open identity providers: {open_identities}")
     except Exception as e:
-        print(f"Failed to retrieve Open identity providers from {cluster_name}. Skipping...")
-        print(f"Error details: {e}")
+        logging.info(f"Failed to retrieve Open identity providers from {cluster_name}. Skipping...")
+        logging.info(f"Error details: {e}")
 
     return open_identities
 
 
 def delete_open_identities_for_cluster(open_identities):
     if not open_identities:
-        print("No OpenID Connect providers to delete.")
+        logging.info("No OpenID Connect providers to delete.")
         return
 
     iam_client = boto3.client('iam')
@@ -735,12 +735,12 @@ def delete_open_identities_for_cluster(open_identities):
                 provider_identity_id = provider['Arn'].split('/id/')[-1]
                 if provider_identity_id == identity:
                     iam_client.delete_open_id_connect_provider(OpenIDConnectProviderArn=provider['Arn'])
-                    print(f"Deleted identity provider: {identity}")
+                    logging.info(f"Deleted identity provider: {identity}")
                 else:
-                    print(f"Identity '{identity}' not found in provider '{provider['Arn']}'")
+                    logging.info(f"Identity '{identity}' not found in provider '{provider['Arn']}'")
         except Exception as e:
-            print(f"Failed to delete identity provider: {identity}")
-            print(f"Error details: {e}")
+            logging.info(f"Failed to delete identity provider: {identity}")
+            logging.info(f"Error details: {e}")
 
 
 def get_vpcs_to_terminate():
@@ -790,6 +790,7 @@ def role_filter(role):
     if role["RoleName"].startswith("atlas-"):
         tags = boto3.client("iam").list_role_tags(RoleName=role["RoleName"])
         persist_days = None
+
         for tag in tags["Tags"]:
             if tag["Key"] == "persist_days":
                 try:
@@ -799,7 +800,28 @@ def role_filter(role):
         if persist_days:
             eol_time = role['CreateDate'] + timedelta(days=float(persist_days))
             return datetime.now(role['CreateDate'].tzinfo) > eol_time
+        else:
+            # mark roles without persist_days tag and created more than TTL for termination
+            logging.warning(f"Role does NOT have 'persist_days' tag: {role['RoleName']}")
+            max_role_ttl = 90     # days
+            if datetime.now(role['CreateDate'].tzinfo) > role['CreateDate'] + timedelta(days=float(max_role_ttl)):
+                logging.info(f"OLD role for TERMINATION: {role['RoleName']} was created "
+                      f"{role['CreateDate']} > {max_role_ttl} days ago.")
+                return True
     return False
+
+
+def remove_iam_policy(policy):
+    iam_client = boto3.client("iam")
+    # list all versions of the policy
+    r = iam_client.list_policy_versions(PolicyArn=policy['Arn'])
+    for version in r['Versions']:
+        if not version['IsDefaultVersion']:
+            version_id = version['VersionId']
+            iam_client.delete_policy_version(PolicyArn=policy['Arn'], VersionId=version_id)
+            logging.info(f"Delete policy {policy['PolicyName']} version: {version['VersionId']}")
+    iam_client.delete_policy(PolicyArn=policy['Arn'])
+    logging.info(f"Deleted policy {policy['PolicyName']}")
 
 
 def remove_cluster_specific_roles_and_policies(cluster_name, aws_region):
@@ -817,16 +839,15 @@ def remove_cluster_specific_roles_and_policies(cluster_name, aws_region):
         for policy in attached_policies["AttachedPolicies"]:
             # Detach policy from the role
             iam_client.detach_role_policy(RoleName=role_name, PolicyArn=policy["PolicyArn"])
-            print(f"  Detached policy {policy['PolicyName']} from role {role_name}")
+            logging.info(f"Detached policy {policy['PolicyName']} from role {role_name}")
 
             if cluster_name in policy['PolicyName']:
                 # Delete the policy
-                iam_client.delete_policy(PolicyArn=policy["PolicyArn"])
-                print(f"  Deleted policy {policy['PolicyName']}")
+                remove_iam_policy(policy)
 
         # Delete the role
         iam_client.delete_role(RoleName=role_name)
-        print(f"Deleted Role: {role_name}")
+        logging.info(f"Deleted Role: {role_name}")
 
 
 def remove_role_and_policies(role_name, active_clusters):
@@ -840,8 +861,7 @@ def remove_role_and_policies(role_name, active_clusters):
         logging.info(f"Detach {policy['PolicyArn']} from {role_name}")
         iam_client.detach_role_policy(PolicyArn=policy["PolicyArn"], RoleName=role_name)
         if policy["PolicyName"].endswith("_Fleet-Enrollment") or policy["PolicyName"].endswith("_LaaS-policy"):
-            logging.info(f"Delete policy {policy['PolicyName']}")
-            iam_client.delete_policy(PolicyArn=policy["PolicyArn"])
+            remove_iam_policy(policy)
     logging.info(f"Delete role {role_name}")
     iam_client.delete_role(RoleName=role_name)
     logging.info(f"Role {role_name} deleted successfully")
@@ -975,6 +995,72 @@ def delete_expired_tf_state_s3_buckets():
                     logging.warning(f"S3 bucket {bucket['Name']} does not have tags.")
 
 
+def is_policy_attached(policy_arn):
+    iam_client = boto3.client("iam")
+    r = iam_client.list_entities_for_policy(PolicyArn=policy_arn)
+    policy_users = r['PolicyUsers']
+    policy_groups = r['PolicyGroups']
+    policy_roles = r['PolicyRoles']
+    if policy_users or policy_groups or policy_roles:
+        return True
+    else:
+        return False
+
+
+def delete_expired_iam_policies():
+    iam_client = boto3.client("iam")
+    finished = False
+    marker = None
+    policies = list()
+    while not finished:
+        if marker:
+            policies_batch = iam_client.list_policies(MaxItems=1000, Scope="Local", Marker=marker)
+        else:
+            policies_batch = iam_client.list_policies(MaxItems=1000, Scope="Local")
+        policies.extend(policies_batch["Policies"])
+        if policies_batch['IsTruncated']:
+            marker = policies_batch['Marker']
+        else:
+            finished = True
+    for policy in policies:
+        if policy['PolicyName'].startswith('atlas-'):
+            # skip attached policies
+            if is_policy_attached(policy['Arn']):
+                logging.warning(f"Policy {policy['PolicyName']} is attached. Skipping termination.")
+                continue
+
+            tags = iam_client.list_policy_tags(PolicyArn=policy['Arn'])
+            persist_days = None
+
+            # delete all expired policies
+            for tag in tags["Tags"]:
+                if tag["Key"] == "persist_days":
+                    try:
+                        persist_days = float(tag["Value"])
+                    except ValueError:
+                        ...
+            if persist_days:
+                eol_time = policy['CreateDate'] + timedelta(days=float(persist_days))
+                if datetime.now(policy['CreateDate'].tzinfo) > eol_time:
+                    logging.info(f"Policy expired {policy['PolicyName']}: "
+                                 f"create date {policy['CreateDate']}, persist_days: {persist_days}")
+
+                    remove_iam_policy(policy)
+                else:
+                    logging.info(f"Policy is NOT expired {policy['PolicyName']}: "
+                                 f"create date {policy['CreateDate']}, persist_days: {persist_days}")
+            else:
+                # Delete policies without persist_days tag and created more that max policy TTL
+                max_policy_ttl = 90     # days
+                logging.warning(f"Policy does NOT have 'persist_days' tag: {policy['PolicyName']}. "
+                                f"Creation date: {policy['CreateDate']}")
+                create_date = datetime.now(policy['CreateDate'].tzinfo)
+                if create_date > policy['CreateDate'] + timedelta(days=float(max_policy_ttl)):
+                    logging.info(f"Policy {policy['PolicyName']} was created "
+                                 f"{policy['CreateDate']} > {max_policy_ttl} days ago.")
+                    remove_iam_policy(policy)
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--cluster_name", type=str, help='Cluster name to terminate.')
@@ -1029,6 +1115,7 @@ def main():
         active_clusters.extend(eks_client.list_clusters().get("clusters"))
     for role_name in role_names:
         remove_role_and_policies(role_name, active_clusters)
+    delete_expired_iam_policies()
     logging.info("Terminate unused and expired ebs volumes")
     delete_unused_volumes()
     logging.info("Search for abandoned S3 buckets")
