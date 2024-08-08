@@ -38,10 +38,19 @@ class PopupLocators:
 
 class LoginPageLocators:
 
-    login_page_url = UrlManager().login_url()
+    sidebar = (By.ID, "sidebar-container")
+
+    # legacy login form
     login_button = (By.ID, "loginButton")
     login_username_field = (By.ID, "os_username")
     login_password_field = (By.ID, "os_password")
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
+
+    login_page_url = UrlManager().login_url()
     footer_build_info = (By.ID, "footer-build-information")
     footer_node_info = (By.ID, "footer-cluster-node")
 
