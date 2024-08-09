@@ -152,15 +152,8 @@ class BitbucketRestClient(RestClient):
         return nodes_count
 
     def get_bitbucket_system_page(self):
-        session = self._session
-        url = f"{self.host}/j_atl_security_check"
-        body = {'j_username': self.user, 'j_password': self.password, '_atl_remember_me': 'on',
-                'next': f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
-                'submit': 'Log in'}
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-        session.post(url, data=body, headers=headers)
-        response = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
+        response = self.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
+                            error_msg="Could not get system page info")
         return response
 
     def get_bitbucket_repo_count(self):
