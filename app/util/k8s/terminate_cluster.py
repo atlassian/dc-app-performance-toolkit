@@ -811,17 +811,17 @@ def role_filter(role):
     return False
 
 
-def remove_iam_policy(policy):
+def remove_iam_policy(policy_arn, policy_name):
     iam_client = boto3.client("iam")
     # list all versions of the policy
-    r = iam_client.list_policy_versions(PolicyArn=policy['Arn'])
+    r = iam_client.list_policy_versions(PolicyArn=policy_arn)
     for version in r['Versions']:
         if not version['IsDefaultVersion']:
             version_id = version['VersionId']
-            iam_client.delete_policy_version(PolicyArn=policy['Arn'], VersionId=version_id)
-            logging.info(f"Delete policy {policy['PolicyName']} version: {version['VersionId']}")
-    iam_client.delete_policy(PolicyArn=policy['Arn'])
-    logging.info(f"Deleted policy {policy['PolicyName']}")
+            iam_client.delete_policy_version(PolicyArn=policy_arn, VersionId=version_id)
+            logging.info(f"Delete policy {policy_name} version: {version['VersionId']}")
+    iam_client.delete_policy(PolicyArn=policy_arn)
+    logging.info(f"Deleted policy {policy_name}")
 
 
 def remove_cluster_specific_roles_and_policies(cluster_name, aws_region):
@@ -843,7 +843,7 @@ def remove_cluster_specific_roles_and_policies(cluster_name, aws_region):
 
             if cluster_name in policy['PolicyName']:
                 # Delete the policy
-                remove_iam_policy(policy)
+                remove_iam_policy(policy["PolicyArn"], policy['PolicyName'])
 
         # Delete the role
         iam_client.delete_role(RoleName=role_name)
@@ -860,8 +860,11 @@ def remove_role_and_policies(role_name, active_clusters):
     for policy in attached_policies:
         logging.info(f"Detach {policy['PolicyArn']} from {role_name}")
         iam_client.detach_role_policy(PolicyArn=policy["PolicyArn"], RoleName=role_name)
-        if policy["PolicyName"].endswith("_Fleet-Enrollment") or policy["PolicyName"].endswith("_LaaS-policy"):
-            remove_iam_policy(policy)
+        if (policy["PolicyName"].endswith("_Fleet-Enrollment") or
+                policy["PolicyName"].endswith("_LaaS-policy") or
+                policy["PolicyName"].endswith("_crowdstrike_s3") or
+                policy["PolicyName"].endswith("_crowdstrike_secret")):
+            remove_iam_policy(policy['PolicyArn'], policy["PolicyName"])
     logging.info(f"Delete role {role_name}")
     iam_client.delete_role(RoleName=role_name)
     logging.info(f"Role {role_name} deleted successfully")
@@ -1045,7 +1048,7 @@ def delete_expired_iam_policies():
                     logging.info(f"Policy expired {policy['PolicyName']}: "
                                  f"create date {policy['CreateDate']}, persist_days: {persist_days}")
 
-                    remove_iam_policy(policy)
+                    remove_iam_policy(policy['Arn'], policy['PolicyName'])
                 else:
                     logging.info(f"Policy is NOT expired {policy['PolicyName']}: "
                                  f"create date {policy['CreateDate']}, persist_days: {persist_days}")
@@ -1058,7 +1061,7 @@ def delete_expired_iam_policies():
                 if create_date > policy['CreateDate'] + timedelta(days=float(max_policy_ttl)):
                     logging.info(f"Policy {policy['PolicyName']} was created "
                                  f"{policy['CreateDate']} > {max_policy_ttl} days ago.")
-                    remove_iam_policy(policy)
+                    remove_iam_policy(policy['Arn'], policy['PolicyName'])
 
 
 def main():
