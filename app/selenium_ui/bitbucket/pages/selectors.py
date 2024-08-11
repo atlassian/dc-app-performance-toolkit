@@ -115,7 +115,7 @@ class ProjectsLocators:
 
 class ProjectLocators:
     repositories_container = (By.ID, "repositories-container")
-    repository_name = (By.CSS_SELECTOR, "span.repository-name")
+    repository_name = (By.CSS_SELECTOR, ".repository-name")
 
 
 class RepoNavigationPanelLocators:
