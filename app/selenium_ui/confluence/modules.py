@@ -56,6 +56,7 @@ def login(webdriver, datasets):
     login_page = Login(webdriver)
     webdriver.debug_info = generate_debug_session_info(webdriver, datasets)
 
+    @print_timing("selenium_login")
     def measure():
 
         def sub_measure():
@@ -104,6 +105,7 @@ def view_page(webdriver, datasets):
     datasets['current_session']['view_page_cache'] = random_page
     page = Page(webdriver, page_id=page_id)
 
+    @print_timing("selenium_view_page")
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
@@ -122,6 +124,7 @@ def view_page_from_cache(webdriver, datasets):
 
     page = Page(webdriver, page_id=page_id)
 
+    @print_timing("selenium_view_page_from_cache")
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
@@ -140,6 +143,7 @@ def view_blog(webdriver, datasets):
     blog = Page(webdriver, page_id=blog_id)
     datasets['current_session']['view_blog'] = random_blog
 
+    @print_timing("selenium_view_blog")
     def measure():
         blog.go_to()
         blog.wait_for_page_loaded()
@@ -153,6 +157,7 @@ def view_blog(webdriver, datasets):
 def view_dashboard(webdriver, datasets):
     dashboard_page = Dashboard(webdriver)
 
+    @print_timing("selenium_view_dashboard")
     def measure():
         dashboard_page.go_to()
         dashboard_page.wait_for_page_loaded()
@@ -168,6 +173,7 @@ def create_confluence_page(webdriver, datasets):
     nav_panel = TopNavPanel(webdriver)
     create_page = Editor(webdriver)
 
+    @print_timing("selenium_create_page")
     def measure():
         def sub_measure():
             nav_panel.click_create()
@@ -203,6 +209,7 @@ def edit_confluence_page_by_url(webdriver, datasets):
     datasets['current_session']['edit_page'] = random_page
     edit_page = Editor(webdriver, page_id=page_id)
 
+    @print_timing("selenium_edit_page_by_url")
     def measure():
         def sub_measure():
             edit_page.go_to()
@@ -234,6 +241,7 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
     page = Page(webdriver, page_id=random_page[0])
     edit_page = Editor(webdriver, page_id=random_page[0])
 
+    @print_timing("selenium_quick_edit_page_click")
     def measure():
         def sub_measure():
             page.go_to()
