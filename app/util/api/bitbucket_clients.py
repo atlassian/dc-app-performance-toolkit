@@ -151,11 +151,13 @@ class BitbucketRestClient(RestClient):
             nodes_count = "Server"
         return nodes_count
 
+    @retry()
     def get_bitbucket_system_page(self):
         response = self.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
                             error_msg="Could not get system page info")
         return response
 
+    @retry()
     def get_bitbucket_repo_count(self):
         repos_count = None
         page = self.get_bitbucket_system_page()
