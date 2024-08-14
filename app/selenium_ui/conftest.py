@@ -310,6 +310,7 @@ def get_wait_browser_metrics(webdriver, expected_metrics):
 
 
 def measure_dom_requests(webdriver, interaction, description=''):
+    interaction = f"{interaction}_dom"
     if CONFLUENCE_SETTINGS.extended_metrics:
         if description:
             interaction = f"{interaction}-{description}"
