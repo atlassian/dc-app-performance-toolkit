@@ -67,7 +67,7 @@
         </collectionProp>
       </HeaderManager>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Confluence" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Confluence">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">0</intProp>
         <longProp name="ThreadGroup.duration">3600</longProp>
@@ -2365,14 +2365,14 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                 </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&apos;confluence-version-number&apos;).toInteger() &lt; 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="260 /display/${space_key}/${page_title}" enabled="true">
-                  <stringProp name="HTTPSampler.path">${application.postfix}/display/${space_key}/pages/${page_title}</stringProp>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="260 /display/${space_key}/${page_title}">
+                  <stringProp name="HTTPSampler.path">${application.postfix}/display/${space_key}/${page_title}</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -2403,7 +2403,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="260 /spaces/${space_key}/pages/${ajs-content-id}/${page_title}" enabled="true">
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="265 /spaces/${space_key}/pages/${ajs-content-id}/${page_title}">
                   <stringProp name="HTTPSampler.path">${application.postfix}/spaces/${space_key}/pages/${ajs-content-id}/${page_title}</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2429,7 +2429,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="270 rest/inlinecomments/1.0/comments" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="270 rest/inlinecomments/1.0/comments">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/inlinecomments/1.0/comments</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2849,14 +2849,14 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                 </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&apos;confluence-version-number&apos;).toInteger() &lt; 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 display/${space_key}/${page_title}">
-                  <stringProp name="HTTPSampler.path">${application.postfix}/sdisplay/${space_key}/${page_title}</stringProp>
+                  <stringProp name="HTTPSampler.path">${application.postfix}/display/${space_key}/${page_title}</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -2881,13 +2881,13 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&apos;confluence-version-number&apos;).toInteger() &gt;= 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="340 spaces/${space_key}/pages/${ajs-content-id}/${page_title}">
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="345 spaces/${space_key}/pages/${ajs-content-id}/${page_title}">
                   <stringProp name="HTTPSampler.path">${application.postfix}/spaces/${space_key}/pages/${ajs-content-id}/${page_title}</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -4936,7 +4936,7 @@ if ( sleep_time &gt; 0 ) {
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="check confluence version">
+            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="check confluence version" enabled="true">
               <stringProp name="TestPlan.comments">Run test only if confluence version is &gt;= 8.4.0</stringProp>
               <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &gt;= 804)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
