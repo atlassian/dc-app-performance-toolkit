@@ -98,7 +98,7 @@ def view_page(locust):
     page_id = page[0]
 
     # 100 pages/viewpage.action
-    r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
+    r = locust.get(f'/pages/viewpage.action?pageId={page_id}&noRedirect=true', catch_response=True)
 
     content = r.content.decode('utf-8')
     if 'Created by' not in content or 'Save for later' not in content:
@@ -297,7 +297,7 @@ def view_blog(locust):
 
     # 340 pages/viewpage.action
     r = locust.get(f'/pages/viewpage.action'
-                   f'?pageId={blog_id}',
+                   f'?pageId={blog_id}&noRedirect=true',
                    catch_response=True)
 
     content = r.content.decode('utf-8')
@@ -1490,7 +1490,7 @@ def upload_attachments(locust):
     page_id = page[0]
     space_key = page[1]
 
-    r = locust.get(f'/pages/viewpage.action?pageId={page_id}', catch_response=True)
+    r = locust.get(f'/pages/viewpage.action?pageId={page_id}&noRedirect=true', catch_response=True)
     content = r.content.decode('utf-8')
     if not('Created by' in content and 'Save for later' in content):
         logger.error(f'Failed to open page {page_id}: {content}')
