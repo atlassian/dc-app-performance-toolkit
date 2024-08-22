@@ -940,7 +940,7 @@ def create_and_edit_page(locust):
                     catch_response=True)
 
         # 1160 display/{space_key}/{page_title}
-        locust.get(f'/display/{space_key}/{page_title}', catch_response=True)
+        locust.get(f'/pages/viewpage.action?spaceKey={space_key}&title={page_title}', catch_response=True)
 
         # 1170 json/startheartbeatactivity.action
         locust.post('/json/startheartbeatactivity.action',
@@ -1204,7 +1204,7 @@ def create_and_edit_page(locust):
                     catch_response=True)
 
         # 1490 /display/${space_key}/${page_title}
-        locust.get(f'/display/{space_key}/{page_title}',
+        locust.get(f'/pages/viewpage.action?spaceKey={space_key}&title={page_title}',
                    catch_response=True)
 
         # 1500 rest/webResources/1.0/resources
