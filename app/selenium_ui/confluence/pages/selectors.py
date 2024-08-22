@@ -7,7 +7,7 @@ class UrlManager:
     def __init__(self, page_id=None):
         self.host = CONFLUENCE_SETTINGS.server_url
         self.login_params = '/login.action'
-        self.page_params = f"/pages/viewpage.action?pageId={page_id}"
+        self.page_params = f"/pages/viewpage.action?pageId={page_id}&noRedirect=true"
         self.dashboard_params = '/dashboard.action#all-updates'
         self.edit_page_params = f'/pages/editpage.action?pageId={page_id}'
         self.logout_params = "/logout.action"
