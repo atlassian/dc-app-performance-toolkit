@@ -251,7 +251,7 @@
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="20 index.action" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="20 index.action">
             <stringProp name="HTTPSampler.path">${application.postfix}/index.action</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -317,7 +317,7 @@
               <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
             </RegexExtractor>
             <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="confluence-version" enabled="true">
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="confluence-version">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">confluence-version</stringProp>
               <stringProp name="RegexExtractor.regex">meta name=\&quot;ajs-version-number\&quot; content=\&quot;(.*?)\&quot;&gt;</stringProp>
@@ -328,7 +328,7 @@
               <boolProp name="RegexExtractor.default_empty_value">true</boolProp>
             </RegexExtractor>
             <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Logger" enabled="true">
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Logger">
               <stringProp name="scriptLanguage">groovy</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
@@ -337,6 +337,7 @@
 log.info(&quot;Confluence version: ${confluence-version}&quot;)
 String confluenceVersion = vars.get(&apos;confluence-version&apos;);
 String[] versionNumbers = confluenceVersion.split(&apos;[.]&apos;)
+// get only major * 100 + minor version, patch version is out of scope. e.g. 9.0.2 converted to 900, 9.2.0 to 902
 vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0].toInteger() * 100 + versionNumbers[1].toInteger()))
 </stringProp>
             </JSR223PostProcessor>
@@ -2365,7 +2366,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                 </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901 (9.1.0)" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &lt; 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
@@ -2397,7 +2398,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901 (9.1.0)" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &gt;= 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
@@ -2754,7 +2755,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="320 rest/api/content/${ajs-content-id}">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="320 rest/api/content/${ajs-content-id}" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/content/${ajs-content-id}</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2795,7 +2796,7 @@ vars.put(&quot;page_title&quot;, &quot;jmeter_create_and_edit_page:create_page -
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_create_and_edit_page:edit_page">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_create_and_edit_page:edit_page" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
@@ -2849,7 +2850,7 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                 </JSR223PreProcessor>
                 <hashTree/>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &lt; 901 (9.1.0)" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &lt; 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
@@ -2881,7 +2882,7 @@ vars.put(&quot;page_text&quot;, &quot;jmeter_create_and_edit_page:edit_page - &q
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901">
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If confluence-version-number &gt;= 901 (9.1.0)" enabled="true">
                 <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &gt;= 901)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
@@ -4936,7 +4937,7 @@ if ( sleep_time &gt; 0 ) {
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="check confluence version" enabled="true">
+            <IfController guiclass="IfControllerPanel" testclass="IfController" testname="check confluence version " enabled="true">
               <stringProp name="TestPlan.comments">Run test only if confluence version is &gt;= 8.4.0</stringProp>
               <stringProp name="IfController.condition">${__groovy(vars.get(&quot;confluence-version-number&quot;).toInteger() &gt;= 804)}</stringProp>
               <boolProp name="IfController.evaluateAll">false</boolProp>
