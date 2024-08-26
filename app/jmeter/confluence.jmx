@@ -4840,7 +4840,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="IfController.useExpression">true</boolProp>
             </IfController>
             <hashTree>
-              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_upload_emoji" enabled="true">
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_upload_emoji" enabled="false">
                 <boolProp name="TransactionController.parent">true</boolProp>
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
               </TransactionController>
