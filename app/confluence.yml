@@ -23,7 +23,7 @@ settings:
     allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     extended_metrics: False
-    view_page: 30
+    view_page: 34
     view_dashboard: 9
     view_blog: 10
     search_cql: 6
@@ -31,7 +31,7 @@ settings:
     create_and_edit_page: 8
     comment_page: 5
     view_attachment: 4
-    upload_attachment: 4
+    upload_attachment: 0
     like_page: 3
     upload_emoticon: 2      # For Confluence 8.4.x+
     standalone_extension: 15 # By default disabled
