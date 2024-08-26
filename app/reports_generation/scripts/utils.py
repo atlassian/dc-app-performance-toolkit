@@ -1,15 +1,20 @@
-import json
-import numbers
-from pathlib import Path
-import typing
-from distutils import util
 import csv
+import numbers
+from distutils import util
+from pathlib import Path
 
-import yaml
 
-
-def resolve_path(str_path: str) -> Path:
-    return Path(str_path).resolve().expanduser()
+def resolve_relative_path(str_path: str) -> Path:
+    """
+    Resolve relative path  from .yml scenario configuration file.
+    Expected working dir for csv_chart_generator.py: ./dc-app-performance-toolkit/app/reports_generation
+    Expected relative path starting from ./dc-app-performance-toolkit folder.
+    """
+    expected_working_dir_name = 'reports_generation'
+    working_dir = Path().resolve().expanduser()
+    if working_dir.name != expected_working_dir_name:
+        raise SystemExit(f"ERROR: expected working dir name: {expected_working_dir_name}, actual: {working_dir.name}")
+    return Path().resolve().expanduser().parents[1] / str_path
 
 
 def validate_str_is_not_blank(config: dict, key: str):
@@ -63,7 +68,7 @@ def validate_config(config: dict):
             raise SystemExit('Config key "run" should be a dictionary')
 
         validate_str_is_not_blank(run, 'runName')
-        validate_str_is_not_blank(run, 'fullPath')
+        validate_str_is_not_blank(run, 'relativePath')
 
 
 def clean_str(string: str):
@@ -71,19 +76,3 @@ def clean_str(string: str):
     string = string.replace(" ", "_")
     # Return alphanumeric characters from a string, except "_"
     return ''.join(e for e in string if e.isalnum() or e == "_")
-
-
-def save_results(results: typing.List[typing.List], filepath: str):
-    with open(filepath, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(results)
-
-
-def read_json(filepath: str):
-    with open(filepath) as f:
-        return json.load(f)
-
-
-def read_yaml(filepath: str):
-    with open(filepath) as f:
-        return yaml.safe_load(f)

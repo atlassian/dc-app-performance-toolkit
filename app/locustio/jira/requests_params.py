@@ -83,6 +83,7 @@ class CreateIssue(JiraResource):
         form_token = issue_body_dict['form_token']
         issue_type = issue_body_dict['issue_type']
         resolution_done = issue_body_dict['resolution_done']
+        resolution_string = f'&resolution={resolution_done}' if resolution_done else ''
         fields_to_retain = issue_body_dict['fields_to_retain']
         custom_fields_to_retain = issue_body_dict['custom_fields_to_retain']
 
@@ -91,7 +92,7 @@ class CreateIssue(JiraResource):
                        f"&description={description}&timetracking_originalestimate={timetracking_originalestimate}" \
                        f"&timetracking_remainingestimate={timetracking_remainingestimate}" \
                        f"&is_create_issue={is_create_issue}" \
-                       f"&hasWorkStarted={has_work_started}&resolution={resolution_done}"
+                       f"&hasWorkStarted={has_work_started}{resolution_string}"
         fields_to_retain_body = ''
         custom_fields_to_retain_body = ''
         for field in fields_to_retain:

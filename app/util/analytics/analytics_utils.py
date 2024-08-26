@@ -152,6 +152,7 @@ def generate_report_summary(collector):
 
     pretty_report = map(lambda x: format_string_summary_report(x, offset_1st), summary_report)
     write_to_file(pretty_report, summary_report_file)
+    print(f"Results summary log file created: {summary_report_file}")
 
 
 def get_os():

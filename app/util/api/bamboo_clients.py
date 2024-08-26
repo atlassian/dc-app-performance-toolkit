@@ -159,14 +159,18 @@ class BambooClient(RestClient):
         return r.json()
 
     def get_available_processors(self):
-        processors = None
-        page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content')
-        tree = html.fromstring(page.content)
         try:
-            processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
-        except Exception as error:
-            print(f"Warning: Could not parse number of Bamboo available processors: {error}")
-        return processors
+            processors = None
+            page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content')
+            tree = html.fromstring(page.content)
+            try:
+                processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
+            except Exception as e:
+                print(f"Warning: Could not parse number of Bamboo available processors: {e}")
+            return processors
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
 
     def get_nodes_count(self):
         r = self.get(f'{self.host}/rest/api/latest/server/nodes', error_msg="Could not get Bamboo nodes count")
@@ -178,3 +182,13 @@ class BambooClient(RestClient):
         if bamboo_system_info_html.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/rest/api/latest/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False

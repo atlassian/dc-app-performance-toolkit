@@ -169,6 +169,13 @@ def __check_for_admin_permissions(jira_api):
         raise SystemExit(f"The '{jira_api.user}' user does not have admin permissions.")
 
 
+def __check_license(client):
+    license_details = client.get_license_details()
+    license_valid, license_expired = license_details['valid'], license_details['expired']
+    if not license_valid or license_expired:
+        raise SystemExit(f'ERROR: Jira license is valid: {license_valid}, license has expired: {license_expired}.')
+
+
 def main():
     print("Started preparing data")
 
@@ -179,6 +186,7 @@ def main():
 
     __check_for_admin_permissions(client)
     __check_current_language(client)
+    __check_license(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

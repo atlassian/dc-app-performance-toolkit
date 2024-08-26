@@ -95,6 +95,7 @@ class IssueLocators:
     issue_title = (By.ID, "summary-val")
 
     create_issue_button = (By.ID, "create_link")
+    issue_edit_button = (By.ID, "edit-issue")
     # Issue create modal form
     issue_modal = (By.ID, "create-issue-dialog")
     issue_summary_field = (By.ID, "summary")
@@ -108,6 +109,7 @@ class IssueLocators:
     issue_type_dropdown_elements = (By.CLASS_NAME, "aui-list-item")
     issue_ready_to_save_spinner = (By.CSS_SELECTOR, ".buttons>.throbber")
     issue_submit_button = (By.ID, "create-issue-submit")
+    issue_epic_name = (By.ID, "customfield_10104")     # Epic Name custom field
 
     # Edit Issue page
     edit_issue_page = (By.ID, "issue-edit")

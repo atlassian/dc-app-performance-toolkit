@@ -18,6 +18,7 @@ class PopupManager(BasePage):
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
     page_loaded_selector = LoginPageLocators.system_dashboard
+    base_url = UrlManager().host
 
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
@@ -87,8 +88,8 @@ class Issue(BasePage):
         self.page_url_edit_issue = url_manager_edit_page.edit_issue_url()
         self.page_url_edit_comment = url_manager_edit_page.edit_comments_url()
 
-    def wait_for_issue_title(self):
-        self.wait_until_visible(IssueLocators.issue_title)
+    def wait_for_issue_loaded(self):
+        self.wait_until_visible(IssueLocators.issue_edit_button)
 
     def go_to_edit_issue(self):
         self.go_to_url(self.page_url_edit_issue)
@@ -100,6 +101,7 @@ class Issue(BasePage):
 
     def fill_summary_edit(self):
         text_summary = f"Edit summary form selenium - {self.generate_random_string(10)}"
+        self.get_element(IssueLocators.issue_summary_field).clear()
         self.get_element(IssueLocators.issue_summary_field).send_keys(text_summary)
 
     def __fill_rich_editor_textfield(self, text, selector):
@@ -192,6 +194,11 @@ class Issue(BasePage):
     def edit_comment_submit(self):
         self.get_element(IssueLocators.edit_comment_add_comment_button).click()
         self.wait_until_visible(IssueLocators.issue_title)
+
+    def set_epic_name(self):
+        if self.get_elements(IssueLocators.issue_epic_name):
+            epic_name = f"Epic name created date {time.time()}"
+            self.wait_until_clickable(IssueLocators.issue_epic_name).send_keys(epic_name)
 
 
 class Project(BasePage):
