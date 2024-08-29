@@ -193,13 +193,34 @@ class ConfluenceRestClient(RestClient):
     def get_system_info_page(self):
         login_url = f'{self.host}/dologin.action'
         auth_url = f'{self.host}/doauthenticate.action'
+        tsv_auth_url = f'{self.host}/rest/tsv/1.0/authenticate'
+        tsv_login_body = {
+            'username': self.user,
+            'password': self.password,
+            'rememberMe': True,
+            'targetUrl': ''
+        }
+
         auth_body = {
             'destination': '/admin/systeminfo.action',
             'authenticate': 'Confirm',
             'password': self.password
         }
-        self.post(url=login_url, error_msg='Could not get login in')
-        system_info_html = self._session.post(url=auth_url, data=auth_body)
+
+        login_page_response = self.session.get(login_url)
+        if login_page_response.status_code == 200:
+            login_page_content = login_page_response.text
+            is_legacy_login_form = 'loginform' in login_page_content
+        else:
+            raise Exception(f"Failed to fetch login page. Status code: {login_page_response.status_code}")
+
+        if is_legacy_login_form:
+            self.session.post(url=login_url)
+        else:
+            self.session.post(url=tsv_auth_url, json=tsv_login_body)
+
+        self.headers['X-Atlassian-Token'] = 'no-check'
+        system_info_html = self.session.post(url=auth_url, data=auth_body, headers=self.headers)
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
