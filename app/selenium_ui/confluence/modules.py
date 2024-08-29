@@ -178,6 +178,7 @@ def create_confluence_page(webdriver, datasets):
         def sub_measure():
             PopupManager(webdriver).dismiss_default_popup()
             nav_panel.click_create()
+            PopupManager(webdriver).dismiss_default_popup()
             create_page.wait_for_create_page_open()
             measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
             if CONFLUENCE_SETTINGS.extended_metrics:
