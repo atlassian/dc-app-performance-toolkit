@@ -176,6 +176,7 @@ def create_confluence_page(webdriver, datasets):
     @print_timing("selenium_create_page")
     def measure():
         def sub_measure():
+            PopupManager(webdriver).dismiss_default_popup()
             nav_panel.click_create()
             PopupManager(webdriver).dismiss_default_popup()
             create_page.wait_for_create_page_open()
