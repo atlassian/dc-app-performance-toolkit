@@ -85,7 +85,8 @@ class PopupManager(BasePage):
         return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
                                   PopupLocators.skip_onboarding_2,
                                   PopupLocators.time_saving_template,
-                                  PopupLocators.welcome_to_confluence)
+                                  PopupLocators.welcome_to_confluence,
+                                  PopupLocators.dark_theme_popup)
 
 
 class Page(BasePage):

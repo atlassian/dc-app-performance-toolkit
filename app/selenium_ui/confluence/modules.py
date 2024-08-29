@@ -247,6 +247,7 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
             page.go_to()
             page.wait_for_resources_loaded()
             page.wait_for_page_loaded()
+            PopupManager(webdriver).dismiss_default_popup()
             page.click_edit()
             edit_page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
@@ -280,6 +281,7 @@ def create_inline_comment(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
 
         @print_timing("selenium_create_comment:write_comment")
         def sub_measure():
@@ -302,6 +304,7 @@ def cql_search(webdriver, datasets):
     random_cql = random.choice(datasets[CQLS])
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
+    PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing("selenium_cql_search")
     def measure():

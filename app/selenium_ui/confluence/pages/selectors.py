@@ -34,6 +34,7 @@ class PopupLocators:
     skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
     time_saving_template = '#closeDisDialog'
     welcome_to_confluence = '.aui-button.aui-button-primary.show-onboarding'
+    dark_theme_popup = 'button[aria-label="Close this modal"]'
 
 
 class LoginPageLocators:
