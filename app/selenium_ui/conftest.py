@@ -219,6 +219,9 @@ def webdriver(app_settings):
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument('lang=en')
+        # Prevent Chrome from showing the search engine prompt
+        chrome_options.add_argument("--disable-search-engine-choice-screen")
+        chrome_options.add_argument("--no-first-run")
         chrome_options.add_experimental_option(
             'prefs', {'intl.accept_languages': 'en,en_US'})
         chrome_options.set_capability(
