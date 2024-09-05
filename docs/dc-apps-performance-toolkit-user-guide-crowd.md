@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-06-24"
+date: "2024-09-02"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -39,10 +39,22 @@ Recommended limit is 30.
 Below process describes how to install Crowd DC with an enterprise-scale dataset included. This configuration was created
 specifically for performance testing during the DC app review process.
 
-1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+1. Create Access keys for AWS CLI:
    {{% warning %}}
-   Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
+   Do not use `root` user credentials for cluster creation.
+
+   Use the following policies to restrict permissions: [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
+
+   The specific configuration relies on how you manage permissions within AWS.
    {{% /warning %}}
+
+   **Example** of Policies and User creation:
+   1. Go to AWS Console -> IAM service -> Policies
+   2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
+   3. Create `policy2` with json content of the [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json) file
+   4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
+   5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
    {{% warning %}}
    For annual review, always get the latest version of the DCAPT code from the master branch.
