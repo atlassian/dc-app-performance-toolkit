@@ -29,10 +29,13 @@ RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
+# Force install setuptools to workaround bzt issue with deprecated distutils module.
+# TODO: removed when bzt remove distutils module usage
+RUN pip install setuptools==74.1.2 --force-reinstall
+
 RUN wget https://blazemeter-tools.s3.us-east-2.amazonaws.com/bzt.tar.gz -O /tmp/bzt.tar.gz && \
     tar -xzf /tmp/bzt.tar.gz -C /root && \
     rm /tmp/bzt.tar.gz
-
 
 WORKDIR /dc-app-performance-toolkit/app
 
