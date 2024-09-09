@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-09-02"
+date: "2024-09-09"
 ---
 # Data Center App Performance Toolkit User Guide For Bitbucket
 
@@ -67,7 +67,13 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    **Example** of Policies and User creation:
    1. Go to AWS Console -> IAM service -> Policies
    2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
    3. Create `policy2` with json content of the [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
    4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
    5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
    6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
@@ -101,7 +107,7 @@ Below process describes how to install low-tier Bitbucket DC with "small" datase
    -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.2 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
@@ -257,7 +263,13 @@ Below process describes how to install enterprise-scale Bitbucket DC with "large
    **Example** of Policies and User creation:
    1. Go to AWS Console -> IAM service -> Policies
    2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
    3. Create `policy2` with json content of the [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
    4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
    5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
    6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
@@ -291,7 +303,7 @@ Below process describes how to install enterprise-scale Bitbucket DC with "large
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.2 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bitbucket`.
 
@@ -366,7 +378,7 @@ To receive performance baseline results **without** an app installed:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bitbucket.yml
+    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh bitbucket.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bitbucket/YY-MM-DD-hh-mm-ss` folder:
@@ -397,7 +409,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bitbucket.yml
+    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh bitbucket.yml
     ```
 
 {{% note %}}
@@ -447,7 +459,7 @@ To receive scalability benchmark results for one-node Bitbucket DC **with** app-
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bitbucket.yml
+    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh bitbucket.yml
     ```
    
 {{% note %}}
@@ -472,7 +484,7 @@ To receive scalability benchmark results for two-node Bitbucket DC **with** app-
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.2 ./install.sh -c conf.tfvars
    ```
 1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
     ``` bash
@@ -485,7 +497,7 @@ To receive scalability benchmark results for two-node Bitbucket DC **with** app-
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bitbucket.yml
+    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh bitbucket.yml
     ```
 
 {{% note %}}
@@ -514,7 +526,7 @@ To receive scalability benchmark results for four-node Bitbucket DC with app-spe
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bitbucket.yml
+    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh bitbucket.yml
     ```
 
 {{% note %}}
