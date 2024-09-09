@@ -1,6 +1,5 @@
 import csv
 import numbers
-from distutils import util
 from pathlib import Path
 
 
@@ -46,11 +45,27 @@ def read_csv_by_line(file: Path) -> list:
     return lines
 
 
+def string_to_bool(val):
+    """
+    Convert a string representation of truth to a boolean.
+    True values are 'y', 'yes', 't', 'true', 'on', and '1';
+    False values are 'n', 'no', 'f', 'false', 'off', and '0'.
+    Raises ValueError if 'val' is anything else.
+    """
+    val = val.strip().lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError(f"Invalid truth value: {val}")
+
+
 def get_app_specific_actions(file: Path) -> list:
     app_specific_list = []
     actions = read_csv_by_line(file)
     for action in actions:
-        if bool(util.strtobool(action['App-specific'])):
+        if string_to_bool(action['App-specific']):
             app_specific_list.append(action['Action'])
     return app_specific_list
 
