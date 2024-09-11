@@ -173,13 +173,13 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_login_and_view_all_builds" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_login_and_view_all_builds">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">false</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="95 /userlogin!doDefault.action" enabled="true">
-            <stringProp name="HTTPSampler.path">${application.postfix}/userlogin!doDefault.action</stringProp>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="95 /userlogin!doDefault.action">
+            <stringProp name="HTTPSampler.path">${application.postfix}/userlogin.action</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -229,7 +229,7 @@
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="100 /userlogin.action" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="100 /userlogin.action">
             <stringProp name="TestPlan.comments">User login action</stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
             <stringProp name="HTTPSampler.path">${application.postfix}/userlogin.action</stringProp>
@@ -318,7 +318,7 @@
             <hashTree/>
           </hashTree>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login checker" enabled="true">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="login checker">
           <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>

@@ -443,7 +443,7 @@ bamboo_min_heap = "2048m"
 bamboo_max_heap = "4096m"
 
 # Bamboo Agent instance resource configuration
-bamboo_agent_cpu = "250m"
+bamboo_agent_cpu = "300m"
 bamboo_agent_mem = "700m"
 
 # Storage
