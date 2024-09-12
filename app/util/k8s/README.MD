@@ -252,13 +252,12 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     docker run --pull=always --env-file aws_envs \
     -it atlassianlabs/terraform:2.9.2 bash 
     ```
-4. Run following commands one by one inside docker container to get effective policies permissions:
+4. Make sure you have IAM policies with names `policy1`, `policy2`, created from [policy1.json](https://github.com/atlassian-labs/data-center-terraform/blob/main/permissions/policy1.json) and [policy2.json](https://github.com/atlassian-labs/data-center-terraform/blob/main/permissions/policy2.json).
+5. Run following commands one by one inside docker container to get effective policies permissions:
     ``` bash
-    POLICY_NAME_1=policy1
-    POLICY_NAME_2=policy2
     ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
-    POLICY_1_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --query 'Policy.DefaultVersionId' --output text)
-    POLICY_2_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --query 'Policy.DefaultVersionId' --output text)
-    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --version-id $POLICY_1_VERSION_ID
-    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --version-id $POLICY_2_VERSION_ID
+    POLICY_1_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy1 --query 'Policy.DefaultVersionId' --output text)
+    POLICY_2_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy2 --query 'Policy.DefaultVersionId' --output text)
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy1 --version-id $POLICY_1_VERSION_ID
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy2 --version-id $POLICY_2_VERSION_ID
     ```
