@@ -14,6 +14,7 @@
 - [Rebuild atlassian/dcapt docker image on the fly](#rebuild-atlassiandcapt-docker-image-on-the-fly)
 - [Run tests locally from docker container](#run-tests-locally-from-docker-container)
 - [Run tests from execution environment pod](#run-tests-from-execution-environment-pod)
+- [Debug AWS required policies](#debug-aws-required-policies)
 
 # Development environment
 
@@ -241,4 +242,23 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
     -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh jira.yml
+    ```
+
+# Debug AWS required policies
+1. Navigate to `dc-app-performance-toolkit/app/util/k8s` folder
+2. Set AWS credential in [aws_envs](./aws_envs) file
+3. Start and ssh to `atlassianlabs/terraform` docker container:
+    ``` bash
+    docker run --pull=always --env-file aws_envs \
+    -it atlassianlabs/terraform:2.9.2 bash 
+    ```
+4. Run following commands one by one inside docker container to get effective policies permissions:
+    ``` bash
+    POLICY_NAME_1=policy1
+    POLICY_NAME_2=policy2
+    ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+    POLICY_1_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --query 'Policy.DefaultVersionId' --output text)
+    POLICY_2_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --query 'Policy.DefaultVersionId' --output text)
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --version-id $POLICY_1_VERSION_ID
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --version-id $POLICY_2_VERSION_ID
     ```
