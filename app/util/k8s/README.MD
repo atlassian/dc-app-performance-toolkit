@@ -250,11 +250,15 @@ Note: this option is **not** suitable for full-scale performance runs as local n
 3. Start and ssh to `atlassianlabs/terraform` docker container:
     ``` bash
     docker run --pull=always --env-file aws_envs \
-    -it atlassianlabs/terraform:2.9.1 bash 
+    -it atlassianlabs/terraform:2.9.2 bash 
     ```
 4. Run following commands one by one inside docker container:
     ``` bash
+    POLICY_NAME_1=policy1
+    POLICY_NAME_2=policy2
     ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
-    POLICY_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy1 --query 'Policy.DefaultVersionId' --output text)
-    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/policy1 --version-id $POLICY_VERSION_ID
+    POLICY_1_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --query 'Policy.DefaultVersionId' --output text)
+    POLICY_2_VERSION_ID=$(aws iam get-policy --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --query 'Policy.DefaultVersionId' --output text)
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_1 --version-id $POLICY_1_VERSION_ID
+    aws iam get-policy-version --policy-arn arn:aws:iam::$ACCOUNT_ID:policy/$POLICY_NAME_2 --version-id $POLICY_2_VERSION_ID
     ```
