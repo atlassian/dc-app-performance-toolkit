@@ -89,10 +89,10 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version.
-jira_version_tag = "9.12.8"
+jira_version_tag = "9.12.12"
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.8"
+# jira_version_tag = "5.12.12"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -161,7 +161,7 @@ jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.9"
+confluence_version_tag = "8.5.14"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
@@ -238,7 +238,7 @@ confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.14"
+bitbucket_version_tag = "8.9.18"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"

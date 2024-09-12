@@ -7,7 +7,7 @@ class UrlManager:
     def __init__(self, page_id=None):
         self.host = CONFLUENCE_SETTINGS.server_url
         self.login_params = '/login.action'
-        self.page_params = f"/pages/viewpage.action?pageId={page_id}"
+        self.page_params = f"/pages/viewpage.action?pageId={page_id}&noRedirect=true"
         self.dashboard_params = '/dashboard.action#all-updates'
         self.edit_page_params = f'/pages/editpage.action?pageId={page_id}'
         self.logout_params = "/logout.action"
@@ -34,14 +34,24 @@ class PopupLocators:
     skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
     time_saving_template = '#closeDisDialog'
     welcome_to_confluence = '.aui-button.aui-button-primary.show-onboarding'
+    dark_theme_popup = 'button[aria-label="Close this modal"]'
 
 
 class LoginPageLocators:
 
-    login_page_url = UrlManager().login_url()
+    sidebar = (By.ID, "sidebar-container")
+
+    # legacy login form
     login_button = (By.ID, "loginButton")
     login_username_field = (By.ID, "os_username")
     login_password_field = (By.ID, "os_password")
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
+
+    login_page_url = UrlManager().login_url()
     footer_build_info = (By.ID, "footer-build-information")
     footer_node_info = (By.ID, "footer-cluster-node")
 

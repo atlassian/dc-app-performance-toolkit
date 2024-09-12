@@ -8,15 +8,36 @@ from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_page_url
-    page_loaded_selector = LoginPageLocators.login_button
+    page_loaded_selector = [LoginPageLocators.login_button, LoginPageLocators.login_button_2sv]
+
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(LoginPageLocators.sidebar)
+        if not self.get_elements(LoginPageLocators.login_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_username_field).send_keys(username)
-        self.get_element(LoginPageLocators.login_password_field).send_keys(password)
+        if self.is_2sv_login:
+            username_field = LoginPageLocators.login_username_field_2sv
+            password_field = LoginPageLocators.login_password_field_2sv
+        else:
+            username_field = LoginPageLocators.login_username_field
+            password_field = LoginPageLocators.login_password_field
+
+        self.get_element(username_field).send_keys(username)
+        self.get_element(password_field).send_keys(password)
 
     def click_login_button(self):
-        self.wait_until_visible(LoginPageLocators.login_button).click()
-        self.wait_until_invisible(LoginPageLocators.login_button)
+        if self.is_2sv_login:
+            self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
+            self.wait_until_invisible(LoginPageLocators.login_button_2sv)
+        else:
+            self.wait_until_visible(LoginPageLocators.login_button).click()
+            self.wait_until_invisible(LoginPageLocators.login_button)
 
     def is_first_login(self):
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
@@ -51,7 +72,7 @@ class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
     def wait_for_logout(self):
-        self.wait_until_visible(LogoutLocators.logout_msg)
+        self.wait_until_visible(LoginPageLocators.sidebar)
 
 
 class AllUpdates(BasePage):
@@ -64,7 +85,8 @@ class PopupManager(BasePage):
         return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
                                   PopupLocators.skip_onboarding_2,
                                   PopupLocators.time_saving_template,
-                                  PopupLocators.welcome_to_confluence)
+                                  PopupLocators.welcome_to_confluence,
+                                  PopupLocators.dark_theme_popup)
 
 
 class Page(BasePage):

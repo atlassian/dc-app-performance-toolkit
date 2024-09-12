@@ -6,7 +6,7 @@ class UrlManager:
 
     def __init__(self, build_plan_id=None):
         self.host = BAMBOO_SETTINGS.server_url
-        self.login_params = '/userlogin!doDefault.action'
+        self.login_params = '/userlogin.action'
         self.logout_params = '/userLogout.action'
         self.all_projects_params = '/allProjects.action'
         self.plan_summary_params = f'/browse/{build_plan_id}'

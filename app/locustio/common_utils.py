@@ -122,7 +122,8 @@ class MyBaseTaskSet(TaskSet):
     login_failed = False
 
     def failure_check(self, response, action_name):
-        if hasattr(response, 'error') or not response:
+        print(dir(response))
+        if (hasattr(response, 'error') and response.error) or not response:
             if 'login' in action_name:
                 self.login_failed = True
             if response.headers.get('Content-Type') == 'application/json':
