@@ -252,7 +252,7 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     docker run --pull=always --env-file aws_envs \
     -it atlassianlabs/terraform:2.9.2 bash 
     ```
-4. Run following commands one by one inside docker container:
+4. Run following commands one by one inside docker container to get effective policies permissions:
     ``` bash
     POLICY_NAME_1=policy1
     POLICY_NAME_2=policy2
