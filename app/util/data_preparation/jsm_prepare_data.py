@@ -85,6 +85,8 @@ def __filter_customer_with_requests(customer, jsm_client):
         for request in random_non_closed_requests:
             requests.append((request['serviceDeskId'], request['issueId'], request['issueKey']))
         customer_dict['requests'] = requests
+    else:
+        print(f"INFO: {customer['name']} does not have open requests")
     return customer_dict
 
 

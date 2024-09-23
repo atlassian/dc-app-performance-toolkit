@@ -3,37 +3,38 @@ settings:
   artifacts-dir: results/confluence/%Y-%m-%d_%H-%M-%S
   aggregator: consolidator
   verbose: false
-  check-updates: false    # disable bzt check for updates
+  check-updates: false                 # disable bzt check for updates
   env:
     application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol, port and postfix e.g. test-confluence.atlassian.com or localhost
-    application_protocol: http        # http or https
-    application_port: 80              # 80, 443, 8080, 1990, etc
-    secure: True                      # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
-    application_postfix: /confluence  # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
+    application_protocol: http         # http or https
+    application_port: 80               # 80, 443, 8080, 1990, etc
+    secure: True                       # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_postfix: /confluence   # e.g. /confluence for TerraForm deployment url like `http://a1234-54321.us-east-2.elb.amazonaws.com/confluence`. Leave this value blank for url without postfix.
     admin_login: admin
     admin_password: admin
-    load_executor: jmeter             # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                  # number of concurrent virtual users for jmeter or locust scenario
+    load_executor: jmeter              # jmeter and locust are supported. jmeter by default.
+    concurrency: 200                   # number of concurrent virtual users for jmeter or locust scenario
     test_duration: 45m
-    ramp-up: 5m                       # time to spin all concurrent users
+    ramp-up: 5m                        # time to spin all concurrent users
     total_actions_per_hour: 20000
     WEBDRIVER_VISIBLE: False
-    JMETER_VERSION: 5.5
+    JMETER_VERSION: 5.6.3
     LANGUAGE: en_US.utf8
-    allow_analytics: Yes              # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
-    # Action percentage for JMeter and Locust load executors
+    allow_analytics: Yes               # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
+    environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     extended_metrics: False
+    # Action percentage for JMeter and Locust load executors
     view_page: 33
-    view_dashboard: 9
+    view_dashboard: 10
     view_blog: 13
-    search_cql: 10
-    create_blog: 4
-    create_and_edit_page: 8
-    comment_page: 7
-    view_attachment: 5
-    upload_attachment: 6
+    search_cql: 4
+    create_blog: 5
+    create_and_edit_page: 9
+    comment_page: 8
+    view_attachment: 6
+    upload_attachment: 7
     like_page: 3
-    upload_emoticon: 2      # For Confluence 8.4.x+
+    upload_emoticon: 4      # For Confluence 8.4.x+
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
@@ -41,7 +42,7 @@ services:
   - module: shellexec
     prepare:
       - python util/pre_run/environment_checker.py
-      - python util/pre_run/check_for_updates.py
+      - python util/pre_run/environment_compliance_check.py confluence
       - python util/data_preparation/confluence_prepare_data.py
     shutdown:
       - python util/post_run/jmeter_post_check.py
@@ -51,7 +52,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.10.0
+      - selenium==4.24.0
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -97,27 +98,23 @@ modules:
     detect-plugins: true
     memory-xmx: 8G  # allow JMeter to use up to 8G of memory
     plugins:
-      - bzm-parallel=0.4
-      - bzm-random-csv=0.6
-      - jpgc-casutg=2.5
-      - jpgc-dummy=0.2
+      - jpgc-casutg=2.10
+      - jpgc-dummy=0.4
       - jpgc-ffw=2.0
       - jpgc-fifo=0.2
-      - jpgc-functions=2.1
-      - jpgc-json=2.6
+      - jpgc-functions=2.2
+      - jpgc-json=2.7
       - jpgc-perfmon=2.1
       - jpgc-prmctl=0.4
-      - jpgc-tst=2.4
-      - jpgc-wsc=0.3
-      - tilln-sshmon=1.0
-      - jpgc-synthesis=2.2
+      - jpgc-tst=2.6
+      - bzm-random-csv=0.8    # not used default jmx file
     system-properties:
       server.rmi.ssl.disable: true
       java.rmi.server.hostname: localhost
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "114.0.5735.90" # Supports Chrome version 114. You can refer to http://chromedriver.chromium.org/downloads
+      version: "128.0.6613.137" # Supports Chrome version 128. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

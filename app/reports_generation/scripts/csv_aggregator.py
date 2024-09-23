@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 from typing import List
 
-from scripts.utils import validate_file_exists, resolve_path, validate_config
+from scripts.utils import validate_file_exists, resolve_relative_path, validate_config
 
 RESULTS_CSV_FILE_NAME = "results.csv"
 
@@ -36,7 +36,7 @@ def __get_tests_results(config: dict) -> List[ResultsCSV]:
     column_name = config['column_name']
     for run in config['runs']:
         value_by_action = {}
-        absolute_file_path = resolve_path(run['fullPath']) / RESULTS_CSV_FILE_NAME
+        absolute_file_path = resolve_relative_path(run['relativePath']) / RESULTS_CSV_FILE_NAME
         with absolute_file_path.open(mode='r') as fs:
             for row in csv.DictReader(fs):
                 value_by_action[row['Label']] = {column_name: row[column_name], 'App-specific': row['App specific']}

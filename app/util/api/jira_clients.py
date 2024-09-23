@@ -80,6 +80,8 @@ class JiraRestClient(RestClient):
 
         return users_list
 
+
+    @retry()
     def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
@@ -190,7 +192,7 @@ class JiraRestClient(RestClient):
         }
         self.post(login_url, error_msg='Could not login in')
         auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
-        system_info_html = self._session.post(auth_url, data=auth_body)
+        system_info_html = self._session.post(auth_url, data=auth_body, verify=self.verify)
         return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):
@@ -233,14 +235,36 @@ class JiraRestClient(RestClient):
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
 
-    def get_service_desk_info(self):
-        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
-        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
-        return service_desk_info.json()
-
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         jira_system_page = self.get_system_info_page()
         if jira_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False
+
+    def get_license_details(self):
+        login_url = f'{self.host}/login.jsp'
+        auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        auth_body = {
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
+        }
+        self.post(login_url, error_msg='Could not login in')
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
+        self._session.post(auth_url, data=auth_body)
+        api_url = f"{self.host}/rest/plugins/applications/1.0/installed/jira-software/license"
+        self.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,' \
+                                 'image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+        r = self.get(api_url, "Could not retrieve license details")
+        return r.json()

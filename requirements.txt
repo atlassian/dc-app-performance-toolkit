@@ -1,12 +1,11 @@
-matplotlib==3.7.2
-pandas==2.0.3
-numpy==1.25.1
-scipy==1.11.1
-pytest==7.4.0
-locust==2.15.1
-selenium==4.10.0
-filelock==3.12.2
-packaging==23.1
-prettytable==3.8.0
-bzt==1.16.23
-boto3==1.28.11
+matplotlib==3.9.2
+pandas==2.2.2
+pytest==8.3.2
+locust==2.31.5
+selenium==4.24.0
+filelock==3.16.0
+packaging==24.1
+prettytable==3.11.0
+bzt==1.16.32        # bzt 1.16.34 has pinned setuptools==65.5.0, which does not have distutils
+boto3==1.35.14
+retry==0.9.2

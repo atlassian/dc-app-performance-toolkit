@@ -6,7 +6,7 @@ class UrlManager:
 
     def __init__(self, build_plan_id=None):
         self.host = BAMBOO_SETTINGS.server_url
-        self.login_params = '/userlogin!doDefault.action'
+        self.login_params = '/userlogin.action'
         self.logout_params = '/userLogout.action'
         self.all_projects_params = '/allProjects.action'
         self.plan_summary_params = f'/browse/{build_plan_id}'
@@ -52,7 +52,7 @@ class AllBuildsLocators:
 
 
 class PlanConfigurationLocators:
-    edit_config_button = (By.XPATH, "//span[contains(text(),'Configure plan')]")
+    edit_config_button = (By.XPATH, "//span[@title='Configure plan']")
     config_plan_page = (By.ID, "config-sidebar")
     config_plan_page_content = (By.ID, "content")
 

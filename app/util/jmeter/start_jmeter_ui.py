@@ -6,14 +6,14 @@ from sys import version_info
 
 import yaml
 
-SUPPORTED_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
+SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
 
 python_full_version = '.'.join(map(str, version_info[0:3]))
 python_short_version = '.'.join(map(str, version_info[0:2]))
-print("Python version: {}".format(python_full_version))
+print(f"Python version: {python_full_version}")
 if python_short_version not in SUPPORTED_PYTHON_VERSIONS:
-    raise SystemExit("Python version {} is not supported. "
-                     "Supported versions: {}.".format(python_full_version, SUPPORTED_PYTHON_VERSIONS))
+    raise SystemExit(f"ERROR: Python version {python_full_version} is not supported.\n"
+                     f"Supported versions: {SUPPORTED_PYTHON_VERSIONS}.")
 
 JIRA = "jira"
 CONFLUENCE = "confluence"
@@ -56,6 +56,7 @@ class StartJMeter:
         parser = argparse.ArgumentParser(description='Edit yml config')
         parser.add_argument('--app', type=str, help='e.g. --app jira/confluence/bitbucket/jsm/bamboo')
         parser.add_argument('--type', type=str, help='jsm specific flag e.g. --type agents/customers')
+        parser.add_argument('--skip-check', action='store_true', help='skip hostname check')
         self.args = parser.parse_args()
         if not self.args.app:
             raise SystemExit('Application type is not specified. e.g. --app jira/confluence/bitbucket/jsm/bamboo')
@@ -86,8 +87,8 @@ class StartJMeter:
             else:
                 raise SystemExit(f'JSM unsupported type: {self.args.type}. Valid types: {AGENTS}, {CUSTOMERS}')
         else:
-            raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {}".
-                             format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM))
+            raise SystemExit("Application type {} is not supported. Valid values: {} {} {} {} {} {}".
+                             format(self.args.app, JIRA, CONFLUENCE, BITBUCKET, JSM, BAMBOO, CROWD))
 
     @staticmethod
     def read_yml_file(file):
@@ -109,9 +110,10 @@ class StartJMeter:
         obj = self.read_yml_file(self.yml)
         self.env_settings = obj['settings']['env']
         hostname = self.env_settings['application_hostname']
-        if hostname in DEFAULT_HOSTNAMES:
-            raise SystemExit("ERROR: Check 'application_hostname' correctness in {}.yml file.\nCurrent value: {}.".
-                             format(self.args.app, hostname))
+        if hostname in DEFAULT_HOSTNAMES and not self.args.skip_check:
+            raise SystemExit(f"ERROR: Check 'application_hostname' correctness in "
+                             f"{self.args.app}.yml file.\nCurrent value: {hostname}.\n"
+                             f"Or skip hostname validation with --skip-check flag.")
         if self.args.app == JSM:
             self.jmeter_properties = obj['scenarios'][f'jmeter_{self.args.type}']['properties']
         else:
@@ -126,21 +128,21 @@ class StartJMeter:
             else:
                 v = value
             if v is None:
-                settings.append("{}=\n".format(setting))
+                settings.append(f"{setting}=\n")
             else:
-                settings.append("{}={}\n".format(setting, v))
+                settings.append(f"{setting}={v}\n")
         return settings
 
     def print_settings(self, settings):
-        print("Get JMeter settings from {} file:".format(self.yml))
+        print(f"Get JMeter settings from {self.yml} file:")
         for setting in settings:
             print(setting.replace('\n', ''))
 
     def launch_jmeter_ui(self):
         jmeter_path = JMETER_HOME / str(self.env_settings['JMETER_VERSION']) / 'bin' / 'jmeter'
         command = [str(jmeter_path), "-p", str(PROPERTIES), "-t", str(self.jmx)]
-        print("JMeter start command: {}".format(' '.join(command)))
-        print("Working dir: {}".format(APP_DIR))
+        print(f"JMeter start command: {' '.join(command)}")
+        print(f"Working dir: {APP_DIR}")
         shell = False
         if system() == WINDOWS:
             shell = True

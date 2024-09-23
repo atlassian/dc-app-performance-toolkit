@@ -42,7 +42,6 @@ ADMIN_HEADERS = {
     'Connection': 'keep-alive',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     'User-Agent': 'xx',
-    'Authorization': 'Basic'
 }
 NO_TOKEN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
@@ -123,9 +122,12 @@ class MyBaseTaskSet(TaskSet):
     login_failed = False
 
     def failure_check(self, response, action_name):
-        if hasattr(response, 'error') or not response:
+        print(dir(response))
+        if (hasattr(response, 'error') and response.error) or not response:
             if 'login' in action_name:
                 self.login_failed = True
+            if response.headers.get('Content-Type') == 'application/json':
+                logger.error(response.json())
             events.request.fire(request_type="Action",
                                 name=f"locust_{action_name}",
                                 response_time=0,
