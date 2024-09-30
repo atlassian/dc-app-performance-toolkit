@@ -14,6 +14,7 @@
 - [Rebuild atlassian/dcapt docker image on the fly](#rebuild-atlassiandcapt-docker-image-on-the-fly)
 - [Run tests locally from docker container](#run-tests-locally-from-docker-container)
 - [Run tests from execution environment pod](#run-tests-from-execution-environment-pod)
+- [Retry to copy run results from the execution environment pod to local](#retry-to-copy-run-results-from-the-execution-environment-pod-to-local)
 - [Debug AWS required policies](#debug-aws-required-policies)
 
 # Development environment
@@ -242,6 +243,23 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
     -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh jira.yml
+    ```
+
+# Retry to copy run results from the execution environment pod to local
+1. Navigate to `dc-app-performance-toolkit` folder
+2. Set AWS credential in [aws_envs](./aws_envs) file
+3. Set environment name:
+    ``` bash
+    export ENVIRONMENT_NAME=your_environment_name
+    ```
+4. Run following command to copy results from execution environment pod to local:
+    ``` bash
+    docker run --pull=always --env-file ./app/util/k8s/aws_envs \
+    -e REGION=us-east-2 \
+    -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
+    -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
+    -v "/$PWD/app/util/k8s/copy_run_results.sh:/data-center-terraform/copy_run_results.sh" \
+    -it atlassianlabs/terraform:2.9.2 bash copy_run_results.sh
     ```
 
 # Debug AWS required policies
