@@ -35,7 +35,7 @@ bitbucket_license = "bitbucket-license"
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
 # When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
 #
-#domain = "<example.com>"
+domain = "sandbox.unitq.us"
 
 ################################################################################
 # Common Settings
@@ -51,7 +51,7 @@ region = "us-east-2"
 whitelist_cidr = ["0.0.0.0/0"]
 
 # Path to a JSON file with EBS and RDS snapshot IDs
-snapshots_json_file_path = "dcapt-snapshots.json"
+snapshots_json_file_path = "/data-center-terraform/dcapt-snapshots.json"
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing-small"}
@@ -70,7 +70,7 @@ max_cluster_capacity = 2
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
 # uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
 # This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
-#enable_https_ingress = false
+enable_https_ingress = true
 
 ################################################################################
 # Jira/JSM Settings

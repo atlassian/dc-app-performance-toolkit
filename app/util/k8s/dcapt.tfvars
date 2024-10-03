@@ -44,7 +44,7 @@ crowd_replica_count = 1
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
 # When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
 #
-#domain = "<example.com>"
+domain = "sandbox.unitq.us"
 
 ################################################################################
 # Common Settings
@@ -60,14 +60,14 @@ region = "us-east-2"
 whitelist_cidr = ["0.0.0.0/0"]
 
 # Path to a JSON file with EBS and RDS snapshot IDs
-snapshots_json_file_path = "dcapt-snapshots.json"
+snapshots_json_file_path = "/data-center-terraform/dcapt-snapshots.json"
 
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {Name: "dcapt-testing"}
 
 # Instance types that is preferred for EKS node group.
 instance_types     = ["m5.2xlarge"]
-instance_disk_size = 200
+instance_disk_size = 500
 
 # Minimum and maximum size of the EKS cluster.
 # Cluster-autoscaler is installed in the EKS cluster that will manage the requested capacity
@@ -135,8 +135,8 @@ jira_reserved_code_cache = "2048m"
 
 # Storage
 # initial volume size of local/shared home EBS.
-jira_local_home_size  = "200Gi"
-jira_shared_home_size = "200Gi"
+jira_local_home_size  = "500Gi"
+jira_shared_home_size = "500Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -145,7 +145,7 @@ jira_shared_home_size = "200Gi"
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
 jira_db_major_engine_version = "14"
 jira_db_instance_class       = "db.m5.xlarge"
-jira_db_allocated_storage    = 200
+jira_db_allocated_storage    = 500
 jira_db_iops                 = 1000
 
 # If you restore the database, make sure `jira_db_name' is set to the db name from the snapshot.
@@ -487,23 +487,23 @@ bamboo_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 # Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
 # to kube-monitoring namespace. Defaults to false.
 #
-# monitoring_enabled = true
+monitoring_enabled = true
 
 # Create Grafana service of LoadBalancer type. Defaults to false. To restrict access to LB URL
 # the list of CIRDs from whitelist_cidr will be automatically applied.
 #
 # To get Grafana URL see README.MD instructions.
 #
-# monitoring_grafana_expose_lb = true
+monitoring_grafana_expose_lb = true
 
 # Prometheus Persistent Volume Claim size. Defaults to 10Gi.
 # Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
 # i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
 # to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
-# prometheus_pvc_disk_size = "100Gi"
+prometheus_pvc_disk_size = "100Gi"
 
 # Grafana Persistent Volume Claim size. Defaults to 10Gi.
-# grafana_pvc_disk_size = "20Gi"
+grafana_pvc_disk_size = "20Gi"
 
 # Custom values file location. Defaults to an empty string which means only values from config.tfvars
 # are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
