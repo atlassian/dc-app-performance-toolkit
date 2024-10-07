@@ -2005,7 +2005,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="400 /browse/&lt;issue_key&gt;" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="400 /browse/&lt;issue_key&gt;">
                 <stringProp name="HTTPSampler.path">${application.postfix}/browse/${issue_key}</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2045,10 +2045,10 @@ if ( sleep_time &gt; 0 ) {
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_id" enabled="true">
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="x_issue_id">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">x_issue_id</stringProp>
-                  <stringProp name="RegexExtractor.regex">id=&quot;key-val&quot; rel=&quot;(.+?)&quot;&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">id=&quot;key-val&quot; rel=&quot;(\d+)&quot;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">1</stringProp>
