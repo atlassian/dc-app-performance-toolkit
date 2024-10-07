@@ -15,20 +15,6 @@ if [[ -z "$REGION" ]]; then
 fi
 echo "INFO: AWS REGION: $REGION"
 
-if [ $# -eq 0 ]; then
-  echo "ERROR: No arguments supplied. Product .yml file need to be passed as first argument. E.g. jira.yml"
-  exit 1
-fi
-
-if [[ $1 =~ "yml" ]]; then
-  echo "INFO: Product .yml: $1"
-else
-  echo "ERROR: first argument should be product.yml, e.g. jira.yml"
-  echo "ERROR: provided first argument: $1"
-  exit 1
-fi
-
-
 echo "INFO: Update kubeconfig"
 aws eks update-kubeconfig --name atlas-"$ENVIRONMENT_NAME"-cluster --region "$REGION"
 
@@ -38,13 +24,13 @@ exec_pod_name=$(kubectl get pods -n atlassian -l=exec=true --no-headers -o custo
 if [[ -z "$exec_pod_name" ]]; then
   echo "ERROR: Current cluster does not have execution environment pod. Check what environment type is used.
   Development environment does not have execution environment pod by default because dedicated for local app-specific actions development only."
-exit 1
+  exit 1
 fi
 
 echo "INFO: Execution environment pod name: $exec_pod_name"
 
 echo "INFO: Copy results folder from the exec env pod to local"
-kubectl cp --retries 10 atlassian/"$exec_pod_name":dc-app-performance-toolkit/app/results dc-app-performance-toolkit/app/results
+kubectl cp --retries 100 atlassian/"$exec_pod_name":dc-app-performance-toolkit/app/results dc-app-performance-toolkit/app/results
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Copy results folder failed"
     exit 1
