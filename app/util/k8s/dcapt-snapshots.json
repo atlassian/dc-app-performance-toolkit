@@ -149,8 +149,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-08518a678828ac8bd",
-                "us-east-1": "snap-0eb15a0f1652f6daa"
+                "us-east-2": "snap-0ea31388ab389d097",
+                "us-east-1": "snap-09c71b1d40d21e408"
               }
             ]
           },
@@ -159,8 +159,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-4-25",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-4-25"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-10-0-1",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-10-0-1"
               }
             ]
           }
