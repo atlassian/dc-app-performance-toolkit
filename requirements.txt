@@ -7,5 +7,5 @@ filelock==3.16.0
 packaging==24.1
 prettytable==3.11.0
 bzt==1.16.32        # bzt 1.16.34 has pinned setuptools==65.5.0, which does not have distutils
-boto3==1.35.14
+boto3==1.35.43
 retry==0.9.2
