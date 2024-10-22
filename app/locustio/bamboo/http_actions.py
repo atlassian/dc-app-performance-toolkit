@@ -103,20 +103,50 @@ def locust_bamboo_login(locust):
     username = user[0]
     password = user[1]
 
-    login_body = params.login_body
-    login_body['os_username'] = username
-    login_body['os_password'] = password
+    # 10 get userlogin.action
+    r = locust.get('/userlogin.action', catch_response=True)
+    content = r.content.decode('utf-8')
+    is_legacy_login_form = 'loginForm' in content
+    print(f"Is legacy login form: {is_legacy_login_form}")
+    logger.locust_info(f"Is legacy login form: {is_legacy_login_form}")
 
-    # login
-    r = locust.post('/userlogin.action',
-                    login_body,
-                    TEXT_HEADERS,
-                    catch_response=True)
+    if is_legacy_login_form:
+        logger.locust_info(f"Legacy login flow for user {username}")
+        login_body = params.login_body
+        login_body['os_username'] = username
+        login_body['os_password'] = password
 
+        # login
+        locust.post('/userlogin.action',
+                        login_body,
+                        TEXT_HEADERS,
+                        catch_response=True)
+
+    else:
+        logger.locust_info(f"2SV login flow for user {username}")
+
+        login_body = {'username': username,
+                      'password': password,
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # 15 /rest/tsv/1.0/authenticate
+        locust.post('/rest/tsv/1.0/authenticate',
+                        json=login_body,
+                        headers=headers,
+                        catch_response=True)
+
+    r = locust.get(url='/', catch_response=True)
     content = r.content.decode('utf-8')
 
     if 'Log Out' not in content:
         logger.error(f'Login with {username}, {password} failed: {content}')
+        print(f'Login with {username}, {password} failed: {content}')
     assert 'Log Out' in content, 'User authentication failed.'
     logger.locust_info(f'User {username} is successfully logged in')
 

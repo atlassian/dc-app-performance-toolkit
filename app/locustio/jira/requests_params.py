@@ -42,7 +42,7 @@ class Login(JiraResource):
 
 class BrowseIssue(JiraResource):
     action_name = "view_issue"
-    issue_id_pattern = r'id="key-val" rel="(.+?)">'
+    issue_id_pattern = r'id="key-val" rel="(.+?)"'
     project_avatar_id_pattern = r'projectavatar\?avatarId\=(.+?)" '
     edit_allow_pattern = "secure\/EditLabels\!default"  # noqa W605
     browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
