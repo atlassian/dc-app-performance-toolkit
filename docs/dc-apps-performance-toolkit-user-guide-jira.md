@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-09-09"
+date: "2024-10-22"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -65,13 +65,21 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
 1. Create Access keys for AWS CLI:
    {{% warning %}}
    Do not use `root` user credentials for cluster creation.
+   
+   **Option 1** (simple): create admin user with `AdministratorAccess` permissions.
 
-   Use the following policies to restrict permissions: [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
+   **Option 2** (complex): create granular permission policies with  [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
 
    The specific configuration relies on how you manage permissions within AWS.
    {{% /warning %}}
 
-   **Example** of Policies and User creation:
+   **Example Option 1** with Admin user:
+   1. Go to AWS Console -> IAM service -> Users
+   2. Create new user -> attach policies directly -> `AdministratorAccess`
+   3. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   4. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
+   
+   **Example Option 2** with granular Policies:
    1. Go to AWS Console -> IAM service -> Policies
    2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
       {{% warning %}}
@@ -84,7 +92,6 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
    5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
    6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
-
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
    {{% warning %}}
    For annual review, always get the latest version of the DCAPT code from the master branch.
@@ -360,12 +367,20 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    {{% warning %}}
    Do not use `root` user credentials for cluster creation.
 
-   Use the following policies to restrict permissions: [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
+   **Option 1** (simple): create admin user with `AdministratorAccess` permissions.
+
+   **Option 2** (complex): create granular permission policies with  [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
 
    The specific configuration relies on how you manage permissions within AWS.
    {{% /warning %}}
 
-   **Example** of Policies and User creation:
+   **Example Option 1** with Admin user:
+   1. Go to AWS Console -> IAM service -> Users
+   2. Create new user -> attach policies directly -> `AdministratorAccess`
+   3. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   4. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
+
+   **Example Option 2** with granular Policies:
    1. Go to AWS Console -> IAM service -> Policies
    2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
       {{% warning %}}
@@ -378,7 +393,6 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
    5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
    6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
-
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
    {{% warning %}}
    For annual review, always get the latest version of the DCAPT code from the master branch.
