@@ -35,9 +35,7 @@ BLOG_CQL = ('type=blogpost'
             )
 
 
-DATASET_PAGES_TEMPLATES = {'big_attachments_1': ['PAGE_1', 'PAGE_2'],
-                           'small_attachments_3': ['PAGE_3', 'PAGE_4', 'PAGE_5', 'PAGE_6'],
-                           'small_text_7': ['PAGE_7', 'PAGE_8', 'PAGE_9', 'PAGE_10', 'PAGE_11',
+DATASET_PAGES_TEMPLATES = {'small_text_7': ['PAGE_7', 'PAGE_8', 'PAGE_9', 'PAGE_10', 'PAGE_11',
                                             'PAGE_12', 'PAGE_13', 'PAGE_14', 'PAGE_15'],
                            'medium_text_16': ['PAGE_16', 'PAGE_17', 'PAGE_18', 'PAGE_19', 'PAGE_20',
                                               'PAGE_23', 'PAGE_24'],
