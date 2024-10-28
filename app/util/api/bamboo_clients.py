@@ -166,7 +166,7 @@ class BambooClient(RestClient):
         legacy_login_body = {
             'os_username': self.user,
             'os_password': self.password,
-            'os_destination': '/allPlans.action',
+            'os_destination': '/admin/systemInfo.action',
             'atl_token': '',
             'save': 'Log in'
         }
@@ -193,7 +193,16 @@ class BambooClient(RestClient):
 
         self.headers['X-Atlassian-Token'] = 'no-check'
         if is_legacy_login_form:
-            self.session.post(url=login_url, params=legacy_login_body, headers=self.headers)
+            r = self.session.post(url=login_url, params=legacy_login_body, headers=self.headers)
+            content = r.content.decode("utf-8")
+            # Bamboo version 9 does not have web sudo auth
+            if "System information" in content:
+                print("INFO: No web sudo auth")
+                return content
+            elif "Administrator Access" in content:
+                print("INFO: Web sudo page detected")
+            else:
+                print(f"Warning: Unexpected login page: Content {content}")
         else:
             self.session.post(url=tsv_auth_url, json=tsv_login_body)
 
