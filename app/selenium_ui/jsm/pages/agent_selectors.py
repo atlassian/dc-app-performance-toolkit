@@ -110,6 +110,7 @@ class BrowseCustomersLocators:
 class ViewCustomerRequestLocators:
     bread_crumbs = (By.CSS_SELECTOR, ".aui-nav.aui-nav-breadcrumbs")
 
+    comment_area = (By.CLASS_NAME, 'sd-comment-collapse')
     comment_collapsed_textarea = (By.ID, "sd-comment-collapsed-textarea")
     comment_text_field_RTE = (By.XPATH, "//div[textarea[@id='comment']]//iframe")
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
