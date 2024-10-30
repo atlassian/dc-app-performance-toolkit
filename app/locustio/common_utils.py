@@ -59,6 +59,13 @@ JSON_HEADERS = {
     "Accept-Encoding": "gzip, deflate",
     "Accept": "application/json, text/javascript, */*; q=0.01"
 }
+JSM_CUSTOMERS_HEADERS = {
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    "X-Atlassian-Token": "no-check"
+}
 
 JIRA_API_URL = '/'
 CONFLUENCE_API_URL = '/'
