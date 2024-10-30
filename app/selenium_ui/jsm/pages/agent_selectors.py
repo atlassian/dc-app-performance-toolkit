@@ -170,9 +170,9 @@ class InsightNewObjectLocators:
 class InsightViewQueueLocators:
     view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
-    presentation_key = (By.XPATH, "//div[@data-column-name='Key']//div[@role='presentation']")
-    add_to_starred_button = (By.XPATH, "//button[@data-testid='star-unstar-button-standalone']//span[@aria-label='Add to Starred']")
-    view_queue_insight_column_jsm10 = (By.XPATH, "(//a[normalize-space()='Insight'])[1]")
+    table_container = (By.XPATH, "//div[@class='queue-react-table-container']")
+    navigation = (By.XPATH, "//div[@role='navigation']")
+    view_queue_insight_column_jsm10 = (By.XPATH, "//a[normalize-space()='Insight']")
 
 
 class InsightSearchObjectIql:

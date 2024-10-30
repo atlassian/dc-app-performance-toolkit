@@ -236,10 +236,6 @@ class InsightNewSchema(BasePage):
 
 class InsightNewObject(BasePage):
 
-    def __init__(self, driver):
-        super().__init__(driver)
-        self.is_jsm_10 = False
-
     def wait_for_page_loaded(self):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
 
@@ -260,8 +256,6 @@ class InsightNewObject(BasePage):
         self.get_element(InsightNewObjectLocators.object_name_field).send_keys(self.generate_random_string(10))
         self.wait_until_visible(InsightNewObjectLocators.create_another)
         if not self.get_elements(InsightNewObjectLocators.create_button):
-            self.is_jsm_10 = True
-        if self.is_jsm_10:
             self.wait_until_visible(InsightNewObjectLocators.create_button_jsm10)
             self.wait_until_clickable(InsightNewObjectLocators.create_button_jsm10).click()
         else:
@@ -274,7 +268,6 @@ class InsightDeleteSchema(BasePage):
 
     def __init__(self, driver):
         BasePage.__init__(self, driver)
-        self.is_jsm_10 = False
         url_manager = UrlManager()
         self.page_url = url_manager.view_insight_all_schemas()
 
@@ -293,8 +286,6 @@ class InsightDeleteSchema(BasePage):
                                   new_object_schema_delete_button_locator(schema_name)).click()
         self.wait_until_visible(InsightDeleteSchemaLocators.delete_window_selector)
         if not self.get_elements(InsightNewObjectLocators.create_button):
-            self.is_jsm_10 = True
-        if self.is_jsm_10:
             self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button_jsm10).click()
             self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button_jsm10).click()
             self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button_jsm10)
@@ -315,8 +306,8 @@ class InsightViewQueue(BasePage):
         self.wait_until_visible(InsightViewQueueLocators.view_queue_page)
 
     def view_random_queue_with_insight(self):
-        self.wait_until_visible(InsightViewQueueLocators.presentation_key)
-        if not self.get_elements(InsightViewQueueLocators.add_to_starred_button):
+        self.wait_until_visible(InsightViewQueueLocators.table_container)
+        if not self.get_elements(InsightViewQueueLocators.navigation):
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column)
         else:
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column_jsm10)
