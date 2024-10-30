@@ -93,7 +93,6 @@ def __filter_customer_with_requests(customer, jsm_client):
 def __get_customers_with_requests(jira_client, jsm_client, count):
     customers_with_requests = []
     customers_without_requests = []
-    start_at = 0
     max_count_iteration = 1000
     customers_chunk_size = 150
     while len(customers_with_requests) < count:
@@ -101,7 +100,6 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
                                                          users_count=max_count_iteration)
         if not customers:
             break
-        start_at = start_at + max_count_iteration
         customer_chunks = [customers[x:x + customers_chunk_size]
                            for x in range(0, len(customers), customers_chunk_size)]
 
