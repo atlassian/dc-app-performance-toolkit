@@ -71,23 +71,26 @@ class JiraRestClient(RestClient):
         Starting from Jira 10 there is no way to get more than 100 users with get_users() API
         Getting more than 100 users by batch search.
         """
+        print(f"INFO: Users search. Prefix: '{username}', users_count: {users_count}")
         perf_users = list()
 
         first_100 = self.get_users(username=username, include_active=True, include_inactive=False)
         if users_count <= 100 or len(first_100) < 100:
             perf_users = first_100[:users_count]
         else:
-            name_start_list = list(string.digits + "_" + string.ascii_lowercase + "-")
+            name_start_list = list(string.digits + "_" + string.ascii_lowercase)
             for i in name_start_list:
                 users_batch = self.get_users(username=username+i, include_active=True, include_inactive=False)
                 if len(users_batch) == 100:
                     print(f"Warning: found 100 users starts with: {username+i}. Checking if there are more.")
-                    users_batch = self.get_users_by_name_search(username=username+i, users_count=users_count)
+                    users_batch = self.get_users_by_name_search(username=username+i,
+                                                                users_count=users_count-len(perf_users))
                 perf_users.extend(users_batch)
 
                 # get rid of any duplicates by creating a set from json objects
                 set_of_jsons = {json.dumps(d, sort_keys=True) for d in perf_users}
                 perf_users = [json.loads(t) for t in set_of_jsons]
+                print(f"INFO: Current found users count: {len(perf_users)}")
 
                 if len(perf_users) >= users_count:
                     perf_users = perf_users[:users_count]

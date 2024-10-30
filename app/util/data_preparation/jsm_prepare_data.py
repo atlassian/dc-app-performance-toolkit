@@ -93,11 +93,14 @@ def __filter_customer_with_requests(customer, jsm_client):
 def __get_customers_with_requests(jira_client, jsm_client, count):
     customers_with_requests = []
     customers_without_requests = []
-    max_count_iteration = 1000
+    count_to_search = 0
+    limit_users_to_search = 3000
+    max_count_iteration = 500
     customers_chunk_size = 150
-    while len(customers_with_requests) < count:
+    while len(customers_with_requests) < count and count_to_search < limit_users_to_search:
+        count_to_search += max_count_iteration
         customers = jira_client.get_users_by_name_search(username=DEFAULT_CUSTOMER_PREFIX,
-                                                         users_count=max_count_iteration)
+                                                         users_count=count_to_search)
         if not customers:
             break
         customer_chunks = [customers[x:x + customers_chunk_size]
@@ -115,11 +118,18 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
                 if customer_data['has_requests']:
                     if len(customers_with_requests) >= count:
                         break
-                    customers_with_requests.append(customer_data)
+                    if customer_data['name'] not in [i['name'] for i in customers_with_requests]:
+                        customers_with_requests.append(customer_data)
                 else:
                     customers_without_requests.append(customer_data)
 
-    print(f'Retrieved customers with requests: {len(customers_with_requests)}')
+    customers_with_requests_count = len(customers_with_requests)
+    print(f'Retrieved customers with requests: {customers_with_requests_count}')
+
+    if customers_with_requests_count < count:
+        raise Exception(f"ERROR: Found {customers_with_requests_count} customers with open requests, "
+                        f"but 'concurrency_customers' in jsm.yml is {count}. "
+                        f"Create more customers with open requests or reduce 'concurrency_customers'.")
 
     return customers_with_requests
 
@@ -146,6 +156,7 @@ def __get_customers(jira_client, jsm_client, servicedesks):
     errors_count = 0
     perf_users_with_requests = __get_customers_with_requests(jsm_client=jsm_client, jira_client=jira_client,
                                                              count=performance_customers_count)
+
     while len(perf_users_with_requests) < performance_customers_count:
         username = f"{DEFAULT_CUSTOMER_PREFIX}{__generate_random_string(10)}"
         try:
