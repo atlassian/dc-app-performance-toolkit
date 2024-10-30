@@ -17,7 +17,7 @@ __warnings_filter()
 MAX_WORKERS = None
 
 ERROR_LIMIT = 10
-DEFAULT_AGENT_PREFIX = 'performance_agent_'
+DEFAULT_AGENT_PREFIX = 'performance_agent_0_'
 DEFAULT_AGENT_APP_KEYS = ["jira-servicedesk"]
 DEFAULT_CUSTOMER_PREFIX = 'performance_customer_'
 DEFAULT_PASSWORD = 'password'
@@ -97,8 +97,8 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
     max_count_iteration = 1000
     customers_chunk_size = 150
     while len(customers_with_requests) < count:
-        customers = jira_client.get_users(username=DEFAULT_CUSTOMER_PREFIX, max_results=max_count_iteration,
-                                          start_at=start_at)
+        customers = jira_client.get_users_by_name_search(username=DEFAULT_CUSTOMER_PREFIX,
+                                                         users_count=max_count_iteration)
         if not customers:
             break
         start_at = start_at + max_count_iteration
@@ -128,15 +128,16 @@ def __get_customers_with_requests(jira_client, jsm_client, count):
 
 @print_timing('Retrieving agents')
 def __get_agents(jira_client):
-    prefix_name, application_keys, count = DEFAULT_AGENT_PREFIX, DEFAULT_AGENT_APP_KEYS, performance_agents_count
-    perf_users = jira_client.get_users(username=prefix_name, max_results=count)
-    users_to_create = count - len(perf_users)
+    perf_users = jira_client.get_users_by_name_search(username=DEFAULT_AGENT_PREFIX,
+                                                      users_count=performance_agents_count)
+
+    users_to_create = performance_agents_count - len(perf_users)
     if users_to_create > 0:
-        add_users = __generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=prefix_name,
-                                     application_keys=application_keys)
+        add_users = __generate_users(api=jira_client, num_to_create=users_to_create, prefix_name=DEFAULT_AGENT_PREFIX,
+                                     application_keys=DEFAULT_AGENT_APP_KEYS)
         if not add_users:
             raise Exception(f"ERROR: Jira Service Management could not create agent"
-                            f"There were {len(perf_users)}/{count} retrieved.")
+                            f"There were {len(perf_users)}/{performance_agents_count} retrieved.")
         perf_users.extend(add_users)
     return perf_users
 
@@ -145,14 +146,13 @@ def __get_agents(jira_client):
 def __get_customers(jira_client, jsm_client, servicedesks):
     created_agents = []
     errors_count = 0
-    prefix_name, application_keys, count = DEFAULT_CUSTOMER_PREFIX, None, performance_customers_count
     perf_users_with_requests = __get_customers_with_requests(jsm_client=jsm_client, jira_client=jira_client,
-                                                             count=count)
+                                                             count=performance_customers_count)
     while len(perf_users_with_requests) < performance_customers_count:
-        username = f"{prefix_name}{__generate_random_string(10)}"
+        username = f"{DEFAULT_CUSTOMER_PREFIX}{__generate_random_string(10)}"
         try:
             agent = jira_client.create_user(name=username, password=DEFAULT_PASSWORD,
-                                            application_keys=application_keys)
+                                            application_keys=None)
             created_agents.append(agent)
             request_types = __get_request_types(jsm_client, servicedesks)
             if not request_types:
