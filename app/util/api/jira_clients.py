@@ -1,10 +1,11 @@
+import json
+import string
 from selenium.common.exceptions import WebDriverException
 
 from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
-BATCH_SIZE_USERS = 1000
 BATCH_SIZE_ISSUES = 1000
 
 
@@ -48,38 +49,53 @@ class JiraRestClient(RestClient):
         return boards_list
 
     @retry()
-    def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
+    def get_users(self, username='.', include_active=True, include_inactive=False):
         """
-        Returns a list of users that match the search string. This resource cannot be accessed anonymously.
-        :param username: A query string used to search username, name or e-mail address. "." - search for all users.
-        :param start_at: the index of the first user to return (0-based).
-        :param max_results: the maximum number of users to return (defaults to 50).
-        The maximum allowed value is 1000.
-        If you specify a value that is higher than this number, your search results will be truncated.
-        :param include_active: If true, then active users are included in the results (default true)
-        :param include_inactive: If true, then inactive users are included in the results (default false)
-        :return: Returns the requested users
+        Starting from Jira 10 there is no way to get more than 100 users with get_users() API
+        startAt param will be deprecated in Jira 10.3+
         """
+        max_results = 100
 
-        loop_count = max_results // BATCH_SIZE_USERS + 1
-        last_loop_remainder = max_results % BATCH_SIZE_USERS
-
-        users_list = list()
-        max_results = BATCH_SIZE_USERS if max_results > BATCH_SIZE_USERS else max_results
-
-        while loop_count > 0:
-            api_url = f'{self.host}/rest/api/2/user/search?username={username}&startAt={start_at}' \
-                      f'&maxResults={max_results}&includeActive={include_active}&includeInactive={include_inactive}'
-            response = self.get(api_url, "Could not retrieve users")
-
-            users_list.extend(response.json())
-            loop_count -= 1
-            start_at += len(response.json())
-            if loop_count == 1:
-                max_results = last_loop_remainder
+        api_url = f'{self.host}/rest/api/2/user/search?username={username}' \
+                  f'&maxResults={max_results}' \
+                  f'&includeActive={include_active}' \
+                  f'&includeInactive={include_inactive}'
+        response = self.get(api_url, "Could not retrieve users")
+        users_list = response.json()
 
         return users_list
 
+    @retry()
+    def get_users_by_name_search(self, username, users_count, include_active=True, include_inactive=False):
+        """
+        Starting from Jira 10 there is no way to get more than 100 users with get_users() API
+        Getting more than 100 users by batch search.
+        """
+        print(f"INFO: Users search. Prefix: '{username}', users_count: {users_count}")
+        perf_users = list()
+
+        first_100 = self.get_users(username=username, include_active=True, include_inactive=False)
+        if users_count <= 100 or len(first_100) < 100:
+            perf_users = first_100[:users_count]
+        else:
+            name_start_list = list(string.digits + "_" + string.ascii_lowercase)
+            for i in name_start_list:
+                users_batch = self.get_users(username=username+i, include_active=True, include_inactive=False)
+                if len(users_batch) == 100:
+                    print(f"Warning: found 100 users starts with: {username+i}. Checking if there are more.")
+                    users_batch = self.get_users_by_name_search(username=username+i,
+                                                                users_count=users_count-len(perf_users))
+                perf_users.extend(users_batch)
+
+                # get rid of any duplicates by creating a set from json objects
+                set_of_jsons = {json.dumps(d, sort_keys=True) for d in perf_users}
+                perf_users = [json.loads(t) for t in set_of_jsons]
+                print(f"INFO: Current found users count: {len(perf_users)}")
+
+                if len(perf_users) >= users_count:
+                    perf_users = perf_users[:users_count]
+                    break
+        return perf_users
 
     @retry()
     def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):

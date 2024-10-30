@@ -137,7 +137,8 @@ def __get_boards(jira_api, board_type):
 
 
 def __get_users(jira_api):
-    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
+    perf_users = jira_api.get_users_by_name_search(username=DEFAULT_USER_PREFIX, users_count=performance_users_count)
+
     users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
     if not users:
         raise SystemExit(f"There are no users in Jira accessible by a random performance user: {jira_api.user}")
