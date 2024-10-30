@@ -6,7 +6,6 @@ from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
-BATCH_SIZE_USERS = 100
 BATCH_SIZE_ISSUES = 1000
 
 
