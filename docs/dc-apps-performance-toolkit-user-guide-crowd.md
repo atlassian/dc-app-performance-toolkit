@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-09-09"
+date: "2024-10-22"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -43,12 +43,20 @@ specifically for performance testing during the DC app review process.
    {{% warning %}}
    Do not use `root` user credentials for cluster creation.
 
-   Use the following policies to restrict permissions: [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
+   **Option 1** (simple): create admin user with `AdministratorAccess` permissions.
+
+   **Option 2** (complex): create granular permission policies with  [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
 
    The specific configuration relies on how you manage permissions within AWS.
    {{% /warning %}}
 
-   **Example** of Policies and User creation:
+   **Example Option 1** with Admin user:
+   1. Go to AWS Console -> IAM service -> Users
+   2. Create new user -> attach policies directly -> `AdministratorAccess`
+   3. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   4. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
+
+   **Example Option 2** with granular Policies:
    1. Go to AWS Console -> IAM service -> Policies
    2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
       {{% warning %}}
@@ -89,7 +97,7 @@ specifically for performance testing during the DC app review process.
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.2 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
@@ -200,7 +208,7 @@ To receive performance baseline results **without** an app installed and **witho
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh crowd.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/crowd/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -229,7 +237,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -288,7 +296,7 @@ To receive scalability benchmark results for one-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -312,7 +320,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.2 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
    ```
 1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
@@ -339,7 +347,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -382,7 +390,7 @@ To receive scalability benchmark results for four-node Crowd DC with app-specifi
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.2 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}

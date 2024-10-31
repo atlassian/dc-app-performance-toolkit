@@ -110,6 +110,7 @@ class BrowseCustomersLocators:
 class ViewCustomerRequestLocators:
     bread_crumbs = (By.CSS_SELECTOR, ".aui-nav.aui-nav-breadcrumbs")
 
+    comment_area = (By.CLASS_NAME, 'sd-comment-collapse')
     comment_collapsed_textarea = (By.ID, "sd-comment-collapsed-textarea")
     comment_text_field_RTE = (By.XPATH, "//div[textarea[@id='comment']]//iframe")
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
@@ -145,6 +146,7 @@ class InsightNewSchemaLocators:
 class InsightDeleteSchemaLocators:
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
+    submit_delete_button_jsm10 = (By.ID, "submit-button")
     schema_list = (By.ID, "rlabs-manage-main")
 
     @staticmethod
@@ -161,11 +163,16 @@ class InsightNewObjectLocators:
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
+    create_another = (By.ID, "rlabs-create-another-label")
+    create_button_jsm10 = (By.ID, "submit-button")
 
 
 class InsightViewQueueLocators:
     view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
+    table_container = (By.XPATH, "//div[@class='queue-react-table-container']")
+    navigation = (By.XPATH, "//div[@role='navigation']")
+    view_queue_insight_column_jsm10 = (By.XPATH, "//a[normalize-space()='Insight']")
 
 
 class InsightSearchObjectIql:

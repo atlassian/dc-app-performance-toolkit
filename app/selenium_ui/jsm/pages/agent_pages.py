@@ -113,7 +113,7 @@ class ViewCustomerRequest(BasePage):
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
-        self.wait_until_visible(ViewCustomerRequestLocators.customers_sidebar_selector)
+        self.wait_until_visible(ViewCustomerRequestLocators.comment_area)
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
@@ -220,7 +220,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
 
     def create_new_schema(self):
-        new_schema_name = self.generate_random_string(4).strip()
+        new_schema_name = self.generate_no_whitespace_string(4).strip()
         self.wait_until_clickable(InsightNewSchemaLocators.create_object_schemas).click()
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema)
         self.wait_until_clickable(InsightNewSchemaLocators.new_object_schema).click()
@@ -254,8 +254,13 @@ class InsightNewObject(BasePage):
         self.wait_until_clickable(InsightNewObjectLocators.create_object_button).click()
         self.wait_until_visible(InsightNewObjectLocators.object_name_field)
         self.get_element(InsightNewObjectLocators.object_name_field).send_keys(self.generate_random_string(10))
-        self.wait_until_visible(InsightNewObjectLocators.create_button)
-        self.wait_until_clickable(InsightNewObjectLocators.create_button).click()
+        self.wait_until_visible(InsightNewObjectLocators.create_another)
+        if not self.get_elements(InsightNewObjectLocators.create_button):
+            self.wait_until_visible(InsightNewObjectLocators.create_button_jsm10)
+            self.wait_until_clickable(InsightNewObjectLocators.create_button_jsm10).click()
+        else:
+            self.wait_until_visible(InsightNewObjectLocators.create_button)
+            self.wait_until_clickable(InsightNewObjectLocators.create_button).click()
         self.wait_until_invisible(InsightNewObjectLocators.pop_up_after_create_object)
 
 
@@ -280,9 +285,14 @@ class InsightDeleteSchema(BasePage):
         self.wait_until_clickable(InsightDeleteSchemaLocators.
                                   new_object_schema_delete_button_locator(schema_name)).click()
         self.wait_until_visible(InsightDeleteSchemaLocators.delete_window_selector)
-        self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
-        self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
-        self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button)
+        if not self.get_elements(InsightNewObjectLocators.create_button):
+            self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button_jsm10).click()
+            self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button_jsm10).click()
+            self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button_jsm10)
+        else:
+            self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
+            self.wait_until_clickable(InsightDeleteSchemaLocators.submit_delete_button).click()
+            self.wait_until_invisible(InsightDeleteSchemaLocators.submit_delete_button)
 
 
 class InsightViewQueue(BasePage):
@@ -296,7 +306,11 @@ class InsightViewQueue(BasePage):
         self.wait_until_visible(InsightViewQueueLocators.view_queue_page)
 
     def view_random_queue_with_insight(self):
-        self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column)
+        self.wait_until_visible(InsightViewQueueLocators.table_container)
+        if not self.get_elements(InsightViewQueueLocators.navigation):
+            self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column)
+        else:
+            self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column_jsm10)
 
 
 class InsightSearchByIql(BasePage):
@@ -328,4 +342,5 @@ class ViewIssueWithObject(BasePage):
         self.wait_until_visible(InsightViewIssue.issue_title)
 
     def view_issue_with_insight_custom_field(self):
-        self.wait_until_visible(InsightViewIssue.custom_field_insight)
+        if self.get_elements(InsightViewQueueLocators.view_queue_page):
+            self.wait_until_visible(InsightViewIssue.custom_field_insight)

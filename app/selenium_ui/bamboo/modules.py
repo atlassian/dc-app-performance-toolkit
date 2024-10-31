@@ -25,6 +25,7 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            login_page.wait_for_page_loaded()
 
         sub_measure()
         login_page.set_credentials(username=datasets['username'], password=datasets['password'])

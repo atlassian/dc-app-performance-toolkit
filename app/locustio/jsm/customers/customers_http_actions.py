@@ -4,7 +4,7 @@ import uuid
 import random
 
 from locustio.common_utils import init_logger, jsm_customer_measure, TEXT_HEADERS, RESOURCE_HEADERS, \
-    generate_random_string
+    generate_random_string, NO_TOKEN_HEADERS, JSM_CUSTOMERS_HEADERS
 from locustio.jsm.customers.customers_requests_params import Login, ViewPortal, ViewRequests, ViewRequest, \
     AddComment, ShareRequest, ShareRequestOrg, CreateRequest, jsm_customer_datasets
 
@@ -50,7 +50,7 @@ def customer_login_and_view_portals(locust):
     r = locust.post(
         '/servicedesk/customer/user/login',
         body,
-        TEXT_HEADERS,
+        headers=JSM_CUSTOMERS_HEADERS,
         catch_response=True)
 
     locust.get('/servicedesk/customer/portals', catch_response=True)

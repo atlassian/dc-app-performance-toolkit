@@ -34,9 +34,18 @@ class UrlManager:
 
 class LoginPageLocators:
     login_page_url = UrlManager().login_url()
+
+    login_page_content = (By.ID, "content")
+
+    # legacy login form
     login_username_field = (By.ID, "loginForm_os_username")
     login_password_field = (By.ID, "loginForm_os_password")
-    login_submit_button = (By.ID, "loginForm_save")
+    login_button = (By.ID, "loginForm_save")
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
 
 
 class AllProjectsLocators:
