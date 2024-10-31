@@ -159,6 +159,10 @@ class BasePage:
     def generate_random_string(length):
         return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
 
+    @staticmethod
+    def generate_no_whitespace_string(length):
+        return "".join([random.choice(string.digits + string.ascii_letters) for _ in range(length)])
+
     def select(self, element):
         return Select(element)
 
