@@ -220,7 +220,7 @@ class InsightNewSchema(BasePage):
         self.wait_until_visible(InsightNewSchemaLocators.create_object_schemas)
 
     def create_new_schema(self):
-        new_schema_name = self.generate_random_string(4).strip()
+        new_schema_name = self.generate_no_whitespace_string(4).strip()
         self.wait_until_clickable(InsightNewSchemaLocators.create_object_schemas).click()
         self.wait_until_visible(InsightNewSchemaLocators.new_object_schema)
         self.wait_until_clickable(InsightNewSchemaLocators.new_object_schema).click()
