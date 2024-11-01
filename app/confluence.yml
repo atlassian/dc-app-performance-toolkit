@@ -27,7 +27,7 @@ settings:
     view_page: 33
     view_dashboard: 10
     view_blog: 13
-    search_cql: 4
+    search_cql: 0
     create_blog: 5
     create_and_edit_page: 9
     comment_page: 8
