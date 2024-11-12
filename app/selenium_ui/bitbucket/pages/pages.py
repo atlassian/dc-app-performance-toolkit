@@ -7,7 +7,6 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 
 
 class LoginPage(BasePage):
-    page_loaded_selector = [LoginPageLocators.submit_button, LoginPageLocators.login_button_2sv]
     page_url = UrlManager().login_url()
 
     def __init__(self, driver):
