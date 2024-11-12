@@ -87,10 +87,16 @@ class PopupLocators:
 
 class LoginPageLocators:
     submit_button = (By.ID, "submit")
+    footer_panel = (By.ID, "footer")
     username_textfield = (By.ID, "j_username")
     password_textfield = (By.ID, "j_password")
     application_version = (By.ID, 'product-version')
     node_id = (By.CLASS_NAME, 'footer-body')
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
 
 
 class LogoutPageLocators:
