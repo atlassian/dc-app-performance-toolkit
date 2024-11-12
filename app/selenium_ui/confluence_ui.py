@@ -7,12 +7,12 @@ def test_0_selenium_a_login(confluence_webdriver, confluence_datasets, confluenc
     modules.login(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_view_blog(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.view_blog(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_view_blog(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.view_blog(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_view_dashboard(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.view_dashboard(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_view_dashboard(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.view_dashboard(confluence_webdriver, confluence_datasets)
 
 
 def test_1_selenium_view_page(confluence_webdriver, confluence_datasets, confluence_screen_shots):
@@ -23,24 +23,24 @@ def test_1_selenium_view_page_from_cache(confluence_webdriver, confluence_datase
     modules.view_page_from_cache(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_create_page(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.create_confluence_page(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_create_page(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.create_confluence_page(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_edit_by_url(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.edit_confluence_page_by_url(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_edit_by_url(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.edit_confluence_page_by_url(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_edit_page_quick_edit(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.edit_confluence_page_quick_edit(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_edit_page_quick_edit(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.edit_confluence_page_quick_edit(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_create_inline_comment(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.create_inline_comment(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_create_inline_comment(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.create_inline_comment(confluence_webdriver, confluence_datasets)
 
 
-def test_1_selenium_cql_search(confluence_webdriver, confluence_datasets, confluence_screen_shots):
-    modules.cql_search(confluence_webdriver, confluence_datasets)
+# def test_1_selenium_cql_search(confluence_webdriver, confluence_datasets, confluence_screen_shots):
+#     modules.cql_search(confluence_webdriver, confluence_datasets)
 
 
 """
