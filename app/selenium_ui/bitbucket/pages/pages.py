@@ -8,6 +8,7 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 
 class LoginPage(BasePage):
     page_url = UrlManager().login_url()
+    page_loaded_selector = LoginPageLocators.footer_panel
 
     def __init__(self, driver):
         super().__init__(driver)
