@@ -8,6 +8,17 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 
 class LoginPage(BasePage):
     page_url = UrlManager().login_url()
+    page_loaded_selector = LoginPageLocators.footer_panel
+
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(LoginPageLocators.footer_panel)
+        if not self.get_elements(LoginPageLocators.submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def __init__(self, driver):
         super().__init__(driver)

@@ -602,14 +602,14 @@
         ]
       },
       {
-        "version": "9.0.0",
+        "version": "9.3.0",
         "data": [
           {
             "type": "ebs",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0ac664e91507f0e9d",
+                "us-east-2": "snap-0a197f5ad51ff7edb",
                 "us-east-1": "snap-0961da714ef84fa67"
               }
             ]
@@ -619,7 +619,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-9-0-0",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-9-3-0",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-9-0-0"
               }
             ]
