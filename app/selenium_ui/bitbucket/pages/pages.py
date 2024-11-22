@@ -8,19 +8,53 @@ from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedL
 
 class LoginPage(BasePage):
     page_url = UrlManager().login_url()
+    page_loaded_selector = LoginPageLocators.footer_panel
+
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(LoginPageLocators.footer_panel)
+        if not self.get_elements(LoginPageLocators.submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
+
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(LoginPageLocators.footer_panel)
+        if not self.get_elements(LoginPageLocators.submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def fill_username(self, username):
         self.get_element(LoginPageLocators.username_textfield).send_keys(username)
+
+    def fill_2sv_username(self, username):
+        self.get_element(LoginPageLocators.login_username_field_2sv).send_keys(username)
+
+    def fill_2sv_password(self, username):
+        self.get_element(LoginPageLocators.login_password_field_2sv).send_keys(username)
 
     def fill_password(self, password):
         self.get_element(LoginPageLocators.password_textfield).send_keys(password)
 
     def submit_login(self):
-        self.wait_until_visible(LoginPageLocators.submit_button).click()
+        if self.is_2sv_login:
+            self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
+        else:
+            self.wait_until_visible(LoginPageLocators.submit_button).click()
 
     def set_credentials(self, username, password):
-        self.fill_username(username)
-        self.fill_password(password)
+        if self.is_2sv_login:
+            self.fill_2sv_username(username)
+            self.fill_2sv_password(password)
+        else:
+            self.fill_username(username)
+            self.fill_password(password)
 
     def get_node_id(self):
         text = self.get_element(LoginPageLocators.node_id).text
