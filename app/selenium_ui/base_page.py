@@ -6,6 +6,7 @@ import time
 from packaging import version
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -133,10 +134,11 @@ class BasePage:
 
     def dismiss_popup(self, *args):
         for elem in args:
-            try:
-                self.driver.execute_script(f"document.querySelector(\'{elem}\').click()")
-            except(WebDriverException, Exception):
-                pass
+            if self.driver.find_elements(by=By.CSS_SELECTOR, value=elem):
+                try:
+                    self.driver.execute_script(f"document.querySelector(\'{elem}\').click()")
+                except(WebDriverException, Exception):
+                    pass
 
     def return_to_parent_frame(self):
         return self.driver.switch_to.parent_frame()
