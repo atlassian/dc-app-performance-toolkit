@@ -26,6 +26,7 @@ class UrlManager:
         self.boards_list_params = '/secure/ManageRapidViews.jspa'
         self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
         self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
+        self.admin_system_params = f"/secure/admin/ViewApplicationProperties.jspa"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -62,6 +63,9 @@ class UrlManager:
 
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
+
+    def admin_system_url(self):
+        return f"{self.host}{self.admin_system_params}"
 
 
 class LoginPageLocators:
@@ -147,3 +151,11 @@ class BoardLocators:
     # Scrum boards
     scrum_board_backlog_content = (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")
     board_columns = (By.CSS_SELECTOR, ".ghx-column")
+
+
+class AdminLocators:
+    admin_system_page_url = UrlManager().admin_system_url()
+    web_sudo_password = (By.ID, 'login-form-authenticatePassword')
+    web_sudo_submit_btn = (By.ID, 'login-form-submit')
+    login_form = (By.ID, 'login-form')
+    admin_search_link = (By.ID, 'admin-search-link')
