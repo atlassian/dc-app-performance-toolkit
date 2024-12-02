@@ -92,7 +92,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults">
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
         <stringProp name="HTTPSampler.domain">${application.hostname}</stringProp>
         <stringProp name="HTTPSampler.port">${application.port}</stringProp>
         <stringProp name="HTTPSampler.protocol">${application.protocol}</stringProp>
@@ -254,7 +254,7 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_os_is_not_windows">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_os_is_not_windows" enabled="true">
           <stringProp name="IfController.condition">${__BeanShell(import org.apache.commons.lang3.SystemUtils; !SystemUtils.IS_OS_WINDOWS;)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
@@ -307,7 +307,7 @@ else{
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10 login.action">
             <stringProp name="TestPlan.comments">Detected the start of a redirect chain</stringProp>
-            <stringProp name="HTTPSampler.path">${application.postfix}//login</stringProp>
+            <stringProp name="HTTPSampler.path">${application.postfix}/login</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
@@ -316,7 +316,7 @@ else{
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="Accept-Language" elementType="Header">
                   <stringProp name="Header.name">Accept-Language</stringProp>
@@ -353,8 +353,8 @@ else{
             <hashTree/>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="legacy login form check">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">loginform</stringProp>
-              <stringProp name="RegexExtractor.regex">loginform</stringProp>
+              <stringProp name="RegexExtractor.refname">j_username</stringProp>
+              <stringProp name="RegexExtractor.regex">j_username</stringProp>
               <stringProp name="RegexExtractor.template">$1$</stringProp>
               <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
               <stringProp name="RegexExtractor.match_number">1</stringProp>
@@ -426,7 +426,7 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="49586">200</stringProp>
                 </collectionProp>
@@ -438,7 +438,7 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If legacy login flow">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If legacy login flow" enabled="true">
             <stringProp name="IfController.condition">${__groovy(vars.get(&quot;legacy_login_form&quot;) == &apos;true&apos;)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
@@ -482,7 +482,7 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_all_ssh_keys_from_bitbucket" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_all_ssh_keys_from_bitbucket">
             <stringProp name="HTTPSampler.path">${application.postfix}/rest/ssh/1.0/keys</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -524,7 +524,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
 </stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_ssh_key_not_present_on_server" enabled="true">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_ssh_key_not_present_on_server">
             <stringProp name="IfController.condition">${__groovy(
         def userSshKey = vars.get(&quot;USER_SSH_KEY&quot;);
         def key_list = vars.get(&quot;SERVER_SSH_KEYS&quot;);
@@ -541,7 +541,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
             <boolProp name="IfController.useExpression">true</boolProp>
           </IfController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="add_ssh_key" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="add_ssh_key">
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/ssh/latest/keys?user=${admin_login}</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -583,7 +583,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
               <hashTree/>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="logout_admin">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="logout_admin" enabled="true">
             <stringProp name="HTTPSampler.path">${application.postfix}/j_atl_security_logout</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -594,7 +594,7 @@ vars.put(&quot;USER_SSH_KEY&quot;, new File(&apos;${__P(PRIVATE_SSH_KEY_LOCATION
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree/>
-          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="hide_samplers_result_if_success">
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="hide_samplers_result_if_success" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
@@ -613,7 +613,7 @@ else{
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="bitbucket">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="bitbucket" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">0</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -636,7 +636,7 @@ else{
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="repos">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="repos" enabled="true">
           <stringProp name="filename">${__P(DATASETS_DIR)}/bitbucket/repos.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">REPO_SLUG,PROJECT_KEY</stringProp>
@@ -648,7 +648,7 @@ else{
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="set_up_random_variables" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
@@ -694,7 +694,7 @@ vars.put(&quot;REPO_FOLDER&quot;, gitTmpWorkspace + &quot;/clone-push-&quot; + v
             </JSR223PreProcessor>
             <hashTree/>
           </hashTree>
-          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_clone_repo_via_${GIT_PROTOCOL}">
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="jmeter_clone_repo_via_${GIT_PROTOCOL}" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
             <stringProp name="SystemSampler.command">git</stringProp>
@@ -802,7 +802,7 @@ import java.util.UUID;
 }</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <intProp name="LoopController.loops">-1</intProp>
           </LoopController>
