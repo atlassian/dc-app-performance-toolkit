@@ -134,7 +134,7 @@ Data Center App Performance Toolkit has its own set of default [JMeter](https://
 
 1. Set up local environment for toolkit using the [README](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/README.md).
 1. Check that `crowd.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1. Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ```python util/jmeter/start_jmeter_ui.py --app crowd```
 1. Open `Crowd` thread group and add new transaction controller.
