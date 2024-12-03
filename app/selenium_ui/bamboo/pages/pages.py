@@ -8,13 +8,32 @@ from selenium_ui.bamboo.pages.selectors import UrlManager, LoginPageLocators, Al
 class Login(BasePage):
     page_url = LoginPageLocators.login_page_url
 
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def wait_for_page_loaded(self):
+        self.wait_until_visible(LoginPageLocators.login_page_content)
+        if not self.get_elements(LoginPageLocators.login_button):
+            self.is_2sv_login = True
+            self.wait_until_visible(LoginPageLocators.login_button_2sv)
+            print("INFO: 2sv login form")
+
     def click_login_button(self):
-        self.wait_until_visible(LoginPageLocators.login_submit_button).click()
-        self.wait_until_invisible(LoginPageLocators.login_submit_button)
+        if self.is_2sv_login:
+            self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
+            self.wait_until_invisible(LoginPageLocators.login_button_2sv)
+        else:
+            self.wait_until_visible(LoginPageLocators.login_button).click()
+            self.wait_until_invisible(LoginPageLocators.login_button)
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_username_field).send_keys(username)
-        self.get_element(LoginPageLocators.login_password_field).send_keys(password)
+        if self.is_2sv_login:
+            self.get_element(LoginPageLocators.login_username_field_2sv).send_keys(username)
+            self.get_element(LoginPageLocators.login_password_field_2sv).send_keys(password)
+        else:
+            self.get_element(LoginPageLocators.login_username_field).send_keys(username)
+            self.get_element(LoginPageLocators.login_password_field).send_keys(password)
 
 
 class ProjectList(BasePage):

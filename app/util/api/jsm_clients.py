@@ -1,11 +1,11 @@
 from util.api.abstract_clients import JSM_EXPERIMENTAL_HEADERS
-from util.api.abstract_clients import RestClient
+from util.api.jira_clients import JiraRestClient
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_USERS = 1000
 
 
-class JsmRestClient(RestClient):
+class JsmRestClient(JiraRestClient):
 
     def get_agent(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
         """
@@ -55,8 +55,7 @@ class JsmRestClient(RestClient):
 
         return response.json()
 
-    def create_request(self, service_desk_id: int, request_type_id: int,
-                       request_fields_values: dict, request_participants: list, raise_on_behalf_of: str):
+    def create_request(self, service_desk_id: int, request_type_id: int, raise_on_behalf_of: str):
         """
         Creates a customer request in a service desk.
         :param service_desk_id:
@@ -70,8 +69,9 @@ class JsmRestClient(RestClient):
         payload = {
             "serviceDeskId": service_desk_id,
             "requestTypeId": request_type_id,
-            "requestFieldValues": request_fields_values,
-            "requestParticipants": request_participants,
+            "requestFieldValues": {
+                "description": "I need a new request",
+                "summary": "Request via REST"},
             "raiseOnBehalfOf": raise_on_behalf_of
         }
         jsm_headers = JSM_EXPERIMENTAL_HEADERS
@@ -84,6 +84,7 @@ class JsmRestClient(RestClient):
         response = self.get(api_url, f"Could not get customer request for id/key {issue_id_or_key}", auth=auth)
         return response.json()
 
+    @retry()
     def get_requests(self, start_at: int = 0, max_results: int = 100, auth: tuple = None, status: str = None):
         """
         Returns the customer request for a given request Id/key.
@@ -104,7 +105,7 @@ class JsmRestClient(RestClient):
         init_url = self.host + "/rest/servicedeskapi/request"
         while loop_count > 0:
 
-            api_url = init_url + f"?start={start_at}&limit={max_results}"
+            api_url = init_url + f"?start={start_at}&limit={max_results}&requestOwnership=PARTICIPATED_REQUESTS"
             if status:
                 api_url += f"&requestStatus={status}"
 
@@ -368,6 +369,11 @@ class JsmRestClient(RestClient):
         objectschemas = []
         api_url = self.host + "/rest/insight/1.0/objectschema/list?"
         r = self.get(api_url,
-                     f"Could not get objectSchemas id").json()
+                     "Could not get objectSchemas id").json()
         objectschemas.extend(r['objectschemas'])
         return objectschemas
+
+    def get_service_desk_info(self):
+        api_url = f'{self.host}/rest/servicedeskapi/info'
+        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
+        return service_desk_info.json()

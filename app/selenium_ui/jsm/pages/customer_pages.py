@@ -11,6 +11,7 @@ from selenium_ui.jsm.pages.customer_selectors import UrlManager, LoginPageLocato
 
 class Login(BasePage):
     page_url = LoginPageLocators.login_url
+    base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.login_submit_button
 
     def set_credentials(self, username, password):
@@ -36,7 +37,7 @@ class TopPanel(BasePage):
 
     def logout(self):
         self.get_element(TopPanelSelectors.logout_button).click()
-        self.wait_until_invisible(TopPanelSelectors.profile_icon)
+        self.wait_until_visible(LoginPageLocators.login_field)
 
 
 class CustomerPortals(BasePage):
@@ -118,6 +119,27 @@ class CustomerRequest(BasePage):
         self.get_element(RequestSelectors.add_comment_button).click()
         self.wait_until_invisible(RequestSelectors.add_comment_button)
 
+    def search_for_customer_to_share_with_react_ui(self, customer_name):
+        self.wait_until_visible(RequestSelectors.share_request_button).click()
+        self.wait_until_visible(RequestSelectors.share_request_search_field_react)
+        self.action_chains().move_to_element(
+            self.get_element(RequestSelectors.share_request_search_field_react)).click().perform()
+        self.action_chains().move_to_element(self.get_element(RequestSelectors.share_request_search_field_react)).\
+            send_keys(customer_name).perform()
+        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem_react)
+
+        random_customer_name = random.choice(
+            [i.text for i in self.get_elements(RequestSelectors.share_request_dropdown_one_elem_react)])
+
+        self.action_chains().move_to_element(
+            self.get_element(RequestSelectors.share_request_search_field_arrow_react)).click().perform()
+        self.wait_until_invisible(RequestSelectors.share_request_dropdown_react)
+        self.action_chains().move_to_element(self.get_element(
+            RequestSelectors.share_request_search_field_react)).send_keys(
+            random_customer_name).perform()
+        self.wait_until_visible(RequestSelectors.share_request_dropdown_one_elem_react).click()
+
+
     def search_for_customer_to_share_with(self, customer_name):
         if not self.element_exists(RequestSelectors.share_request_button):
             print(f'Request {self.page_url} does not have Share button')
@@ -152,6 +174,10 @@ class CustomerRequest(BasePage):
     def share_request(self):
         self.wait_until_visible(RequestSelectors.share_request_modal_button).click()
         self.wait_until_invisible(RequestSelectors.share_request_modal_button)
+
+    def share_request_react(self):
+        self.wait_until_invisible(RequestSelectors.share_request_dropdown_one_elem_react)
+        self.wait_until_clickable(RequestSelectors.share_request_button_request_widget).click()
 
 
 class Requests(BasePage):

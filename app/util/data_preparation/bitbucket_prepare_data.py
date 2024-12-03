@@ -1,9 +1,11 @@
 import time
 
-from prepare_data_common import __generate_random_string, __write_to_file
+from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
 from util.api.bitbucket_clients import BitbucketRestClient, BitbucketUserPermission
 from util.conf import BITBUCKET_SETTINGS
 from util.project_paths import BITBUCKET_PROJECTS, BITBUCKET_USERS, BITBUCKET_REPOS, BITBUCKET_PRS
+
+__warnings_filter()
 
 DEFAULT_USER_PREFIX = 'dcapt-perf-user'
 USERS = "users"

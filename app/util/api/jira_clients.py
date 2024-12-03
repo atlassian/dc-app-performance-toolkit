@@ -1,10 +1,11 @@
+import json
+import string
 from selenium.common.exceptions import WebDriverException
 
 from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
-BATCH_SIZE_USERS = 1000
 BATCH_SIZE_ISSUES = 1000
 
 
@@ -48,38 +49,55 @@ class JiraRestClient(RestClient):
         return boards_list
 
     @retry()
-    def get_users(self, username='.', start_at=0, max_results=1000, include_active=True, include_inactive=False):
+    def get_users(self, username='.', include_active=True, include_inactive=False):
         """
-        Returns a list of users that match the search string. This resource cannot be accessed anonymously.
-        :param username: A query string used to search username, name or e-mail address. "." - search for all users.
-        :param start_at: the index of the first user to return (0-based).
-        :param max_results: the maximum number of users to return (defaults to 50).
-        The maximum allowed value is 1000.
-        If you specify a value that is higher than this number, your search results will be truncated.
-        :param include_active: If true, then active users are included in the results (default true)
-        :param include_inactive: If true, then inactive users are included in the results (default false)
-        :return: Returns the requested users
+        Starting from Jira 10 there is no way to get more than 100 users with get_users() API
+        startAt param will be deprecated in Jira 10.3+
         """
+        max_results = 100
 
-        loop_count = max_results // BATCH_SIZE_USERS + 1
-        last_loop_remainder = max_results % BATCH_SIZE_USERS
-
-        users_list = list()
-        max_results = BATCH_SIZE_USERS if max_results > BATCH_SIZE_USERS else max_results
-
-        while loop_count > 0:
-            api_url = f'{self.host}/rest/api/2/user/search?username={username}&startAt={start_at}' \
-                      f'&maxResults={max_results}&includeActive={include_active}&includeInactive={include_inactive}'
-            response = self.get(api_url, "Could not retrieve users")
-
-            users_list.extend(response.json())
-            loop_count -= 1
-            start_at += len(response.json())
-            if loop_count == 1:
-                max_results = last_loop_remainder
+        api_url = f'{self.host}/rest/api/2/user/search?username={username}' \
+                  f'&maxResults={max_results}' \
+                  f'&includeActive={include_active}' \
+                  f'&includeInactive={include_inactive}'
+        response = self.get(api_url, "Could not retrieve users")
+        users_list = response.json()
 
         return users_list
 
+    @retry()
+    def get_users_by_name_search(self, username, users_count, include_active=True, include_inactive=False):
+        """
+        Starting from Jira 10 there is no way to get more than 100 users with get_users() API
+        Getting more than 100 users by batch search.
+        """
+        print(f"INFO: Users search. Prefix: '{username}', users_count: {users_count}")
+        perf_users = list()
+
+        first_100 = self.get_users(username=username, include_active=True, include_inactive=False)
+        if users_count <= 100 or len(first_100) < 100:
+            perf_users = first_100[:users_count]
+        else:
+            name_start_list = list(string.digits + "_" + string.ascii_lowercase)
+            for i in name_start_list:
+                users_batch = self.get_users(username=username+i, include_active=True, include_inactive=False)
+                if len(users_batch) == 100:
+                    print(f"Warning: found 100 users starts with: {username+i}. Checking if there are more.")
+                    users_batch = self.get_users_by_name_search(username=username+i,
+                                                                users_count=users_count-len(perf_users))
+                perf_users.extend(users_batch)
+
+                # get rid of any duplicates by creating a set from json objects
+                set_of_jsons = {json.dumps(d, sort_keys=True) for d in perf_users}
+                perf_users = [json.loads(t) for t in set_of_jsons]
+                print(f"INFO: Current found users count: {len(perf_users)}")
+
+                if len(perf_users) >= users_count:
+                    perf_users = perf_users[:users_count]
+                    break
+        return perf_users
+
+    @retry()
     def issues_search(self, jql='order by key', start_at=0, max_results=1000, fields=None):
         """
         Searches for issues using JQL.
@@ -189,7 +207,8 @@ class JiraRestClient(RestClient):
             'webSudoPassword': self.password
         }
         self.post(login_url, error_msg='Could not login in')
-        system_info_html = self._session.post(auth_url, data=auth_body)
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
+        system_info_html = self._session.post(auth_url, data=auth_body, verify=self.verify)
         return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):
@@ -232,14 +251,36 @@ class JiraRestClient(RestClient):
         app_properties = self.get(api_url, "Could not retrieve user permissions")
         return app_properties.json()
 
-    def get_service_desk_info(self):
-        api_url = f'{self.host}/rest/plugins/applications/1.0/installed/jira-servicedesk'
-        service_desk_info = self.get(api_url, "Could not retrieve JSM info", headers=JSM_EXPERIMENTAL_HEADERS)
-        return service_desk_info.json()
-
     def get_deployment_type(self):
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         jira_system_page = self.get_system_info_page()
         if jira_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False
+
+    def get_license_details(self):
+        login_url = f'{self.host}/login.jsp'
+        auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        auth_body = {
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
+        }
+        self.post(login_url, error_msg='Could not login in')
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
+        self._session.post(auth_url, data=auth_body)
+        api_url = f"{self.host}/rest/plugins/applications/1.0/installed/jira-software/license"
+        self.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,' \
+                                 'image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+        r = self.get(api_url, "Could not retrieve license details")
+        return r.json()

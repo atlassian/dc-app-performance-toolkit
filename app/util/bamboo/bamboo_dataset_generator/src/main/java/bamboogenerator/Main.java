@@ -27,7 +27,9 @@ import static java.lang.System.currentTimeMillis;
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    private static final String BAMBOO_SERVER_URL = "http://0.0.0.0:8085";
+    // e.g. for TerraForm deployment:    BAMBOO_SERVER_URL = "http://my-babmoo.amazonaws.com:80/bamboo"
+    // e.g. for localhost deployment:    BAMBOO_SERVER_URL = "http://0.0.0.0:8085"
+    private static final String BAMBOO_SERVER_URL = "http://my-babmoo.amazonaws.com:80/bamboo";
     private static final String ADMIN_USER_NAME = "admin";
 
     // NOTE: Please make sure you haven't changed these values after initial run

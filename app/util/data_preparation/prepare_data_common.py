@@ -1,6 +1,12 @@
 import random
 import string
+import warnings
+
 from os import makedirs
+
+
+def __warnings_filter():
+    warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
 def __generate_random_string(length=20):
@@ -12,3 +18,9 @@ def __write_to_file(file_path, items):
     with open(file_path, 'w') as f:
         for item in items:
             f.write(f"{item}\n")
+
+
+def __read_file(file):
+    with file.open('r') as f:
+        lines = f.read().splitlines()
+        return lines

@@ -42,7 +42,7 @@ class Login(JiraResource):
 
 class BrowseIssue(JiraResource):
     action_name = "view_issue"
-    issue_id_pattern = r'id="key-val" rel="(.+?)">'
+    issue_id_pattern = r'id="key-val" rel="(.+?)"'
     project_avatar_id_pattern = r'projectavatar\?avatarId\=(.+?)" '
     edit_allow_pattern = "secure\/EditLabels\!default"  # noqa W605
     browse_project_payload = {"id": "com.atlassian.jira.jira-projects-issue-navigator:sidebar-issue-navigator"}
@@ -83,6 +83,7 @@ class CreateIssue(JiraResource):
         form_token = issue_body_dict['form_token']
         issue_type = issue_body_dict['issue_type']
         resolution_done = issue_body_dict['resolution_done']
+        resolution_string = f'&resolution={resolution_done}' if resolution_done else ''
         fields_to_retain = issue_body_dict['fields_to_retain']
         custom_fields_to_retain = issue_body_dict['custom_fields_to_retain']
 
@@ -91,7 +92,7 @@ class CreateIssue(JiraResource):
                        f"&description={description}&timetracking_originalestimate={timetracking_originalestimate}" \
                        f"&timetracking_remainingestimate={timetracking_remainingestimate}" \
                        f"&is_create_issue={is_create_issue}" \
-                       f"&hasWorkStarted={has_work_started}&resolution={resolution_done}"
+                       f"&hasWorkStarted={has_work_started}{resolution_string}"
         fields_to_retain_body = ''
         custom_fields_to_retain_body = ''
         for field in fields_to_retain:

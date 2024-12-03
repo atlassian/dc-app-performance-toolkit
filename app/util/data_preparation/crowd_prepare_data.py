@@ -1,11 +1,9 @@
-import urllib3
-
-from prepare_data_common import __write_to_file
+from prepare_data_common import __write_to_file, __warnings_filter
 from util.api.crowd_clients import CrowdRestClient
 from util.conf import CROWD_SETTINGS
 from util.project_paths import CROWD_USERS
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 
 USERS = "users"

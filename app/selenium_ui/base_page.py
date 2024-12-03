@@ -1,6 +1,7 @@
 import random
 import string
 from collections import OrderedDict
+import time
 
 from packaging import version
 from selenium.common.exceptions import WebDriverException
@@ -56,6 +57,19 @@ class BasePage:
         by, locator = selector[0], selector[1]
         return True if self.driver.find_elements(by, locator) else False
 
+    def wait_for_js_statement(self, key, value, exception_msg=None, timeout=timeout):
+        start_time = time.time()
+        print(f'Waiting for {key} is equal to {value}: {timeout} s.')
+        exception_msg = exception_msg if exception_msg else f'{key} is not equal to {value} for {timeout} s. '
+
+        while time.time() - start_time < timeout:
+            js_current_value = self.execute_js(f'return {key}')
+            if js_current_value == value:
+                print(f'{key} == {value} after {time.time() - start_time} s.')
+                break
+        else:
+            raise SystemExit(f'{exception_msg}')
+
     def wait_until_invisible(self, selector, timeout=timeout):
         return self.__wait_until(expected_condition=ec.invisibility_of_element_located(selector), locator=selector,
                                  time_out=timeout)
@@ -105,15 +119,15 @@ class BasePage:
 
         elif ec_type == ec.invisibility_of_element_located:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {locator}")
+                        f"Locator: {locator}{str(expected_condition)}")
 
         elif ec_type == ec.frame_to_be_available_and_switch_to_it:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {locator}")
+                        f"Locator: {locator}{str(expected_condition)}")
 
         else:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
-                        f"Locator: {locator}")
+                        f"Locator: {locator}{str(expected_condition)}")
 
         return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
 
@@ -130,6 +144,13 @@ class BasePage:
     def execute_js(self, js):
         return self.driver.execute_script(js)
 
+    def rest_api_get(self, url):
+        return self.execute_js(js=f"""
+        return fetch('{url}')
+                    .then(response => response.json())
+                    .then(data => data);
+        """)
+
     @property
     def app_version(self):
         return self.driver.app_version if 'app_version' in dir(self.driver) else None
@@ -137,6 +158,10 @@ class BasePage:
     @staticmethod
     def generate_random_string(length):
         return "".join([random.choice(string.digits + string.ascii_letters + ' ') for _ in range(length)])
+
+    @staticmethod
+    def generate_no_whitespace_string(length):
+        return "".join([random.choice(string.digits + string.ascii_letters) for _ in range(length)])
 
     def select(self, element):
         return Select(element)
@@ -146,6 +171,9 @@ class BasePage:
 
     def delete_all_cookies(self):
         self.driver.delete_all_cookies()
+
+    def scroll_down_till_bottom(self):
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
 
 
 class AnyEc:

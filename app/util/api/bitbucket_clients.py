@@ -3,6 +3,7 @@ from enum import Enum
 
 from util.api.abstract_clients import RestClient, LOGIN_POST_HEADERS
 from lxml import html
+from selenium_ui.conftest import retry
 
 BATCH_SIZE_PROJECTS = 100
 BATCH_SIZE_USERS = 100
@@ -126,42 +127,24 @@ class BitbucketRestClient(RestClient):
         print(f'Successfully applied user [{name}] permission [{permission.value}] in [{(time.time() - start_time)}]')
         return response
 
-    def get_bitbucket_cluster_page(self):
-        session = self._session
-        url = f"{self.host}/admin/clustering"
-        body = {
-            '_atl_remember_me': 'on',
-            'j_password': self.password,
-            'j_username': self.user,
-            'next': '/admin/clustering',
-            'queryString': 'next=/admin/clustering',
-            'submit': 'Log in'
-        }
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-        r = session.post(url, data=body, headers=headers)
-        cluster_html = r.content.decode("utf-8")
-        return cluster_html
 
     def get_bitbucket_nodes_count(self):
-        cluster_page = self.get_bitbucket_cluster_page()
-        nodes_count = cluster_page.count('class="cluster-node-id" headers="cluster-node-id"')
-        if nodes_count == 0:
-            nodes_count = "Server"
+        nodes_count = 'Server'
+        cluster_page = self.get_bitbucket_system_page()
+        tree = html.fromstring(cluster_page.content)
+        try:
+            nodes_count = str(tree.xpath("//label[text()='stp.properties.cluster.node.count']/following-sibling::span[@class='field-value']/text()")[0])
+        except Exception as error:
+            print(f"Warning: Could not retrieve Bitbucket nodes count: {error}")
         return nodes_count
 
+    @retry()
     def get_bitbucket_system_page(self):
-        session = self._session
-        url = f"{self.host}/j_atl_security_check"
-        body = {'j_username': self.user, 'j_password': self.password, '_atl_remember_me': 'on',
-                'next': f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
-                'submit': 'Log in'}
-        headers = LOGIN_POST_HEADERS
-        headers['Origin'] = self.host
-        session.post(url, data=body, headers=headers)
-        response = session.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view")
+        response = self.get(f"{self.host}/plugins/servlet/troubleshooting/view/system-info/view",
+                            error_msg="Could not get system page info")
         return response
 
+    @retry()
     def get_bitbucket_repo_count(self):
         repos_count = None
         page = self.get_bitbucket_system_page()
@@ -173,14 +156,18 @@ class BitbucketRestClient(RestClient):
         return repos_count
 
     def get_available_processors(self):
-        processors = None
-        page = self.get_bitbucket_system_page()
-        tree = html.fromstring(page.content)
         try:
-            processors = tree.xpath('//*[@id="content-stp.properties.os-0"]/div[4]/span/text()')[0]
-        except Exception as error:
-            print(f"Warning: Could not parse number of Bitbucket available processors: {error}")
-        return processors
+            processors = None
+            page = self.get_bitbucket_system_page()
+            tree = html.fromstring(page.content)
+            try:
+                processors = tree.xpath('//*[@id="content-stp.properties.os-0"]/div[4]/span/text()')[0]
+            except Exception as error:
+                print(f"Warning: Could not parse number of Bitbucket available processors: {error}")
+            return processors
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
 
     def get_locale(self):
         language = None
@@ -203,3 +190,13 @@ class BitbucketRestClient(RestClient):
         if bitbucket_system_page.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False

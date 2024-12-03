@@ -42,7 +42,6 @@ ADMIN_HEADERS = {
     'Connection': 'keep-alive',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     'User-Agent': 'xx',
-    'Authorization': 'Basic'
 }
 NO_TOKEN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
@@ -59,6 +58,13 @@ JSON_HEADERS = {
     "Content-Type": "application/json",
     "Accept-Encoding": "gzip, deflate",
     "Accept": "application/json, text/javascript, */*; q=0.01"
+}
+JSM_CUSTOMERS_HEADERS = {
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    "X-Atlassian-Token": "no-check"
 }
 
 JIRA_API_URL = '/'
@@ -123,9 +129,11 @@ class MyBaseTaskSet(TaskSet):
     login_failed = False
 
     def failure_check(self, response, action_name):
-        if hasattr(response, 'error') or not response:
+        if (hasattr(response, 'error') and response.error) or not response:
             if 'login' in action_name:
                 self.login_failed = True
+            if response.headers.get('Content-Type') == 'application/json':
+                logger.error(response.json())
             events.request.fire(request_type="Action",
                                 name=f"locust_{action_name}",
                                 response_time=0,

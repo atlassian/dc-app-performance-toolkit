@@ -158,23 +158,91 @@ class BambooClient(RestClient):
         r = self.get(f'{self.host}/rest/applinks/1.0/manifest', error_msg="Could not get Bamboo server info")
         return r.json()
 
+    def get_system_page(self):
+        login_url = f'{self.host}/userlogin.action'
+        auth_url = f'{self.host}/admin/webSudoSubmit.action'
+        tsv_auth_url = f'{self.host}/rest/tsv/1.0/authenticate'
+
+        legacy_login_body = {
+            'os_username': self.user,
+            'os_password': self.password,
+            'os_destination': '/admin/systemInfo.action',
+            'atl_token': '',
+            'save': 'Log in'
+        }
+
+        tsv_login_body = {
+            'username': self.user,
+            'password': self.password,
+            'rememberMe': True,
+            'targetUrl': ''
+        }
+
+        auth_body = {
+            'web_sudo_destination': '/admin/systemInfo.action',
+            'save': 'Submit',
+            'password': self.password
+        }
+
+        login_page_response = self.session.get(login_url)
+        if login_page_response.status_code == 200:
+            login_page_content = login_page_response.text
+            is_legacy_login_form = 'loginForm' in login_page_content
+        else:
+            raise Exception(f"Failed to fetch login page. Status code: {login_page_response.status_code}")
+
+        self.headers['X-Atlassian-Token'] = 'no-check'
+        if is_legacy_login_form:
+            r = self.session.post(url=login_url, params=legacy_login_body, headers=self.headers)
+            content = r.content.decode("utf-8")
+            # Bamboo version 9 does not have web sudo auth
+            if "System information" in content:
+                print("INFO: No web sudo auth")
+                return content
+            elif "Administrator Access" in content:
+                print("INFO: Web sudo page detected")
+            else:
+                print(f"Warning: Unexpected login page: Content {content}")
+        else:
+            self.session.post(url=tsv_auth_url, json=tsv_login_body)
+
+        system_info_html = self.session.post(url=auth_url, params=auth_body, headers=self.headers)
+        content = system_info_html.content.decode("utf-8")
+        if "System information" not in content:
+            print(f"Warning: failed to get System information page: Content {content}")
+        return content
+
     def get_available_processors(self):
-        processors = None
-        page = self.get(f'{self.host}/admin/systemInfo.action', 'Could not get Page content')
-        tree = html.fromstring(page.content)
         try:
-            processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
-        except Exception as error:
-            print(f"Warning: Could not parse number of Bamboo available processors: {error}")
-        return processors
+            processors = None
+            page = self.get_system_page()
+            tree = html.fromstring(page)
+            try:
+                processors = tree.xpath('//*[@id="systemInfo_availableProcessors"]/text()')[0]
+            except Exception as e:
+                print(f"Warning: Could not parse number of Bamboo available processors: {e}")
+            return processors
+        except Exception as e:
+            print(f"Warning: Could not get Available Processors information. Error: {e}")
+            return 'N/A'
 
     def get_nodes_count(self):
         r = self.get(f'{self.host}/rest/api/latest/server/nodes', error_msg="Could not get Bamboo nodes count")
         return len(r.json()["nodeStatuses"])
 
     def get_deployment_type(self):
-        bamboo_system_info_html = self._session.get(f'{self.host}/admin/systemInfo.action').content.decode("utf-8")
+        bamboo_system_info_html = self.get_system_page()
         html_pattern = 'com.atlassian.dcapt.deployment=terraform'
         if bamboo_system_info_html.count(html_pattern):
             return 'terraform'
         return 'other'
+
+    @retry()
+    def get_status(self):
+        api_url = f'{self.host}/rest/api/latest/status'
+        status = self.get(api_url, "Could not get status")
+        if status.ok:
+            return status.text
+        else:
+            print(f"Warning: failed to get {api_url}: Error: {e}")
+            return False

@@ -4,9 +4,25 @@ Before you start, make sure you have installed [Maven](https://maven.apache.org/
 
 Configuration located inside: [src/main/java/bamboogenerator/Main.java](src/main/java/bamboogenerator/Main.java)
 
+**POM Configuration**
+
+- Set the Bamboo version in the pom.xml file according to your Bamboo version.
+
+e.g. configuration for version 10.0.0:
+```
+<artifactId>bamboo-specs-parent</artifactId>
+<version>10.0.0</version>
+```
+pom.xml file location: [pom.xml](pom.xml)
+
 **Client Configuration**
 
 - `BAMBOO_SERVER_URL` - the URL of Bamboo
+
+    For TerraForm deployment URL should have port and postfix
+    ```
+    BAMBOO_SERVER_URL = "http://my-bamboo.amazonaws.com:80/bamboo"
+    ```
 - `ADMIN_USER_NAME` - the username of admin account
 
 

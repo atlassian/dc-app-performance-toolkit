@@ -1,15 +1,19 @@
-import json
+import csv
 import numbers
 from pathlib import Path
-import typing
-from distutils import util
-import csv
-
-import yaml
 
 
-def resolve_path(str_path: str) -> Path:
-    return Path(str_path).resolve().expanduser()
+def resolve_relative_path(str_path: str) -> Path:
+    """
+    Resolve relative path  from .yml scenario configuration file.
+    Expected working dir for csv_chart_generator.py: ./dc-app-performance-toolkit/app/reports_generation
+    Expected relative path starting from ./dc-app-performance-toolkit folder.
+    """
+    expected_working_dir_name = 'reports_generation'
+    working_dir = Path().resolve().expanduser()
+    if working_dir.name != expected_working_dir_name:
+        raise SystemExit(f"ERROR: expected working dir name: {expected_working_dir_name}, actual: {working_dir.name}")
+    return Path().resolve().expanduser().parents[1] / str_path
 
 
 def validate_str_is_not_blank(config: dict, key: str):
@@ -41,11 +45,27 @@ def read_csv_by_line(file: Path) -> list:
     return lines
 
 
+def string_to_bool(val):
+    """
+    Convert a string representation of truth to a boolean.
+    True values are 'y', 'yes', 't', 'true', 'on', and '1';
+    False values are 'n', 'no', 'f', 'false', 'off', and '0'.
+    Raises ValueError if 'val' is anything else.
+    """
+    val = val.strip().lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError(f"Invalid truth value: {val}")
+
+
 def get_app_specific_actions(file: Path) -> list:
     app_specific_list = []
     actions = read_csv_by_line(file)
     for action in actions:
-        if bool(util.strtobool(action['App-specific'])):
+        if string_to_bool(action['App-specific']):
             app_specific_list.append(action['Action'])
     return app_specific_list
 
@@ -63,7 +83,7 @@ def validate_config(config: dict):
             raise SystemExit('Config key "run" should be a dictionary')
 
         validate_str_is_not_blank(run, 'runName')
-        validate_str_is_not_blank(run, 'fullPath')
+        validate_str_is_not_blank(run, 'relativePath')
 
 
 def clean_str(string: str):
@@ -71,19 +91,3 @@ def clean_str(string: str):
     string = string.replace(" ", "_")
     # Return alphanumeric characters from a string, except "_"
     return ''.join(e for e in string if e.isalnum() or e == "_")
-
-
-def save_results(results: typing.List[typing.List], filepath: str):
-    with open(filepath, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(results)
-
-
-def read_json(filepath: str):
-    with open(filepath) as f:
-        return json.load(f)
-
-
-def read_yaml(filepath: str):
-    with open(filepath) as f:
-        return yaml.safe_load(f)

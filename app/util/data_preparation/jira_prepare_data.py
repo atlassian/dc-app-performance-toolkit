@@ -1,15 +1,13 @@
 import random
 import string
 
-import urllib3
-
-from prepare_data_common import __generate_random_string, __write_to_file
+from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
 from util.api.jira_clients import JiraRestClient
 from util.conf import JIRA_SETTINGS
 from util.project_paths import JIRA_DATASET_JQLS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_USERS, JIRA_DATASET_ISSUES, JIRA_DATASET_PROJECTS, JIRA_DATASET_CUSTOM_ISSUES
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+__warnings_filter()
 
 KANBAN_BOARDS = "kanban_boards"
 SCRUM_BOARDS = "scrum_boards"
@@ -139,7 +137,8 @@ def __get_boards(jira_api, board_type):
 
 
 def __get_users(jira_api):
-    perf_users = jira_api.get_users(username=DEFAULT_USER_PREFIX, max_results=performance_users_count)
+    perf_users = jira_api.get_users_by_name_search(username=DEFAULT_USER_PREFIX, users_count=performance_users_count)
+
     users = generate_perf_users(api=jira_api, cur_perf_user=perf_users)
     if not users:
         raise SystemExit(f"There are no users in Jira accessible by a random performance user: {jira_api.user}")
@@ -171,6 +170,13 @@ def __check_for_admin_permissions(jira_api):
         raise SystemExit(f"The '{jira_api.user}' user does not have admin permissions.")
 
 
+def __check_license(client):
+    license_details = client.get_license_details()
+    license_valid, license_expired = license_details['valid'], license_details['expired']
+    if not license_valid or license_expired:
+        raise SystemExit(f'ERROR: Jira license is valid: {license_valid}, license has expired: {license_expired}.')
+
+
 def main():
     print("Started preparing data")
 
@@ -181,6 +187,7 @@ def main():
 
     __check_for_admin_permissions(client)
     __check_current_language(client)
+    __check_license(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
 

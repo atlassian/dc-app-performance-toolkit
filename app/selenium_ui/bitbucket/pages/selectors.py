@@ -82,6 +82,7 @@ class PopupLocators:
     popup_4 = '.css-1dqf51u'
     popup_5 = '.css-1kflcxk'
     popup_6 = '.css-1gh2dqy'
+    popup_7 = "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']"
 
 
 class LoginPageLocators:
@@ -99,6 +100,7 @@ class LogoutPageLocators:
 class GetStartedLocators:
     get_started_url = UrlManager().get_started_url()
     user_profile_icon = (By.ID, 'current-user')
+    whats_new_window_close_button = (By.CSS_SELECTOR, "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
 
 
 class DashboardLocators:
@@ -113,7 +115,7 @@ class ProjectsLocators:
 
 class ProjectLocators:
     repositories_container = (By.ID, "repositories-container")
-    repository_name = (By.CSS_SELECTOR, "span.repository-name")
+    repository_name = (By.CSS_SELECTOR, ".repository-name")
 
 
 class RepoNavigationPanelLocators:
@@ -154,6 +156,7 @@ class PullRequestLocator:
     pull_request_modal_merge_button = (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")
     del_branch_checkbox_selector = (By.NAME, 'deleteSourceRef')
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
+    updates_info_banner = (By.CSS_SELECTOR, ".pull-request-onboarding>footer>button")
 
 
 class BranchesLocator:
