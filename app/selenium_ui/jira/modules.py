@@ -79,6 +79,7 @@ def login(webdriver, datasets):
             login_page.set_credentials(
                 username=datasets['current_session']['username'],
                 password=datasets['current_session']['password'])
+            login_page.wait_for_dashboard_or_first_login_loaded()
             if login_page.is_first_login():
                 login_page.first_login_setup()
             if login_page.is_first_login_second_page():

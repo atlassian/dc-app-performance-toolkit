@@ -25,11 +25,38 @@ def login_and_view_dashboard(locust):
     body = params.login_body
     body['os_username'] = user[0]
     body['os_password'] = user[1]
+    legacy_form = False
+
+    # Check if 2sv login form
+    r = locust.get('/login.jsp', catch_response=True)
+    if 'login-form-remember-me' in r.content:
+        legacy_form = True
+
 
     # 100 /login.jsp
-    locust.post('/login.jsp', body,
-                TEXT_HEADERS,
-                catch_response=True)
+    if legacy_form:
+        locust.post('/login.jsp', body,
+                    TEXT_HEADERS,
+                    catch_response=True)
+        logger.locust_info(f"Legacy login flow for user {user[0]}")
+    else:
+        logger.locust_info(f"2SV login flow for user {user[0]}")
+
+        login_body = {'username': user[0],
+                      'password': user[1],
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # 15 /rest/tsv/1.0/authenticate
+        locust.post('/rest/tsv/1.0/authenticate',
+                    json=login_body,
+                    headers=headers,
+                    catch_response=True)
 
     r = locust.get('/', catch_response=True)
     if not r.content:
