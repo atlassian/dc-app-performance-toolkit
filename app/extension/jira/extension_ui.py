@@ -25,6 +25,7 @@ def app_specific_action(webdriver, datasets):
     #         login_page.go_to()
     #         login_page.wait_for_login_page_loaded()
     #         login_page.set_credentials(username=username, password=password)
+    #         login_page.wait_for_dashboard_or_first_login_loaded()
     #         if login_page.is_first_login():
     #             login_page.first_login_setup()
     #         if login_page.is_first_login_second_page():
