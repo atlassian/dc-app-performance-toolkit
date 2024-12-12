@@ -29,7 +29,8 @@ def login_and_view_dashboard(locust):
 
     # Check if 2sv login form
     r = locust.get('/login.jsp', catch_response=True)
-    if 'login-form-remember-me' in r.content:
+    content = r.content.decode('utf-8')
+    if 'login-form-remember-me' in content:
         legacy_form = True
 
 
