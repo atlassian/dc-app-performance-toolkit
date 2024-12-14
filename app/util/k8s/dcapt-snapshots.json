@@ -165,6 +165,41 @@
             ]
           }
         ]
+      },
+      {
+        "version": "10.3.0",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-03260aba5a188e81e",
+                "us-east-1": "snap-087b3154bb64b625f"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-10-3-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-10-3-0"
+              }
+            ]
+          },
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-022a6d10e6fb4a24b",
+                "us-east-1": "snap-0a28c4d98b4f14090"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -281,7 +316,7 @@
         ]
       },
       {
-      "version": "10.0.1",
+        "version": "10.0.1",
         "data": [
           {
             "type": "local-home",
