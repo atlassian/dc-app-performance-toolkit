@@ -9,6 +9,7 @@ FROM python:3.13-slim-bookworm
 ENV APT_INSTALL="apt-get -y install --no-install-recommends"
 
 ARG CHROME_VERSION="latest"
+ARG INCLUDE_BZT_TOOLS="false"
 
 ENV CHROME_LATEST_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 ENV CHROME_VERSION_URL="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb"
@@ -29,9 +30,11 @@ RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-RUN wget https://blazemeter-tools.s3.us-east-2.amazonaws.com/bzt.tar.gz -O /tmp/bzt.tar.gz && \
-    tar -xzf /tmp/bzt.tar.gz -C /root && \
-    rm /tmp/bzt.tar.gz
+RUN if [ "$INCLUDE_BZT" = "true" ]; then \
+      wget https://blazemeter-tools.s3.us-east-2.amazonaws.com/bzt.tar.gz -O /tmp/bzt.tar.gz && \
+      tar -xzf /tmp/bzt.tar.gz -C /root && \
+      rm /tmp/bzt.tar.gz; \
+    fi
 
 WORKDIR /dc-app-performance-toolkit/app
 
