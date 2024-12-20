@@ -112,61 +112,6 @@
         ]
       },
       {
-        "version": "10.0.1",
-        "data": [
-          {
-            "type": "local-home",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-034eee5f34bf936b3",
-                "us-east-1": "snap-001d16b1ffa28ac4a"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-09b742ca1bb9fff88",
-                "us-east-1": "snap-0506e2d0d2b39e92a"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-10-0-1",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-10-0-1"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-0ea31388ab389d097",
-                "us-east-1": "snap-09c71b1d40d21e408"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-10-0-1",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-10-0-1"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "version": "10.3.0",
         "data": [
           {
@@ -196,6 +141,26 @@
               {
                 "us-east-2": "snap-022a6d10e6fb4a24b",
                 "us-east-1": "snap-0a28c4d98b4f14090"
+              }
+            ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-01028de0f83e60d8f",
+                "us-east-1": "snap-0bd8efeebd7eabc9e"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-10-3-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-10-3-0"
               }
             ]
           }
