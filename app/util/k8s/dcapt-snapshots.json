@@ -431,15 +431,15 @@
         "build_number": "9012"
       },
       {
-        "version": "7.19.26",
+        "version": "9.2.0",
         "data": [
           {
             "type": "ebs",
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0110ef301c0517b63",
-                "us-east-1": "snap-02790fdfa10bbb675"
+                "us-east-2": "snap-03bd9289ff7b87051",
+                "us-east-1": "snap-0d1ceb385cdf36d84"
               }
             ]
           },
@@ -448,8 +448,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-7-19-26",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-7-19-26"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-9-2-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-9-2-0"
               }
             ]
           },
@@ -458,8 +458,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0b5b1710dba17a851",
-                "us-east-1": "snap-09c20285b19c42232"
+                "us-east-2": "snap-0877428a1f19c5de2",
+                "us-east-1": "snap-04deb20a69b0dc23b"
               }
             ]
           },
@@ -468,8 +468,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-26",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-7-19-26"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-9-2-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-9-2-0"
               }
             ]
           },
@@ -478,69 +478,13 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-054156e5c540b25fa",
-                "us-east-1": "snap-07b216c16361eca04"
+                "us-east-2": "snap-0cee0a51628de136e",
+                "us-east-1": "snap-0c7d00e251e7ce592"
               }
             ]
           }
         ],
-        "build_number": "8804"
-      },
-      {
-        "version": "9.0.2",
-        "data": [
-          {
-            "type": "ebs",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "snap-0708fe4076049b8ef",
-                "us-east-1": "snap-01f51febcf56e2ae5"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "small",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-9-0-2",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-9-0-2"
-              }
-            ]
-          },
-          {
-            "type": "ebs",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-082ccc7959ebdc851",
-                "us-east-1": "snap-0f2bf3233418c8a30"
-              }
-            ]
-          },
-          {
-            "type": "rds",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-9-0-2",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-9-0-2"
-              }
-            ]
-          },
-          {
-            "type": "local-home",
-            "size": "large",
-            "snapshots": [
-              {
-                "us-east-2": "snap-06c5d1e6a8009fefb",
-                "us-east-1": "snap-063e03017a826e78e"
-              }
-            ]
-          }
-        ],
-        "build_number": "9104"
+        "build_number": "9109"
       }
     ]
   },
