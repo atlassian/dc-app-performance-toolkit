@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.atlassian.bamboo</groupId>
         <artifactId>bamboo-specs-parent</artifactId>
-        <version>9.6.6</version>
+        <version>10.2.0</version>
         <relativePath/>
     </parent>
 

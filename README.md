@@ -20,7 +20,7 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Crowd [release notes](https://confluence.atlassian.com/crowd/crowd-release-notes-199094.html): `6.0.0`
   
 * Supported Bamboo versions:
-    * Bamboo [Long Term Support release](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `9.6.6` and `10.0.1` Platform release
+    * Bamboo [Long Term Support release](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `10.2.0`
   
 ## Support
 In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
