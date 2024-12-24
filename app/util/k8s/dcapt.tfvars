@@ -461,7 +461,7 @@ bamboo_nfs_limits_memory   = "2Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bamboo_db_major_engine_version = "14"
+bamboo_db_major_engine_version = "15"
 bamboo_db_instance_class       = "db.t3.medium"
 bamboo_db_allocated_storage    = 100
 bamboo_db_iops                 = 1000
