@@ -203,7 +203,7 @@ So, our test has to open plan summary page and measure time to load of this new 
 1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
 For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all 
    other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1.Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ```python util/jmeter/start_jmeter_ui.py --app bamboo```
     

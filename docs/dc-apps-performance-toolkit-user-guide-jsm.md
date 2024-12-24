@@ -272,7 +272,7 @@ Set `agent_standalone_extension`/`customer_standalone_extension` weight in accor
 1. Check that `jsm.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Set desired execution percentage for `agent_standalone_extension` and/or `customer_standalone_extension`. Default values are `0`, which means that `agent_standalone_extension` and `customer_standalone_extension` actions will not be executed. 
 For example, for app-specific action development you could set percentage of `agent_standalone_extension` and/or `customer_standalone_extension` to 100 and for all other actions to 0 - this way only `jmeter_agent_login_and_view_dashboard` and `agent_standalone_extension` or `jmeter_customer_login_and_view_dashboard` and `customer_standalone_extension` actions would be executed.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1. Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ``` bash
     python util/jmeter/start_jmeter_ui.py --app jsm --type agents
