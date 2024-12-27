@@ -399,8 +399,8 @@ crowd_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.6.6"
-bamboo_agent_version_tag = "9.6.6"
+bamboo_version_tag       = "10.2.0"
+bamboo_agent_version_tag = "10.2.0"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
@@ -461,7 +461,7 @@ bamboo_nfs_limits_memory   = "2Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bamboo_db_major_engine_version = "14"
+bamboo_db_major_engine_version = "15"
 bamboo_db_instance_class       = "db.t3.medium"
 bamboo_db_allocated_storage    = 100
 bamboo_db_iops                 = 1000
