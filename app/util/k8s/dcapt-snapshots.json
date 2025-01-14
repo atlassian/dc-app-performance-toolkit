@@ -540,15 +540,15 @@
   "crowd": {
     "versions": [
       {
-        "version": "6.0.0",
+        "version": "6.2.0",
         "data": [
           {
             "type": "ebs",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0447ca5809d646efe",
-                "us-east-1": "snap-0877485f60faa521c"
+                "us-east-2": "snap-06c0080a7532b6b14",
+                "us-east-1": "snap-01231c998f6613955"
               }
             ]
           },
@@ -557,8 +557,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-6-0-0",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-6-0-0"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-6-2-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-crowd-6-2-0"
               }
             ]
           }
