@@ -2,7 +2,7 @@ matplotlib==3.9.2
 pandas==2.2.3
 pytest==8.3.3
 locust==2.32.0
-selenium==4.25.0
+selenium==4.27.1
 filelock==3.16.1
 packaging==24.1
 prettytable==3.11.0
