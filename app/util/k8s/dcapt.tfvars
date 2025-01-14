@@ -110,7 +110,7 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version
-jira_version_tag = "9.12.12"
+jira_version_tag = "9.12.17"
 
 # JSM version
 # ! REQUIRED for JSM !
