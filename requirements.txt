@@ -4,7 +4,7 @@ pytest==8.3.3
 locust==2.32.0
 selenium==4.25.0
 filelock==3.16.1
-packaging==24.1
+packaging==24.2
 prettytable==3.11.0
 bzt==1.16.32        # bzt 1.16.34 has pinned setuptools==65.5.0, which does not have distutils
 boto3==1.35.47
