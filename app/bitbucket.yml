@@ -37,7 +37,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.25.0
+      - selenium==4.27.1
 execution:
   - scenario: ${load_executor}
     concurrency: ${concurrency}
