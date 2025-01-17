@@ -401,15 +401,15 @@
   "bitbucket": {
     "versions": [
       {
-        "version": "8.19.7",
+        "version": "8.19.14",
         "data": [
           {
             "type": "ebs",
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0763969979fa4a043",
-                "us-east-1": "snap-0cae984360987eb88"
+                "us-east-2": "snap-0798bf7120fded49c",
+                "us-east-1": "snap-0f5201b2552f9d977"
               }
             ]
           },
@@ -418,8 +418,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-19-7",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-8-19-7"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-8-19-14",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-8-19-14"
               }
             ]
           },
@@ -428,8 +428,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0a29829d9651d8f0f",
-                "us-east-1": "snap-0514287d8adcd80ea"
+                "us-east-2": "snap-07833b387b8dd6736",
+                "us-east-1": "snap-0682852926407d536"
               }
             ]
           },
@@ -438,8 +438,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-19-7",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-8-19-7"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-19-14",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-8-19-14"
               }
             ]
           }
