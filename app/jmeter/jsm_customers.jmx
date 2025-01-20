@@ -249,33 +249,18 @@ import org.apache.commons.io.FileUtils;
           <boolProp name="TransactionController.includeTimers">false</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="100 /servicedesk/customer/user/login" enabled="true">
-            <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/user/login</stringProp>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="100 /servicedesk/customer/user/login">
+            <stringProp name="HTTPSampler.path">${application.postfix}/login.jsp</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="os_password" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.name">os_password</stringProp>
-                  <stringProp name="Argument.value">${password}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="os_username" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.name">os_username</stringProp>
-                  <stringProp name="Argument.value">${username}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
+              <collectionProp name="Arguments.arguments"/>
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -296,6 +281,147 @@ import org.apache.commons.io.FileUtils;
               </collectionProp>
             </HeaderManager>
             <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="legacy login form check" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">legacy_form</stringProp>
+              <stringProp name="RegexExtractor.regex">login-form-remember-me</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="Scope.variable"></stringProp>
+              <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="set legacy form type" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">String loginform = vars.get(&quot;legacy_form&quot;);
+
+if (&quot;NOT_FOUND&quot;.equals(loginform)) {
+	vars.put(&quot;legacy_login_form&quot;, &quot;false&quot;);
+	log.info(&quot;2sv flow detected&quot;);
+} else {
+	vars.put(&quot;legacy_login_form&quot;, &quot;true&quot;);
+	log.info(&quot;Legacy login flow detected&quot;);
+}
+</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Logger" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">log.info(&quot;Legacy login flow: ${legacy_login_form}&quot;)
+</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If legacy login flow" enabled="true">
+            <stringProp name="IfController.condition">${__groovy(vars.get(&quot;legacy_login_form&quot;) == &apos;true&apos;)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="100 /servicedesk/customer/user/login" enabled="true">
+              <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/user/login</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="os_password" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">os_password</stringProp>
+                    <stringProp name="Argument.value">${password}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                  <elementProp name="os_username" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.name">os_username</stringProp>
+                    <stringProp name="Argument.value">${username}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Accept" elementType="Header">
+                    <stringProp name="Header.name">Accept</stringProp>
+                    <stringProp name="Header.value">*/*</stringProp>
+                  </elementProp>
+                  <elementProp name="X-Requested-With" elementType="Header">
+                    <stringProp name="Header.name">X-Requested-With</stringProp>
+                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                  </elementProp>
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/x-www-form-urlencoded</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">X-Atlassian-Token</stringProp>
+                    <stringProp name="Header.value">no-check</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if 2sv login flow" enabled="true">
+            <stringProp name="IfController.condition">${__groovy(vars.get(&quot;legacy_login_form&quot;) == &apos;false&apos;)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="15 /rest/tsv/1.0/authenticate" enabled="true">
+              <stringProp name="TestPlan.comments">2sv login flow</stringProp>
+              <stringProp name="HTTPSampler.path">${application.postfix}/rest/tsv/1.0/authenticate</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&quot;username&quot;: &quot;${username}&quot;,&#xd;
+ &quot;password&quot;: &quot;${password}&quot;,&#xd;
+ &quot;rememberMe&quot;: &quot;True&quot;,&#xd;
+ &quot;targetUrl&quot;: &quot;&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="Content-Type" elementType="Header">
+                    <stringProp name="Header.name">Content-Type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">2</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="105 /servicedesk/customer/portals" enabled="true">
             <stringProp name="HTTPSampler.path">${application.postfix}/servicedesk/customer/portals</stringProp>
