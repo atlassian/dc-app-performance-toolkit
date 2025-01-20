@@ -19,8 +19,17 @@ class Login(BasePage):
     base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.system_dashboard
 
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
+
+    def is_2sv(self):
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def is_first_login_second_page(self):
         return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
@@ -37,9 +46,21 @@ class Login(BasePage):
         self.wait_until_visible(DashboardLocators.dashboard_window)
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        login_field = LoginPageLocators.login_field
+        password_field = LoginPageLocators.password_field
+        submit_button = LoginPageLocators.login_submit_button
+        if self.is_2sv_login:
+            login_field = LoginPageLocators.login_field_2sv
+            password_field = LoginPageLocators.password_field_2sv
+            submit_button = LoginPageLocators.login_submit_button_2sv
+
+        self.wait_until_visible(login_field).send_keys(username)
+        self.wait_until_visible(password_field).send_keys(password)
+        self.wait_until_visible(submit_button).click()
+
+    def wait_for_dashboard_or_first_login_loaded(self):
+        self.wait_until_any_ec_presented((LoginPageLocators.system_dashboard,
+                                          LoginPageLocators.continue_button))
 
     def __get_footer_text(self):
         return self.get_element(LoginPageLocators.footer).text

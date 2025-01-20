@@ -83,6 +83,9 @@ class LoginPageLocators:
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
     login_submit_button = (By.ID, 'login-form-submit')
+    login_field_2sv = (By.ID, 'username-field')
+    password_field_2sv = (By.ID, 'password-field')
+    login_submit_button_2sv = (By.ID, 'login-button')
     system_dashboard = (By.ID, "dashboard")
     footer = (By.ID, 'footer-build-information')
 

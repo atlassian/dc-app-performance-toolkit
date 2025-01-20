@@ -51,7 +51,35 @@ def agent_login_and_view_dashboard(locust, jsm_agent_dataset):
     body['os_username'] = user[0]
     body['os_password'] = user[1]
 
-    locust.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
+    legacy_form = False
+
+    # is 2sv login form
+    r = locust.get('/login.jsp', catch_response=True)
+    if b'login-form-remember-me' in r.content:
+        legacy_form = True
+
+    if legacy_form:
+        locust.post('/login.jsp', body, TEXT_HEADERS, catch_response=True)
+        logger.locust_info(f"Legacy login flow for user {user[0]}")
+    else:
+        logger.locust_info(f"2SV login flow for user {user[0]}")
+
+        login_body = {'username': user[0],
+                      'password': user[1],
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # 15 /rest/tsv/1.0/authenticate
+        locust.post('/rest/tsv/1.0/authenticate',
+                    json=login_body,
+                    headers=headers,
+                    catch_response=True)
+
     r = locust.get('/', catch_response=True)
     if not r.content:
         raise Exception('Please check server hostname in jsm.yml file')
