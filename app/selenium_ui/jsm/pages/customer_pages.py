@@ -56,7 +56,11 @@ class TopPanel(BasePage):
 
     def logout(self):
         self.get_element(TopPanelSelectors.logout_button).click()
-        self.wait_until_visible(LoginPageLocators.login_field)
+        self.wait_until_visible(LoginPageLocators.login_form)
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.wait_until_visible(LoginPageLocators.login_field_2sv)
+        else:
+            self.wait_until_visible(LoginPageLocators.login_field)
 
 
 class CustomerPortals(BasePage):
@@ -206,7 +210,7 @@ class Requests(BasePage):
         url_manager = UrlManager()
         self.page_url = url_manager.all_requests_url() if all_requests else url_manager.my_requests_url()
 
-    page_loaded_selector = RequestsSelectors.requests_label
+    page_loaded_selector = RequestsSelectors.all_requests_filter
 
 
 class ViewRequestWithInsight(BasePage):
