@@ -54,8 +54,10 @@ def login(webdriver, datasets):
         def sub_measure():
             login_page.submit_login()
             get_started_page = GetStarted(webdriver)
+            get_started_page.wait_for_page_loaded()
             PopupManager(webdriver).dismiss_default_popup()
             get_started_page.close_whats_new_window()
+            PopupManager(webdriver).dismiss_default_popup()
             get_started_page.wait_for_page_loaded()
             webdriver.node_id = login_page.get_node_id()
             print(f"node_id:{webdriver.node_id}")
