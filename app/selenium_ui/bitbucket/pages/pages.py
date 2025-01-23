@@ -20,23 +20,16 @@ class LoginPage(BasePage):
             self.is_2sv_login = True
             print("INFO: 2sv login form")
 
-    def __init__(self, driver):
-        super().__init__(driver)
-        self.is_2sv_login = False
-
-    def wait_for_page_loaded(self):
-        self.wait_until_visible(LoginPageLocators.footer_panel)
-        if not self.get_elements(LoginPageLocators.submit_button):
-            self.is_2sv_login = True
-            print("INFO: 2sv login form")
 
     def fill_username(self, username):
         self.get_element(LoginPageLocators.username_textfield).send_keys(username)
 
     def fill_2sv_username(self, username):
+        self.wait_until_visible(LoginPageLocators.login_username_field_2sv)
         self.get_element(LoginPageLocators.login_username_field_2sv).send_keys(username)
 
     def fill_2sv_password(self, username):
+        self.wait_until_visible(LoginPageLocators.login_username_field_2sv)
         self.get_element(LoginPageLocators.login_password_field_2sv).send_keys(username)
 
     def fill_password(self, password):
