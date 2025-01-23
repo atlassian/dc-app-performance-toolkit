@@ -3,7 +3,7 @@ pandas==2.2.3
 pytest==8.3.4
 locust==2.32.6
 selenium==4.27.1
-filelock==3.16.1
+filelock==3.17.0
 packaging==24.2
 prettytable==3.12.0
 bzt==1.16.32        # bzt 1.16.34 has pinned setuptools==65.5.0, which does not have distutils
