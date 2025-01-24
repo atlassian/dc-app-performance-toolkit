@@ -80,6 +80,7 @@ def login(webdriver, datasets):
             login_page.click_login_button()
             if login_page.is_first_login():
                 login_page.first_user_setup()
+            PopupManager(webdriver).dismiss_default_popup()
             all_updates_page = AllUpdates(webdriver)
             all_updates_page.wait_for_page_loaded()
             PopupManager(webdriver).dismiss_default_popup()
