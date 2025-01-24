@@ -138,7 +138,10 @@ class ViewCustomerRequest(BasePage):
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
-        comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        if not self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn_jsm10)
+        else:
+            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
 
         if rte_status:
@@ -219,9 +222,16 @@ class InsightLogin(BasePage):
         self.page_url = url_manager.view_insight_all_schemas()
 
     def submit_login(self, username, password):
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        self.wait_until_visible(LoginPageLocators.login_form)
+        if self.get_elements(LoginPageLocators.login_field):
+            self.get_element(LoginPageLocators.login_field).send_keys(username)
+            self.get_element(LoginPageLocators.password_field).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button).click()
+        else:
+            self.get_element(LoginPageLocators.login_field_2sv).send_keys(username)
+            self.get_element(LoginPageLocators.password_field_2sv).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button_2sv).click()
+
 
 
 class InsightNewSchema(BasePage):
