@@ -82,10 +82,11 @@ def login(webdriver, datasets):
                 login_page.first_user_setup()
             all_updates_page = AllUpdates(webdriver)
             all_updates_page.wait_for_page_loaded()
+            PopupManager(webdriver).dismiss_default_popup()
             measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
             if CONFLUENCE_SETTINGS.extended_metrics:
                 measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_login'])
-
+            PopupManager(webdriver).dismiss_default_popup()
         sub_measure()
         current_session_response = login_page.rest_api_get(url=f'{CONFLUENCE_SETTINGS.server_url}'
                                                                f'/rest/api/user/current')
