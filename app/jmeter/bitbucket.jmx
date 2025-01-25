@@ -254,7 +254,7 @@ log.info(&quot;GIT_LOG_DIR: &quot; + gitLogDir);
           </JSR223PreProcessor>
           <hashTree/>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_os_is_not_windows">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if_os_is_not_windows" enabled="true">
           <stringProp name="IfController.condition">${__BeanShell(import org.apache.commons.lang3.SystemUtils; !SystemUtils.IS_OS_WINDOWS;)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
@@ -303,9 +303,9 @@ else{
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="add_ssh_key_on_bitbucket"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="add_ssh_key_on_bitbucket" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10 login.action">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10 login.action" enabled="true">
             <stringProp name="TestPlan.comments">Detected the start of a redirect chain</stringProp>
             <stringProp name="HTTPSampler.path">${application.postfix}/login</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -351,7 +351,7 @@ else{
               <intProp name="Assertion.test_type">2</intProp>
             </ResponseAssertion>
             <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="legacy login form check">
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="legacy login form check" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">j_username</stringProp>
               <stringProp name="RegexExtractor.regex">j_username</stringProp>
@@ -363,18 +363,18 @@ else{
               <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
             </RegexExtractor>
             <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="set legacy form type">
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="set legacy form type" enabled="true">
               <stringProp name="scriptLanguage">groovy</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="script">String loginform = vars.get(&quot;loginform&quot;);
+              <stringProp name="script">String loginform = vars.get(&quot;j_username&quot;);
 
 if (&quot;NOT_FOUND&quot;.equals(loginform)) {
-	vars.put(&quot;legacy_login_form&quot;, &quot;true&quot;);
+	vars.put(&quot;legacy_login_form&quot;, &quot;false&quot;);
 	log.info(&quot;legacy login flow detected&quot;);
 } else {
-	vars.put(&quot;legacy_login_form&quot;, &quot;false&quot;);
+	vars.put(&quot;legacy_login_form&quot;, &quot;true&quot;);
 	log.info(&quot;2SVlogin flow detected&quot;);
 }
 </stringProp>
@@ -390,13 +390,13 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if 2sv login flow">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if 2sv login flow" enabled="true">
             <stringProp name="IfController.condition">${__groovy(vars.get(&quot;legacy_login_form&quot;) == &apos;false&apos;)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
           </IfController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="15 /rest/tsv/1.0/authenticate">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="15 /rest/tsv/1.0/authenticate" enabled="true">
               <stringProp name="TestPlan.comments">2sv login flow</stringProp>
               <stringProp name="HTTPSampler.path">${application.postfix}/rest/tsv/1.0/authenticate</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -438,13 +438,13 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If legacy login flow">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If legacy login flow" enabled="true">
             <stringProp name="IfController.condition">${__groovy(vars.get(&quot;legacy_login_form&quot;) == &apos;true&apos;)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
           </IfController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="login_admin">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="login_admin" enabled="true">
               <stringProp name="HTTPSampler.path">${application.postfix}/login</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -470,7 +470,7 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
               </elementProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="49586">200</stringProp>
                 </collectionProp>
@@ -482,7 +482,7 @@ if (&quot;NOT_FOUND&quot;.equals(loginform)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_all_ssh_keys_from_bitbucket">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_all_ssh_keys_from_bitbucket" enabled="true">
             <stringProp name="HTTPSampler.path">${application.postfix}/rest/ssh/1.0/keys</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -514,7 +514,7 @@ vars.put(&quot;SERVER_SSH_KEYS&quot;, result.join(&quot;::&quot;));
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="read_user_pub_ssh_key_file">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="read_user_pub_ssh_key_file" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
@@ -648,7 +648,7 @@ else{
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="full_repository_clone_and_push" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="set_up_random_variables" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
