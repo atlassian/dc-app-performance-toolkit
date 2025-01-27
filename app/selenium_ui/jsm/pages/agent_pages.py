@@ -338,9 +338,10 @@ class InsightViewQueue(BasePage):
 
     def view_random_queue_with_insight(self):
         self.wait_until_visible(InsightViewQueueLocators.table_container)
-        if not self.get_elements(InsightViewQueueLocators.navigation):
+        if self.get_elements(InsightViewQueueLocators.all_queues):
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column)
         else:
+            self.wait_until_visible(InsightViewQueueLocators.navigation)
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column_jsm10)
 
 
