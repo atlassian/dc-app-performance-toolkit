@@ -173,6 +173,7 @@ class InsightNewObjectLocators:
 
 
 class InsightViewQueueLocators:
+    all_queues = (By.XPATH, "//div[@class='aui-nav-heading pinned-nav-title nav-group-items']")
     view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
     table_container = (By.XPATH, "//div[@class='queue-react-table-container']")
