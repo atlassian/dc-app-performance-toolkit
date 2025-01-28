@@ -94,7 +94,7 @@ def login(webdriver, datasets):
             assert actual_username == datasets['current_session']['username']
 
     measure()
-    PopupManager(webdriver).dismiss_default_popup()
+
 
 
 def view_page(webdriver, datasets):
