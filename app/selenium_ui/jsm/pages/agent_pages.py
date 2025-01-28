@@ -125,10 +125,16 @@ class ViewCustomerRequest(BasePage):
                 if self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).text != text:
                     self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
                     self.return_to_parent_frame()
-                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                    if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                    else:
+                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
             elif self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).text != text:
                 self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
-                self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                else:
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
