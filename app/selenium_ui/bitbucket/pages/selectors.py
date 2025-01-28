@@ -75,14 +75,16 @@ class UrlManager:
 
 
 class PopupLocators:
-    default_popup = '.feature-discovery-close'
-    popup_1 = '.css-1it7f5o'
-    popup_2 = 'button.aui-button-link.feature-discovery-close'
-    popup_3 = '.css-15p34h1'
-    popup_4 = '.css-1dqf51u'
-    popup_5 = '.css-1kflcxk'
-    popup_6 = '.css-1gh2dqy'
-    popup_7 = "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']"
+    popup_selectors = [
+        ("css", ".feature-discovery-close"),
+        ("css", ".css-1it7f5o"),
+        ("css", "button.aui-button-link.feature-discovery-close"),
+        ("css", ".css-15p34h1"),
+        ("css", ".css-1dqf51u"),
+        ("css", ".css-1kflcxk"),
+        ("css", ".css-1gh2dqy"),
+        ("css", "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
+    ]
 
 
 class LoginPageLocators:

@@ -82,11 +82,7 @@ class AllUpdates(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
-                                  PopupLocators.skip_onboarding_2,
-                                  PopupLocators.time_saving_template,
-                                  PopupLocators.welcome_to_confluence,
-                                  PopupLocators.dark_theme_popup)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Page(BasePage):
