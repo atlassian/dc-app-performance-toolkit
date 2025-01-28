@@ -76,14 +76,14 @@ class UrlManager:
 
 class PopupLocators:
     popup_selectors = [
-        ("css", ".feature-discovery-close"),
-        ("css", ".css-1it7f5o"),
-        ("css", "button.aui-button-link.feature-discovery-close"),
-        ("css", ".css-15p34h1"),
-        ("css", ".css-1dqf51u"),
-        ("css", ".css-1kflcxk"),
-        ("css", ".css-1gh2dqy"),
-        ("css", "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
+        (By.CSS_SELECTOR, ".feature-discovery-close"),
+        (By.CSS_SELECTOR, ".css-1it7f5o"),
+        (By.CSS_SELECTOR, "button.aui-button-link.feature-discovery-close"),
+        (By.CSS_SELECTOR, ".css-15p34h1"),
+        (By.CSS_SELECTOR, ".css-1dqf51u"),
+        (By.CSS_SELECTOR, ".css-1kflcxk"),
+        (By.CSS_SELECTOR, ".css-1gh2dqy"),
+        (By.CSS_SELECTOR, "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
     ]
 
 

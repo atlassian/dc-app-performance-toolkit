@@ -4,9 +4,9 @@ from util.conf import JIRA_SETTINGS
 
 class PopupLocators:
     popup_selectors = [
-        ("css", ".aui-message .icon-close"),
-        ("css", "form.tip-footer>.helptip-close"),
-        ("css", ".aui-inline-dialog-contents .cancel")
+        (By.CSS_SELECTOR, ".aui-message .icon-close"),
+        (By.CSS_SELECTOR, "form.tip-footer>.helptip-close"),
+        (By.CSS_SELECTOR, ".aui-inline-dialog-contents .cancel")
     ]
 
 

@@ -4,15 +4,15 @@ from selenium.webdriver.common.by import By
 
 class PopupLocators:
     popup_selectors = [
-        ("css", ".aui-message .icon-close"),
-        ("css", "form.tip-footer>.helptip-close"),
-        ("css", ".aui-inline-dialog-contents .cancel"),
-        ("css", ".aui-close-button"),
-        ("css", ".aui-button aui-button-link"),
-        ("css", ".buttons-container > div > a"),
-        ("css", ".css-19r5em7"),
-        ("css", ".css-178ag6o"),
-        ("xpath", "//button[contains(text(),'Got it')]")
+        (By.CSS_SELECTOR, ".aui-message .icon-close"),
+        (By.CSS_SELECTOR, "form.tip-footer>.helptip-close"),
+        (By.CSS_SELECTOR, ".aui-inline-dialog-contents .cancel"),
+        (By.CSS_SELECTOR, ".aui-close-button"),
+        (By.CSS_SELECTOR, ".aui-button aui-button-link"),
+        (By.CSS_SELECTOR, ".buttons-container > div > a"),
+        (By.CSS_SELECTOR, ".css-19r5em7"),
+        (By.CSS_SELECTOR, ".css-178ag6o"),
+        (By.XPATH, "//button[contains(text(),'Got it')]")
     ]
 
 

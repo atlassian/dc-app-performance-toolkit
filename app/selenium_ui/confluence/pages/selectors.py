@@ -30,12 +30,12 @@ class UrlManager:
 
 class PopupLocators:
     popup_selectors = [
-        ("css", ".button-panel-button .set-timezone-button"),
-        ("css", ".aui-button aui-button-link .skip-onboarding"),
-        ("css", ".aui-button.aui-button-link.skip-onboarding"),
-        ("css", "#closeDisDialog"),
-        ("css", ".aui-button.aui-button-primary.show-onboarding"),
-        ("css", "button[aria-label='Close this modal']")
+        (By.CSS_SELECTOR, ".button-panel-button .set-timezone-button"),
+        (By.CSS_SELECTOR, ".aui-button aui-button-link .skip-onboarding"),
+        (By.CSS_SELECTOR, ".aui-button.aui-button-link.skip-onboarding"),
+        (By.CSS_SELECTOR, "#closeDisDialog"),
+        (By.CSS_SELECTOR, ".aui-button.aui-button-primary.show-onboarding"),
+        (By.CSS_SELECTOR, "button[aria-label='Close this modal']")
     ]
 
 
