@@ -132,13 +132,20 @@ class BasePage:
 
         return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
 
-    def dismiss_popup(self, *args):
-        for elem in args:
-            if self.driver.find_elements(by=By.CSS_SELECTOR, value=elem):
-                try:
-                    self.driver.execute_script(f"document.querySelector(\'{elem}\').click()")
-                except(WebDriverException, Exception):
-                    pass
+    def dismiss_popup(self, popup_selectors):
+        for selector_type, selector_value in popup_selectors:
+            if selector_type.lower() == "css":
+                if self.driver.find_elements(by=By.CSS_SELECTOR, value=selector_value):
+                    try:
+                        self.driver.execute_script(f"document.querySelector('{selector_value}').click()")
+                    except (WebDriverException, Exception):
+                        pass
+            elif selector_type.lower() == "xpath":
+                if self.driver.find_elements(by=By.XPATH, value=selector_value):
+                    try:
+                        self.driver.find_element(by=By.XPATH, value=selector_value).click()
+                    except (WebDriverException, Exception):
+                        pass
 
     def return_to_parent_frame(self):
         return self.driver.switch_to.parent_frame()

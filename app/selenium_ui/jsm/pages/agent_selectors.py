@@ -3,14 +3,17 @@ from selenium.webdriver.common.by import By
 
 
 class PopupLocators:
-    default_popup = '.aui-message .icon-close'
-    popup_1 = 'form.tip-footer>.helptip-close'
-    popup_2 = '.aui-inline-dialog-contents .cancel'
-    popup_3 = '.aui-close-button'
-    popup_4 = '.aui-button aui-button-link'
-    popup_5 = '.buttons-container > div > a'
-    popup_6 = '.css-19r5em7'
-    popup_7 = '.css-178ag6o'
+    popup_selectors = [
+        ("css", ".aui-message .icon-close"),
+        ("css", "form.tip-footer>.helptip-close"),
+        ("css", ".aui-inline-dialog-contents .cancel"),
+        ("css", ".aui-close-button"),
+        ("css", ".aui-button aui-button-link"),
+        ("css", ".buttons-container > div > a"),
+        ("css", ".css-19r5em7"),
+        ("css", ".css-178ag6o"),
+        ("xpath", "//button[contains(text(),'Got it')]")
+    ]
 
 
 class UrlManager:

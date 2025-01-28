@@ -9,9 +9,7 @@ from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocato
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3, PopupLocators.popup_4,
-                                  PopupLocators.popup_5, PopupLocators.popup_6, PopupLocators.popup_7)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Login(BasePage):
@@ -138,10 +136,10 @@ class ViewCustomerRequest(BasePage):
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
-        if not self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn_jsm10)
-        else:
+        if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
             comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        else:
+            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn_jsm10)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
 
         if rte_status:
