@@ -2,6 +2,7 @@ import time
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.conftest import retry
+from selenium.webdriver.common.keys import Keys
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
     PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators, XsrfTokenLocators
 
@@ -83,6 +84,8 @@ class PopupManager(BasePage):
 
     @retry()
     def dismiss_default_popup(self):
+        self.action_chains().send_keys(Keys.ESCAPE).perform()
+        self.action_chains().send_keys(Keys.SPACE).perform()
         return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
                                   PopupLocators.skip_onboarding_2,
                                   PopupLocators.time_saving_template,

@@ -109,6 +109,7 @@ def view_page(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
         measure_dom_requests(webdriver, interaction=f"selenium_view_page", description=page_description)
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_view_page'])
@@ -147,6 +148,7 @@ def view_blog(webdriver, datasets):
     def measure():
         blog.go_to()
         blog.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
         measure_dom_requests(webdriver, interaction=f"selenium_view_blog", description=blog_description)
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_view_blog'])
