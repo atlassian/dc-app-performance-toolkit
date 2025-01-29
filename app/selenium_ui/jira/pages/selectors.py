@@ -3,9 +3,11 @@ from util.conf import JIRA_SETTINGS
 
 
 class PopupLocators:
-    default_popup = '.aui-message .icon-close'
-    popup_1 = 'form.tip-footer>.helptip-close'
-    popup_2 = '.aui-inline-dialog-contents .cancel'
+    popup_selectors = [
+        (By.CSS_SELECTOR, ".aui-message .icon-close"),
+        (By.CSS_SELECTOR, "form.tip-footer>.helptip-close"),
+        (By.CSS_SELECTOR, ".aui-inline-dialog-contents .cancel")
+    ]
 
 
 class UrlManager:

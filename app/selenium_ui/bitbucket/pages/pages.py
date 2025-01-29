@@ -103,9 +103,7 @@ class RepoNavigationPanel(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3, PopupLocators.popup_4, PopupLocators.popup_5,
-                                  PopupLocators.popup_6, PopupLocators.popup_7)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Repository(BasePage):

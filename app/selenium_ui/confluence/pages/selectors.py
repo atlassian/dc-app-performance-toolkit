@@ -29,12 +29,14 @@ class UrlManager:
 
 
 class PopupLocators:
-    timezone_popups = '.button-panel-button .set-timezone-button'
-    skip_onbording_1 = '.aui-button aui-button-link .skip-onboarding'
-    skip_onboarding_2 = '.aui-button.aui-button-link.skip-onboarding'
-    time_saving_template = '#closeDisDialog'
-    welcome_to_confluence = '.aui-button.aui-button-primary.show-onboarding'
-    dark_theme_popup = 'button[aria-label="Close this modal"]'
+    popup_selectors = [
+        (By.CSS_SELECTOR, ".button-panel-button .set-timezone-button"),
+        (By.CSS_SELECTOR, ".aui-button aui-button-link .skip-onboarding"),
+        (By.CSS_SELECTOR, ".aui-button.aui-button-link.skip-onboarding"),
+        (By.CSS_SELECTOR, "#closeDisDialog"),
+        (By.CSS_SELECTOR, ".aui-button.aui-button-primary.show-onboarding"),
+        (By.CSS_SELECTOR, "button[aria-label='Close this modal']")
+    ]
 
 
 class LoginPageLocators:
