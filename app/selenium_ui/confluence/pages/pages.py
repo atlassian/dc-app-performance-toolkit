@@ -82,7 +82,10 @@ class AllUpdates(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.popup_selectors)
+        try:
+            return self.dismiss_popup(PopupLocators.popup_selectors)
+        except:
+            pass
 
 
 class Page(BasePage):
