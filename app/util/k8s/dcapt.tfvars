@@ -240,7 +240,7 @@ confluence_collaborative_editing_enabled = true
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
 # Example: ["-Dproperty=value", "-Dproperty1=value1"]
-confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true -Datlassian.darkfeature.dashboard.onboarding.disabled=true"]
 
 ################################################################################
 # Bitbucket Settings
