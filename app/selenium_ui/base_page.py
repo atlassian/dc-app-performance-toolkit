@@ -141,7 +141,7 @@ class BasePage:
                     elif selector_type == By.XPATH:
                         self.driver.find_element(by=selector_type, value=selector_value).click()
                 except (WebDriverException, Exception):
-                    pass
+                    print(f'Exception when closing selector: {selector_type}, {selector_value}')
 
     def return_to_parent_frame(self):
         return self.driver.switch_to.parent_frame()
