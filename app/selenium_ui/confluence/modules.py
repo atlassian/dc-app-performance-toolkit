@@ -60,16 +60,27 @@ def login(webdriver, datasets):
     def measure():
 
         def sub_measure():
+            print('DEBUG 1')
             login_page.go_to()
+            print('DEBUG 2')
             if login_page.is_logged_in():
+                print('DEBUG 3')
                 login_page.delete_all_cookies()
+                print('DEBUG 4')
                 login_page.go_to()
+                print('DEBUG 5')
             login_page.wait_for_page_loaded()
+            print('DEBUG 6')
             node_id = login_page.get_node_id()
+            print('DEBUG 7')
             node_ip = rest_client.get_node_ip(node_id)
+            print('DEBUG 8')
             webdriver.node_ip = node_ip
+            print('DEBUG 9')
             print(f"node_id:{node_id}, node_ip: {webdriver.node_ip}")
+            print('DEBUG 10')
             measure_dom_requests(webdriver, interaction="selenium_login:open_login_page")
+            print('DEBUG 11')
 
         sub_measure()
 
