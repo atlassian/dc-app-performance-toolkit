@@ -83,17 +83,21 @@ def login(webdriver, datasets):
             print('DEBUG 11')
 
         sub_measure()
-
+        print('DEBUG 12')
         login_page.set_credentials(username=datasets['current_session']['username'],
                                    password=datasets['current_session']['password'])
-
+        print('DEBUG 13')
         def sub_measure():
             login_page.click_login_button()
+            print('DEBUG 14')
             if login_page.is_first_login():
                 login_page.first_user_setup()
+                print('DEBUG 15')
             all_updates_page = AllUpdates(webdriver)
             all_updates_page.wait_for_page_loaded()
+            print('DEBUG 16')
             measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
+            print('DEBUG 17')
             if CONFLUENCE_SETTINGS.extended_metrics:
                 measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_login'])
 
@@ -329,10 +333,12 @@ def cql_search(webdriver, datasets):
 
 def log_out(webdriver, datasets):
     logout_page = Logout(webdriver)
+    login_page = Login(webdriver)
 
     @print_timing("selenium_log_out")
     def measure():
         logout_page.go_to()
         logout_page.wait_for_logout()
+        login_page.wait_for_page_loaded()
 
     measure()

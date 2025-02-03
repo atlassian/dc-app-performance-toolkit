@@ -19,6 +19,7 @@ class Login(BasePage):
         if not self.get_elements(LoginPageLocators.login_button):
             self.is_2sv_login = True
             print("INFO: 2sv login form")
+            self.wait_until_visible(LoginPageLocators.login_button_2sv)
 
     def set_credentials(self, username, password):
         if self.is_2sv_login:
