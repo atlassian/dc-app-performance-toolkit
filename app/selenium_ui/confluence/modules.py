@@ -7,6 +7,8 @@ from selenium_ui.confluence.pages.selectors import PageLocators
 from util.api.confluence_clients import ConfluenceRestClient
 from util.confluence.browser_metrics import browser_metrics
 from util.conf import CONFLUENCE_SETTINGS
+from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
+
 
 USERS = "users"
 PAGES = "pages"
@@ -84,11 +86,26 @@ def login(webdriver, datasets):
 
         sub_measure()
         print('DEBUG 12')
+        import uuid
+        session_id = str(uuid.uuid4())
+        errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
+        errors_artifacts.mkdir(parents=True, exist_ok=True)
+
+        error_artifact_name = errors_artifacts / f'login_12_{session_id}'
+        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
         login_page.set_credentials(username=datasets['current_session']['username'],
                                    password=datasets['current_session']['password'])
+        try:
+            r = login_page.rest_api_get(f'{CONFLUENCE_SETTINGS.server_url}/rest/api/user/current')
+            print(f'DEBUG LogIN user {r["username"]}')
+        except:
+            print('user still not logged in')
+
         print('DEBUG 13')
         def sub_measure():
             login_page.click_login_button()
+            r = login_page.rest_api_get(f'{CONFLUENCE_SETTINGS.server_url}/rest/api/user/current')
+            print(f'DEBUG LogIN user {r["username"]}')
             print('DEBUG 14')
             if login_page.is_first_login():
                 login_page.first_user_setup()
@@ -337,6 +354,8 @@ def log_out(webdriver, datasets):
 
     @print_timing("selenium_log_out")
     def measure():
+        r = logout_page.rest_api_get(f'{CONFLUENCE_SETTINGS.server_url}/rest/api/user/current')
+        print(f'DEBUG Logout user {r["username"]}')
         logout_page.go_to()
         logout_page.wait_for_logout()
         login_page.wait_for_page_loaded()
