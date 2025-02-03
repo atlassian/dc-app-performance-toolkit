@@ -34,7 +34,9 @@ class Login(BasePage):
 
     def click_login_button(self):
         if self.is_2sv_login:
+            print('DEBUG 14_1')
             self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
+            print('DEBUG 14_2')
             self.wait_until_invisible(LoginPageLocators.login_button_2sv)
         else:
             self.wait_until_visible(LoginPageLocators.login_button).click()

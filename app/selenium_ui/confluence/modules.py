@@ -91,8 +91,6 @@ def login(webdriver, datasets):
         errors_artifacts = ENV_TAURUS_ARTIFACT_DIR / 'errors_artifacts'
         errors_artifacts.mkdir(parents=True, exist_ok=True)
 
-        error_artifact_name = errors_artifacts / f'login_12_{session_id}'
-        webdriver.save_screenshot('{}.png'.format(error_artifact_name))
         login_page.set_credentials(username=datasets['current_session']['username'],
                                    password=datasets['current_session']['password'])
         try:
@@ -103,6 +101,8 @@ def login(webdriver, datasets):
 
         print('DEBUG 13')
         def sub_measure():
+            error_artifact_name = errors_artifacts / f'login_12_{session_id}'
+            webdriver.save_screenshot('{}.png'.format(error_artifact_name))
             login_page.click_login_button()
             r = login_page.rest_api_get(f'{CONFLUENCE_SETTINGS.server_url}/rest/api/user/current')
             print(f'DEBUG LogIN user {r["username"]}')
@@ -359,5 +359,6 @@ def log_out(webdriver, datasets):
         logout_page.go_to()
         logout_page.wait_for_logout()
         login_page.wait_for_page_loaded()
+
 
     measure()
