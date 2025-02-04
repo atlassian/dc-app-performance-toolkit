@@ -78,9 +78,10 @@ def login(webdriver, datasets):
 
         def sub_measure():
             login_page.click_login_button()
+            all_updates_page = AllUpdates(webdriver)
+            all_updates_page.wait_for_page_loaded()
             if login_page.is_first_login():
                 login_page.first_user_setup()
-            all_updates_page = AllUpdates(webdriver)
             all_updates_page.wait_for_page_loaded()
             measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
             if CONFLUENCE_SETTINGS.extended_metrics:

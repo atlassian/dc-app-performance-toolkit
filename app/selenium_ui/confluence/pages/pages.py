@@ -34,10 +34,8 @@ class Login(BasePage):
     def click_login_button(self):
         if self.is_2sv_login:
             self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
-            self.wait_until_invisible(LoginPageLocators.login_button_2sv)
         else:
             self.wait_until_visible(LoginPageLocators.login_button).click()
-            self.wait_until_invisible(LoginPageLocators.login_button)
 
     def is_first_login(self):
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
