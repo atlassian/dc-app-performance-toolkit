@@ -35,7 +35,7 @@ class PopupLocators:
         (By.CSS_SELECTOR, ".aui-button.aui-button-link.skip-onboarding"),
         (By.CSS_SELECTOR, "#closeDisDialog"),
         (By.CSS_SELECTOR, ".aui-button.aui-button-primary.show-onboarding"),
-        (By.CSS_SELECTOR, "button[aria-label='Close this modal']")
+        (By.CSS_SELECTOR, 'button[aria-label="Close this modal"]')
     ]
 
 
