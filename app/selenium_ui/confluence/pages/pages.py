@@ -37,10 +37,10 @@ class Login(BasePage):
             print('DEBUG 14_1')
             self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
             print('DEBUG 14_2')
-            self.wait_until_invisible(LoginPageLocators.login_button_2sv)
+            #self.wait_until_invisible(LoginPageLocators.login_button_2sv)
         else:
             self.wait_until_visible(LoginPageLocators.login_button).click()
-            self.wait_until_invisible(LoginPageLocators.login_button)
+            #self.wait_until_invisible(LoginPageLocators.login_button)
 
     def is_first_login(self):
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
