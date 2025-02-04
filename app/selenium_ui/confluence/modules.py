@@ -104,6 +104,8 @@ def login(webdriver, datasets):
             error_artifact_name = errors_artifacts / f'login_12_{session_id}'
             webdriver.save_screenshot('{}.png'.format(error_artifact_name))
             login_page.click_login_button()
+            dashboard = Dashboard(webdriver)
+            dashboard.wait_for_page_loaded()
             r = login_page.rest_api_get(f'{CONFLUENCE_SETTINGS.server_url}/rest/api/user/current')
             print(f'DEBUG LogIN user {r["username"]}')
             print('DEBUG 14')
