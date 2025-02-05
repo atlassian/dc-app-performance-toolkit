@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-10-22"
+date: "2024-11-22"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -102,7 +102,7 @@ specifically for performance testing during the DC app review process.
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
 8. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
@@ -203,7 +203,7 @@ So, our test has to open plan summary page and measure time to load of this new 
 1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
 For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all 
    other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1.Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ```python util/jmeter/start_jmeter_ui.py --app bamboo```
     
@@ -303,7 +303,7 @@ To receive performance baseline results **without** an app installed and **witho
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bamboo/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -334,7 +334,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 
 {{% note %}}
@@ -368,7 +368,7 @@ To receive results for Bamboo DC **with app** and **with app-specific actions**:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 
 {{% note %}}

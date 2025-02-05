@@ -38,7 +38,12 @@ class LoginPageLocators:
     login_field = (By.ID, 'os_username')
     password_field = (By.ID, 'os_password')
     login_submit_button = (By.ID, 'js-login-submit')
+    login_field_2sv = (By.ID, 'username-field')
+    password_field_2sv = (By.ID, 'password-field')
+    login_submit_button_2sv = (By.ID, 'login-button')
     app_version = (By.NAME, "ajs-sdPluginVersion")
+    app_version_2sv = (By.NAME, "application-name")
+    login_form = (By.ID, "login-form")
 
 
 class TopPanelSelectors:
@@ -107,3 +112,4 @@ class InsightSelectors:
 class RequestsSelectors:
     my_requests_url = UrlManager().my_requests_url()
     requests_label = (By.XPATH, "//h2[contains(text(),'Requests')]")
+    all_requests_filter = (By.ID, "sd-all-requests-filter")

@@ -34,10 +34,8 @@ class Login(BasePage):
     def click_login_button(self):
         if self.is_2sv_login:
             self.wait_until_visible(LoginPageLocators.login_button_2sv).click()
-            self.wait_until_invisible(LoginPageLocators.login_button_2sv)
         else:
             self.wait_until_visible(LoginPageLocators.login_button).click()
-            self.wait_until_invisible(LoginPageLocators.login_button)
 
     def is_first_login(self):
         elements = self.get_elements(LoginPageLocators.first_login_setup_page)
@@ -82,11 +80,7 @@ class AllUpdates(BasePage):
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.timezone_popups, PopupLocators.skip_onbording_1,
-                                  PopupLocators.skip_onboarding_2,
-                                  PopupLocators.time_saving_template,
-                                  PopupLocators.welcome_to_confluence,
-                                  PopupLocators.dark_theme_popup)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Page(BasePage):

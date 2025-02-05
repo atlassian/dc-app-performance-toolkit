@@ -52,7 +52,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.25.0
+      - selenium==4.27.1
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
@@ -114,7 +114,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "130.0.6723.91" # Supports Chrome version 130. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "133.0.6943.53" # Supports Chrome version 133. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

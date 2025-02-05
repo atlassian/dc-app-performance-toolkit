@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-10-22"
+date: "2024-11-22"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
@@ -124,7 +124,7 @@ Below process describes how to install low-tier Jira Service Management DC with 
    -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
 
@@ -272,7 +272,7 @@ Set `agent_standalone_extension`/`customer_standalone_extension` weight in accor
 1. Check that `jsm.yml` file has correct settings of `application_hostname`, `application_protocol`, `application_port`, `application_postfix`, etc.
 1. Set desired execution percentage for `agent_standalone_extension` and/or `customer_standalone_extension`. Default values are `0`, which means that `agent_standalone_extension` and `customer_standalone_extension` actions will not be executed. 
 For example, for app-specific action development you could set percentage of `agent_standalone_extension` and/or `customer_standalone_extension` to 100 and for all other actions to 0 - this way only `jmeter_agent_login_and_view_dashboard` and `agent_standalone_extension` or `jmeter_customer_login_and_view_dashboard` and `customer_standalone_extension` actions would be executed.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1. Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ``` bash
     python util/jmeter/start_jmeter_ui.py --app jsm --type agents
@@ -459,7 +459,7 @@ Below process describes how to install enterprise-scale Jira Service Management 
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
    ```
 8. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/jira`.
 
@@ -539,7 +539,7 @@ To receive performance baseline results **without** an app installed:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh jsm.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jsm.yml
     ```
 
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/jsm/YY-MM-DD-hh-mm-ss` folder:
@@ -594,7 +594,7 @@ Re-index information window is displayed on the **Indexing page**. If the window
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh jsm.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jsm.yml
     ```
 
 {{% note %}}
@@ -654,7 +654,7 @@ To receive scalability benchmark results for one-node Jira Service Management DC
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh jsm.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jsm.yml
     ```
 
 {{% note %}}
@@ -679,7 +679,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.3 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
    ```
 1. Navigate to `dc-app-performance-toolkit` folder and start tests execution:
     ``` bash
@@ -692,7 +692,7 @@ To receive scalability benchmark results for two-node Jira Service Management DC
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh jsm.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jsm.yml
     ```
 
 {{% note %}}
@@ -721,7 +721,7 @@ To receive scalability benchmark results for four-node Jira Service Management D
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.3 bash bzt_on_pod.sh jsm.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jsm.yml
     ```
    
 {{% note %}}

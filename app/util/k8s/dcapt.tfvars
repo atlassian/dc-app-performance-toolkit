@@ -110,11 +110,11 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version
-jira_version_tag = "9.12.12"
+jira_version_tag = "10.3.0"
 
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "5.12.12"
+# jira_version_tag = "10.3.1"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
 jira_dataset_size = "large"
@@ -172,7 +172,7 @@ jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "8.5.14"
+confluence_version_tag = "9.2.0"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "large"
@@ -247,7 +247,7 @@ confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "8.9.18"
+bitbucket_version_tag = "9.4.1"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
@@ -399,8 +399,8 @@ crowd_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "9.6.6"
-bamboo_agent_version_tag = "9.6.6"
+bamboo_version_tag       = "10.2.0"
+bamboo_agent_version_tag = "10.2.0"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"

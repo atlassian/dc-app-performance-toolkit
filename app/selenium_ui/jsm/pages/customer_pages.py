@@ -14,19 +14,38 @@ class Login(BasePage):
     base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.login_submit_button
 
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
+    def is_2sv(self):
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
+
     def set_credentials(self, username, password):
-        self.wait_until_visible(LoginPageLocators.login_field)
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        if self.is_2sv_login:
+            self.wait_until_visible(LoginPageLocators.login_field_2sv)
+            self.get_element(LoginPageLocators.login_field_2sv).send_keys(username)
+            self.get_element(LoginPageLocators.password_field_2sv).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button_2sv).click()
+        else:
+            self.wait_until_visible(LoginPageLocators.login_field)
+            self.get_element(LoginPageLocators.login_field).send_keys(username)
+            self.get_element(LoginPageLocators.password_field).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button).click()
 
     def is_logged_in(self):
         elements = self.get_elements(CustomerPortalsSelectors.welcome_logged_in_page)
         return True if elements else False
 
     def get_app_version(self):
-        version_str = self.get_element(LoginPageLocators.app_version).get_attribute('content')
-        return version.parse(version_str)
+        if self.is_2sv_login:
+            version_str = self.get_element(LoginPageLocators.app_version_2sv).get_attribute('data-version')
+            return version.parse(version_str)
+        else:
+            version_str = self.get_element(LoginPageLocators.app_version).get_attribute('content')
+            return version.parse(version_str)
 
 
 class TopPanel(BasePage):
@@ -37,7 +56,11 @@ class TopPanel(BasePage):
 
     def logout(self):
         self.get_element(TopPanelSelectors.logout_button).click()
-        self.wait_until_visible(LoginPageLocators.login_field)
+        self.wait_until_visible(LoginPageLocators.login_form)
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.wait_until_visible(LoginPageLocators.login_field_2sv)
+        else:
+            self.wait_until_visible(LoginPageLocators.login_field)
 
 
 class CustomerPortals(BasePage):
@@ -187,7 +210,7 @@ class Requests(BasePage):
         url_manager = UrlManager()
         self.page_url = url_manager.all_requests_url() if all_requests else url_manager.my_requests_url()
 
-    page_loaded_selector = RequestsSelectors.requests_label
+    page_loaded_selector = RequestsSelectors.all_requests_filter
 
 
 class ViewRequestWithInsight(BasePage):

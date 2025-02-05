@@ -70,6 +70,8 @@ def login(webdriver, datasets):
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
+            login_page.wait_for_login_page_loaded()
+
         sub_measure()
 
         @print_timing("selenium_login:login_and_view_dashboard")
@@ -77,6 +79,7 @@ def login(webdriver, datasets):
             login_page.set_credentials(
                 username=datasets['current_session']['username'],
                 password=datasets['current_session']['password'])
+            login_page.wait_for_dashboard_or_first_login_loaded()
             if login_page.is_first_login():
                 login_page.first_login_setup()
             if login_page.is_first_login_second_page():

@@ -75,22 +75,30 @@ class UrlManager:
 
 
 class PopupLocators:
-    default_popup = '.feature-discovery-close'
-    popup_1 = '.css-1it7f5o'
-    popup_2 = 'button.aui-button-link.feature-discovery-close'
-    popup_3 = '.css-15p34h1'
-    popup_4 = '.css-1dqf51u'
-    popup_5 = '.css-1kflcxk'
-    popup_6 = '.css-1gh2dqy'
-    popup_7 = "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']"
+    popup_selectors = [
+        (By.CSS_SELECTOR, ".feature-discovery-close"),
+        (By.CSS_SELECTOR, ".css-1it7f5o"),
+        (By.CSS_SELECTOR, "button.aui-button-link.feature-discovery-close"),
+        (By.CSS_SELECTOR, ".css-15p34h1"),
+        (By.CSS_SELECTOR, ".css-1dqf51u"),
+        (By.CSS_SELECTOR, ".css-1kflcxk"),
+        (By.CSS_SELECTOR, ".css-1gh2dqy"),
+        (By.CSS_SELECTOR, "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
+    ]
 
 
 class LoginPageLocators:
     submit_button = (By.ID, "submit")
+    footer_panel = (By.ID, "footer")
     username_textfield = (By.ID, "j_username")
     password_textfield = (By.ID, "j_password")
     application_version = (By.ID, 'product-version')
     node_id = (By.CLASS_NAME, 'footer-body')
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
 
 
 class LogoutPageLocators:

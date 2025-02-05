@@ -6,13 +6,13 @@ import json
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
-    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
+    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators, AdminLocators
 
 
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Login(BasePage):
@@ -20,8 +20,22 @@ class Login(BasePage):
     page_loaded_selector = LoginPageLocators.system_dashboard
     base_url = UrlManager().host
 
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
+
+    def wait_for_login_page_loaded(self):
+        # TODO DCA-2394: Find proper logic to wait until login page is fully loaded
+        # Jira 10.0.1 has issue when clicking too fast on login button resulting in user is not logged in.
+        from time import sleep
+        sleep(1)
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
+
 
     def is_first_login_second_page(self):
         return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
@@ -38,9 +52,21 @@ class Login(BasePage):
         self.wait_until_visible(DashboardLocators.dashboard_window)
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        login_field = LoginPageLocators.login_field
+        password_field = LoginPageLocators.password_field
+        submit_button = LoginPageLocators.login_submit_button
+        if self.is_2sv_login:
+            login_field = LoginPageLocators.login_field_2sv
+            password_field = LoginPageLocators.password_field_2sv
+            submit_button = LoginPageLocators.login_submit_button_2sv
+
+        self.wait_until_visible(login_field).send_keys(username)
+        self.wait_until_visible(password_field).send_keys(password)
+        self.wait_until_visible(submit_button).click()
+
+    def wait_for_dashboard_or_first_login_loaded(self):
+        self.wait_until_any_ec_presented((LoginPageLocators.system_dashboard,
+                                          LoginPageLocators.continue_button))
 
     def __get_footer_text(self):
         return self.get_element(LoginPageLocators.footer).text
@@ -255,3 +281,22 @@ class Board(BasePage):
 
     def wait_for_scrum_board_backlog(self):
         self.wait_until_present(BoardLocators.scrum_board_backlog_content)
+
+
+class AdminPage(BasePage):
+    page_url = AdminLocators.admin_system_page_url
+    page_loaded_selector = AdminLocators.login_form
+
+    def is_websudo(self):
+        return True if self.get_elements(AdminLocators.web_sudo_password) else False
+
+    def do_websudo(self, password):
+        self.wait_until_clickable(AdminLocators.web_sudo_password).send_keys(password)
+        self.wait_until_clickable(AdminLocators.web_sudo_submit_btn).click()
+        self.wait_until_visible(AdminLocators.admin_search_link)
+
+    def go_to(self, password=None):
+        super().go_to()
+        self.wait_for_page_loaded()
+        if self.is_websudo():
+            self.do_websudo(password)

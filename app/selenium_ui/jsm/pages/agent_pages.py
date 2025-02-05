@@ -9,9 +9,7 @@ from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocato
 class PopupManager(BasePage):
 
     def dismiss_default_popup(self):
-        return self.dismiss_popup(PopupLocators.default_popup, PopupLocators.popup_1, PopupLocators.popup_2,
-                                  PopupLocators.popup_3, PopupLocators.popup_4,
-                                  PopupLocators.popup_5, PopupLocators.popup_6, PopupLocators.popup_7)
+        return self.dismiss_popup(PopupLocators.popup_selectors)
 
 
 class Login(BasePage):
@@ -19,8 +17,17 @@ class Login(BasePage):
     base_url = UrlManager().host
     page_loaded_selector = LoginPageLocators.system_dashboard
 
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.is_2sv_login = False
+
     def is_first_login(self):
         return True if self.get_elements(LoginPageLocators.continue_button) else False
+
+    def is_2sv(self):
+        if not self.get_elements(LoginPageLocators.login_submit_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def is_first_login_second_page(self):
         return True if self.get_elements(LoginPageLocators.avatar_page_next_button) else False
@@ -37,9 +44,21 @@ class Login(BasePage):
         self.wait_until_visible(DashboardLocators.dashboard_window)
 
     def set_credentials(self, username, password):
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        login_field = LoginPageLocators.login_field
+        password_field = LoginPageLocators.password_field
+        submit_button = LoginPageLocators.login_submit_button
+        if self.is_2sv_login:
+            login_field = LoginPageLocators.login_field_2sv
+            password_field = LoginPageLocators.password_field_2sv
+            submit_button = LoginPageLocators.login_submit_button_2sv
+
+        self.wait_until_visible(login_field).send_keys(username)
+        self.wait_until_visible(password_field).send_keys(password)
+        self.wait_until_visible(submit_button).click()
+
+    def wait_for_dashboard_or_first_login_loaded(self):
+        self.wait_until_any_ec_presented((LoginPageLocators.system_dashboard,
+                                          LoginPageLocators.continue_button))
 
     def __get_footer_text(self):
         return self.get_element(LoginPageLocators.footer).text
@@ -106,10 +125,16 @@ class ViewCustomerRequest(BasePage):
                 if self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).text != text:
                     self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
                     self.return_to_parent_frame()
-                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                    if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                    else:
+                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
             elif self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).text != text:
                 self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
-                self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                else:
+                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
@@ -117,7 +142,10 @@ class ViewCustomerRequest(BasePage):
         textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
         textarea.click()
-        comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
+            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+        else:
+            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn_jsm10)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
 
         if rte_status:
@@ -198,9 +226,16 @@ class InsightLogin(BasePage):
         self.page_url = url_manager.view_insight_all_schemas()
 
     def submit_login(self, username, password):
-        self.get_element(LoginPageLocators.login_field).send_keys(username)
-        self.get_element(LoginPageLocators.password_field).send_keys(password)
-        self.get_element(LoginPageLocators.login_submit_button).click()
+        self.wait_until_visible(LoginPageLocators.login_form)
+        if self.get_elements(LoginPageLocators.login_field):
+            self.get_element(LoginPageLocators.login_field).send_keys(username)
+            self.get_element(LoginPageLocators.password_field).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button).click()
+        else:
+            self.get_element(LoginPageLocators.login_field_2sv).send_keys(username)
+            self.get_element(LoginPageLocators.password_field_2sv).send_keys(password)
+            self.get_element(LoginPageLocators.login_submit_button_2sv).click()
+
 
 
 class InsightNewSchema(BasePage):
@@ -307,9 +342,10 @@ class InsightViewQueue(BasePage):
 
     def view_random_queue_with_insight(self):
         self.wait_until_visible(InsightViewQueueLocators.table_container)
-        if not self.get_elements(InsightViewQueueLocators.navigation):
+        if self.get_elements(InsightViewQueueLocators.all_queues):
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column)
         else:
+            self.wait_until_visible(InsightViewQueueLocators.navigation)
             self.wait_until_visible(InsightViewQueueLocators.view_queue_insight_column_jsm10)
 
 
