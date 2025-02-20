@@ -50,9 +50,8 @@ echo "INFO: Copy latest dc-app-performance-toolkit folder to the exec env pod"
 start=$(date +%s)
 # tar only app folder, exclude results and util/k8s folder
 tar -czf dcapt.tar.gz -C dc-app-performance-toolkit --exclude results --exclude util/k8s app Dockerfile requirements.txt
-kubectl cp --retries 10 dcapt.tar.gz atlassian/"$exec_pod_name":/dcapt.tar.gz
 kubectl exec -it "$exec_pod_name" -n atlassian -- mkdir /dc-app-performance-toolkit
-kubectl exec -it "$exec_pod_name" -n atlassian -- tar -xf /dcapt.tar.gz -C /dc-app-performance-toolkit
+cat dcapt.tar.gz | kubectl exec -i -n atlassian "$exec_pod_name" -- tar xzf - -C /dc-app-performance-toolkit
 rm -rf dcapt.tar.gz
 end=$(date +%s)
 runtime=$((end-start))
