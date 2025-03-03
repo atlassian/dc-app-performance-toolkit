@@ -158,7 +158,7 @@ def __get_custom_pages(confluence_api, count, cql):
 
 
 @print_timing('Generate CQLs')
-def __generate_cqls(words_count, total=5000):
+def __generate_cqls(words_count, total=10):
     cqls = []
     words = __read_file(CONFLUENCE_WORDS)
     for i in range(total):
