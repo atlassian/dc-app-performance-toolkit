@@ -3,9 +3,11 @@ from util.conf import JIRA_SETTINGS
 
 
 class PopupLocators:
-    default_popup = '.aui-message .icon-close'
-    popup_1 = 'form.tip-footer>.helptip-close'
-    popup_2 = '.aui-inline-dialog-contents .cancel'
+    popup_selectors = [
+        (By.CSS_SELECTOR, ".aui-message .icon-close"),
+        (By.CSS_SELECTOR, "form.tip-footer>.helptip-close"),
+        (By.CSS_SELECTOR, ".aui-inline-dialog-contents .cancel")
+    ]
 
 
 class UrlManager:
@@ -26,6 +28,7 @@ class UrlManager:
         self.boards_list_params = '/secure/ManageRapidViews.jspa'
         self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
         self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
+        self.admin_system_params = f"/secure/admin/ViewApplicationProperties.jspa"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -63,6 +66,9 @@ class UrlManager:
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
 
+    def admin_system_url(self):
+        return f"{self.host}{self.admin_system_params}"
+
 
 class LoginPageLocators:
     login_url = UrlManager().login_url()
@@ -75,6 +81,9 @@ class LoginPageLocators:
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
     login_submit_button = (By.ID, 'login-form-submit')
+    login_field_2sv = (By.ID, 'username-field')
+    password_field_2sv = (By.ID, 'password-field')
+    login_submit_button_2sv = (By.ID, 'login-button')
     system_dashboard = (By.ID, "dashboard")
     footer = (By.ID, 'footer-build-information')
 
@@ -147,3 +156,11 @@ class BoardLocators:
     # Scrum boards
     scrum_board_backlog_content = (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")
     board_columns = (By.CSS_SELECTOR, ".ghx-column")
+
+
+class AdminLocators:
+    admin_system_page_url = UrlManager().admin_system_url()
+    web_sudo_password = (By.ID, 'login-form-authenticatePassword')
+    web_sudo_submit_btn = (By.ID, 'login-form-submit')
+    login_form = (By.ID, 'login-form')
+    admin_search_link = (By.ID, 'admin-search-link')

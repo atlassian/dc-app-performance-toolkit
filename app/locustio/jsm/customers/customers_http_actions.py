@@ -4,7 +4,7 @@ import uuid
 import random
 
 from locustio.common_utils import init_logger, jsm_customer_measure, TEXT_HEADERS, RESOURCE_HEADERS, \
-    generate_random_string
+    generate_random_string, NO_TOKEN_HEADERS, JSM_CUSTOMERS_HEADERS
 from locustio.jsm.customers.customers_requests_params import Login, ViewPortal, ViewRequests, ViewRequest, \
     AddComment, ShareRequest, ShareRequestOrg, CreateRequest, jsm_customer_datasets
 
@@ -47,22 +47,61 @@ def customer_login_and_view_portals(locust):
     locust.session_data_storage['username'] = user[0]
     locust.session_data_storage['password'] = user[1]
 
-    r = locust.post(
-        '/servicedesk/customer/user/login',
-        body,
-        TEXT_HEADERS,
-        catch_response=True)
+    legacy_form = False
 
-    locust.get('/servicedesk/customer/portals', catch_response=True)
+    # is 2sv login form
+    r = locust.get('/login.jsp', catch_response=True)
+    if b'login-form-remember-me' in r.content:
+        legacy_form = True
 
-    locust.post(
-        '/rest/servicedesk/1/customer/models',
-        json=params.resources_body.get("115"),
-        headers=RESOURCE_HEADERS,
-        catch_response=True)
+    if legacy_form:
+        r = locust.post(
+            '/servicedesk/customer/user/login',
+            body,
+            headers=JSM_CUSTOMERS_HEADERS,
+            catch_response=True)
 
-    assert '"loginSucceeded":true' in r.content.decode(
-        'utf-8'), 'Customer login is failed'
+        locust.get('/servicedesk/customer/portals', catch_response=True)
+
+        locust.post(
+            '/rest/servicedesk/1/customer/models',
+            json=params.resources_body.get("115"),
+            headers=RESOURCE_HEADERS,
+            catch_response=True)
+
+        assert '"loginSucceeded":true' in r.content.decode('utf-8'), 'Customer login is failed'
+
+    else:
+        logger.locust_info(f"2SV login flow for user {user[0]}")
+
+        login_body = {'username': user[0],
+                      'password': user[1],
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "*/*"
+        }
+
+        locust.post('/rest/tsv/1.0/authenticate?os_authType=none',
+                    json=login_body,
+                    headers=headers,
+                    catch_response=True)
+
+        locust.get('/servicedesk/customer/portals', catch_response=True)
+
+        locust.post(
+            '/rest/servicedesk/1/customer/models',
+            json=params.resources_body.get("115"),
+            headers=RESOURCE_HEADERS,
+            catch_response=True)
+
+        r = locust.get('/', catch_response=True)
+        if not r.content:
+            raise Exception('Please check server hostname in jsm.yml file')
+        r.content.decode('utf-8')
 
 
 @jsm_customer_measure('locust_customer_view_portal')

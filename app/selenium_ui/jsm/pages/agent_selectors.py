@@ -3,14 +3,17 @@ from selenium.webdriver.common.by import By
 
 
 class PopupLocators:
-    default_popup = '.aui-message .icon-close'
-    popup_1 = 'form.tip-footer>.helptip-close'
-    popup_2 = '.aui-inline-dialog-contents .cancel'
-    popup_3 = '.aui-close-button'
-    popup_4 = '.aui-button aui-button-link'
-    popup_5 = '.buttons-container > div > a'
-    popup_6 = '.css-19r5em7'
-    popup_7 = '.css-178ag6o'
+    popup_selectors = [
+        (By.CSS_SELECTOR, ".aui-message .icon-close"),
+        (By.CSS_SELECTOR, "form.tip-footer>.helptip-close"),
+        (By.CSS_SELECTOR, ".aui-inline-dialog-contents .cancel"),
+        (By.CSS_SELECTOR, ".aui-close-button"),
+        (By.CSS_SELECTOR, ".aui-button aui-button-link"),
+        (By.CSS_SELECTOR, ".buttons-container > div > a"),
+        (By.CSS_SELECTOR, ".css-19r5em7"),
+        (By.CSS_SELECTOR, ".css-178ag6o"),
+        (By.XPATH, "//button[contains(text(),'Got it')]")
+    ]
 
 
 class UrlManager:
@@ -83,8 +86,12 @@ class LoginPageLocators:
     login_field = (By.ID, 'login-form-username')
     password_field = (By.ID, 'login-form-password')
     login_submit_button = (By.ID, 'login-form-submit')
+    login_field_2sv = (By.ID, 'username-field')
+    password_field_2sv = (By.ID, 'password-field')
+    login_submit_button_2sv = (By.ID, 'login-button')
     system_dashboard = (By.ID, "dashboard")
     footer = (By.ID, 'footer-build-information')
+    login_form = (By.ID, "login-form")
 
 
 class DashboardLocators:
@@ -110,11 +117,13 @@ class BrowseCustomersLocators:
 class ViewCustomerRequestLocators:
     bread_crumbs = (By.CSS_SELECTOR, ".aui-nav.aui-nav-breadcrumbs")
 
+    comment_area = (By.CLASS_NAME, 'sd-comment-collapse')
     comment_collapsed_textarea = (By.ID, "sd-comment-collapsed-textarea")
     comment_text_field_RTE = (By.XPATH, "//div[textarea[@id='comment']]//iframe")
     comment_text_field = (By.XPATH, "//textarea[@id='comment']")
     comment_tinymce_field = (By.ID, "tinymce")
     comment_internally_btn = (By.XPATH, "//button[contains(text(),'Comment internally')]")
+    comment_internally_btn_jsm10 = (By.XPATH, "//span[normalize-space()='Comment internally']")
     customers_sidebar_selector = (By.CSS_SELECTOR, 'span.aui-icon.aui-icon-large.sd-sidebar-icon.icon-sidebar-customers')
 
 
@@ -145,6 +154,7 @@ class InsightNewSchemaLocators:
 class InsightDeleteSchemaLocators:
     delete_window_selector = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div")
     submit_delete_button = (By.CSS_SELECTOR, "#rlabs-insight-dialog > div > div.dialog-button-panel > button")
+    submit_delete_button_jsm10 = (By.ID, "submit-button")
     schema_list = (By.ID, "rlabs-manage-main")
 
     @staticmethod
@@ -161,11 +171,17 @@ class InsightNewObjectLocators:
     object_name_field = (By.CSS_SELECTOR, "input[id^=rlabs-insight-attribute-]")
     create_button = (By.XPATH, "//body/div[@id='rlabs-insight-dialog']/div[1]/div[2]/button[1]")
     pop_up_after_create_object = (By.XPATH, "//body/div[@id='aui-flag-container']/div[1]/div[1]")
+    create_another = (By.ID, "rlabs-create-another-label")
+    create_button_jsm10 = (By.ID, "submit-button")
 
 
 class InsightViewQueueLocators:
+    all_queues = (By.XPATH, "//div[@class='aui-nav-heading pinned-nav-title nav-group-items']")
     view_queue_page = (By.XPATH, "//section[@id='sd-page-panel']")
     view_queue_insight_column = (By.XPATH, "//span[contains(text(),'Insight')]")
+    table_container = (By.XPATH, "//div[@class='queue-react-table-container']")
+    navigation = (By.XPATH, "//div[@role='navigation']")
+    view_queue_insight_column_jsm10 = (By.XPATH, "//a[normalize-space()='Insight']")
 
 
 class InsightSearchObjectIql:

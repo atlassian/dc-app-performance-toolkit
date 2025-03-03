@@ -6,7 +6,7 @@ class UrlManager:
 
     def __init__(self, build_plan_id=None):
         self.host = BAMBOO_SETTINGS.server_url
-        self.login_params = '/userlogin!doDefault.action'
+        self.login_params = '/userlogin.action'
         self.logout_params = '/userLogout.action'
         self.all_projects_params = '/allProjects.action'
         self.plan_summary_params = f'/browse/{build_plan_id}'
@@ -34,9 +34,18 @@ class UrlManager:
 
 class LoginPageLocators:
     login_page_url = UrlManager().login_url()
+
+    login_page_content = (By.ID, "content")
+
+    # legacy login form
     login_username_field = (By.ID, "loginForm_os_username")
     login_password_field = (By.ID, "loginForm_os_password")
-    login_submit_button = (By.ID, "loginForm_save")
+    login_button = (By.ID, "loginForm_save")
+
+    # 2sv login form
+    login_button_2sv = (By.ID, "login-button")
+    login_username_field_2sv = (By.ID, "username-field")
+    login_password_field_2sv = (By.ID, "password-field")
 
 
 class AllProjectsLocators:

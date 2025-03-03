@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-06-24"
+date: "2024-11-22"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
@@ -43,10 +43,36 @@ Recommended limit is 30.
 Below process describes how to install Bamboo DC with an enterprise-scale dataset included. This configuration was created
 specifically for performance testing during the DC app review process.
 
-1. Create [access keys for IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+1. Create Access keys for AWS CLI:
    {{% warning %}}
-   Do not use `root` user credentials for cluster creation. Instead, [create an admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html#create-an-admin).
+   Do not use `root` user credentials for cluster creation.
+
+   **Option 1** (simple): create admin user with `AdministratorAccess` permissions.
+
+   **Option 2** (complex): create granular permission policies with  [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) and [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json).
+
+   The specific configuration relies on how you manage permissions within AWS.
    {{% /warning %}}
+
+   **Example Option 1** with Admin user:
+   1. Go to AWS Console -> IAM service -> Users
+   2. Create new user -> attach policies directly -> `AdministratorAccess`
+   3. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   4. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
+
+   **Example Option 2** with granular Policies:
+   1. Go to AWS Console -> IAM service -> Policies
+   2. Create `policy1` with json content of the [policy1](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy1.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
+   3. Create `policy2` with json content of the [policy2](https://raw.githubusercontent.com/atlassian-labs/data-center-terraform/main/permissions/policy2.json) file
+      {{% warning %}}
+      **Important**: change all occurrences of `123456789012` to your real AWS Account ID.
+      {{% /warning %}}
+   4. Go to User -> Create user -> Attach policies directly -> Attach `policy1` and `policy2`-> Click on Create user button
+   5. Open newly created user -> Security credentials tab -> Access keys -> Create access key -> Command Line Interface (CLI) -> Create access key
+   6. Use `Access key` and `Secret access key` in [aws_envs](https://github.com/atlassian/dc-app-performance-toolkit/blob/master/app/util/k8s/aws_envs) file
 2. Clone [Data Center App Performance Toolkit](https://github.com/atlassian/dc-app-performance-toolkit) locally.
    {{% warning %}}
    For annual review, always get the latest version of the DCAPT code from the master branch.
@@ -76,7 +102,7 @@ specifically for performance testing during the DC app review process.
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.1 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/bamboo`.
 8. Wait for all remote agents to be started and connected. It can take up to 10 minutes. Agents can be checked in `Settings` > `Agents`.
@@ -177,7 +203,7 @@ So, our test has to open plan summary page and measure time to load of this new 
 1. Set desired execution percentage for `standalone_extension`. Default value is `0`, which means that `standalone_extension` action will not be executed. 
 For example, for app-specific action development you could set percentage of `standalone_extension` to 100 and for all 
    other actions to 0 - this way only `login_and_view_all_builds` and `standalone_extension` actions would be executed.
-1. Navigate to `dc-app-performance-toolkit/app` folder and run from virtualenv(as described in `dc-app-performance-toolkit/README.md`):
+1.Navigate to `dc-app-performance-toolkit/app` folder and follow [start JMeter UI README](https://github.com/atlassian/dc-app-performance-toolkit/tree/master/app/util/jmeter#start-jmeter-ui):
     
     ```python util/jmeter/start_jmeter_ui.py --app bamboo```
     
@@ -277,7 +303,7 @@ To receive performance baseline results **without** an app installed and **witho
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/bamboo/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -308,7 +334,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 
 {{% note %}}
@@ -342,7 +368,7 @@ To receive results for Bamboo DC **with app** and **with app-specific actions**:
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.1 bash bzt_on_pod.sh bamboo.yml
+    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh bamboo.yml
     ```
 
 {{% note %}}

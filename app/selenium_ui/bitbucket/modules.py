@@ -34,12 +34,11 @@ def login(webdriver, datasets):
         BITBUCKET_SETTINGS.admin_login,
         BITBUCKET_SETTINGS.admin_password)
     webdriver.app_version = version.parse(client.get_bitbucket_version())
-    login_page = LoginPage(webdriver)
     webdriver.debug_info = generate_debug_session_info(webdriver, datasets)
+    login_page = LoginPage(webdriver)
 
     @print_timing("selenium_login")
     def measure():
-
         @print_timing("selenium_login:open_login_page")
         def sub_measure():
             login_page.go_to()
@@ -48,14 +47,17 @@ def login(webdriver, datasets):
                 login_page.go_to()
         sub_measure()
 
+        login_page.wait_for_page_loaded()
         login_page.set_credentials(datasets['current_session']['username'], datasets['current_session']['password'])
 
         @print_timing("selenium_login:login_get_started")
         def sub_measure():
             login_page.submit_login()
             get_started_page = GetStarted(webdriver)
+            get_started_page.wait_for_page_loaded()
             PopupManager(webdriver).dismiss_default_popup()
             get_started_page.close_whats_new_window()
+            PopupManager(webdriver).dismiss_default_popup()
             get_started_page.wait_for_page_loaded()
             webdriver.node_id = login_page.get_node_id()
             print(f"node_id:{webdriver.node_id}")

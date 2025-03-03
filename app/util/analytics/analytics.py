@@ -246,7 +246,7 @@ def send_analytics(collector: AnalyticsCollector):
                "concurrency": collector.concurrency,
                "deployment": collector.deployment
                }
-    r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers)
+    r = requests.post(url=f'{BASE_URL}', json=payload, headers=headers, verify=collector.conf.secure)
     print(r.json())
     if r.status_code != 200:
         print(f'Warning: Analytics data was send unsuccessfully, status code {r.status_code}')
