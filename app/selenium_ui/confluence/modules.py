@@ -10,7 +10,7 @@ from util.conf import CONFLUENCE_SETTINGS
 
 USERS = "users"
 PAGES = "pages"
-CQLS = "cqls"
+CQLS = "cqls_3_letters"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
 

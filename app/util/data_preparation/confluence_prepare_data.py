@@ -8,7 +8,8 @@ from prepare_data_common import __generate_random_string, __write_to_file, __war
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.common_util import print_timing
 from util.conf import CONFLUENCE_SETTINGS
-from util.project_paths import (CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CQLS,
+from util.project_paths import (CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CQLS_3_LETTERS,
+                                CONFLUENCE_CQLS_4_LETTERS, CONFLUENCE_CQLS_5_LETTERS,
                                 CONFLUENCE_CUSTOM_PAGES, CONFLUENCE_WORDS)
 
 __warnings_filter()
@@ -17,7 +18,9 @@ USERS = "users"
 PAGES = "pages"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
-CQLS = "cqls"
+CQLS_3_LETTERS_WORDS = "cqls_3_letters_words"
+CQLS_4_LETTERS_WORDS = "cqls_4_letters_words"
+CQLS_5_LETTERS_WORDS = "cqls_5_letters_words"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
@@ -76,8 +79,9 @@ def __create_data_set(rest_client, rpc_client):
     dataset[PAGES] = async_pages.get()
     dataset[BLOGS] = async_blogs.get()
 
-    dataset[CQLS] = __generate_cqls(words_count=CQL_WORDS_COUNT)
-
+    dataset[CQLS_3_LETTERS_WORDS] = __generate_cqls(words_count=CQL_WORDS_COUNT, letter_per_words_count=3)
+    dataset[CQLS_4_LETTERS_WORDS] = __generate_cqls(words_count=CQL_WORDS_COUNT, letter_per_words_count=4)
+    dataset[CQLS_5_LETTERS_WORDS] = __generate_cqls(words_count=CQL_WORDS_COUNT, letter_per_words_count=5)
     dataset[CUSTOM_PAGES] = __get_custom_pages(perf_user_api, 5000, CONFLUENCE_SETTINGS.custom_dataset_query)
     print(f'Users count: {len(dataset[USERS])}')
     print(f'Pages count: {len(dataset[PAGES])}')
@@ -158,11 +162,12 @@ def __get_custom_pages(confluence_api, count, cql):
 
 
 @print_timing('Generate CQLs')
-def __generate_cqls(words_count, total=5000):
+def __generate_cqls(words_count, letter_per_words_count, total=10):
     cqls = []
-    words = __read_file(CONFLUENCE_WORDS)
+    all_words = __read_file(CONFLUENCE_WORDS)
+    words_with_letter_per_count = [word for word in all_words if len(word) == letter_per_words_count]
     for i in range(total):
-        random_words = random.sample(words, words_count)
+        random_words = random.sample(words_with_letter_per_count, words_count)
         cql = ' '.join(random_words)
         cqls.append(cql)
     return cqls
@@ -211,7 +216,9 @@ def write_test_data_to_files(dataset):
     users = [f"{user['user']['username']},{DEFAULT_USER_PASSWORD}" for user in dataset[USERS]]
     __write_to_file(CONFLUENCE_USERS, users)
 
-    __write_to_file(CONFLUENCE_CQLS, dataset[CQLS])
+    __write_to_file(CONFLUENCE_CQLS_3_LETTERS, dataset[CQLS_3_LETTERS_WORDS])
+    __write_to_file(CONFLUENCE_CQLS_4_LETTERS, dataset[CQLS_4_LETTERS_WORDS])
+    __write_to_file(CONFLUENCE_CQLS_5_LETTERS, dataset[CQLS_5_LETTERS_WORDS])
 
     custom_pages = [f"{page['id']},{page['space']['key']}" for page in dataset[CUSTOM_PAGES]]
     __write_to_file(CONFLUENCE_CUSTOM_PAGES, custom_pages)
