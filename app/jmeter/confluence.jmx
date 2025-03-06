@@ -67,7 +67,7 @@
         </collectionProp>
       </HeaderManager>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Confluence">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Confluence" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">0</intProp>
         <longProp name="ThreadGroup.duration">3600</longProp>
@@ -91,7 +91,7 @@
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="load profile">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="load profile" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="total_actions_per_hr" elementType="Argument">
               <stringProp name="Argument.name">total_actions_per_hr</stringProp>
@@ -498,7 +498,7 @@ vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0
           </TestAction>
           <hashTree/>
         </hashTree>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="actions per login">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="actions per login" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </LoopController>
@@ -527,7 +527,7 @@ vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0
             <stringProp name="variableNames">page_id,space_key</stringProp>
           </CSVDataSet>
           <hashTree/>
-          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_3_letters">
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_3_letters" enabled="true">
             <stringProp name="filename">datasets/confluence/cqls_3_letters.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
@@ -538,7 +538,7 @@ vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
-          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_4_letters">
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_4_letters" enabled="true">
             <stringProp name="filename">datasets/confluence/cqls_4_letters.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
@@ -549,7 +549,7 @@ vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
-          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_5_letters">
+          <com.blazemeter.jmeter.RandomCSVDataSetConfig guiclass="com.blazemeter.jmeter.RandomCSVDataSetConfigGui" testclass="com.blazemeter.jmeter.RandomCSVDataSetConfig" testname="cql_5_letters" enabled="true">
             <stringProp name="filename">datasets/confluence/cqls_5_letters.csv</stringProp>
             <stringProp name="fileEncoding">UTF-8</stringProp>
             <stringProp name="delimiter">,</stringProp>
@@ -560,7 +560,7 @@ vars.put(&quot;confluence-version-number&quot;, &quot;&quot; + (versionNumbers[0
             <boolProp name="independentListPerThread">false</boolProp>
           </com.blazemeter.jmeter.RandomCSVDataSetConfig>
           <hashTree/>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="files upload">
+          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="files upload" enabled="true">
             <stringProp name="delimiter">,</stringProp>
             <stringProp name="fileEncoding"></stringProp>
             <stringProp name="filename">datasets/confluence/static-content/files_upload.csv</stringProp>
@@ -1508,7 +1508,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="search_cql">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="search_cql" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
@@ -1531,12 +1531,12 @@ if ( sleep_time &gt; 0 ) {
               </JSR223PreProcessor>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql:recently_viewed">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql:recently_viewed" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="180 rest/recentlyviewed/1.0/recent">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="180 rest/recentlyviewed/1.0/recent" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/recentlyviewed/1.0/recent</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1578,12 +1578,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_3_letters:search_results">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_3_letters:search_results" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/search</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1649,12 +1649,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_4_letters:search_results">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_4_letters:search_results" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/search</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1720,12 +1720,12 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_5_letters:search_results">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql_5_letters:search_results" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="530 rest/api/search" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/search</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -3977,7 +3977,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="comment_page" enabled="true">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="comment_page">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>

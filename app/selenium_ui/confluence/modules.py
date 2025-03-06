@@ -10,7 +10,9 @@ from util.conf import CONFLUENCE_SETTINGS
 
 USERS = "users"
 PAGES = "pages"
-CQLS = "cqls_3_letters"
+CQLS_3_LETTERS = "cqls_3_letters"
+CQLS_4_LETTERS = "cqls_4_letters"
+CQLS_5_LETTERS = "cqls_5_letters"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
 
@@ -301,9 +303,21 @@ def create_inline_comment(webdriver, datasets):
 
     measure()
 
+def cql_search_three_letters(webdriver, datasets):
+    random_cql = random.choice(datasets[CQLS_3_LETTERS])
+    cql_search(webdriver, datasets, random_cql)
 
-def cql_search(webdriver, datasets):
-    random_cql = random.choice(datasets[CQLS])
+def cql_search_four_letters(webdriver, datasets):
+    random_cql = random.choice(datasets[CQLS_4_LETTERS])
+    cql_search(webdriver, datasets, random_cql)
+
+def cql_search_five_letters(webdriver, datasets):
+    random_cql = random.choice(datasets[CQLS_5_LETTERS])
+    cql_search(webdriver, datasets, random_cql)
+
+
+def cql_search(webdriver, datasets, cql):
+    random_cql = random.choice(cql)
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
     PopupManager(webdriver).dismiss_default_popup()
