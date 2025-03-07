@@ -24,7 +24,7 @@ CQLS_5_LETTERS_WORDS = "cqls_5_letters_words"
 DEFAULT_USER_PREFIX = 'performance_'
 DEFAULT_USER_PASSWORD = 'password'
 ERROR_LIMIT = 10
-CQL_WORDS_COUNT = 3
+CQL_WORDS_COUNT = 1
 
 PAGE_CQL = ('type=page'
             ' and title !~ JMeter'  # filter out pages created by JMeter
