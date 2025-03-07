@@ -162,7 +162,7 @@ def __get_custom_pages(confluence_api, count, cql):
 
 
 @print_timing('Generate CQLs')
-def __generate_cqls(words_count, letter_per_words_count, total=10):
+def __generate_cqls(words_count, letter_per_words_count, total=3):
     cqls = []
     all_words = __read_file(CONFLUENCE_WORDS)
     words_with_letter_per_count = [word for word in all_words if len(word) == letter_per_words_count]
