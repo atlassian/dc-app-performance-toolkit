@@ -165,6 +165,7 @@ def __generate_cqls(words_count, total=1):
         random_words = random.sample(words, words_count)
         cql = ' '.join(random_words)
         cqls.append(cql)
+        print(f'CQL_DEBUG: {cql}')
     return cqls
 
 
