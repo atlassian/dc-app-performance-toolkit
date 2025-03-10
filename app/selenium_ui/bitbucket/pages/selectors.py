@@ -26,6 +26,7 @@ class UrlManager:
         self.dashboard_params = '/dashboard'
         self.projects_params = '/projects'
         self.branches_base_branch = f'/projects/{self.project_key}/repos/{self.repo_slug}/branches?base='
+        self.admin_system_params = '/admin'
 
     def create_pull_request_url(self, from_branch, to_branch):
         return f"{self.host}/projects/{self.project_key}/repos/{self.repo_slug}/pull-requests?create&targetBranch=" \
@@ -72,6 +73,9 @@ class UrlManager:
 
     def projects_url(self):
         return f"{self.host}{self.projects_params}"
+
+    def admin_system_url(self):
+        return f"{self.host}{self.admin_system_params}"
 
 
 class PopupLocators:
@@ -181,3 +185,11 @@ class BranchesLocator:
 
 class RepoCommitsLocator:
     repo_commits_graph = (By.ID, 'commits-table')
+
+
+class AdminLocators:
+    admin_system_page_url = UrlManager().admin_system_url()
+    web_sudo_password = (By.ID, 'j_password-uid1')
+    web_sudo_submit_btn = (By.XPATH, "//span[contains(text(),'Confirm')]")
+    login_form = (By.ID, 'websudo-container')
+    administration_link = (By.XPATH, "//span[contains(text(),'Administration')]")
