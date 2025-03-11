@@ -202,7 +202,7 @@ class ConfluenceRestClient(RestClient):
         }
 
         auth_body = {
-            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoDestination': '/admin/systeminfo.action',
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
