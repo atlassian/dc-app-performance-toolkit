@@ -159,13 +159,13 @@ def __get_custom_pages(confluence_api, count, cql):
 
 @print_timing('Generate CQLs')
 def __generate_cqls(words_count, total=1):
-    cqls = []
-    words = __read_file(CONFLUENCE_WORDS)
-    for i in range(total):
-        random_words = random.sample(words, words_count)
-        cql = ' '.join(random_words)
-        cqls.append(cql)
-        print(f'CQL_DEBUG: {cql}')
+    cqls = ['shoulder trip discussion', 'hour woman two']
+    # words = __read_file(CONFLUENCE_WORDS)
+    # for i in range(total):
+    #     random_words = random.sample(words, words_count)
+    #     cql = ' '.join(random_words)
+    #     cqls.append(cql)
+    #     print(f'CQL_DEBUG: {cql}')
     return cqls
 
 
