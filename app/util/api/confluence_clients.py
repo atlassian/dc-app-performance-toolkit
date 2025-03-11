@@ -192,7 +192,7 @@ class ConfluenceRestClient(RestClient):
 
     def get_system_info_page(self):
         login_url = f'{self.host}/dologin.action'
-        auth_url = f'{self.host}/doauthenticate.action'
+        auth_url = f'{self.host}/admin/websudo.action'
         tsv_auth_url = f'{self.host}/rest/tsv/1.0/authenticate'
         tsv_login_body = {
             'username': self.user,
@@ -202,9 +202,9 @@ class ConfluenceRestClient(RestClient):
         }
 
         auth_body = {
-            'destination': '/admin/systeminfo.action',
-            'authenticate': 'Confirm',
-            'password': self.password
+            'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+            'webSudoIsPost': False,
+            'webSudoPassword': self.password
         }
 
         login_page_response = self.session.get(login_url)
@@ -219,12 +219,12 @@ class ConfluenceRestClient(RestClient):
         else:
             self.session.post(url=tsv_auth_url, json=tsv_login_body)
 
-        self.headers['X-Atlassian-Token'] = 'no-check'
-        system_info_html = self.session.post(url=auth_url, data=auth_body, headers=self.headers)
+        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
+        system_info_html = self.session.post(url=auth_url, data=auth_body, verify=self.verify)
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
-        html_pattern = 'com.atlassian.dcapt.deployment=terraform'
+        html_pattern = 'deployment=terraform'
         confluence_system_page = self.get_system_info_page()
         if confluence_system_page.count(html_pattern):
             return 'terraform'
