@@ -220,7 +220,6 @@ class ConfluenceRestClient(RestClient):
             self.session.post(url=tsv_auth_url, json=tsv_login_body)
 
         system_info_html = self.session.post(url=auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
-        print(system_info_html.content.decode("utf-8"))
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
