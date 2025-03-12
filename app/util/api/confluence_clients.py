@@ -192,7 +192,7 @@ class ConfluenceRestClient(RestClient):
 
     def get_system_info_page(self):
         login_url = f'{self.host}/dologin.action'
-        auth_url = f'{self.host}/admin/websudo.action'
+        auth_url = f'{self.host}/doauthenticate.action'
         tsv_auth_url = f'{self.host}/rest/tsv/1.0/authenticate'
         tsv_login_body = {
             'username': self.user,
@@ -202,9 +202,9 @@ class ConfluenceRestClient(RestClient):
         }
 
         auth_body = {
-            'webSudoDestination': '/admin/systeminfo.action',
-            'webSudoIsPost': False,
-            'webSudoPassword': self.password
+            'authenticate': 'Confirm',
+            'destination': '/admin/systeminfo.action',
+            'password': self.password,
         }
 
         login_page_response = self.session.get(login_url)
@@ -219,8 +219,8 @@ class ConfluenceRestClient(RestClient):
         else:
             self.session.post(url=tsv_auth_url, json=tsv_login_body)
 
-        auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
-        system_info_html = self.session.post(url=auth_url, data=auth_body, verify=self.verify)
+        system_info_html = self.session.post(url=auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
+        print(system_info_html.content.decode("utf-8"))
         return system_info_html.content.decode("utf-8")
 
     def get_deployment_type(self):
