@@ -301,8 +301,15 @@ def create_inline_comment(webdriver, datasets):
 
     measure()
 
+def cql_search_three_words(webdriver, datasets):
+    cql_search(webdriver, datasets, cql_string='shoulder trip discussion')
 
-def cql_search(webdriver, datasets):
+
+def cql_search_two_words(webdriver, datasets):
+    cql_search(webdriver, datasets, cql_string='confluence agreement')
+
+
+def cql_search(webdriver, datasets, cql_string):
     random_cql = random.choice(datasets[CQLS])
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
@@ -310,7 +317,7 @@ def cql_search(webdriver, datasets):
 
     @print_timing("selenium_cql_search")
     def measure():
-        page.get_element(PageLocators.search_box).send_keys(random_cql)
+        page.get_element(PageLocators.search_box).send_keys(cql_string)
         page.wait_until_any_ec_presented((PageLocators.empty_search_results, PageLocators.search_results),
                                          timeout=30)
         page.get_element(PageLocators.close_search_button).click()
