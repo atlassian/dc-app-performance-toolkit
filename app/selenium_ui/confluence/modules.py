@@ -13,7 +13,8 @@ PAGES = "pages"
 CQLS = "cqls"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
-
+TWO_WORDS_CQL = 'confluence agreement'
+THREE_WORDS_CQL = 'shoulder trip discussion'
 
 def setup_run_data(datasets):
     datasets['current_session'] = {}
@@ -301,16 +302,15 @@ def create_inline_comment(webdriver, datasets):
 
     measure()
 
-def cql_search_three_words(webdriver, datasets):
-    cql_search(webdriver, datasets, cql_string='shoulder trip discussion')
+def cql_search_three_words(webdriver):
+    return cql_search(webdriver, cql_string=THREE_WORDS_CQL)
 
 
-def cql_search_two_words(webdriver, datasets):
-    cql_search(webdriver, datasets, cql_string='confluence agreement')
+def cql_search_two_words(webdriver):
+    return cql_search(webdriver, cql_string=TWO_WORDS_CQL)
 
 
-def cql_search(webdriver, datasets, cql_string):
-    random_cql = random.choice(datasets[CQLS])
+def cql_search(webdriver, cql_string):
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
     PopupManager(webdriver).dismiss_default_popup()
