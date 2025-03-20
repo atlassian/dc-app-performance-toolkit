@@ -303,19 +303,19 @@ def create_inline_comment(webdriver, datasets):
     measure()
 
 def cql_search_three_words(webdriver):
-    return cql_search(webdriver, cql_string=THREE_WORDS_CQL)
+    return cql_search(webdriver, cql_string=THREE_WORDS_CQL, print_timing_suffix='3_words')
 
 
 def cql_search_two_words(webdriver):
-    return cql_search(webdriver, cql_string=TWO_WORDS_CQL)
+    return cql_search(webdriver, cql_string=TWO_WORDS_CQL, print_timing_suffix='2_words')
 
 
-def cql_search(webdriver, cql_string):
+def cql_search(webdriver, cql_string, print_timing_suffix):
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
     PopupManager(webdriver).dismiss_default_popup()
 
-    @print_timing("selenium_cql_search")
+    @print_timing(f"selenium_cql_search_{print_timing_suffix}")
     def measure():
         page.get_element(PageLocators.search_box).send_keys(cql_string)
         page.wait_until_any_ec_presented((PageLocators.empty_search_results, PageLocators.search_results),

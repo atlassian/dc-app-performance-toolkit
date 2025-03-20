@@ -1,7 +1,6 @@
 # flake8: noqa
 from locustio.common_utils import read_input_file, BaseResource
-from util.project_paths import (CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_USERS, CONFLUENCE_STATIC_CONTENT,
-                                CONFLUENCE_CQLS)
+from util.project_paths import (CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_USERS, CONFLUENCE_STATIC_CONTENT)
 
 
 def confluence_datasets():
@@ -9,7 +8,6 @@ def confluence_datasets():
     data_sets["pages"] = read_input_file(CONFLUENCE_PAGES)
     data_sets["blogs"] = read_input_file(CONFLUENCE_BLOGS)
     data_sets["users"] = read_input_file(CONFLUENCE_USERS)
-    data_sets["cqls"] = read_input_file(CONFLUENCE_CQLS)
     data_sets['static-content'] = read_input_file(CONFLUENCE_STATIC_CONTENT)
 
     return data_sets

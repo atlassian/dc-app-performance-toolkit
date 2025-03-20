@@ -8,7 +8,7 @@ from prepare_data_common import __generate_random_string, __write_to_file, __war
 from util.api.confluence_clients import ConfluenceRpcClient, ConfluenceRestClient
 from util.common_util import print_timing
 from util.conf import CONFLUENCE_SETTINGS
-from util.project_paths import (CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS, CONFLUENCE_CQLS,
+from util.project_paths import (CONFLUENCE_USERS, CONFLUENCE_PAGES, CONFLUENCE_BLOGS,
                                 CONFLUENCE_CUSTOM_PAGES, CONFLUENCE_WORDS)
 
 __warnings_filter()
