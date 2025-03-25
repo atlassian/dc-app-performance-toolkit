@@ -1,22 +1,20 @@
-import functools
-
-from locust import events
-import time
 import csv
-import re
+import functools
+import inspect
+import json
 import logging
 import random
-import string
-import json
+import re
 import socket
-from logging.handlers import RotatingFileHandler
+import string
+import time
 from datetime import datetime
+from logging.handlers import RotatingFileHandler
+
+from locust import exception, TaskSet, events
+
 from util.conf import JIRA_SETTINGS, CONFLUENCE_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS, BaseAppSettings
 from util.project_paths import ENV_TAURUS_ARTIFACT_DIR
-from locust import exception
-import inspect
-from locust import TaskSet
-
 
 TEXT_HEADERS = {
         'Accept-Language': 'en-US,en;q=0.5',
@@ -66,10 +64,16 @@ JSM_CUSTOMERS_HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     "X-Atlassian-Token": "no-check"
 }
+LOGIN_BODY = {
+    'os_username': '',
+    'os_password': '',
+    'os_destination': '',
+    'os_cookie': True,
+    'user_role': '',
+    'atl_token': '',
+    'login': 'Log in'
+}
 
-JIRA_API_URL = '/'
-CONFLUENCE_API_URL = '/'
-BAMBOO_API_URL = '/'
 JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
 CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
 
@@ -368,36 +372,68 @@ def run_as_specific_user(username=None, password=None):
 
                 # Jira or JSM Agent - redefine token value
                 if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
-                    url = JIRA_API_URL
                     token_pattern = JIRA_TOKEN_PATTERN
-                # JSM Customer
-                elif app == JSM and app_type == TYPE_CUSTOMER:
-                    url = JIRA_API_URL
                 # Confluence - redefine token value
                 elif app == CONFLUENCE:
-                    url = CONFLUENCE_API_URL
                     token_pattern = CONFLUENCE_TOKEN_PATTERN
-                # Bamboo
-                elif app == BAMBOO:
-                    url = BAMBOO_API_URL
-                else:
-                    raise Exception(f'The "{app}" application type is not known.')
 
-                def do_login(usr, pwd):
+                def do_login_jira(usr, pwd):
                     locust.client.cookies.clear()
-                    r = locust.get(url, auth=(usr, pwd), catch_response=True)
-                    if token_pattern:
-                        content = r.content.decode('utf-8')
-                        token = fetch_by_re(token_pattern, content)
-                        locust.session_data_storage["token"] = token
+                    body = LOGIN_BODY
+                    body['os_username'] = usr
+                    body['os_password'] = pwd
+
+                    legacy_form = False
+
+                    # Check if 2sv login form
+                    r = locust.get('/login.jsp', catch_response=True)
+                    content = r.content.decode('utf-8')
+                    if 'login-form-remember-me' in content:
+                        legacy_form = True
+
+                    # 100 /login.jsp
+                    if legacy_form:
+                        locust.post('/login.jsp', body,
+                                    TEXT_HEADERS,
+                                    catch_response=True)
+                    else:
+                        login_body = {'username': usr,
+                                      'password': pwd,
+                                      'rememberMe': 'True',
+                                      'targetUrl': ''
+                                      }
+
+                        headers = {
+                            "Content-Type": "application/json"
+                        }
+
+                        # 15 /rest/tsv/1.0/authenticate
+                        locust.post('/rest/tsv/1.0/authenticate',
+                                    json=login_body,
+                                    headers=headers,
+                                    catch_response=True)
+
+                        r = locust.get('/', catch_response=True)
+                        if not r.content:
+                            raise Exception('Please check server hostname in jira.yml file')
+                        if token_pattern:
+                            content = r.content.decode('utf-8')
+                            token = fetch_by_re(token_pattern, content)
+                            locust.session_data_storage["token"] = token
 
                 # send requests by the specific user
-                do_login(usr=username, pwd=password)
+                if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
+                    do_login_jira(usr=username, pwd=password)
+                else:
+                    raise SystemExit(f"Unsupported app type: {app}")
 
                 func(*args, **kwargs)
 
                 # send requests by the session user
-                do_login(usr=session_user_name, pwd=session_user_password)
+                if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
+                    do_login_jira(usr=session_user_name, pwd=session_user_password)
+                else:
+                    raise SystemExit(f"Unsupported app type: {app}")
 
             else:
                 raise SystemExit(f"There is no 'locust' object in the '{func.__name__}' function.")

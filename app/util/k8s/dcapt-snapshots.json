@@ -286,15 +286,15 @@
         "build_number": "9012"
       },
       {
-        "version": "9.2.0",
+        "version": "9.2.2",
         "data": [
           {
             "type": "ebs",
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-03bd9289ff7b87051",
-                "us-east-1": "snap-0d1ceb385cdf36d84"
+                "us-east-2": "snap-0cd3a211ef6d9c1d4",
+                "us-east-1": "snap-08552ebe7c3185082"
               }
             ]
           },
@@ -303,8 +303,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-9-2-0",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-9-2-0"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-9-2-2",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-9-2-2"
               }
             ]
           },
@@ -313,8 +313,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0877428a1f19c5de2",
-                "us-east-1": "snap-04deb20a69b0dc23b"
+                "us-east-2": "snap-03b8437f931e28c57",
+                "us-east-1": "snap-0fd19ad39c99d286f"
               }
             ]
           },
@@ -323,8 +323,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-9-2-0",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-9-2-0"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-9-2-2",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-9-2-2"
               }
             ]
           },
@@ -333,8 +333,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0cee0a51628de136e",
-                "us-east-1": "snap-0c7d00e251e7ce592"
+                "us-east-2": "snap-0af55f20a2333c8a9",
+                "us-east-1": "snap-074976ace4598a845"
               }
             ]
           }
