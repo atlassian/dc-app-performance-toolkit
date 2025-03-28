@@ -268,8 +268,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0322e3d70ad49e63d",
-                "us-east-1": "snap-06b87e40b22f84c9f"
+                "us-east-2": "snap-0feb610e3f8837536",
+                "us-east-1": "snap-06b06c30c3f6d3fd5"
               }
             ]
           },
@@ -278,8 +278,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-01842f9456a92712e",
-                "us-east-1": "snap-0f24c67fa1a002b07"
+                "us-east-2": "snap-017366c26d67a868e",
+                "us-east-1": "snap-0605f8d83017dee68"
               }
             ]
           },
