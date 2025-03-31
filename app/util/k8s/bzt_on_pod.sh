@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DCAPT_DOCKER_IMAGE="atlassian/dcapt:dev"
+DCAPT_DOCKER_IMAGE="atlassian/dcapt"
 echo "INFO: DCAPT docker image: $DCAPT_DOCKER_IMAGE"
 
 if [[ -z "$ENVIRONMENT_NAME" ]]; then
