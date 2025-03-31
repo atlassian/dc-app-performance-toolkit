@@ -30,7 +30,7 @@ fi
 echo "INFO: Execution environment pod name: $exec_pod_name"
 
 echo "INFO: Copy results folder from the exec env pod to local"
-kubectl exec -n atlassian "$exec_pod_name" -- tar cf - /dc-app-performance-toolkit/app/results | tar xf - -C /data-center-terraform/dc-app-performance-toolkit/app/results
+kubectl exec -n atlassian "$exec_pod_name" -- tar cf - -C /dc-app-performance-toolkit/app results | tar xf - -C /data-center-terraform/dc-app-performance-toolkit/app/results --strip-components=1
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Copy results folder failed"
     exit 1
