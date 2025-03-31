@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DCAPT_DOCKER_IMAGE="atlassian/dcapt"
+DCAPT_DOCKER_IMAGE="atlassian/dcapt:dev"
 echo "INFO: DCAPT docker image: $DCAPT_DOCKER_IMAGE"
 
 if [[ -z "$ENVIRONMENT_NAME" ]]; then
@@ -67,7 +67,7 @@ kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --shm-size=4g -v "/
 sleep 10
 
 echo "INFO: Copy results folder from the exec env pod to local"
-kubectl exec -n atlassian "$exec_pod_name" -- tar cf - /dc-app-performance-toolkit/app/results | tar xf - -C /dc-app-performance-toolkit/app/results
+kubectl exec -n atlassian "$exec_pod_name" -- tar cf - /dc-app-performance-toolkit/app/results | tar xf - -C /data-center-terraform/dc-app-performance-toolkit/app/results
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Copy results folder failed"
     exit 1
