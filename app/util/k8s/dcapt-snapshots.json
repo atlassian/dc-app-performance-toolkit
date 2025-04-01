@@ -144,7 +144,7 @@
               }
             ]
           },
-                    {
+          {
             "type": "ebs",
             "size": "small",
             "snapshots": [
@@ -313,7 +313,7 @@
               }
             ]
           },
-                    {
+          {
             "type": "ebs",
             "size": "small",
             "snapshots": [
@@ -330,6 +330,31 @@
               {
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-10-3-4",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-10-3-4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "5.12.19",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-027bac6ece3a628a9",
+                "us-east-1": "snap-0b73b2ff6800a1ca4"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-5-12-19",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-5-12-19"
               }
             ]
           }
