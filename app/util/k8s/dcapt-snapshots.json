@@ -230,15 +230,15 @@
   "confluence": {
     "versions": [
       {
-        "version": "8.5.18",
+        "version": "8.5.20",
         "data": [
           {
             "type": "ebs",
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-0109f4729e0ae632a",
-                "us-east-1": "snap-0c4ea051fbe1d7855"
+                "us-east-2": "snap-025ed06e325f3e993",
+                "us-east-1": "snap-0dc4fe5e05d41b342"
               }
             ]
           },
@@ -247,8 +247,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-18",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-18"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-small-8-5-20",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-8-5-20"
               }
             ]
           },
@@ -257,8 +257,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0f4fb2beb7ad38c9b",
-                "us-east-1": "snap-058e65850ec984202"
+                "us-east-2": "snap-0267a462e98ffdaec",
+                "us-east-1": "snap-0c7c80285157c1fe1"
               }
             ]
           },
@@ -267,8 +267,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-18",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-18"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-8-5-20",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-8-5-20"
               }
             ]
           },
@@ -277,8 +277,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-04bccf3e19b8c2a77",
-                "us-east-1": "snap-06b41ef7cd1a1b01e"
+                "us-east-2": "snap-0fc33474a6932eef4",
+                "us-east-1": "snap-088774c9ef2b58e6a"
               }
             ]
           }
