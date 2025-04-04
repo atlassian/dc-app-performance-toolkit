@@ -399,8 +399,8 @@ crowd_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 # By default, latest supported by DCAPT version is set.
 # https://hub.docker.com/r/atlassian/bamboo/tags
 # https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-bamboo_version_tag       = "10.2.0"
-bamboo_agent_version_tag = "10.2.0"
+bamboo_version_tag       = "10.2.3"
+bamboo_agent_version_tag = "10.2.3"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 # bamboo_helm_chart_version       = "<helm_chart_version>"
