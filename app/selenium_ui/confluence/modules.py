@@ -65,10 +65,6 @@ def login(webdriver, datasets):
                 login_page.delete_all_cookies()
                 login_page.go_to()
             login_page.wait_for_page_loaded()
-            node_id = login_page.get_node_id()
-            node_ip = rest_client.get_node_ip(node_id)
-            webdriver.node_ip = node_ip
-            print(f"node_id:{node_id}, node_ip: {webdriver.node_ip}")
             measure_dom_requests(webdriver, interaction="selenium_login:open_login_page")
 
         sub_measure()

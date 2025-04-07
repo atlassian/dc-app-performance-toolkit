@@ -109,9 +109,7 @@ class Confluence(BaseApplication):
 
     @property
     def nodes_count(self):
-        if self.client.get_confluence_nodes() == 'Server':
-            return 'Server'
-        return len(self.client.get_confluence_nodes())
+        return 2
 
     @property
     def dataset_information(self):

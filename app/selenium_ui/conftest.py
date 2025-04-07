@@ -326,9 +326,9 @@ def measure_dom_requests(webdriver, interaction, description=''):
         with open(selenium_results_file, "a+") as jtl_file:
             timestamp = round(time() * 1000)
             jtl_file.write(
-                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
+                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,IP_REMOVED,0\n")
             print(
-                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,{webdriver.node_ip},0\n")
+                f"{timestamp},{timing},{interaction},,{error_msg},,{success},0,0,0,0,IP_REMOVED,0\n")
 
 
 def get_mark_from_dataset(page_id: str, dataset: dict) -> str:
@@ -406,9 +406,9 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                 timestamp = round(time() * 1000)
                 node_ip = webdriver.node_ip
                 jtl_file.write(
-                    f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
+                    f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,IP_REMOVED,0\n")
                 print(
-                    f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},{node_ip}")
+                    f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},IP_REMOVED")
 
 
 @pytest.fixture(scope="module")
