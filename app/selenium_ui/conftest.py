@@ -150,14 +150,11 @@ def print_timing(interaction=None, explicit_timing=None):
                 globals.login_failed = False
             if globals.login_failed:
                 pytest.skip("login is failed")
-            node_ip = ""
             start = time()
             error_msg = 'Success'
             full_exception = ''
             if args:
                 driver = [arg for arg in args if isinstance(arg, Chrome)]
-                node_ip = "" if not driver else getattr(
-                    driver[0], "node_ip", "")
             try:
                 func(*args, **kwargs)
                 success = True
@@ -189,10 +186,10 @@ def print_timing(interaction=None, explicit_timing=None):
                     else:
                         jtl_file.write(
                             f"{timestamp},{timing},{interaction},,{error_msg}"
-                            f",,{success},0,0,0,0,{node_ip},0\n")
+                            f",,{success},0,0,0,0,IP REMOVED,0\n")
 
             print(
-                f"{timestamp},{timing},{interaction},{error_msg},{success},{node_ip}")
+                f"{timestamp},{timing},{interaction},{error_msg},{success},IP REMOVED")
 
             if not success:
                 if LOGIN_ACTION_NAME in interaction:
@@ -404,7 +401,6 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                 interaction = metric['key']
                 ready_for_user_timing = metric['ready_for_user']
                 timestamp = round(time() * 1000)
-                node_ip = webdriver.node_ip
                 jtl_file.write(
                     f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,IP_REMOVED,0\n")
                 print(
