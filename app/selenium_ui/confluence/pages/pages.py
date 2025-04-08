@@ -16,6 +16,7 @@ class Login(BasePage):
 
     def wait_for_page_loaded(self):
         self.wait_until_visible(LoginPageLocators.sidebar)
+        time.sleep(5)
         if not self.get_elements(LoginPageLocators.login_button):
             self.is_2sv_login = True
             print("INFO: 2sv login form")
@@ -71,6 +72,7 @@ class Logout(BasePage):
 
     def wait_for_logout(self):
         self.wait_until_visible(LoginPageLocators.sidebar)
+        time.sleep(5)
 
 
 class AllUpdates(BasePage):
