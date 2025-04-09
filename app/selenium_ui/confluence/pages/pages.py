@@ -15,8 +15,10 @@ class Login(BasePage):
         self.is_2sv_login = True
 
     def wait_for_page_loaded(self):
-        print("INFO: waiting for 2sv login form...")
-        self.wait_until_visible(LoginPageLocators.login_button_2sv)
+        self.wait_until_visible(LoginPageLocators.sidebar)
+        if not self.get_elements(LoginPageLocators.login_button):
+            self.is_2sv_login = True
+            print("INFO: 2sv login form")
 
     def set_credentials(self, username, password):
         if self.is_2sv_login:
@@ -68,7 +70,7 @@ class Logout(BasePage):
     page_url = UrlManager().logout_url()
 
     def wait_for_logout(self):
-        self.wait_until_visible(LoginPageLocators.login_button_2sv)
+        self.wait_until_visible(LoginPageLocators.sidebar)
 
 
 class AllUpdates(BasePage):
