@@ -32,7 +32,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.9.8 ./install.sh -c conf.tfvars
 ```
 ### Terminate development environment
 Note: install and uninstall commands have to use the same `atlassianlabs/terraform:TAG` image tag.
@@ -44,7 +44,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:2.9.7 ./uninstall.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.9.8 ./uninstall.sh -c conf.tfvars
 ```
 
 # Enterprise-scale environment
@@ -61,7 +61,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.9.8 ./install.sh -c conf.tfvars
 ```
 ### Terminate enterprise-scale environment
 Note: install and uninstall commands have to use the same `atlassianlabs/terraform:TAG` image tag.
@@ -73,7 +73,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:2.9.7 ./uninstall.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.9.8 ./uninstall.sh -c conf.tfvars
 ```
 
 # Collect detailed k8s logs
@@ -93,7 +93,7 @@ export REGION=us-east-2
 docker run --pull=always --env-file aws_envs \
 -v "/$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:2.9.7 ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
+-it atlassianlabs/terraform:2.9.8 ./scripts/collect_k8s_logs.sh atlas-$ENVIRONMENT_NAME-cluster $REGION k8s_logs
 ```
 
 # Force terminate cluster
@@ -126,7 +126,7 @@ atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-clus
     docker run --pull=always --env-file aws_envs \
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -e REGION=$REGION \
-    -it atlassianlabs/terraform:2.9.7 bash 
+    -it atlassianlabs/terraform:2.9.8 bash 
     ```
 
 5. Connect to the product pod. Example below for jira pod with number 0. For other product or pod number change `PRODUCT_POD` accordingly.
@@ -150,7 +150,7 @@ atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-clus
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -e REGION=$REGION \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
-    -it atlassianlabs/terraform:2.9.7 bash 
+    -it atlassianlabs/terraform:2.9.8 bash 
     ```
 5. Copy code base and connect to the execution environment pod:
     ``` bash
@@ -178,7 +178,7 @@ atlassian/dcapt terminate_cluster.py --cluster_name atlas-$ENVIRONMENT_NAME-clus
     -e REGION=$REGION \
     -e PRODUCT=$PRODUCT \
     -v "/$PWD/script-runner.yml:/data-center-terraform/script-runner.yml" \
-    -it atlassianlabs/terraform:2.9.7 bash 
+    -it atlassianlabs/terraform:2.9.8 bash 
     ```
 5. Run following commands one by one inside docker container:
     ``` bash
@@ -206,7 +206,7 @@ To enable detailed CPU/Memory monitoring and Grafana dashboards for visualisatio
     docker run --pull=always --env-file aws_envs \
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -e REGION=$REGION \
-    -it atlassianlabs/terraform:2.9.7 bash 
+    -it atlassianlabs/terraform:2.9.8 bash 
     ```
     ``` bash
     aws eks update-kubeconfig --name atlas-$ENVIRONMENT_NAME-cluster --region $REGION
@@ -242,7 +242,7 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh jira.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh jira.yml
     ```
 
 # Retry to copy run results from the execution environment pod to local
@@ -259,7 +259,7 @@ Note: this option is **not** suitable for full-scale performance runs as local n
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/copy_run_results.sh:/data-center-terraform/copy_run_results.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash copy_run_results.sh
+    -it atlassianlabs/terraform:2.9.8 bash copy_run_results.sh
     ```
 
 # Debug AWS required policies
@@ -268,7 +268,7 @@ Note: this option is **not** suitable for full-scale performance runs as local n
 3. Start and ssh to `atlassianlabs/terraform` docker container:
     ``` bash
     docker run --pull=always --env-file aws_envs \
-    -it atlassianlabs/terraform:2.9.7 bash 
+    -it atlassianlabs/terraform:2.9.8 bash 
     ```
 4. Make sure you have IAM policies with names `policy1`, `policy2`, created from [policy1.json](https://github.com/atlassian-labs/data-center-terraform/blob/main/permissions/policy1.json) and [policy2.json](https://github.com/atlassian-labs/data-center-terraform/blob/main/permissions/policy2.json).
 5. Run following commands one by one inside docker container to get effective policies permissions:

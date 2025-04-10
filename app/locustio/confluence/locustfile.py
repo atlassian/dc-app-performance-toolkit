@@ -30,7 +30,11 @@ class ConfluenceBehavior(MyBaseTaskSet):
 
     @task(config.percentage('search_cql'))
     def search_cql_action(self):
-        search_cql_and_view_results(self)
+        search_cql_two_words_and_view_results(self)
+
+    @task(config.percentage('search_cql'))
+    def search_cql_action(self):
+        search_cql_three_words(self)
 
     @task(config.percentage('create_blog'))
     def create_blog_action(self):
