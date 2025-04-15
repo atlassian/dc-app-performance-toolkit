@@ -30,7 +30,6 @@ fi
 echo "INFO: Execution environment pod name: $exec_pod_name"
 
 echo "INFO: Copy results folder from the exec env pod to local"
-
 for _ in {1..3}; do
     if kubectl exec -n atlassian "$exec_pod_name" --request-timeout=60s -- tar czf - -C /dc-app-performance-toolkit/app results | tar xzf - -C /data-center-terraform/dc-app-performance-toolkit/app/results --strip-components=1; then
         break
