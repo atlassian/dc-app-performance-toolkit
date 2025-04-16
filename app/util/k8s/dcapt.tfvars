@@ -335,7 +335,7 @@ bitbucket_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "6.0.0"
+crowd_version_tag = "6.3.0"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -346,7 +346,7 @@ crowd_version_tag = "6.0.0"
 crowd_installation_timeout = 20
 
 # Crowd instance resource configuration
-crowd_cpu      = "2"
+crowd_cpu      = "4"
 crowd_mem      = "8Gi"
 crowd_min_heap = "2048m"
 crowd_max_heap = "2048m"
