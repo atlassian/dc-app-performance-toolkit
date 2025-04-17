@@ -67,8 +67,12 @@ kubectl exec -it "$exec_pod_name" -n atlassian -- docker run --shm-size=4g -v "/
 sleep 10
 
 echo "INFO: Copy results folder from the exec env pod to local"
+# Ensure the local results directory exists
+local_results_dir="/data-center-terraform/dc-app-performance-toolkit/app/results"
+mkdir -p "$local_results_dir"
+
 for _ in {1..3}; do
-    if kubectl exec -n atlassian "$exec_pod_name" --request-timeout=60s -- tar czf - -C /dc-app-performance-toolkit/app results | tar xzf - -C /data-center-terraform/dc-app-performance-toolkit/app/results --strip-components=1; then
+    if kubectl exec -n atlassian "$exec_pod_name" --request-timeout=60s -- tar czf - -C /dc-app-performance-toolkit/app results | tar xzf - -C "$local_results_dir" --strip-components=1; then
         break
     else
         echo "Copying failed, retrying..."
