@@ -303,11 +303,11 @@ def create_inline_comment(webdriver, datasets):
     measure()
 
 def cql_search_three_words(webdriver):
-    return cql_search(webdriver, cql_string=THREE_WORDS_CQL, print_timing_suffix='3_words')
+    return cql_search(webdriver, cql_string=THREE_WORDS_CQL, print_timing_suffix='three_words')
 
 
 def cql_search_two_words(webdriver):
-    return cql_search(webdriver, cql_string=TWO_WORDS_CQL, print_timing_suffix='2_words')
+    return cql_search(webdriver, cql_string=TWO_WORDS_CQL, print_timing_suffix='two_words')
 
 
 def cql_search(webdriver, cql_string, print_timing_suffix):
