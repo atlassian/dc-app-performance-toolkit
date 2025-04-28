@@ -13,7 +13,8 @@ PAGES = "pages"
 CQLS = "cqls"
 CUSTOM_PAGES = "custom_pages"
 BLOGS = "blogs"
-
+TWO_WORDS_CQL = 'confluence agreement'
+THREE_WORDS_CQL = 'shoulder trip discussion'
 
 def setup_run_data(datasets):
     datasets['current_session'] = {}
@@ -301,16 +302,22 @@ def create_inline_comment(webdriver, datasets):
 
     measure()
 
+def cql_search_three_words(webdriver):
+    return cql_search(webdriver, cql_string=THREE_WORDS_CQL, print_timing_suffix='three_words')
 
-def cql_search(webdriver, datasets):
-    random_cql = random.choice(datasets[CQLS])
+
+def cql_search_two_words(webdriver):
+    return cql_search(webdriver, cql_string=TWO_WORDS_CQL, print_timing_suffix='two_words')
+
+
+def cql_search(webdriver, cql_string, print_timing_suffix):
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
     PopupManager(webdriver).dismiss_default_popup()
 
-    @print_timing("selenium_cql_search")
+    @print_timing(f"selenium_cql_search_{print_timing_suffix}")
     def measure():
-        page.get_element(PageLocators.search_box).send_keys(random_cql)
+        page.get_element(PageLocators.search_box).send_keys(cql_string)
         page.wait_until_any_ec_presented((PageLocators.empty_search_results, PageLocators.search_results),
                                          timeout=30)
         page.get_element(PageLocators.close_search_button).click()

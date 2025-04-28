@@ -30,7 +30,19 @@ fi
 echo "INFO: Execution environment pod name: $exec_pod_name"
 
 echo "INFO: Copy results folder from the exec env pod to local"
-kubectl cp --retries 100 atlassian/"$exec_pod_name":dc-app-performance-toolkit/app/results dc-app-performance-toolkit/app/results
+# Ensure the local results directory exists
+local_results_dir="/data-center-terraform/dc-app-performance-toolkit/app/results"
+mkdir -p "$local_results_dir"
+
+for _ in {1..3}; do
+    if kubectl exec -n atlassian "$exec_pod_name" --request-timeout=60s -- tar czf - -C /dc-app-performance-toolkit/app results | tar xzf - -C "$local_results_dir" --strip-components=1; then
+        break
+    else
+        echo "Copying failed, retrying..."
+        sleep 5
+    fi
+done
+
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Copy results folder failed"
     exit 1

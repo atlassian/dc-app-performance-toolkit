@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2024-11-22"
+date: "2025-04-22"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -97,7 +97,7 @@ specifically for performance testing during the DC app review process.
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.8 ./install.sh -c conf.tfvars
    ```
 7. Copy product URL from the console output. Product url should look like `http://a1234-54321.us-east-2.elb.amazonaws.com/crowd`.
 
@@ -208,7 +208,7 @@ To receive performance baseline results **without** an app installed and **witho
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh crowd.yml
     ```
 1. View the following main results of the run in the `dc-app-performance-toolkit/app/results/crowd/YY-MM-DD-hh-mm-ss` folder:
     - `results_summary.log`: detailed run summary
@@ -237,7 +237,7 @@ To receive performance results with an app installed (still use master branch):
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -296,7 +296,7 @@ To receive scalability benchmark results for one-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -320,7 +320,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
    -v "/$PWD/dcapt.tfvars:/data-center-terraform/conf.tfvars" \
    -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
    -v "/$PWD/logs:/data-center-terraform/logs" \
-   -it atlassianlabs/terraform:2.9.7 ./install.sh -c conf.tfvars
+   -it atlassianlabs/terraform:2.9.8 ./install.sh -c conf.tfvars
    ```
 1. Edit **run parameters** for 2 nodes run. To do it, left uncommented only 2 nodes scenario parameters in `crowd.yml` file.
    ```
@@ -347,7 +347,7 @@ To receive scalability benchmark results for two-node Crowd DC **with** app-spec
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}
@@ -390,7 +390,7 @@ To receive scalability benchmark results for four-node Crowd DC with app-specifi
     -e ENVIRONMENT_NAME=$ENVIRONMENT_NAME \
     -v "/$PWD:/data-center-terraform/dc-app-performance-toolkit" \
     -v "/$PWD/app/util/k8s/bzt_on_pod.sh:/data-center-terraform/bzt_on_pod.sh" \
-    -it atlassianlabs/terraform:2.9.7 bash bzt_on_pod.sh crowd.yml
+    -it atlassianlabs/terraform:2.9.8 bash bzt_on_pod.sh crowd.yml
     ```
 
 {{% note %}}

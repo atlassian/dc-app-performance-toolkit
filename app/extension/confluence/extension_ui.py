@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.conftest import print_timing
-from selenium_ui.confluence.pages.pages import Login, AllUpdates
+from selenium_ui.confluence.pages.pages import Login, AllUpdates, AdminPage
 from util.conf import CONFLUENCE_SETTINGS
 
 
@@ -29,6 +29,9 @@ def app_specific_action(webdriver, datasets):
     #             login_page.first_user_setup()
     #         all_updates_page = AllUpdates(webdriver)
     #         all_updates_page.wait_for_page_loaded()
+    #         # uncomment below line to do web_sudo and authorise access to admin pages
+    #         # AdminPage(webdriver).go_to(password=password)
+    #
     #     app_specific_user_login(username='admin', password='admin')
     # measure()
 

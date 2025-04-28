@@ -11,6 +11,7 @@ class UrlManager:
         self.dashboard_params = '/dashboard.action#all-updates'
         self.edit_page_params = f'/pages/editpage.action?pageId={page_id}'
         self.logout_params = "/logout.action"
+        self.admin_system_params = f"/admin/viewgeneralconfig.action"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -26,6 +27,9 @@ class UrlManager:
 
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
+
+    def admin_system_url(self):
+        return f"{self.host}{self.admin_system_params}"
 
 
 class PopupLocators:
@@ -110,3 +114,10 @@ class LogoutLocators:
 
 class XsrfTokenLocators:
     xsrf_token = (By.ID, "atlassian-token")
+
+class AdminLocators:
+    admin_system_page_url = UrlManager().admin_system_url()
+    web_sudo_password = (By.ID, 'password')
+    web_sudo_submit_btn = (By.ID, 'authenticateButton')
+    login_form = (By.ID, 'login-container')
+    edit_baseurl = (By.ID, 'editbaseurl')

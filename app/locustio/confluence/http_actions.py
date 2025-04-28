@@ -12,6 +12,9 @@ import uuid
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
 
+TWO_WORDS_CQL = 'confluence agreement'
+THREE_WORDS_CQL = 'shoulder trip discussion'
+
 
 @confluence_measure('locust_login_and_view_dashboard')
 def login_and_view_dashboard(locust):
@@ -402,9 +405,8 @@ def view_blog(locust):
                catch_response=True)
 
 
-def search_cql_and_view_results(locust):
+def search_cql_two_words_and_view_results(locust):
     raise_if_login_failed(locust)
-    cql = random.choice(confluence_dataset["cqls"])[0]
 
     @confluence_measure('locust_search_cql:recently_viewed')
     def search_recently_viewed():
@@ -413,11 +415,11 @@ def search_cql_and_view_results(locust):
                    '?limit=8',
                    catch_response=True)
 
-    @confluence_measure('locust_search_cql:search_results')
+    @confluence_measure('locust_search_cql:search_results_2_words')
     def search_cql():
         # 530 rest/api/search
         r = locust.get(f"/rest/api/search"
-                       f"?cql=siteSearch~'{cql}'"
+                       f"?cql=siteSearch~'{TWO_WORDS_CQL}'"
                        f"&start=0"
                        f"&limit=20",
                        catch_response=True)
@@ -434,6 +436,31 @@ def search_cql_and_view_results(locust):
 
     search_recently_viewed()
     search_cql()
+
+def search_cql_three_words(locust):
+    raise_if_login_failed(locust)
+
+    @confluence_measure('locust_search_cql:search_results_3_words')
+    def search_cql():
+        # 530 rest/api/search
+        r = locust.get(f"/rest/api/search"
+                       f"?cql=siteSearch~'{THREE_WORDS_CQL}'"
+                       f"&start=0"
+                       f"&limit=20",
+                       catch_response=True)
+
+        if '{"results":[' not in r.content.decode('utf-8'):
+            logger.locust_info(r.content.decode('utf-8'))
+        content = r.content.decode('utf-8')
+        if 'results' not in content:
+            logger.error(f"Search cql failed: {content}")
+        assert 'results' in content, "Search cql failed."
+
+        # 540 rest/mywork/latest/status/notification/count
+        locust.get('/rest/mywork/latest/status/notification/count', catch_response=True)
+
+    search_cql()
+
 
 
 def open_editor_and_create_blog(locust):

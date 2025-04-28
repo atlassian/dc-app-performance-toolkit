@@ -3,7 +3,7 @@ import time
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
-    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators, XsrfTokenLocators
+    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators, XsrfTokenLocators, AdminLocators
 
 
 class Login(BasePage):
@@ -176,3 +176,22 @@ class Editor(BasePage):
         self.wait_until_invisible(EditorLocators.save_spinner)
         self.wait_until_any_ec_presented(selectors=[PageLocators.page_title,
                                                     EditorLocators.confirm_publishing_button])
+
+
+class AdminPage(BasePage):
+    page_url = AdminLocators.admin_system_page_url
+    page_loaded_selector = AdminLocators.login_form
+
+    def is_websudo(self):
+        return True if self.get_elements(AdminLocators.web_sudo_password) else False
+
+    def do_websudo(self, password):
+        self.wait_until_clickable(AdminLocators.web_sudo_password).send_keys(password)
+        self.wait_until_clickable(AdminLocators.web_sudo_submit_btn).click()
+        self.wait_until_visible(AdminLocators.edit_baseurl)
+
+    def go_to(self, password=None):
+        super().go_to()
+        self.wait_for_page_loaded()
+        if self.is_websudo():
+            self.do_websudo(password)
