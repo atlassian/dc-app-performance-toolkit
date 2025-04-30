@@ -11,13 +11,13 @@
 # This value can not be altered after the configuration has been applied.
 # Only lowercase letters, numbers, dashes, and dots are allowed.
 # ! REQUIRED !
-environment_name = "dcapt-product"
+environment_name = "perf-test-42c"
 
 # Supported products: jira, confluence, bitbucket, crowd and bamboo.
 # For JSM set product as jira.
 # e.g.: products = ["jira"]
 # ! REQUIRED !
-products = ["product-to-deploy"]
+products = ["bamboo"]
 
 # License
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_jira_license`) and keep the below line commented out
@@ -28,7 +28,7 @@ jira_license = "jira-license"
 confluence_license = "confluence-license"
 bitbucket_license = "bitbucket-license"
 crowd_license = "crowd-license"
-bamboo_license = "bamboo-license"
+bamboo_license = "AAABtg0ODAoPeNp1Uttum0AQfecrkPrSqsJaFrATSysVFupQcXGMlaSRX5bNxKaFhS7gxn9fLkZuouRxbufMnDOf7uFJtSupGkhFi6VlLQ1dpe5WxQhbCpXAmqwULmuA9BkNmZqBlJQVaVnOGG+yI5BGtjClorZIQcbPzhAGJWe5vQfR1ETTlSDjIGrwXqpMnv7DtHrMpE1rLrOq5xshvSPLW3aJzxRnlO2pgogVQGgcht6G+nYwdXTQjHakIMfBfJy4YfWBhPQv/e7chEenCPaP6/Rh21E8rm7vDYrxQnD7cPuH5ebc+VHrMqleqJOi1cI02/ZrmNk7siPTGb5LAt9NvEgLMLo2MDasaYGkYbJnf2Z5DUoC8giya3ceENauf8a65kdXcy2IrZXyG053IOv+SH2O0AJdGYaurFvJD6yGt8J3bOQ1owsX1UbR1c/9/eoowJfdUr3oqIQs67KCCf6BC+/auM6ZGAx8t7qBomzg7LKOEJr0nu7CSiz3TGT16KWJqWwFPyi0FE33Ql63VE5+gZSnWZ6JbybmQ33Gy+KN595TNkB40dbbrDd+4k0gwyd8gPEPCkr1nzAsAhQpAw9AmxxfAqW0lE4ABHy7RdJ5RwIUdbMgxozmlQpdj62GD04l8iko/qc=X02l1"
 
 # Replica count.
 # Number of product application nodes.
