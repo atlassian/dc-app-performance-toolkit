@@ -1545,7 +1545,7 @@ if ( sleep_time &gt; 0 ) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql:search_results_2_words">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="jmeter_search_cql:search_results_2_words" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
