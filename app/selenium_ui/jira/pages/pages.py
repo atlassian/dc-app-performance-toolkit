@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium_ui.conftest import retry
 import time
 import random
@@ -139,7 +140,13 @@ class Issue(BasePage):
         self.get_element(selector).send_keys(text)
 
     def edit_issue_submit(self):
-        self.get_element(IssueLocators.edit_issue_submit).click()
+        element = self.get_element(IssueLocators.edit_issue_submit)
+        try:
+            element.click()
+        except ElementClickInterceptedException:
+            print('INFO: Trying JS click for edit_issue_submit button...')
+            self.driver.execute_script("arguments[0].click();", element)
+
 
     def fill_description_edit(self, rte):
         text_description = f"Edit description form selenium - {self.generate_random_string(30)}"
