@@ -248,7 +248,7 @@ def confluence_measure(interaction=None):
             if total < confluence_action_time:
                 sleep = (confluence_action_time - total)
                 logger.info(f'action: {interaction}, action_execution_time: {total}, sleep {sleep}')
-                time.sleep(5)
+                time.sleep(sleep)
             return result
         return wrapper
     return deco_wrapper
