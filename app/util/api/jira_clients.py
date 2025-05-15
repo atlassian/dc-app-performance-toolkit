@@ -2,7 +2,8 @@ import json
 import string
 from selenium.common.exceptions import WebDriverException
 
-from util.api.abstract_clients import RestClient, JSM_EXPERIMENTAL_HEADERS
+from util.api.abstract_clients import RestClient
+
 from selenium_ui.conftest import retry
 
 BATCH_SIZE_BOARDS = 1000
@@ -201,14 +202,29 @@ class JiraRestClient(RestClient):
     def get_system_info_page(self):
         login_url = f'{self.host}/login.jsp'
         auth_url = f'{self.host}/secure/admin/WebSudoAuthenticate.jspa'
+        tsv_login_url = f'{self.host}/rest/tsv/1.0/authenticate'
         auth_body = {
             'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
             'webSudoIsPost': False,
             'webSudoPassword': self.password
         }
-        self.post(login_url, error_msg='Could not login in')
+        tsv_login_body = {"username": self.user,
+                          "password": self.password,
+                          "rememberMe": "True",
+                          "targetUrl": ""
+                          }
+
+        r = self.session.get(login_url)
+        if not r.status_code == 200:
+            raise Exception(f'ERROR: Could not login to Jira with url {login_url}, status code: {r.status_code}')
+        legacy_login = 'login-form-remember-me' in r.text
+        if not legacy_login:
+            print(f'INFO: 2sv login on Jira detected')
+            self.session.post(url=tsv_login_url, json=tsv_login_body)
+        else:
+            self.post(login_url, error_msg='Could not login in')
         auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
-        system_info_html = self._session.post(auth_url, data=auth_body, verify=self.verify)
+        system_info_html = self.session.post(auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
         return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):
