@@ -83,6 +83,8 @@ LOGIN_BODY_CONFLUENCE = {
 
 JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
 CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
+CONFLUENCE_KEYBOARD_HASH_RE = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+CONFLUENCE_BUILD_NUMBER_RE = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
 
 JIRA = 'jira'
 JSM = 'jsm'
@@ -389,6 +391,25 @@ def do_confluence_login(locust, usr, pwd):
                     json=login_body,
                     headers=headers,
                     catch_response=True)
+    r = locust.get(url='/', catch_response=True)
+    content = r.content.decode('utf-8')
+
+    if 'Log Out' not in content:
+        print(f'Login with {usr}, {pwd} failed: {content}')
+    assert 'Log Out' in content, 'User authentication failed.'
+    print(f'User {usr} is successfully logged in back')
+    keyboard_hash = fetch_by_re(CONFLUENCE_KEYBOARD_HASH_RE, content)
+    build_number = fetch_by_re(CONFLUENCE_BUILD_NUMBER_RE, content)
+    token = fetch_by_re(locust.session_data_storage['token_pattern'], content)
+
+    # 20 index.action
+    locust.get('/index.action', catch_response=True)
+
+    locust.session_data_storage['build_number'] = build_number
+    locust.session_data_storage['keyboard_hash'] = keyboard_hash
+    locust.session_data_storage['username'] = usr
+    locust.session_data_storage['password'] = pwd
+    locust.session_data_storage['token'] = token
 
 
 def do_login_jira(locust, usr, pwd):
