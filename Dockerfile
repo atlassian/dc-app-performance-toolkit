@@ -28,7 +28,8 @@ RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_
   && rm -rf ./google-chrome.deb
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+#TODO Remove --no-deps after Taurus will install the latest setuptools https://raw.githubusercontent.com/Blazemeter/taurus/refs/heads/master/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt --no-deps
 
 RUN if [ "$INCLUDE_BZT" = "true" ]; then \
       wget https://blazemeter-tools.s3.us-east-2.amazonaws.com/bzt.tar.gz -O /tmp/bzt.tar.gz && \
