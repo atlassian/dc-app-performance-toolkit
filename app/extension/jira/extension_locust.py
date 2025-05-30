@@ -5,7 +5,10 @@ logger = init_logger(app_type='jira')
 
 
 @jira_measure("locust_app_specific_action")
-# @run_as_specific_user(username='admin', password='admin')  # run as specific user
+# WebSudo is a feature that enhances security by requiring administrators to re-authenticate before
+# accessing administrative functions within Atlassian applications.
+# do_websudo=True requires user administrative rights, otherwise requests fail.
+#@run_as_specific_user(username='admin', password='admin', do_websudo=False)  # run as specific user
 def app_specific_action(locust):
     r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
     content = r.content.decode('utf-8')   # decode response content
