@@ -1780,7 +1780,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create_blog">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create_blog" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
@@ -2032,7 +2032,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="190 rest/api/content/${ajs-content-id}?status=draft">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="190 rest/api/content/${ajs-content-id}?status=draft" enabled="true">
                 <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/api/content/${ajs-content-id}?status=draft</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -2098,7 +2098,7 @@ if ( sleep_time &gt; 0 ) {
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 ${x_new_title_blog}">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="200 ${x_new_title_blog}" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/${x_new_title_blog}</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2141,7 +2141,7 @@ if ( sleep_time &gt; 0 ) {
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="210 rest/likes/1.0/content/${x_content_id}/likes">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="210 rest/likes/1.0/content/${x_content_id}/likes" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/likes/1.0/content/${ajs-content-id}/likes</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2189,7 +2189,7 @@ if ( sleep_time &gt; 0 ) {
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="220 rest/inlinecomments/1.0/comments">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="220 rest/inlinecomments/1.0/comments" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/rest/inlinecomments/1.0/comments</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2237,7 +2237,7 @@ if ( sleep_time &gt; 0 ) {
                 </HeaderManager>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="230 plugins/editor-loader/editor.action">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="230 plugins/editor-loader/editor.action" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/plugins/editor-loader/editor.action</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2356,7 +2356,7 @@ if ( sleep_time &gt; 0 ) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create_and_edit_page">
+          <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="create_and_edit_page" enabled="true">
             <intProp name="ThroughputController.style">1</intProp>
             <boolProp name="ThroughputController.perThread">false</boolProp>
             <intProp name="ThroughputController.maxThroughput">1</intProp>
@@ -2384,7 +2384,7 @@ if ( sleep_time &gt; 0 ) {
               <boolProp name="TransactionController.includeTimers">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="240 pages/createpage.action">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="240 pages/createpage.action" enabled="true">
                 <stringProp name="HTTPSampler.path">${application.postfix}/pages/createpage.action</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
