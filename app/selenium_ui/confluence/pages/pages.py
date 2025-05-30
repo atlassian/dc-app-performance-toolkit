@@ -19,6 +19,10 @@ class Login(BasePage):
         if not self.get_elements(LoginPageLocators.login_button):
             self.is_2sv_login = True
             print("INFO: 2sv login form")
+            self.wait_until_visible(LoginPageLocators.login_username_field_2sv)
+        else:
+            print("INFO: legacy login form")
+            self.wait_until_visible(LoginPageLocators.login_username_field)
 
     def set_credentials(self, username, password):
         if self.is_2sv_login:
@@ -71,6 +75,12 @@ class Logout(BasePage):
 
     def wait_for_logout(self):
         self.wait_until_visible(LoginPageLocators.sidebar)
+        if not self.get_elements(LoginPageLocators.login_button):
+            print("INFO: 2sv login form")
+            self.wait_until_visible(LoginPageLocators.login_username_field_2sv)
+        else:
+            print("INFO: legacy login form")
+            self.wait_until_visible(LoginPageLocators.login_username_field)
 
 
 class AllUpdates(BasePage):
