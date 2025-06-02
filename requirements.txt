@@ -6,6 +6,6 @@ selenium==4.31.0
 filelock==3.18.0
 packaging==24.2
 prettytable==3.16.0
-bzt==1.16.42
+bzt==1.16.32        # bzt 1.16.34 has pinned setuptools==65.5.0, which does not have distutils
 boto3==1.37.30
 retry==0.9.2
