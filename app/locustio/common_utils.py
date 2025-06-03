@@ -358,7 +358,7 @@ def raise_if_login_failed(locust):
         raise exception.StopUser('Action login_and_view_dashboard failed')
 
 
-def do_confluence_login(locust, usr, pwd):
+def do_confluence_login(locust, usr, pwd, do_websudo=False):
     locust.client.cookies.clear()
     r = locust.get('/dologin.action', catch_response=True)
     content = r.content.decode('utf-8')
@@ -411,6 +411,18 @@ def do_confluence_login(locust, usr, pwd):
     locust.session_data_storage['password'] = pwd
     locust.session_data_storage['token'] = token
 
+    if do_websudo:
+        auth_body = {
+            'authenticate': 'Confirm',
+            'destination': '/admin/systeminfo.action',
+            'password': pwd,
+        }
+        system_info_html = locust.post(url='/doauthenticate.action', data=auth_body,
+                                       headers={'X-Atlassian-Token': 'no-check'}, catch_response=True)
+        print(system_info_html.content.decode('utf-8'))
+
+
+
 
 def do_login_jira(locust, usr, pwd):
     locust.client.cookies.clear()
@@ -457,7 +469,7 @@ def do_login_jira(locust, usr, pwd):
             locust.session_data_storage["token"] = token
 
 
-def run_as_specific_user(username=None, password=None):
+def run_as_specific_user(username=None, password=None, do_websudo=False):
     if not (username and password):
         raise SystemExit(f'The credentials are not valid: {{username: {username}, password: {password}}}.')
 
@@ -493,7 +505,7 @@ def run_as_specific_user(username=None, password=None):
                     do_login_jira(locust, session_user_name, session_user_password)
 
                 if app == CONFLUENCE:
-                    do_confluence_login(locust, username, password)
+                    do_confluence_login(locust, username, password, do_websudo)
                     func(*args, **kwargs)
                     do_confluence_login(locust, session_user_name, session_user_password)
 
