@@ -419,12 +419,9 @@ def do_confluence_login(locust, usr, pwd, do_websudo=False):
         }
         system_info_html = locust.post(url='/doauthenticate.action', data=auth_body,
                                        headers={'X-Atlassian-Token': 'no-check'}, catch_response=True)
-        print(system_info_html.content.decode('utf-8'))
 
 
-
-
-def do_login_jira(locust, usr, pwd):
+def do_login_jira(locust, usr, pwd, do_websudo=False):
     locust.client.cookies.clear()
     body = LOGIN_BODY
     body['os_username'] = usr
@@ -468,6 +465,16 @@ def do_login_jira(locust, usr, pwd):
             token = fetch_by_re(locust.session_data_storage['token_pattern'], content)
             locust.session_data_storage["token"] = token
 
+        if do_websudo:
+            auth_body = {
+                'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+                'webSudoIsPost': False,
+                'webSudoPassword': pwd,
+                'atl_token': locust.session_data_storage["token"]
+            }
+            system_info_html = locust.post(url='/secure/admin/WebSudoAuthenticate.jspa', data=auth_body,
+                                           headers={'X-Atlassian-Token': 'no-check'}, catch_response=True)
+
 
 def run_as_specific_user(username=None, password=None, do_websudo=False):
     if not (username and password):
@@ -500,7 +507,7 @@ def run_as_specific_user(username=None, password=None, do_websudo=False):
 
                 # send requests by the specific user
                 if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
-                    do_login_jira(locust, username, password)
+                    do_login_jira(locust, username, password, do_websudo)
                     func(*args, **kwargs)
                     do_login_jira(locust, session_user_name, session_user_password)
 
