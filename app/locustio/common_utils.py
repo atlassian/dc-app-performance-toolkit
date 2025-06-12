@@ -73,9 +73,18 @@ LOGIN_BODY = {
     'atl_token': '',
     'login': 'Log in'
 }
+LOGIN_BODY_CONFLUENCE = {
+        'os_username': '',
+        'os_password': '',
+        'os_cookie': True,
+        'os_destination': '',
+        'login': 'Log in'
+    }
 
 JIRA_TOKEN_PATTERN = r'name="atlassian-token" content="(.+?)">'
 CONFLUENCE_TOKEN_PATTERN = r'"ajs-atl-token" content="(.+?)"'
+CONFLUENCE_KEYBOARD_HASH_RE = 'name=\"ajs-keyboardshortcut-hash\" content=\"(.*?)\">'
+CONFLUENCE_BUILD_NUMBER_RE = 'meta name=\"ajs-build-number\" content=\"(.*?)\"'
 
 JIRA = 'jira'
 JSM = 'jsm'
@@ -349,7 +358,125 @@ def raise_if_login_failed(locust):
         raise exception.StopUser('Action login_and_view_dashboard failed')
 
 
-def run_as_specific_user(username=None, password=None):
+def do_confluence_login(locust, usr, pwd, do_websudo=False):
+    locust.client.cookies.clear()
+    r = locust.get('/dologin.action', catch_response=True)
+    content = r.content.decode('utf-8')
+    is_legacy_login_form = 'loginform' in content
+
+    if is_legacy_login_form:
+
+        login_body = LOGIN_BODY_CONFLUENCE
+        login_body['os_username'] = usr
+        login_body['os_password'] = pwd
+
+        locust.post('/dologin.action',
+                    login_body,
+                    TEXT_HEADERS,
+                    catch_response=True)
+    else:
+
+        login_body = {'username': usr,
+                      'password': pwd,
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # 15 /rest/tsv/1.0/authenticate
+        locust.post('/rest/tsv/1.0/authenticate',
+                    json=login_body,
+                    headers=headers,
+                    catch_response=True)
+    r = locust.get(url='/', catch_response=True)
+    content = r.content.decode('utf-8')
+
+    if 'Log Out' not in content:
+        print(f'Login with {usr}, {pwd} failed: {content}')
+    assert 'Log Out' in content, 'User authentication failed.'
+    print(f'User {usr} is successfully logged in back')
+    keyboard_hash = fetch_by_re(CONFLUENCE_KEYBOARD_HASH_RE, content)
+    build_number = fetch_by_re(CONFLUENCE_BUILD_NUMBER_RE, content)
+    token = fetch_by_re(locust.session_data_storage['token_pattern'], content)
+
+    # 20 index.action
+    locust.get('/index.action', catch_response=True)
+
+    locust.session_data_storage['build_number'] = build_number
+    locust.session_data_storage['keyboard_hash'] = keyboard_hash
+    locust.session_data_storage['username'] = usr
+    locust.session_data_storage['password'] = pwd
+    locust.session_data_storage['token'] = token
+
+    if do_websudo:
+        auth_body = {
+            'authenticate': 'Confirm',
+            'destination': '/admin/systeminfo.action',
+            'password': pwd,
+        }
+        system_info_html = locust.post(url='/doauthenticate.action', data=auth_body,
+                                       headers={'X-Atlassian-Token': 'no-check'}, catch_response=True)
+
+
+def do_login_jira(locust, usr, pwd, do_websudo=False):
+    locust.client.cookies.clear()
+    body = LOGIN_BODY
+    body['os_username'] = usr
+    body['os_password'] = pwd
+
+    legacy_form = False
+
+    # Check if 2sv login form
+    r = locust.get('/login.jsp', catch_response=True)
+    content = r.content.decode('utf-8')
+    if 'login-form-remember-me' in content:
+        legacy_form = True
+
+    # 100 /login.jsp
+    if legacy_form:
+        locust.post('/login.jsp', body,
+                    TEXT_HEADERS,
+                    catch_response=True)
+    else:
+        login_body = {'username': usr,
+                      'password': pwd,
+                      'rememberMe': 'True',
+                      'targetUrl': ''
+                      }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # 15 /rest/tsv/1.0/authenticate
+        locust.post('/rest/tsv/1.0/authenticate',
+                    json=login_body,
+                    headers=headers,
+                    catch_response=True)
+
+        r = locust.get('/', catch_response=True)
+        if not r.content:
+            raise Exception('Please check server hostname in jira.yml file')
+        if locust.session_data_storage['token_pattern']:
+            content = r.content.decode('utf-8')
+            token = fetch_by_re(locust.session_data_storage['token_pattern'], content)
+            locust.session_data_storage["token"] = token
+
+        if do_websudo:
+            auth_body = {
+                'webSudoDestination': '/secure/admin/ViewSystemInfo.jspa',
+                'webSudoIsPost': False,
+                'webSudoPassword': pwd,
+                'atl_token': locust.session_data_storage["token"]
+            }
+            system_info_html = locust.post(url='/secure/admin/WebSudoAuthenticate.jspa', data=auth_body,
+                                           headers={'X-Atlassian-Token': 'no-check'}, catch_response=True)
+
+
+def run_as_specific_user(username=None, password=None, do_websudo=False):
     if not (username and password):
         raise SystemExit(f'The credentials are not valid: {{username: {username}, password: {password}}}.')
 
@@ -367,72 +494,29 @@ def run_as_specific_user(username=None, password=None):
                 session_user_name = locust.session_data_storage["username"]
                 session_user_password = locust.session_data_storage["password"]
                 app = locust.session_data_storage['app']
+                locust.session_data_storage['token_pattern'] = None
                 app_type = locust.session_data_storage.get('app_type', None)
                 token_pattern = None
 
                 # Jira or JSM Agent - redefine token value
                 if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
-                    token_pattern = JIRA_TOKEN_PATTERN
+                    locust.session_data_storage['token_pattern'] = JIRA_TOKEN_PATTERN
                 # Confluence - redefine token value
                 elif app == CONFLUENCE:
-                    token_pattern = CONFLUENCE_TOKEN_PATTERN
-
-                def do_login_jira(usr, pwd):
-                    locust.client.cookies.clear()
-                    body = LOGIN_BODY
-                    body['os_username'] = usr
-                    body['os_password'] = pwd
-
-                    legacy_form = False
-
-                    # Check if 2sv login form
-                    r = locust.get('/login.jsp', catch_response=True)
-                    content = r.content.decode('utf-8')
-                    if 'login-form-remember-me' in content:
-                        legacy_form = True
-
-                    # 100 /login.jsp
-                    if legacy_form:
-                        locust.post('/login.jsp', body,
-                                    TEXT_HEADERS,
-                                    catch_response=True)
-                    else:
-                        login_body = {'username': usr,
-                                      'password': pwd,
-                                      'rememberMe': 'True',
-                                      'targetUrl': ''
-                                      }
-
-                        headers = {
-                            "Content-Type": "application/json"
-                        }
-
-                        # 15 /rest/tsv/1.0/authenticate
-                        locust.post('/rest/tsv/1.0/authenticate',
-                                    json=login_body,
-                                    headers=headers,
-                                    catch_response=True)
-
-                        r = locust.get('/', catch_response=True)
-                        if not r.content:
-                            raise Exception('Please check server hostname in jira.yml file')
-                        if token_pattern:
-                            content = r.content.decode('utf-8')
-                            token = fetch_by_re(token_pattern, content)
-                            locust.session_data_storage["token"] = token
+                    locust.session_data_storage['token_pattern'] = CONFLUENCE_TOKEN_PATTERN
 
                 # send requests by the specific user
                 if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
-                    do_login_jira(usr=username, pwd=password)
-                else:
-                    raise SystemExit(f"Unsupported app type: {app}")
+                    do_login_jira(locust, username, password, do_websudo)
+                    func(*args, **kwargs)
+                    do_login_jira(locust, session_user_name, session_user_password)
 
-                func(*args, **kwargs)
+                if app == CONFLUENCE:
+                    do_confluence_login(locust, username, password, do_websudo)
+                    func(*args, **kwargs)
+                    do_confluence_login(locust, session_user_name, session_user_password)
 
-                # send requests by the session user
-                if app == JIRA or (app == JSM and app_type == TYPE_AGENT):
-                    do_login_jira(usr=session_user_name, pwd=session_user_password)
-                else:
+                if app not in [CONFLUENCE, JIRA, JSM]:
                     raise SystemExit(f"Unsupported app type: {app}")
 
             else:
