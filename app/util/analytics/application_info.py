@@ -8,6 +8,7 @@ from util.api.crowd_clients import CrowdRestClient
 from util.api.bamboo_clients import BambooClient
 import json
 from lxml import html
+from functools import cached_property
 
 JIRA = 'jira'
 CONFLUENCE = 'confluence'
@@ -31,6 +32,8 @@ class BaseApplication:
     version = None
     nodes_count = None
     dataset_information = None
+    apps_count = None
+    custom_app_count = None
 
     def __init__(self, api_client, config_yml):
         self.client = api_client(host=config_yml.server_url,
@@ -98,6 +101,22 @@ class Jira(BaseApplication):
     @property
     def dataset_information(self):
         return f"{self.__issues_count()} issues"
+
+    @property
+    def apps_count(self):
+        return len(self.__get_apps)
+
+    @cached_property
+    def __get_apps(self):
+        return self.client.get_installed_apps()
+
+    @property
+    def custom_app_count(self):
+        all_apps = self.__get_apps
+        apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
+        non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
+                              app['vendor']['name'] and app['userInstalled'] == True]
+        return len(non_atlassian_apps)
 
 
 class Confluence(BaseApplication):

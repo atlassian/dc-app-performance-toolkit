@@ -106,6 +106,8 @@ def generate_report_summary(collector):
     summary_report.append(f'Compliant|{compliant}')
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
+    summary_report.append(f'Applications count|{collector.apps_count}')
+    summary_report.append(f'Custom applications count|{collector.custom_apps_count}')
 
     if collector.app_type == JSM:
         insight = collector.insight
