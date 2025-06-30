@@ -182,7 +182,10 @@ def __check_number_of_custom_app(client):
     apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
     non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
                           app['vendor']['name'] and app['userInstalled'] == True]
-    print(len(non_atlassian_apps))
+    non_atlassian_apps_names = [app['name'] for app in non_atlassian_apps]
+    print(f"Custom application count: {len(non_atlassian_apps)}")
+    print(f'Custom app names:')
+    print(*non_atlassian_apps_names, sep='\n')
 
 
 

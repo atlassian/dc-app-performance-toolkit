@@ -34,6 +34,7 @@ class BaseApplication:
     dataset_information = None
     apps_count = None
     custom_app_count = None
+    custom_app_count_enabled = None
 
     def __init__(self, api_client, config_yml):
         self.client = api_client(host=config_yml.server_url,
@@ -110,13 +111,23 @@ class Jira(BaseApplication):
     def __get_apps(self):
         return self.client.get_installed_apps()
 
-    @property
-    def custom_app_count(self):
+    @cached_property
+    def __get_custom_apps(self):
         all_apps = self.__get_apps
         apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
         non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
                               app['vendor']['name'] and app['userInstalled'] == True]
-        return len(non_atlassian_apps)
+        return non_atlassian_apps
+
+    @property
+    def custom_app_count(self):
+        return len(self.__get_custom_apps)
+
+    @property
+    def custom_app_count_enabled(self):
+        non_atlassian_apps = self.__get_custom_apps
+        non_atlassian_apps_enabled = [app for app in non_atlassian_apps if app['enabled'] == True]
+        return len(non_atlassian_apps_enabled)
 
 
 class Confluence(BaseApplication):
