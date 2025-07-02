@@ -109,7 +109,11 @@ class Jira(BaseApplication):
 
     @cached_property
     def __get_apps(self):
-        return self.client.get_installed_apps()
+        try:
+            return self.client.get_installed_apps()
+        except Exception as e:
+            print(f'ERROR: Could not get the installed applications. Error: {e}')
+            return []
 
     @cached_property
     def __get_custom_apps(self):
