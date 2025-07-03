@@ -52,6 +52,9 @@ class AnalyticsCollector:
         self.application_version = application.version
         self.nodes_count = application.nodes_count
         self.dataset_information = application.dataset_information
+        self.apps_count = application.apps_count
+        self.custom_apps_count = application.custom_app_count
+        self.custom_apps_count_enabled = application.custom_app_count_enabled
         if self.app_type != CROWD:
             self.processors = application.processors
             self.deployment = application.deployment
