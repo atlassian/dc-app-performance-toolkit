@@ -222,6 +222,13 @@ class ConfluenceRestClient(RestClient):
         system_info_html = self.session.post(url=auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
         return system_info_html.content.decode("utf-8")
 
+    def get_installed_apps(self):
+        plugins_url = f'{self.host}/rest/plugins/1.0/'
+        r = self.get(plugins_url, error_msg="ERROR: Could not get installed plugins.",
+                     headers={'X-Atlassian-Token': 'no-check'})
+        return r.json()['plugins']
+
+
     def get_deployment_type(self):
         html_pattern = 'deployment=terraform'
         confluence_system_page = self.get_system_info_page()
