@@ -200,3 +200,9 @@ class BitbucketRestClient(RestClient):
         else:
             print(f"Warning: failed to get {api_url}: Error: {e}")
             return False
+
+    def get_installed_apps(self):
+        plugins_url = f'{self.host}/rest/plugins/1.0/'
+        r = self.get(plugins_url, error_msg="ERROR: Could not get installed plugins.",
+                     headers={'X-Atlassian-Token': 'no-check'})
+        return r.json()['plugins']
