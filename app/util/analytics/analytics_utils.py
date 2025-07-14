@@ -107,7 +107,7 @@ def generate_report_summary(collector):
     summary_report.append(f'Success|{success}')
     summary_report.append(f'Has app-specific actions|{bool(collector.app_specific_rates)}')
 
-    if collector.app_type in [JIRA, JSM, CONFLUENCE, BITBUCKET]:
+    if collector.app_type in [JIRA, JSM, CONFLUENCE, BITBUCKET, CROWD]:
         summary_report.append(f'Applications count|{collector.apps_count}')
         summary_report.append(f'Custom applications count|{collector.custom_apps_count}')
         summary_report.append(f'Custom applications count enabled|{collector.custom_apps_count_enabled}')
