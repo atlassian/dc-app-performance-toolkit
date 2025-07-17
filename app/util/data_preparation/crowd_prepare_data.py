@@ -40,6 +40,21 @@ def write_test_data_to_files(dataset):
     __write_to_file(CROWD_USERS, users)
 
 
+def __check_number_of_custom_app(client):
+    try:
+        all_apps = client.get_installed_apps()
+        apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
+        non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
+                              app['vendor']['name'] and app['userInstalled'] == True]
+        non_atlassian_apps_names = [app['name'] for app in non_atlassian_apps]
+        print(f"Custom application count: {len(non_atlassian_apps)}")
+        if non_atlassian_apps:
+            print(f'Custom app names:')
+            print(*non_atlassian_apps_names, sep='\n')
+    except Exception as e:
+        print(f'ERROR: Could not get the installed applications. Error: {e}')
+
+
 def main():
     print("Started preparing data")
 
@@ -48,9 +63,11 @@ def main():
 
     client = CrowdRestClient(url, CROWD_SETTINGS.application_name,
                              CROWD_SETTINGS.application_password, verify=CROWD_SETTINGS.secure)
-
+    crowd_admin_client = CrowdRestClient(url, CROWD_SETTINGS.admin_login,
+                             CROWD_SETTINGS.admin_password, verify=CROWD_SETTINGS.secure)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
+    __check_number_of_custom_app(crowd_admin_client)
 
     print("Finished preparing data")
 

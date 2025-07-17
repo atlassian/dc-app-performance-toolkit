@@ -108,3 +108,9 @@ class CrowdRestClient(RestClient):
         else:
             print(f"Warning: failed to get {api_url}: Error: {e}")
             return False
+
+    def get_installed_apps(self):
+        api_url = f'{self.host}/rest/plugins/1.0/'
+        r = self.get(api_url, error_msg="ERROR: Could not get installed plugins.",
+                     headers={'X-Atlassian-Token': 'no-check'})
+        return r.json()['plugins']
