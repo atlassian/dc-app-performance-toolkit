@@ -1,5 +1,6 @@
 import random
 import string
+import time
 
 from prepare_data_common import __generate_random_string, __write_to_file, __warnings_filter
 from util.api.jira_clients import JiraRestClient
@@ -192,6 +193,9 @@ def __check_number_of_custom_app(client):
         print(f'ERROR: Could not get the installed applications. Error: {e}')
 
 
+def __get_deployment_type(client):
+    print(f"Jira deployment type: {client.get_deployment_type()}")
+
 
 def main():
     print("Started preparing data")
@@ -200,13 +204,21 @@ def main():
     print("Server url: ", url)
 
     client = JiraRestClient(url, JIRA_SETTINGS.admin_login, JIRA_SETTINGS.admin_password, verify=JIRA_SETTINGS.secure)
-
+    __get_deployment_type(client)
     __check_for_admin_permissions(client)
     __check_current_language(client)
     __check_license(client)
     __check_number_of_custom_app(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
+
+    # CI debug
+    dep_types = []
+    for i in range(0, 10):
+        dtype = client.get_deployment_type()
+        dep_types.append(dtype)
+        time.sleep(random.randint(2,6))
+    print(dep_types)
 
     print("Finished preparing data")
 
