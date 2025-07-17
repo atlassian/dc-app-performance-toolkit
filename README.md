@@ -23,7 +23,7 @@ This repository contains Taurus scripts for performance testing of Atlassian Dat
     * Bamboo [Long Term Support release](https://confluence.atlassian.com/bamboo/bamboo-release-notes-671089224.html): `10.2.2`
   
 ## Support
-In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](http://bit.ly/dcapt_slack) **#data-center-app-performance-toolkit** channel.
+In case of technical questions, issues or problems with DC Apps Performance Toolkit, contact us for support in the [community Slack](https://go.atlassian.com/dcapt-community-slack) **#data-center-app-performance-toolkit** channel.
 
 ## Installation and set up
 
