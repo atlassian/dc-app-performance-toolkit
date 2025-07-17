@@ -225,6 +225,7 @@ class JiraRestClient(RestClient):
             self.post(login_url, error_msg='Could not login in')
         auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
         system_info_html = self.session.post(auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
+        print(system_info_html.content.decode("utf-8"))
         return system_info_html.content.decode("utf-8")
 
     def get_available_processors(self):

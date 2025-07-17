@@ -211,15 +211,6 @@ def main():
     __check_number_of_custom_app(client)
     dataset = __create_data_set(client)
     write_test_data_to_files(dataset)
-
-    # CI debug
-    dep_types = []
-    for i in range(0, 10):
-        dtype = client.get_deployment_type()
-        dep_types.append(dtype)
-        time.sleep(random.randint(2,6))
-    print(dep_types)
-
     print("Finished preparing data")
 
 
