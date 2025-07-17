@@ -75,6 +75,21 @@ def write_test_data_to_files(dataset):
     __write_to_file(BAMBOO_USERS, users)
 
 
+def __check_number_of_custom_app(client):
+    try:
+        all_apps = client.get_installed_apps()
+        apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
+        non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
+                              app['vendor']['name'] and app['userInstalled'] == True]
+        non_atlassian_apps_names = [app['name'] for app in non_atlassian_apps]
+        print(f"Custom application count: {len(non_atlassian_apps)}")
+        if non_atlassian_apps:
+            print(f'Custom app names:')
+            print(*non_atlassian_apps_names, sep='\n')
+    except Exception as e:
+        print(f'ERROR: Could not get the installed applications. Error: {e}')
+
+
 def main():
     print("Started preparing data")
     verify_agents_plans_setup()
@@ -84,7 +99,7 @@ def main():
 
     client = BambooClient(url, BAMBOO_SETTINGS.admin_login, BAMBOO_SETTINGS.admin_password,
                           verify=BAMBOO_SETTINGS.secure)
-
+    __check_number_of_custom_app(client)
     dataset = __create_dataset(client)
     write_test_data_to_files(dataset)
     assert_number_of_agents(client)
