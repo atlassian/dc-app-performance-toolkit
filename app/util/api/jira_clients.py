@@ -272,7 +272,9 @@ class JiraRestClient(RestClient):
         jira_system_page = self.get_system_info_page()
         if jira_system_page.count(html_pattern):
             return 'terraform'
+        print(jira_system_page)
         return 'other'
+
 
     @retry()
     def get_status(self):
