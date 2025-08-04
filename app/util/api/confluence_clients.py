@@ -190,6 +190,7 @@ class ConfluenceRestClient(RestClient):
         groups = [group['name'] for group in response.json()['results']]
         return groups
 
+    @retry()
     def get_system_info_page(self):
         login_url = f'{self.host}/dologin.action'
         auth_url = f'{self.host}/doauthenticate.action'
@@ -220,7 +221,11 @@ class ConfluenceRestClient(RestClient):
             self.session.post(url=tsv_auth_url, json=tsv_login_body)
 
         system_info_html = self.session.post(url=auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
-        return system_info_html.content.decode("utf-8")
+        page_decoded = system_info_html.content.decode("utf-8")
+        if page_decoded:
+            return page_decoded
+        else:
+            raise Exception(f"ERROR: System info page is empty. Content: {page_decoded}")
 
     def get_installed_apps(self):
         plugins_url = f'{self.host}/rest/plugins/1.0/'
@@ -230,10 +235,13 @@ class ConfluenceRestClient(RestClient):
 
 
     def get_deployment_type(self):
-        html_pattern = 'deployment=terraform'
-        confluence_system_page = self.get_system_info_page()
-        if confluence_system_page.count(html_pattern):
-            return 'terraform'
+        try:
+            html_pattern = 'deployment=terraform'
+            confluence_system_page = self.get_system_info_page()
+            if confluence_system_page.count(html_pattern):
+                return 'terraform'
+        except Exception as e:
+            print(f"Warning: Could not get deployment type. Error: {e}")
         return 'other'
 
     def get_node_ip(self, node_id: str) -> str:
