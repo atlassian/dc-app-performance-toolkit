@@ -153,10 +153,13 @@ class Confluence(BaseApplication):
 
     @property
     def java_version(self):
-        full_system_info = self.client.get_system_info_page()
-        java_versions_parsed = html.fromstring(full_system_info).xpath('//*[contains(@id, "java.version")]')
-        if java_versions_parsed:
-            return java_versions_parsed[0].text
+        try:
+            full_system_info = self.client.get_system_info_page()
+            java_versions_parsed = html.fromstring(full_system_info).xpath('//*[contains(@id, "java.version")]')
+            if java_versions_parsed:
+                return java_versions_parsed[0].text
+        except Exception as e:
+            print(f'ERROR: Could not get the Java version. Error: {e}')
         return None
 
     @property
