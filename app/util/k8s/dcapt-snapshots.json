@@ -165,6 +165,41 @@
             ]
           }
         ]
+      },
+      {
+        "version": "9.12.26",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0b99312d8354fc853",
+                "us-east-1": "snap-0d81511fb2c645f74"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-12-26",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-9-12-26"
+              }
+            ]
+          },
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-07f68bc00441fa20a",
+                "us-east-1": "snap-02a9d5de2688b445a"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
