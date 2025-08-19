@@ -198,6 +198,26 @@
                 "us-east-1": "snap-02a9d5de2688b445a"
               }
             ]
+          },
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0eed11018011eb7cf",
+                "us-east-1": "snap-092a7493cb4f7d380"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-9-12-26",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-9-12-26"
+              }
+            ]
           }
         ]
       }
