@@ -292,8 +292,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-025ed06e325f3e993",
-                "us-east-1": "snap-0dc4fe5e05d41b342"
+                "us-east-2": "snap-0c6d4d8802c48f433",
+                "us-east-1": "snap-00287c6466d81be94"
               }
             ]
           },
@@ -312,8 +312,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0267a462e98ffdaec",
-                "us-east-1": "snap-0c7c80285157c1fe1"
+                "us-east-2": "snap-0af92e32632eb2500",
+                "us-east-1": "snap-0ac6fd59413cb71ed"
               }
             ]
           },
@@ -332,8 +332,8 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0fc33474a6932eef4",
-                "us-east-1": "snap-088774c9ef2b58e6a"
+                "us-east-2": "snap-08439439376d2afb1",
+                "us-east-1": "snap-09f9176f7485f9db2"
               }
             ]
           }
@@ -450,7 +450,7 @@
             ]
           }
         ],
-        "build_number": "9109"
+        "build_number": "9111"
       }
     ]
   },
