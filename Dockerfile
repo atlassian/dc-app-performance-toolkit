@@ -30,7 +30,7 @@ RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-RUN if [ "$INCLUDE_BZT" = "true" ]; then \
+RUN if [ "$INCLUDE_BZT_TOOLS" = "true" ]; then \
       wget https://blazemeter-tools.s3.us-east-2.amazonaws.com/bzt.tar.gz -O /tmp/bzt.tar.gz && \
       tar -xzf /tmp/bzt.tar.gz -C /root && \
       rm /tmp/bzt.tar.gz; \
