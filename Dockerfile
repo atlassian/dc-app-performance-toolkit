@@ -34,7 +34,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 ADD . /tmp/
 
 RUN if [ "$INCLUDE_BZT_TOOLS" = "true" ]; then \
-      tar -xzf /tmp/context/bzt.tar.gz -C /root && \
+      tar -xzf /tmp/bzt.tar.gz -C /root && \
       rm /tmp/bzt.tar.gz; \
     fi
 
