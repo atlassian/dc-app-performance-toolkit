@@ -984,8 +984,7 @@ def delete_expired_tf_state_s3_buckets():
                 try:
                     tags = s3_client.get_bucket_tagging(Bucket=bucket["Name"])["TagSet"]
                 except s3_client.exceptions.NoSuchTagSet:
-                    logging.warning(f"S3 bucket {bucket['Name']} does not have any tags.")
-                    continue
+                    raise RuntimeError(f"S3 bucket {bucket['Name']} does not have any tags.")
                 persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
                 if persist_days:
                     if not is_float(persist_days):
