@@ -30,7 +30,7 @@ RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-COPY bzt.tar.* /tmp/bzt.tar.gz
+COPY bzt.tar.gz* /tmp/bzt.tar.gz
 
 RUN if [ "$INCLUDE_BZT_TOOLS" = "true" ]; then \
       tar -xzf /tmp/bzt.tar.gz -C /root && \
