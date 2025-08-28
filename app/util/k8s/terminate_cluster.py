@@ -983,7 +983,7 @@ def delete_expired_tf_state_s3_buckets():
                 created_date = bucket["CreationDate"]
                 try:
                     tags = s3_client.get_bucket_tagging(Bucket=bucket["Name"])["TagSet"]
-                except (s3_client.exceptions.NoSuchTagSet, botocore.exceptions.ClientError):
+                except botocore.exceptions.ClientError:
                     raise RuntimeError(f"S3 bucket {bucket['Name']} does not have any tags.")
                 persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
                 if persist_days:
