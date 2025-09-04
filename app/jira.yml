@@ -38,6 +38,8 @@ settings:
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
+    local_chrome_binary_path: ''        # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
+
 services:
   - module: shellexec
     prepare:

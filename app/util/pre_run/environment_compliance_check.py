@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 from packaging import version
 from selenium import webdriver
@@ -87,6 +88,11 @@ def validate_chromedriver_version(app_name, app_settings):
     else:
         print(f"WARNING: Chromedriver version was not found in the {app_name}.yml. Skipping Chrome/chromedriver check.")
         return
+    if app_settings.local_chrome_binary_path is not None:
+        if not os.path.exists(app_settings.local_chrome_binary_path):
+            raise FileNotFoundError(f"WARNING: Chrome binary not found at {app_settings.local_chrome_binary_path}")
+        options.binary_location = app_settings.local_chrome_binary_path
+        print(f"INFO: Using local chrome binary path: {options.binary_location}")
     if current_chromedriver_version.major == current_chrome_version.major:
         print(f"INFO: Chrome version: {current_chrome_version}")
         print(f"INFO: Chromedriver version in {app_name}.yml: {current_chromedriver_version}")
