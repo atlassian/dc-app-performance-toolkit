@@ -129,6 +129,7 @@ def analyze_application_configuration(app_name, app_settings):
     print(f"INFO: application_postfix: {app_settings.postfix}")
     url = f"{app_settings.protocol}://{app_settings.hostname}:{app_settings.port}{app_settings.postfix}"
     print(f"INFO: Product URL: {url}")
+    print(f"INFO: Local chrome binary path: {app_settings.local_chrome_binary_path}")
 
     try:
         status = app.status
