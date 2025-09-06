@@ -9,7 +9,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0606351bf5d2006f8",
+                "us-east-2": "snap-08e3207a378903af9",
                 "us-east-1": "snap-"
               }
             ]
@@ -29,7 +29,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0d0e130f79bb6d8ab",
+                "us-east-2": "snap-02b3467b4ef62d1de",
                 "us-east-1": "snap-"
               }
             ]
