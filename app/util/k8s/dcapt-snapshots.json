@@ -10,7 +10,7 @@
             "snapshots": [
               {
                 "us-east-2": "snap-08e3207a378903af9",
-                "us-east-1": "snap-"
+                "us-east-1": "snap-011dc45746e1b031f"
               }
             ]
           },
@@ -20,7 +20,7 @@
             "snapshots": [
               {
                 "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-11-0-0",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-"
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-11-0-0"
               }
             ]
           },
@@ -30,7 +30,7 @@
             "snapshots": [
               {
                 "us-east-2": "snap-02b3467b4ef62d1de",
-                "us-east-1": "snap-"
+                "us-east-1": "snap-0f8f606dfa0e1d64c"
               }
             ]
           },
@@ -39,8 +39,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-",
-                "us-east-1": "snap-"
+                "us-east-2": "snap-0c89728f1f06f468b",
+                "us-east-1": "snap-0e4557f9eb8eaa028"
               }
             ]
           },
@@ -49,8 +49,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-",
-                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-"
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-11-0-0",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-11-0-0"
               }
             ]
           }
