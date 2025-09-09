@@ -81,6 +81,11 @@ def validate_chromedriver_version(app_name, app_settings):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
+    if app_settings.local_chrome_binary_path is not None:
+        print("Setting up local chrome binary path")
+        if not os.path.exists(app_settings.local_chrome_binary_path):
+            raise FileNotFoundError(f"Chrome binary not found at {app_settings.local_chrome_binary_path}")
+        options.binary_location = app_settings.local_chrome_binary_path
     driver = webdriver.Chrome(options=options)
     current_chrome_version = version.parse(driver.capabilities['browserVersion'])
     if app_settings.chromedriver_version:
