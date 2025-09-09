@@ -213,6 +213,12 @@ def webdriver(app_settings):
             chrome_options.add_argument("--headless")
         if not app_settings.secure:
             chrome_options.add_argument('--ignore-certificate-errors')
+        if app_settings.local_chrome_binary_path is not None:
+            print("Setting up local chrome binary path")
+            if not os.path.exists(app_settings.local_chrome_binary_path):
+                raise FileNotFoundError(f"Chrome binary not found at {app_settings.local_chrome_binary_path}")
+            chrome_options.binary_location = app_settings.local_chrome_binary_path
+            print(f"Using custom local chrome binary path: {chrome_options.binary_location}")
         chrome_options.add_argument(
             "--window-size={},{}".format(SCREEN_WIDTH, SCREEN_HEIGHT))
         chrome_options.add_argument("--no-sandbox")
