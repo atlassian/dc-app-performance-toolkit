@@ -129,9 +129,6 @@ def view_page(locust):
                 headers=RESOURCE_HEADERS,
                 catch_response=True)
 
-    # 120 rest/helptips/1.0/tips
-    locust.get('/rest/helptips/1.0/tips', catch_response=True)
-
     # 130 rest/inlinecomments/1.0/comments
     r = locust.get(f'/rest/inlinecomments/1.0/comments'
                    f'?containerId={parsed_page_id}'
@@ -312,9 +309,6 @@ def view_blog(locust):
                 json=params.resources_body.get("350"),
                 headers=RESOURCE_HEADERS,
                 catch_response=True)
-
-    # 360 rest/helptips/1.0/tips
-    locust.get('/rest/helptips/1.0/tips', catch_response=True)
 
     # 370 rest/inlinecomments/1.0/comments
     r = locust.get(f'/rest/inlinecomments/1.0/comments'
@@ -691,9 +685,6 @@ def open_editor_and_create_blog(locust):
         locust.get(f'/s/en_GB/{build_number}/{keyboard_hash}/_/images/icons/profilepics/add_profile_pic.svg',
                    catch_response=True)
 
-        # 810 rest/helptips/1.0/tips
-        locust.get('/rest/helptips/1.0/tips', catch_response=True)
-
         # 820 rest/mywork/latest/status/notification/count
         locust.get(f'/rest/mywork/latest/status/notification/count'
                    f'?pageid={content_id}'
@@ -975,9 +966,6 @@ def create_and_edit_page(locust):
                     headers=RESOURCE_HEADERS,
                     catch_response=True)
 
-        # 1190 rest/helptips/1.0/tips
-        locust.get('/rest/helptips/1.0/tips', catch_response=True)
-
         # 1200 rest/inlinecomments/1.0/comments
         locust.get(f'/rest/inlinecomments/1.0/comments'
                    f'?containerId={locust.session_data_storage["content_id"]}'
@@ -1233,9 +1221,6 @@ def create_and_edit_page(locust):
                     json=params.resources_body.get("1500"),
                     headers=RESOURCE_HEADERS,
                     catch_response=True)
-
-        # 1510 rest/helptips/1.0/tips
-        locust.get('/rest/helptips/1.0/tips', catch_response=True)
 
         locust.get(f'/rest/inlinecomments/1.0/comments'
                    f'?containerId={locust.session_data_storage["content_id"]}'
