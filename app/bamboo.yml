@@ -37,6 +37,8 @@ settings:
     parallel_plans_count: 40           # number of parallel plans execution
     start_plan_timeout: 60             # maximum timeout of plan to start
     default_dataset_plan_duration: 60  # expected plan execution duration
+    local_chrome_binary_path:          # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
+
 services:
   - module: shellexec
     prepare:

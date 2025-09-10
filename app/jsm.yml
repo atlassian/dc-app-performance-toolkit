@@ -52,8 +52,9 @@ settings:
     customer_create_request: 16
     customer_insight_view_request: 6
     customer_standalone_extension: 0
+    custom_dataset_query:            # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
+    local_chrome_binary_path:        # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
 
-    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
 services:
   - module: shellexec
     prepare:
