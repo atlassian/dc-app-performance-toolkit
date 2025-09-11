@@ -318,8 +318,8 @@
             "size": "small",
             "snapshots": [
               {
-                "us-east-2": "snap-",
-                "us-east-1": "snap-"
+                "us-east-2": "snap-033d2033ff1a18568",
+                "us-east-1": "snap-0522bd67f65f3358c"
               }
             ]
           },
