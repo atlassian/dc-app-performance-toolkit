@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2025-07-17"
+date: "2025-09-11"
 ---
 # Data Center App Performance Toolkit User Guide For Bamboo
 
