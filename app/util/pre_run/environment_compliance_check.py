@@ -129,7 +129,6 @@ def analyze_application_configuration(app_name, app_settings):
     print(f"INFO: application_postfix: {app_settings.postfix}")
     url = f"{app_settings.protocol}://{app_settings.hostname}:{app_settings.port}{app_settings.postfix}"
     print(f"INFO: Product URL: {url}")
-    print(f"INFO: Local chrome binary path: {app_settings.local_chrome_binary_path}")
 
     try:
         status = app.status
@@ -169,6 +168,7 @@ def analyze_application_configuration(app_name, app_settings):
     if app_name.upper() == "CROWD":
         print("INFO: Skipping Chromedriver check for Crowd.")
     else:
+        print(f"INFO: Local chrome binary path: {app_settings.local_chrome_binary_path}")
         validate_chromedriver_version(app_name, app_settings)
 
     validate_java_version()
