@@ -1,5 +1,7 @@
 import json
 import string
+import time
+
 from selenium.common.exceptions import WebDriverException
 
 from util.api.abstract_clients import RestClient
@@ -224,8 +226,14 @@ class JiraRestClient(RestClient):
         else:
             self.post(login_url, error_msg='Could not login in')
         auth_body['atl_token'] = self.session.cookies.get_dict()['atlassian.xsrf.token']
-        system_info_html = self.session.post(auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
-        return system_info_html.content.decode("utf-8")
+        number_of_attempts = 5
+        for _ in range(0, number_of_attempts):
+            system_info_html = self.session.post(auth_url, data=auth_body, headers={'X-Atlassian-Token': 'no-check'}, verify=self.verify)
+            if system_info_html.status_code == 200:
+                return system_info_html.content.decode("utf-8")
+            time.sleep(1)
+        print(f"ERROR: Could not get the system information page.")
+        return ""
 
     def get_available_processors(self):
         try:
@@ -300,3 +308,9 @@ class JiraRestClient(RestClient):
                                  'image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
         r = self.get(api_url, "Could not retrieve license details")
         return r.json()
+
+    def get_installed_apps(self):
+        api_url = f'{self.host}/rest/plugins/1.0/'
+        r = self.get(api_url, error_msg="ERROR: Could not get installed plugins.",
+                     headers={'X-Atlassian-Token': 'no-check'})
+        return r.json()['plugins']

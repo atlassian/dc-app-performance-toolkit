@@ -981,7 +981,14 @@ def delete_expired_tf_state_s3_buckets():
         for bucket in response["Buckets"]:
             if bucket_name_template in bucket["Name"]:
                 created_date = bucket["CreationDate"]
-                tags = s3_client.get_bucket_tagging(Bucket=bucket["Name"])["TagSet"]
+                try:
+                    tags = s3_client.get_bucket_tagging(Bucket=bucket["Name"])["TagSet"]
+                except botocore.exceptions.ClientError as e:
+                    if e.response['Error']['Code'] == 'NoSuchTagSet':
+                        raise RuntimeError(f"S3 bucket {bucket['Name']} does not have any tags.")
+                    else:
+                        logging.error(f"Unexpected error for bucket: {bucket['Name']}")
+                        raise e
                 persist_days = next((tag["Value"] for tag in tags if tag["Key"] == "persist_days"), None)
                 if persist_days:
                     if not is_float(persist_days):
@@ -995,7 +1002,7 @@ def delete_expired_tf_state_s3_buckets():
                         logging.info(f"S3 bucket {bucket['Name']} is EOL and should be deleted.")
                         delete_bucket_by_name(s3_client, bucket['Name'])
                 else:
-                    logging.warning(f"S3 bucket {bucket['Name']} does not have tags.")
+                    logging.warning(f"S3 bucket {bucket['Name']} is missing persis_days tag.")
 
 
 def is_policy_attached(policy_arn):

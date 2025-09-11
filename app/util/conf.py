@@ -50,6 +50,7 @@ class JiraSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
 
 
 class ConfluenceSettings(BaseAppSettings):
@@ -62,6 +63,7 @@ class ConfluenceSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
         self.extended_metrics = self.get_property('extended_metrics')
+        self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
 
 
 class BitbucketSettings(BaseAppSettings):
@@ -72,6 +74,7 @@ class BitbucketSettings(BaseAppSettings):
         self.concurrency = self.get_property('concurrency')
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
 
 
 class JsmSettings(BaseAppSettings):
@@ -87,6 +90,7 @@ class JsmSettings(BaseAppSettings):
         self.custom_dataset_query = self.get_property('custom_dataset_query') or ""
         self.verbose = self.settings['verbose']
         self.insight = self.get_property('insight')
+        self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
 
 
 class CrowdSettings(BaseAppSettings):
@@ -112,6 +116,7 @@ class BambooSettings(BaseAppSettings):
         self.start_plan_timeout = self.env_settings['start_plan_timeout']
         self.default_dataset_plan_duration = self.env_settings['default_dataset_plan_duration']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
+        self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
 
 
 JIRA_SETTINGS = JiraSettings(config_yml=JIRA_YML)

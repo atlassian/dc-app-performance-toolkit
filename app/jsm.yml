@@ -52,8 +52,9 @@ settings:
     customer_create_request: 16
     customer_insight_view_request: 6
     customer_standalone_extension: 0
+    custom_dataset_query:            # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
+    local_chrome_binary_path:        # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
 
-    custom_dataset_query: ""        # Write JQL query to add JQL output to the app/datasets/jsm/custom-issues.csv, e.g. "summary ~ 'AppRequests*'"
 services:
   - module: shellexec
     prepare:
@@ -68,7 +69,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.31.0
+      - selenium==4.35.0
 execution:
   - scenario: ${load_executor}_agents
     executor: ${load_executor}
@@ -167,7 +168,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "137.0.7151.70" # Supports Chrome version 137. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "140.0.7339.82" # Supports Chrome version 140. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
   - data-source: sample-labels
     module: junit-xml

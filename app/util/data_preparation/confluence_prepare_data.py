@@ -247,6 +247,20 @@ def __check_license(rest_client):
     print(f"The license expiry date: {expiry_date_human}.\n"
           f"License available seats: {license_remaining_seats['count']}")
 
+def __check_number_of_custom_app(rest_client):
+    try:
+        all_apps = rest_client.get_installed_apps()
+        apps_with_vendor_defined = [app for app in all_apps if 'vendor' in app]
+        non_atlassian_apps = [app for app in apps_with_vendor_defined if 'Atlassian' not in
+                              app['vendor']['name'] and app['userInstalled'] == True]
+        non_atlassian_apps_names = [app['name'] for app in non_atlassian_apps]
+        print(f"Custom application count: {len(non_atlassian_apps)}")
+        if non_atlassian_apps:
+            print(f'Custom app names:')
+            print(*non_atlassian_apps_names, sep='\n')
+    except Exception as e:
+        print(f'ERROR: Could not get the installed applications. Error: {e}')
+
 
 @print_timing('Confluence data preparation')
 def main():
@@ -258,6 +272,7 @@ def main():
     rest_client = ConfluenceRestClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password,
                                        verify=CONFLUENCE_SETTINGS.secure)
     rpc_client = ConfluenceRpcClient(url, CONFLUENCE_SETTINGS.admin_login, CONFLUENCE_SETTINGS.admin_password)
+    __check_number_of_custom_app(rest_client)
     __is_remote_api_enabled(rest_client)
     __check_license(rest_client)
     __check_for_admin_permissions(rest_client)

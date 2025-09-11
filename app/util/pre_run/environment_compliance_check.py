@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 from packaging import version
 from selenium import webdriver
@@ -80,6 +81,11 @@ def validate_chromedriver_version(app_name, app_settings):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
+    if app_settings.local_chrome_binary_path is not None:
+        print("INFO: Setting up local chrome binary path")
+        if not os.path.exists(app_settings.local_chrome_binary_path):
+            raise FileNotFoundError(f"ERROR: Chrome binary not found at {app_settings.local_chrome_binary_path}")
+        options.binary_location = app_settings.local_chrome_binary_path
     driver = webdriver.Chrome(options=options)
     current_chrome_version = version.parse(driver.capabilities['browserVersion'])
     if app_settings.chromedriver_version:
@@ -162,6 +168,7 @@ def analyze_application_configuration(app_name, app_settings):
     if app_name.upper() == "CROWD":
         print("INFO: Skipping Chromedriver check for Crowd.")
     else:
+        print(f"INFO: Local chrome binary path: {app_settings.local_chrome_binary_path}")
         validate_chromedriver_version(app_name, app_settings)
 
     validate_java_version()
