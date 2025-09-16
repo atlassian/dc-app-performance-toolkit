@@ -1,12 +1,31 @@
 from pathlib import Path
 from shutil import make_archive
+import yaml
 
 from scripts.utils import validate_config, clean_str, resolve_relative_path
 
 
 def __zip_folder(folder_path: Path, destination_path: Path) -> Path:
+    yml_files = list(folder_path.glob("*.yml"))
+    if len(yml_files) == 0:
+        raise FileNotFoundError(f'No .yml file found in the {destination_path} folder')
+    __hide_sensitive_info(yml_files)
     archive_path = make_archive(destination_path, 'zip', folder_path)
     return Path(archive_path)
+
+
+def __hide_sensitive_info(files: list[Path]) -> None:
+    for file in files:
+        with file.open('r') as f:
+            data = yaml.safe_load(f)
+        if "settings" not in data or "env" not in data["settings"]:
+            continue
+        if "admin_login" in data["settings"]["env"]:
+            data["settings"]["env"]["admin_login"] = "****"
+        if "admin_password" in data["settings"]["env"]:
+            data["settings"]["env"]["admin_password"] = "****"
+        with file.open('w') as f:
+            yaml.safe_dump(data, f)
 
 
 def archive_results(config: dict, results_dir: Path):
