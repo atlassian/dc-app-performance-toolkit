@@ -1,6 +1,6 @@
 from pathlib import Path
 from shutil import make_archive
-import yaml
+import re
 
 from scripts.utils import validate_config, clean_str, resolve_relative_path
 
@@ -16,19 +16,17 @@ def __zip_folder(folder_path: Path, destination_path: Path) -> Path:
 def __hide_sensitive_info(files: list[Path]) -> None:
     for file in files:
         with file.open('r') as f:
-            data = yaml.safe_load(f)
+            lines = f.readlines()
+        new_lines = []
         file_edited = False
-        if "settings" not in data or "env" not in data["settings"]:
-            continue
-        if "admin_login" in data["settings"]["env"]:
-            data["settings"]["env"]["admin_login"] = "****"
-            file_edited = True
-        if "admin_password" in data["settings"]["env"]:
-            data["settings"]["env"]["admin_password"] = "****"
-            file_edited = True
+        for line in lines:
+            if re.match(r'\s*admin_password\s*:', line):
+                line = re.sub(r'(:\s*).+', r'\1****', line)
+                file_edited = True
+            new_lines.append(line)
         if file_edited:
             with file.open('w') as f:
-                yaml.safe_dump(data, f)
+                f.writelines(new_lines)
 
 
 def archive_results(config: dict, results_dir: Path):
