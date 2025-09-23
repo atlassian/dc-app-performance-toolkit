@@ -335,7 +335,7 @@ bitbucket_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-crowd_version_tag = "6.3.2"
+crowd_version_tag = "7.0.1"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
@@ -366,7 +366,7 @@ crowd_nfs_limits_memory   = "2Gi"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-crowd_db_major_engine_version = "14"
+crowd_db_major_engine_version = "17"
 crowd_db_instance_class       = "db.m5.large"
 crowd_db_allocated_storage    = 200
 crowd_db_iops                 = 1000
