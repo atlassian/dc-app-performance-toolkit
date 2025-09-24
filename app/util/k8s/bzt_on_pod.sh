@@ -28,6 +28,14 @@ else
   exit 1
 fi
 
+# Parse arguments for --ci flag (starting from 2nd argument)
+ci=false
+for ((i=2; i<=$#; i++)); do
+  if [[ "${!i}" == "--ci" ]]; then
+    ci=true
+    break
+  fi
+done
 
 echo "INFO: Update kubeconfig"
 aws eks update-kubeconfig --name atlas-"$ENVIRONMENT_NAME"-cluster --region "$REGION"
@@ -45,7 +53,7 @@ echo "INFO: Execution environment pod name: $exec_pod_name"
 
 # Ensure tmux is installed in the pod (using apk for Alpine)
 echo "INFO: Ensuring tmux is available in the pod"
-kubectl exec -it "$exec_pod_name" -n atlassian -- sh -c "command -v tmux || apk add --no-cache tmux"
+kubectl exec -i "$exec_pod_name" -n atlassian -- sh -c "command -v tmux || apk add --no-cache tmux"
 
 # Check if tmux session already exists and contains our setup
 session_exists=$(kubectl exec "$exec_pod_name" -n atlassian -- sh -c "tmux has-session -t bzt_session 2>/dev/null; echo \$?")
@@ -97,8 +105,10 @@ else
   "
   
   # Start tmux session with the complete setup and execution
-  kubectl exec -it "$exec_pod_name" -n atlassian -- sh -c "
+  kubectl exec -i "$exec_pod_name" -n atlassian -- sh -c "
+    rm -f /tmp/bzt_session.log
     tmux new-session -d -s bzt_session \"$setup_script\"
+    tmux pipe-pane -t bzt_session \"cat > /tmp/bzt_session.log\"
   "
   
   echo "INFO: Tmux session 'bzt_session' created with setup and execution"
@@ -119,9 +129,28 @@ while [ $attempt -le $max_attempts ]; do
     break
   fi
   
+  # Different behavior based on ci flag
+  if [[ "$ci" == "true" ]]; then
+    # CI mode: stream logs from /tmp/bzt_session.log (non-interactive)
+    kubectl exec "$exec_pod_name" -n atlassian -- sh -c "
+      tail -f /tmp/bzt_session.log &
+      tail_pid=\$!
+      
+      while true; do
+        sleep 5
+        if ! tmux has-session -t bzt_session 2>/dev/null; then
+          break
+        fi
+      done
 
-  kubectl exec -it "$exec_pod_name" -n atlassian -- tmux attach-session -t bzt_session 2>/dev/null
-  exit_code=$?
+      kill \$tail_pid 2>/dev/null || true
+    " 2>/dev/null
+    exit_code=$?
+  else
+    # Interactive mode: attach to tmux session
+    kubectl exec -it "$exec_pod_name" -n atlassian -- tmux attach-session -t bzt_session 2>/dev/null
+    exit_code=$?
+  fi
   
   # Handle different exit scenarios
   if [[ $exit_code -eq 0 ]]; then
@@ -136,7 +165,7 @@ while [ $attempt -le $max_attempts ]; do
     echo "INFO: Session still active, continuing to monitor..."
   elif [[ $exit_code -ne 0 ]]; then
     # Handle network errors or other failures
-    echo "WARNING: Connection error detected (exit code: $exit_code)"
+    echo "WARNING: Connection lost (exit code: $exit_code)"
     
     # Verify session still exists before retrying
     session_exists=$(kubectl exec "$exec_pod_name" -n atlassian -- sh -c "tmux has-session -t bzt_session 2>/dev/null; echo \$?" 2>/dev/null)
