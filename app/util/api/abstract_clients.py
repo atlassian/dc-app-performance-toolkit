@@ -50,6 +50,7 @@ class RestClient(Client):
 
         self._requests_timeout = timeout
         self._session = session or requests.Session()
+        self._session.verify = verify
         self.headers = headers if headers else JSON_HEADERS
         self.verify = verify
 
