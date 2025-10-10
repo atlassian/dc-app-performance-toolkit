@@ -241,8 +241,7 @@ class RepositoryBranches(BasePage):
 
     def delete_branch(self, branch_name):
         self.wait_until_visible(BranchesLocator.search_branch_textfield).send_keys(branch_name)
-        if self.app_version >= version.parse("10.0.0"):
-            self.wait_until_visible(CommonLocators.spinner)
+        self.became_visible_in_time(self.get_selector(CommonLocators.spinner), 3)
         self.wait_until_visible(BranchesLocator.branches_name)
         self.wait_until_clickable(BranchesLocator.search_branch_action).click()
         self.wait_until_clickable(self.get_selector(BranchesLocator.delete_branch_action)).click()

@@ -92,7 +92,9 @@ class PopupLocators:
 
 
 class CommonLocators:
-    spinner = (By.CSS_SELECTOR, '.centered-spinner')
+    spinner = OrderedDict({"7.0.0": (By.CSS_SELECTOR, ".spinner-wrapper"),
+                            "10.0.0": (By.CSS_SELECTOR, ".centered-spinner")})
+
 
 class LoginPageLocators:
     submit_button = (By.ID, "submit")

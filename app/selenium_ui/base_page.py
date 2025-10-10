@@ -4,7 +4,7 @@ from collections import OrderedDict
 import time
 
 from packaging import version
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
@@ -78,6 +78,14 @@ class BasePage:
     def wait_until_visible(self, selector, timeout=timeout):
         return self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), locator=selector,
                                  time_out=timeout)
+
+    def became_visible_in_time(self, selector, timeout):
+        try:
+            self.__wait_until(expected_condition=ec.visibility_of_element_located(selector), locator=selector,
+                                 time_out=timeout)
+            return True
+        except TimeoutException:
+            return False
 
     def wait_until_available_to_switch(self, selector):
         return self.__wait_until(expected_condition=ec.frame_to_be_available_and_switch_to_it(selector),
