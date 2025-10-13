@@ -51,7 +51,8 @@ class LoginPage(BasePage):
 
     def get_node_id(self):
         text = self.get_element(LoginPageLocators.node_id).text
-        return text.split('\n')[2]
+        lines = text.split('\n')
+        return lines[2] if len(lines) > 2 else None
 
     def is_logged_in(self):
         elements = self.get_elements(GetStartedLocators.user_profile_icon)
