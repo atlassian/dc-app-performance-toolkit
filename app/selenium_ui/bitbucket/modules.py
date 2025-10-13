@@ -186,6 +186,7 @@ def comment_pull_request_diff(webdriver, datasets):
         PopupManager(webdriver).dismiss_default_popup()
         pull_request_page.dismiss_updates_info_popup()
         pull_request_page.click_inline_comment_button_js()
+        PopupManager(webdriver).dismiss_default_popup()
         pull_request_page.dismiss_updates_info_popup()
         pull_request_page.add_code_comment()
     measure()
@@ -239,12 +240,15 @@ def create_pull_request(webdriver, datasets):
             branch_from = datasets['current_session']['pull_request_branch_from']
             branch_to = datasets['current_session']['pull_request_branch_to']
             repository_branches_page.open_base_branch(base_branch_name=branch_from)
+            PopupManager(webdriver).dismiss_default_popup()
             fork_branch_from = repository_branches_page.create_branch_fork_rnd_name(base_branch_name=branch_from)
             navigation_panel.wait_for_navigation_panel()
+            PopupManager(webdriver).dismiss_default_popup()
             repository_branches_page.open_base_branch(base_branch_name=branch_to)
             fork_branch_to = repository_branches_page.create_branch_fork_rnd_name(base_branch_name=branch_to)
             datasets['pull_request_fork_branch_to'] = fork_branch_to
             navigation_panel.wait_for_navigation_panel()
+            PopupManager(webdriver).dismiss_default_popup()
             repo_pull_requests_page.create_new_pull_request(from_branch=fork_branch_from, to_branch=fork_branch_to)
             pull_request_page.dismiss_updates_info_popup()
             PopupManager(webdriver).dismiss_default_popup()
