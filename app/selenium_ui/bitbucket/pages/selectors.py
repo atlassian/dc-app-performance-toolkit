@@ -87,7 +87,7 @@ class PopupLocators:
         (By.CSS_SELECTOR, ".css-1dqf51u"),
         (By.CSS_SELECTOR, ".css-1kflcxk"),
         (By.CSS_SELECTOR, ".css-1gh2dqy"),
-        (By.CSS_SELECTOR, "[data-testid='whats-new-modal'] button[aria-label='Close modal'] > span > span[aria-hidden='true']")
+        (By.XPATH, "//*[@data-testid='whats-new-modal']//button[@aria-label='Close modal']//span//span[@aria-hidden='true']")
     ]
 
 
