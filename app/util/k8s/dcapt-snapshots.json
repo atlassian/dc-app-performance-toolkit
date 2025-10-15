@@ -165,6 +165,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "10.3.12",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0ed31cf24b9eef7bb",
+                "us-east-1": "snap-0fef1e9ba11e5acc4"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-10-3-12",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-10-3-12"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
