@@ -220,6 +220,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "11.0.1",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-00e4506605a9816f7",
+                "us-east-1": "snap-080d57b47b6f792be"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-small-11-0-1",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-small-11-0-1"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
