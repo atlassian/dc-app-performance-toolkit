@@ -444,6 +444,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "10.3.12",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-085ee08f797710aa5",
+                "us-east-1": "snap-0663eb7e4f79e76ef"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-10-3-12",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-10-3-12"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
