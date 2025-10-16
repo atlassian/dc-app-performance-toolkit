@@ -469,6 +469,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "11.0.1",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-05dc0bb94cd2ec1eb",
+                "us-east-1": "snap-04385c9cc2dbd753f"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-small-11-0-1",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jsm-small-11-0-1"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
