@@ -5,6 +5,8 @@ from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocato
     ViewQueueLocators, InsightViewQueueLocators, InsightViewIssue, InsightDeleteSchemaLocators, \
     InsightNewSchemaLocators, InsightNewObjectLocators, InsightSearchObjectIql
 
+import time
+
 
 class PopupManager(BasePage):
 
@@ -153,10 +155,12 @@ class ViewCustomerRequest(BasePage):
             self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
             self.return_to_parent_frame()
             comment_button.click()
+            time.sleep(5)
             self.check_comment_text_is_displayed(comment_text, True)
         else:
             self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
             comment_button.click()
+            time.sleep(5)
             self.check_comment_text_is_displayed(comment_text)
 
 
