@@ -71,7 +71,7 @@ class CrowdRestClient(RestClient):
             return loop_users
 
         num_cores = cpu_count()
-        pool = ThreadPool(processes=num_cores*2)
+        pool = ThreadPool(processes=num_cores)
         loop_users_list = pool.map(search_users, [i for i in range(loop_count)])
         print("")  # new line
         users = [user for loop_users in loop_users_list for user in loop_users]
