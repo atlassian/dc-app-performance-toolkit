@@ -690,6 +690,31 @@
             ]
           }
         ]
+      },
+      {
+        "version": "8.19.24",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0ce99f571499433ba",
+                "us-east-1": "snap-03da486f36a53f108"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "small",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-small-8-19-24",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-bitbucket-small-8-19-24"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
