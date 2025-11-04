@@ -529,6 +529,36 @@
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-small-10-0-3"
               }
             ]
+          },
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-02334c2ccfc49a306",
+                "us-east-1": "snap-0f9f1510ae5c335bc"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-10-0-3",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-10-0-3"
+              }
+            ]
+          },
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-02e8158dcedd57722",
+                "us-east-1": "snap-04a5fcd6fd282e183"
+              }
+            ]
           }
         ],
         "build_number": "9304"
