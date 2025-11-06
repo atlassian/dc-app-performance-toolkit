@@ -390,7 +390,7 @@ crowd_db_master_password     = "Password1!"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
 # Example: ["-Dproperty=value", "-Dproperty1=value1"]
-crowd_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+crowd_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Datlassian.upm.config.loosecheck.allowed=true"]
 
 ################################################################################
 # Bamboo Settings
@@ -479,7 +479,7 @@ bamboo_dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-b
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
 # Example: ["-Dproperty=value", "-Dproperty1=value1"]
-bamboo_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Datlassian.upm.config.loosecheck.allowed=true"]
+bamboo_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
 
 ################################################################################
 # Monitoring settings
