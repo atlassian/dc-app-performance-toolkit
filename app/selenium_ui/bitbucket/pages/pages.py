@@ -3,7 +3,7 @@ from packaging import version
 from selenium_ui.base_page import BasePage
 from selenium_ui.bitbucket.pages.selectors import LoginPageLocators, GetStartedLocators, \
     DashboardLocators, ProjectsLocators, ProjectLocators, RepoLocators, RepoNavigationPanelLocators, PopupLocators, \
-    PullRequestLocator, BranchesLocator, RepoCommitsLocator, LogoutPageLocators, UrlManager, AdminLocators
+    PullRequestLocator, BranchesLocator, RepoCommitsLocator, LogoutPageLocators, UrlManager, AdminLocators, CommonLocators
 
 
 class LoginPage(BasePage):
@@ -51,7 +51,8 @@ class LoginPage(BasePage):
 
     def get_node_id(self):
         text = self.get_element(LoginPageLocators.node_id).text
-        return text.split('\n')[2]
+        lines = text.split('\n')
+        return lines[2] if len(lines) > 2 else None
 
     def is_logged_in(self):
         elements = self.get_elements(GetStartedLocators.user_profile_icon)
@@ -231,8 +232,8 @@ class RepositoryBranches(BasePage):
         self.wait_until_visible(BranchesLocator.branches_name)
 
     def create_branch_fork_rnd_name(self, base_branch_name):
-        self.wait_until_visible(BranchesLocator.branches_action).click()
-        self.get_element(BranchesLocator.branches_action_create_branch).click()
+        self.wait_until_visible(self.get_selector(BranchesLocator.branches_action)).click()
+        self.wait_until_visible(self.get_selector(BranchesLocator.branches_action_create_branch)).click()
         self.wait_until_visible(BranchesLocator.new_branch_name_textfield)
         branch_name = f"{base_branch_name}-{self.generate_random_string(5)}".replace(' ', '-')
         self.get_element(BranchesLocator.new_branch_name_textfield).send_keys(branch_name)
@@ -241,10 +242,11 @@ class RepositoryBranches(BasePage):
 
     def delete_branch(self, branch_name):
         self.wait_until_visible(BranchesLocator.search_branch_textfield).send_keys(branch_name)
+        self.became_visible_in_time(self.get_selector(CommonLocators.spinner), 3)
         self.wait_until_visible(BranchesLocator.branches_name)
-        self.wait_until_visible(BranchesLocator.search_branch_action).click()
-        self.execute_js("document.querySelector('li>a.delete-branch').click()")
-        self.wait_until_clickable(BranchesLocator.delete_branch_dialog_submit).click()
+        self.wait_until_clickable(BranchesLocator.search_branch_action).click()
+        self.wait_until_clickable(self.get_selector(BranchesLocator.delete_branch_action)).click()
+        self.wait_until_clickable(self.get_selector(BranchesLocator.delete_branch_dialog_submit)).click()
 
 
 class RepositoryCommits(BasePage):
