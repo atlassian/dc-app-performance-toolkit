@@ -6,7 +6,7 @@ selenium==4.35.0
 filelock==3.19.1
 packaging==25.0
 prettytable==3.16.0
-bzt==1.16.45
+bzt==1.16.46
 boto3==1.40.16
 retry==0.9.2
 apiritif==1.1.3
