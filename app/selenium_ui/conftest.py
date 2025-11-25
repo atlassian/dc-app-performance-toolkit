@@ -134,8 +134,8 @@ def datetime_now(prefix):
 def is_docker():
     path = '/proc/self/cgroup'
     return (
-            os.path.exists('/.dockerenv') or
-            os.path.isfile(path) and any('docker' in line for line in open(path))
+        os.path.exists('/.dockerenv') or
+        os.path.isfile(path) and any('docker' in line for line in open(path))
     )
 
 
@@ -269,9 +269,9 @@ def get_performance_logs(webdriver):
     for entry in logs:
         log = json.loads(entry["message"])["message"]
         if log["method"] == "Network.requestWillBeSent" or \
-                log["method"] == "Network.responseReceived" or \
-                log["method"] == "Network.requestServedFromCache" or \
-                log["method"] == "Network.loadingFinished":
+           log["method"] == "Network.responseReceived" or \
+           log["method"] == "Network.requestServedFromCache" or \
+           log["method"] == "Network.loadingFinished":
             needed_logs.append(log)
 
     sorted_requests = {}
