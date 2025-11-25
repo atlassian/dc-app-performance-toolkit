@@ -84,6 +84,7 @@ def login(webdriver, datasets):
             if login_page.is_first_login():
                 login_page.first_user_setup()
             all_updates_page.wait_for_page_loaded()
+            all_updates_page.click_page_body()
             measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
             if CONFLUENCE_SETTINGS.extended_metrics:
                 measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_login'])
@@ -111,6 +112,7 @@ def view_page(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
+        page.click_page_body()
         measure_dom_requests(webdriver, interaction=f"selenium_view_page", description=page_description)
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_view_page'])
@@ -130,6 +132,7 @@ def view_page_from_cache(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
+        page.click_page_body()
         measure_dom_requests(webdriver, interaction=f"selenium_view_page_from_cache", description=page_description)
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets,
@@ -149,6 +152,7 @@ def view_blog(webdriver, datasets):
     def measure():
         blog.go_to()
         blog.wait_for_page_loaded()
+        blog.click_page_body()
         measure_dom_requests(webdriver, interaction=f"selenium_view_blog", description=blog_description)
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_view_blog'])
@@ -163,6 +167,7 @@ def view_dashboard(webdriver, datasets):
     def measure():
         dashboard_page.go_to()
         dashboard_page.wait_for_page_loaded()
+        dashboard_page.click_page_body()
         measure_dom_requests(webdriver, interaction="selenium_view_dashboard")
         if CONFLUENCE_SETTINGS.extended_metrics:
             measure_browser_navi_metrics(webdriver, datasets,
@@ -182,6 +187,7 @@ def create_confluence_page(webdriver, datasets):
             nav_panel.click_create()
             PopupManager(webdriver).dismiss_default_popup()
             create_page.wait_for_create_page_open()
+            create_page.click_page_body()
             measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
             if CONFLUENCE_SETTINGS.extended_metrics:
                 measure_browser_navi_metrics(webdriver, datasets,
@@ -217,6 +223,7 @@ def edit_confluence_page_by_url(webdriver, datasets):
         def sub_measure():
             edit_page.go_to()
             edit_page.wait_for_page_loaded()
+            edit_page.click_page_body()
             measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
                                  description=page_description)
             if CONFLUENCE_SETTINGS.extended_metrics:
@@ -253,6 +260,7 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
             PopupManager(webdriver).dismiss_default_popup()
             page.click_edit()
             edit_page.wait_for_page_loaded()
+            edit_page.click_page_body()
             measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
                                  description=page_description)
             if CONFLUENCE_SETTINGS.extended_metrics:

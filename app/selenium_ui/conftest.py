@@ -8,7 +8,6 @@ import re
 import sys
 from datetime import timezone
 from pprint import pprint
-from selenium.webdriver.common.by import By
 from time import sleep, time
 
 import filelock
@@ -135,8 +134,8 @@ def datetime_now(prefix):
 def is_docker():
     path = '/proc/self/cgroup'
     return (
-        os.path.exists('/.dockerenv') or
-        os.path.isfile(path) and any('docker' in line for line in open(path))
+            os.path.exists('/.dockerenv') or
+            os.path.isfile(path) and any('docker' in line for line in open(path))
     )
 
 
@@ -270,9 +269,9 @@ def get_performance_logs(webdriver):
     for entry in logs:
         log = json.loads(entry["message"])["message"]
         if log["method"] == "Network.requestWillBeSent" or \
-           log["method"] == "Network.responseReceived" or \
-           log["method"] == "Network.requestServedFromCache" or \
-           log["method"] == "Network.loadingFinished":
+                log["method"] == "Network.responseReceived" or \
+                log["method"] == "Network.requestServedFromCache" or \
+                log["method"] == "Network.loadingFinished":
             needed_logs.append(log)
 
     sorted_requests = {}
@@ -297,15 +296,11 @@ def get_requests_by_url(requests, url_path):
 
 
 def get_wait_browser_metrics(webdriver, expected_metrics):
-    body_element = webdriver.find_element(By.TAG_NAME, "body")
     attempts = 15
     sleep_time = 0.5
     data = {}
 
     for i in range(attempts):
-        if i > 0:
-            body_element.click()
-            print("Successfully clicked on page body")
         requests = get_performance_logs(webdriver)
         requests_bulk = get_requests_by_url(requests, 'bulk')
         data.update(requests_bulk)
