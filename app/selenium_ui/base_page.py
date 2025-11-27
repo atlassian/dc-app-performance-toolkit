@@ -188,14 +188,6 @@ class BasePage:
     def scroll_down_till_bottom(self):
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
 
-    def click_page_body(self):
-        try:
-            body_element = self.driver.find_element(By.TAG_NAME, "body")
-            body_element.click()
-            print("Successfully clicked on page body")
-        except Exception as e:
-            print(f"Failed to click on page body: {e}")
-
 
 class AnyEc:
     """ Use with WebDriverWait to combine expected_conditions
