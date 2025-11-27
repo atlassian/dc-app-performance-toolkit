@@ -224,7 +224,7 @@ def print_timing(interaction=None, explicit_timing=None):
                     timestamp = round(time() * 1000)
                     if explicit_timing:
                         jtl_file.write(
-                            f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
+                            f"{timestamp},{str(int(explicit_timing * 1000))},{interaction},,{error_msg},"
                             f",{success},0,0,0,0,,0\n")
                     else:
                         jtl_file.write(
