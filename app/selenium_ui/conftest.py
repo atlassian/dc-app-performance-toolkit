@@ -150,9 +150,9 @@ def measure_timing(func):
     return wrapper
 
 
-def measure_with_browser_metrics(interaction_name, webdriver, datasets, measure_func):
+def measure_with_browser_metrics(interaction_name, webdriver, datasets, measure_func, post_metric_measure_func=None):
     """
-    Helper function that combines measure_timing + ready_for_user_timing.
+    Helper function that combines timing for measure_func + post_metric_measure_func + ready_for_user_timing.
     """
     # Step 1: Measure core operations
     @measure_timing
@@ -168,11 +168,20 @@ def measure_with_browser_metrics(interaction_name, webdriver, datasets, measure_
             webdriver, datasets, expected_metrics=browser_metrics[interaction_name]
         )
     
-    # Step 3: Calculate combined timing
+    # Step 3: Measure post_metric_measure_func (included in total timing)
+    if post_metric_measure_func is not None:
+        @measure_timing
+        def measure_post():
+            post_metric_measure_func()
+        
+        post_timing = measure_post()
+        timing = timing + post_timing
+    
+    # Step 4: Calculate combined timing (core + post + ready_for_user)
     if ready_for_user_timing is not None:
         timing = timing + (int(ready_for_user_timing) / 1000)
     
-    # Step 4: Record combined timing using print_timing with explicit_timing
+    # Step 5: Record combined timing using print_timing with explicit_timing
     @print_timing(interaction_name, explicit_timing=timing)
     def record_result():
         pass

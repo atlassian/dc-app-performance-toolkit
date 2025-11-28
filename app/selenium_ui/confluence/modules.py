@@ -1,5 +1,5 @@
 import random
-from selenium_ui.conftest import print_timing, measure_timing, measure_browser_navi_metrics, measure_dom_requests, measure_with_browser_metrics
+from selenium_ui.conftest import print_timing, measure_timing, measure_dom_requests, measure_with_browser_metrics
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
@@ -57,45 +57,45 @@ def login(webdriver, datasets):
     login_page = Login(webdriver)
     webdriver.debug_info = generate_debug_session_info(webdriver, datasets)
 
-    @print_timing("selenium_login")
+
     def measure():
-
-        def sub_measure():
+        login_page.go_to()
+        if login_page.is_logged_in():
+            login_page.delete_all_cookies()
             login_page.go_to()
-            if login_page.is_logged_in():
-                login_page.delete_all_cookies()
-                login_page.go_to()
-            login_page.wait_for_page_loaded()
-            node_id = login_page.get_node_id()
-            node_ip = rest_client.get_node_ip(node_id)
-            webdriver.node_ip = node_ip
-            print(f"node_id:{node_id}, node_ip: {webdriver.node_ip}")
-            measure_dom_requests(webdriver, interaction="selenium_login:open_login_page")
-
-        sub_measure()
+        login_page.wait_for_page_loaded()
+        node_id = login_page.get_node_id()
+        node_ip = rest_client.get_node_ip(node_id)
+        webdriver.node_ip = node_ip
+        print(f"node_id:{node_id}, node_ip: {webdriver.node_ip}")
+        measure_dom_requests(webdriver, interaction="selenium_login:open_login_page")
 
         login_page.set_credentials(username=datasets['current_session']['username'],
                                    password=datasets['current_session']['password'])
 
-        def sub_measure():
-            login_page.click_login_button()
-            all_updates_page = AllUpdates(webdriver)
-            all_updates_page.wait_for_page_loaded()
-            if login_page.is_first_login():
-                login_page.first_user_setup()
-            all_updates_page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
-            if CONFLUENCE_SETTINGS.extended_metrics:
-                measure_browser_navi_metrics(webdriver, datasets, expected_metrics=browser_metrics['selenium_login'])
+        login_page.click_login_button()
+        all_updates_page = AllUpdates(webdriver)
+        all_updates_page.wait_for_page_loaded()
+        if login_page.is_first_login():
+            login_page.first_user_setup()
+        all_updates_page.wait_for_page_loaded()
+        measure_dom_requests(webdriver, interaction="selenium_login:login_and_view_dashboard")
 
-        sub_measure()
+
+    def post_metric_measure():
         current_session_response = login_page.rest_api_get(url=f'{CONFLUENCE_SETTINGS.server_url}'
                                                                f'/rest/api/user/current')
         if 'username' in current_session_response:
             actual_username = current_session_response['username']
             assert actual_username == datasets['current_session']['username']
 
-    measure()
+    measure_with_browser_metrics(
+        "selenium_login",
+        webdriver,
+        datasets,
+        measure,
+        post_metric_measure
+    )
     PopupManager(webdriver).dismiss_default_popup()
 
 
@@ -179,34 +179,33 @@ def create_confluence_page(webdriver, datasets):
     nav_panel = TopNavPanel(webdriver)
     create_page = Editor(webdriver)
 
-    @print_timing("selenium_create_page")
     def measure():
-        def sub_measure():
-            PopupManager(webdriver).dismiss_default_popup()
-            nav_panel.click_create()
-            PopupManager(webdriver).dismiss_default_popup()
-            create_page.wait_for_create_page_open()
-            measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
-            if CONFLUENCE_SETTINGS.extended_metrics:
-                measure_browser_navi_metrics(webdriver, datasets,
-                                             expected_metrics=browser_metrics['selenium_create_page'])
+        PopupManager(webdriver).dismiss_default_popup()
+        nav_panel.click_create()
+        PopupManager(webdriver).dismiss_default_popup()
+        create_page.wait_for_create_page_open()
+        measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
 
-        sub_measure()
 
+    def post_metric_measure():
         PopupManager(webdriver).dismiss_default_popup()
 
         create_page.write_title()
         create_page.write_content()
 
-        def sub_measure():
-            create_page.click_submit()
-            page = Page(webdriver)
-            page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction="selenium_create_page:save_created_page")
+        create_page.click_submit()
+        page = Page(webdriver)
+        page.wait_for_page_loaded()
+        measure_dom_requests(webdriver, interaction="selenium_create_page:save_created_page")
 
-        sub_measure()
 
-    measure()
+    measure_with_browser_metrics(
+        "selenium_create_page",
+        webdriver,
+        datasets,
+        measure,
+        post_metric_measure
+    )
 
 
 def edit_confluence_page_by_url(webdriver, datasets):
@@ -216,29 +215,26 @@ def edit_confluence_page_by_url(webdriver, datasets):
     datasets['current_session']['edit_page'] = random_page
     edit_page = Editor(webdriver, page_id=page_id)
 
-    @print_timing("selenium_edit_page_by_url")
     def measure():
-        def sub_measure():
-            edit_page.go_to()
-            edit_page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
-                                 description=page_description)
-            if CONFLUENCE_SETTINGS.extended_metrics:
-                measure_browser_navi_metrics(webdriver, datasets,
-                                             expected_metrics=browser_metrics['selenium_edit_page_by_url'])
+        edit_page.go_to()
+        edit_page.wait_for_page_loaded()
+        measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
+                             description=page_description)
 
-        sub_measure()
-
+    def post_metric_measure():
         edit_page.write_content()
 
-        def sub_measure():
-            edit_page.save_edited_page()
-            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
-                                 description=page_description)
+        edit_page.save_edited_page()
+        measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
+                             description=page_description)
 
-        sub_measure()
-
-    measure()
+    measure_with_browser_metrics(
+        "selenium_edit_page_by_url",
+        webdriver,
+        datasets,
+        measure,
+        post_metric_measure
+    )
 
 
 def edit_confluence_page_quick_edit(webdriver, datasets):
@@ -250,32 +246,29 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
 
     @print_timing("selenium_quick_edit_page_click")
     def measure():
-        def sub_measure():
-            page.go_to()
-            page.wait_for_resources_loaded()
-            page.wait_for_page_loaded()
-            PopupManager(webdriver).dismiss_default_popup()
-            page.click_edit()
-            edit_page.wait_for_page_loaded()
-            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
-                                 description=page_description)
-            if CONFLUENCE_SETTINGS.extended_metrics:
-                measure_browser_navi_metrics(webdriver, datasets,
-                                             expected_metrics=browser_metrics['selenium_quick_edit_page_click'])
+        page.go_to()
+        page.wait_for_resources_loaded()
+        page.wait_for_page_loaded()
+        PopupManager(webdriver).dismiss_default_popup()
+        page.click_edit()
+        edit_page.wait_for_page_loaded()
+        measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
+                             description=page_description)
 
-        sub_measure()
-
+    def post_metric_measure():
         edit_page.write_content()
 
-        def sub_measure():
-            edit_page.save_edited_page()
-            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
-                                 description=page_description)
+        edit_page.save_edited_page()
+        measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
+                             description=page_description)
 
-        sub_measure()
-
-    measure()
-
+    measure_with_browser_metrics(
+        "selenium_quick_edit_page_click",
+        webdriver,
+        datasets,
+        measure,
+        post_metric_measure
+    )
 
 def create_inline_comment(webdriver, datasets):
     page = random.choice(datasets[PAGES])
