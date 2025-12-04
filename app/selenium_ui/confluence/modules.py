@@ -1,5 +1,5 @@
 import random
-from selenium_ui.conftest import print_timing, measure_timing, measure_dom_requests, measure_with_browser_metrics
+from selenium_ui.conftest import print_timing, measure_timing, measure_browser_navi_metrics, measure_dom_requests, measure_with_browser_metrics
 
 from selenium_ui.confluence.pages.pages import Login, AllUpdates, PopupManager, Page, Dashboard, TopNavPanel, Editor, \
     Logout
@@ -179,33 +179,34 @@ def create_confluence_page(webdriver, datasets):
     nav_panel = TopNavPanel(webdriver)
     create_page = Editor(webdriver)
 
+    @print_timing("selenium_create_page")
     def measure():
-        PopupManager(webdriver).dismiss_default_popup()
-        nav_panel.click_create()
-        PopupManager(webdriver).dismiss_default_popup()
-        create_page.wait_for_create_page_open()
-        measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
+        def sub_measure():
+            PopupManager(webdriver).dismiss_default_popup()
+            nav_panel.click_create()
+            PopupManager(webdriver).dismiss_default_popup()
+            create_page.wait_for_create_page_open()
+            measure_dom_requests(webdriver, interaction="selenium_create_page:open_create_page_editor")
+            if CONFLUENCE_SETTINGS.extended_metrics:
+                measure_browser_navi_metrics(webdriver, datasets,
+                                             expected_metrics=browser_metrics['selenium_create_page'])
 
+        sub_measure()
 
-    def post_metric_measure():
         PopupManager(webdriver).dismiss_default_popup()
 
         create_page.write_title()
         create_page.write_content()
 
-        create_page.click_submit()
-        page = Page(webdriver)
-        page.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction="selenium_create_page:save_created_page")
+        def sub_measure():
+            create_page.click_submit()
+            page = Page(webdriver)
+            page.wait_for_page_loaded()
+            measure_dom_requests(webdriver, interaction="selenium_create_page:save_created_page")
 
+        sub_measure()
 
-    measure_with_browser_metrics(
-        "selenium_create_page",
-        webdriver,
-        datasets,
-        measure,
-        post_metric_measure
-    )
+    measure()
 
 
 def edit_confluence_page_by_url(webdriver, datasets):
@@ -215,26 +216,29 @@ def edit_confluence_page_by_url(webdriver, datasets):
     datasets['current_session']['edit_page'] = random_page
     edit_page = Editor(webdriver, page_id=page_id)
 
+    @print_timing("selenium_edit_page_by_url")
     def measure():
-        edit_page.go_to()
-        edit_page.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
-                             description=page_description)
+        def sub_measure():
+            edit_page.go_to()
+            edit_page.wait_for_page_loaded()
+            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:open_create_page_editor",
+                                 description=page_description)
+            if CONFLUENCE_SETTINGS.extended_metrics:
+                measure_browser_navi_metrics(webdriver, datasets,
+                                             expected_metrics=browser_metrics['selenium_edit_page_by_url'])
 
-    def post_metric_measure():
+        sub_measure()
+
         edit_page.write_content()
 
-        edit_page.save_edited_page()
-        measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
-                             description=page_description)
+        def sub_measure():
+            edit_page.save_edited_page()
+            measure_dom_requests(webdriver, interaction=f"selenium_edit_page_by_url:save_edited_page",
+                                 description=page_description)
 
-    measure_with_browser_metrics(
-        "selenium_edit_page_by_url",
-        webdriver,
-        datasets,
-        measure,
-        post_metric_measure
-    )
+        sub_measure()
+
+    measure()
 
 
 def edit_confluence_page_quick_edit(webdriver, datasets):
@@ -246,29 +250,32 @@ def edit_confluence_page_quick_edit(webdriver, datasets):
 
     @print_timing("selenium_quick_edit_page_click")
     def measure():
-        page.go_to()
-        page.wait_for_resources_loaded()
-        page.wait_for_page_loaded()
-        PopupManager(webdriver).dismiss_default_popup()
-        page.click_edit()
-        edit_page.wait_for_page_loaded()
-        measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
-                             description=page_description)
+        def sub_measure():
+            page.go_to()
+            page.wait_for_resources_loaded()
+            page.wait_for_page_loaded()
+            PopupManager(webdriver).dismiss_default_popup()
+            page.click_edit()
+            edit_page.wait_for_page_loaded()
+            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:open_create_page_editor",
+                                 description=page_description)
+            if CONFLUENCE_SETTINGS.extended_metrics:
+                measure_browser_navi_metrics(webdriver, datasets,
+                                             expected_metrics=browser_metrics['selenium_quick_edit_page_click'])
 
-    def post_metric_measure():
+        sub_measure()
+
         edit_page.write_content()
 
-        edit_page.save_edited_page()
-        measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
-                             description=page_description)
+        def sub_measure():
+            edit_page.save_edited_page()
+            measure_dom_requests(webdriver, interaction=f"selenium_quick_edit_page_click:save_edited_page",
+                                 description=page_description)
 
-    measure_with_browser_metrics(
-        "selenium_quick_edit_page_click",
-        webdriver,
-        datasets,
-        measure,
-        post_metric_measure
-    )
+        sub_measure()
+
+    measure()
+
 
 def create_inline_comment(webdriver, datasets):
     page = random.choice(datasets[PAGES])
