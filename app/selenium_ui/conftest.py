@@ -232,8 +232,9 @@ def print_timing(interaction=None, explicit_timing=None):
                 with open(selenium_results_file, "a+") as jtl_file:
                     timestamp = round(time() * 1000)
                     if explicit_timing:
+                        timing = str(int(explicit_timing * 1000))
                         jtl_file.write(
-                            f"{timestamp},{str(int(explicit_timing * 1000))},{interaction},,{error_msg},"
+                            f"{timestamp},{timing},{interaction},,{error_msg},"
                             f",{success},0,0,0,0,,0\n")
                     else:
                         jtl_file.write(
