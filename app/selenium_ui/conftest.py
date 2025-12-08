@@ -18,6 +18,7 @@ from selenium.webdriver.chrome.options import Options
 
 from util.common_util import webdriver_pretty_debug
 from util.conf import CONFLUENCE_SETTINGS, JIRA_SETTINGS, BITBUCKET_SETTINGS, JSM_SETTINGS, BAMBOO_SETTINGS
+from util.confluence.browser_metrics import browser_metrics
 from util.exceptions import WebDriverExceptionPostpone
 from util.project_paths import JIRA_DATASET_ISSUES, JIRA_DATASET_JQLS, JIRA_DATASET_KANBAN_BOARDS, \
     JIRA_DATASET_PROJECTS, JIRA_DATASET_SCRUM_BOARDS, JIRA_DATASET_USERS, JIRA_DATASET_CUSTOM_ISSUES, BITBUCKET_USERS, \
@@ -139,6 +140,55 @@ def is_docker():
     )
 
 
+def measure_timing(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time()
+        func(*args, **kwargs)
+        end = time()
+        return end - start
+    return wrapper
+
+
+def measure_with_browser_metrics(interaction_name, webdriver, datasets, measure_func, post_metric_measure_func=None):
+    """
+    Helper function that combines timing for measure_func + post_metric_measure_func + ready_for_user_timing.
+    """
+    # Step 1: Measure core operations
+    @measure_timing
+    def measure1():
+        measure_func()
+    
+    timing = measure1()
+    
+    # Step 2: Measure browser metrics AFTER core operations (not included in core timing)
+    ready_for_user_timing = None
+    if CONFLUENCE_SETTINGS.extended_metrics:
+        ready_for_user_timing = measure_browser_navi_metrics(
+            webdriver, datasets, expected_metrics=browser_metrics[interaction_name]
+        )
+    
+    # Step 3: Measure post_metric_measure_func (included in total timing)
+    if post_metric_measure_func is not None:
+        @measure_timing
+        def measure_post():
+            post_metric_measure_func()
+        
+        post_timing = measure_post()
+        timing = timing + post_timing
+    
+    # Step 4: Calculate combined timing (core + post + ready_for_user)
+    if ready_for_user_timing is not None:
+        timing = timing + (int(ready_for_user_timing) / 1000)
+    
+    # Step 5: Record combined timing using print_timing with explicit_timing
+    @print_timing(interaction_name, explicit_timing=timing)
+    def record_result():
+        pass
+    
+    record_result()
+
+
 def print_timing(interaction=None, explicit_timing=None):
     assert interaction is not None, "Interaction name is not passed to print_timing decorator"
 
@@ -182,8 +232,9 @@ def print_timing(interaction=None, explicit_timing=None):
                 with open(selenium_results_file, "a+") as jtl_file:
                     timestamp = round(time() * 1000)
                     if explicit_timing:
+                        timing = str(int(explicit_timing * 1000))
                         jtl_file.write(
-                            f"{timestamp},{explicit_timing*1000},{interaction},,{error_msg},"
+                            f"{timestamp},{timing},{interaction},,{error_msg},"
                             f",{success},0,0,0,0,,0\n")
                     else:
                         jtl_file.write(
@@ -295,10 +346,21 @@ def get_requests_by_url(requests, url_path):
     return filtered_requests
 
 
+def click_page_body(webdriver):
+    try:
+        body_element = webdriver.find_element("tag name", "body")
+        body_element.click()
+        print("Successfully clicked on page body")
+    except Exception as e:
+        print(f"Failed to click on page body: {e}")
+
+
 def get_wait_browser_metrics(webdriver, expected_metrics):
     attempts = 15
     sleep_time = 0.5
     data = {}
+
+    click_page_body(webdriver) #this resolves browser metric
 
     for i in range(attempts):
         requests = get_performance_logs(webdriver)
@@ -398,8 +460,11 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
     lockfile = f'{selenium_results_file}.lock'
     error_msg = 'Success'
     success = True
+    ready_for_user_timing = None
+    
     if not metrics:
-        return
+        return ready_for_user_timing
+    
     with filelock.SoftFileLock(lockfile):
         with open(selenium_results_file, "a+") as jtl_file:
             for metric in metrics:
@@ -411,6 +476,8 @@ def measure_browser_navi_metrics(webdriver, dataset, expected_metrics):
                     f"{timestamp},{ready_for_user_timing},{interaction},,{error_msg},,{success},0,0,0,0,{node_ip},0\n")
                 print(
                     f"{timestamp},{ready_for_user_timing},{interaction},{error_msg},{success},{node_ip}")
+    
+    return ready_for_user_timing
 
 
 @pytest.fixture(scope="module")
