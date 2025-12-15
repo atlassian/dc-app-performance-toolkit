@@ -114,7 +114,7 @@ jira_version_tag = "11.3.0"
 
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "10.3.12"
+# jira_version_tag = "11.3.0"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large.
 jira_dataset_size = "large"
