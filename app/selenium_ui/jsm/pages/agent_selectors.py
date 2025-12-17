@@ -186,7 +186,7 @@ class InsightViewQueueLocators:
 
 class InsightSearchObjectIql:
     search_object_text_field = (By.CSS_SELECTOR, "textarea[name='iql']")
-    search_iql_button = (By.CLASS_NAME, "rIcon-search")
+    search_iql_button = (By.CSS_SELECTOR, ".rIcon-search, .rlIqlEditor ~ button")
     search_iql_success = (By.XPATH, "//thead/tr[1]")
 
 
