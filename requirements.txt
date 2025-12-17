@@ -3,7 +3,7 @@ pandas==2.3.3
 pytest==8.4.2
 locust==2.42.1
 selenium==4.38.0
-filelock==3.20.0
+filelock==3.20.1
 packaging==25.0
 prettytable==3.16.0
 bzt==1.16.46
