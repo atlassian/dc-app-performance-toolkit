@@ -7,7 +7,6 @@ from selenium_ui.jsm.pages.agent_selectors import LoginPageLocators, PopupLocato
 
 
 class PopupManager(BasePage):
-
     def dismiss_default_popup(self):
         return self.dismiss_popup(PopupLocators.popup_selectors)
 
@@ -126,37 +125,38 @@ class ViewCustomerRequest(BasePage):
                     self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
                     self.return_to_parent_frame()
                     if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                        self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn).click()
                     else:
-                        self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
+                        self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
             elif self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).text != text:
                 self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
                 if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn).click()
+                    self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn).click()
                 else:
-                    self.wait_until_present(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
+                    self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
 
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
         self.wait_until_visible(ViewCustomerRequestLocators.comment_area)
-        textarea = self.get_element(ViewCustomerRequestLocators.comment_collapsed_textarea)
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
-        textarea.click()
+        self.driver.execute_script("arguments[0].scrollIntoView(true);",
+                                   self.wait_until_present(ViewCustomerRequestLocators.comment_collapsed_textarea))
+        self.wait_until_clickable(ViewCustomerRequestLocators.comment_collapsed_textarea).click()
         if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn)
+            comment_button_selector = ViewCustomerRequestLocators.comment_internally_btn
         else:
-            comment_button = self.get_element(ViewCustomerRequestLocators.comment_internally_btn_jsm10)
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", comment_button)
+            comment_button_selector = ViewCustomerRequestLocators.comment_internally_btn_jsm10
+        self.driver.execute_script("arguments[0].scrollIntoView(true);",
+                                   self.wait_until_present(comment_button_selector))
 
         if rte_status:
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
             self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
             self.return_to_parent_frame()
-            comment_button.click()
+            self.wait_until_clickable(comment_button_selector).click()
             self.check_comment_text_is_displayed(comment_text, True)
         else:
             self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
-            comment_button.click()
+            self.wait_until_clickable(comment_button_selector).click()
             self.check_comment_text_is_displayed(comment_text)
 
 

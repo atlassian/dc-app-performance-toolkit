@@ -4,7 +4,7 @@ from collections import OrderedDict
 import time
 
 from packaging import version
-from selenium.common.exceptions import WebDriverException, TimeoutException
+from selenium.common.exceptions import WebDriverException, TimeoutException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
@@ -138,7 +138,11 @@ class BasePage:
             message += (f"Timed out after {time_out} sec waiting for {str(expected_condition)}. \n"
                         f"Locator: {locator}{str(expected_condition)}")
 
-        return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
+        try:
+            return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
+        except StaleElementReferenceException:
+            print(f"Stale element reference detected for {locator}, retrying wait...")
+            return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
 
     def dismiss_popup(self, popup_selectors):
         for selector_type, selector_value in popup_selectors:
