@@ -144,6 +144,43 @@ class BasePage:
             print(f"Stale element reference detected for {locator}, retrying wait...")
             return WebDriverWait(self.driver, time_out).until(expected_condition, message=message)
 
+    def wait_for_dom_mutations_complete(self, timeout=10):
+        start_time = time.time()
+        script = """
+        var callback = arguments[arguments.length - 1];
+        var timeout = arguments[0] * 1000;
+        var lastMutation = Date.now();
+        var startTime = Date.now();
+
+        var observer = new MutationObserver(function() {
+            lastMutation = Date.now();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true
+        });
+
+        var interval = setInterval(function() {
+            if (Date.now() - lastMutation > 500) {
+                observer.disconnect();
+                clearInterval(interval);
+                callback(true);
+            } else if (Date.now() - startTime > timeout) {
+                observer.disconnect();
+                clearInterval(interval);
+                callback(false);
+            }
+        }, 100);
+        """
+        complete = self.driver.execute_async_script(script, timeout)
+        if not complete:
+            print(f'WARNING: DOM mutations did not complete in {timeout} s')
+        else:
+            print(f'DOM mutations completed after {time.time() - start_time} s')
+        return complete
+
     def dismiss_popup(self, popup_selectors):
         for selector_type, selector_value in popup_selectors:
             if self.driver.find_elements(by=selector_type, value=selector_value):
