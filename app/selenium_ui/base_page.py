@@ -185,10 +185,7 @@ class BasePage:
         for selector_type, selector_value in popup_selectors:
             if self.driver.find_elements(by=selector_type, value=selector_value):
                 try:
-                    if selector_type == By.CSS_SELECTOR:
-                        self.driver.execute_script(f"document.querySelector('{selector_value}').click()")
-                    elif selector_type == By.XPATH:
-                        self.driver.find_element(by=selector_type, value=selector_value).click()
+                    self.wait_until_clickable((selector_type, selector_value), 1).click()
                 except (WebDriverException, Exception):
                     pass
 

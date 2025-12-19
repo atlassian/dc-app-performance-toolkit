@@ -310,8 +310,8 @@ def cql_search_two_words(webdriver):
 def cql_search(webdriver, cql_string, print_timing_suffix):
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
-    PopupManager(webdriver).dismiss_default_popup()
     page.wait_for_dom_mutations_complete()
+    PopupManager(webdriver).dismiss_default_popup()
 
     @print_timing(f"selenium_cql_search_{print_timing_suffix}")
     def measure():
