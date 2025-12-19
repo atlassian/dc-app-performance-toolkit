@@ -310,15 +310,19 @@ def cql_search_two_words(webdriver):
 def cql_search(webdriver, cql_string, print_timing_suffix):
     page = Page(webdriver)
     page.wait_until_visible(PageLocators.search_box)
-    page.wait_for_dom_mutations_complete()
     PopupManager(webdriver).dismiss_default_popup()
+    page.wait_for_dom_mutations_complete()
 
     @print_timing(f"selenium_cql_search_{print_timing_suffix}")
     def measure():
+        print(f"Before sending keys {cql_string}")
         page.get_element(PageLocators.search_box).send_keys(cql_string)
+        print("Waiting for search result")
         page.wait_until_any_ec_presented((PageLocators.empty_search_results, PageLocators.search_results),
                                          timeout=30)
+        print("Closing search results")
         page.get_element(PageLocators.close_search_button).click()
+        print("Search finished")
     measure()
 
 
