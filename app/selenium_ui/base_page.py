@@ -182,12 +182,17 @@ class BasePage:
         return complete
 
     def dismiss_popup(self, popup_selectors):
+        dismissed = False
         for selector_type, selector_value in popup_selectors:
             if self.driver.find_elements(by=selector_type, value=selector_value):
                 try:
                     self.wait_until_clickable((selector_type, selector_value), 1).click()
+                    dismissed = True
                 except (WebDriverException, Exception):
                     pass
+        if dismissed:
+            self.wait_for_dom_mutations_complete()
+        return dismissed
 
     def return_to_parent_frame(self):
         return self.driver.switch_to.parent_frame()
