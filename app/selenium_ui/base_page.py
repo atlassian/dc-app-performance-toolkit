@@ -116,6 +116,17 @@ class BasePage:
                            selector_text in selector_text_list)
         return self.__wait_until(expected_condition=any_ec, locator=selector_text_list, time_out=timeout)
 
+    def safe_click(self, locator, retries=3, delay=0.5):
+        for attempt in range(retries):
+            try:
+                self.wait_until_clickable(locator).click()
+                return
+            except StaleElementReferenceException:
+                if attempt < retries - 1:
+                    time.sleep(delay)
+                else:
+                    raise
+
     def __wait_until(self, expected_condition, locator, time_out=timeout):
         message = f"Error in wait_until: "
         ec_type = type(expected_condition)

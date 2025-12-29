@@ -116,25 +116,6 @@ class ViewCustomerRequest(BasePage):
     def wait_for_page_loaded(self):
         self.wait_until_visible(ViewCustomerRequestLocators.bread_crumbs)
 
-    def check_comment_text_is_displayed(self, text, rte_status=None):
-        if self.get_elements(ViewCustomerRequestLocators.comment_text_field_RTE) or \
-                self.get_elements(ViewCustomerRequestLocators.comment_text_field):
-            if rte_status:
-                self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
-                if self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).text != text:
-                    self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(text)
-                    self.return_to_parent_frame()
-                    if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-                        self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn).click()
-                    else:
-                        self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
-            elif self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).text != text:
-                self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(text)
-                if self.get_elements(ViewCustomerRequestLocators.comment_internally_btn):
-                    self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn).click()
-                else:
-                    self.wait_until_clickable(ViewCustomerRequestLocators.comment_internally_btn_jsm10).click()
-
     def add_request_comment(self, rte_status):
         comment_text = f"Add comment from selenium - {self.generate_random_string(30)}"
         self.wait_until_visible(ViewCustomerRequestLocators.comment_area)
@@ -152,12 +133,10 @@ class ViewCustomerRequest(BasePage):
             self.wait_until_available_to_switch(ViewCustomerRequestLocators.comment_text_field_RTE)
             self.wait_until_present(ViewCustomerRequestLocators.comment_tinymce_field).send_keys(comment_text)
             self.return_to_parent_frame()
-            self.wait_until_clickable(comment_button_selector).click()
-            self.check_comment_text_is_displayed(comment_text, True)
+            self.safe_click(comment_button_selector)
         else:
             self.wait_until_present(ViewCustomerRequestLocators.comment_text_field).send_keys(comment_text)
-            self.wait_until_clickable(comment_button_selector).click()
-            self.check_comment_text_is_displayed(comment_text)
+            self.safe_click(comment_button_selector)
 
 
 class Report:
