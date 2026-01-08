@@ -135,9 +135,15 @@ class ConfluenceRestClient(RestClient):
             error_msg='Could not get Confluence nodes count via API',
             expected_status_codes=[
                 200,
+                401,
                 403,
                 500])
-        if response.status_code == 403 and 'clustered installation' in response.text:
+        if (response.status_code in [401,403] and
+                ('clustered installation' in response.text or
+                    ('www-authenticate' in response.headers and
+                    'clustered installation' in response.headers['www-authenticate'])
+                )
+        ):
             return 'Server'
         nodes = [node['id'] for node in response.json()['nodes']]
         return nodes
