@@ -186,7 +186,7 @@ confluence_dataset_size = "large"
 confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
-confluence_cpu      = "8"
+confluence_cpu      = "7"
 confluence_mem      = "20Gi"
 confluence_min_heap = "18432m"
 confluence_max_heap = "18432m"
