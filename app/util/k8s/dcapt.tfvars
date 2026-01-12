@@ -199,9 +199,9 @@ synchrony_max_heap  = "2048m"
 synchrony_stack_size = "2048k"
 
 # Confluence NFS instance resource configuration
-confluence_nfs_requests_cpu    = "2.5"
+confluence_nfs_requests_cpu    = "1"
 confluence_nfs_requests_memory = "3Gi"
-confluence_nfs_limits_cpu      = "3"
+confluence_nfs_limits_cpu      = "1.5"
 confluence_nfs_limits_memory   = "4Gi"
 
 # Storage
