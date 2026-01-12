@@ -200,9 +200,9 @@ synchrony_stack_size = "2048k"
 
 # Confluence NFS instance resource configuration
 confluence_nfs_requests_cpu    = "1"
-confluence_nfs_requests_memory = "3Gi"
+confluence_nfs_requests_memory = "1Gi"
 confluence_nfs_limits_cpu      = "1.5"
-confluence_nfs_limits_memory   = "4Gi"
+confluence_nfs_limits_memory   = "2Gi"
 
 # Storage
 confluence_local_home_size  = "200Gi"
