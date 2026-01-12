@@ -186,10 +186,10 @@ confluence_dataset_size = "large"
 confluence_installation_timeout = 30
 
 # Confluence instance resource configuration
-confluence_cpu      = "6"
-confluence_mem      = "16Gi"
-confluence_min_heap = "12288m"
-confluence_max_heap = "12288m"
+confluence_cpu      = "8"
+confluence_mem      = "20Gi"
+confluence_min_heap = "18432m"
+confluence_max_heap = "118432m"
 
 # Synchrony instance resource configuration
 synchrony_cpu       = "1"
@@ -199,10 +199,10 @@ synchrony_max_heap  = "2048m"
 synchrony_stack_size = "2048k"
 
 # Confluence NFS instance resource configuration
-confluence_nfs_requests_cpu    = "1"
-confluence_nfs_requests_memory = "1Gi"
-confluence_nfs_limits_cpu      = "1.5"
-confluence_nfs_limits_memory   = "2Gi"
+confluence_nfs_requests_cpu    = "2.5"
+confluence_nfs_requests_memory = "3Gi"
+confluence_nfs_limits_cpu      = "3"
+confluence_nfs_limits_memory   = "4Gi"
 
 # Storage
 confluence_local_home_size  = "200Gi"
