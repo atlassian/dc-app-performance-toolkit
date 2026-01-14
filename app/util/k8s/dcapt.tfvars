@@ -214,7 +214,7 @@ confluence_shared_home_size = "200Gi"
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
 confluence_db_major_engine_version = "14"
-confluence_db_instance_class       = "db.m6g.2xlarge"
+confluence_db_instance_class       = "db.m6g.4xlarge"
 confluence_db_allocated_storage    = 200
 confluence_db_iops                 = 1000
 # If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
