@@ -1,4 +1,5 @@
 import argparse
+import re
 from pathlib import Path
 from platform import system
 from subprocess import run
@@ -109,6 +110,10 @@ class StartJMeter:
     def get_settings(self):
         obj = self.read_yml_file(self.yml)
         self.env_settings = obj['settings']['env']
+        jmeter_version = self.env_settings.get('JMETER_VERSION')
+        if jmeter_version and not re.match(r'^\d+(\.\d+)*$', str(jmeter_version)):
+            raise SystemExit(
+                f"ERROR: Invalid JMETER_VERSION format '{jmeter_version}'")
         hostname = self.env_settings['application_hostname']
         if hostname in DEFAULT_HOSTNAMES and not self.args.skip_check:
             raise SystemExit(f"ERROR: Check 'application_hostname' correctness in "
@@ -140,6 +145,7 @@ class StartJMeter:
 
     def launch_jmeter_ui(self):
         jmeter_path = JMETER_HOME / str(self.env_settings['JMETER_VERSION']) / 'bin' / 'jmeter'
+        print(jmeter_path)
         command = [str(jmeter_path), "-p", str(PROPERTIES), "-t", str(self.jmx)]
         print(f"JMeter start command: {' '.join(command)}")
         print(f"Working dir: {APP_DIR}")
