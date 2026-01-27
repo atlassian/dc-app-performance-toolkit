@@ -14,4 +14,10 @@ requestUrlBase = "https://api.bitbucket.org/2.0/repositories/"
 
 userCheckBaseUrl = "https://api.bitbucket.org/2.0/users/"
 
-# adding a comment
+# adding a few more synthetic secrets
+
+aws_access_key_id = "AKIAIOSFODNN7EXAMPLE"
+aws_secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
+const GITHUB_TOKEN_ROVO_GEN = "ghp_1234567890abcdefghijklmnopqrstuvwxyzABCD"
+const GITHUB_TOKEN_ME_GEN = "ghp_1234908888abcqecdefgklmnopqrstuvwxyzABCD"
