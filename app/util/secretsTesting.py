@@ -14,10 +14,7 @@ requestUrlBase = "https://api.bitbucket.org/2.0/repositories/"
 
 userCheckBaseUrl = "https://api.bitbucket.org/2.0/users/"
 
-# adding a few more synthetic secrets
+# Adding another token which should be blocked ideally
+BB_API_ALT_TOKEn = "ATATT3xFfGF0F4HhU6mZxuDqab7hN9l3W7Jhk3Ldwps3Bdn_pWd9A7j_V-3BFC9W-tEsXbEU_YVg9MSaD_6JeWnhYl1ImlLs-JQE--wI0vypysRYqvUA48DP6P_Y2t1TQcHiOuc-dep1v_YKJ_4SCI8jw3Li4V_K8MqOTWRLv-cHfhHEe3IeM5s=8102408F"
 
-aws_access_key_id = "AKIAIOSFODNN7EXAMPLE"
-aws_secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-
-const GITHUB_TOKEN_ROVO_GEN = "ghp_1234567890abcdefghijklmnopqrstuvwxyzABCD"
-const GITHUB_TOKEN_ME_GEN = "ghp_1234908888abcqecdefgklmnopqrstuvwxyzABCD"
+BB_API_ALT_OBSC_Tokn = "ATATT3xFfGF0F4HhU6mZxiDqaF7hN9l3W7Jhk3Ldpsw3Bdn_pWd9A7j_V-3BFC9W-tEsXbEU_YVg9MSaD_6JeWnhYl1ImlLs-JQE--wI0vyvianYqvUA48DP6P_Y2t1TQcHOuch-dep2s_LKG_4SCI8jw3Li4V_K8MqOTWRLv-cHfhHER3IeM7s=8102408F"
