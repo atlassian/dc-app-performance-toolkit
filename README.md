@@ -28,7 +28,7 @@ In case of technical questions, issues or problems with DC Apps Performance Tool
 ## Installation and set up
 
 #### Dependencies
-* Python 3.10 - 3.14 and pip
+* Python 3.10 - 3.13 and pip
 * JDK 17 or JDK 21
 * Google Chrome web browser
 * Git client (only for Bitbucket DC)
@@ -75,8 +75,10 @@ source venv/bin/activate
 4. Install dependencies:
 ```
 pip install -r requirements.txt
-
-pip install urwid==2.1.2 --force-reinstall # if you intend to use locust as main load-executor while runnning tests
+```
+5. Optional: Reinstall urwid package if you intend to use locust as main load-executor while runnning tests:
+```
+pip install urwid==2.1.2 --force-reinstall
 ```
 
 ### Linux setup
