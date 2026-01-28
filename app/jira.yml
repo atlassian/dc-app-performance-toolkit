@@ -54,7 +54,7 @@ services:
       - python util/post_run/cleanup_results_dir.py
   - module: pip-install
     packages:
-      - selenium==4.38.0
+      - selenium==4.39.0
 execution:
   - scenario: ${load_executor}
     executor: ${load_executor}
