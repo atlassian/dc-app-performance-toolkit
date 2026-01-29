@@ -1,6 +1,6 @@
 matplotlib==3.10.7
 pandas==2.3.3
-pytest==8.4.2
+pytest==9.0.2
 locust==2.42.1
 selenium==4.39.0
 filelock==3.20.3
