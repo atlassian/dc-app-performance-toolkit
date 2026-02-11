@@ -87,10 +87,10 @@ max_cluster_capacity = 6
 # Create a docker-in-docker privileged container as execution environment pod
 
 start_test_deployment = "true"
-test_deployment_cpu_request = "3"
-test_deployment_cpu_limit = "4"
-test_deployment_mem_request = "8Gi"
-test_deployment_mem_limit = "8Gi"
+test_deployment_cpu_request = "7"
+test_deployment_cpu_limit = "8"
+test_deployment_mem_request = "15Gi"
+test_deployment_mem_limit = "16Gi"
 
 ################################################################################
 # Jira/JSM Settings
