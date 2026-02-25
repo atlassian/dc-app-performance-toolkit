@@ -12,7 +12,7 @@ import uuid
 logger = init_logger(app_type='confluence')
 confluence_dataset = confluence_datasets()
 
-TWO_WORDS_CQL = 'sheep agreement'
+TWO_WORDS_CQL = 'confluence agreement'
 THREE_WORDS_CQL = 'shoulder trip discussion'
 
 
