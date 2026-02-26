@@ -1561,7 +1561,7 @@ if ( sleep_time &gt; 0 ) {
                     <elementProp name="cql" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">true</boolProp>
                       <stringProp name="Argument.name">cql</stringProp>
-                      <stringProp name="Argument.value">siteSearch~&quot;confluence agreement&quot;</stringProp>
+                      <stringProp name="Argument.value">siteSearch~&quot;sheep agreement&quot;</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
