@@ -27,7 +27,7 @@ def retry(exception_type=Exception, tries=DEFAULT_RETRY_COUNT, delay=DEFAULT_RET
                 except exception_type as e:
                     logging.error(f"Attempt {attempt + 1} failed with error: {e}")
                     if attempt < tries - 1:
-                        time.sleep(delay)
+                        sleep(delay)
                     else:
                         raise
         return wrapper
@@ -985,6 +985,70 @@ def delete_dynamo_bucket_tf_state(cluster_name, aws_region):
             logging.warning(f"Could not delete dynamo db '{table}': {e}")
 
 
+def dynamodb_list_tables_all(dynamodb_client):
+    table_names = []
+    paginator = dynamodb_client.get_paginator('list_tables')
+    for page in paginator.paginate():
+        table_names.extend(page.get('TableNames', []))
+    return table_names
+
+
+def delete_expired_dynamodb_tables():
+    for rgn in REGIONS:
+        logging.info(f"Region: {rgn}")
+        dynamodb_client = boto3.client('dynamodb', region_name=rgn)
+        try:
+            table_names = dynamodb_list_tables_all(dynamodb_client)
+        except exceptions.EndpointConnectionError as e:
+            logging.error(f"Could not connect to DynamoDB endpoint URL: {e}")
+            continue
+
+        for table_name in table_names:
+            if not table_name.startswith('atl_dc_'):
+                continue
+            try:
+                table_desc = dynamodb_client.describe_table(TableName=table_name).get('Table', {})
+            except botocore.exceptions.ClientError as e:
+                logging.warning(f"Could not describe DynamoDB table {table_name}: {e}")
+                continue
+
+            table_arn = table_desc.get('TableArn')
+            if not table_arn:
+                continue
+
+            try:
+                response = dynamodb_client.list_tags_of_resource(ResourceArn=table_arn)
+                tags = response.get('Tags', [])
+            except botocore.exceptions.ClientError as e:
+                raise RuntimeError(f"Could not list tags for {table_arn}: {e}")
+            persist_days = next((tag.get('Value') for tag in tags if tag.get('Key') == 'persist_days'), None)
+            if not persist_days:
+                logging.warning(f"DynamoDB table {table_name} does not have 'persist_days' tag; skipping")
+                continue
+            if not is_float(persist_days):
+                persist_days = 0
+
+            created_at = table_desc.get('CreationDateTime')
+            if not created_at:
+                logging.warning(f"DynamoDB table {table_name} has no CreationDateTime; skipping")
+                continue
+
+            created_date_timestamp = created_at.timestamp()
+            persist_seconds = float(persist_days) * 24 * 60 * 60
+            now = time()
+            if created_date_timestamp + persist_seconds > now:
+                logging.info(f"DynamoDB table {table_name} is not EOL yet; skipping")
+                continue
+
+            try:
+                logging.info(
+                    f"DynamoDB table {table_name} is EOL (created_at={created_at.isoformat()}, persist_days={persist_days}); deleting"
+                )
+                dynamodb_client.delete_table(TableName=table_name)
+            except botocore.exceptions.ClientError as e:
+                logging.warning(f"Could not delete DynamoDB table {table_name}: {e}")
+
+
 def delete_expired_tf_state_s3_buckets():
     for rgn in REGIONS:
         logging.info(f"Region: {rgn}")
@@ -1146,6 +1210,8 @@ def main():
     delete_unused_volumes()
     logging.info("Search for abandoned S3 buckets")
     delete_expired_tf_state_s3_buckets()
+    logging.info("Search for abandoned DynamoDB tables")
+    delete_expired_dynamodb_tables()
 
 
 if __name__ == '__main__':
