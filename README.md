@@ -76,9 +76,9 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-5. Optional: Reinstall urwid package if you intend to use locust as main load-executor while runnning tests:
+5. Optional: to use locust as main load-executor while running tests uninstall 'trio' and 'trio-websocket because they conflict with gevent monkey-patching used by bzt's Locust wrapper:
 ```
-pip install urwid==2.1.2 --force-reinstall
+pip uninstall -y trio trio-websocket
 ```
 
 ### Linux setup
