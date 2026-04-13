@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2026-03-12"
+date: "2026-04-13"
 ---
 # Data Center App Performance Toolkit User Guide For Jira Service Management
 
@@ -112,8 +112,7 @@ Below process describes how to install low-tier Jira Service Management DC with 
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 
    {{% note %}}
-   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   If you don't have a license, you can request a trial one for testing purposes via an ECOHELP ticket.
    {{% /note %}}
 
 6. Optional variables to override:
@@ -447,8 +446,7 @@ Below process describes how to install enterprise-scale Jira Service Management 
    - `region` - AWS region for deployment.  **Do not change default region (`us-east-2`). If specific region is required, contact support.**
    
    {{% note %}}
-   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   If you don't have your own license, you can request a trial license for testing purposes via ECOHELP ticket.
    {{% /note %}}
 
 6. Optional variables to override:

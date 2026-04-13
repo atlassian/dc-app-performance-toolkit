@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2026-03-12"
+date: "2026-04-13"
 ---
 # Data Center App Performance Toolkit User Guide For Crowd
 
@@ -87,8 +87,7 @@ specifically for performance testing during the DC app review process.
    - `region` - **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 
    {{% note %}}
-   New trial license could be generated on [my atlassian](https://my.atlassian.com/license/evaluation).
-   Use `BX02-9YO1-IN86-LO5G` Server ID for generation.
+   If you don't have a license, you can request a trial one for testing purposes via an ECOHELP ticket.
    {{% /note %}}
 
 6. From local terminal (Git Bash for Windows users) start the installation (~40min):
