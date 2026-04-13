@@ -410,7 +410,7 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 
    {{% note %}}
-   If you don't have your own license, you can request a trial license for testing purposes via ECOHELP ticket.
+   If you don't have a license, you can request a trial one for testing purposes via an ECOHELP ticket.
    {{% /note %}}
 
 6. Optional variables to override:
