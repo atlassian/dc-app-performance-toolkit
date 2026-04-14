@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2026-04-13"
+date: "2026-04-14"
 ---
 # Data Center App Performance Toolkit User Guide For Jira
 
@@ -110,7 +110,7 @@ Below process describes how to install low-tier Jira DC with "small" dataset inc
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 
    {{% note %}}
-   If you don't have a license, you can request a trial one for testing purposes via an ECOHELP ticket.
+   If you don't have a license, you can request a trial one for DCAPT performance testing purposes via your open DC Annual Review ECOHELP ticket.
    {{% /note %}}
 
 6. Optional variables to override:
@@ -410,7 +410,7 @@ Below process describes how to install enterprise-scale Jira DC with "large" dat
    - `region` - AWS region for deployment. **Do not change default region (`us-east-2`). If specific region is required, contact support.**
 
    {{% note %}}
-   If you don't have a license, you can request a trial one for testing purposes via an ECOHELP ticket.
+   If you don't have a license, you can request a trial one for DCAPT performance testing purposes via your open DC Annual Review ECOHELP ticket.
    {{% /note %}}
 
 6. Optional variables to override:
