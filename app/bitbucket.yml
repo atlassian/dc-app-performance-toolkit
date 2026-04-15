@@ -23,6 +23,9 @@ settings:
     allow_analytics: No                # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     environment_compliance_check: True # Pre-test environment compliance validation. Set to "False" to skip it.
     local_chrome_binary_path:          # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
+    chrome_options:                # Optional Chrome browser options for Selenium. Avoids manual edits to Python files in CI/CD.
+      arguments:                   # List of Chrome command-line arguments, e.g. ["--disable-gpu", "--remote-debugging-port=9222"]
+      experimental_options:        # Chrome experimental options. 'prefs' are deep-merged with defaults, so you can override specific keys only.
 
 services:
   - module: shellexec
