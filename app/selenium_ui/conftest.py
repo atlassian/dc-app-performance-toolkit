@@ -275,8 +275,24 @@ def webdriver(app_settings):
         # Prevent Chrome from showing the search engine prompt
         chrome_options.add_argument("--disable-search-engine-choice-screen")
         chrome_options.add_argument("--no-first-run")
-        chrome_options.add_experimental_option(
-            'prefs', {'intl.accept_languages': 'en,en_US'})
+        # Build prefs by starting with the default language preference and
+        # deep-merging any user-supplied prefs on top, so user values win.
+        default_prefs = {'intl.accept_languages': 'en,en_US'}
+        user_experimental = app_settings.chrome_options['experimental_options']
+        user_prefs = user_experimental.get('prefs', {})
+        merged_prefs = {**default_prefs, **user_prefs}
+        chrome_options.add_experimental_option('prefs', merged_prefs)
+
+        # Apply any remaining user-supplied experimental options (excluding prefs,
+        # which was already handled above).
+        for key, value in user_experimental.items():
+            if key != 'prefs':
+                chrome_options.add_experimental_option(key, value)
+
+        # Apply any user-supplied Chrome arguments from the YML config.
+        for argument in app_settings.chrome_options['arguments']:
+            chrome_options.add_argument(argument)
+
         chrome_options.set_capability(
             'goog:loggingPrefs', {
                 'performance': 'ALL'})

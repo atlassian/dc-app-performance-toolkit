@@ -35,6 +35,16 @@ class BaseAppSettings:
     def server_url(self):
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
 
+    @property
+    def chrome_options(self):
+        # Returns user-defined chrome options from the YML env section.
+        # Supports 'arguments' (list) and 'experimental_options' (dict).
+        options = self.env_settings.get('chrome_options') or {}
+        return {
+            'arguments': options.get('arguments') or [],
+            'experimental_options': options.get('experimental_options') or {},
+        }
+
     def get_property(self, property_name):
         if property_name not in self.env_settings:
             raise Exception(f'Application property {property_name} was not found in .yml configuration file')

@@ -38,6 +38,9 @@ settings:
     start_plan_timeout: 60             # maximum timeout of plan to start
     default_dataset_plan_duration: 60  # expected plan execution duration
     local_chrome_binary_path:          # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
+    chrome_options:                # Optional Chrome browser options for Selenium. Avoids manual edits to Python files in CI/CD.
+      arguments:                   # List of Chrome command-line arguments, e.g. ["--disable-gpu", "--remote-debugging-port=9222"]
+      experimental_options:        # Chrome experimental options. 'prefs' are deep-merged with defaults, so you can override specific keys only.
 
 services:
   - module: shellexec
