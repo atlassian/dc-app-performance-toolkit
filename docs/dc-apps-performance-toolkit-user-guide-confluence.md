@@ -4,7 +4,7 @@ platform: platform
 product: marketplace
 category: devguide
 subcategory: build
-date: "2026-04-14"
+date: "2026-04-21"
 ---
 # Data Center App Performance Toolkit User Guide For Confluence
 
