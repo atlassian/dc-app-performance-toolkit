@@ -3,7 +3,7 @@ import yaml
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
 TOOLKIT_VERSION = '8.10.2'
-UNSUPPORTED_VERSION = '8.8.0'
+UNSUPPORTED_VERSION = '8.7.0'
 
 
 def read_yml_file(file):
