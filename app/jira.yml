@@ -39,6 +39,9 @@ settings:
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
     local_chrome_binary_path:      # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
+    chrome_options:                # Optional Chrome browser options for Selenium. Avoids manual edits to Python files in CI/CD.
+      arguments:                   # List of Chrome command-line arguments, e.g. ["--disable-gpu", "--remote-debugging-port=9222"]
+      experimental_options:        # Chrome experimental options. 'prefs' are deep-merged with defaults, so you can override specific keys only.
 
 services:
   - module: shellexec
@@ -117,7 +120,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "146.0.7680.72" # Supports Chrome version 146. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "147.0.7727.57" # Supports Chrome version 147. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml

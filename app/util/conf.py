@@ -2,7 +2,7 @@ import yaml
 
 from util.project_paths import JIRA_YML, CONFLUENCE_YML, BITBUCKET_YML, JSM_YML, CROWD_YML, BAMBOO_YML
 
-TOOLKIT_VERSION = '8.10.1'
+TOOLKIT_VERSION = '8.10.2'
 UNSUPPORTED_VERSION = '8.7.0'
 
 
@@ -34,6 +34,16 @@ class BaseAppSettings:
     @property
     def server_url(self):
         return f'{self.protocol}://{self.hostname}:{self.port}{self.postfix}'
+
+    @property
+    def chrome_options(self):
+        # Returns user-defined chrome options from the YML env section.
+        # Supports 'arguments' (list) and 'experimental_options' (dict).
+        options = self.env_settings.get('chrome_options') or {}
+        return {
+            'arguments': options.get('arguments') or [],
+            'experimental_options': options.get('experimental_options') or {},
+        }
 
     def get_property(self, property_name):
         if property_name not in self.env_settings:
