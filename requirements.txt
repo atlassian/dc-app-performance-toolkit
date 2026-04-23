@@ -1,5 +1,5 @@
 matplotlib==3.10.8
-pandas==2.3.3
+pandas==3.0.2
 pytest==9.0.3
 locust==2.43.1
 selenium==4.39.0
