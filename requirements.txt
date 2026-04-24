@@ -4,7 +4,7 @@ pytest==9.0.3
 locust==2.43.1
 selenium==4.39.0
 filelock==3.20.3
-packaging==25.0
+packaging==26.2
 prettytable==3.17.0
 bzt==1.16.49
 urwid==3.0.2
