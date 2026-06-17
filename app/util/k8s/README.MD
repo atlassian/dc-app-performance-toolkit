@@ -32,7 +32,7 @@ docker run --pull=always --env-file aws_envs \
 -v "/$PWD/dcapt-small.tfvars:/data-center-terraform/conf.tfvars" \
 -v "/$PWD/dcapt-snapshots.json:/data-center-terraform/dcapt-snapshots.json" \
 -v "/$PWD/logs:/data-center-terraform/logs" \
--it atlassianlabs/terraform:terraform:2.9.23 ./install.sh -c conf.tfvars
+-it atlassianlabs/terraform:2.9.23 ./install.sh -c conf.tfvars
 ```
 ### Terminate development environment
 Note: install and uninstall commands have to use the same `atlassianlabs/terraform:TAG` image tag.
