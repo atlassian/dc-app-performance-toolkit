@@ -1,5 +1,5 @@
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 from selenium_ui.conftest import retry
 import time
 import random
@@ -297,6 +297,10 @@ class AdminPage(BasePage):
     def is_websudo(self):
         return True if self.get_elements(AdminLocators.web_sudo_password) else False
 
+    def is_login_gateway(self):
+        return bool(self.get_elements(LoginPageLocators.login_field)
+                    or self.get_elements(LoginPageLocators.login_field_2sv))
+
     def do_websudo(self, password):
         self.wait_until_clickable(AdminLocators.web_sudo_password).send_keys(password)
         self.wait_until_clickable(AdminLocators.web_sudo_submit_btn).click()
@@ -304,6 +308,26 @@ class AdminPage(BasePage):
 
     def go_to(self, password=None):
         super().go_to()
-        self.wait_for_page_loaded()
+        try:
+            self.wait_until_any_ec_presented(
+                selectors=[
+                    AdminLocators.web_sudo_password,
+                    AdminLocators.admin_search_link,
+                    LoginPageLocators.login_field,
+                    LoginPageLocators.login_field_2sv,
+                ],
+                timeout=self.timeout,
+            )
+        except TimeoutException as exc:
+            raise RuntimeError(
+                "Jira admin page did not open as an authenticated Jira admin session. "
+                f"Current URL: {self.driver.current_url}"
+            ) from exc
+
         if self.is_websudo():
             self.do_websudo(password)
+        elif self.is_login_gateway() or not self.get_elements(AdminLocators.admin_search_link):
+            raise RuntimeError(
+                "Jira admin page did not open as an authenticated Jira admin session. "
+                f"Current URL: {self.driver.current_url}"
+            )
