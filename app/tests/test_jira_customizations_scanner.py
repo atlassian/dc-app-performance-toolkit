@@ -29,6 +29,9 @@ def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
     config = load_yaml(JIRA_CONFIG_PATH)
     env = config["settings"]["env"]
     properties = config["scenarios"]["jmeter"]["properties"]
+    selenium_execution = next(
+        execution for execution in config["execution"] if execution["scenario"] == "selenium"
+    )
 
     assert env["concurrency"] == 200
     assert env["test_duration"] == "45m"
@@ -44,6 +47,7 @@ def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
     assert "customization_insights_rest_assertion" not in env
     assert "customization_insights_rest_path" not in properties
     assert "customization_insights_rest_assertion" not in properties
+    assert selenium_execution.get("iterations") == 1
 
 
 def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
@@ -67,6 +71,7 @@ def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
         "runner": "pytest",
         "hold-for": "${test_duration}",
         "delay": "${ramp-up}",
+        "iterations": 1,
     }
 
 

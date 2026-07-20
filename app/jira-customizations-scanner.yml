@@ -12,5 +12,6 @@ settings:
   - scenario: selenium
     executor: selenium
     runner: pytest
+    iterations: 1
     hold-for: ${test_duration}
     delay: ${ramp-up}

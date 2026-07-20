@@ -42,8 +42,9 @@ a 45-minute hold.
 bzt jira.yml
 ```
 
-The following opt-in profile is the short release-regression run: it changes
-the hold to 25 minutes and delays the Customizations Scanner Selenium scenario
+The Customizations Scanner Selenium journey runs exactly once per profile
+invocation. The following opt-in profile is the short release-regression run:
+it changes the JMeter hold to 25 minutes and delays that one Selenium journey
 by 3 minutes.
 
 ```bash
