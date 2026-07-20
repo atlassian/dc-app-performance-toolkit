@@ -28,6 +28,7 @@ def load_yaml(path):
 def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
     config = load_yaml(JIRA_CONFIG_PATH)
     env = config["settings"]["env"]
+    properties = config["scenarios"]["jmeter"]["properties"]
 
     assert env["concurrency"] == 200
     assert env["test_duration"] == "45m"
@@ -39,6 +40,10 @@ def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
     assert env["customization_insights_completed_text"] == "Done"
     assert env["customization_insights_scan_timeout"] == 1200
     assert env["standalone_extension"] == 0
+    assert "customization_insights_rest_path" not in env
+    assert "customization_insights_rest_assertion" not in env
+    assert "customization_insights_rest_path" not in properties
+    assert "customization_insights_rest_assertion" not in properties
 
 
 def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
