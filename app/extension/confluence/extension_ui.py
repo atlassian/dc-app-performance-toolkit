@@ -1,4 +1,5 @@
 import random
+import pytest
 
 from selenium.webdriver.common.by import By
 
@@ -9,6 +10,10 @@ from util.conf import CONFLUENCE_SETTINGS
 
 
 def app_specific_action(webdriver, datasets):
+    config = CONFLUENCE_SETTINGS.customization_insights
+    if not config.enabled:
+        pytest.skip("Customization Insights action is disabled.")
+
     page = BasePage(webdriver)
     if datasets['custom_pages']:
         app_specific_page_id = datasets['custom_page_id']

@@ -1,32 +1,34 @@
-import re
 from locustio.common_utils import init_logger, jira_measure, run_as_specific_user  # noqa F401
+from util.conf import JIRA_SETTINGS
 
 logger = init_logger(app_type='jira')
 
 
-@jira_measure("locust_app_specific_action")
+@jira_measure("locust_customizations_scanner_status")
 # WebSudo is a feature that enhances security by requiring administrators to re-authenticate before
 # accessing administrative functions within Atlassian applications.
 # do_websudo=True requires user administrative rights, otherwise requests fail.
 #@run_as_specific_user(username='admin', password='admin', do_websudo=False)  # run as specific user
 def app_specific_action(locust):
-    r = locust.get('/app/get_endpoint', catch_response=True)  # call app-specific GET endpoint
-    content = r.content.decode('utf-8')   # decode response content
+    config = JIRA_SETTINGS.customization_insights
+    if not config.rest_path or not config.rest_assertion:
+        raise ValueError(
+            "Customization Insights 'rest_path' and 'rest_assertion' must be set "
+            "under settings.env.customization_insights in app/jira.yml."
+        )
 
-    token_pattern_example = '"token":"(.+?)"'
-    id_pattern_example = '"id":"(.+?)"'
-    token = re.findall(token_pattern_example, content)  # get TOKEN from response using regexp
-    id = re.findall(id_pattern_example, content)    # get ID from response using regexp
+    with locust.get(
+        config.rest_path,
+        headers={'Accept': 'application/json,text/plain,*/*'},
+        catch_response=True,
+    ) as r:
+        content = r.content.decode('utf-8')
+        if r.status_code != 200:
+            message = f"Customization Scanner status endpoint returned {r.status_code}: {content}"
+        elif config.rest_assertion not in content:
+            message = f"'{config.rest_assertion}' was not found in {content}"
+        else:
+            return
 
-    logger.locust_info(f'token: {token}, id: {id}')  # log info for debug when verbose is true in jira.yml file
-    if 'assertion string' not in content:
-        logger.error(f"'assertion string' was not found in {content}")
-    assert 'assertion string' in content  # assert specific string in response content
-
-    body = {"id": id, "token": token}  # include parsed variables to POST request body
-    headers = {'content-type': 'application/json'}
-    r = locust.post('/app/post_endpoint', body, headers, catch_response=True)  # call app-specific POST endpoint
-    content = r.content.decode('utf-8')
-    if 'assertion string after successful POST request' not in content:
-        logger.error(f"'assertion string after successful POST request' was not found in {content}")
-    assert 'assertion string after successful POST request' in content  # assertion after POST request
+        logger.error(message)
+        r.failure(message)
