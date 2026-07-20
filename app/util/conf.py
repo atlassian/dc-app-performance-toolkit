@@ -77,8 +77,10 @@ class CustomizationInsightsSettings:
             env_settings.get('customization_insights_completed_text') or config.get('completed_text') or "Done")
         self.scan_timeout = int(
             env_settings.get('customization_insights_scan_timeout') or config.get('scan_timeout') or 600)
-        self.enabled = str(
-            env_settings.get('customization_insights_enabled') or config.get('enabled') or "false").lower() == "true"
+        enabled = (env_settings['customization_insights_enabled']
+                   if 'customization_insights_enabled' in env_settings
+                   else config.get('enabled') or "false")
+        self.enabled = str(enabled).lower() == "true"
 
 
 class JiraSettings(BaseAppSettings):

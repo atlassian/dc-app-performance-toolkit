@@ -160,6 +160,15 @@ def test_customization_insights_settings_read_status_contract_from_both_yaml_sha
     assert settings.in_progress_text == "In progress"
 
 
+def test_flat_scanner_disable_overrides_nested_enable():
+    settings = CustomizationInsightsSettings({
+        "customization_insights_enabled": False,
+        "customization_insights": {"enabled": True},
+    })
+
+    assert settings.enabled is False
+
+
 def test_scanner_status_uses_configured_selector_type_and_value():
     driver = StatusDriver(["In progress"])
 
