@@ -32,6 +32,34 @@ Run Taurus.
 bzt jira.yml
 ```
 
+### Customizations Scanner release-regression run
+Run these commands from the `app` directory.
+
+The standard command is normal Run 4: 200 JMeter users, a 3-minute ramp, and
+a 45-minute hold.
+
+```bash
+bzt jira.yml
+```
+
+The following opt-in profile is the short release-regression run: it changes
+the hold to 25 minutes and delays the Customizations Scanner Selenium scenario
+by 3 minutes.
+
+```bash
+bzt jira.yml jira-customizations-scanner.yml
+```
+
+This profile reports the one-time
+`selenium_customizations_scanner:full_scan` duration. JMeter traffic runs
+uninterrupted, so review its availability and latency metrics alongside the
+scan duration.
+
+Use a prior release as a baseline only when the dataset, cluster topology,
+JVM, application version alignment, and selected profile are the same. Record
+the agreed scan-duration tolerance outside this repository, or add it here
+only after the team supplies a value.
+
 ## Results
 Results are located in the `resutls/jira/YY-MM-DD-hh-mm-ss` directory:
 * `bzt.log` - log of bzt run
