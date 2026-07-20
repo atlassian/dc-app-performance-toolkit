@@ -35,9 +35,24 @@ settings:
     view_kanban_board: 7
     view_backlog: 6
     browse_boards: 1
-    standalone_extension: 0 # By default disabled
+    standalone_extension: 0 # The scanner is a one-time administrative Selenium KPI, not weighted normal-user JMeter traffic.
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
+    # Customization Insights app-specific performance action settings.
+    # The scanner is an administrative KPI measured once through Selenium, outside normal weighted user traffic.
+    customization_insights_enabled: true                                        # Set true only after Customizations Scanner plugin is installed/enabled.
+    customization_insights_ui_path: /plugins/servlet/customizations-scanner       # Plugin UI path, relative to Jira base URL.
+    customization_insights_ready_selector: new-scan-btn                           # Stable selector that means the scanner UI is ready.
+    customization_insights_ready_selector_type: id                                # css or id.
+    customization_insights_new_scan_selector: new-scan-btn                        # Button that starts a new scan.
+    customization_insights_status_selector_type: id                                # css or id.
+    customization_insights_status_selector: scan-panel-summary                    # Status lozenge updated from In progress to Done.
+    customization_insights_in_progress_text: In progress                           # Text that confirms the scan has started.
+    customization_insights_completed_text: Done                                   # Text that means scan completed successfully.
+    customization_insights_scan_timeout: 1200                                     # Max seconds to wait for scan completion.
+    customization_insights_detail_path:                                           # Optional detail/drilldown UI path. Leave blank to skip.
+    customization_insights_detail_selector:                                       # Optional stable selector for detail page readiness.
+    customization_insights_detail_selector_type: css                              # css or id.
     local_chrome_binary_path:      # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
     chrome_options:                # Optional Chrome browser options for Selenium. Avoids manual edits to Python files in CI/CD.
       arguments:                   # List of Chrome command-line arguments, e.g. ["--disable-gpu", "--remote-debugging-port=9222"]
@@ -68,6 +83,7 @@ execution:
     executor: selenium
     runner: pytest
     hold-for: ${test_duration}
+    # Its scanner action is a one-time administrative KPI; normal JMeter users never poll scanner status.
 scenarios:
   selenium:
     script: selenium_ui/jira_ui.py

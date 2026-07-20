@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, WebDriverException
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -12,6 +13,56 @@ from extension.jira import extension_ui
 from selenium_ui.jira.pages.pages import AdminPage
 from selenium_ui.jira.pages.selectors import AdminLocators, LoginPageLocators
 from util.conf import CustomizationInsightsSettings
+
+
+APP_DIRECTORY = Path(__file__).resolve().parents[1]
+JIRA_CONFIG_PATH = APP_DIRECTORY / "jira.yml"
+SCANNER_OVERLAY_PATH = APP_DIRECTORY / "jira-customizations-scanner.yml"
+
+
+def load_yaml(path):
+    with path.open() as config_file:
+        return yaml.safe_load(config_file)
+
+
+def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
+    config = load_yaml(JIRA_CONFIG_PATH)
+    env = config["settings"]["env"]
+
+    assert env["concurrency"] == 200
+    assert env["test_duration"] == "45m"
+    assert env["ramp-up"] == "3m"
+    assert env["customization_insights_enabled"] is True
+    assert env["customization_insights_status_selector_type"] == "id"
+    assert env["customization_insights_status_selector"] == "scan-panel-summary"
+    assert env["customization_insights_in_progress_text"] == "In progress"
+    assert env["customization_insights_completed_text"] == "Done"
+    assert env["customization_insights_scan_timeout"] == 1200
+    assert env["standalone_extension"] == 0
+
+
+def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
+    assert SCANNER_OVERLAY_PATH.exists()
+
+    config = load_yaml(SCANNER_OVERLAY_PATH)
+    executions = config["~execution"]
+
+    assert config["settings"]["env"]["test_duration"] == "25m"
+    assert len(executions) == 2
+    assert executions[0] == {
+        "scenario": "${load_executor}",
+        "executor": "${load_executor}",
+        "concurrency": "${concurrency}",
+        "hold-for": "${test_duration}",
+        "ramp-up": "${ramp-up}",
+    }
+    assert executions[1] == {
+        "scenario": "selenium",
+        "executor": "selenium",
+        "runner": "pytest",
+        "hold-for": "${test_duration}",
+        "delay": "${ramp-up}",
+    }
 
 
 class FakeElement:

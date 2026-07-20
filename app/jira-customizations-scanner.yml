@@ -1,0 +1,16 @@
+---
+settings:
+  env:
+    test_duration: 25m
+
+~execution:
+  - scenario: ${load_executor}
+    executor: ${load_executor}
+    concurrency: ${concurrency}
+    hold-for: ${test_duration}
+    ramp-up: ${ramp-up}
+  - scenario: selenium
+    executor: selenium
+    runner: pytest
+    hold-for: ${test_duration}
+    delay: ${ramp-up}
