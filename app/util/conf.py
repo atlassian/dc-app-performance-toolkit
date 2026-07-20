@@ -51,6 +51,36 @@ class BaseAppSettings:
         return self.env_settings[property_name]
 
 
+class CustomizationInsightsSettings:
+
+    def __init__(self, env_settings):
+        config = env_settings.get('customization_insights') or {}
+        self.ui_path = env_settings.get('customization_insights_ui_path') or config.get('ui_path') or ""
+        self.ready_selector = env_settings.get('customization_insights_ready_selector') or config.get('ready_selector') or ""
+        self.ready_selector_type = (
+            env_settings.get('customization_insights_ready_selector_type') or config.get('ready_selector_type') or "css")
+        self.detail_path = env_settings.get('customization_insights_detail_path') or config.get('detail_path') or ""
+        self.detail_selector = env_settings.get('customization_insights_detail_selector') or config.get('detail_selector') or ""
+        self.detail_selector_type = (
+            env_settings.get('customization_insights_detail_selector_type') or config.get('detail_selector_type') or "css")
+        self.rest_path = env_settings.get('customization_insights_rest_path') or config.get('rest_path') or ""
+        self.rest_assertion = (
+            env_settings.get('customization_insights_rest_assertion') or config.get('rest_assertion') or "")
+        self.new_scan_selector = (
+            env_settings.get('customization_insights_new_scan_selector') or config.get('new_scan_selector') or "")
+        self.status_selector_type = (
+            env_settings.get('customization_insights_status_selector_type') or config.get('status_selector_type') or "css")
+        self.status_selector = env_settings.get('customization_insights_status_selector') or config.get('status_selector') or ""
+        self.in_progress_text = (
+            env_settings.get('customization_insights_in_progress_text') or config.get('in_progress_text') or "In progress")
+        self.completed_text = (
+            env_settings.get('customization_insights_completed_text') or config.get('completed_text') or "Done")
+        self.scan_timeout = int(
+            env_settings.get('customization_insights_scan_timeout') or config.get('scan_timeout') or 600)
+        self.enabled = str(
+            env_settings.get('customization_insights_enabled') or config.get('enabled') or "false").lower() == "true"
+
+
 class JiraSettings(BaseAppSettings):
 
     def __init__(self, config_yml):
@@ -61,6 +91,7 @@ class JiraSettings(BaseAppSettings):
         self.verbose = self.settings['verbose']
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
         self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
+        self.customization_insights = CustomizationInsightsSettings(self.env_settings)
 
 
 class ConfluenceSettings(BaseAppSettings):
@@ -74,6 +105,7 @@ class ConfluenceSettings(BaseAppSettings):
         self.total_actions_per_hour = self.get_property('total_actions_per_hour')
         self.extended_metrics = self.get_property('extended_metrics')
         self.local_chrome_binary_path = self.get_property('local_chrome_binary_path')
+        self.customization_insights = CustomizationInsightsSettings(self.env_settings)
 
 
 class BitbucketSettings(BaseAppSettings):
