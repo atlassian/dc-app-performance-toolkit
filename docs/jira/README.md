@@ -44,17 +44,19 @@ bzt jira.yml
 
 The Customizations Scanner Selenium journey runs exactly once per profile
 invocation. The following opt-in profile is the short release-regression run:
-it changes the JMeter hold to 25 minutes and delays that one Selenium journey
-by 3 minutes.
+it changes the JMeter hold to 25 minutes. Selenium authenticates and opens the
+scanner while JMeter ramps, then waits for the three-minute ramp to finish
+before clicking **New Scan** at the 200-user target concurrency.
 
 ```bash
 bzt jira.yml jira-customizations-scanner.yml
 ```
 
 This profile reports the one-time
-`selenium_customizations_scanner:full_scan` duration. JMeter traffic runs
-uninterrupted, so review its availability and latency metrics alongside the
-scan duration.
+`selenium_customizations_scanner:full_scan` duration. It accepts a direct
+`Done` state when a fast scan finishes before Selenium can observe the
+transient `In progress` state. JMeter traffic runs uninterrupted, so review
+its availability and latency metrics alongside the scan duration.
 
 Use a prior release as a baseline only when the dataset, cluster topology,
 JVM, application version alignment, and selected profile are the same. Record

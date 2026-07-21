@@ -1,4 +1,6 @@
 import pytest
+import re
+from time import sleep
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,6 +17,14 @@ _SELECTOR_TYPES = {
 }
 
 _SCAN_START_TIMEOUT = 60
+_DURATION_UNITS_IN_SECONDS = {
+    "": 1,
+    "s": 1,
+    "m": 60,
+    "h": 60 * 60,
+    "d": 24 * 60 * 60,
+    "w": 7 * 24 * 60 * 60,
+}
 
 
 class ScanStartError(RuntimeError):
@@ -98,19 +108,22 @@ def _click_new_scan(webdriver, config):
 
 def _scanner_status(webdriver, config):
     selector = _selector(config.status_selector_type, config.status_selector, "status_selector")
-    return webdriver.find_element(*selector).text.strip()
+    return webdriver.find_element(*selector).get_attribute("textContent").strip()
 
 
 def _wait_until_started(webdriver, config):
     def scan_started(_):
-        return _scanner_status(webdriver, config) == config.in_progress_text
+        return _scanner_status(webdriver, config) in {
+            config.in_progress_text,
+            config.completed_text,
+        }
 
     try:
         WebDriverWait(webdriver, _SCAN_START_TIMEOUT).until(scan_started)
     except TimeoutException as exc:
         raise ScanStartError(
             f"Customizations Scanner scan did not start within {_SCAN_START_TIMEOUT} seconds; "
-            f"status never reached '{config.in_progress_text}'."
+            f"status never reached '{config.in_progress_text}' or '{config.completed_text}'."
         ) from exc
 
 
@@ -125,6 +138,17 @@ def _wait_until_completed(webdriver, config):
             f"Customizations Scanner scan did not complete within {config.scan_timeout} seconds; "
             f"status never reached '{config.completed_text}'."
         ) from exc
+
+
+def _wait_for_jmeter_ramp_up():
+    duration = str(JIRA_SETTINGS.ramp_up).strip()
+    match = re.fullmatch(r"(\d+)([smhdw]?)", duration)
+    if not match:
+        raise ValueError(
+            "Jira 'ramp-up' must be an integer optionally followed by one of s, m, h, d, or w. "
+            f"Received: '{duration}'."
+        )
+    sleep(int(match.group(1)) * _DURATION_UNITS_IN_SECONDS[match.group(2)])
 
 
 @print_timing("selenium_customizations_scanner:full_scan")
@@ -185,6 +209,7 @@ def app_specific_action(webdriver, datasets):
         admin_login()
         websudo()
         open_scanner()
+        _wait_for_jmeter_ramp_up()
         _run_full_scan(webdriver, config)
         page.wait_for_dom_mutations_complete()
 

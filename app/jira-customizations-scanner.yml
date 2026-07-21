@@ -14,4 +14,5 @@ settings:
     runner: pytest
     iterations: 1
     hold-for: ${test_duration}
-    delay: ${ramp-up}
+    # Authenticate and open the scanner before JMeter reaches peak; extension_ui waits through the ramp before clicking New Scan.
+    delay: 0s

@@ -62,7 +62,7 @@ def test_jira_base_profile_has_standard_run_four_and_scanner_contract():
     ]
 
 
-def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
+def test_scanner_overlay_starts_selenium_before_the_jmeter_ramp_completes():
     assert SCANNER_OVERLAY_PATH.exists()
 
     config = load_yaml(SCANNER_OVERLAY_PATH)
@@ -82,7 +82,7 @@ def test_scanner_overlay_replaces_executions_with_short_delayed_selenium_run():
         "executor": "selenium",
         "runner": "pytest",
         "hold-for": "${test_duration}",
-        "delay": "${ramp-up}",
+        "delay": "0s",
         "iterations": 1,
     }
 
@@ -106,8 +106,13 @@ def scanner_config(**overrides):
 
 
 class StatusElement:
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, rendered_text, dom_text=None):
+        self.text = rendered_text
+        self.dom_text = dom_text if dom_text is not None else rendered_text
+
+    def get_attribute(self, name):
+        assert name == "textContent"
+        return self.dom_text
 
 
 class StatusDriver:
@@ -117,7 +122,10 @@ class StatusDriver:
 
     def find_element(self, by, value):
         self.find_calls.append((by, value))
-        return StatusElement(next(self._status_texts))
+        status = next(self._status_texts)
+        if isinstance(status, tuple):
+            return StatusElement(*status)
+        return StatusElement(status)
 
 
 class PollingWait:
@@ -169,8 +177,8 @@ def test_flat_scanner_disable_overrides_nested_enable():
     assert settings.enabled is False
 
 
-def test_scanner_status_uses_configured_selector_type_and_value():
-    driver = StatusDriver(["In progress"])
+def test_scanner_status_reads_dom_value_not_css_transformed_rendered_text():
+    driver = StatusDriver([("IN PROGRESS", "In progress")])
 
     status = extension_ui._scanner_status(driver, scanner_config())
 
@@ -214,6 +222,37 @@ def test_full_scan_waits_for_configured_in_progress_then_completed_status(monkey
         (extension_ui.By.ID, "scan-panel-summary"),
         (extension_ui.By.ID, "scan-panel-summary"),
     ]
+
+
+def test_full_scan_accepts_completion_before_progress_is_observed(monkeypatch):
+    class Button:
+        def click(self):
+            pass
+
+    class ScanDriver(StatusDriver):
+        def __init__(self):
+            super().__init__(["Done", "Done"])
+
+        def find_element(self, by, value):
+            if value == "new-scan-btn":
+                return Button()
+            return super().find_element(by, value)
+
+        def execute_script(self, *args):
+            pass
+
+    class OnePollWait:
+        def __init__(self, webdriver, timeout):
+            self.webdriver = webdriver
+
+        def until(self, predicate):
+            if not predicate(self.webdriver):
+                raise TimeoutException("terminal status was not accepted")
+
+    monkeypatch.setattr(extension_ui, "WebDriverWait", OnePollWait)
+    monkeypatch.setattr(extension_ui, "_dismiss_aui_messages", lambda webdriver: None)
+
+    extension_ui._run_full_scan.__wrapped__(ScanDriver(), scanner_config())
 
 
 def test_full_scan_raises_actionable_error_when_new_scan_click_fails(monkeypatch):
@@ -388,6 +427,7 @@ def test_customizations_scanner_reauthenticates_once_after_login_redirect(monkey
     websudo_calls = []
     scanner_visits = []
     scanner_waits = []
+    sequence = []
 
     class FakeLogin:
         def __init__(self, webdriver):
@@ -430,6 +470,7 @@ def test_customizations_scanner_reauthenticates_once_after_login_redirect(monkey
 
         def go_to_url(self, url):
             scanner_visits.append(url)
+            sequence.append("open_scanner")
             if len(scanner_visits) == 1:
                 self.webdriver.current_url = (
                     "http://jira.example/jira/login.jsp?permissionViolation=true"
@@ -454,7 +495,13 @@ def test_customizations_scanner_reauthenticates_once_after_login_redirect(monkey
     monkeypatch.setattr(extension_ui, "BasePage", FakePage)
     monkeypatch.setattr(extension_ui, "print_timing", lambda *args, **kwargs: lambda func: func)
     monkeypatch.setattr(extension_ui, "_dismiss_aui_messages", lambda webdriver: None)
-    monkeypatch.setattr(extension_ui, "_run_full_scan", lambda webdriver, config: None)
+    monkeypatch.setattr(
+        extension_ui,
+        "_wait_for_jmeter_ramp_up",
+        lambda: sequence.append("wait_for_jmeter_ramp"),
+        raising=False,
+    )
+    monkeypatch.setattr(extension_ui, "_run_full_scan", lambda webdriver, config: sequence.append("run_full_scan"))
     monkeypatch.setattr(
         extension_ui.JIRA_SETTINGS,
         "customization_insights",
@@ -477,3 +524,9 @@ def test_customizations_scanner_reauthenticates_once_after_login_redirect(monkey
     assert len(login_calls) == 2
     assert len(websudo_calls) == 2
     assert scanner_waits == [("id", "new-scan-btn")]
+    assert sequence == [
+        "open_scanner",
+        "open_scanner",
+        "wait_for_jmeter_ramp",
+        "run_full_scan",
+    ]
