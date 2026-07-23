@@ -38,7 +38,17 @@ settings:
     standalone_extension: 0 # By default disabled
     # Custom dataset section.
     custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
+    # Customization Insights app-specific performance action settings.
+    # Replace placeholder paths/selectors/assertions with values from the plugin installed in your Confluence DC instance.
     customization_insights_enabled: false                                         # Keep this optional action disabled unless the plugin is installed.
+    customization_insights_ui_path: /plugins/servlet/customization-insights       # Plugin UI path, relative to Confluence base URL.
+    customization_insights_ready_selector: "[data-testid='customization-insights']" # Stable selector that means the main insights UI is ready.
+    customization_insights_ready_selector_type: css                               # css or id.
+    customization_insights_detail_path:                                           # Optional detail/drilldown UI path. Leave blank to skip.
+    customization_insights_detail_selector:                                       # Optional stable selector for detail page readiness.
+    customization_insights_detail_selector_type: css                              # css or id.
+    customization_insights_rest_path: /rest/customization-insights/1.0/insights   # Plugin REST endpoint path, relative to Confluence base URL.
+    customization_insights_rest_assertion: customization                          # Response text that must be present in JMeter assertion.
     local_chrome_binary_path:       # e.g. /usr/bin/google-chrome-stable. Leave it blank to use default Chrome binary path.
     chrome_options:                # Optional Chrome browser options for Selenium. Avoids manual edits to Python files in CI/CD.
       arguments:                   # List of Chrome command-line arguments, e.g. ["--disable-gpu", "--remote-debugging-port=9222"]
@@ -95,6 +105,8 @@ scenarios:
       perc_like_page: ${like_page}
       perc_upload_emoticon: ${upload_emoticon}
       perc_standalone_extension: ${standalone_extension}
+      customization_insights_rest_path: ${customization_insights_rest_path}
+      customization_insights_rest_assertion: ${customization_insights_rest_assertion}
 modules:
   consolidator:
     rtimes-len: 0 # CONFSRVDEV-7631 reduce sampling

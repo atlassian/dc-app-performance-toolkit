@@ -84,7 +84,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-05cb805552827adf7",
+                "us-east-2": "snap-0f5fd615df08f4ca0",
                 "us-east-1": "snap-0c936325b25fd3899"
               }
             ]
@@ -94,7 +94,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-11-3-1",
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-11-3-1-centurion-customizations",
                 "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-jira-11-3-1"
               }
             ]
@@ -104,7 +104,7 @@
             "size": "large",
             "snapshots": [
               {
-                "us-east-2": "snap-0dc413e149a0e6664",
+                "us-east-2": "snap-059c6c18f69085791",
                 "us-east-1": "snap-0b141d82744a59622"
               }
             ]
