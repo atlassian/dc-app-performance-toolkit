@@ -35,7 +35,7 @@ settings:
     view_kanban_board: 7
     view_backlog: 6
     browse_boards: 1
-    standalone_extension: 0 # The scanner is a one-time administrative Selenium KPI, not weighted normal-user JMeter traffic.
+    standalone_extension: 10 # The scanner is a one-time administrative Selenium KPI, not weighted normal-user JMeter traffic.
     # Custom dataset section.
     custom_dataset_query:          # Write JQL query to add JQL output to the app/datasets/jira/custom-issues.csv, e.g. "summary ~ 'AppIssue*'"
     # Customization Insights app-specific performance action settings.
