@@ -3,7 +3,7 @@ import time
 from selenium_ui.base_page import BasePage
 
 from selenium_ui.confluence.pages.selectors import UrlManager, LoginPageLocators, AllUpdatesLocators, PopupLocators,\
-    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, LogoutLocators, XsrfTokenLocators, AdminLocators
+    PageLocators, DashboardLocators, TopPanelLocators, EditorLocators, XsrfTokenLocators, AdminLocators
 
 
 class Login(BasePage):
@@ -71,16 +71,15 @@ class Login(BasePage):
 
 
 class Logout(BasePage):
-    page_url = UrlManager().logout_url()
+    def click_logout(self):
+        if self.element_exists(LoginPageLocators.user_menu):
+            self.wait_until_clickable(LoginPageLocators.user_menu).click()
 
-    def wait_for_logout(self):
-        self.wait_until_visible(LoginPageLocators.sidebar)
-        if not self.get_elements(LoginPageLocators.login_button):
-            print("INFO: 2sv login form")
-            self.wait_until_visible(LoginPageLocators.login_username_field_2sv)
-        else:
-            print("INFO: legacy login form")
-            self.wait_until_visible(LoginPageLocators.login_username_field)
+            if self.element_exists(LoginPageLocators.logout):
+                self.wait_until_clickable(LoginPageLocators.logout).click()
+                return
+
+        self.go_to_url(UrlManager().logout_url())
 
 
 class AllUpdates(BasePage):

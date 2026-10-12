@@ -71,7 +71,8 @@ class LoginPageLocators:
     finish_setup = (By.CSS_SELECTOR, ".intro-find-spaces-button-continue")
 
     # logout
-    logout = (By.XPATH, "//a[@href='logout.action']")
+    user_menu = (By.ID, "user-menu-link")
+    logout = (By.XPATH, "//a[@id='logout-link' or contains(@href, 'logout.action')]")
 
 
 class AllUpdatesLocators:
