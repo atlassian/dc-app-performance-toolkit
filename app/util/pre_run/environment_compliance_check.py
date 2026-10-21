@@ -20,7 +20,7 @@ APPS_SETTINGS = {
     "CROWD": CROWD_SETTINGS,
 }
 
-SUPPORTED_JAVA_VERSIONS = [17, 21]
+SUPPORTED_JAVA_VERSIONS = [17, 21, 25]
 
 
 def check_dcapt_version():
