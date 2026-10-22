@@ -178,7 +178,7 @@ jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Dstartup.file.
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "10.2.2"
+confluence_version_tag = "11.0.0"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "large"
