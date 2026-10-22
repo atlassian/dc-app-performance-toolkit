@@ -24,8 +24,7 @@ ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN set -eux; \
-  wget -O /tmp/jdk.tar.gz 'https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz'; \
-  echo 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94  /tmp/jdk.tar.gz' | sha256sum -c -; \
+  wget -O /tmp/jdk.tar.gz 'https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse'; \
   mkdir -p "$JAVA_HOME"; \
   tar -xzf /tmp/jdk.tar.gz -C "$JAVA_HOME" --strip-components=1; \
   rm /tmp/jdk.tar.gz; \
