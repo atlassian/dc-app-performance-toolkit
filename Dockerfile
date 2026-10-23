@@ -28,7 +28,7 @@ RUN set -eux; \
   mkdir -p "$JAVA_HOME"; \
   tar -xzf /tmp/jdk.tar.gz -C "$JAVA_HOME" --strip-components=1; \
   rm /tmp/jdk.tar.gz; \
-  java -version \
+  java -version
 
 RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_LATEST_URL; else wget -O google-chrome.deb $CHROME_VERSION_URL; fi \
   && $APT_INSTALL ./google-chrome.deb \
