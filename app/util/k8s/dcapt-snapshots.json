@@ -476,6 +476,42 @@
           }
         ],
         "build_number": "9526"
+      },
+      {
+        "version": "9.2.26",
+        "data": [
+          {
+            "type": "ebs",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-0eee2f0f12765d0b0",
+                "us-east-1": "snap-0f7a4adaaa9e4d092"
+              }
+            ]
+          },
+          {
+            "type": "rds",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-9-2-26",
+                "us-east-1": "arn:aws:rds:us-east-1:585036043680:snapshot:dcapt-confluence-9-2-26"
+              }
+            ]
+          },
+          {
+            "type": "local-home",
+            "size": "large",
+            "snapshots": [
+              {
+                "us-east-2": "snap-03b91b22042cdefa7",
+                "us-east-1": "snap-0a48202c3f306359f"
+              }
+            ]
+          }
+        ],
+        "build_number": "9111"
       }
     ]
   },
