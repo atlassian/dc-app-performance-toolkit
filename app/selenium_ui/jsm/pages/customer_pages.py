@@ -51,11 +51,11 @@ class Login(BasePage):
 class TopPanel(BasePage):
 
     def open_profile_menu(self):
-        self.get_element(TopPanelSelectors.profile_icon).click()
+        self.safe_click(TopPanelSelectors.profile_icon)
         self.wait_until_visible(TopPanelSelectors.logout_button)
 
     def logout(self):
-        self.get_element(TopPanelSelectors.logout_button).click()
+        self.safe_click(TopPanelSelectors.logout_button)
         self.wait_until_visible(LoginPageLocators.login_form)
         if not self.get_elements(LoginPageLocators.login_submit_button):
             self.wait_until_visible(LoginPageLocators.login_field_2sv)
@@ -72,7 +72,7 @@ class CustomerPortals(BasePage):
         self.wait_until_visible(self.get_selector(CustomerPortalsSelectors.full_portals_list))
 
     def open_random_portal(self):
-        portals = self.get_elements(CustomerPortalsSelectors.portal_from_list)
+        portals = self.get_elements(self.get_selector(CustomerPortalsSelectors.portal_from_list))
         if len(portals) > 1:
             portal = random.choice(portals)
         else:

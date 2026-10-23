@@ -54,11 +54,13 @@ class TopPanelSelectors:
 
 class CustomerPortalsSelectors:
     welcome_logged_in_page = (By.CSS_SELECTOR, "div.cv-help-center-container")
-    browse_portals_button = (By.CSS_SELECTOR, "button.cv-smart-portal-browse-portals")
+    browse_portals_button = (By.CSS_SELECTOR, "button.cv-smart-portal-browse-portals, "
+                                              ".cv-smart-portal-browse-portals button, "
+                                              "button[data-testid='expand-portal-cards']")
     full_portals_list = OrderedDict({"4.13.0": (By.CSS_SELECTOR, "ul.cv-smart-portal-all-portals-list"),
                                      "4.15.0": (By.CLASS_NAME, "cv-portal-cards-react-container")})
     portal_from_list = OrderedDict({"4.13.0": (By.CSS_SELECTOR, "ul.cv-smart-portal-all-portals-list>li>a>span"),
-                                    "4.15.0": (By.CSS_SELECTOR, "portal-card-item")})
+                                    "4.15.0": (By.CSS_SELECTOR, "li[data-testid='portal-card-item'] a")})
 
 
 class CustomerPortalSelectors:
