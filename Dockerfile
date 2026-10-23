@@ -20,9 +20,15 @@ RUN apt-get -y update \
   && python -m pip install --upgrade pip \
   && apt-get clean
 
-RUN wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb \
-  && $APT_INSTALL ./jdk-21_linux-x64_bin.deb \
-  && rm -rf ./jdk-21_linux-x64_bin.deb
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+RUN set -eux; \
+  wget -O /tmp/jdk.tar.gz 'https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse'; \
+  mkdir -p "$JAVA_HOME"; \
+  tar -xzf /tmp/jdk.tar.gz -C "$JAVA_HOME" --strip-components=1; \
+  rm /tmp/jdk.tar.gz; \
+  java -version
 
 RUN if [ "$CHROME_VERSION" = "latest" ]; then wget -O google-chrome.deb $CHROME_LATEST_URL; else wget -O google-chrome.deb $CHROME_VERSION_URL; fi \
   && $APT_INSTALL ./google-chrome.deb \
