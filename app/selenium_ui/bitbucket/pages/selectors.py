@@ -168,10 +168,12 @@ class PullRequestLocator:
 
     pull_request_page_merge_button = (By.CLASS_NAME, 'merge-button')
 
-    diagram_selector = (By.CLASS_NAME, 'branches-diagram')
+    # Bitbucket 10.2+ renders the merge diagram as '.merge-branches' instead of '.branches-diagram'
+    diagram_selector = (By.CSS_SELECTOR, '.branches-diagram, .merge-branches')
     merge_diagram_selector = (By.CLASS_NAME, "merge-diagram")
     pull_request_modal_merge_button = (By.CSS_SELECTOR, ".merge-dialog button[type='submit']")
-    del_branch_checkbox_selector = (By.NAME, 'deleteSourceRef')
+    # Bitbucket 10.2+ renamed the checkbox from 'deleteSourceRef' to 'deleteSource'
+    del_branch_checkbox_selector = (By.CSS_SELECTOR, "input[name='deleteSourceRef'], input[name='deleteSource']")
     delete_branch_per_merge_checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
     updates_info_banner = (By.CSS_SELECTOR, ".pull-request-onboarding>footer>button")
 
