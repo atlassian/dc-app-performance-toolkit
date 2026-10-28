@@ -253,7 +253,7 @@ confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Dstartup
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "9.4.12"
+bitbucket_version_tag = "10.2.8"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "large"
