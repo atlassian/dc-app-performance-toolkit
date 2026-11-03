@@ -328,8 +328,7 @@ def log_out(webdriver, datasets):
 
     @print_timing("selenium_log_out")
     def measure():
-        logout_page.go_to()
-        logout_page.wait_for_logout()
+        logout_page.click_logout()
         login_page.wait_for_page_loaded()
         login_page.delete_all_cookies()
 

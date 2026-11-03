@@ -95,10 +95,10 @@ jira_image_repository = "atlassian/jira-software"
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
 # Jira version.
-jira_version_tag = "11.3.1"
+jira_version_tag = "11.3.12"
 # JSM version
 # ! REQUIRED for JSM !
-# jira_version_tag = "11.3.1"
+# jira_version_tag = "11.3.12"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 jira_dataset_size = "small"
@@ -160,14 +160,14 @@ jira_db_master_password = "Password1!"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
 # Example: ["-Dproperty=value", "-Dproperty1=value1"]
-jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+jira_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Dstartup.file.permissions.lenient=true"]
 
 ################################################################################
 # Confluence Settings
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-confluence_version_tag = "10.2.2"
+confluence_version_tag = "11.0.0"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 confluence_dataset_size = "small"
@@ -237,14 +237,14 @@ confluence_collaborative_editing_enabled = true
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
 # Example: ["-Dproperty=value", "-Dproperty1=value1"]
-confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true"]
+confluence_additional_jvm_args = ["-Dupm.plugin.upload.enabled=true", "-Dstartup.file.permissions.lenient=true"]
 
 ################################################################################
 # Bitbucket Settings
 ################################################################################
 
 # Supported versions by DCAPT: https://github.com/atlassian/dc-app-performance-toolkit#supported-versions
-bitbucket_version_tag = "9.4.12"
+bitbucket_version_tag = "10.2.8"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 bitbucket_dataset_size = "small"
