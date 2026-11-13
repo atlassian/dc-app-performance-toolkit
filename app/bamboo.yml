@@ -126,7 +126,7 @@ modules:
       httpsampler.ignore_failed_embedded_resources: "true"
   selenium:
     chromedriver:
-      version: "157.0.8103.38" # Supports Chrome version 157. You can refer to https://googlechromelabs.github.io/chrome-for-testing
+      version: "157.0.8103.50" # Supports Chrome version 157. You can refer to https://googlechromelabs.github.io/chrome-for-testing
 reporting:
 - data-source: sample-labels
   module: junit-xml
