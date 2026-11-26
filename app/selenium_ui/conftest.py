@@ -275,6 +275,12 @@ def webdriver(app_settings):
         # Prevent Chrome from showing the search engine prompt
         chrome_options.add_argument("--disable-search-engine-choice-screen")
         chrome_options.add_argument("--no-first-run")
+
+        # Allow HTTP test instances through Chrome's Ask-before-HTTP warning.
+        if app_settings.protocol == 'http':
+            chrome_options.add_argument(
+                f"--unsafely-treat-insecure-origin-as-secure=http://{app_settings.hostname}:{app_settings.port}")
+
         # Build prefs by starting with the default language preference and
         # deep-merging any user-supplied prefs on top, so user values win.
         default_prefs = {'intl.accept_languages': 'en,en_US'}
