@@ -85,7 +85,7 @@ max_cluster_capacity = 6
 # When set to true, Envoy Gateway is deployed as a drop-in replacement for NGINX. Only one can be active per deployment.
 # If `domain` is set, HTTPS is used with TLS termination via ACM cert; otherwise the raw NLB hostname is used over HTTP.
 # For Bitbucket, SSH on port 7999 is handled natively via TCPRoute (no manual ELB listener modification needed).
-# use_gateway_api = "true"
+use_gateway_api = "true"
 
 ################################################################################
 # Execution Environment Settings
